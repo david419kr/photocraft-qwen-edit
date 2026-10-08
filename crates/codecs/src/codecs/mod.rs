@@ -1,3 +1,4 @@
+pub(crate) mod avif;
 pub(crate) mod deep_exr;
 pub(crate) mod exr;
 pub(crate) mod heif;

@@ -44,7 +44,7 @@ let out = encode(&img, Format::Tiff, &EncodeOptions::default())?;
 | QOI | yes | yes | U8 | RGB, RGBA | yes | no | no | no | no | no | no | `image` |
 | OpenEXR | yes | yes | F16, F32 | Y, YA, RGB, RGBA | yes | no | no | no | no | no | no | `exr` |
 | Radiance HDR | yes | yes | F32 | RGB | no | no | no | no | no | no | yes (RGBE) | `image` |
-| AVIF | **no** | only with feature `avif` | U8 | RGB, RGBA | yes | no | no | no | no | no | yes | `image` + `ravif` |
+| AVIF | feature `avif-decode` (native apps enable it) | only with feature `avif` | U8 write; U8/U16 read (8/10/12-bit) | RGB, RGBA | yes | read only | read only | read only | no | no | yes | `oxideav-avif` read; `image` + `ravif` write |
 | HEIF/HEIC | with feature `heif` | **no** | U8, U16 (10/12-bit decodes to U16) | RGB, RGBA | yes (auxiliary alpha) | yes (`colr` prof) | yes | yes | no | no | n/a | `heic-rs` |
 
 "Native" means the data is stored and read back without conversion. Anything else is converted by
@@ -76,10 +76,21 @@ the same.
   decodes to RGB. Image sequences, overlays and identity derivations, multilayer HEVC and some
   4:2:2/4:4:4 streams return `CodecError::Unsupported` or `Malformed`, never wrong pixels. Writing
   needs an HEVC encoder and every mature one is C, so HEIF is listed in `ASYMMETRIC_EXCEPTIONS`.
-* **AVIF.** Encoding uses `ravif`, which is pure Rust. Decoding
-  needs `dav1d`, which is C. AVIF is therefore read-unsupported, and write support is gated
-  behind the non-default `avif` feature. In a default build it is neither readable nor writable,
-  so the symmetric guarantee holds. It is listed in `ASYMMETRIC_EXCEPTIONS`.
+* **AVIF.** The native desktop and CLI apps enable `avif-decode`, bundling `oxideav-avif` and its pure-Rust AV1
+  decoder; no system codec, dav1d or external DLL is required. Still pictures, auxiliary alpha,
+  8/10/12-bit samples (10/12 become normalized U16), ICC, EXIF and XMP are read. Container
+  transforms are applied once; EXIF Orientation does not rotate the picture a second time.
+  `keep_orientation` preserves EXIF metadata, but AVIF container transforms are always applied.
+  Only the first frame of a sequence is imported, with a `MoreFrames` warning.
+  Untagged wide-gamut/HDR CICP is explicitly refused until CICP-to-ICC conversion is available;
+  ordinary sRGB AVIF and files with embedded ICC profiles open. Unsupported codec/container
+  features and damaged files return errors. Decode limits apply before pixel conversion.
+  Optional writing still uses `ravif` (`avif` feature), U8 without metadata. `FormatCaps`
+  continues to describe those encoder depth/metadata guarantees so export warnings remain
+  correct. It is listed in `ASYMMETRIC_EXCEPTIONS` because reading and writing are independent.
+  Standalone codec/web builds opt in with `avif-decode`; default web bundles keep their size.
+  Distribution must retain the decoder's [MIT notice](licenses/oxideav-MIT.txt); the portable
+  development packaging script copies it beside the executable under `licenses/`.
 * **Lossy WebP.** There is no pure-Rust lossy WebP encoder. We always write lossless WebP, and
   `webp_lossless: false` returns `CodecError::Unsupported`. We can read both lossy and lossless
   files.

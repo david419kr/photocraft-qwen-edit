@@ -200,9 +200,12 @@ pub fn test_cmd(args: &[&str]) -> Result<(), String> {
     }
     let mut features: Vec<String> = crates.iter().map(|k| format!("{k}/corpus")).collect();
     features.extend(crates.iter().filter(|k| HEIF_CRATES.contains(&k.as_str())).map(|k| format!("{k}/heif")));
+    if crates.iter().any(|k| k != "photocraft-psd") {
+        features.push("photocraft-codecs/avif-decode".into());
+    }
     c.args(["--features", &features.join(",")]);
     if !passthrough.is_empty() {
         c.arg("--").args(passthrough);
     }
-    run(c, &format!("cargo test --release --features corpus,heif ({})", crates.join(", ")))
+    run(c, &format!("cargo test --release --features {} ({})", features.join(","), crates.join(", ")))
 }

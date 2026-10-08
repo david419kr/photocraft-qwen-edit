@@ -5,6 +5,21 @@ existing local ComfyUI server. Original pixel data remains intact; each successf
 adds one new top-level layer in one undo step. Whole-image edits also hide the previous layers
 on success so the new result's transparency is visible; Undo restores their visibility.
 
+## AVIF import (2026-10-09)
+
+The development portable build also includes a pure-Rust AVIF reader. Open or drag/drop
+`.avif` files normally; no DLL, Windows codec installation or ComfyUI connection is needed.
+8-bit and 10/12-bit SDR pictures, alpha and embedded metadata are preserved. AVIF writing
+is still an optional codec feature and is not enabled by this build. Untagged wide-gamut/HDR
+AVIF is refused explicitly; see `crates/codecs/README.md` for decoder limits.
+
+Verified on 2026-10-09: 10 AVIF tests; 564 codec regression/corpus tests passed (three existing
+opt-in benchmarks ignored); 79 desktop/CLI tests and 46 build-tool tests passed. Codec/tool
+Clippy, native portable release build, wasm checks (including optional AVIF), and layering
+checks passed. The Korean offscreen UI opens a synthetic RGBA AVIF with transparency.
+The reported 1216x1600 file decodes with at most 2/255 RGB difference from FFmpeg; a synthetic
+24 MP file decodes in 883 ms in release. The executable depends on Windows system DLLs only.
+
 ## Use
 
 Run `scripts/run-comfyui-korean.ps1` on Windows. It builds a portable copy under
@@ -17,7 +32,7 @@ Windows packaging and statically links the Microsoft C runtime into `photocraft.
 (`--target x86_64-pc-windows-msvc`, `-C target-feature=+crt-static`). No separate
 `VCRUNTIME140.dll` or Visual C++ runtime installer is needed for this executable. Standard
 Windows system libraries remain required. `portable.txt` is optional for execution and
-enables settings beside the executable. For sharing, use the executable and marker rather
+enables settings beside the executable. For sharing, use the executable, marker and `licenses/` folder rather
 than copying personal `PhotoCraftData` (preferences, recent
 files and recovery data); the recipient can select Korean in Preferences.
 

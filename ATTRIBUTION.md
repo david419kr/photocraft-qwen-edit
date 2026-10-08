@@ -66,9 +66,15 @@ Artwork shown in the screenshots (all public domain, via Wikimedia Commons; deta
 | `photocraft-type.jpg` | *Among the Sierra Nevada, California*, Albert Bierstadt, 1868 | [Commons](https://commons.wikimedia.org/wiki/File:Albert_Bierstadt_-_Among_the_Sierra_Nevada,_California_-_Google_Art_Project.jpg) |
 | `photocraft-export-light.jpg` | *The Kiss*, Gustav Klimt, 1907–1908 | [Commons](https://commons.wikimedia.org/wiki/File:Gustav_Klimt_016.jpg) |
 
-## Test data (not committed, not shipped)
+## Synthetic test data (committed, not shipped)
 
-`corpus/` is gitignored and no test fixtures are committed to the repository.
+| Path | Title | Author | Source | License |
+|---|---|---|---|---|
+| `crates/codecs/tests/data/avif/*.avif` | Solid colour AVIF fixtures | PhotoCraft contributors | Original synthetic pixels, encoded by libaom/libheif; [`README.md`](crates/codecs/tests/data/avif/README.md) | MIT OR Apache-2.0, [`LICENSE.txt`](crates/codecs/tests/data/avif/LICENSE.txt) |
+
+## External test corpora (not committed, not shipped)
+
+`corpus/` is gitignored; externally sourced corpus files are never committed to the repository.
 `cargo xtask corpus --all` fetches every corpus at the pinned commits in `xtask/src/corpus_pins.rs`
 and verifies each file against the sha256 lists in `xtask/*.sha256`, with the upstream licence
 next to the files:

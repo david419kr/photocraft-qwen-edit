@@ -3450,6 +3450,43 @@ dependencies = [
 ]
 
 [[package]]
+name = "oxideav-av1"
+version = "0.1.20"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ca117d1c12ff9e722beb028880fa436afffbb19158a35750cf1e4ba3e9389740"
+dependencies = [
+ "oxideav-core",
+]
+
+[[package]]
+name = "oxideav-avif"
+version = "0.0.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2eab0a90ee528354d39c0e188bad6876a8b9b9c31f6d53e11a1ed05ef40e0e65"
+dependencies = [
+ "oxideav-av1",
+ "oxideav-core",
+ "oxideav-heif",
+]
+
+[[package]]
+name = "oxideav-core"
+version = "0.1.39"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f49a13fc8a75d81fb4af6108bd67d080d52213ffa008340212246d543d63f982"
+dependencies = [
+ "bytemuck",
+ "serde_json",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "oxideav-heif"
+version = "0.0.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2a7ba53e21a577b6c7f068be80f2f61c86a8b0971d23c93108d57e4d5866b5b8"
+
+[[package]]
 name = "parking"
 version = "2.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3700,6 +3737,8 @@ dependencies = [
  "image",
  "image-webp",
  "jpeg-encoder",
+ "oxideav-avif",
+ "oxideav-heif",
  "photocraft-heif",
  "png 0.18.1",
  "proptest",

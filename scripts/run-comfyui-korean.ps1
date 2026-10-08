@@ -27,6 +27,9 @@ try {
     if (-not (Test-Path -LiteralPath $builtExe)) { throw ('Executable not found: ' + $builtExe) }
     New-Item -ItemType Directory -Path $dataDir -Force | Out-Null
     Copy-Item -LiteralPath $builtExe -Destination (Join-Path $bundleDir 'photocraft.exe') -Force
+    $licenseDir = Join-Path $bundleDir 'licenses'
+    New-Item -ItemType Directory -Path $licenseDir -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $repoRoot 'crates\codecs\licenses\oxideav-MIT.txt') -Destination $licenseDir -Force
     # Remove only the runtime bundled by the previous development launcher.
     $oldRuntime = Join-Path $bundleDir 'VCRUNTIME140.dll'
     if (Test-Path -LiteralPath $oldRuntime -PathType Leaf) {

@@ -19,7 +19,7 @@ pub enum Format {
     OpenExr,
     /// Radiance RGBE.
     Hdr,
-    /// Encode-only behind the `avif` feature; see [`ASYMMETRIC_EXCEPTIONS`].
+    /// Read behind `avif-decode` (native apps enable it); encode behind `avif`.
     Avif,
     /// HEIF/HEIC (HEVC-coded): read-only; see [`ASYMMETRIC_EXCEPTIONS`].
     Heif,
@@ -56,8 +56,10 @@ pub struct FormatCaps {
 pub const ASYMMETRIC_EXCEPTIONS: &[(Format, &str)] = &[
     (
         Format::Avif,
-        "AVIF encode uses ravif (pure Rust) but decoding requires dav1d (C); read stays unsupported \
-         until a pure-Rust AV1 decoder is viable. Only enabled with the non-default `avif` feature.",
+        "AVIF decode uses oxideav (pure Rust) through avif-decode, enabled by native apps; writing \
+         uses ravif through the non-default avif feature. Builds can enable reading independently \
+         of writing. Encoder capabilities are U8 RGB/RGBA without metadata; decode also keeps \
+         10/12-bit precision (U16), ICC, EXIF and XMP.",
     ),
     (
         Format::Heif,
@@ -204,7 +206,8 @@ pub fn caps(format: Format) -> FormatCaps {
         Format::Qoi => base,
         Format::OpenExr => FormatCaps { depths: &[S::F16, S::F32], layouts: RGB_GRAY, ..base },
         Format::Hdr => FormatCaps { depths: &[S::F32], layouts: &[L::Rgb], alpha: false, lossy: true, ..base },
-        Format::Avif => FormatCaps { read: false, write: cfg!(feature = "avif"), lossy: true, ..base },
+        // Depth/metadata describe the encoder's guarantee, not the broader decoder support.
+        Format::Avif => FormatCaps { read: cfg!(feature = "avif-decode"), write: cfg!(feature = "avif"), animation: true, lossy: true, ..base },
         Format::Heif => {
             FormatCaps { read: cfg!(feature = "heif"), write: false, depths: &[S::U8, S::U16], icc: true, exif: true, xmp: true, lossy: true, ..base }
         }
