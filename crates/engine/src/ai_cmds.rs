@@ -17,6 +17,9 @@ use crate::{EngineError, Result, Session};
 pub const MAX_DOCUMENT_PIXELS: u64 = 36_000_000;
 pub const MAX_PROMPT_BYTES: usize = 8192;
 pub const MAX_WORKING_SIDE: u32 = 1536;
+pub const REMOVE_BACKGROUND_COMMAND: &str = "edit.aiRemoveBackground";
+/// 05_BackgroundRemoval_AutoINT8Cache, generalised beyond its example woman.
+pub const REMOVE_BACKGROUND_PROMPT: &str = "This is an RGBA image with transparency. Extract only the foreground subject or subjects, including hair, fur, clothing and held objects. Everything else must be fully transparent. Preserve clean edges and fine hair or fur strands.";
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -135,7 +138,7 @@ fn can_fill(s: &Session) -> std::result::Result<(), String> {
 }
 
 pub fn specs() -> Vec<CommandSpec> {
-    [EditMode::PromptEdit, EditMode::GenerativeFill]
+    let mut commands: Vec<_> = [EditMode::PromptEdit, EditMode::GenerativeFill]
         .into_iter()
         .map(|mode| CommandSpec {
             id: mode.command(),
@@ -150,7 +153,25 @@ pub fn specs() -> Vec<CommandSpec> {
             run: if mode == EditMode::PromptEdit { prompt_edit } else { generative_fill },
             journal: true,
         })
-        .collect()
+        .collect();
+    commands.push(CommandSpec {
+        id: REMOVE_BACKGROUND_COMMAND,
+        label: "Remove Background",
+        menu: &[],
+        shortcut: None,
+        params: "{\"seed\":u64?,\"name\":str?} → {layer,mode,seed,workingSize} (AI cutout as a new layer; hides source layers)",
+        enabled: can_edit,
+        run: remove_background,
+        journal: true,
+    });
+    commands
+}
+
+fn remove_background(s: &mut Session, p: &Value) -> Result<Value> {
+    let mut params = p.as_object().cloned().ok_or_else(|| bad(REMOVE_BACKGROUND_COMMAND, "params must be an object"))?;
+    params.insert("prompt".into(), json!(REMOVE_BACKGROUND_PROMPT));
+    params.entry("name").or_insert_with(|| json!("Remove Background"));
+    run(s, &Value::Object(params), EditMode::PromptEdit)
 }
 
 fn prompt_edit(s: &mut Session, p: &Value) -> Result<Value> {
@@ -222,6 +243,13 @@ fn run(s: &mut Session, p: &Value, mode: EditMode) -> Result<Value> {
             ctx.check()?;
             let layer = result_layer(doc, &generated, &request.image, input.content_size, &name, mode, ctx)?;
             let id = layer.id;
+            if mode == EditMode::PromptEdit {
+                // The result represents the entire visible composite. Its transparent pixels
+                // must reveal the checkerboard, not a copy of the old image underneath.
+                for source in &mut doc.layers {
+                    source.visible = false;
+                }
+            }
             doc.layers.push(layer);
             *active = Some(id);
             Ok(json!({"layer":id.0,"mode":mode,"seed":seed,"workingSize":size}))

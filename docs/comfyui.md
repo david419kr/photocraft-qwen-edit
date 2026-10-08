@@ -1,8 +1,9 @@
 # ComfyUI Qwen Image 2.1 image editing
 
 This branch adds two native commands and a contextual canvas bar. Generation runs in an
-existing local ComfyUI server. Original layers remain intact; each successful request adds
-one new top-level layer in one undo step.
+existing local ComfyUI server. Original pixel data remains intact; each successful request
+adds one new top-level layer in one undo step. Whole-image edits also hide the previous layers
+on success so the new result's transparency is visible; Undo restores their visibility.
 
 ## Use
 
@@ -59,6 +60,11 @@ With no selection or a full selection, click **Prompt Edit** below the image and
 the change. The prompt is passed through unchanged. With a partial selection, click
 **Generative Fill** below the selection. A blank prompt removes the content in the selected
 region; a nonblank prompt specifies its replacement. Cancel stops only this ComfyUI job.
+The closed whole-image bar also has a one-click **Remove Background** button. It uses the
+05 BackgroundRemoval workflow's RGBA/full-transparency instruction, generalised from its
+example woman to foreground subjects, hair/fur, clothing and held objects. The selected-region
+bar has a one-click **Remove** button, identical to Generative Fill with an empty prompt.
+These shortcuts leave any draft prompt unchanged and are disabled while the document is busy.
 With the prompt field focused, **Ctrl+Enter** starts generation through the same command and
 validation as the Generate button. Plain Enter still inserts a newline. Empty whole-image
 prompts and busy jobs do not submit; empty Generative Fill prompts retain removal behaviour.
@@ -73,8 +79,12 @@ selection and synthetic padding are excluded from the boundary reference. If no 
 context survives at model resolution, blending is skipped. This applies to both blank and
 nonblank fill prompts; new objects can also inherit the surrounding colour cast. Prompt Edit
 does not apply this correction. The solve supports job cancellation and uses no AI inference.
-Existing layers and the selection are preserved. Hide or undo the new layer to return to
-the previous image.
+Existing pixels and the selection are preserved. Fill leaves source visibility unchanged;
+hide or undo its result to return to the previous image. Prompt Edit and AI Remove Background
+hide all existing root layers only after the generated layer is ready. This includes visible
+source groups; their child visibility flags are preserved. Undo restores the exact old root
+visibility and active layer in the same step. Failure/cancellation keeps the source visible.
+To compare a whole-image result manually, hide it and re-enable the source layers.
 
 ## Input and output
 
@@ -127,6 +137,9 @@ result into another document. Conflicting edits to the source are blocked while 
 The desktop UI does not supply a fixed seed. Each request defaults to the current native
 system time in nanoseconds as a 64-bit seed; an explicitly supplied `seed` is honoured for
 reproducible automation and diagnostic comparisons.
+`edit.aiRemoveBackground` accepts optional `seed`/`name` and uses its fixed foreground-cutout
+prompt, then follows the whole-image result/visibility path. This AI quick action is separate
+from the existing local `layer.removeBackground` mask-based command.
 
 `ui.inspect` includes `ai` (open, prompt, mode, rectangle). `ui.set` accepts `aiOpen` and
 `aiPrompt`. `ui.menu.invoke` with either command and no parameters opens the input bar.

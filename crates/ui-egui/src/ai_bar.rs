@@ -166,6 +166,23 @@ fn label(mode: EditMode) -> &'static str {
     }
 }
 
+fn quick_label(mode: EditMode) -> &'static str {
+    match mode {
+        EditMode::PromptEdit => tl!("Remove Background"),
+        EditMode::GenerativeFill => tl!("Remove"),
+    }
+}
+
+fn quick_action(app: &mut PhotocraftApp, mode: EditMode) -> Result<(), String> {
+    let result = match mode {
+        EditMode::PromptEdit => app.run(photocraft_engine::ai_cmds::REMOVE_BACKGROUND_COMMAND, json!({"name":quick_label(mode)})),
+        EditMode::GenerativeFill => app.run(mode.command(), json!({"prompt":"","name":quick_label(mode)})),
+    };
+    result.map(|_| {
+        app.ui.ai.open = false;
+    })
+}
+
 fn prompt_id(document: u64) -> egui::Id {
     egui::Id::new(("photocraft-ai-prompt", document))
 }
@@ -201,14 +218,19 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let anchor = if mode == EditMode::GenerativeFill { selection.unwrap_or(image) } else { image };
     // Scrollbar tracks must remain reachable beneath this foreground Area.
     let canvas = canvas.shrink2(vec2(20.0, 20.0));
-    let width = if app.ui.ai.open { 440.0f32 } else { 200.0f32 }.min(canvas.width() - 16.0);
-    let button_text = ui.painter().layout(
-        label(mode).to_owned(),
+    let width = if app.ui.ai.open { 440.0f32 } else { 330.0f32 }.min(canvas.width() - 16.0);
+    let button_width = ((width - 16.0 - ui.spacing().item_spacing.x) * 0.5).max(1.0);
+    let text_width = if app.ui.ai.open { width - 32.0 } else { button_width - 16.0 };
+    let button_text =
+        ui.painter().layout(label(mode).to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text, text_width.max(1.0));
+    let quick_text = ui.painter().layout(
+        quick_label(mode).to_owned(),
         egui::TextStyle::Button.resolve(ui.style()),
         crate::theme::Tokens::get(ui.ctx()).text,
-        (width - 32.0).max(1.0),
+        text_width.max(1.0),
     );
-    let height = if app.ui.ai.open { 128.0 } else { (button_text.size().y + 8.0).max(24.0) + 16.0 };
+    let button_height = (button_text.size().y.max(quick_text.size().y) + 8.0).max(24.0);
+    let height = if app.ui.ai.open { 128.0 } else { button_height + 16.0 };
     if canvas.height() < height + 16.0 {
         app.ui.ai.rect = None;
         return;
@@ -218,6 +240,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let busy = app.session.job_on(doc.id).is_some();
     let tokens = crate::theme::Tokens::get(ui.ctx());
     let mut generate = false;
+    let mut quick = false;
     let mut close = false;
     let area = egui::Area::new(egui::Id::new(("photocraft-ai-bar", doc.id.0))).order(egui::Order::Foreground).fixed_pos(pos2(x, y)).show(ui.ctx(), |ui| {
         egui::Frame::new()
@@ -228,10 +251,15 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
             .show(ui, |ui| {
                 ui.set_width(width - 16.0);
                 if !app.ui.ai.open {
-                    if ui.add_enabled(!busy, egui::Button::new(label(mode)).min_size(vec2(width - 16.0, 24.0))).clicked() {
-                        app.ui.ai.open = true;
-                        app.ui.ai.focus = true;
-                    }
+                    ui.add_enabled_ui(!busy, |ui| {
+                        ui.horizontal(|ui| {
+                            if ui.add_sized(vec2(button_width, button_height), egui::Button::new(label(mode)).wrap()).clicked() {
+                                app.ui.ai.open = true;
+                                app.ui.ai.focus = true;
+                            }
+                            quick = ui.add_sized(vec2(button_width, button_height), egui::Button::new(quick_label(mode)).wrap()).clicked();
+                        })
+                    });
                     return;
                 }
                 let hint = match mode {
@@ -273,6 +301,9 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     if close {
         app.ui.ai.open = false;
     }
+    if quick {
+        let _ = quick_action(app, mode);
+    }
     if generate && !close {
         let params = json!({"prompt":app.ui.ai.prompt,"name":label(mode)});
         if app.run(mode.command(), params).is_ok() {
@@ -301,6 +332,27 @@ mod tests {
             }
             Ok(image)
         }
+    }
+
+    #[test]
+    fn one_click_actions_use_background_preset_and_blank_fill_without_changing_drafts() {
+        let calls = Arc::new(Mutex::new(Vec::new()));
+        let mut session = Session::new();
+        session.ai_backend = Some(Arc::new(CaptureGenerate(calls.clone())));
+        let mut app = PhotocraftApp::new(session, Services::default());
+        app.run("file.new", json!({"width":20,"height":20})).unwrap();
+        app.ui.ai.prompt = "saved draft".into();
+        quick_action(&mut app, EditMode::PromptEdit).unwrap();
+        assert_eq!(app.session.journal.last().unwrap().0, photocraft_engine::ai_cmds::REMOVE_BACKGROUND_COMMAND);
+        assert!(!app.session.active().unwrap().doc.layers.first().unwrap().visible);
+        assert_eq!(app.ui.ai.prompt, "saved draft");
+        app.run("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
+        let old_visible: Vec<_> = app.session.active().unwrap().doc.layers.iter().map(|l| l.visible).collect();
+        quick_action(&mut app, EditMode::GenerativeFill).unwrap();
+        assert_eq!(app.session.journal.last().unwrap().0, "edit.generativeFill");
+        assert_eq!(*calls.lock().unwrap(), vec![false, true]);
+        assert_eq!(app.ui.ai.prompt, "saved draft");
+        assert_eq!(app.session.active().unwrap().doc.layers.iter().take(old_visible.len()).map(|l| l.visible).collect::<Vec<_>>(), old_visible);
     }
 
     #[test]

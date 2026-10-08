@@ -33,8 +33,19 @@ impl photocraft_engine::ai_cmds::AiBackend for MockAi {
     ) -> photocraft_engine::Result<photocraft_raster::Rgba8Image> {
         ctx.check()?;
         let mut image = request.image.clone();
-        for pixel in image.pixels.chunks_exact_mut(4) {
-            pixel.copy_from_slice(&[40, 160, 210, 255]);
+        let cutout = request.prompt == photocraft_engine::ai_cmds::REMOVE_BACKGROUND_PROMPT;
+        let width = image.width as usize;
+        let height = image.height as usize;
+        for (i, pixel) in image.pixels.chunks_exact_mut(4).enumerate() {
+            if cutout {
+                let (x, y) = (i % width, i / width);
+                let inside = (width / 4..width * 3 / 4).contains(&x) && (height / 4..height * 3 / 4).contains(&y);
+                pixel.copy_from_slice(&[40, 160, 210, if inside { 255 } else { 0 }]);
+            } else if request.mode == photocraft_engine::ai_cmds::EditMode::PromptEdit || pixel.get(3).copied().unwrap_or(255) < 255 {
+                pixel.copy_from_slice(&[40, 160, 210, 255]);
+            } else if let Some(alpha) = pixel.get_mut(3) {
+                *alpha = 255;
+            }
         }
         Ok(image)
     }

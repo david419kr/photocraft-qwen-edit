@@ -33,11 +33,15 @@ fn prompt_edit_adds_top_layer_preserves_original_and_undo_redo() {
         assert_eq!(doc.layers.len(), before.layers.len() + 1);
         assert_eq!(doc.layers.last().unwrap().id.0, result["layer"]);
         assert_eq!(doc.layers.first().unwrap().id, before.layers.first().unwrap().id);
+        assert!(!doc.layers.first().unwrap().visible);
+        assert!(doc.layers.last().unwrap().visible);
         assert!(doc.layers.last().unwrap().mask.is_none());
         s.execute("edit.undo", json!({})).unwrap();
         assert_eq!(s.active().unwrap().doc.layers.len(), before.layers.len());
+        assert!(s.active().unwrap().doc.layers.first().unwrap().visible);
         s.execute("edit.redo", json!({})).unwrap();
         assert_eq!(s.active().unwrap().doc.layers.len(), before.layers.len() + 1);
+        assert!(!s.active().unwrap().doc.layers.first().unwrap().visible);
     }
 }
 
@@ -160,6 +164,60 @@ impl AiBackend for Fail {
     }
 }
 
+struct Transparent;
+impl AiBackend for Transparent {
+    fn generate(&self, request: &AiRequest, _: &JobCtx) -> Result<Rgba8Image> {
+        assert_eq!(request.image.pixels.get(..4), Some([255, 255, 255, 255].as_slice()));
+        assert_eq!(request.prompt, REMOVE_BACKGROUND_PROMPT);
+        assert_eq!(request.mode, EditMode::PromptEdit);
+        assert!(!request.removal);
+        let mut image = request.image.clone();
+        for p in image.pixels.chunks_exact_mut(4) {
+            p.copy_from_slice(&[60, 120, 180, 0]);
+        }
+        Ok(image)
+    }
+}
+
+#[test]
+fn background_removal_hides_all_source_roots_and_undo_restores_visibility() {
+    for depth in [8, 16, 32] {
+        let mut s = session(depth);
+        s.execute("layer.new.layer", json!({"name":"Visible overlay"})).unwrap();
+        s.execute("layer.new.layer", json!({"name":"Already hidden"})).unwrap();
+        s.edit("Hide", |d, _| {
+            d.layers.last_mut().unwrap().visible = false;
+            Ok(())
+        })
+        .unwrap();
+        let before = s.active().unwrap().doc.clone();
+        let visibility: Vec<_> = before.layers.iter().map(|l| l.visible).collect();
+        s.ai_backend = Some(Arc::new(Transparent));
+        s.execute(REMOVE_BACKGROUND_COMMAND, json!({})).unwrap();
+        let doc = &s.active().unwrap().doc;
+        assert!(doc.layers.iter().take(before.layers.len()).all(|l| !l.visible));
+        assert!(doc.layers.last().unwrap().visible);
+        assert_eq!(doc.layers.last().unwrap().name, "Remove Background");
+        assert!(photocraft_compose::render(doc, doc.bounds()).px.iter().all(|p| p[3] == 0.0));
+        assert_eq!(doc.layers.first().unwrap().surface().unwrap().pixel(0, 0), before.layers.first().unwrap().surface().unwrap().pixel(0, 0));
+        s.execute("edit.undo", json!({})).unwrap();
+        assert_eq!(s.active().unwrap().doc.layers.iter().map(|l| l.visible).collect::<Vec<_>>(), visibility);
+        s.execute("edit.redo", json!({})).unwrap();
+        assert!(s.active().unwrap().doc.layers.iter().take(before.layers.len()).all(|l| !l.visible));
+    }
+}
+
+#[test]
+fn failed_background_removal_does_not_hide_sources() {
+    let mut s = session(8);
+    s.ai_backend = Some(Arc::new(Fail));
+    for p in [Value::Null, json!({"seed":-1}), json!({})] {
+        assert!(s.execute(REMOVE_BACKGROUND_COMMAND, p).is_err());
+        assert!(s.active().unwrap().doc.layers.first().unwrap().visible);
+        assert_eq!(s.active().unwrap().doc.layers.len(), 1);
+    }
+}
+
 struct CheckRemovalIntent(bool);
 impl AiBackend for CheckRemovalIntent {
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
@@ -194,6 +252,7 @@ fn backend_failure_leaves_document_and_selection_unchanged() {
     assert!(s.execute("edit.promptEdit", json!({"prompt":"change"})).is_err());
     assert_eq!(revision, s.active().unwrap().revision);
     assert_eq!(s.active().unwrap().doc.layers.len(), 1);
+    assert!(s.active().unwrap().doc.layers.first().unwrap().visible);
 }
 
 #[test]
