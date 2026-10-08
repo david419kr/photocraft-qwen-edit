@@ -1,10 +1,12 @@
 //! Contextual, native prompt bar. Edits are dispatched through the engine registry.
 
 use egui::{Rect, Stroke, pos2, vec2};
+use photocraft_engine::ai_cmds::AiBackend;
 use photocraft_engine::ai_cmds::{EditMode, MAX_PROMPT_BYTES, edit_mode, selection_signature, supported_document};
 use photocraft_raster::Surface;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+use std::sync::{Arc, Mutex, PoisonError, Weak};
 
 use crate::PhotocraftApp;
 
@@ -15,6 +17,10 @@ pub struct AiUi {
     pub prompt: String,
     pub mode: Option<EditMode>,
     pub rect: Option<[f32; 4]>,
+    pub available: bool,
+    pub checking: bool,
+    #[serde(rename = "availabilityError")]
+    pub availability_error: Option<String>,
     #[serde(skip)]
     document: Option<u64>,
     #[serde(skip)]
@@ -28,8 +34,97 @@ pub struct AiUi {
 
 impl PartialEq for AiUi {
     fn eq(&self, other: &Self) -> bool {
-        self.open == other.open && self.prompt == other.prompt && self.mode == other.mode && self.rect == other.rect
+        self.open == other.open
+            && self.prompt == other.prompt
+            && self.mode == other.mode
+            && self.rect == other.rect
+            && self.available == other.available
+            && self.checking == other.checking
+            && self.availability_error == other.availability_error
     }
+}
+
+#[derive(Default)]
+pub(crate) struct ServiceProbe {
+    endpoint: String,
+    backend: Option<Weak<dyn AiBackend>>,
+    next_check: f64,
+    pending: Option<ProbeSlot>,
+}
+
+type ProbeSlot = Arc<Mutex<Option<Result<(), String>>>>;
+
+/// One bounded, read-only background check; never wait for HTTP on the UI thread.
+pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
+    let Some(backend) = app.session.ai_backend.clone() else {
+        app.ai_probe = ServiceProbe::default();
+        app.ui.ai.available = false;
+        app.ui.ai.checking = false;
+        app.ui.ai.availability_error = None;
+        return;
+    };
+    let endpoint = app.session.prefs().integrations.comfyui_url.clone();
+    let identity = Arc::downgrade(&backend);
+    if app.ai_probe.endpoint != endpoint || app.ai_probe.backend.as_ref().is_none_or(|old| !old.ptr_eq(&identity)) {
+        app.ai_probe = ServiceProbe { endpoint: endpoint.clone(), backend: Some(identity), ..Default::default() };
+        app.ui.ai.available = false;
+        app.ui.ai.checking = false;
+        app.ui.ai.availability_error = None;
+    }
+    let now = ctx.input(|i| i.time);
+    if !now.is_finite() {
+        return;
+    }
+    let result = app.ai_probe.pending.as_ref().and_then(|slot| slot.lock().unwrap_or_else(PoisonError::into_inner).take());
+    if let Some(result) = result {
+        app.ai_probe.pending = None;
+        app.ai_probe.next_check = now + 15.0;
+        app.ui.ai.checking = false;
+        app.ui.ai.available = result.is_ok();
+        app.ui.ai.availability_error = result.err();
+        if !app.ui.ai.available {
+            app.ui.ai.open = false;
+            app.ui.ai.rect = None;
+        }
+    }
+    if app.ai_probe.pending.is_none() && now >= app.ai_probe.next_check {
+        let slot = Arc::new(Mutex::new(None));
+        app.ai_probe.pending = Some(slot.clone());
+        app.ui.ai.checking = true;
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            let repaint = ctx.clone();
+            let spawned = std::thread::Builder::new().name("photocraft-ai-check".into()).spawn(move || {
+                let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| backend.check_available(&endpoint)))
+                    .map_err(|_| "AI availability check failed".to_owned())
+                    .and_then(|r| r.map_err(|e| e.to_string()));
+                *slot.lock().unwrap_or_else(PoisonError::into_inner) = Some(result);
+                repaint.request_repaint();
+            });
+            if let Err(error) = spawned {
+                app.ai_probe.pending = None;
+                app.ai_probe.next_check = now + 15.0;
+                app.ui.ai.checking = false;
+                app.ui.ai.available = false;
+                app.ui.ai.availability_error = Some(error.to_string());
+            }
+        }
+        #[cfg(target_arch = "wasm32")]
+        {
+            *slot.lock().unwrap_or_else(PoisonError::into_inner) = Some(backend.check_available(&endpoint).map_err(|e| e.to_string()));
+            ctx.request_repaint();
+        }
+    }
+    if app.ai_probe.pending.is_none() {
+        let wait_ms = ((app.ai_probe.next_check - now).clamp(0.05, 15.0) * 1000.0) as u64;
+        ctx.request_repaint_after(std::time::Duration::from_millis(wait_ms));
+    }
+}
+
+pub(crate) fn clear_document(state: &mut AiUi) {
+    let (available, checking) = (state.available, state.checking);
+    let error = state.availability_error.take();
+    *state = AiUi { available, checking, availability_error: error, ..Default::default() };
 }
 
 pub fn open(app: &mut PhotocraftApp) -> Result<(), String> {
@@ -51,7 +146,8 @@ pub fn set_prompt(app: &mut PhotocraftApp, prompt: String) -> Result<(), String>
 
 fn sync(state: &mut AiUi, doc: &photocraft_doc::Document) {
     if state.document != Some(doc.id.0) {
-        *state = AiUi { document: Some(doc.id.0), ..Default::default() };
+        clear_document(state);
+        state.document = Some(doc.id.0);
     }
     let signature = selection_signature(doc);
     if state.signature != Some(signature) {
@@ -69,6 +165,10 @@ fn label(mode: EditMode) -> &'static str {
 }
 
 pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, image: Rect, selection: Option<Rect>) {
+    if !app.ui.ai.available {
+        app.ui.ai.rect = None;
+        return;
+    }
     let Some(st) = app.session.documents().get(index) else { return };
     let doc = st.doc.clone();
     if !app.ui.dialogs.is_empty() || supported_document(&doc).is_err() || canvas.width() < 180.0 || canvas.height() < 100.0 {
@@ -95,7 +195,6 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let x = (anchor.center().x - width * 0.5).clamp(canvas.left() + 8.0, canvas.right() - width - 8.0);
     let y = (anchor.bottom() + 10.0).clamp(canvas.top() + 8.0, (canvas.bottom() - height - 8.0).max(canvas.top() + 8.0));
     let busy = app.session.job_on(doc.id).is_some();
-    let connected = app.session.ai_backend.is_some();
     let tokens = crate::theme::Tokens::get(ui.ctx());
     let mut generate = false;
     let mut close = false;
@@ -139,15 +238,10 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                     ui.label("Qwen Image 2.1");
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         let valid = mode == EditMode::GenerativeFill || !app.ui.ai.prompt.trim().is_empty();
-                        generate = ui
-                            .add_enabled(!busy && connected && valid && app.ui.ai.prompt.len() <= MAX_PROMPT_BYTES, egui::Button::new(tl!("Generate")))
-                            .clicked();
+                        generate = ui.add_enabled(!busy && valid && app.ui.ai.prompt.len() <= MAX_PROMPT_BYTES, egui::Button::new(tl!("Generate"))).clicked();
                         close = ui.add_enabled(!busy, egui::Button::new(tl!("Cancel"))).clicked();
                     });
                 });
-                if !connected {
-                    ui.small(tl!("ComfyUI is unavailable in this frontend"));
-                }
             });
     });
     let r = area.response.rect;
@@ -168,6 +262,76 @@ mod tests {
     use super::*;
     use crate::Services;
     use photocraft_engine::Session;
+
+    struct FakeAvailability(std::sync::atomic::AtomicBool);
+    impl AiBackend for FakeAvailability {
+        fn check_available(&self, _: &str) -> photocraft_engine::Result<()> {
+            if self.0.load(std::sync::atomic::Ordering::Relaxed) { Ok(()) } else { Err(photocraft_engine::EngineError::Other("missing model".into())) }
+        }
+        fn generate(
+            &self,
+            _: &photocraft_engine::ai_cmds::AiRequest,
+            _: &photocraft_engine::jobs::JobCtx,
+        ) -> photocraft_engine::Result<photocraft_raster::Rgba8Image> {
+            panic!("availability must not generate")
+        }
+    }
+
+    fn finish_probe(app: &mut PhotocraftApp, ctx: &egui::Context) {
+        for _ in 0..200 {
+            poll_service(app, ctx);
+            if !app.ui.ai.checking {
+                return;
+            }
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+        panic!("availability check did not finish");
+    }
+
+    #[test]
+    fn readiness_survives_document_changes_and_hides_the_bar_on_failure() {
+        let backend = Arc::new(FakeAvailability(std::sync::atomic::AtomicBool::new(true)));
+        let mut session = Session::new();
+        session.ai_backend = Some(backend.clone());
+        let mut app = PhotocraftApp::new(session, Services::default());
+        let ctx = egui::Context::default();
+        poll_service(&mut app, &ctx);
+        assert!(!app.ui.ai.available);
+        assert!(app.ui.ai.checking);
+        finish_probe(&mut app, &ctx);
+        assert!(app.ui.ai.available);
+        clear_document(&mut app.ui.ai);
+        assert!(app.ui.ai.available);
+        app.run("file.new", json!({"width":20,"height":20})).unwrap();
+        open(&mut app).unwrap();
+        assert!(app.ui.ai.available);
+        app.run("file.new", json!({"width":30,"height":30})).unwrap();
+        open(&mut app).unwrap();
+        assert!(app.ui.ai.available);
+        backend.0.store(false, std::sync::atomic::Ordering::Relaxed);
+        app.ai_probe.next_check = 0.0;
+        poll_service(&mut app, &ctx);
+        finish_probe(&mut app, &ctx);
+        assert!(!app.ui.ai.available);
+        assert!(!app.ui.ai.open);
+        assert_eq!(app.ui.ai.availability_error.as_deref(), Some("missing model"));
+        let mut output = ctx.run_ui(egui::RawInput::default(), |ui| {
+            let rect = egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(800.0, 600.0));
+            show(&mut app, ui, 0, rect, rect, None);
+        });
+        output.textures_delta.clear();
+        assert!(app.ui.ai.rect.is_none());
+        backend.0.store(true, std::sync::atomic::Ordering::Relaxed);
+        app.session.edit_prefs(|p| p.integrations.comfyui_url = "http://127.0.0.1:8189".into());
+        poll_service(&mut app, &ctx);
+        assert!(!app.ui.ai.available);
+        finish_probe(&mut app, &ctx);
+        assert!(app.ui.ai.available);
+        app.session.ai_backend = None;
+        poll_service(&mut app, &ctx);
+        assert!(!app.ui.ai.available);
+        assert!(!app.ui.ai.checking);
+    }
 
     #[test]
     fn mode_tracks_selection_and_open_does_not_mutate_document() {

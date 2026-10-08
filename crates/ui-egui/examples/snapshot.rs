@@ -53,6 +53,7 @@ fn main() {
     let scale: f32 = arg(&args, "--scale").and_then(|s| s.parse().ok()).unwrap_or(2.0);
     let wayland_notice = args.iter().any(|a| a == "--wayland-notice");
     let mock_ai = args.iter().any(|a| a == "--mock-ai");
+    let comfy_ai = args.iter().any(|a| a == "--comfy-ai");
     let script: Vec<(String, Value)> =
         arg(&args, "--script").map(|s| serde_json::from_str::<Vec<(String, Value)>>(&s).expect("--script must be [[method, params], …]")).unwrap_or_default();
 
@@ -87,6 +88,8 @@ fn main() {
             let mut session = photocraft_engine::Session::new();
             if mock_ai {
                 session.ai_backend = Some(std::sync::Arc::new(MockAi));
+            } else if comfy_ai {
+                session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi));
             }
             let mut app = PhotocraftApp::new(session, services);
             app.background_jobs = background_jobs;
@@ -166,6 +169,9 @@ fn main() {
     let (req, _rx) = ControlRequest::new("ui.inspect", Value::Null);
     if let Outcome::Done(v) = handle(harness.state_mut(), &ctx, &req) {
         println!("perf: {}", v["result"]["perf"]["timings"]);
+        if comfy_ai || mock_ai {
+            println!("ai: {}", v["result"]["ai"]);
+        }
     }
     println!(
         "language: {}",

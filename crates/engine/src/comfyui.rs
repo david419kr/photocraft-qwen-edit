@@ -63,6 +63,31 @@ fn read_json(response: Response) -> Result<Value> {
     serde_json::from_slice(&read_response(response, MAX_JSON_BYTES)?).map_err(failure)
 }
 
+fn client(connect: Duration, timeout: Duration) -> Result<Client> {
+    Client::builder()
+        .http1_only()
+        .pool_max_idle_per_host(0)
+        .no_proxy()
+        .redirect(reqwest::redirect::Policy::none())
+        .connect_timeout(connect)
+        .timeout(timeout)
+        .build()
+        .map_err(failure)
+}
+
+fn model_inputs(client: &Client, base: &Url, ctx: &JobCtx) -> Result<Vec<(&'static str, &'static str, String)>> {
+    let mut models = Vec::with_capacity(3);
+    for (id, node, input, filename) in
+        [("37", "UNETLoader", "unet_name", UNET_MODEL), ("38", "CLIPLoader", "clip_name", CLIP_MODEL), ("39", "VAELoader", "vae_name", VAE_MODEL)]
+    {
+        ctx.check()?;
+        let url = base.join(&format!("object_info/{node}")).map_err(failure)?;
+        let info = read_json(client.get(url).send().map_err(failure)?)?;
+        models.push((id, input, model_name(&info, node, input, filename)?));
+    }
+    Ok(models)
+}
+
 fn model_name(info: &Value, node: &str, input: &str, filename: &str) -> Result<String> {
     let names = info
         .get(node)
@@ -124,27 +149,25 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
 }
 
 impl AiBackend for ComfyUi {
+    fn check_available(&self, endpoint: &str) -> Result<()> {
+        let base = endpoint_url(endpoint)?;
+        let client = client(Duration::from_secs(1), Duration::from_secs(2))?;
+        model_inputs(&client, &base, &JobCtx::new())?;
+        for node in ["TextEncodeQwenImage21", "QwenImage21Cache"] {
+            let info = read_json(client.get(base.join(&format!("object_info/{node}")).map_err(failure)?).send().map_err(failure)?)?;
+            if !info.get(node).is_some_and(Value::is_object) {
+                return Err(failure(format!("required node not found: {node}")));
+            }
+        }
+        Ok(())
+    }
+
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
         let base = endpoint_url(&request.endpoint)?;
         let route = |path: &str| base.join(path).map_err(failure);
-        let client = Client::builder()
-            .http1_only()
-            .pool_max_idle_per_host(0)
-            .no_proxy()
-            .redirect(reqwest::redirect::Policy::none())
-            .connect_timeout(Duration::from_secs(3))
-            .timeout(Duration::from_secs(5))
-            .build()
-            .map_err(failure)?;
+        let client = client(Duration::from_secs(3), Duration::from_secs(5))?;
         ctx.check()?;
-        let mut models = Vec::with_capacity(3);
-        for (id, node, input, filename) in
-            [("37", "UNETLoader", "unet_name", UNET_MODEL), ("38", "CLIPLoader", "clip_name", CLIP_MODEL), ("39", "VAELoader", "vae_name", VAE_MODEL)]
-        {
-            ctx.check()?;
-            let info = read_json(client.get(route(&format!("object_info/{node}"))?).send().map_err(failure)?)?;
-            models.push((id, input, model_name(&info, node, input, filename)?));
-        }
+        let models = model_inputs(&client, &base, ctx)?;
         ctx.check()?;
         let image =
             Image::from_raw(request.image.width, request.image.height, ChannelLayout::Rgba, SampleType::U8, request.image.pixels.clone()).map_err(failure)?;

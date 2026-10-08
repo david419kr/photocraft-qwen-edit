@@ -53,6 +53,10 @@ pub struct AiRequest {
 
 /// Installed by native frontends; tests use a fake backend and never load an AI model.
 pub trait AiBackend: Send + Sync {
+    /// Read-only service/model availability; fake backends need no external service.
+    fn check_available(&self, _endpoint: &str) -> Result<()> {
+        Ok(())
+    }
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image>;
 }
 

@@ -67,7 +67,7 @@ fn reject_remote_urls_and_oversized_outputs_before_use() {
     assert!(decode_result(&png, 32, 32).is_err());
 }
 
-fn mock_server(cancel: Option<JobCtx>) -> (String, std::thread::JoinHandle<Vec<String>>) {
+fn mock_server(cancel: Option<JobCtx>, probe: Option<bool>) -> (String, std::thread::JoinHandle<Vec<String>>) {
     use std::io::{BufRead, BufReader, Write};
     use std::net::TcpListener;
     let listener = TcpListener::bind("127.0.0.1:0").unwrap();
@@ -108,8 +108,10 @@ fn mock_server(cancel: Option<JobCtx>) -> (String, std::thread::JoinHandle<Vec<S
                     "UNETLoader" => ("unet_name", UNET_MODEL),
                     "CLIPLoader" => ("clip_name", CLIP_MODEL),
                     "VAELoader" => ("vae_name", VAE_MODEL),
+                    "TextEncodeQwenImage21" | "QwenImage21Cache" => ("model", "unused"),
                     _ => panic!("unexpected model list request {path}"),
                 };
+                let filename = if probe == Some(false) { "missing.safetensors" } else { filename };
                 ("application/json", serde_json::to_vec(&json!({node:{"input":{"required":{input:[[format!("Qwen/{filename}")],{}]}}}})).unwrap())
             } else if path == "/upload/image" {
                 assert!(String::from_utf8_lossy(&body).contains("source.png"));
@@ -146,7 +148,10 @@ fn mock_server(cancel: Option<JobCtx>) -> (String, std::thread::JoinHandle<Vec<S
             stream.shutdown(std::net::Shutdown::Write).unwrap();
             stream.set_read_timeout(Some(Duration::from_millis(250))).unwrap();
             let _ = std::io::Read::by_ref(&mut stream).take(8192).read_to_end(&mut Vec::new());
-            let finished = path.starts_with("/view?") || path.ends_with("/cancel");
+            let finished = path.starts_with("/view?")
+                || path.ends_with("/cancel")
+                || probe == Some(false)
+                || probe == Some(true) && path == "/object_info/QwenImage21Cache";
             paths.push(path);
             if finished {
                 break;
@@ -159,7 +164,7 @@ fn mock_server(cancel: Option<JobCtx>) -> (String, std::thread::JoinHandle<Vec<S
 
 #[test]
 fn round_trip_through_a_mock_server_never_uses_a_real_model() {
-    let (endpoint, server) = mock_server(None);
+    let (endpoint, server) = mock_server(None, None);
     let mut request = request(EditMode::PromptEdit);
     request.endpoint = endpoint;
     let result = ComfyUi.generate(&request, &JobCtx::new());
@@ -174,7 +179,7 @@ fn round_trip_through_a_mock_server_never_uses_a_real_model() {
 #[test]
 fn cancellation_targets_only_the_submitted_job() {
     let ctx = JobCtx::new();
-    let (endpoint, server) = mock_server(Some(ctx.clone()));
+    let (endpoint, server) = mock_server(Some(ctx.clone()), None);
     let mut request = request(EditMode::GenerativeFill);
     request.endpoint = endpoint;
     let result = ComfyUi.generate(&request, &ctx);
@@ -183,4 +188,16 @@ fn cancellation_targets_only_the_submitted_job() {
     assert!(paths.len() >= 4);
     assert!(paths.last().unwrap().ends_with("/cancel"));
     assert!(!paths.iter().any(|p| p == "/interrupt" || p == "/queue"));
+}
+
+#[test]
+fn availability_checks_models_and_nodes_without_upload_or_generation() {
+    for present in [true, false] {
+        let (endpoint, server) = mock_server(None, Some(present));
+        let available = ComfyUi.check_available(&endpoint);
+        let paths = server.join().unwrap();
+        assert_eq!(available.is_ok(), present, "{available:?}");
+        assert!(paths.iter().all(|path| path.starts_with("/object_info/")), "{paths:?}");
+        assert_eq!(paths.len(), if present { 5 } else { 1 });
+    }
 }

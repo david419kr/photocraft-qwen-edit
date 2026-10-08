@@ -26,6 +26,14 @@ by the previous launcher. Target build flags are restored when the launcher exit
 
 Start ComfyUI separately. The default endpoint is `http://127.0.0.1:8188`. Change it in
 Edit > Preferences > Integrations > ComfyUI URL. Only loopback HTTP(S) endpoints are supported.
+The AI floating bar starts hidden. A background, read-only startup check verifies the three
+model filenames and the Qwen encoder/cache nodes; it never starts ComfyUI, loads weights or
+submits a generation. Failed checks keep the bar hidden. Availability is rechecked about
+every 15 seconds, so starting/stopping ComfyUI or adding missing models updates the bar
+without restarting PhotoCraft. Changing the endpoint resets the check immediately. Checks
+use a 1-second connect timeout and 2-second request timeout and do not block UI interaction.
+`ui.inspect.ai` exposes `available`, `checking` and `availabilityError`. Prompt drafts survive
+temporary service loss; document changes reset the draft while preserving service state.
 This first version uses these model files:
 
 - `qwen_image_2.1_int8_convrot.safetensors`
