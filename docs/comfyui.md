@@ -79,9 +79,23 @@ workflow's central crop. The output is cropped to remove that padding and resamp
 the original document dimensions. Small details and narrow selections in large images
 are limited by this working resolution.
 
-MaskEdit supplies two reference images, not a latent noise mask: image 1 is the source,
-image 2 is the selection. The uploaded PNG stores `alpha = 1 - selection`, preserving
-RGB under transparent mask pixels, so LoadImage produces the correct mask orientation.
+Empty-prompt removal supplies a primary reference with the selected area painted bright
+green, not a latent noise mask. The prompt identifies the paint as an edit annotation and
+removes the marked shapes to reconstruct their background. This replaces the
+previous binary silhouette secondary reference, which could cause Qwen to edit the wrong
+object despite a correctly positioned mask. A secondary colour guide could also be copied
+as object colour; placing the annotation directly in the primary reference avoids that case.
+The uploaded PNG stores `alpha = 1 - selection`, preserving RGB under transparent mask
+pixels, so LoadImage produces the correct selection. Stock `EmptyImage` and
+`ImageCompositeMasked` nodes build the guide without a second upload or an extra model.
+Inputs are already padded to multiples of 32, so the annotation shares exact image coordinates.
+Original pixels underneath the paint are not reference content for the model; unmarked image
+context supplies the style and background. Fill with a nonblank prompt retains the original
+two-reference MaskEdit graph (unmarked original + separate binary selection) and its prompt
+formatting, preserving existing content-edit behaviour. Prompt Edit also keeps its original
+unmarked reference. The engine passes an explicit removal flag to the native backend.
+The selection still independently masks the result layer; the green guide does not change
+selection coverage or Poisson blending. The guide paint is excluded from the requested output.
 The result is read specifically from SaveImage node 56, never the mask preview.
 
 ## Commands and automation
@@ -99,6 +113,9 @@ Commands are available through the desktop control channel/MCP bridge and truste
 `name` optionally supplies the new layer name. `jobs.list` and `jobs.cancel` expose existing
 background-job state. A job is bound to the source document; switching tabs cannot put the
 result into another document. Conflicting edits to the source are blocked while it runs.
+The desktop UI does not supply a fixed seed. Each request defaults to the current native
+system time in nanoseconds as a 64-bit seed; an explicitly supplied `seed` is honoured for
+reproducible automation and diagnostic comparisons.
 
 `ui.inspect` includes `ai` (open, prompt, mode, rectangle). `ui.set` accepts `aiOpen` and
 `aiPrompt`. `ui.menu.invoke` with either command and no parameters opens the input bar.
@@ -132,3 +149,15 @@ reported that the integration works successfully. This is user-confirmed runtime
 the agent did not run additional real Qwen generation. The user also noticed some
 improvements to make; their details remain to be collected and addressed in follow-up work.
 Generation quality, latency and VRAM usage have not been measured quantitatively.
+
+### Removal region regression — 2026-10-09
+
+The reported white-background drawing had a correct lower-left character selection, but
+the old binary-mask request left that character and removed the upper-left mirror in the
+raw ComfyUI output. The inverted-background request removed the character. At fixed original
+seeds and unchanged model/sampler settings, a primary reference annotated in bright green
+removed the character on both backgrounds. A secondary colour guide was rejected because
+it could recolour the character instead. Prompted edits retain their original two-reference
+route; the change is limited to empty-prompt removal. Diagnostic outputs are local-only under
+`target/qwen-mask-diagnostic`, not committed source assets. Model adherence remains
+probabilistic; these checks establish the supplied regression cases, not every possible image.

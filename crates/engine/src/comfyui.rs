@@ -103,7 +103,16 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
     });
     if let Some(object) = graph.as_object_mut() {
         object.insert(cache.into(), json!({"class_type":"QwenImage21Cache","inputs":{"model":["37",0],"device":"auto","dtype":"int8"}}));
-        if masked {
+        if masked && request.removal {
+            // Put the annotation in the primary reference; a secondary binary silhouette
+            // can target the wrong object, and a secondary colour guide can be copied.
+            object.insert("79".into(), json!({"class_type":"EmptyImage","inputs":{"width":["76",0],"height":["76",1],"batch_size":1,"color":65280}}));
+            object.insert("80".into(), json!({"class_type":"ImageCompositeMasked","inputs":{"destination":["77",0],"source":["79",0],"x":0,"y":0,"resize_source":false,"mask":["78",1]}}));
+            if let Some(inputs) = object.get_mut("64").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {
+                inputs.insert("images.image_1".into(), json!(["80", 0]));
+                inputs.remove("images.image_2");
+            }
+        } else if masked {
             object.insert("79".into(), json!({"class_type":"MaskToImage","inputs":{"mask":["78",1]}}));
             object.insert("80".into(), json!({"class_type":"ResizeImageMaskNode","inputs":{"input":["79",0],"resize_type":"match size","resize_type.match":["77",0],"resize_type.crop":"center","scale_method":"bicubic"}}));
             if let Some(inputs) = object.get_mut("64").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {

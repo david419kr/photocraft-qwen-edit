@@ -73,7 +73,12 @@ fn explicit_all_uses_prompt_edit_and_empty_prompt_removes_only_in_fill() {
     s.execute("select.all", json!({})).unwrap();
     assert_eq!(edit_mode(&s.active().unwrap().doc), EditMode::PromptEdit);
     assert_eq!(shaped_prompt(EditMode::PromptEdit, "  unchanged\n "), "  unchanged\n ");
-    assert!(shaped_prompt(EditMode::GenerativeFill, " \n\t").starts_with("Remove the content"));
+    let removal = shaped_prompt(EditMode::GenerativeFill, " \n\t");
+    assert!(removal.contains("Completely remove the marked shapes"));
+    assert!(removal.contains("edit annotation, not part of the artwork"));
+    assert!(removal.contains("bright-green paint in <image1>"));
+    assert!(!removal.contains("<image2>"));
+    assert!(!removal.contains("white region"));
     assert!(shaped_prompt(EditMode::GenerativeFill, "달을 추가").contains("달을 추가"));
     assert!(s.execute("edit.generativeFill", json!({"prompt":""})).is_err());
 }
@@ -153,6 +158,32 @@ impl AiBackend for Fail {
     fn generate(&self, _: &AiRequest, _: &JobCtx) -> Result<Rgba8Image> {
         Err(EngineError::Other("mock failure".into()))
     }
+}
+
+struct CheckRemovalIntent(bool);
+impl AiBackend for CheckRemovalIntent {
+    fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
+        assert_eq!(request.removal, self.0);
+        if self.0 {
+            assert!(request.prompt.contains("edit annotation"));
+        } else if request.mode == EditMode::GenerativeFill {
+            assert!(request.prompt.contains("white region indicated by <image2>"));
+        }
+        Solid.generate(request, ctx)
+    }
+}
+
+#[test]
+fn only_empty_fill_prompts_select_the_removal_reference() {
+    let mut s = session(8);
+    s.execute("select.rect", json!({"x":2,"y":3,"width":4,"height":5})).unwrap();
+    for prompt in ["", " \n\t", "달을 추가"] {
+        s.ai_backend = Some(Arc::new(CheckRemovalIntent(prompt.trim().is_empty())));
+        s.execute("edit.generativeFill", json!({"prompt":prompt})).unwrap();
+    }
+    s.execute("select.deselect", json!({})).unwrap();
+    s.ai_backend = Some(Arc::new(CheckRemovalIntent(false)));
+    s.execute("edit.promptEdit", json!({"prompt":"change the image"})).unwrap();
 }
 
 #[test]
@@ -252,7 +283,10 @@ fn fill_blending_excludes_padding_and_handles_missing_context_bad_buffers_and_ca
     s.execute("select.all", json!({})).unwrap();
     let input = prepare(&s.active().unwrap().doc, EditMode::GenerativeFill, &JobCtx::new()).unwrap();
     let generated = Solid
-        .generate(&AiRequest { image: input.image.clone(), prompt: "".into(), mode: EditMode::GenerativeFill, endpoint: "".into(), seed: 1 }, &JobCtx::new())
+        .generate(
+            &AiRequest { image: input.image.clone(), prompt: "".into(), mode: EditMode::GenerativeFill, removal: true, endpoint: "".into(), seed: 1 },
+            &JobCtx::new(),
+        )
         .unwrap();
     let blended = harmonize_fill(&generated, &input.image, input.content_size, &JobCtx::new()).unwrap();
     assert!(blended.chunks_exact(3).all(|p| (p[0] - 40.0 / 255.0).abs() < 1e-6));

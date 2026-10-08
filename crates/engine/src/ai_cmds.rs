@@ -45,6 +45,8 @@ pub struct AiRequest {
     pub image: Rgba8Image,
     pub prompt: String,
     pub mode: EditMode,
+    /// Empty-prompt fill reconstructs background rather than editing existing content.
+    pub removal: bool,
     pub endpoint: String,
     pub seed: u64,
 }
@@ -112,7 +114,7 @@ pub fn shaped_prompt(mode: EditMode, prompt: &str) -> String {
         return prompt.into();
     }
     if prompt.trim().is_empty() {
-        "Remove the content in the white region indicated by <image2> from <image1>. Fill that region naturally using the surrounding background and context. Keep everything outside the indicated region unchanged. Do not include the mask in the result.".into()
+        "The bright-green paint in <image1> marks the region to erase; it is an edit annotation, not part of the artwork. Completely remove the marked shapes and reconstruct only the surrounding background in their place. Leave no object, outline or silhouette in the marked region. Keep all unmarked artwork and its positions unchanged. The result must contain no annotation paint.".into()
     } else {
         format!(
             "Using <image1> as the original image, apply the following edit only in the white region indicated by <image2>:\n{prompt}\nBlend the edited region naturally with the surrounding image. Keep everything outside the indicated region unchanged. Do not include the mask in the result."
@@ -204,7 +206,14 @@ fn run(s: &mut Session, p: &Value, mode: EditMode) -> Result<Value> {
         move |doc, active, ctx| {
             let input = prepare(doc, mode, ctx)?;
             let size = [input.image.width, input.image.height];
-            let request = AiRequest { image: input.image, prompt: shaped_prompt(mode, &prompt), mode, endpoint, seed };
+            let request = AiRequest {
+                image: input.image,
+                prompt: shaped_prompt(mode, &prompt),
+                mode,
+                removal: mode == EditMode::GenerativeFill && prompt.trim().is_empty(),
+                endpoint,
+                seed,
+            };
             let generated = backend.generate(&request, ctx)?;
             ctx.check()?;
             let layer = result_layer(doc, &generated, &request.image, input.content_size, &name, mode, ctx)?;

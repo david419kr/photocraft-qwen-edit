@@ -5,6 +5,7 @@ fn request(mode: EditMode) -> AiRequest {
         image: Rgba8Image { width: 32, height: 32, pixels: vec![255; 32 * 32 * 4] },
         prompt: "plain prompt".into(),
         mode,
+        removal: false,
         endpoint: "http://127.0.0.1:8188".into(),
         seed: 1234,
     }
@@ -19,9 +20,20 @@ fn exact_qwen_graph_and_mask_wiring() {
     assert_eq!(global["79"]["class_type"], "QwenImage21Cache");
     let masked = workflow(&request(EditMode::GenerativeFill), "source.png", "test");
     assert_eq!(masked["79"]["class_type"], "MaskToImage");
+    assert_eq!(masked["64"]["inputs"]["images.image_1"], json!(["77", 0]));
     assert_eq!(masked["64"]["inputs"]["images.image_2"], json!(["80", 0]));
     assert_eq!(masked["82"]["inputs"]["dtype"], "int8");
     assert!(masked.get("81").is_none());
+    let mut removal = request(EditMode::GenerativeFill);
+    removal.removal = true;
+    let annotated = workflow(&removal, "source.png", "test");
+    assert_eq!(annotated["79"]["class_type"], "EmptyImage");
+    assert_eq!(annotated["79"]["inputs"]["color"], 65280);
+    assert_eq!(annotated["80"]["class_type"], "ImageCompositeMasked");
+    assert_eq!(annotated["80"]["inputs"]["destination"], json!(["77", 0]));
+    assert_eq!(annotated["80"]["inputs"]["mask"], json!(["78", 1]));
+    assert_eq!(annotated["64"]["inputs"]["images.image_1"], json!(["80", 0]));
+    assert!(annotated["64"]["inputs"].get("images.image_2").is_none());
 }
 
 #[test]
