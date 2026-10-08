@@ -30,6 +30,14 @@ region; a nonblank prompt specifies its replacement. Cancel stops only this Comf
 
 The original selection becomes the result layer's mask. Outside-selection pixels stay
 unchanged even if the model changes the corresponding pixels. Feather is applied once.
+Generative Fill also applies source-gradient Poisson blending at model resolution before
+resampling and conversion to the document profile. It interpolates the original/generated
+colour difference from outside the selection into the filled region, preserving generated
+texture while matching surrounding colour and brightness. Original content inside the
+selection and synthetic padding are excluded from the boundary reference. If no unselected
+context survives at model resolution, blending is skipped. This applies to both blank and
+nonblank fill prompts; new objects can also inherit the surrounding colour cast. Prompt Edit
+does not apply this correction. The solve supports job cancellation and uses no AI inference.
 Existing layers and the selection are preserved. Hide or undo the new layer to return to
 the previous image.
 
@@ -88,6 +96,10 @@ Unit tests use synthetic images and a loopback mock HTTP server. They cover prom
 wiring, full versus partial selection, mask direction/padding, native bit depths, new-layer
 Undo/Redo, document switching, cancellation, malformed parameters and image limits.
 Build and automated visual QA use mock results and do not execute real Qwen inference.
+Fill harmonisation regression tests cover a simulated colour shift over removed content,
+texture preservation, selections at canvas edges, unchanged exterior pixels, 8/16/32-bit
+documents, Undo, padding exclusion, missing exterior context, cancellation and malformed
+buffers. The new harmonisation step has not yet been evaluated with a real Qwen result.
 
 ### User runtime verification — 2026-10-08
 

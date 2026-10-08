@@ -207,7 +207,7 @@ fn run(s: &mut Session, p: &Value, mode: EditMode) -> Result<Value> {
             let request = AiRequest { image: input.image, prompt: shaped_prompt(mode, &prompt), mode, endpoint, seed };
             let generated = backend.generate(&request, ctx)?;
             ctx.check()?;
-            let layer = result_layer(doc, &generated, input.content_size, &name, mode, ctx)?;
+            let layer = result_layer(doc, &generated, &request.image, input.content_size, &name, mode, ctx)?;
             let id = layer.id;
             doc.layers.push(layer);
             *active = Some(id);
@@ -270,21 +270,84 @@ fn prepare(doc: &Document, mode: EditMode, ctx: &JobCtx) -> Result<Prepared> {
     Ok(Prepared { image, content_size: [w, h] })
 }
 
-fn result_layer(doc: &Document, image: &Rgba8Image, size: [u32; 2], name: &str, mode: EditMode, ctx: &JobCtx) -> Result<Layer> {
+/// Source-gradient Poisson blending: interpolate only the outside colour mismatch.
+/// The original RGB beneath the removal mask must never become a boundary condition.
+fn harmonize_fill(image: &Rgba8Image, reference: &Rgba8Image, size: [u32; 2], ctx: &JobCtx) -> Result<Vec<f32>> {
+    ctx.check()?;
+    let [w, h] = size;
+    let valid = w > 0
+        && h > 0
+        && w <= MAX_WORKING_SIDE
+        && h <= MAX_WORKING_SIDE
+        && image.width == w.div_ceil(32) * 32
+        && image.height == h.div_ceil(32) * 32
+        && reference.width == image.width
+        && reference.height == image.height;
+    if !valid {
+        return Err(EngineError::Other("invalid image buffers for fill blending".into()));
+    }
+    let expected = u64::from(image.width) * u64::from(image.height) * 4;
+    if image.pixels.len() as u64 != expected || reference.pixels.len() as u64 != expected {
+        return Err(EngineError::Other("invalid image buffers for fill blending".into()));
+    }
+    let (w, h) = (w as usize, h as usize);
+    let stride = image.width as usize * 4;
+    let mut rgb = Vec::with_capacity(w * h * 3);
+    let mut difference = Vec::with_capacity(w * h * 3);
+    let mut mask = Vec::with_capacity(w * h);
+    // Exclude the synthetic right/bottom padding: it is not unselected image context.
+    for (row, original) in image.pixels.chunks_exact(stride).zip(reference.pixels.chunks_exact(stride)).take(h) {
+        ctx.check()?;
+        let row = row.get(..w * 4).ok_or_else(|| EngineError::Other("short generated row".into()))?;
+        let original = original.get(..w * 4).ok_or_else(|| EngineError::Other("short reference row".into()))?;
+        for (pixel, original) in row.chunks_exact(4).zip(original.chunks_exact(4)) {
+            mask.push(original.get(3).copied().unwrap_or(255) < 255);
+            for (generated, source) in pixel.iter().take(3).zip(original.iter()) {
+                rgb.push(*generated as f32 / 255.0);
+                difference.push((*source as f32 - *generated as f32) / 255.0);
+            }
+        }
+    }
+    if !mask.iter().any(|v| *v) || mask.iter().all(|v| *v) {
+        return Ok(rgb); // No usable exterior at model resolution: preserve the generated result.
+    }
+    let correction = ctx
+        .stage(0.91, 0.94, "Adding generated layer", |ctl| photocraft_algo::poisson::membrane_fill_with(w, h, 3, &difference, &mask, ctl))
+        .map_err(|_| EngineError::Cancelled)?;
+    ctx.check()?;
+    for ((pixel, correction), selected) in rgb.chunks_exact_mut(3).zip(correction.chunks_exact(3)).zip(mask) {
+        if selected {
+            for (value, delta) in pixel.iter_mut().zip(correction) {
+                *value = (*value + delta).clamp(0.0, 1.0);
+            }
+        }
+    }
+    Ok(rgb)
+}
+
+fn result_layer(doc: &Document, image: &Rgba8Image, reference: &Rgba8Image, size: [u32; 2], name: &str, mode: EditMode, ctx: &JobCtx) -> Result<Layer> {
     let [w, h] = size;
     let expected_w = w.div_ceil(32) * 32;
     let expected_h = h.div_ceil(32) * 32;
     if image.width != expected_w || image.height != expected_h || image.pixels.len() != expected_w as usize * expected_h as usize * 4 {
         return Err(EngineError::Other("ComfyUI returned an unexpected image size".into()));
     }
+    let harmonized = if mode == EditMode::GenerativeFill { Some(harmonize_fill(image, reference, size, ctx)?) } else { None };
     ctx.progress(0.95, "Adding generated layer");
     let fmt = PixelFormat::new(doc.mode, doc.depth, true);
     let transform = Transform::new(Builtin::Srgb.profile(), &crate::color_cmds::document_profile(doc), Intent::RelativeColorimetric, true)
         .map_err(|e| EngineError::Other(e.to_string()))?;
     let mut source = Surface::new(PixelFormat::RGBA32F);
     for (y, row) in image.pixels.chunks_exact(expected_w as usize * 4).take(h as usize).enumerate() {
-        let values: Vec<f32> =
+        let mut values: Vec<f32> =
             row.get(..w as usize * 4).ok_or_else(|| EngineError::Other("short generated row".into()))?.iter().map(|v| *v as f32 / 255.0).collect();
+        if let Some(rgb) = &harmonized {
+            let stride = w as usize * 3;
+            let rgb = rgb.get(y * stride..(y + 1) * stride).ok_or_else(|| EngineError::Other("short blended row".into()))?;
+            for (pixel, rgb) in values.chunks_exact_mut(4).zip(rgb.chunks_exact(3)) {
+                pixel.get_mut(..3).ok_or_else(|| EngineError::Other("short blended pixel".into()))?.copy_from_slice(rgb);
+            }
+        }
         source.write_region(Rect::new(0, y as i32, w as i32, y as i32 + 1), &values);
     }
     let resized = photocraft_algo::resample::resize_surface_in_canvas(

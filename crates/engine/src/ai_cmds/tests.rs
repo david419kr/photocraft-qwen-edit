@@ -202,3 +202,67 @@ fn empty_selection_is_equivalent_to_no_selection() {
     .unwrap();
     assert_eq!(edit_mode(&s.active().unwrap().doc), EditMode::PromptEdit);
 }
+
+struct DriftRemoval;
+impl AiBackend for DriftRemoval {
+    fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
+        ctx.check()?;
+        let mut image = request.image.clone();
+        for pixel in image.pixels.chunks_exact_mut(4) {
+            pixel.copy_from_slice(&[96, 128, 160, 255]);
+        }
+        // A new texture detail must survive colour harmonisation.
+        let offset = (6 * image.width as usize + 6) * 4;
+        image.pixels.get_mut(offset..offset + 4).unwrap().copy_from_slice(&[104, 128, 160, 255]);
+        Ok(image)
+    }
+}
+
+#[test]
+fn fill_matches_background_without_restoring_removed_content_and_keeps_texture() {
+    for depth in [8, 16, 32] {
+        for (x, y) in [(2, 2), (0, 0)] {
+            let mut s = session(depth);
+            s.execute("edit.fill", json!({"color":"#406080"})).unwrap();
+            s.execute("select.rect", json!({"x":x,"y":y,"width":10,"height":8})).unwrap();
+            s.execute("edit.fill", json!({"color":"#ffffff"})).unwrap();
+            let before = s.active().unwrap().doc.clone();
+            s.ai_backend = Some(Arc::new(DriftRemoval));
+            s.execute("edit.generativeFill", json!({"prompt":""})).unwrap();
+            let doc = &s.active().unwrap().doc;
+            let rendered = photocraft_compose::render(doc, doc.bounds());
+            let background = rendered.px[5 * 17 + 5];
+            let texture = rendered.px[6 * 17 + 6];
+            for (actual, expected) in background.iter().take(3).zip([64.0, 96.0, 128.0]) {
+                assert!((*actual - expected / 255.0).abs() < 2.0 / 255.0, "{depth}: {background:?}");
+            }
+            assert!((texture[0] - background[0] - 8.0 / 255.0).abs() < 2.0 / 255.0);
+            let outside = Rect::new(15, 11, 17, 13);
+            assert_eq!(photocraft_compose::render(doc, outside).px, photocraft_compose::render(&before, outside).px);
+            assert_eq!(doc.layers.first().unwrap().surface().unwrap().pixel(5, 5), before.layers.first().unwrap().surface().unwrap().pixel(5, 5));
+            s.execute("edit.undo", json!({})).unwrap();
+            assert_eq!(s.active().unwrap().doc.layers.len(), before.layers.len());
+        }
+    }
+}
+
+#[test]
+fn fill_blending_excludes_padding_and_handles_missing_context_bad_buffers_and_cancel() {
+    let mut s = session(8);
+    s.execute("select.all", json!({})).unwrap();
+    let input = prepare(&s.active().unwrap().doc, EditMode::GenerativeFill, &JobCtx::new()).unwrap();
+    let generated = Solid
+        .generate(&AiRequest { image: input.image.clone(), prompt: "".into(), mode: EditMode::GenerativeFill, endpoint: "".into(), seed: 1 }, &JobCtx::new())
+        .unwrap();
+    let blended = harmonize_fill(&generated, &input.image, input.content_size, &JobCtx::new()).unwrap();
+    assert!(blended.chunks_exact(3).all(|p| (p[0] - 40.0 / 255.0).abs() < 1e-6));
+    assert!(harmonize_fill(&generated, &input.image, [0, 13], &JobCtx::new()).is_err());
+    let mut malformed = generated.clone();
+    malformed.pixels.pop();
+    assert!(harmonize_fill(&malformed, &input.image, input.content_size, &JobCtx::new()).is_err());
+    let absurd = Rgba8Image { width: u32::MAX, height: u32::MAX, pixels: Vec::new() };
+    assert!(harmonize_fill(&absurd, &absurd, input.content_size, &JobCtx::new()).is_err());
+    let ctx = JobCtx::new();
+    ctx.cancel();
+    assert!(matches!(harmonize_fill(&generated, &input.image, input.content_size, &ctx), Err(EngineError::Cancelled)));
+}
