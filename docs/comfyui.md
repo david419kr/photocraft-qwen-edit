@@ -11,6 +11,19 @@ Run `scripts/run-comfyui-korean.ps1` on Windows. It builds a portable copy under
 first launch. It does not replace the installed PhotoCraft or its preferences. Rust 1.95.0
 is required. `-DebugBuild` builds the debug profile; `-NoBuild` reuses an existing binary.
 
+Prebuilt Windows x64 users need no Rust installation. The launcher now follows official
+Windows packaging and statically links the Microsoft C runtime into `photocraft.exe`
+(`--target x86_64-pc-windows-msvc`, `-C target-feature=+crt-static`). No separate
+`VCRUNTIME140.dll` or Visual C++ runtime installer is needed for this executable. Standard
+Windows system libraries remain required. `portable.txt` is optional for execution and
+enables settings beside the executable. For sharing, use the executable and marker rather
+than copying personal `PhotoCraftData` (preferences, recent
+files and recovery data); the recipient can select Korean in Preferences.
+
+`-NoBuild` reuses the static build in `target/x86_64-pc-windows-msvc/<profile>`, not an older
+dynamic development build in `target/<profile>`. Packaging removes the runtime DLL bundled
+by the previous launcher. Target build flags are restored when the launcher exits.
+
 Start ComfyUI separately. The default endpoint is `http://127.0.0.1:8188`. Change it in
 Edit > Preferences > Integrations > ComfyUI URL. Only loopback HTTP(S) endpoints are supported.
 This first version uses these model files:
@@ -18,6 +31,17 @@ This first version uses these model files:
 - `qwen_image_2.1_int8_convrot.safetensors`
 - `qwen3vl_8b_int8_convrot.safetensors` (`qwen_image` CLIP type)
 - `qwen_image_2.1_vae_bf16.safetensors`
+
+Before uploading an image, PhotoCraft queries `/object_info/UNETLoader`,
+`/object_info/CLIPLoader` and `/object_info/VAELoader` for their model lists. The exact filenames
+above are resolved to the paths ComfyUI advertises, including nested folders and Windows
+backslash paths; the resolved paths are submitted unchanged. An exact root-folder model
+takes precedence. A single matching filename in a subfolder is selected automatically;
+multiple subfolder matches produce an explicit ambiguity error. Missing models or malformed
+model lists fail before uploading or submitting a generation. Different model variants or
+renamed filenames are not substituted automatically. The server, not PhotoCraft, controls
+which model directories and extra model paths are searched. These metadata requests do not
+load model weights or run inference.
 
 The API graphs follow the supplied `03_Edit_AutoINT8Cache.json` and
 `04_MaskEdit_AutoINT8Cache.json`: 25 steps, CFG 1, Euler/simple, denoise 1, and

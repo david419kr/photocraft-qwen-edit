@@ -16,6 +16,9 @@ use crate::{EngineError, Result};
 const MAX_RESPONSE_BYTES: u64 = 64 << 20;
 const MAX_JSON_BYTES: u64 = 1 << 20;
 const GENERATION_TIMEOUT: Duration = Duration::from_secs(20 * 60);
+const UNET_MODEL: &str = "qwen_image_2.1_int8_convrot.safetensors";
+const CLIP_MODEL: &str = "qwen3vl_8b_int8_convrot.safetensors";
+const VAE_MODEL: &str = "qwen_image_2.1_vae_bf16.safetensors";
 
 #[derive(Default)]
 pub struct ComfyUi;
@@ -60,14 +63,35 @@ fn read_json(response: Response) -> Result<Value> {
     serde_json::from_slice(&read_response(response, MAX_JSON_BYTES)?).map_err(failure)
 }
 
+fn model_name(info: &Value, node: &str, input: &str, filename: &str) -> Result<String> {
+    let names = info
+        .get(node)
+        .and_then(|v| v.pointer(&format!("/input/required/{input}/0")))
+        .and_then(Value::as_array)
+        .ok_or_else(|| failure(format!("model list unavailable for {node}.{input}")))?;
+    let mut matches: Vec<&str> =
+        names.iter().filter_map(Value::as_str).filter(|name| name.rsplit(['/', '\\']).next().is_some_and(|base| base.eq_ignore_ascii_case(filename))).collect();
+    // Preserve the existing root-folder choice; otherwise require one unambiguous model.
+    if matches.contains(&filename) {
+        return Ok(filename.into());
+    }
+    matches.sort_unstable();
+    matches.dedup();
+    match matches.as_slice() {
+        [name] => Ok((*name).into()),
+        [] => Err(failure(format!("model not found: {filename} ({node}.{input}); check ComfyUI's model folders"))),
+        _ => Err(failure(format!("multiple models named {filename}: {}; keep one copy or place the intended model in the root folder", matches.join(", ")))),
+    }
+}
+
 /// Built from the user's 03 Edit / 04 MaskEdit graphs, with UI-only widgets removed.
 pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
     let masked = request.mode == EditMode::GenerativeFill;
     let cache = if masked { "82" } else { "79" };
     let mut graph = json!({
-        "37":{"class_type":"UNETLoader","inputs":{"unet_name":"qwen_image_2.1_int8_convrot.safetensors","weight_dtype":"default"}},
-        "38":{"class_type":"CLIPLoader","inputs":{"clip_name":"qwen3vl_8b_int8_convrot.safetensors","type":"qwen_image","device":"default"}},
-        "39":{"class_type":"VAELoader","inputs":{"vae_name":"qwen_image_2.1_vae_bf16.safetensors"}},
+        "37":{"class_type":"UNETLoader","inputs":{"unet_name":UNET_MODEL,"weight_dtype":"default"}},
+        "38":{"class_type":"CLIPLoader","inputs":{"clip_name":CLIP_MODEL,"type":"qwen_image","device":"default"}},
+        "39":{"class_type":"VAELoader","inputs":{"vae_name":VAE_MODEL}},
         "78":{"class_type":"LoadImage","inputs":{"image":filename}},
         "77":{"class_type":"ResizeImageMaskNode","inputs":{"input":["78",0],"resize_type":"scale to multiple","resize_type.multiple":32,"scale_method":"bicubic"}},
         "76":{"class_type":"GetImageSize","inputs":{"image":["77",0]}},
@@ -104,6 +128,15 @@ impl AiBackend for ComfyUi {
             .build()
             .map_err(failure)?;
         ctx.check()?;
+        let mut models = Vec::with_capacity(3);
+        for (id, node, input, filename) in
+            [("37", "UNETLoader", "unet_name", UNET_MODEL), ("38", "CLIPLoader", "clip_name", CLIP_MODEL), ("39", "VAELoader", "vae_name", VAE_MODEL)]
+        {
+            ctx.check()?;
+            let info = read_json(client.get(route(&format!("object_info/{node}"))?).send().map_err(failure)?)?;
+            models.push((id, input, model_name(&info, node, input, filename)?));
+        }
+        ctx.check()?;
         let image =
             Image::from_raw(request.image.width, request.image.height, ChannelLayout::Rgba, SampleType::U8, request.image.pixels.clone()).map_err(failure)?;
         let png = photocraft_codecs::encode(&image, Format::Png, &EncodeOptions::default()).map_err(failure)?;
@@ -118,7 +151,11 @@ impl AiBackend for ComfyUi {
         let filename = if folder.is_empty() { name.to_owned() } else { format!("{folder}/{name}") };
         ctx.check()?;
         ctx.progress(0.2, "Waiting for ComfyUI generation");
-        let prompt = workflow(request, &filename, &job);
+        let mut prompt = workflow(request, &filename, &job);
+        for (id, input, name) in models {
+            let value = prompt.pointer_mut(&format!("/{id}/inputs/{input}")).ok_or_else(|| failure("workflow model input missing"))?;
+            *value = Value::String(name);
+        }
         // A client-selected UUID lets us cancel our job even when the POST reply is lost.
         // POST is never blindly retried: repeating the UUID does not guarantee deduplication.
         let outcome = (|| {
