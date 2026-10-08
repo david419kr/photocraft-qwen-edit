@@ -59,6 +59,9 @@ With no selection or a full selection, click **Prompt Edit** below the image and
 the change. The prompt is passed through unchanged. With a partial selection, click
 **Generative Fill** below the selection. A blank prompt removes the content in the selected
 region; a nonblank prompt specifies its replacement. Cancel stops only this ComfyUI job.
+With the prompt field focused, **Ctrl+Enter** starts generation through the same command and
+validation as the Generate button. Plain Enter still inserts a newline. Empty whole-image
+prompts and busy jobs do not submit; empty Generative Fill prompts retain removal behaviour.
 
 The original selection becomes the result layer's mask. Outside-selection pixels stay
 unchanged even if the model changes the corresponding pixels. Feather is applied once.

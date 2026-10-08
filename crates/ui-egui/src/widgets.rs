@@ -182,6 +182,34 @@ pub fn value_field(ui: &mut Ui, value: &mut f32, range: std::ops::RangeInclusive
 /// rounds it would cut `5/2*2` short. `changed()` means a new value, not just a keystroke.
 fn number_edit(ui: &mut Ui, value: &mut f32, range: std::ops::RangeInclusive<f32>, fine: bool) -> Response {
     let (id, ctx) = (ui.next_auto_id(), ui.ctx().clone());
+    if ui.is_enabled() && ui.rect_contains_pointer(ui.max_rect()) {
+        // Target DragValue's increment/decrement actions without taking keyboard focus.
+        ui.input_mut(|input| {
+            let mut actions = Vec::new();
+            input.events.retain(|event| {
+                if let egui::Event::MouseWheel { delta, modifiers, .. } = event
+                    && modifiers.is_none()
+                    && delta.y.is_finite()
+                    && delta.y != 0.0
+                {
+                    actions.push(if delta.y > 0.0 { egui::accesskit::Action::Increment } else { egui::accesskit::Action::Decrement });
+                    false
+                } else {
+                    true
+                }
+            });
+            // Also consume the smoothed tail so the surrounding panel does not scroll.
+            input.smooth_scroll_delta = Vec2::ZERO;
+            input.events.extend(actions.into_iter().map(|action| {
+                egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
+                    action,
+                    target_node: id.accesskit_id(),
+                    target_tree: egui::accesskit::TreeId::ROOT,
+                    data: None,
+                })
+            }));
+        });
+    }
     let held = id.with("arithmetic");
     let math = ui.memory(|m| m.has_focus(id)) && ui.data(|d| d.get_temp(held)).unwrap_or(false);
     ui.data_mut(|d| d.insert_temp(held, math));
@@ -832,6 +860,64 @@ mod tests {
         // `5/2` alone would round to 3 under the caller; the whole expression still applies.
         assert_eq!(type_and_press(1.0, "5/2*2", Tab, true), 5.0);
         assert_eq!(type_and_press(1.0, "1280/3*2", Enter, true), 853.0);
+    }
+
+    #[test]
+    fn hovered_wheel_matches_arrow_steps_without_taking_focus() {
+        use egui_kittest::{Harness, kittest::Queryable};
+        for (start, range) in [(50.0, 0.0..=100.0), (0.5, 0.0..=1.0)] {
+            let field_range = range.clone();
+            let mut h = Harness::builder().with_size(egui::vec2(300.0, 100.0)).build_ui_state(
+                move |ui, v: &mut f32| {
+                    super::value_field(ui, v, field_range.clone(), "", 90.0);
+                },
+                start,
+            );
+            let wheel = |dy| egui::Event::MouseWheel {
+                unit: egui::MouseWheelUnit::Line,
+                delta: egui::vec2(0.0, dy),
+                phase: egui::TouchPhase::Move,
+                modifiers: egui::Modifiers::NONE,
+            };
+            h.get_by_role(egui::accesskit::Role::SpinButton).hover();
+            h.event(wheel(1.0));
+            h.run();
+            let hovered_up = *h.state();
+            assert!(hovered_up > start);
+            assert!(h.ctx.memory(|m| m.focused()).is_none());
+            h.event(wheel(-1.0));
+            h.run();
+            assert!((*h.state() - start).abs() < 1e-5);
+            *h.state_mut() = start;
+            h.get_by_role(egui::accesskit::Role::SpinButton).click();
+            h.run();
+            h.key_press(egui::Key::ArrowUp);
+            h.run();
+            let up = *h.state();
+            assert_eq!(up, hovered_up);
+            *h.state_mut() = start;
+            h.event(wheel(1.0));
+            h.run();
+            assert_eq!(*h.state(), up);
+            assert!(up > start);
+            *h.state_mut() = start;
+            h.key_press(egui::Key::ArrowDown);
+            h.run();
+            let down = *h.state();
+            *h.state_mut() = start;
+            h.event(wheel(-1.0));
+            h.run();
+            assert_eq!(*h.state(), down);
+            assert!(down < start);
+            *h.state_mut() = *range.end();
+            h.event(wheel(1.0));
+            h.run();
+            assert_eq!(*h.state(), *range.end());
+            h.event(egui::Event::PointerMoved(egui::pos2(280.0, 90.0)));
+            h.event(wheel(-1.0));
+            h.run();
+            assert_eq!(*h.state(), *range.end());
+        }
     }
 
     #[test]

@@ -30,6 +30,8 @@ pub struct AiUi {
     selection: Option<Surface>,
     #[serde(skip)]
     focus: bool,
+    #[serde(skip)]
+    submit: Option<u64>,
 }
 
 impl PartialEq for AiUi {
@@ -164,7 +166,26 @@ fn label(mode: EditMode) -> &'static str {
     }
 }
 
+fn prompt_id(document: u64) -> egui::Id {
+    egui::Id::new(("photocraft-ai-prompt", document))
+}
+
+/// Reserve Ctrl+Enter before global shortcuts and the multiline editor see it.
+pub(crate) fn keys(app: &mut PhotocraftApp, ctx: &egui::Context) -> bool {
+    if !app.ui.ai.open || !app.ui.ai.available || app.ui.ai.rect.is_none() || !app.ui.dialogs.is_empty() || app.discard.is_some() {
+        return false;
+    }
+    let Some(doc) = app.session.active() else { return false };
+    let id = doc.doc.id.0;
+    if ctx.memory(|m| m.has_focus(prompt_id(id))) && ctx.input_mut(|i| i.consume_key(egui::Modifiers::CTRL, egui::Key::Enter)) {
+        app.ui.ai.submit = Some(id);
+        return true;
+    }
+    false
+}
+
 pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, image: Rect, selection: Option<Rect>) {
+    let submitted = app.ui.ai.submit.take();
     if !app.ui.ai.available {
         app.ui.ai.rect = None;
         return;
@@ -223,6 +244,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                         ui.add_enabled(
                             !busy,
                             egui::TextEdit::multiline(&mut app.ui.ai.prompt)
+                                .id(prompt_id(doc.id.0))
                                 .hint_text(hint)
                                 .desired_rows(2)
                                 .desired_width(f32::INFINITY)
@@ -234,11 +256,13 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                     response.request_focus();
                     app.ui.ai.focus = false;
                 }
+                let valid = mode == EditMode::GenerativeFill || !app.ui.ai.prompt.trim().is_empty();
+                let can_generate = !busy && valid && app.ui.ai.prompt.len() <= MAX_PROMPT_BYTES;
+                generate = submitted == Some(doc.id.0) && can_generate;
                 ui.horizontal(|ui| {
                     ui.label("Qwen Image 2.1");
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                        let valid = mode == EditMode::GenerativeFill || !app.ui.ai.prompt.trim().is_empty();
-                        generate = ui.add_enabled(!busy && valid && app.ui.ai.prompt.len() <= MAX_PROMPT_BYTES, egui::Button::new(tl!("Generate"))).clicked();
+                        generate |= ui.add_enabled(can_generate, egui::Button::new(tl!("Generate"))).clicked();
                         close = ui.add_enabled(!busy, egui::Button::new(tl!("Cancel"))).clicked();
                     });
                 });
@@ -249,7 +273,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     if close {
         app.ui.ai.open = false;
     }
-    if generate {
+    if generate && !close {
         let params = json!({"prompt":app.ui.ai.prompt,"name":label(mode)});
         if app.run(mode.command(), params).is_ok() {
             app.ui.ai.open = false;
@@ -262,6 +286,77 @@ mod tests {
     use super::*;
     use crate::Services;
     use photocraft_engine::Session;
+
+    struct CaptureGenerate(Arc<Mutex<Vec<bool>>>);
+    impl AiBackend for CaptureGenerate {
+        fn generate(
+            &self,
+            request: &photocraft_engine::ai_cmds::AiRequest,
+            _: &photocraft_engine::jobs::JobCtx,
+        ) -> photocraft_engine::Result<photocraft_raster::Rgba8Image> {
+            self.0.lock().unwrap().push(request.removal);
+            let mut image = request.image.clone();
+            for pixel in image.pixels.chunks_exact_mut(4) {
+                pixel[3] = 255;
+            }
+            Ok(image)
+        }
+    }
+
+    #[test]
+    fn ctrl_enter_submits_only_the_focused_prompt_and_uses_button_validation() {
+        use egui_kittest::Harness;
+        let calls = Arc::new(Mutex::new(Vec::new()));
+        let mut session = Session::new();
+        session.ai_backend = Some(Arc::new(CaptureGenerate(calls.clone())));
+        let mut app = PhotocraftApp::new(session, Services::default());
+        app.run("file.new", json!({"width":20,"height":20})).unwrap();
+        app.ui.ai.available = true;
+        open(&mut app).unwrap();
+        set_prompt(&mut app, "make the sky blue".into()).unwrap();
+        let mut h = Harness::builder().with_size(egui::vec2(800.0, 600.0)).build_ui_state(
+            |ui, app| {
+                if !ui.ctx().fonts(|f| f.families().contains(&egui::FontFamily::Name("medium".into()))) {
+                    return;
+                }
+                crate::shortcuts::handle(app, ui.ctx());
+                let canvas = egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(800.0, 600.0));
+                let image = egui::Rect::from_min_size(egui::pos2(100.0, 100.0), egui::vec2(400.0, 300.0));
+                show(app, ui, 0, canvas, image, None);
+            },
+            app,
+        );
+        PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
+        h.run_steps(4);
+        h.key_press(egui::Key::Enter);
+        h.run_steps(4);
+        assert!(h.state().ui.ai.prompt.contains('\n'));
+        assert!(calls.lock().unwrap().is_empty());
+        h.key_press_modifiers(egui::Modifiers::CTRL, egui::Key::Enter);
+        h.run_steps(4);
+        assert_eq!(*calls.lock().unwrap(), vec![false]);
+        assert_eq!(h.state().session.active().unwrap().doc.layers.len(), 2);
+        open(h.state_mut()).unwrap();
+        set_prompt(h.state_mut(), "".into()).unwrap();
+        h.run_steps(4);
+        h.key_press_modifiers(egui::Modifiers::CTRL, egui::Key::Enter);
+        h.run_steps(4);
+        assert_eq!(calls.lock().unwrap().len(), 1); // Empty whole-image prompt is disabled.
+        h.state_mut().run("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
+        open(h.state_mut()).unwrap();
+        h.run_steps(4);
+        h.key_press_modifiers(egui::Modifiers::CTRL, egui::Key::Enter);
+        h.run_steps(4);
+        assert_eq!(*calls.lock().unwrap(), vec![false, true]); // Empty fill still removes.
+        assert_eq!(h.state().session.active().unwrap().doc.layers.len(), 3);
+        open(h.state_mut()).unwrap();
+        h.run_steps(4);
+        let id = h.state().session.active().unwrap().doc.id.0;
+        h.ctx.memory_mut(|m| m.surrender_focus(prompt_id(id)));
+        h.key_press_modifiers(egui::Modifiers::CTRL, egui::Key::Enter);
+        h.run_steps(4);
+        assert_eq!(calls.lock().unwrap().len(), 2);
+    }
 
     struct FakeAvailability(std::sync::atomic::AtomicBool);
     impl AiBackend for FakeAvailability {
