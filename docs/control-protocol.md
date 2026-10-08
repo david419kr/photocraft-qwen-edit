@@ -389,3 +389,13 @@ and region changes rebuild only the dependent analysis. Display options and the 
 geometry persist in preferences `dialogs["filter.cameraRaw.scope"]`; probes and vectorscope
 visibility reset when the dialog opens. HDR scopes are not implemented. See
 [camera-raw-histogram.md](camera-raw-histogram.md).
+
+## ComfyUI editing
+
+`ui.inspect` includes `ai` with `open`, `prompt`, `mode` and the screen-space `rect`.
+`ui.set {aiOpen: bool, aiPrompt: string}` drives the prompt bar without starting inference.
+`ui.menu.invoke` for `edit.promptEdit` or `edit.generativeFill` without params opens it.
+With params, `engine.execute` dispatches the same command as the Generate button.
+Use `wait:false` and the existing `jobs.list` / `jobs.cancel` to track the job.
+The desktop bridge supports these commands; unconfigured headless MCP sessions do not
+install an AI backend. See [ComfyUI editing](comfyui.md).

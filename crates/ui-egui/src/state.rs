@@ -787,6 +787,8 @@ pub struct UiState {
     pub theme: crate::theme::ThemeKind,
     pub workspace: String,
     pub palette_open: bool,
+    #[serde(default)]
+    pub ai: crate::ai_bar::AiUi,
     pub dock_tabs: DockTabs,
     /// Right-dock group order, heights and collapsed groups (see `dock`).
     #[serde(default)]
@@ -878,6 +880,7 @@ impl Default for UiState {
             theme: crate::theme::ThemeKind::ProMedium,
             workspace: "Essentials".into(),
             palette_open: false,
+            ai: Default::default(),
             dock_tabs: DockTabs::default(),
             dock: Default::default(),
             color_panel: Default::default(),

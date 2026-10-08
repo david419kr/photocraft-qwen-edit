@@ -2551,3 +2551,18 @@ cameraRaw	Blending	Pembauran
 	% of all commits	% dari semua commit
 	Lines +/−	Baris +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login}: {prs} PR, {commits} commit, +{added} / −{deleted} baris (Δ {delta}), +{binAdded} / −{binDeleted} berkas biner, {first} – {last}
+
+# ComfyUI generative image editing
+	Prompt Edit	Edit dengan prompt
+	Generative Fill	Isian generatif
+	Describe changes to the whole image	Jelaskan perubahan untuk seluruh gambar
+	Describe changes, or leave blank to remove	Jelaskan perubahan atau kosongkan untuk menghapus
+	ComfyUI is unavailable in this frontend	ComfyUI tidak tersedia di lingkungan ini
+	Comfyui url	URL server ComfyUI
+	Prompt Edit…	Edit dengan prompt…
+	Generative Fill…	Isian generatif…
+	Preparing image and selection	Menyiapkan gambar dan pilihan
+	Uploading image to ComfyUI	Mengunggah ke ComfyUI
+	Waiting for ComfyUI generation	Menunggu generasi ComfyUI
+	Downloading generated image	Mengunduh hasil
+	Adding generated layer	Menambahkan lapisan hasil

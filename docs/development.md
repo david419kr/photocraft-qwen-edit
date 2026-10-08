@@ -406,3 +406,9 @@ stroke is drawn above its clipped layers; linked effect patterns tile from the l
 reference point; stroke distances follow a 5 × 5 chamfer metric (1, √2, √5) seeded at sub-pixel
 edge offsets; interior effects keep the layer's alpha; outside strokes blend onto the backdrop with
 their own modes, an upper stroke covering lower ones.
+
+## Local ComfyUI image editing
+
+See [ComfyUI Qwen Image 2.1 editing](comfyui.md) for the native prompt bar,
+masked editing, automation commands and the separate Korean portable development build.
+Real inference is opt-in through an explicit generation request; tests use mock backends.

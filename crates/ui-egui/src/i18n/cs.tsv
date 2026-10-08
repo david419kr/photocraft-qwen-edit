@@ -2133,3 +2133,18 @@ cameraRaw	Color	Barvy
 	% of all commits	% všech commitů
 	Lines +/−	Řádky +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login}: PR: {prs}, commity: {commits}, řádky +{added} / −{deleted} (Δ {delta}), binární soubory +{binAdded} / −{binDeleted}, {first} – {last}
+
+# ComfyUI generative image editing
+	Prompt Edit	Upravit podle zadání
+	Generative Fill	Generativní výplň
+	Describe changes to the whole image	Popište změny celého obrázku
+	Describe changes, or leave blank to remove	Popište změny nebo nechte prázdné pro odstranění
+	ComfyUI is unavailable in this frontend	ComfyUI není v tomto prostředí dostupné
+	Comfyui url	URL serveru ComfyUI
+	Prompt Edit…	Upravit podle zadání…
+	Generative Fill…	Generativní výplň…
+	Preparing image and selection	Příprava obrázku a výběru
+	Uploading image to ComfyUI	Nahrávání do ComfyUI
+	Waiting for ComfyUI generation	Čekání na generování ComfyUI
+	Downloading generated image	Stahování výsledku
+	Adding generated layer	Přidávání nové vrstvy

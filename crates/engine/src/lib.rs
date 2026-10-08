@@ -10,6 +10,7 @@
 pub mod actions_cmds;
 pub mod adjust_cmds;
 pub mod adjust_params;
+pub mod ai_cmds;
 pub mod align_cmds;
 pub mod analysis_cmds;
 pub mod artboard_cmds;
@@ -21,6 +22,8 @@ pub mod build_info;
 mod canvas_geom;
 pub mod channel_cmds;
 pub mod color_cmds;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod comfyui;
 pub mod commands;
 pub mod comps_cmds;
 pub mod cutout_cmds;
@@ -264,6 +267,8 @@ pub struct Session {
     docs: Vec<DocState>,
     active: Option<usize>,
     pub tools: ToolState,
+    /// Native AI service. Unconfigured headless/test sessions never contact an AI server.
+    pub ai_backend: Option<Arc<dyn ai_cmds::AiBackend>>,
     /// Log of executed commands (for action recording and debugging).
     pub journal: Vec<(String, Value)>,
     /// Coalescing key of the command being executed.

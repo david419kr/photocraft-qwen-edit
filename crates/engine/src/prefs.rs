@@ -698,11 +698,13 @@ pub struct Integrations {
     pub allow_agent_control: bool,
     /// Default control port (0 = only when `--control` is given).
     pub control_port: u32,
+    /// Local ComfyUI endpoint for generative image edits.
+    pub comfyui_url: String,
 }
 
 impl Default for Integrations {
     fn default() -> Self {
-        Self { allow_agent_control: true, control_port: 0 }
+        Self { allow_agent_control: true, control_port: 0, comfyui_url: "http://127.0.0.1:8188".into() }
     }
 }
 
@@ -1007,6 +1009,15 @@ fn check_value(path: &str, v: &Value) -> std::result::Result<(), String> {
         let s = v.as_str().ok_or_else(|| format!("`{path}` must be one of {}", c.join("|")))?;
         if !c.contains(&s) {
             return Err(format!("`{path}` must be one of {} (got `{s}`)", c.join("|")));
+        }
+    }
+    if path == "integrations.comfyuiUrl" {
+        let endpoint = v.as_str().filter(|s| !s.is_empty() && s.len() <= 2048).ok_or("ComfyUI URL must be a nonempty string of at most 2048 bytes")?;
+        #[cfg(not(target_arch = "wasm32"))]
+        crate::comfyui::endpoint_url(endpoint).map_err(|e| e.to_string())?;
+        #[cfg(target_arch = "wasm32")]
+        if !(endpoint.starts_with("http://") || endpoint.starts_with("https://")) {
+            return Err("ComfyUI URL must use HTTP(S)".into());
         }
     }
     if path == "interface.language" {

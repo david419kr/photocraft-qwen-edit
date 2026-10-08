@@ -2717,3 +2717,18 @@ cameraRaw	Color	색상
 	% of all commits	전체 커밋 대비 %
 	Lines +/−	줄 +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login}: PR {prs}개, 커밋 {commits}개, 줄 +{added} / −{deleted} (Δ {delta}), 바이너리 +{binAdded} / −{binDeleted}, {first} – {last}
+
+# ComfyUI generative image editing
+	Prompt Edit	프롬프트로 편집
+	Generative Fill	생성형 채우기
+	Describe changes to the whole image	이미지 전체에 적용할 변경 내용을 설명하세요
+	Describe changes, or leave blank to remove	변경 내용을 설명하세요. 비워 두면 선택 영역을 제거합니다
+	ComfyUI is unavailable in this frontend	이 환경에서는 ComfyUI를 사용할 수 없습니다
+	Comfyui url	ComfyUI 서버 주소
+	Prompt Edit…	프롬프트로 편집…
+	Generative Fill…	생성형 채우기…
+	Preparing image and selection	이미지와 선택 영역 준비 중
+	Uploading image to ComfyUI	ComfyUI에 이미지 전송 중
+	Waiting for ComfyUI generation	ComfyUI 생성 대기 중
+	Downloading generated image	생성 이미지 가져오는 중
+	Adding generated layer	생성 레이어 추가 중

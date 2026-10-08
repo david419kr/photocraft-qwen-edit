@@ -2108,6 +2108,10 @@ pub fn canvas_view(app: &mut PhotocraftApp, ui: &mut egui::Ui, idx: usize, rect:
     if primary {
         app.ui.views[idx] = view.clone();
     }
+    if primary && !app.ui.view.hides_chrome() {
+        let selected = doc.selection.as_ref().map(|m| xf.doc_rect(m.content_bounds().intersect(&doc.bounds())));
+        crate::ai_bar::show(app, ui, idx, rect, img_rect, selected);
+    }
     view
 }
 
@@ -2779,16 +2783,14 @@ pub(crate) fn finish_gesture(app: &mut PhotocraftApp, d: Drag) {
                 let _ = app.run("select.deselect", json!({}));
             }
         }
-        Tool::Gradient => {
-            if (end[0] - d.start[0]).abs() + (end[1] - d.start[1]).abs() >= 2.0 {
-                let o = app.ui.tool_options.clone();
-                let fg = app.session.tools.foreground;
-                let bg = app.session.tools.background;
-                let _ = app.run(
+        Tool::Gradient if (end[0] - d.start[0]).abs() + (end[1] - d.start[1]).abs() >= 2.0 => {
+            let o = app.ui.tool_options.clone();
+            let fg = app.session.tools.foreground;
+            let bg = app.session.tools.background;
+            let _ = app.run(
                     "paint.gradient",
                     json!({"from": [d.start[0], d.start[1]], "to": [end[0], end[1]], "style": o.gradient_style, "reverse": o.gradient_reverse, "dither": o.gradient_dither, "colors": [hex(fg), hex(bg)], "opacity": o.fill_opacity, "mode": o.gradient_blend_mode.label(), "target": paint_target(app)}),
                 );
-            }
         }
         Tool::Move => {
             let (dx, dy) = ((end[0] - d.start[0]).round(), (end[1] - d.start[1]).round());

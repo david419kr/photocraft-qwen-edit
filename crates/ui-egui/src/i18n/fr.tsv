@@ -2564,3 +2564,18 @@ cameraRaw	Blending	Fusion
 	% of all commits	% de tous les commits
 	Lines +/−	Lignes +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login} : {prs} PR, {commits} commits, +{added} / −{deleted} lignes (Δ {delta}), +{binAdded} / −{binDeleted} fichiers binaires, {first} – {last}
+
+# ComfyUI generative image editing
+	Prompt Edit	Modifier par invite
+	Generative Fill	Remplissage génératif
+	Describe changes to the whole image	Décrivez les modifications de toute l’image
+	Describe changes, or leave blank to remove	Décrivez les modifications ou laissez vide pour supprimer
+	ComfyUI is unavailable in this frontend	ComfyUI est indisponible dans cet environnement
+	Comfyui url	URL du serveur ComfyUI
+	Prompt Edit…	Modifier par invite…
+	Generative Fill…	Remplissage génératif…
+	Preparing image and selection	Préparation de l’image et de la sélection
+	Uploading image to ComfyUI	Envoi de l’image à ComfyUI
+	Waiting for ComfyUI generation	Attente de génération ComfyUI
+	Downloading generated image	Téléchargement du résultat
+	Adding generated layer	Ajout du calque généré

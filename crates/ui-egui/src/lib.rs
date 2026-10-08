@@ -19,6 +19,7 @@ pub mod adjust_dialog;
 pub mod adjust_editors;
 pub mod adjust_preview;
 pub mod adjust_ui;
+pub mod ai_bar;
 pub mod analysis_ui;
 pub mod artboard_ui;
 mod brand;
@@ -1065,6 +1066,10 @@ impl eframe::App for PhotocraftApp {
         }
         let t = theme::Tokens::get(&ctx);
         let backdrop = if chrome { prefs_ui::pasteboard_color(self).unwrap_or(t.canvas) } else { egui::Color32::BLACK };
+        if self.session.active().is_none() {
+            self.ui.ai = Default::default();
+        }
+        self.ui.ai.rect = None;
         egui::CentralPanel::default().frame(egui::Frame::NONE.fill(backdrop)).show(ui, |ui| {
             canvas::document_area(self, ui);
         });

@@ -2116,3 +2116,18 @@ cameraRaw	Color	カラー
 	% of all commits	全コミットに占める割合 (%)
 	Lines +/−	行数 +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login}: PR {prs} 件、コミット {commits} 件、行 +{added} / −{deleted} (Δ {delta})、バイナリ +{binAdded} / −{binDeleted}、{first} – {last}
+
+# ComfyUI generative image editing
+	Prompt Edit	プロンプトで編集
+	Generative Fill	生成塗りつぶし
+	Describe changes to the whole image	画像全体への変更を説明してください
+	Describe changes, or leave blank to remove	変更を説明してください。空欄なら選択範囲を削除します
+	ComfyUI is unavailable in this frontend	この環境ではComfyUIを利用できません
+	Comfyui url	ComfyUIサーバーURL
+	Prompt Edit…	プロンプトで編集…
+	Generative Fill…	生成塗りつぶし…
+	Preparing image and selection	画像と選択範囲を準備中
+	Uploading image to ComfyUI	ComfyUIに画像を送信中
+	Waiting for ComfyUI generation	ComfyUIの生成を待機中
+	Downloading generated image	生成画像を取得中
+	Adding generated layer	生成レイヤーを追加中

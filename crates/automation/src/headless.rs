@@ -48,7 +48,14 @@ impl Headless {
     /// not a remote automation client, supplies these host paths. Nested
     /// `actions.play` steps are not re-checked: this caller is already trusted.
     pub fn trusted_local() -> Self {
-        Self { session: Session::new(), writers: HashMap::new(), filesystem: Filesystem::TrustedLocal }
+        let session = Session::new();
+        #[cfg(not(target_arch = "wasm32"))]
+        let session = {
+            let mut session = session;
+            session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi));
+            session
+        };
+        Self { session, writers: HashMap::new(), filesystem: Filesystem::TrustedLocal }
     }
 
     /// Create an automation session with capability-scoped file access.

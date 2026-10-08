@@ -2206,3 +2206,18 @@ cameraRaw	Amount	Quantità
 	Lines +/−	Righe +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login}: {prs} PR, {commits} commit, +{added} / −{deleted} righe (Δ {delta}), +{binAdded} / −{binDeleted} risorse binarie, {first} – {last}
 	Convert to Layers	Converti in livelli
+
+# ComfyUI generative image editing
+	Prompt Edit	Modifica con prompt
+	Generative Fill	Riempimento generativo
+	Describe changes to the whole image	Descrivi le modifiche all’intera immagine
+	Describe changes, or leave blank to remove	Descrivi le modifiche o lascia vuoto per rimuovere
+	ComfyUI is unavailable in this frontend	ComfyUI non è disponibile in questo ambiente
+	Comfyui url	URL del server ComfyUI
+	Prompt Edit…	Modifica con prompt…
+	Generative Fill…	Riempimento generativo…
+	Preparing image and selection	Preparazione di immagine e selezione
+	Uploading image to ComfyUI	Invio dell’immagine a ComfyUI
+	Waiting for ComfyUI generation	Attesa della generazione ComfyUI
+	Downloading generated image	Download del risultato
+	Adding generated layer	Aggiunta del livello generato

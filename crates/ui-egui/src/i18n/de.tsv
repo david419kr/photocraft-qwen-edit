@@ -2172,3 +2172,18 @@
 	% of all commits	% aller Commits
 	Lines +/−	Zeilen +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login}: {prs} PRs, {commits} Commits, +{added} / −{deleted} Zeilen (Δ {delta}), +{binAdded} / −{binDeleted} Binärdateien, {first} – {last}
+
+# ComfyUI generative image editing
+	Prompt Edit	Mit Prompt bearbeiten
+	Generative Fill	Generatives Füllen
+	Describe changes to the whole image	Änderungen am gesamten Bild beschreiben
+	Describe changes, or leave blank to remove	Änderungen beschreiben oder zum Entfernen leer lassen
+	ComfyUI is unavailable in this frontend	ComfyUI ist in dieser Umgebung nicht verfügbar
+	Comfyui url	ComfyUI-Server-URL
+	Prompt Edit…	Mit Prompt bearbeiten…
+	Generative Fill…	Generatives Füllen…
+	Preparing image and selection	Bild und Auswahl werden vorbereitet
+	Uploading image to ComfyUI	Bild wird an ComfyUI gesendet
+	Waiting for ComfyUI generation	Warten auf ComfyUI-Generierung
+	Downloading generated image	Ergebnis wird heruntergeladen
+	Adding generated layer	Neue Ebene wird hinzugefügt

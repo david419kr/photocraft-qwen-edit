@@ -2571,3 +2571,18 @@ cameraRaw	Whites	Brancos
 	% of all commits	% de todos os commits
 	Lines +/−	Linhas +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} linhas (Δ {delta}), +{binAdded} / −{binDeleted} arquivos binários, {first} – {last}
+
+# ComfyUI generative image editing
+	Prompt Edit	Editar com prompt
+	Generative Fill	Preenchimento generativo
+	Describe changes to the whole image	Descreva alterações na imagem inteira
+	Describe changes, or leave blank to remove	Descreva alterações ou deixe vazio para remover
+	ComfyUI is unavailable in this frontend	ComfyUI não está disponível neste ambiente
+	Comfyui url	URL do servidor ComfyUI
+	Prompt Edit…	Editar com prompt…
+	Generative Fill…	Preenchimento generativo…
+	Preparing image and selection	Preparando imagem e seleção
+	Uploading image to ComfyUI	Enviando imagem ao ComfyUI
+	Waiting for ComfyUI generation	Aguardando geração do ComfyUI
+	Downloading generated image	Baixando resultado
+	Adding generated layer	Adicionando camada gerada

@@ -23,6 +23,23 @@ use photocraft_ui_egui::control::{ControlRequest, Outcome, handle};
 use photocraft_ui_egui::{PhotocraftApp, Services};
 use serde_json::Value;
 
+/// Visual acceptance fixture: deliberately has no HTTP client or AI model.
+struct MockAi;
+impl photocraft_engine::ai_cmds::AiBackend for MockAi {
+    fn generate(
+        &self,
+        request: &photocraft_engine::ai_cmds::AiRequest,
+        ctx: &photocraft_engine::jobs::JobCtx,
+    ) -> photocraft_engine::Result<photocraft_raster::Rgba8Image> {
+        ctx.check()?;
+        let mut image = request.image.clone();
+        for pixel in image.pixels.chunks_exact_mut(4) {
+            pixel.copy_from_slice(&[40, 160, 210, 255]);
+        }
+        Ok(image)
+    }
+}
+
 fn arg(args: &[String], name: &str) -> Option<String> {
     args.iter().position(|a| a == name).and_then(|i| args.get(i + 1).cloned())
 }
@@ -35,6 +52,7 @@ fn main() {
         .unwrap_or((1440.0, 900.0));
     let scale: f32 = arg(&args, "--scale").and_then(|s| s.parse().ok()).unwrap_or(2.0);
     let wayland_notice = args.iter().any(|a| a == "--wayland-notice");
+    let mock_ai = args.iter().any(|a| a == "--mock-ai");
     let script: Vec<(String, Value)> =
         arg(&args, "--script").map(|s| serde_json::from_str::<Vec<(String, Value)>>(&s).expect("--script must be [[method, params], …]")).unwrap_or_default();
 
@@ -66,7 +84,11 @@ fn main() {
             PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
             let mut services = services;
             services.is_wayland = wayland_notice;
-            let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), services);
+            let mut session = photocraft_engine::Session::new();
+            if mock_ai {
+                session.ai_backend = Some(std::sync::Arc::new(MockAi));
+            }
+            let mut app = PhotocraftApp::new(session, services);
             app.background_jobs = background_jobs;
             app.custom_titlebar = custom_titlebar;
             // `--safe-gpu`: the CPU canvas, as the desktop app's `--safe-gpu` launch.

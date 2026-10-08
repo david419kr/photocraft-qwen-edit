@@ -70,7 +70,7 @@ pub enum Outcome {
 
 /// The fields `ui.set` reads. Anything else is rejected before a field is applied, so a typo or
 /// a field the method doesn't have can't reply with success while nothing changes (#412).
-pub const UI_SET_FIELDS: [&str; 19] = [
+pub const UI_SET_FIELDS: [&str; 21] = [
     "tool",
     "panels",
     "dock",
@@ -90,6 +90,8 @@ pub const UI_SET_FIELDS: [&str; 19] = [
     "brushSize",
     "gradientBlendMode",
     "gradientClassic",
+    "aiPrompt",
+    "aiOpen",
 ];
 
 fn ok(v: Value) -> Outcome {
@@ -221,11 +223,45 @@ fn dispatch(app: &mut PhotocraftApp, ctx: &egui::Context, req: &ControlRequest) 
             {
                 return err("gradientClassic must be a boolean");
             }
+            let ai_prompt = match p.get("aiPrompt") {
+                Some(v) => match v.as_str().filter(|text| text.len() <= photocraft_engine::ai_cmds::MAX_PROMPT_BYTES) {
+                    Some(text) => Some(text.to_owned()),
+                    None => return err("aiPrompt must be a string of at most 8192 bytes"),
+                },
+                None => None,
+            };
+            let ai_open = match p.get("aiOpen") {
+                Some(v) => match v.as_bool() {
+                    Some(open) => Some(open),
+                    None => return err("aiOpen must be a boolean"),
+                },
+                None => None,
+            };
+            if ai_open == Some(true) || ai_prompt.is_some() {
+                let Some(state) = app.session.active() else { return err("no document open") };
+                if let Err(e) = photocraft_engine::ai_cmds::supported_document(&state.doc) {
+                    return err(e);
+                }
+            }
             if let Some(t) = s("tool") {
                 match Tool::from_name(t) {
                     Some(t) => app.ui.tool = t,
                     None => return err(format!("unknown tool `{t}`")),
                 }
+            }
+            if let Some(open) = ai_open {
+                if open {
+                    if let Err(e) = crate::ai_bar::open(app) {
+                        return err(e);
+                    }
+                } else {
+                    app.ui.ai.open = false;
+                }
+            }
+            if let Some(prompt) = ai_prompt
+                && let Err(e) = crate::ai_bar::set_prompt(app, prompt)
+            {
+                return err(e);
             }
             let gradient_before = app.ui.tool_options.clone();
             if let Some(mode) = gradient_blend {
@@ -599,6 +635,7 @@ pub fn inspect(app: &PhotocraftApp, ctx: &egui::Context) -> Value {
         app.ui.dialogs.iter().map(|d| json!({"id": d.id, "kind": d.kind, "title": crate::dialogs::title(d), "fields": d.fields})).collect();
     json!({
         "window": {"width": screen.width(), "height": screen.height(), "pixelsPerPoint": ctx.pixels_per_point()},
+        "ai": app.ui.ai,
         "tool": app.ui.tool,
         "toolOptions": app.ui.tool_options,
         "magnetic": app.ui.magnetic,
@@ -764,6 +801,21 @@ mod tests {
             assert!(!r.to_string().contains("unknown field"), "{field}: {r}");
         }
         assert_eq!(call(&mut app, &ctx, "ui.set", Value::Null)["ok"], true);
+    }
+
+    #[test]
+    fn ai_controls_are_inspectable_and_invalid_input_is_atomic() {
+        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let ctx = egui::Context::default();
+        app.run("file.new", json!({"width":20,"height":20})).unwrap();
+        let r = call(&mut app, &ctx, "ui.set", json!({"aiOpen":true,"aiPrompt":"하늘에 달 추가"}));
+        assert_eq!(r["ok"], true);
+        let r = call(&mut app, &ctx, "ui.inspect", json!({}));
+        assert_eq!(r["result"]["ai"]["prompt"], "하늘에 달 추가");
+        assert_eq!(r["result"]["ai"]["mode"], "promptEdit");
+        let r = call(&mut app, &ctx, "ui.set", json!({"tool":"move","aiPrompt":false}));
+        assert_eq!(r["ok"], false);
+        assert_eq!(app.ui.tool, Tool::Brush);
     }
 
     #[test]

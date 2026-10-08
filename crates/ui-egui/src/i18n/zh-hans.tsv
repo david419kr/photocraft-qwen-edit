@@ -2141,3 +2141,18 @@ cameraRaw	Blending	混合
 	% of all commits	占全部提交的 %
 	Lines +/−	行数 +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login}：{prs} 个 PR，{commits} 次提交，行 +{added} / −{deleted}（Δ {delta}），二进制文件 +{binAdded} / −{binDeleted}，{first} – {last}
+
+# ComfyUI generative image editing
+	Prompt Edit	提示词编辑
+	Generative Fill	生成式填充
+	Describe changes to the whole image	描述对整张图像的修改
+	Describe changes, or leave blank to remove	描述修改内容，留空以移除选区内容
+	ComfyUI is unavailable in this frontend	此环境无法使用ComfyUI
+	Comfyui url	ComfyUI服务器地址
+	Prompt Edit…	提示词编辑…
+	Generative Fill…	生成式填充…
+	Preparing image and selection	正在准备图像和选区
+	Uploading image to ComfyUI	正在上传图像到ComfyUI
+	Waiting for ComfyUI generation	正在等待ComfyUI生成
+	Downloading generated image	正在下载生成图像
+	Adding generated layer	正在添加生成图层

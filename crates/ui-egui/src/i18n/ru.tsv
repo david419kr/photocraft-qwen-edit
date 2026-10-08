@@ -2407,3 +2407,18 @@ cameraRaw	Roughness	Неровность
 	% of all commits	% от всех коммитов
 	Lines +/−	Строки +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login}: PR: {prs}, коммиты: {commits}, строки +{added} / −{deleted} (Δ {delta}), двоичные файлы +{binAdded} / −{binDeleted}, {first} – {last}
+
+# ComfyUI generative image editing
+	Prompt Edit	Редактировать по запросу
+	Generative Fill	Генеративная заливка
+	Describe changes to the whole image	Опишите изменения всего изображения
+	Describe changes, or leave blank to remove	Опишите изменения или оставьте пустым для удаления
+	ComfyUI is unavailable in this frontend	ComfyUI недоступен в этой среде
+	Comfyui url	URL сервера ComfyUI
+	Prompt Edit…	Редактировать по запросу…
+	Generative Fill…	Генеративная заливка…
+	Preparing image and selection	Подготовка изображения и выделения
+	Uploading image to ComfyUI	Загрузка изображения в ComfyUI
+	Waiting for ComfyUI generation	Ожидание генерации ComfyUI
+	Downloading generated image	Скачивание результата
+	Adding generated layer	Добавление нового слоя
