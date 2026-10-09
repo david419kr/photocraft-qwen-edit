@@ -24,8 +24,11 @@ use photocraft_ui_egui::{PhotocraftApp, Services};
 use serde_json::Value;
 
 /// Visual acceptance fixture: deliberately has no HTTP client or AI model.
-struct MockAi;
+struct MockAi(Vec<photocraft_engine::prefs::ComfyUiModel>);
 impl photocraft_engine::ai_cmds::AiBackend for MockAi {
+    fn available_models(&self, _: &str) -> photocraft_engine::Result<Vec<photocraft_engine::prefs::ComfyUiModel>> {
+        Ok(self.0.clone())
+    }
     fn generate(
         &self,
         request: &photocraft_engine::ai_cmds::AiRequest,
@@ -91,6 +94,10 @@ fn main() {
     let custom_titlebar = args.iter().any(|a| a == "--custom-titlebar");
     // `--settle-ms N`: keep rendering frames for N ms before the capture (e.g. mid-job).
     let settle_ms: u64 = arg(&args, "--settle-ms").and_then(|s| s.parse().ok()).unwrap_or(0);
+    let mock_models = match arg(&args, "--mock-ai-model") {
+        Some(name) => photocraft_engine::prefs::ComfyUiModel::ALL.into_iter().filter(|model| model.name() == name).collect(),
+        None => photocraft_engine::prefs::ComfyUiModel::ALL.to_vec(),
+    };
     let mut harness =
         egui_kittest::Harness::builder().with_size(egui::vec2(w, h)).with_pixels_per_point(scale).with_max_steps(64).wgpu().build_eframe(move |cc| {
             PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
@@ -98,7 +105,7 @@ fn main() {
             services.is_wayland = wayland_notice;
             let mut session = photocraft_engine::Session::new();
             if mock_ai {
-                session.ai_backend = Some(std::sync::Arc::new(MockAi));
+                session.ai_backend = Some(std::sync::Arc::new(MockAi(mock_models)));
             } else if comfy_ai {
                 session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi));
             }

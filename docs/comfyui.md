@@ -83,13 +83,22 @@ backslash paths; the resolved paths are submitted unchanged. An exact root-folde
 takes precedence. A single matching filename in a subfolder is selected automatically;
 multiple subfolder matches produce an explicit ambiguity error. Missing models or malformed
 model lists fail before uploading or submitting a generation. A detected supported checkpoint
-plus the encoder/VAE and required nodes makes the bars available; an absent checkpoint is
-disabled in the selector. A remembered but missing choice does not hide the other available
-choice. Model changes are saved immediately through the normal preferences store and also
+plus the encoder/VAE and required nodes makes the bars available. If exactly one supported
+checkpoint is detected, it is selected automatically, saved and used regardless of the previous
+choice; the selector is hidden on both closed bars and the expanded prompt editor. If both are
+detected, the selector appears and keeps the saved choice. No detected checkpoint (or missing
+shared models/nodes) hides the bars. Model changes are saved through the normal preferences store and also
 apply to Remove Background / Remove. Different model variants or
 renamed filenames are not substituted automatically. The server, not PhotoCraft, controls
 which model directories and extra model paths are searched. These metadata requests do not
 load model weights or run inference.
+
+Single-checkpoint UI verification (2026-10-09): six AI bar tests passed, including either
+checkpoint alone with an opposite remembered choice, persisted selection, request model,
+repeated probes without extra saves, both checkpoints and zero checkpoints. Korean offscreen
+snapshots confirm hidden selectors in edit/fill/generate and expanded input, a hidden bar for
+zero models, and a visible selector for both models. UI Clippy, formatting, wasm, layering and
+the static-CRT portable release build passed. No additional real model inference was run.
 
 NoctQ V4 was installed on 2026-10-09 from repository revision
 `a81b9af51120a78e285e57906f2250a2a02080e9`: 7,256,784,368 bytes, SHA-256

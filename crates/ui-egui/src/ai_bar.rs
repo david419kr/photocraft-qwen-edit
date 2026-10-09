@@ -90,9 +90,20 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         app.ui.ai.checking = false;
         match result {
             Ok(models) => {
+                let single = match models.as_slice() {
+                    [model] => Some(*model),
+                    _ => None,
+                };
                 app.ui.ai.available = !models.is_empty();
                 app.ui.ai.available_models = models;
                 app.ui.ai.availability_error = None;
+                if let Some(model) = single
+                    && model != app.session.prefs().integrations.comfyui_model
+                    && let Err(error) = select_model(app, model)
+                {
+                    app.ui.status = error;
+                    app.ui.status_error = true;
+                }
             }
             Err(error) => {
                 app.ui.ai.available = false;
@@ -157,6 +168,9 @@ fn select_model(app: &mut PhotocraftApp, model: ComfyUiModel) -> Result<(), Stri
 }
 
 fn model_selector(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u64) {
+    if app.ui.ai.available_models.len() == 1 {
+        return;
+    }
     let mut selected = app.session.prefs().integrations.comfyui_model;
     let old = selected;
     egui::ComboBox::from_id_salt(("ai-model", document))
@@ -280,7 +294,9 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let repeat = regeneration(&app.session);
     let width = (if repeat.is_some() { 476.0f32 } else { 440.0f32 }).min(canvas.width() - 16.0);
     let buttons = if mode == EditMode::PromptGenerate { 1.0 } else { 2.0 };
-    let button_width = ((width - 16.0 - 115.0 - if repeat.is_some() { 32.0 } else { 0.0 } - ui.spacing().item_spacing.x * (buttons + 1.0)) / buttons).max(1.0);
+    let model_width = if app.ui.ai.available_models.len() == 1 { 0.0 } else { 115.0 };
+    let button_width =
+        ((width - 16.0 - model_width - if repeat.is_some() { 32.0 } else { 0.0 } - ui.spacing().item_spacing.x * (buttons + 1.0)) / buttons).max(1.0);
     let text_width = if app.ui.ai.open { width - 32.0 } else { button_width - 16.0 };
     let button_text =
         ui.painter().layout(label(mode).to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text, text_width.max(1.0));
@@ -448,6 +464,91 @@ mod tests {
                 pixel[3] = 255;
             }
             Ok(image)
+        }
+    }
+
+    struct ModelAvailability {
+        models: Mutex<Vec<ComfyUiModel>>,
+        requests: Mutex<Vec<ComfyUiModel>>,
+    }
+    impl AiBackend for ModelAvailability {
+        fn available_models(&self, _: &str) -> photocraft_engine::Result<Vec<ComfyUiModel>> {
+            Ok(self.models.lock().unwrap().clone())
+        }
+        fn generate(
+            &self,
+            request: &photocraft_engine::ai_cmds::AiRequest,
+            _: &photocraft_engine::jobs::JobCtx,
+        ) -> photocraft_engine::Result<photocraft_raster::Rgba8Image> {
+            self.requests.lock().unwrap().push(request.model);
+            let mut image = request.image.clone();
+            for pixel in image.pixels.chunks_exact_mut(4) {
+                pixel[3] = 255;
+            }
+            Ok(image)
+        }
+    }
+
+    #[test]
+    fn single_detected_model_overrides_saved_choice_and_no_models_hides_bar() {
+        for single in ComfyUiModel::ALL {
+            let other = ComfyUiModel::ALL.into_iter().find(|model| *model != single).unwrap();
+            let backend = Arc::new(ModelAvailability { models: Mutex::new(vec![single]), requests: Mutex::new(Vec::new()) });
+            let saved = Arc::new(Mutex::new(Vec::<String>::new()));
+            let sink = saved.clone();
+            let mut session = Session::new();
+            session.ai_backend = Some(backend.clone());
+            session.edit_prefs(|prefs| prefs.integrations.comfyui_model = other);
+            let mut app = PhotocraftApp::new(
+                session,
+                Services {
+                    save_prefs: Some(Box::new(move |text| {
+                        sink.lock().unwrap().push(text.into());
+                        Ok(())
+                    })),
+                    ..Default::default()
+                },
+            );
+            app.run("file.new", json!({"width":20,"height":20})).unwrap();
+            let revision = app.session.active().unwrap().revision;
+            let ctx = egui::Context::default();
+            poll_service(&mut app, &ctx);
+            finish_probe(&mut app, &ctx);
+            assert!(app.ui.ai.available);
+            assert_eq!(app.ui.ai.available_models, vec![single]);
+            assert_eq!(app.session.prefs().integrations.comfyui_model, single);
+            assert_eq!(app.session.active().unwrap().revision, revision);
+            let mut reopened = Session::new();
+            reopened.load_prefs_json(saved.lock().unwrap().last().unwrap()).unwrap();
+            assert_eq!(reopened.prefs().integrations.comfyui_model, single);
+            app.ai_probe.next_check = 0.0;
+            poll_service(&mut app, &ctx);
+            finish_probe(&mut app, &ctx);
+            assert_eq!(saved.lock().unwrap().len(), 1); // Repeated probes do not rewrite preferences.
+            app.run("edit.promptGenerate", json!({"prompt":"blue circle"})).unwrap();
+            app.run("select.rect", json!({"x":2,"y":2,"width":4,"height":4})).unwrap();
+            app.run("edit.generativeFill", json!({"prompt":""})).unwrap();
+            assert_eq!(*backend.requests.lock().unwrap(), vec![single, single]);
+
+            select_model(&mut app, other).unwrap();
+            *backend.models.lock().unwrap() = ComfyUiModel::ALL.to_vec();
+            app.ai_probe.next_check = 0.0;
+            poll_service(&mut app, &ctx);
+            finish_probe(&mut app, &ctx);
+            assert_eq!(app.ui.ai.available_models.len(), 2);
+            assert_eq!(app.session.prefs().integrations.comfyui_model, other);
+            assert_eq!(saved.lock().unwrap().len(), 2);
+
+            backend.models.lock().unwrap().clear();
+            app.ui.ai.open = true;
+            app.ui.ai.rect = Some([0.0, 0.0, 400.0, 100.0]);
+            app.ai_probe.next_check = 0.0;
+            poll_service(&mut app, &ctx);
+            finish_probe(&mut app, &ctx);
+            assert!(!app.ui.ai.available);
+            assert!(!app.ui.ai.open);
+            assert!(app.ui.ai.rect.is_none());
+            assert_eq!(app.session.prefs().integrations.comfyui_model, other);
         }
     }
 
