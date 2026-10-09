@@ -269,6 +269,8 @@ pub struct Session {
     pub tools: ToolState,
     /// Native AI service. Unconfigured headless/test sessions never contact an AI server.
     pub ai_backend: Option<Arc<dyn ai_cmds::AiBackend>>,
+    pub(crate) ai_runs: std::collections::HashMap<photocraft_doc::DocId, ai_cmds::LastRun>,
+    pub(crate) ai_modes: std::cell::RefCell<ai_cmds::ModeCache>,
     /// Log of executed commands (for action recording and debugging).
     pub journal: Vec<(String, Value)>,
     /// Coalescing key of the command being executed.
@@ -388,6 +390,10 @@ impl Session {
         smart_cmds::on_close(self, index);
         if let Some(id) = self.docs.get(index).map(|d| d.doc.id) {
             self.cancel_jobs_on(id);
+            self.ai_runs.remove(&id);
+            if let Ok(mut cache) = self.ai_modes.try_borrow_mut() {
+                cache.remove(&id);
+            }
         }
         let d = self.docs.remove(index);
         self.active = if self.docs.is_empty() { None } else { Some(index.min(self.docs.len() - 1)) };

@@ -22,6 +22,117 @@ fn session(depth: u32) -> Session {
 }
 
 #[test]
+fn t2i_only_for_transparent_or_pure_white_without_partial_selection() {
+    for depth in [8, 16, 32] {
+        let mut s = session(depth);
+        assert_eq!(contextual_mode(&s, s.active().unwrap()), EditMode::PromptGenerate);
+        s.execute("select.all", json!({})).unwrap();
+        assert_eq!(contextual_mode(&s, s.active().unwrap()), EditMode::PromptGenerate);
+        s.execute("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
+        assert_eq!(contextual_mode(&s, s.active().unwrap()), EditMode::GenerativeFill);
+        assert!(s.execute("edit.promptGenerate", json!({"prompt":"blue"})).is_err());
+        s.execute("select.deselect", json!({})).unwrap();
+        s.edit("one pixel", |doc, _| {
+            doc.layers.first_mut().unwrap().surface_mut().unwrap().write_pixel(16, 12, &[0.0, 0.0, 0.0, 1.0]);
+            Ok(())
+        })
+        .unwrap();
+        assert_eq!(contextual_mode(&s, s.active().unwrap()), EditMode::PromptEdit);
+    }
+    for bg in ["transparent", "black"] {
+        let mut s = Session::new();
+        s.execute("file.new", json!({"width":17,"height":13,"background":bg})).unwrap();
+        assert_eq!(blank_canvas(&s.active().unwrap().doc), bg == "transparent");
+    }
+    let mut s = session(32);
+    s.edit("almost white", |doc, _| {
+        let bounds = doc.bounds();
+        doc.layers.first_mut().unwrap().surface_mut().unwrap().fill_rect(bounds, &[0.999, 0.999, 0.999, 1.0]);
+        Ok(())
+    })
+    .unwrap();
+    assert!(!blank_canvas(&s.active().unwrap().doc));
+}
+
+#[test]
+fn t2i_canvas_size_is_exact_after_padding_and_is_not_edit_resolution_limited() {
+    let mut s = session(8);
+    s.execute("file.new", json!({"width":1601,"height":97,"background":"transparent"})).unwrap();
+    let result = s.execute("edit.promptGenerate", json!({"prompt":"blue","seed":25})).unwrap();
+    assert_eq!(result["workingSize"], json!([1632, 128]));
+    let doc = &s.active().unwrap().doc;
+    assert_eq!([doc.size.width, doc.size.height], [1601, 97]);
+    let bounds = doc.layers.last().unwrap().surface().unwrap().content_bounds();
+    assert_eq!(bounds, doc.bounds());
+    assert!(s.execute("edit.promptGenerate", json!({"prompt":""})).is_err());
+    s.execute("file.new", json!({"width":1,"height":20000,"background":"transparent"})).unwrap();
+    assert!(s.execute("edit.promptGenerate", json!({"prompt":"blue"})).is_err());
+}
+
+#[test]
+fn regeneration_keeps_source_prompt_model_mask_and_replaces_one_layer_with_undo() {
+    struct Capture(Arc<std::sync::Mutex<Vec<AiRequest>>>);
+    impl AiBackend for Capture {
+        fn generate(&self, request: &AiRequest, _: &JobCtx) -> Result<Rgba8Image> {
+            let mut calls = self.0.lock().unwrap();
+            calls.push(request.clone());
+            let value = if calls.len() % 2 == 1 { 35 } else { 185 };
+            let mut image = request.image.clone();
+            for pixel in image.pixels.chunks_exact_mut(4) {
+                pixel.copy_from_slice(&[value, 80, 120, 255]);
+            }
+            Ok(image)
+        }
+    }
+    for mode in [EditMode::PromptGenerate, EditMode::PromptEdit, EditMode::GenerativeFill] {
+        let mut s = session(8);
+        let calls = Arc::new(std::sync::Mutex::new(Vec::new()));
+        s.ai_backend = Some(Arc::new(Capture(calls.clone())));
+        if mode == EditMode::GenerativeFill {
+            s.execute("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
+        }
+        s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"noctQv4"})).unwrap();
+        let result = s.execute(mode.command(), json!({"prompt":"blue","seed":42})).unwrap();
+        let before = s.active().unwrap().doc.clone();
+        s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"qwenImage21"})).unwrap();
+        let rerolled = s.execute(REGENERATE_COMMAND, json!({})).unwrap();
+        assert_eq!(rerolled["layer"], result["layer"]);
+        assert_ne!(rerolled["seed"], result["seed"]);
+        assert_eq!(s.active().unwrap().doc.layers.len(), before.layers.len());
+        let received = calls.lock().unwrap();
+        assert_eq!(received.len(), 2);
+        assert_eq!(received[0].image.pixels, received[1].image.pixels);
+        assert_eq!(received[0].prompt, received[1].prompt);
+        assert_eq!(received[1].model, crate::prefs::ComfyUiModel::NoctQv4);
+        assert_eq!(received[0].mode, received[1].mode);
+        drop(received);
+        s.execute("edit.undo", json!({})).unwrap();
+        assert_eq!(
+            s.active().unwrap().doc.layers.last().unwrap().surface().unwrap().sample_channel(0, 0, 0),
+            before.layers.last().unwrap().surface().unwrap().sample_channel(0, 0, 0)
+        );
+        s.execute("edit.redo", json!({})).unwrap();
+        assert!(s.execute(REGENERATE_COMMAND, json!({"seed":42})).is_err());
+        s.execute("select.rect", json!({"x":1,"y":1,"width":2,"height":2})).unwrap();
+        assert!(s.execute(REGENERATE_COMMAND, json!({})).is_err());
+    }
+}
+
+#[test]
+fn regenerate_failure_preserves_previous_result_and_closed_document_drops_snapshot() {
+    let mut s = session(8);
+    assert!(s.execute(REGENERATE_COMMAND, json!({})).is_err());
+    s.execute("edit.promptEdit", json!({"prompt":"blue"})).unwrap();
+    let before = s.active().unwrap().doc.clone();
+    s.ai_backend = Some(Arc::new(Fail));
+    assert!(s.execute(REGENERATE_COMMAND, json!({})).is_err());
+    assert!(Arc::ptr_eq(&before, &s.active().unwrap().doc));
+    assert!(regeneration(&s).is_some());
+    s.close(0);
+    assert!(s.ai_runs.is_empty());
+}
+
+#[test]
 fn preference_selects_models_for_edit_fill_and_background_removal() {
     struct Capture(Arc<std::sync::Mutex<Vec<crate::prefs::ComfyUiModel>>>);
     impl AiBackend for Capture {

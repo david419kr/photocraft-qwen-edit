@@ -74,6 +74,8 @@ pub static CATALOG: &[(&[&str], &str, Option<&str>, &str)] = &[
     (&["File"], "---", None, "---"),
     (&["File"], "Exit", Some("Cmd+Q"), "file.exit"),
     (&["Edit"], "Prompt Edit…", None, "edit.promptEdit"),
+    (&["Edit"], "Prompt Generate…", None, "edit.promptGenerate"),
+    (&["Edit"], "Regenerate AI Result", None, "edit.aiRegenerate"),
     (&["Edit"], "Generative Fill…", None, "edit.generativeFill"),
     (&["Edit"], "Undo", None, "edit.undo"),
     (&["Edit"], "Redo", None, "edit.redo"),

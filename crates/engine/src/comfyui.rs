@@ -113,6 +113,19 @@ fn model_name(info: &Value, node: &str, input: &str, filename: &str) -> Result<S
 
 /// Built from the user's 03 Edit / 04 MaskEdit graphs, with UI-only widgets removed.
 pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
+    if request.mode == EditMode::PromptGenerate {
+        return json!({
+            "37":{"class_type":"UNETLoader","inputs":{"unet_name":request.model.filename(),"weight_dtype":"default"}},
+            "38":{"class_type":"CLIPLoader","inputs":{"clip_name":CLIP_MODEL,"type":"qwen_image","device":"default"}},
+            "39":{"class_type":"VAELoader","inputs":{"vae_name":VAE_MODEL}},
+            "6":{"class_type":"CLIPTextEncode","inputs":{"clip":["38",0],"text":request.prompt}},
+            "63":{"class_type":"ConditioningZeroOut","inputs":{"conditioning":["6",0]}},
+            "62":{"class_type":"EmptyLatentImage","inputs":{"width":request.image.width,"height":request.image.height,"batch_size":1}},
+            "3":{"class_type":"KSampler","inputs":{"model":["37",0],"positive":["6",0],"negative":["63",0],"latent_image":["62",0],"seed":request.seed,"steps":25,"cfg":1.0,"sampler_name":"euler","scheduler":"simple","denoise":1.0}},
+            "8":{"class_type":"VAEDecode","inputs":{"samples":["3",0],"vae":["39",0]}},
+            "56":{"class_type":"SaveImage","inputs":{"images":["8",0],"filename_prefix":format!("PhotoCraft/{job}/result")}}
+        });
+    }
     let masked = request.mode == EditMode::GenerativeFill;
     let cache = if masked { "82" } else { "79" };
     let mut graph = json!({
@@ -183,18 +196,23 @@ impl AiBackend for ComfyUi {
         ctx.check()?;
         let models = model_inputs(&client, &base, ctx, request.model)?;
         ctx.check()?;
-        let image =
-            Image::from_raw(request.image.width, request.image.height, ChannelLayout::Rgba, SampleType::U8, request.image.pixels.clone()).map_err(failure)?;
-        let png = photocraft_codecs::encode(&image, Format::Png, &EncodeOptions::default()).map_err(failure)?;
         let job = uuid::Uuid::new_v4().to_string();
-        let part = multipart::Part::bytes(png).file_name("source.png").mime_str("image/png").map_err(failure)?;
-        let form = multipart::Form::new().part("image", part).text("type", "input").text("subfolder", format!("PhotoCraft/{job}")).text("overwrite", "false");
-        ctx.progress(0.1, "Uploading image to ComfyUI");
-        let upload =
-            read_json(client.post(route("upload/image")?).timeout(Duration::from_secs(30)).multipart(form).send().map_err(|e| failure(format!("{e:?}")))?)?;
-        let name = upload.get("name").and_then(Value::as_str).filter(|s| !s.is_empty()).ok_or_else(|| failure("upload response has no image name"))?;
-        let folder = upload.get("subfolder").and_then(Value::as_str).unwrap_or_default();
-        let filename = if folder.is_empty() { name.to_owned() } else { format!("{folder}/{name}") };
+        let filename = if request.mode == EditMode::PromptGenerate {
+            String::new()
+        } else {
+            let image = Image::from_raw(request.image.width, request.image.height, ChannelLayout::Rgba, SampleType::U8, request.image.pixels.clone())
+                .map_err(failure)?;
+            let png = photocraft_codecs::encode(&image, Format::Png, &EncodeOptions::default()).map_err(failure)?;
+            let part = multipart::Part::bytes(png).file_name("source.png").mime_str("image/png").map_err(failure)?;
+            let form =
+                multipart::Form::new().part("image", part).text("type", "input").text("subfolder", format!("PhotoCraft/{job}")).text("overwrite", "false");
+            ctx.progress(0.1, "Uploading image to ComfyUI");
+            let upload =
+                read_json(client.post(route("upload/image")?).timeout(Duration::from_secs(30)).multipart(form).send().map_err(|e| failure(format!("{e:?}")))?)?;
+            let name = upload.get("name").and_then(Value::as_str).filter(|s| !s.is_empty()).ok_or_else(|| failure("upload response has no image name"))?;
+            let folder = upload.get("subfolder").and_then(Value::as_str).unwrap_or_default();
+            if folder.is_empty() { name.to_owned() } else { format!("{folder}/{name}") }
+        };
         ctx.check()?;
         ctx.progress(0.2, "Waiting for ComfyUI generation");
         let mut prompt = workflow(request, &filename, &job);

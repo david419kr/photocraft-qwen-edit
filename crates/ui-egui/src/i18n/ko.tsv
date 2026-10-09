@@ -2732,3 +2732,8 @@ cameraRaw	Color	색상
 	Waiting for ComfyUI generation	ComfyUI 생성 대기 중
 	Downloading generated image	생성 이미지 가져오는 중
 	Adding generated layer	생성 레이어 추가 중
+	Prompt Generate	프롬프트로 생성
+	Prompt Generate…	프롬프트로 생성…
+	Describe the image to generate	생성할 이미지를 설명하세요
+	Regenerate	재생성
+	Regenerate AI Result	AI 결과 재생성

@@ -340,7 +340,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
         "select.transformSelection" if params.as_object().is_none_or(|o| o.is_empty()) => {
             crate::transform_tool::begin_selection(app, ctx).map(|_| json!({"transform": app.ui.transform}))
         }
-        "edit.promptEdit" | "edit.generativeFill" if params.as_object().is_none_or(|o| o.is_empty()) => {
+        "edit.promptGenerate" | "edit.promptEdit" | "edit.generativeFill" if params.as_object().is_none_or(|o| o.is_empty()) => {
             crate::ai_bar::open(app)?;
             Ok(json!({"ai": app.ui.ai}))
         }

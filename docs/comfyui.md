@@ -1,9 +1,10 @@
-# ComfyUI Qwen Image 2.1 image editing
+# ComfyUI Qwen Image 2.1 generation and editing
 
-This branch adds two native commands and a contextual canvas bar. Generation runs in an
+This branch adds native AI commands and a contextual canvas bar. Generation runs in an
 existing local ComfyUI server. Original pixel data remains intact; each successful request
 adds one new top-level layer in one undo step. Whole-image edits also hide the previous layers
 on success so the new result's transparency is visible; Undo restores their visibility.
+Regeneration replaces the previous AI result layer in one undo step.
 
 ## AVIF import/export (2026-10-09)
 
@@ -114,6 +115,39 @@ The API graphs follow the supplied `03_Edit_AutoINT8Cache.json` and
 `04_MaskEdit_AutoINT8Cache.json`: 25 steps, CFG 1, Euler/simple, denoise 1, and
 QwenImage21Cache auto/INT8. The user's GUI workflow files are not rewritten.
 
+### Blank canvas: Prompt Generate
+
+Under the normal whole-image condition (no selection or a full selection), an entirely
+transparent or entirely opaque pure-white visible canvas shows **Prompt Generate** instead
+of Prompt Edit. Hidden layers are ignored. Other solid colours, near-white, and mixed white
+and transparent pixels are not blank. A partial selection always shows **Generative Fill**,
+including on a blank canvas. Classification is cached per document revision and selection;
+it does not render the full document on every UI frame.
+
+Prompt Generate uses `01_T2I_Quality_4MP_25step.json`: basic CLIPTextEncode,
+ConditioningZeroOut, EmptyLatentImage, KSampler, VAEDecode and SaveImage. It uses the selected
+Qwen/NoctQ checkpoint with the shared encoder/VAE, 25 steps, CFG 1 and Euler/simple. The user's
+prompt is passed unchanged, without an input image, upload or edit/cache graph. The GUI
+workflow's resolution selector is replaced by canvas dimensions rounded up to multiples of
+32. Right/bottom padding is cropped after decoding, yielding the exact original canvas size.
+Unlike editing, T2I does not reduce canvases to 1536 pixels. It retains the 36-megapixel document
+limit and caps each side at 16384 pixels; larger sizes can require substantially more VRAM.
+The result is a new layer and existing root layers are hidden only on success.
+
+### One-click regeneration
+
+After a successful generation, edit, fill or quick action, the floating bar shows a refresh
+icon. It uses the original source image/selection, prompt, model, endpoint and working size
+with a different seed. It replaces the same AI layer, preserving the layer ID and avoiding
+accumulated results. Undo restores the preceding result. Failure/cancellation keeps it intact.
+The icon also appears in the expanded prompt editor; it ignores subsequent draft text and
+model-selector changes. Its tooltip identifies the model used by the previous request.
+
+The repeat snapshot is per document and lasts only for the current session. Additional
+document/selection edits or Undo invalidate it, so regeneration cannot overwrite subsequent
+retouching. Closing the document frees the snapshot. Opening another document preserves each
+document's eligible result. A new generation refreshes that document's snapshot.
+
 With no selection or a full selection, click **Prompt Edit** below the image and describe
 the change. The prompt is passed through unchanged. With a partial selection, click
 **Generative Fill** below the selection. A blank prompt removes the content in the selected
@@ -152,7 +186,7 @@ and converts its result back to the document profile and depth. The document its
 not converted. Model exchange is 8-bit PNG, so generated content has 8-bit source precision.
 Transparent input is composited over white for the model.
 
-Working resolution has a maximum side of 1536 pixels. Both image and mask use the same
+For Prompt Edit and Generative Fill, working resolution has a maximum side of 1536 pixels. Both image and mask use the same
 coordinates. Right/bottom padding makes their dimensions multiples of 32 without the
 workflow's central crop. The output is cropped to remove that padding and resampled to
 the original document dimensions. Small details and narrow selections in large images
@@ -182,6 +216,10 @@ The result is read specifically from SaveImage node 56, never the mask preview.
 Commands are available through the desktop control channel/MCP bridge and trusted local CLI:
 
 ```json
+{"method":"engine.execute","params":{"command":"edit.promptGenerate","params":{"prompt":"Watercolour landscape","seed":1234},"wait":false}}
+```
+
+```json
 {"method":"engine.execute","params":{"command":"edit.promptEdit","params":{"prompt":"Change the sky to sunset","seed":1234},"wait":false}}
 ```
 
@@ -195,12 +233,14 @@ result into another document. Conflicting edits to the source are blocked while 
 The desktop UI does not supply a fixed seed. Each request defaults to the current native
 system time in nanoseconds as a 64-bit seed; an explicitly supplied `seed` is honoured for
 reproducible automation and diagnostic comparisons.
+`edit.aiRegenerate` accepts `{}` and always chooses a different seed; an explicit `seed`
+is rejected. It requires an unchanged successful AI result in the active document.
 `edit.aiRemoveBackground` accepts optional `seed`/`name` and uses its fixed foreground-cutout
 prompt, then follows the whole-image result/visibility path. This AI quick action is separate
 from the existing local `layer.removeBackground` mask-based command.
 
 `ui.inspect` includes `ai` (open, prompt, mode, rectangle). `ui.set` accepts `aiOpen` and
-`aiPrompt`. `ui.menu.invoke` with either command and no parameters opens the input bar.
+`aiPrompt`. `ui.menu.invoke` with any prompt command and no parameters opens the input bar.
 The normal engine command executes only when a prompt string is supplied.
 
 Unconfigured engine/test sessions do not contact ComfyUI. Web and unconfigured headless
@@ -222,7 +262,27 @@ Build and automated visual QA use mock results and do not execute real Qwen infe
 Fill harmonisation regression tests cover a simulated colour shift over removed content,
 texture preservation, selections at canvas edges, unchanged exterior pixels, 8/16/32-bit
 documents, Undo, padding exclusion, missing exterior context, cancellation and malformed
-buffers. The new harmonisation step has not yet been evaluated with a real Qwen result.
+buffers. These synthetic shift tests validate the harmonisation calculation; individual live
+fill checks do not establish colour matching for all artwork.
+
+### T2I and regeneration verification — 2026-10-09
+
+Both installed Qwen 2.1 and NoctQ V4 completed real Prompt Generate, Prompt Edit, Generative
+Fill and one regeneration of each through the PhotoCraft engine and local ComfyUI server
+(12 requests). T2I used a 509x377 canvas, generated at 512x384, and exported at exactly 509x377.
+The initial T2I calls took 7.8s / 7.4s respectively; the corresponding rerolls took 4.5s / 4.4s.
+The watercolor-teapot results were inspected. Rerolls changed the seed, retained the result
+layer ID and kept the layer count unchanged. These are integration smoke checks, not a
+quality guarantee or a large-canvas VRAM benchmark.
+
+Targeted engine tests cover blank detection at 8/16/32-bit depth, partial/full selection
+precedence, exact padding/crop, T2I above the edit-resolution cap, captured source/prompt/model,
+same-layer reroll, Undo/Redo, failure and document closing. The T2I mock transport test checks
+both models and rejects any image upload. Korean offscreen UI snapshots were inspected for
+the blank-canvas bar, partial-white fill bar, open generator and post-result refresh buttons.
+An offscreen refresh-icon click dispatched `edit.aiRegenerate`. Engine/UI Clippy, formatting,
+wasm, layering, adversarial-command panic hunt and the static-CRT portable release build passed.
+Menu wiring and scorecard documents were regenerated (631/631 live menu items).
 
 ### User runtime verification — 2026-10-08
 

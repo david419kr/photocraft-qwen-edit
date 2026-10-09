@@ -156,7 +156,12 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
             } else if path == "/prompt" {
                 let submitted: Value = serde_json::from_slice(&body).unwrap();
                 job = submitted["prompt_id"].as_str().unwrap().into();
-                assert_eq!(submitted["prompt"]["64"]["inputs"]["prompt"], "plain prompt");
+                if submitted["prompt"].get("6").is_some() {
+                    assert_eq!(submitted["prompt"]["6"]["inputs"]["text"], "plain prompt");
+                    assert!(submitted["prompt"].get("78").is_none());
+                } else {
+                    assert_eq!(submitted["prompt"]["64"]["inputs"]["prompt"], "plain prompt");
+                }
                 assert_eq!(submitted["prompt"]["37"]["inputs"]["unet_name"], format!("Qwen/{}", selected.filename()));
                 assert_eq!(submitted["prompt"]["38"]["inputs"]["clip_name"], format!("Qwen/{CLIP_MODEL}"));
                 assert_eq!(submitted["prompt"]["39"]["inputs"]["vae_name"], format!("Qwen/{VAE_MODEL}"));
@@ -211,6 +216,24 @@ fn round_trip_through_a_mock_server_never_uses_a_real_model() {
     assert!(paths.len() >= 7);
     assert!(paths.iter().take(3).all(|path| path.starts_with("/object_info/")));
     assert!(paths.last().unwrap().starts_with("/view?"));
+}
+
+#[test]
+fn text_to_image_matches_workflow_one_and_never_uploads_source_image() {
+    for model in ComfyUiModel::ALL {
+        let mut input = request(EditMode::PromptGenerate);
+        input.model = model;
+        let graph = workflow(&input, "unused.png", "t2i");
+        assert_eq!(graph["6"]["class_type"], "CLIPTextEncode");
+        assert_eq!(graph["63"]["class_type"], "ConditioningZeroOut");
+        assert_eq!(graph["3"]["inputs"]["model"], json!(["37", 0]));
+        assert!(graph.get("78").is_none());
+        assert_eq!(graph["62"]["inputs"]["width"], 32);
+        let (endpoint, server) = mock_server_model(None, None, model);
+        input.endpoint = endpoint;
+        assert!(ComfyUi.generate(&input, &JobCtx::new()).is_ok());
+        assert!(!server.join().unwrap().iter().any(|p| p == "/upload/image"));
+    }
 }
 
 #[test]

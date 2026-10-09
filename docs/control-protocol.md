@@ -394,8 +394,12 @@ visibility reset when the dialog opens. HDR scopes are not implemented. See
 
 `ui.inspect` includes `ai` with `open`, `prompt`, `mode` and the screen-space `rect`.
 `ui.set {aiOpen: bool, aiPrompt: string}` drives the prompt bar without starting inference.
-`ui.menu.invoke` for `edit.promptEdit` or `edit.generativeFill` without params opens it.
+`ui.menu.invoke` for `edit.promptGenerate`, `edit.promptEdit` or `edit.generativeFill` without params opens it.
 With params, `engine.execute` dispatches the same command as the Generate button.
+`edit.promptGenerate` requires an entirely transparent or pure-white canvas and no partial
+selection; `ai.mode` reports `promptGenerate` in that context. `edit.aiRegenerate` with `{}`
+repeats the last unchanged AI request with a new seed and replaces its result layer. It keeps
+the original source, selection, prompt, model and endpoint, and rejects an explicit seed.
 Use `wait:false` and the existing `jobs.list` / `jobs.cancel` to track the job.
 The desktop bridge supports these commands; unconfigured headless MCP sessions do not
 install an AI backend. See [ComfyUI editing](comfyui.md).
