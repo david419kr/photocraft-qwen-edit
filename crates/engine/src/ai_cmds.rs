@@ -52,6 +52,7 @@ pub struct AiRequest {
     pub removal: bool,
     pub endpoint: String,
     pub seed: u64,
+    pub model: crate::prefs::ComfyUiModel,
 }
 
 /// Installed by native frontends; tests use a fake backend and never load an AI model.
@@ -59,6 +60,10 @@ pub trait AiBackend: Send + Sync {
     /// Read-only service/model availability; fake backends need no external service.
     fn check_available(&self, _endpoint: &str) -> Result<()> {
         Ok(())
+    }
+    fn available_models(&self, endpoint: &str) -> Result<Vec<crate::prefs::ComfyUiModel>> {
+        self.check_available(endpoint)?;
+        Ok(crate::prefs::ComfyUiModel::ALL.to_vec())
     }
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image>;
 }
@@ -224,6 +229,7 @@ fn run(s: &mut Session, p: &Value, mode: EditMode) -> Result<Value> {
     }
     let backend = s.ai_backend.clone().ok_or_else(|| EngineError::Other("ComfyUI is not configured in this frontend".into()))?;
     let endpoint = s.prefs().integrations.comfyui_url.clone();
+    let model = s.prefs().integrations.comfyui_model;
     let prompt = prompt.to_owned();
     crate::jobs::edit_job(
         s,
@@ -238,6 +244,7 @@ fn run(s: &mut Session, p: &Value, mode: EditMode) -> Result<Value> {
                 removal: mode == EditMode::GenerativeFill && prompt.trim().is_empty(),
                 endpoint,
                 seed,
+                model,
             };
             let generated = backend.generate(&request, ctx)?;
             ctx.check()?;

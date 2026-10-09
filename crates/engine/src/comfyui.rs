@@ -11,11 +11,13 @@ use serde_json::{Value, json};
 
 use crate::ai_cmds::{AiBackend, AiRequest, EditMode};
 use crate::jobs::JobCtx;
+use crate::prefs::ComfyUiModel;
 use crate::{EngineError, Result};
 
 const MAX_RESPONSE_BYTES: u64 = 64 << 20;
 const MAX_JSON_BYTES: u64 = 1 << 20;
 const GENERATION_TIMEOUT: Duration = Duration::from_secs(20 * 60);
+#[cfg(test)]
 const UNET_MODEL: &str = "qwen_image_2.1_int8_convrot.safetensors";
 const CLIP_MODEL: &str = "qwen3vl_8b_int8_convrot.safetensors";
 const VAE_MODEL: &str = "qwen_image_2.1_vae_bf16.safetensors";
@@ -75,10 +77,10 @@ fn client(connect: Duration, timeout: Duration) -> Result<Client> {
         .map_err(failure)
 }
 
-fn model_inputs(client: &Client, base: &Url, ctx: &JobCtx) -> Result<Vec<(&'static str, &'static str, String)>> {
+fn model_inputs(client: &Client, base: &Url, ctx: &JobCtx, model: ComfyUiModel) -> Result<Vec<(&'static str, &'static str, String)>> {
     let mut models = Vec::with_capacity(3);
     for (id, node, input, filename) in
-        [("37", "UNETLoader", "unet_name", UNET_MODEL), ("38", "CLIPLoader", "clip_name", CLIP_MODEL), ("39", "VAELoader", "vae_name", VAE_MODEL)]
+        [("37", "UNETLoader", "unet_name", model.filename()), ("38", "CLIPLoader", "clip_name", CLIP_MODEL), ("39", "VAELoader", "vae_name", VAE_MODEL)]
     {
         ctx.check()?;
         let url = base.join(&format!("object_info/{node}")).map_err(failure)?;
@@ -114,7 +116,7 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
     let masked = request.mode == EditMode::GenerativeFill;
     let cache = if masked { "82" } else { "79" };
     let mut graph = json!({
-        "37":{"class_type":"UNETLoader","inputs":{"unet_name":UNET_MODEL,"weight_dtype":"default"}},
+        "37":{"class_type":"UNETLoader","inputs":{"unet_name":request.model.filename(),"weight_dtype":"default"}},
         "38":{"class_type":"CLIPLoader","inputs":{"clip_name":CLIP_MODEL,"type":"qwen_image","device":"default"}},
         "39":{"class_type":"VAELoader","inputs":{"vae_name":VAE_MODEL}},
         "78":{"class_type":"LoadImage","inputs":{"image":filename}},
@@ -150,16 +152,28 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
 
 impl AiBackend for ComfyUi {
     fn check_available(&self, endpoint: &str) -> Result<()> {
+        self.available_models(endpoint).map(|_| ())
+    }
+
+    fn available_models(&self, endpoint: &str) -> Result<Vec<ComfyUiModel>> {
         let base = endpoint_url(endpoint)?;
         let client = client(Duration::from_secs(1), Duration::from_secs(2))?;
-        model_inputs(&client, &base, &JobCtx::new())?;
+        let info = read_json(client.get(base.join("object_info/UNETLoader").map_err(failure)?).send().map_err(failure)?)?;
+        let models: Vec<_> = ComfyUiModel::ALL.into_iter().filter(|m| model_name(&info, "UNETLoader", "unet_name", m.filename()).is_ok()).collect();
+        if models.is_empty() {
+            return Err(failure("no supported Qwen Image 2.1 or NoctQ V4 checkpoint found"));
+        }
+        for (node, input, filename) in [("CLIPLoader", "clip_name", CLIP_MODEL), ("VAELoader", "vae_name", VAE_MODEL)] {
+            let info = read_json(client.get(base.join(&format!("object_info/{node}")).map_err(failure)?).send().map_err(failure)?)?;
+            model_name(&info, node, input, filename)?;
+        }
         for node in ["TextEncodeQwenImage21", "QwenImage21Cache"] {
             let info = read_json(client.get(base.join(&format!("object_info/{node}")).map_err(failure)?).send().map_err(failure)?)?;
             if !info.get(node).is_some_and(Value::is_object) {
                 return Err(failure(format!("required node not found: {node}")));
             }
         }
-        Ok(())
+        Ok(models)
     }
 
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
@@ -167,7 +181,7 @@ impl AiBackend for ComfyUi {
         let route = |path: &str| base.join(path).map_err(failure);
         let client = client(Duration::from_secs(3), Duration::from_secs(5))?;
         ctx.check()?;
-        let models = model_inputs(&client, &base, ctx)?;
+        let models = model_inputs(&client, &base, ctx, request.model)?;
         ctx.check()?;
         let image =
             Image::from_raw(request.image.width, request.image.height, ChannelLayout::Rgba, SampleType::U8, request.image.pixels.clone()).map_err(failure)?;

@@ -22,6 +22,37 @@ fn session(depth: u32) -> Session {
 }
 
 #[test]
+fn preference_selects_models_for_edit_fill_and_background_removal() {
+    struct Capture(Arc<std::sync::Mutex<Vec<crate::prefs::ComfyUiModel>>>);
+    impl AiBackend for Capture {
+        fn generate(&self, request: &AiRequest, _: &JobCtx) -> Result<Rgba8Image> {
+            self.0.lock().unwrap().push(request.model);
+            Ok(request.image.clone())
+        }
+    }
+    let calls = Arc::new(std::sync::Mutex::new(Vec::new()));
+    let mut s = session(8);
+    s.ai_backend = Some(Arc::new(Capture(calls.clone())));
+    s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"noctQv4"})).unwrap();
+    s.execute("edit.promptEdit", json!({"prompt":"blue"})).unwrap();
+    s.execute(REMOVE_BACKGROUND_COMMAND, json!({})).unwrap();
+    s.execute("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
+    s.execute("edit.generativeFill", json!({"prompt":""})).unwrap();
+    s.execute("select.deselect", json!({})).unwrap();
+    s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"qwenImage21"})).unwrap();
+    s.execute("edit.promptEdit", json!({"prompt":"red"})).unwrap();
+    assert_eq!(
+        *calls.lock().unwrap(),
+        vec![
+            crate::prefs::ComfyUiModel::NoctQv4,
+            crate::prefs::ComfyUiModel::NoctQv4,
+            crate::prefs::ComfyUiModel::NoctQv4,
+            crate::prefs::ComfyUiModel::QwenImage21
+        ]
+    );
+}
+
+#[test]
 fn prompt_edit_adds_top_layer_preserves_original_and_undo_redo() {
     for depth in [8, 16, 32] {
         let mut s = session(depth);
@@ -343,7 +374,15 @@ fn fill_blending_excludes_padding_and_handles_missing_context_bad_buffers_and_ca
     let input = prepare(&s.active().unwrap().doc, EditMode::GenerativeFill, &JobCtx::new()).unwrap();
     let generated = Solid
         .generate(
-            &AiRequest { image: input.image.clone(), prompt: "".into(), mode: EditMode::GenerativeFill, removal: true, endpoint: "".into(), seed: 1 },
+            &AiRequest {
+                image: input.image.clone(),
+                prompt: "".into(),
+                mode: EditMode::GenerativeFill,
+                removal: true,
+                endpoint: "".into(),
+                seed: 1,
+                model: crate::prefs::ComfyUiModel::default(),
+            },
             &JobCtx::new(),
         )
         .unwrap();

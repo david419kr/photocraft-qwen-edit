@@ -2,12 +2,45 @@ use super::*;
 
 fn request(mode: EditMode) -> AiRequest {
     AiRequest {
+        model: ComfyUiModel::default(),
         image: Rgba8Image { width: 32, height: 32, pixels: vec![255; 32 * 32 * 4] },
         prompt: "plain prompt".into(),
         mode,
         removal: false,
         endpoint: "http://127.0.0.1:8188".into(),
         seed: 1234,
+    }
+}
+
+#[test]
+fn both_models_use_the_same_edit_and_fill_graph_and_resolve_nested_paths() {
+    for model in ComfyUiModel::ALL {
+        for mode in [EditMode::PromptEdit, EditMode::GenerativeFill] {
+            let mut input = request(mode);
+            input.model = model;
+            let graph = workflow(&input, "source.png", "models");
+            assert_eq!(graph["37"]["inputs"]["unet_name"], model.filename());
+            assert_eq!(graph["38"]["inputs"]["clip_name"], CLIP_MODEL);
+            assert_eq!(graph["39"]["inputs"]["vae_name"], VAE_MODEL);
+        }
+        let nested = format!("Qwen/{}", model.filename());
+        let info = json!({"UNETLoader":{"input":{"required":{"unet_name":[[nested],{}]}}}});
+        assert_eq!(model_name(&info, "UNETLoader", "unet_name", model.filename()).unwrap(), nested);
+    }
+}
+
+#[test]
+fn noct_only_server_is_available_and_receives_the_selected_checkpoint() {
+    let (endpoint, server) = mock_server_model(None, Some(true), ComfyUiModel::NoctQv4);
+    assert_eq!(ComfyUi.available_models(&endpoint).unwrap(), vec![ComfyUiModel::NoctQv4]);
+    assert_eq!(server.join().unwrap().len(), 5);
+    for mode in [EditMode::PromptEdit, EditMode::GenerativeFill] {
+        let (endpoint, server) = mock_server_model(None, None, ComfyUiModel::NoctQv4);
+        let mut input = request(mode);
+        input.endpoint = endpoint;
+        input.model = ComfyUiModel::NoctQv4;
+        assert!(ComfyUi.generate(&input, &JobCtx::new()).is_ok());
+        assert!(server.join().unwrap().iter().any(|p| p == "/prompt"));
     }
 }
 
@@ -68,6 +101,10 @@ fn reject_remote_urls_and_oversized_outputs_before_use() {
 }
 
 fn mock_server(cancel: Option<JobCtx>, probe: Option<bool>) -> (String, std::thread::JoinHandle<Vec<String>>) {
+    mock_server_model(cancel, probe, ComfyUiModel::QwenImage21)
+}
+
+fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: ComfyUiModel) -> (String, std::thread::JoinHandle<Vec<String>>) {
     use std::io::{BufRead, BufReader, Write};
     use std::net::TcpListener;
     let listener = TcpListener::bind("127.0.0.1:0").unwrap();
@@ -105,7 +142,7 @@ fn mock_server(cancel: Option<JobCtx>, probe: Option<bool>) -> (String, std::thr
             reader.read_exact(&mut body).unwrap();
             let (mime, response) = if let Some(node) = path.strip_prefix("/object_info/") {
                 let (input, filename) = match node {
-                    "UNETLoader" => ("unet_name", UNET_MODEL),
+                    "UNETLoader" => ("unet_name", selected.filename()),
                     "CLIPLoader" => ("clip_name", CLIP_MODEL),
                     "VAELoader" => ("vae_name", VAE_MODEL),
                     "TextEncodeQwenImage21" | "QwenImage21Cache" => ("model", "unused"),
@@ -120,7 +157,7 @@ fn mock_server(cancel: Option<JobCtx>, probe: Option<bool>) -> (String, std::thr
                 let submitted: Value = serde_json::from_slice(&body).unwrap();
                 job = submitted["prompt_id"].as_str().unwrap().into();
                 assert_eq!(submitted["prompt"]["64"]["inputs"]["prompt"], "plain prompt");
-                assert_eq!(submitted["prompt"]["37"]["inputs"]["unet_name"], format!("Qwen/{UNET_MODEL}"));
+                assert_eq!(submitted["prompt"]["37"]["inputs"]["unet_name"], format!("Qwen/{}", selected.filename()));
                 assert_eq!(submitted["prompt"]["38"]["inputs"]["clip_name"], format!("Qwen/{CLIP_MODEL}"));
                 assert_eq!(submitted["prompt"]["39"]["inputs"]["vae_name"], format!("Qwen/{VAE_MODEL}"));
                 ("application/json", serde_json::to_vec(&json!({"prompt_id":job,"number":1,"node_errors":{}})).unwrap())

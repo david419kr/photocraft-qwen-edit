@@ -3,6 +3,7 @@
 use egui::{Rect, Stroke, pos2, vec2};
 use photocraft_engine::ai_cmds::AiBackend;
 use photocraft_engine::ai_cmds::{EditMode, MAX_PROMPT_BYTES, edit_mode, selection_signature, supported_document};
+use photocraft_engine::prefs::ComfyUiModel;
 use photocraft_raster::Surface;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -21,6 +22,8 @@ pub struct AiUi {
     pub checking: bool,
     #[serde(rename = "availabilityError")]
     pub availability_error: Option<String>,
+    #[serde(rename = "availableModels")]
+    pub available_models: Vec<ComfyUiModel>,
     #[serde(skip)]
     document: Option<u64>,
     #[serde(skip)]
@@ -43,6 +46,7 @@ impl PartialEq for AiUi {
             && self.available == other.available
             && self.checking == other.checking
             && self.availability_error == other.availability_error
+            && self.available_models == other.available_models
     }
 }
 
@@ -54,7 +58,7 @@ pub(crate) struct ServiceProbe {
     pending: Option<ProbeSlot>,
 }
 
-type ProbeSlot = Arc<Mutex<Option<Result<(), String>>>>;
+type ProbeSlot = Arc<Mutex<Option<Result<Vec<ComfyUiModel>, String>>>>;
 
 /// One bounded, read-only background check; never wait for HTTP on the UI thread.
 pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
@@ -63,6 +67,7 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         app.ui.ai.available = false;
         app.ui.ai.checking = false;
         app.ui.ai.availability_error = None;
+        app.ui.ai.available_models.clear();
         return;
     };
     let endpoint = app.session.prefs().integrations.comfyui_url.clone();
@@ -72,6 +77,7 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         app.ui.ai.available = false;
         app.ui.ai.checking = false;
         app.ui.ai.availability_error = None;
+        app.ui.ai.available_models.clear();
     }
     let now = ctx.input(|i| i.time);
     if !now.is_finite() {
@@ -82,8 +88,18 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         app.ai_probe.pending = None;
         app.ai_probe.next_check = now + 15.0;
         app.ui.ai.checking = false;
-        app.ui.ai.available = result.is_ok();
-        app.ui.ai.availability_error = result.err();
+        match result {
+            Ok(models) => {
+                app.ui.ai.available = !models.is_empty();
+                app.ui.ai.available_models = models;
+                app.ui.ai.availability_error = None;
+            }
+            Err(error) => {
+                app.ui.ai.available = false;
+                app.ui.ai.available_models.clear();
+                app.ui.ai.availability_error = Some(error);
+            }
+        }
         if !app.ui.ai.available {
             app.ui.ai.open = false;
             app.ui.ai.rect = None;
@@ -97,7 +113,7 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         {
             let repaint = ctx.clone();
             let spawned = std::thread::Builder::new().name("photocraft-ai-check".into()).spawn(move || {
-                let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| backend.check_available(&endpoint)))
+                let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| backend.available_models(&endpoint)))
                     .map_err(|_| "AI availability check failed".to_owned())
                     .and_then(|r| r.map_err(|e| e.to_string()));
                 *slot.lock().unwrap_or_else(PoisonError::into_inner) = Some(result);
@@ -113,7 +129,7 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         }
         #[cfg(target_arch = "wasm32")]
         {
-            *slot.lock().unwrap_or_else(PoisonError::into_inner) = Some(backend.check_available(&endpoint).map_err(|e| e.to_string()));
+            *slot.lock().unwrap_or_else(PoisonError::into_inner) = Some(backend.available_models(&endpoint).map_err(|e| e.to_string()));
             ctx.request_repaint();
         }
     }
@@ -126,7 +142,44 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
 pub(crate) fn clear_document(state: &mut AiUi) {
     let (available, checking) = (state.available, state.checking);
     let error = state.availability_error.take();
-    *state = AiUi { available, checking, availability_error: error, ..Default::default() };
+    let available_models = std::mem::take(&mut state.available_models);
+    *state = AiUi { available, checking, availability_error: error, available_models, ..Default::default() };
+}
+
+fn model_ready(app: &PhotocraftApp, model: ComfyUiModel) -> bool {
+    // Manually enabled/mock frontends have no probe result; live probes never mark an empty list ready.
+    app.ui.ai.available && (app.ui.ai.available_models.is_empty() || app.ui.ai.available_models.contains(&model))
+}
+
+fn select_model(app: &mut PhotocraftApp, model: ComfyUiModel) -> Result<(), String> {
+    app.run("prefs.set", json!({"path":"integrations.comfyuiModel","value":model.name()}))?;
+    crate::prefs_ui::save_preferences(app)
+}
+
+fn model_selector(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u64) {
+    let mut selected = app.session.prefs().integrations.comfyui_model;
+    let old = selected;
+    egui::ComboBox::from_id_salt(("ai-model", document))
+        .selected_text(selected.label())
+        .width(105.0)
+        .show_ui(ui, |ui| {
+            for model in ComfyUiModel::ALL {
+                ui.add_enabled_ui(model_ready(app, model), |ui| {
+                    ui.selectable_value(&mut selected, model, model.label());
+                });
+            }
+        })
+        .response
+        .on_hover_text(selected.filename());
+    if selected != old {
+        match select_model(app, selected) {
+            Ok(()) => app.ui.ai.focus = app.ui.ai.open,
+            Err(error) => {
+                app.ui.status = error;
+                app.ui.status_error = true;
+            }
+        }
+    }
 }
 
 pub fn open(app: &mut PhotocraftApp) -> Result<(), String> {
@@ -218,8 +271,8 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let anchor = if mode == EditMode::GenerativeFill { selection.unwrap_or(image) } else { image };
     // Scrollbar tracks must remain reachable beneath this foreground Area.
     let canvas = canvas.shrink2(vec2(20.0, 20.0));
-    let width = if app.ui.ai.open { 440.0f32 } else { 330.0f32 }.min(canvas.width() - 16.0);
-    let button_width = ((width - 16.0 - ui.spacing().item_spacing.x) * 0.5).max(1.0);
+    let width = 440.0f32.min(canvas.width() - 16.0);
+    let button_width = ((width - 16.0 - 115.0 - ui.spacing().item_spacing.x * 2.0) * 0.5).max(1.0);
     let text_width = if app.ui.ai.open { width - 32.0 } else { button_width - 16.0 };
     let button_text =
         ui.painter().layout(label(mode).to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text, text_width.max(1.0));
@@ -238,6 +291,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let x = (anchor.center().x - width * 0.5).clamp(canvas.left() + 8.0, canvas.right() - width - 8.0);
     let y = (anchor.bottom() + 10.0).clamp(canvas.top() + 8.0, (canvas.bottom() - height - 8.0).max(canvas.top() + 8.0));
     let busy = app.session.job_on(doc.id).is_some();
+    let ready = model_ready(app, app.session.prefs().integrations.comfyui_model);
     let tokens = crate::theme::Tokens::get(ui.ctx());
     let mut generate = false;
     let mut quick = false;
@@ -253,11 +307,12 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                 if !app.ui.ai.open {
                     ui.add_enabled_ui(!busy, |ui| {
                         ui.horizontal(|ui| {
+                            model_selector(app, ui, doc.id.0);
                             if ui.add_sized(vec2(button_width, button_height), egui::Button::new(label(mode)).wrap()).clicked() {
                                 app.ui.ai.open = true;
                                 app.ui.ai.focus = true;
                             }
-                            quick = ui.add_sized(vec2(button_width, button_height), egui::Button::new(quick_label(mode)).wrap()).clicked();
+                            quick = ui.add_enabled(ready, egui::Button::new(quick_label(mode)).min_size(vec2(button_width, button_height)).wrap()).clicked();
                         })
                     });
                     return;
@@ -285,10 +340,10 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                     app.ui.ai.focus = false;
                 }
                 let valid = mode == EditMode::GenerativeFill || !app.ui.ai.prompt.trim().is_empty();
-                let can_generate = !busy && valid && app.ui.ai.prompt.len() <= MAX_PROMPT_BYTES;
+                let can_generate = !busy && ready && valid && app.ui.ai.prompt.len() <= MAX_PROMPT_BYTES;
                 generate = submitted == Some(doc.id.0) && can_generate;
                 ui.horizontal(|ui| {
-                    ui.label("Qwen Image 2.1");
+                    ui.add_enabled_ui(!busy, |ui| model_selector(app, ui, doc.id.0));
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         generate |= ui.add_enabled(can_generate, egui::Button::new(tl!("Generate"))).clicked();
                         close = ui.add_enabled(!busy, egui::Button::new(tl!("Cancel"))).clicked();
@@ -317,6 +372,38 @@ mod tests {
     use super::*;
     use crate::Services;
     use photocraft_engine::Session;
+
+    #[test]
+    fn model_choice_is_written_immediately_and_restored_in_a_new_session() {
+        let saved = Arc::new(Mutex::new(String::new()));
+        let sink = saved.clone();
+        let mut app = PhotocraftApp::new(
+            Session::new(),
+            Services {
+                save_prefs: Some(Box::new(move |text| {
+                    *sink.lock().unwrap() = text.into();
+                    Ok(())
+                })),
+                ..Default::default()
+            },
+        );
+        app.run("file.new", json!({"width":32,"height":32})).unwrap();
+        let revision = app.session.active().unwrap().revision;
+        select_model(&mut app, ComfyUiModel::NoctQv4).unwrap();
+        assert_eq!(app.session.active().unwrap().revision, revision);
+        let mut reopened = Session::new();
+        reopened.load_prefs_json(&saved.lock().unwrap()).unwrap();
+        assert_eq!(reopened.prefs().integrations.comfyui_model, ComfyUiModel::NoctQv4);
+        let mut older = Session::new();
+        older.load_prefs_json(r#"{"integrations":{"comfyuiUrl":"http://127.0.0.1:8188"}}"#).unwrap();
+        assert_eq!(older.prefs().integrations.comfyui_model, ComfyUiModel::QwenImage21);
+        assert!(reopened.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"arbitrary.safetensors"})).is_err());
+        app.ui.ai.available = true;
+        app.ui.ai.available_models = vec![ComfyUiModel::NoctQv4];
+        clear_document(&mut app.ui.ai);
+        assert!(model_ready(&app, ComfyUiModel::NoctQv4));
+        assert!(!model_ready(&app, ComfyUiModel::QwenImage21));
+    }
 
     struct CaptureGenerate(Arc<Mutex<Vec<bool>>>);
     impl AiBackend for CaptureGenerate {

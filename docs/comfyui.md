@@ -62,11 +62,16 @@ submits a generation. Failed checks keep the bar hidden. Availability is recheck
 every 15 seconds, so starting/stopping ComfyUI or adding missing models updates the bar
 without restarting PhotoCraft. Changing the endpoint resets the check immediately. Checks
 use a 1-second connect timeout and 2-second request timeout and do not block UI interaction.
-`ui.inspect.ai` exposes `available`, `checking` and `availabilityError`. Prompt drafts survive
+`ui.inspect.ai` exposes `available`, `checking`, `availableModels` and `availabilityError`. Prompt drafts survive
 temporary service loss; document changes reset the draft while preserving service state.
-This first version uses these model files:
+Supported diffusion checkpoints (the compact selector in both floating bars shares one saved
+choice under `integrations.comfyuiModel`):
 
 - `qwen_image_2.1_int8_convrot.safetensors`
+- `NoctQ_V4_int8_convrot.safetensors` (NoctQ V4, `noctQv4`; default remains `qwenImage21`)
+
+Both use the same support models:
+
 - `qwen3vl_8b_int8_convrot.safetensors` (`qwen_image` CLIP type)
 - `qwen_image_2.1_vae_bf16.safetensors`
 
@@ -76,10 +81,34 @@ above are resolved to the paths ComfyUI advertises, including nested folders and
 backslash paths; the resolved paths are submitted unchanged. An exact root-folder model
 takes precedence. A single matching filename in a subfolder is selected automatically;
 multiple subfolder matches produce an explicit ambiguity error. Missing models or malformed
-model lists fail before uploading or submitting a generation. Different model variants or
+model lists fail before uploading or submitting a generation. A detected supported checkpoint
+plus the encoder/VAE and required nodes makes the bars available; an absent checkpoint is
+disabled in the selector. A remembered but missing choice does not hide the other available
+choice. Model changes are saved immediately through the normal preferences store and also
+apply to Remove Background / Remove. Different model variants or
 renamed filenames are not substituted automatically. The server, not PhotoCraft, controls
 which model directories and extra model paths are searched. These metadata requests do not
 load model weights or run inference.
+
+NoctQ V4 was installed on 2026-10-09 from repository revision
+`a81b9af51120a78e285e57906f2250a2a02080e9`: 7,256,784,368 bytes, SHA-256
+`4d92d5538253ab36e6a73b056cce5f697950f4303cb9e6686a3198d0ea13f9e8`.
+Its 649 tensor names, shapes and dtypes match the installed Qwen checkpoint. Weights live in
+ComfyUI's `models/diffusion_models`, with the upstream LICENSE/NOTICE beside them; they are
+not bundled into PhotoCraft. NoctQ uses the upstream Qwen Research License (non-commercial
+use only): [model license](https://huggingface.co/Noctaluna/Noct-Q-Uncensored-Qwen-Image-2.1/blob/main/LICENSE).
+
+Validation: both models completed real Prompt Edit and blank Generative Fill through the
+PhotoCraft engine/ComfyUI transport, with new layers and original layers retained. A NoctQ
+512x512 synthetic blue-circle test created the circle and removed it back to a white background
+(7.9s edit, 5.8s fill). Very small 128x128 removal outputs were less reliable, so these smoke
+tests establish integration, not a blanket quality guarantee for arbitrary artwork. Mock tests
+cover both workflow modes, NoctQ-only installs, filename/subfolder resolution, all quick actions,
+saved choice restoration and older preferences. Korean UI snapshots cover both closed bars
+and the open prompt bar.
+Preference restoration and availability/UI tests passed; engine/UI Clippy, wasm, layering
+and static-CRT portable release build also passed. Saved model choice is shared across image
+tabs and both editing modes; a job keeps the model that was selected when it was submitted.
 
 The API graphs follow the supplied `03_Edit_AutoINT8Cache.json` and
 `04_MaskEdit_AutoINT8Cache.json`: 25 steps, CFG 1, Euler/simple, denoise 1, and

@@ -691,6 +691,24 @@ impl Default for RawDefaults {
     }
 }
 
+choice!(ComfyUiModel { QwenImage21 = "qwenImage21", NoctQv4 = "noctQv4" } default QwenImage21);
+
+impl ComfyUiModel {
+    pub const ALL: [Self; 2] = [Self::QwenImage21, Self::NoctQv4];
+    pub fn filename(self) -> &'static str {
+        match self {
+            Self::QwenImage21 => "qwen_image_2.1_int8_convrot.safetensors",
+            Self::NoctQv4 => "NoctQ_V4_int8_convrot.safetensors",
+        }
+    }
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::QwenImage21 => "Qwen 2.1",
+            Self::NoctQv4 => "NoctQ V4",
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase")]
 pub struct Integrations {
@@ -700,11 +718,13 @@ pub struct Integrations {
     pub control_port: u32,
     /// Local ComfyUI endpoint for generative image edits.
     pub comfyui_url: String,
+    /// Diffusion checkpoint shared by Prompt Edit, Generative Fill and their quick actions.
+    pub comfyui_model: ComfyUiModel,
 }
 
 impl Default for Integrations {
     fn default() -> Self {
-        Self { allow_agent_control: true, control_port: 0, comfyui_url: "http://127.0.0.1:8188".into() }
+        Self { allow_agent_control: true, control_port: 0, comfyui_url: "http://127.0.0.1:8188".into(), comfyui_model: ComfyUiModel::default() }
     }
 }
 
@@ -869,6 +889,7 @@ pub fn is_hidden(path: &str) -> bool {
 /// Choices of an enumerated preference (dotted path, e.g. `"cursors.painting"`).
 pub fn choices(path: &str) -> Option<&'static [&'static str]> {
     Some(match path {
+        "integrations.comfyuiModel" => ComfyUiModel::NAMES,
         "general.colorPicker" => ColorPicker::NAMES,
         "general.imageInterpolation" => Interpolation::NAMES,
         "interface.theme" => Theme::NAMES,
