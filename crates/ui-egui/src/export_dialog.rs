@@ -11,7 +11,7 @@ use crate::state::DialogKind;
 use crate::theme::Tokens;
 use crate::{ExportSettings, PhotocraftApp};
 
-const FORMATS: [(&str, &str); 5] = [("png", "PNG"), ("jpg", "JPG"), ("webp", "WebP"), ("tif", "TIFF"), ("tga", "TGA")];
+const FORMATS: [(&str, &str); 6] = [("png", "PNG"), ("jpg", "JPG"), ("webp", "WebP"), ("avif", "AVIF"), ("tif", "TIFF"), ("tga", "TGA")];
 
 pub fn open(app: &mut PhotocraftApp) -> Result<u64, String> {
     let st = app.session.active().ok_or("no document")?;
@@ -105,10 +105,10 @@ fn settings(f: &Map<String, Value>) -> ExportSettings {
     let fmt = s_fmt(f);
     let quality = n(f, "quality", 85.0).clamp(1.0, 100.0) as u8;
     ExportSettings {
-        jpeg_quality: (fmt == "jpg").then_some(quality),
+        jpeg_quality: matches!(fmt.as_str(), "jpg" | "avif").then_some(quality),
         webp_lossless: fmt != "webp" || lossless(f),
         webp_quality: (fmt == "webp" && !lossless(f)).then_some(quality),
-        xmp_all: s(f, "metadata") == "all",
+        xmp_all: fmt != "avif" && s(f, "metadata") == "all",
         ..Default::default()
     }
 }
@@ -116,7 +116,8 @@ fn settings(f: &Map<String, Value>) -> ExportSettings {
 /// Estimated size (bytes) from a ≤512 px proxy encode, scaled by pixel count.
 fn estimate(app: &PhotocraftApp, doc: &Document, f: &Map<String, Value>) -> Option<u64> {
     let export = app.services.export.as_ref()?;
-    let proxy = export_document(doc, f, Some(512)).ok()?;
+    // AV1 is expensive: a smaller size proxy keeps quality-slider changes responsive.
+    let proxy = export_document(doc, f, Some(if s_fmt(f) == "avif" { 128 } else { 512 })).ok()?;
     let (bytes, _) = export(&proxy, &format!("estimate.{}", s_fmt(f)), &settings(f)).ok()?;
     let scale = n(f, "scale", 100.0) / 100.0;
     let full = doc.size.width as f64 * scale * doc.size.height as f64 * scale;
@@ -135,7 +136,11 @@ pub fn body(app: &mut PhotocraftApp, ui: &mut egui::Ui, f: &mut Map<String, Valu
             ui.horizontal(|ui| {
                 ui.label(egui::RichText::new(tl!("Format")).color(t.text_dim));
                 let mut fmt = s_fmt(f);
-                let opts: Vec<(String, &str)> = FORMATS.iter().map(|(k, l)| (k.to_string(), *l)).collect();
+                let opts: Vec<(String, &str)> = FORMATS
+                    .iter()
+                    .filter(|(k, _)| *k != "avif" || photocraft_codecs::caps(photocraft_codecs::Format::Avif).write)
+                    .map(|(k, l)| (k.to_string(), *l))
+                    .collect();
                 if crate::widgets::dropdown(ui, "export-format", &mut fmt, &opts, 130.0) {
                     f.insert("format".into(), json!(fmt));
                 }
@@ -146,7 +151,7 @@ pub fn body(app: &mut PhotocraftApp, ui: &mut egui::Ui, f: &mut Map<String, Valu
                 crate::widgets::checkbox(ui, &mut ll, tl!("Lossless"));
                 f.insert("lossless".into(), json!(ll));
             }
-            if fmt == "jpg" || (fmt == "webp" && !lossless(f)) {
+            if matches!(fmt.as_str(), "jpg" | "avif") || (fmt == "webp" && !lossless(f)) {
                 let mut q = n(f, "quality", 85.0) as f32;
                 crate::widgets::slider_row(ui, tl!("Quality"), &mut q, 1.0..=100.0, "%", None);
                 f.insert("quality".into(), json!(q.round()));
@@ -156,14 +161,16 @@ pub fn body(app: &mut PhotocraftApp, ui: &mut egui::Ui, f: &mut Map<String, Valu
                 crate::widgets::checkbox(ui, &mut tr, tl!("Transparency"));
                 f.insert("transparency".into(), json!(tr));
             }
-            ui.horizontal(|ui| {
-                ui.label(egui::RichText::new(tl!("Metadata")).color(t.text_dim));
-                let mut m = s(f, "metadata");
-                let opts: Vec<(String, &str)> = vec![("none".into(), tl!("None")), ("all".into(), tl!("All"))];
-                if crate::widgets::dropdown(ui, "export-metadata", &mut m, &opts, 130.0) {
-                    f.insert("metadata".into(), json!(m));
-                }
-            });
+            if fmt != "avif" {
+                ui.horizontal(|ui| {
+                    ui.label(egui::RichText::new(tl!("Metadata")).color(t.text_dim));
+                    let mut m = s(f, "metadata");
+                    let opts: Vec<(String, &str)> = vec![("none".into(), tl!("None")), ("all".into(), tl!("All"))];
+                    if crate::widgets::dropdown(ui, "export-metadata", &mut m, &opts, 130.0) {
+                        f.insert("metadata".into(), json!(m));
+                    }
+                });
+            }
             ui.add_space(8.0);
             ui.label(egui::RichText::new(tl!("Image Size")).font(crate::theme::semibold(12.0)).color(t.text));
             let mut sc = n(f, "scale", 100.0) as f32;
@@ -266,6 +273,23 @@ pub fn quick_export_png(app: &mut PhotocraftApp) -> Result<Value, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn avif_export_uses_quality_and_keeps_transparency() {
+        let mut f = Map::new();
+        f.insert("format".into(), json!("avif"));
+        f.insert("quality".into(), json!(72));
+        f.insert("metadata".into(), json!("all"));
+        assert_eq!(settings(&f).jpeg_quality, Some(72));
+        assert!(!settings(&f).xmp_all);
+        let mut doc = Document::new("alpha", photocraft_doc::Size::new(4, 2), photocraft_doc::ColorMode::Rgb, photocraft_doc::SampleType::U8);
+        doc.layers.push(photocraft_doc::Layer::raster("transparent", doc.pixel_format()));
+        let transparent = export_document(&doc, &f, None).unwrap();
+        assert!(photocraft_compose::flatten(&transparent).px.iter().all(|p| p[3] == 0.0));
+        f.insert("transparency".into(), json!(false));
+        let opaque = export_document(&doc, &f, None).unwrap();
+        assert!(photocraft_compose::flatten(&opaque).px.iter().all(|p| p[3] == 1.0));
+    }
 
     #[test]
     fn export_document_scales_and_flattens() {

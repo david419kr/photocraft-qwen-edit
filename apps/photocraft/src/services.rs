@@ -15,7 +15,7 @@ use std::sync::Arc;
 /// brushes (.abr) and gradients (.grd), which go to the preset libraries.
 const OPEN_EXTS: &[&str] = &[
     "pcraft", "psd", "psb", "psdt", "png", "jpg", "jpeg", "tif", "tiff", "webp", "gif", "bmp", "tga", "ico", "qoi", "exr", "hdr", "pbm", "pgm", "ppm", "pam",
-    "pfm", "heic", "heif", "hif", "dng", "cr2", "cr3", "nef", "nrw", "arw", "pef", "orf", "rw2", "raf", "abr", "grd",
+    "pfm", "avif", "heic", "heif", "hif", "dng", "cr2", "cr3", "nef", "nrw", "arw", "pef", "orf", "rw2", "raf", "abr", "grd",
 ];
 
 /// File › Save As formats: (filter name, extensions). The filter matching the suggested name's
@@ -27,6 +27,7 @@ const SAVE_FILTERS: &[(&str, &[&str])] = &[
     ("PNG", &["png"]),
     ("JPEG", &["jpg"]),
     ("WebP", &["webp"]),
+    ("AVIF", &["avif"]),
     ("TIFF", &["tif"]),
     ("Targa", &["tga"]),
     ("OpenEXR", &["exr"]),
@@ -315,9 +316,16 @@ mod tests {
     /// "Export As" formats must lead with their own filter, or the save panel appends the first one's extension (`photo.webp.psd`).
     #[test]
     fn save_filters_lead_with_every_export_format() {
-        for ext in ["png", "jpg", "webp", "tif", "tga"] {
+        for ext in ["png", "jpg", "webp", "avif", "tif", "tga"] {
             assert!(save_filters(&format!("photo.{ext}"))[0].1.contains(&ext), "{ext}");
         }
+    }
+
+    #[test]
+    fn avif_is_available_for_open_and_save() {
+        assert!(OPEN_EXTS.contains(&"avif"));
+        assert!(photocraft_codecs::caps(photocraft_codecs::Format::Avif).write);
+        assert!(photocraft_codecs::caps(photocraft_codecs::Format::Avif).read);
     }
 
     const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];

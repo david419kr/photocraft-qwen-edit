@@ -202,6 +202,7 @@ pub fn test_cmd(args: &[&str]) -> Result<(), String> {
     features.extend(crates.iter().filter(|k| HEIF_CRATES.contains(&k.as_str())).map(|k| format!("{k}/heif")));
     if crates.iter().any(|k| k != "photocraft-psd") {
         features.push("photocraft-codecs/avif-decode".into());
+        features.push("photocraft-codecs/avif".into());
     }
     c.args(["--features", &features.join(",")]);
     if !passthrough.is_empty() {

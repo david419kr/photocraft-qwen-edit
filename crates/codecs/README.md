@@ -85,12 +85,15 @@ the same.
   Untagged wide-gamut/HDR CICP is explicitly refused until CICP-to-ICC conversion is available;
   ordinary sRGB AVIF and files with embedded ICC profiles open. Unsupported codec/container
   features and damaged files return errors. Decode limits apply before pixel conversion.
-  Optional writing still uses `ravif` (`avif` feature), U8 without metadata. `FormatCaps`
+  Native desktop/CLI builds also enable writing through `ravif` (`avif` feature): U8 RGB/RGBA
+  with alpha, quality 1–100 (`EncodeOptions::jpeg_quality`), without metadata. `FormatCaps`
   continues to describe those encoder depth/metadata guarantees so export warnings remain
   correct. It is listed in `ASYMMETRIC_EXCEPTIONS` because reading and writing are independent.
   Standalone codec/web builds opt in with `avif-decode`; default web bundles keep their size.
   Distribution must retain the decoder's [MIT notice](licenses/oxideav-MIT.txt); the portable
   development packaging script copies it beside the executable under `licenses/`.
+  Encoder dependency notices are in [avif-encoder.txt](licenses/avif-encoder.txt), copied into
+  the same folder. No assembly, external encoder DLL, or runtime installer is required.
 * **Lossy WebP.** There is no pure-Rust lossy WebP encoder. We always write lossless WebP, and
   `webp_lossless: false` returns `CodecError::Unsupported`. We can read both lossy and lossless
   files.

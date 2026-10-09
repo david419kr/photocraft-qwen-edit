@@ -86,8 +86,9 @@ Confidence: moderate — the next users of 0.2.x will move these numbers either 
 8/10/12-bit SDR, alpha and embedded ICC/EXIF/XMP. Ten focused tests cover independent encoder
 fixtures, alpha, depth, metadata, limits and damaged data. The reported 1216x1600 file opens;
 comparison with FFmpeg differs by at most 2/255 per RGB channel. A synthetic 24 MP image
-decodes in 883 ms in release. Untagged wide-gamut/HDR CICP and AVIF writing in the development
-build remain unsupported; see `crates/codecs/README.md`.
+decodes in 883 ms in release. Native AVIF writing now uses ravif: quality-controlled 8-bit
+RGB/RGBA with alpha via Save As / Export As / CLI. Export HDR and metadata preservation,
+and import of untagged wide-gamut/HDR CICP remain unsupported; see `crates/codecs/README.md`.
 
 2026-10-07: Camera Raw PSD mapping covers relative custom white balance, Light/Presence,
 parametric and four point curves, HSL, Color Grading, sharpening/noise detail, grain and numeric

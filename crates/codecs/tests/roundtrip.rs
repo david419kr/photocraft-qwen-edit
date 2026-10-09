@@ -141,6 +141,11 @@ mod hdr {
     cases!(Format::Hdr);
 }
 
+#[cfg(all(feature = "avif", feature = "avif-decode"))]
+mod avif {
+    cases!(Format::Avif);
+}
+
 // ---------------------------------------------------------------------------
 // Targeted round-trips beyond the matrix
 // ---------------------------------------------------------------------------

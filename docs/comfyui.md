@@ -5,13 +5,27 @@ existing local ComfyUI server. Original pixel data remains intact; each successf
 adds one new top-level layer in one undo step. Whole-image edits also hide the previous layers
 on success so the new result's transparency is visible; Undo restores their visibility.
 
-## AVIF import (2026-10-09)
+## AVIF import/export (2026-10-09)
 
 The development portable build also includes a pure-Rust AVIF reader. Open or drag/drop
 `.avif` files normally; no DLL, Windows codec installation or ComfyUI connection is needed.
-8-bit and 10/12-bit SDR pictures, alpha and embedded metadata are preserved. AVIF writing
-is still an optional codec feature and is not enabled by this build. Untagged wide-gamut/HDR
+8-bit and 10/12-bit SDR pictures, alpha and embedded metadata are preserved on import. Untagged wide-gamut/HDR
 AVIF is refused explicitly; see `crates/codecs/README.md` for decoder limits.
+
+The desktop and CLI builds also enable AVIF writing. Use File > Save As and choose AVIF,
+or File > Export > Export As and select AVIF. Export As offers quality 1–100 and transparency;
+Save As uses the codec's default quality (90). The output is a flattened 8-bit RGB/RGBA image.
+HDR/high-depth export and ICC/EXIF/XMP preservation are deferred; existing export warnings
+report depth/metadata/layer loss. Colours are converted to sRGB when the document carries
+another RGB profile. The encoder's license notices ship under `licenses/avif-encoder.txt`.
+CLI example: `photocraft-cli convert input.png output.avif --quality 85`.
+
+AVIF export validation: 361 codec tests (including 24 format/depth/layout AVIF round trips),
+898 codec/IO corpus-regression tests passed (five existing opt-in benchmarks ignored),
+80 desktop/CLI tests and three export-dialog tests passed. Clippy, wasm with optional AVIF
+encode/decode, layering and the static-CRT portable release build passed. Korean offscreen
+Export As shows AVIF, quality and transparency correctly. A release benchmark of a uniform
+6000x4000 RGB8 image at quality 85 took 21.655 seconds; the saved AVIF reopens at the original size.
 
 Verified on 2026-10-09: 10 AVIF tests; 564 codec regression/corpus tests passed (three existing
 opt-in benchmarks ignored); 79 desktop/CLI tests and 46 build-tool tests passed. Codec/tool

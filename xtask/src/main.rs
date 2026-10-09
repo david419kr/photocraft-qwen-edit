@@ -154,7 +154,7 @@ fn wasm_set() -> Result<Vec<String>, String> {
 
 /// Optional codec features, also checked for wasm32 when enabled:
 /// (package, feature).
-const WASM_FEATURES: &[(&str, &str)] = &[("photocraft-codecs", "heif"), ("photocraft-codecs", "avif-decode")];
+const WASM_FEATURES: &[(&str, &str)] = &[("photocraft-codecs", "heif"), ("photocraft-codecs", "avif-decode"), ("photocraft-codecs", "avif")];
 
 fn cmd_wasm() -> Result<(), String> {
     let set = wasm_set()?;

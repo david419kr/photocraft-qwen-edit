@@ -22,7 +22,7 @@ photocraft-raster = { workspace = true }
 photocraft-geom = { workspace = true }
 photocraft-compose = { workspace = true }
 photocraft-engine = { workspace = true }
-photocraft-codecs = { workspace = true, features = ["avif-decode"] }
+photocraft-codecs = { workspace = true, features = ["avif-decode", "avif"] }
 photocraft-io = { workspace = true }
 photocraft-format = { workspace = true }
 photocraft-automation = { workspace = true }

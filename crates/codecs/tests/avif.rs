@@ -8,6 +8,22 @@ const RGBA: &[u8] = include_bytes!("data/avif/rgba.avif");
 const TEN_BIT: &[u8] = include_bytes!("data/avif/ten-bit.avif");
 const TWELVE_BIT: &[u8] = include_bytes!("data/avif/twelve-bit.avif");
 
+#[cfg(feature = "avif")]
+#[test]
+fn avif_encoder_writes_quality_controlled_rgba_and_reopens_it() {
+    let original = decode(RGBA).unwrap();
+    for quality in [20, 90, 100] {
+        let bytes = encode(&original, Format::Avif, &EncodeOptions { jpeg_quality: quality, ..Default::default() }).unwrap();
+        assert_eq!(detect(&bytes), Some(Format::Avif));
+        let back = decode(&bytes).unwrap();
+        assert_eq!(back.dimensions(), original.dimensions());
+        assert_eq!(back.layout(), ChannelLayout::Rgba);
+        assert_eq!(back.sample_type(), SampleType::U8);
+        assert!((back.get(24, 8, 3) - 128.0 / 255.0).abs() < 0.02);
+        assert!(back.get(8, 8, 0) > 0.9 && back.get(24, 8, 1) > 0.9);
+    }
+}
+
 #[test]
 fn independently_encoded_rgb_is_readable() {
     assert!(caps(Format::Avif).read);

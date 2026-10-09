@@ -39,6 +39,24 @@ macro_rules! codec_rt {
 }
 
 codec_rt!(png_rgba8, "png", ColorMode::Rgb, SampleType::U8, true, 0.0);
+
+#[test]
+fn avif_exports_rgb_rgba_documents_and_reopens_as_u8() {
+    if !photocraft_codecs::caps(photocraft_codecs::Format::Avif).write {
+        return;
+    }
+    for alpha in [false, true] {
+        let d = single(ColorMode::Rgb, SampleType::U8, alpha);
+        let mut opts = ExportOptions::default();
+        opts.encode.jpeg_quality = 100;
+        let r = export(&d, "out.avif", &opts).unwrap();
+        assert_eq!(photocraft_codecs::detect(&r.bytes), Some(photocraft_codecs::Format::Avif));
+        let back = import("out.avif", &r.bytes).unwrap().document;
+        assert_eq!((back.size, back.mode, back.depth), (d.size, ColorMode::Rgb, SampleType::U8));
+        assert_eq!(back.layers.len(), 1);
+        pixels_eq(&d, &back, 0.08);
+    }
+}
 codec_rt!(png_rgb8_opaque, "png", ColorMode::Rgb, SampleType::U8, false, 0.0);
 codec_rt!(png_rgba16, "png", ColorMode::Rgb, SampleType::U16, true, 0.0);
 codec_rt!(png_gray8, "png", ColorMode::Grayscale, SampleType::U8, false, 0.0);
