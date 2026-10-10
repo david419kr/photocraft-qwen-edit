@@ -11,10 +11,29 @@ mod interrupt;
 pub use interrupt::{Cancelled, Interrupt};
 
 use std::collections::BTreeMap;
+use std::fmt;
 use std::sync::Arc;
 
 use photocraft_color::{ColorMode, PixelFormat, SampleType, read_sample, write_sample};
 use photocraft_geom::{Rect, TILE_SIZE, TileCoord};
+
+/// A checked surface allocation could not be represented or reserved.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum AllocationError {
+    SizeOverflow,
+    NotEnoughMemory { bytes: usize },
+}
+
+impl fmt::Display for AllocationError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::SizeOverflow => f.write_str("requested surface allocation is too large"),
+            Self::NotEnoughMemory { bytes } => write!(f, "not enough memory to allocate {} bytes", bytes),
+        }
+    }
+}
+
+impl std::error::Error for AllocationError {}
 
 /// Pixel storage for one tile: `TILE_SIZE² × bytes_per_pixel`, row-major, interleaved channels.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -23,6 +42,29 @@ pub struct Tile {
 }
 
 impl Tile {
+    fn try_filled(format: &PixelFormat, pixel: &[u8]) -> Result<Self, AllocationError> {
+        let n = (TILE_SIZE * TILE_SIZE) as usize;
+        let bytes = n.checked_mul(format.bytes_per_pixel()).ok_or(AllocationError::SizeOverflow)?;
+        let mut data = Vec::new();
+        data.try_reserve_exact(bytes).map_err(|_| AllocationError::NotEnoughMemory { bytes })?;
+        data.resize(bytes, 0);
+        if pixel.iter().any(|&b| b != 0) {
+            for px in data.chunks_exact_mut(pixel.len()) {
+                px.copy_from_slice(pixel);
+            }
+        }
+        Ok(Tile { data: data.into_boxed_slice() })
+    }
+
+    /// Clone this tile's pixel buffer with a fallible reservation.
+    pub fn try_clone(&self) -> Result<Self, AllocationError> {
+        let bytes = self.data.len();
+        let mut data = Vec::new();
+        data.try_reserve_exact(bytes).map_err(|_| AllocationError::NotEnoughMemory { bytes })?;
+        data.extend_from_slice(&self.data);
+        Ok(Tile { data: data.into_boxed_slice() })
+    }
+
     fn filled(format: &PixelFormat, pixel: &[u8]) -> Self {
         let n = (TILE_SIZE * TILE_SIZE) as usize;
         let mut data = vec![0u8; n * format.bytes_per_pixel()];
@@ -55,6 +97,47 @@ impl PartialEq for Surface {
 }
 
 impl Surface {
+    /// Reads a region into a newly allocated buffer, returning an error instead of aborting if
+    /// the requested pixel buffer cannot be represented or reserved.
+    pub fn try_read_region(&self, r: Rect) -> Result<Vec<f32>, AllocationError> {
+        let len = (r.width() as usize).checked_mul(r.height() as usize).and_then(|n| n.checked_mul(self.channels())).ok_or(AllocationError::SizeOverflow)?;
+        let bytes = len.checked_mul(std::mem::size_of::<f32>()).ok_or(AllocationError::SizeOverflow)?;
+        let mut out = Vec::new();
+        out.try_reserve_exact(len).map_err(|_| AllocationError::NotEnoughMemory { bytes })?;
+        out.resize(len, 0.0);
+        self.read_region_into(r, &mut out);
+        Ok(out)
+    }
+
+    /// Reads a region as encoded interleaved bytes with fallible allocation.
+    pub fn try_to_interleaved(&self, r: Rect) -> Result<Vec<u8>, AllocationError> {
+        let bpp = self.format.bytes_per_pixel();
+        let len = (r.width() as usize).checked_mul(r.height() as usize).and_then(|n| n.checked_mul(bpp)).ok_or(AllocationError::SizeOverflow)?;
+        let mut out = Vec::new();
+        out.try_reserve_exact(len).map_err(|_| AllocationError::NotEnoughMemory { bytes: len })?;
+        out.resize(len, 0);
+        let w = r.width() as usize;
+        for tc in r.tiles() {
+            let tr = tc.rect().intersect(&r);
+            let span = tr.width() as usize * bpp;
+            for y in tr.y0..tr.y1 {
+                let dst = (((y - r.y0) as usize) * w + (tr.x0 - r.x0) as usize) * bpp;
+                match self.tiles.get(&tc) {
+                    Some(t) => {
+                        let src = (((y - tc.ty * TILE_SIZE) as usize) * TILE_SIZE as usize + (tr.x0 - tc.tx * TILE_SIZE) as usize) * bpp;
+                        out[dst..dst + span].copy_from_slice(&t.data[src..src + span]);
+                    }
+                    None => {
+                        for px in out[dst..dst + span].chunks_exact_mut(bpp) {
+                            px.copy_from_slice(&self.default_pixel);
+                        }
+                    }
+                }
+            }
+        }
+        Ok(out)
+    }
+
     /// Transparent/zero surface.
     pub fn new(format: PixelFormat) -> Self {
         Self { format, default_pixel: vec![0u8; format.bytes_per_pixel()].into_boxed_slice(), tiles: BTreeMap::new() }
@@ -92,6 +175,44 @@ impl Surface {
         let dp = self.default_pixel.clone();
         let arc = self.tiles.entry(c).or_insert_with(|| Arc::new(Tile::filled(&fmt, &dp)));
         Arc::make_mut(arc)
+    }
+
+    /// Fallible counterpart to [`Surface::tile_mut`]. Pixel storage is reserved before changing
+    /// the surface, and a shared tile is copied only after its replacement has been allocated.
+    pub fn try_tile_mut(&mut self, c: TileCoord) -> Result<&mut Tile, AllocationError> {
+        if !self.tiles.contains_key(&c) {
+            let tile = Arc::new(Tile::try_filled(&self.format, &self.default_pixel)?);
+            self.tiles.insert(c, tile);
+        } else if self.tiles.get(&c).is_some_and(|t| Arc::strong_count(t) > 1) {
+            let original = self.tiles.get(&c).ok_or(AllocationError::SizeOverflow)?;
+            let tile = Arc::new(original.try_clone()?);
+            self.tiles.insert(c, tile);
+        }
+        self.tiles.get_mut(&c).and_then(Arc::get_mut).ok_or(AllocationError::SizeOverflow)
+    }
+
+    /// Writes a region using fallible pixel-tile allocations. Callers that need transactional
+    /// document updates should perform this on their staged document copy and commit on success.
+    pub fn try_write_region(&mut self, r: Rect, data: &[f32]) -> Result<(), AllocationError> {
+        let n = self.channels();
+        let sample = self.format.sample;
+        let expected = (r.width() as usize).checked_mul(r.height() as usize).and_then(|v| v.checked_mul(n)).ok_or(AllocationError::SizeOverflow)?;
+        if data.len() != expected {
+            return Err(AllocationError::SizeOverflow);
+        }
+        for tc in r.tiles() {
+            let tr = tc.rect().intersect(&r);
+            let t = self.try_tile_mut(tc)?;
+            let span = tr.width() as usize * n;
+            for y in tr.y0..tr.y1 {
+                let src = (((y - r.y0) as usize) * r.width() as usize + (tr.x0 - r.x0) as usize) * n;
+                let dst = (((y - tc.ty * TILE_SIZE) as usize) * TILE_SIZE as usize + (tr.x0 - tc.tx * TILE_SIZE) as usize) * n;
+                for (i, v) in data[src..src + span].iter().enumerate() {
+                    write_sample(&mut t.data, sample, dst + i, *v);
+                }
+            }
+        }
+        Ok(())
     }
 
     /// Coarse bounds: union of allocated tile rects.
@@ -292,6 +413,23 @@ impl Surface {
                             *d = [g, g, g, s[1] as f32 / 255.0];
                         }
                     }
+                    (ColorMode::Cmyk, SampleType::U8, _) => {
+                        // Identical ink bytes share the exact ICC result; alpha is independent.
+                        let mut previous: Option<([u8; 4], [f32; 3])> = None;
+                        let src = &t.data[base..base + dst.len() * n];
+                        for (d, s) in dst.iter_mut().zip(src.chunks_exact(n)) {
+                            let ink = [s[0], s[1], s[2], s[3]];
+                            let rgb = match previous {
+                                Some((key, rgb)) if key == ink => rgb,
+                                _ => {
+                                    let rgb = photocraft_color::convert::cmyk_to_rgb(ink.map(|v| v as f32 / 255.0));
+                                    previous = Some((ink, rgb));
+                                    rgb
+                                }
+                            };
+                            *d = [rgb[0], rgb[1], rgb[2], s.get(4).map_or(1.0, |v| *v as f32 / 255.0)];
+                        }
+                    }
                     _ => {
                         let mut px = [0.0f32; 8];
                         for (i, d) in dst.iter_mut().enumerate() {
@@ -412,6 +550,24 @@ impl Surface {
             .collect()
     }
 
+    /// Fallible counterpart to [`Surface::take_tiles`]. Reserves the complete result and any
+    /// default tile before removing a tile, so a reservation failure leaves the surface intact.
+    pub fn try_take_tiles(&mut self, r: Rect) -> Result<Vec<(TileCoord, Arc<Tile>)>, AllocationError> {
+        let count = r.tiles().count();
+        let bytes = count.checked_mul(std::mem::size_of::<(TileCoord, Arc<Tile>)>()).ok_or(AllocationError::SizeOverflow)?;
+        let mut out = Vec::new();
+        out.try_reserve_exact(count).map_err(|_| AllocationError::NotEnoughMemory { bytes })?;
+        let has_missing = r.tiles().any(|c| !self.tiles.contains_key(&c));
+        let blank = if has_missing { Some(Arc::new(Tile::try_filled(&self.format, &self.default_pixel)?)) } else { None };
+        for c in r.tiles() {
+            let tile = self.tiles.remove(&c).or_else(|| blank.clone());
+            if let Some(tile) = tile {
+                out.push((c, tile));
+            }
+        }
+        Ok(out)
+    }
+
     /// Put tiles back (see [`Surface::take_tiles`]); each replaces the tile at its coordinate.
     pub fn put_tiles(&mut self, tiles: impl IntoIterator<Item = (TileCoord, Arc<Tile>)>) {
         for (c, t) in tiles {
@@ -438,8 +594,17 @@ impl Surface {
         let mut enc = vec![0u8; self.format.bytes_per_pixel()];
         encode_pixel(&self.format, &px[..n], &mut enc);
         let bpp = enc.len();
+        // Fully covered tiles share one Arc: a solid fill costs one tile however large `r` is,
+        // and copy-on-write splits a tile off when it is edited (#705).
+        let mut full: Option<Arc<Tile>> = None;
         for tc in r.tiles() {
             let tr = tc.rect().intersect(&r);
+            if tr == tc.rect() {
+                let fmt = self.format;
+                let t = full.get_or_insert_with(|| Arc::new(Tile::filled(&fmt, &enc)));
+                self.tiles.insert(tc, t.clone());
+                continue;
+            }
             let t = self.tile_mut(tc);
             for y in tr.y0..tr.y1 {
                 let ly = (y - tc.ty * TILE_SIZE) as usize;
@@ -503,6 +668,46 @@ impl Surface {
         out
     }
 
+    /// The surface moved by whole pixels: its encoded samples copied tile to tile (no float
+    /// round trip, no intermediate buffer); moves by whole tiles share the tiles themselves.
+    /// `content` must hold every pixel that isn't the default one (`content_bounds`, say): only
+    /// tiles it reaches are kept.
+    pub fn translated(&self, dx: i32, dy: i32, content: Rect) -> Surface {
+        let mut out = Surface { format: self.format, default_pixel: self.default_pixel.clone(), tiles: BTreeMap::new() };
+        let sources = || self.tiles.iter().filter(move |(c, _)| !c.rect().intersect(&content).is_empty());
+        if dx % TILE_SIZE == 0 && dy % TILE_SIZE == 0 {
+            let (tx, ty) = (dx / TILE_SIZE, dy / TILE_SIZE);
+            out.tiles = sources().map(|(c, t)| (TileCoord::new(c.tx.saturating_add(tx), c.ty.saturating_add(ty)), t.clone())).collect();
+            return out;
+        }
+        let bpp = self.format.bytes_per_pixel();
+        let moved = content.translate(dx, dy);
+        let targets: std::collections::BTreeSet<TileCoord> = sources().flat_map(|(c, _)| c.rect().translate(dx, dy).intersect(&moved).tiles()).collect();
+        for dc in targets {
+            let mut tile = Tile::filled(&self.format, &self.default_pixel);
+            let dr = dc.rect();
+            let sr = dr.translate(dx.saturating_neg(), dy.saturating_neg());
+            for sc in sr.intersect(&content).tiles() {
+                let Some(st) = self.tiles.get(&sc) else { continue };
+                let part = sc.rect().intersect(&sr);
+                let span = part.width() as usize * bpp;
+                // Offsets inside the tiles (the target's computed wide: an offset near the i32
+                // limits saturates `translate`, and such rows are skipped rather than misplaced).
+                let at = |x: i64, y: i64| usize::try_from(y * i64::from(TILE_SIZE) + x).ok().map(|i| i * bpp);
+                for y in part.y0..part.y1 {
+                    let src = at(i64::from(part.x0 - sc.tx * TILE_SIZE), i64::from(y - sc.ty * TILE_SIZE));
+                    let dst = at(i64::from(part.x0) + i64::from(dx) - i64::from(dr.x0), i64::from(y) + i64::from(dy) - i64::from(dr.y0));
+                    let (Some(src), Some(dst)) = (src, dst) else { continue };
+                    if let (Some(d), Some(s)) = (tile.data.get_mut(dst..dst + span), st.data.get(src..src + span)) {
+                        d.copy_from_slice(s);
+                    }
+                }
+            }
+            out.tiles.insert(dc, Arc::new(tile));
+        }
+        out
+    }
+
     /// Convert to another pixel format (depth and/or model; colour models via [`convert_pixel`]).
     pub fn convert(&self, to: PixelFormat) -> Surface {
         let mut out = Surface::with_default(to, &convert_pixel(&self.format, &to, &self.default_pixel()));
@@ -522,6 +727,29 @@ impl Surface {
             }
         }
         out
+    }
+
+    /// Convert a surface while reserving each replacement tile fallibly.
+    pub fn try_convert(&self, to: PixelFormat) -> Result<Surface, AllocationError> {
+        let mut out = Surface::with_default(to, &convert_pixel(&self.format, &to, &self.default_pixel()));
+        let from_n = self.channels();
+        let mut src = Vec::new();
+        src.try_reserve_exact(from_n).map_err(|_| AllocationError::NotEnoughMemory { bytes: from_n * std::mem::size_of::<f32>() })?;
+        src.resize(from_n, 0.0f32);
+        for (c, t) in &self.tiles {
+            let dst = out.try_tile_mut(*c)?;
+            let px_count = (TILE_SIZE * TILE_SIZE) as usize;
+            for i in 0..px_count {
+                for (k, v) in src.iter_mut().enumerate() {
+                    *v = read_sample(&t.data, self.format.sample, i * from_n + k);
+                }
+                let px = convert_pixel(&self.format, &to, &src);
+                for (k, v) in px.iter().enumerate() {
+                    write_sample(&mut dst.data, to.sample, i * to.channels() + k, *v);
+                }
+            }
+        }
+        Ok(out)
     }
 
     /// Composite-friendly RGBA read (converts from the surface's model).
@@ -682,6 +910,40 @@ mod tests {
     }
 
     #[test]
+    fn fallible_region_reads_report_size_overflow() {
+        let surface = Surface::new(PixelFormat::RGBA8);
+        let huge = Rect::new(i32::MIN, i32::MIN, i32::MAX, i32::MAX);
+        assert_eq!(surface.try_read_region(huge), Err(AllocationError::SizeOverflow));
+        assert_eq!(surface.try_to_interleaved(huge), Err(AllocationError::SizeOverflow));
+    }
+
+    #[test]
+    fn fallible_region_write_rejects_bad_input_without_mutating_surface() {
+        let mut surface = Surface::new(PixelFormat::RGBA8);
+        let before = surface.clone();
+        assert_eq!(surface.try_write_region(Rect::new(0, 0, 2, 2), &[1.0]), Err(AllocationError::SizeOverflow));
+        assert_eq!(surface, before);
+    }
+
+    #[test]
+    fn fill_rect_shares_covered_tiles_and_edits_stay_local() {
+        // A 300000² background used to materialize ~360 GB of tiles (#705).
+        let mut s = Surface::new(PixelFormat::RGBA8);
+        s.fill_rect(Rect::new(0, 0, 300_000, 300_000), &[1.0, 0.5, 0.0, 1.0]);
+        let t = |s: &Surface, x, y| s.tile(TileCoord::new(x, y)).unwrap().clone();
+        assert!(Arc::ptr_eq(&t(&s, 0, 0), &t(&s, 1000, 900)));
+        // 300000 is not a multiple of 256: the edge tile is partial and stays its own.
+        let edge = 300_000 / TILE_SIZE;
+        assert!(!Arc::ptr_eq(&t(&s, 0, 0), &t(&s, edge, 0)));
+        assert_eq!(s.pixel(299_999, 299_999), vec![1.0, 128.0 / 255.0, 0.0, 1.0]);
+        assert_eq!(s.pixel(300_000, 0), vec![0.0; 4]);
+        s.write_pixel(5, 5, &[0.0, 0.0, 1.0, 1.0]);
+        assert_eq!(s.pixel(5, 5), vec![0.0, 0.0, 1.0, 1.0]);
+        assert_eq!(s.pixel(300, 5), vec![1.0, 128.0 / 255.0, 0.0, 1.0]);
+        assert!(!Arc::ptr_eq(&t(&s, 0, 0), &t(&s, 1, 0)));
+    }
+
+    #[test]
     fn empty_surface_reads_default() {
         let s = Surface::new(PixelFormat::RGBA8);
         assert_eq!(s.pixel(10, -500), vec![0.0; 4]);
@@ -770,6 +1032,58 @@ mod tests {
         g.write_pixel(0, 0, &[0.5, 1.0]);
         let v = g.rgba(0, 0);
         assert!((v[0] - v[2]).abs() < 1e-6 && (v[3] - 1.0).abs() < 1e-6);
+    }
+
+    #[test]
+    fn repeated_cmyk_reads_match_individual_pixels_bitwise() {
+        let rect = Rect::new(-2, -1, 515, 2);
+        for depth in SampleType::ALL {
+            for alpha in [false, true] {
+                let fmt = PixelFormat::new(ColorMode::Cmyk, depth, alpha);
+                let mut s = Surface::with_default(fmt, &[0.2, 0.4, 0.6, 0.3, 0.7]);
+                for (i, x) in (-1..514).enumerate() {
+                    let c = if i / 2 % 256 == 0 { -0.0 } else { (i / 2 % 256) as f32 / 255.0 };
+                    s.write_pixel(x, 0, &[c, 0.4, 0.6, 0.3, (i % 9) as f32 / 8.0]);
+                }
+                let mut out = vec![[0.0; 4]; (rect.width() * rect.height()) as usize];
+                s.read_rgba_into(rect, &mut out);
+                for (i, actual) in out.iter().enumerate() {
+                    let expected = s.rgba(rect.x0 + (i % rect.width() as usize) as i32, rect.y0 + (i / rect.width() as usize) as i32);
+                    assert_eq!(actual.map(f32::to_bits), expected.map(f32::to_bits), "{depth:?}, alpha={alpha}, pixel={i}");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn translated_matches_reading_the_moved_pixels() {
+        // Any offset (whole tiles, negative, across tile edges), every depth, a non-zero default.
+        for fmt in [PixelFormat::RGBA8, PixelFormat::RGBA16, PixelFormat::RGBA32F, PixelFormat::GRAY8] {
+            let mut s = Surface::with_default(fmt, &vec![0.25; fmt.channels()]);
+            let r = Rect::new(-37, 200, 530, 300);
+            let v: Vec<f32> = (0..r.width() * r.height() * fmt.channels() as u32).map(|i| (i % 251) as f32 / 250.0).collect();
+            s.write_region(r, &v);
+            for (dx, dy) in [(0, 0), (256, -512), (1, 0), (-3, 7), (300, -257), (-1000, 999)] {
+                let t = s.translated(dx, dy, s.content_bounds());
+                let moved = r.translate(dx, dy).inflate(3);
+                assert_eq!(t.read_region(moved), s.read_region(moved.translate(-dx, -dy)), "{fmt:?} by ({dx}, {dy})");
+                assert_eq!(t.default_pixel(), s.default_pixel());
+                assert_eq!(t.to_interleaved(r.translate(dx, dy)), s.to_interleaved(r), "{fmt:?} by ({dx}, {dy}): not an exact copy");
+            }
+            // Whole tiles: the tiles are shared, not copied.
+            let t = s.translated(512, -256, s.content_bounds());
+            assert!(s.tiles().zip(t.tiles()).all(|((_, a), (_, b))| Arc::ptr_eq(a, b)));
+            // Tiles without content (allocated, default pixels) are left behind.
+            let mut padded = s.clone();
+            padded.fill_rect(Rect::new(2000, 2000, 2100, 2100), &s.default_pixel());
+            assert_eq!(padded.translated(5, 5, s.content_bounds()).tile_count(), s.translated(5, 5, s.content_bounds()).tile_count());
+        }
+        // Offsets at the limits don't panic.
+        let mut s = Surface::new(PixelFormat::GRAY8);
+        s.write_pixel(5, 5, &[1.0]);
+        let all = Rect::new(i32::MIN, i32::MIN, i32::MAX, i32::MAX);
+        let _ = s.translated(i32::MAX, i32::MIN, all);
+        let _ = s.translated(i32::MIN + 1, 3, all);
     }
 
     proptest! {

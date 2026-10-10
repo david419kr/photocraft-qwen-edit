@@ -43,7 +43,13 @@ fn harness(tool: Tool) -> Harness<'static, PhotocraftApp> {
 fn screen(h: &Harness<'static, PhotocraftApp>, x: f32, y: f32) -> Pos2 {
     let app = h.state();
     let v = &app.ui.views[0];
-    let xf = ViewXform { rect: crate::rulers::content_rect(app, app.last_canvas_rect), zoom: v.zoom, center: v.center, flip: app.ui.view.flip_horizontal };
+    let xf = ViewXform {
+        rect: crate::rulers::content_rect(app, app.last_canvas_rect),
+        zoom: v.zoom,
+        center: v.center,
+        flip: app.ui.view.flip_horizontal,
+        rotation: v.rotation,
+    };
     xf.to_screen(x, y)
 }
 
@@ -92,6 +98,37 @@ fn readout(h: &Harness<'static, PhotocraftApp>, w: i32, ht: i32) -> bool {
 }
 
 #[test]
+fn marquee_intent_is_captured_before_the_drag_threshold() {
+    for tool in [Tool::RectMarquee, Tool::EllipseMarquee] {
+        for at_press in [Modifiers::NONE, Modifiers::SHIFT] {
+            let mut h = harness(tool);
+            h.state_mut().ui.extras.snap = false;
+            h.state_mut().run("select.rect", json!({"x": 10, "y": 10, "width": 20, "height": 20})).unwrap();
+            mods(&mut h, at_press);
+            move_to(&mut h, 100.0, 100.0);
+            let start = screen(&h, 100.0, 100.0);
+            button(&mut h, start, true, at_press);
+            assert!(h.state().drag.is_none(), "still below the drag threshold");
+            // Change Shift while the pointer is still at the press, before egui starts a drag.
+            let during = if at_press.shift { Modifiers::NONE } else { Modifiers::SHIFT };
+            mods(&mut h, during);
+            move_to(&mut h, 180.0, 130.0);
+            assert!(readout(&h, 80, if at_press.shift { 30 } else { 80 }), "{tool:?}, Shift at press: {}", at_press.shift);
+            release_at(&mut h, 180.0, 130.0, during);
+            let st = h.state().session.active().unwrap();
+            let sel = st.doc.selection.as_ref().unwrap();
+            if at_press.shift {
+                assert!(sel.sample_channel(20, 20, 0) > 0.99, "Shift at the press keeps Add mode");
+                assert_eq!(selection(&h), Rect::new(10, 10, 180, 130));
+            } else {
+                assert!(sel.sample_channel(20, 20, 0) < 0.01, "Shift after the press constrains a replacement");
+                assert_eq!(selection(&h), Rect::new(100, 100, 180, 180));
+            }
+        }
+    }
+}
+
+#[test]
 fn shift_during_the_drag_draws_a_square_and_the_readout_follows() {
     let mut h = harness(Tool::RectMarquee);
     press_at(&mut h, 50.0, 50.0, Modifiers::NONE);
@@ -126,6 +163,83 @@ fn alt_draws_from_the_centre_and_shift_alt_a_centred_circle() {
     mods(&mut h, Modifiers::NONE);
     let r = selection(&h);
     assert!(r.x0.abs_diff(170) <= 1 && r.x1.abs_diff(230) <= 1 && r.y0.abs_diff(120) <= 1 && r.y1.abs_diff(180) <= 1, "{r:?}");
+}
+
+#[test]
+fn the_live_outline_snaps_to_pixels_and_matches_the_committed_selection() {
+    for tool in [Tool::RectMarquee, Tool::EllipseMarquee] {
+        let mut h = harness(tool);
+        // Zoomed in, the pointer lands between pixel edges.
+        let v = &mut h.state_mut().ui.views[0];
+        v.zoom = 8.0;
+        v.center = [20.0, 15.0];
+        h.run_steps(2);
+        press_at(&mut h, 10.3, 10.3, Modifiers::NONE);
+        move_to(&mut h, 20.6, 15.4);
+        let app = h.state();
+        let live = app.drag.as_ref().and_then(|d| crate::canvas::marquee_preview_px(&app.ui.tool_options, d, app.point_zoom())).unwrap();
+        assert_eq!(live, [10.0, 10.0, 21.0, 16.0], "{tool:?}: whole pixels while dragging");
+        release_at(&mut h, 20.6, 15.4, Modifiers::NONE);
+        assert_eq!(selection(&h), Rect::new(10, 10, 21, 16), "{tool:?}: the commit is what was shown");
+    }
+}
+
+/// 800 %, snapping off, the view centred on (30, 30): the pointer lands between pixel edges.
+fn zoomed(tool: Tool) -> Harness<'static, PhotocraftApp> {
+    let mut h = harness(tool);
+    h.state_mut().ui.extras.snap = false;
+    let v = &mut h.state_mut().ui.views[0];
+    v.zoom = 8.0;
+    v.center = [30.0, 30.0];
+    h.run_steps(2);
+    h
+}
+
+/// Press at `from` and move to `to` in six ordinary pointer moves, the button still held.
+fn drag_to(h: &mut Harness<'static, PhotocraftApp>, from: [f32; 2], to: [f32; 2]) {
+    move_to(h, from[0], from[1]);
+    button(h, screen(h, from[0], from[1]), true, Modifiers::NONE);
+    for i in 1..=6 {
+        let t = i as f32 / 6.0;
+        move_to(h, from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t);
+    }
+}
+
+/// #2391: a one-pixel column or row shown while dragging (ants and readout) is the selection the
+/// release keeps, also when the drag starts outside a selection it replaces (Photoshop). A click
+/// without a drag still deselects.
+#[test]
+fn a_one_pixel_column_or_row_is_kept_on_release() {
+    for tool in [Tool::RectMarquee, Tool::EllipseMarquee] {
+        for (name, end, want) in [("column", [10.6, 50.4], Rect::new(10, 10, 11, 51)), ("row", [50.6, 10.8], Rect::new(10, 10, 51, 11))] {
+            for existing in [false, true] {
+                let mut h = zoomed(tool);
+                if existing {
+                    h.state_mut().run("select.rect", json!({"x": 100, "y": 100, "width": 10, "height": 10})).unwrap();
+                }
+                drag_to(&mut h, [10.2, 10.4], end);
+                let app = h.state();
+                let live = app.drag.as_ref().and_then(|d| crate::canvas::marquee_preview_px(&app.ui.tool_options, d, app.point_zoom()));
+                let shown = [want.x0, want.y0, want.x1, want.y1].map(f64::from);
+                assert_eq!(live, Some(shown), "{tool:?} {name} (existing {existing}): the outline while dragging");
+                assert!(readout(&h, want.width() as i32, want.height() as i32), "{tool:?} {name}: W/H readout");
+                let p = screen(&h, end[0], end[1]);
+                button(&mut h, p, false, Modifiers::NONE);
+                h.run_steps(2);
+                assert_eq!(selection(&h), want, "{tool:?} {name} (existing {existing}): the release keeps what was shown");
+                assert!(h.query_by_label("W:").is_none(), "the readout goes away with the drag");
+            }
+        }
+        // A plain click outside the selection deselects.
+        let mut h = zoomed(tool);
+        h.state_mut().run("select.rect", json!({"x": 100, "y": 100, "width": 10, "height": 10})).unwrap();
+        move_to(&mut h, 10.2, 10.4);
+        let p = screen(&h, 10.2, 10.4);
+        button(&mut h, p, true, Modifiers::NONE);
+        button(&mut h, p, false, Modifiers::NONE);
+        h.run_steps(2);
+        assert!(h.state().session.active().unwrap().doc.selection.is_none(), "{tool:?}: a click deselects");
+    }
 }
 
 #[test]
@@ -276,7 +390,7 @@ fn cmd_drag_floats_the_selected_pixels() {
     assert!(d.selection.is_none() && offset(&app).is_none());
     assert!(alpha(&d, 12, 12) == 0.0 && alpha(&d, 26, 21) == 1.0 && alpha(&d, 44, 39) == 1.0);
     let labels: Vec<String> = app.session.active().unwrap().history.entries().into_iter().skip(steps + 1).map(|e| e.to_string()).collect();
-    assert_eq!(labels.first().map(String::as_str), Some("Move Selected Pixels"), "{labels:?}");
+    assert_eq!(labels.first().map(String::as_str), Some("Move"), "{labels:?}");
 }
 
 /// Through the real canvas (mouse events): a drag inside the ants moves the selection.
@@ -289,4 +403,222 @@ fn mouse_drag_inside_the_selection_moves_it() {
     press_at(&mut h, 150.0, 120.0, Modifiers::NONE);
     release_at(&mut h, 170.0, 130.0, Modifiers::NONE);
     assert_eq!(selection(&h), Rect::new(120, 90, 220, 170), "moved by (20, 10)");
+}
+
+/// #1428: hovering inside the ants with a marquee shows the move cursor (a press there drags the
+/// outline); outside it is the marquee's own cursor.
+#[test]
+fn hovering_inside_the_selection_shows_the_move_cursor() {
+    for tool in [Tool::RectMarquee, Tool::EllipseMarquee] {
+        let mut h = harness(tool);
+        press_at(&mut h, 100.0, 80.0, Modifiers::NONE);
+        release_at(&mut h, 200.0, 160.0, Modifiers::NONE);
+        move_to(&mut h, 150.0, 120.0);
+        assert_eq!(h.output().platform_output.cursor_icon, egui::CursorIcon::Move, "{tool:?} inside");
+        move_to(&mut h, 300.0, 250.0);
+        assert_ne!(h.output().platform_output.cursor_icon, egui::CursorIcon::Move, "{tool:?} outside");
+    }
+}
+
+/// #1428: with a marquee, the arrow keys nudge the selection outline 1 px, ⇧ 10 px (Photoshop);
+/// each press is one undoable step.
+#[test]
+fn arrow_keys_nudge_the_selection_outline() {
+    use egui::Key;
+    for tool in [Tool::RectMarquee, Tool::EllipseMarquee] {
+        let mut h = harness(tool);
+        press_at(&mut h, 100.0, 80.0, Modifiers::NONE);
+        release_at(&mut h, 200.0, 160.0, Modifiers::NONE);
+        let drawn = selection(&h);
+        assert!(!drawn.is_empty(), "{tool:?} drew");
+        let shifted = |dx: i32, dy: i32| Rect::new(drawn.x0 + dx, drawn.y0 + dy, drawn.x1 + dx, drawn.y1 + dy);
+        let steps = h.state().session.active().unwrap().history.past_len();
+        h.key_press(Key::ArrowRight);
+        h.run_steps(1);
+        assert_eq!(selection(&h), shifted(1, 0), "{tool:?} right 1 px");
+        h.key_press(Key::ArrowUp);
+        h.run_steps(1);
+        assert_eq!(selection(&h), shifted(1, -1), "{tool:?} up 1 px");
+        h.key_press_modifiers(Modifiers::SHIFT, Key::ArrowDown);
+        h.run_steps(1);
+        assert_eq!(selection(&h), shifted(1, 9), "{tool:?} shift-down 10 px");
+        h.key_press_modifiers(Modifiers::SHIFT, Key::ArrowLeft);
+        h.run_steps(1);
+        assert_eq!(selection(&h), shifted(-9, 9), "{tool:?} shift-left 10 px");
+        assert_eq!(h.state().session.active().unwrap().history.past_len(), steps + 4, "one step per press");
+        h.state_mut().session.undo();
+        assert_eq!(selection(&h), shifted(1, 9), "{tool:?} undo takes back one nudge");
+    }
+}
+
+/// Arrow keys with a marquee but no selection change nothing and report no error.
+#[test]
+fn arrow_keys_without_a_selection_do_nothing() {
+    let mut h = harness(Tool::RectMarquee);
+    let steps = h.state().session.active().unwrap().history.past_len();
+    h.key_press(egui::Key::ArrowRight);
+    h.run_steps(1);
+    assert_eq!(selection(&h), Rect::EMPTY);
+    assert_eq!(h.state().session.active().unwrap().history.past_len(), steps);
+    assert!(!h.state().ui.status_error);
+}
+
+/// ⌘⌥-drag copies the selected pixels instead of cutting them: the original stays.
+#[test]
+fn cmd_alt_drag_floats_a_copy() {
+    let (mut app, layer) = painted();
+    let alpha = |d: &photocraft_doc::Document, x, y| d.layer(layer).unwrap().surface().unwrap().rgba(x, y)[3];
+    let cmd_alt = Modifiers { alt: true, ..Modifiers::COMMAND };
+    drag(&mut app, [20.0, 20.0], [45.0, 20.0], cmd_alt);
+    app.run("select.drop", json!({})).unwrap();
+    let d = app.session.active().unwrap().doc.clone();
+    assert!(alpha(&d, 12, 20) == 1.0, "the original stays");
+    assert!(alpha(&d, 50, 20) == 1.0, "the copy dropped 25 px right");
+}
+
+#[test]
+fn alt_with_nothing_selected_draws_a_new_selection() {
+    // #1106: with no selection, ⌥ has nothing to subtract from, so a marquee drawn with it held
+    // still selects (Photoshop: ⌥ then only draws from the centre). With a selection it subtracts.
+    let mut h = harness(Tool::RectMarquee);
+    mods(&mut h, Modifiers::ALT);
+    press_at(&mut h, 100.0, 100.0, Modifiers::ALT);
+    move_to(&mut h, 140.0, 130.0);
+    release_at(&mut h, 140.0, 130.0, Modifiers::ALT);
+    mods(&mut h, Modifiers::NONE);
+    assert!(h.state().session.active().unwrap().doc.selection.as_ref().is_some_and(|s| !s.content_bounds().is_empty()), "a selection was made");
+    // Now ⌥ subtracts from it.
+    let before = selection(&h);
+    mods(&mut h, Modifiers::ALT);
+    press_at(&mut h, 0.0, 0.0, Modifiers::ALT);
+    move_to(&mut h, 400.0, 400.0);
+    release_at(&mut h, 400.0, 400.0, Modifiers::ALT);
+    mods(&mut h, Modifiers::NONE);
+    let after = h.state().session.active().unwrap().doc.selection.as_ref().map(|s| s.content_bounds());
+    assert!(after.is_none_or(|r| r.is_empty() || r != before), "⌥ subtracted: {before:?} -> {after:?}");
+}
+
+fn error_dialogs(app: &PhotocraftApp) -> Vec<String> {
+    app.ui.dialogs.iter().filter(|d| d.kind == crate::state::DialogKind::Error).filter_map(|d| d.fields.get("message")?.as_str().map(String::from)).collect()
+}
+
+/// Photoshop's "Could not use the move tool because the layer is locked." when a Move-tool drag
+/// (the Move tool, or ⌘ with a marquee) starts on a layer it can't move: the Background with no
+/// selection, a position-locked layer; a plain click says nothing, and the drag never starts.
+#[test]
+fn move_on_the_background_without_a_selection_shows_photoshops_lock_message() {
+    let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+    app.run("file.new", json!({"width": 80, "height": 60})).unwrap();
+    app.sync_views();
+    app.ui.tool = Tool::Move;
+    app.ui.tool_options.move_auto_select = false;
+    let steps = app.session.active().unwrap().history.past_len();
+    use crate::canvas::{ToolEvent, tool_event};
+    // A click: no message.
+    tool_event(&mut app, ToolEvent::Down { x: 20.0, y: 20.0, pressure: 1.0 }, Modifiers::NONE);
+    tool_event(&mut app, ToolEvent::Up { x: 20.0, y: 20.0 }, Modifiers::NONE);
+    assert!(error_dialogs(&app).is_empty() && !app.move_blocked);
+    // A drag: the message once, nothing moved, no drag in progress.
+    tool_event(&mut app, ToolEvent::Down { x: 20.0, y: 20.0, pressure: 1.0 }, Modifiers::NONE);
+    tool_event(&mut app, ToolEvent::Move { x: 30.0, y: 20.0, pressure: 1.0 }, Modifiers::NONE);
+    tool_event(&mut app, ToolEvent::Move { x: 40.0, y: 20.0, pressure: 1.0 }, Modifiers::NONE);
+    tool_event(&mut app, ToolEvent::Up { x: 40.0, y: 20.0 }, Modifiers::NONE);
+    assert_eq!(error_dialogs(&app), [crate::move_lock::MESSAGE]);
+    assert!(app.drag.is_none(), "no drag started");
+    assert_eq!(app.session.active().unwrap().history.past_len(), steps);
+    app.ui.dialogs.clear();
+    // ⌘-drag with a marquee (the Move tool for the drag, #896): the same.
+    app.ui.tool = Tool::RectMarquee;
+    drag(&mut app, [20.0, 20.0], [40.0, 20.0], Modifiers::COMMAND);
+    assert_eq!(error_dialogs(&app), [crate::move_lock::MESSAGE]);
+    app.ui.dialogs.clear();
+    // A position-locked layer: the same; unlocked, it moves.
+    app.run("layer.new.layer", json!({})).unwrap();
+    app.session
+        .edit("lock", |doc, a| {
+            doc.layer_mut(a.unwrap()).unwrap().locks.position = true;
+            Ok(())
+        })
+        .unwrap();
+    drag(&mut app, [20.0, 20.0], [40.0, 20.0], Modifiers::COMMAND);
+    assert_eq!(error_dialogs(&app).len(), 1);
+    app.ui.dialogs.clear();
+    app.session
+        .edit("unlock", |doc, a| {
+            doc.layer_mut(a.unwrap()).unwrap().locks.position = false;
+            Ok(())
+        })
+        .unwrap();
+    drag(&mut app, [20.0, 20.0], [40.0, 20.0], Modifiers::COMMAND);
+    assert!(error_dialogs(&app).is_empty());
+}
+
+/// With a selection the Background's pixels do move (its lock is partial: transparency and
+/// position), so no message; a layer locked all over gets it, with the marquee's ⌘-drag inside the
+/// selection as with the Move tool.
+#[test]
+fn selected_pixels_move_off_the_background_but_not_off_a_fully_locked_layer() {
+    let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+    app.run("file.new", json!({"width": 80, "height": 60})).unwrap();
+    app.sync_views();
+    app.ui.extras.snap = false;
+    app.ui.view.show.smart_guides = false;
+    app.ui.tool = Tool::RectMarquee;
+    app.run("select.rect", json!({"x": 10, "y": 10, "width": 20, "height": 20})).unwrap();
+    drag(&mut app, [20.0, 20.0], [50.0, 20.0], Modifiers::COMMAND);
+    assert!(error_dialogs(&app).is_empty());
+    assert_eq!(photocraft_engine::float_cmds::floating(app.session.active().unwrap()).map(|f| f.offset), Some((30, 0)));
+    let (mut app, layer) = painted();
+    app.session
+        .edit("lock", |doc, _| {
+            doc.layer_mut(layer).unwrap().locks.all = true;
+            Ok(())
+        })
+        .unwrap();
+    // ⌘ with the Brush is the Move tool too (#2248).
+    for (tool, m) in [(Tool::RectMarquee, Modifiers::COMMAND), (Tool::Move, Modifiers::NONE), (Tool::Brush, Modifiers::COMMAND)] {
+        app.ui.tool = tool;
+        drag(&mut app, [20.0, 20.0], [40.0, 20.0], m);
+        assert_eq!(error_dialogs(&app), [crate::move_lock::MESSAGE], "{tool:?}");
+        assert!(photocraft_engine::float_cmds::floating(app.session.active().unwrap()).is_none(), "{tool:?}");
+        app.ui.dialogs.clear();
+    }
+}
+
+/// Photoshop's cursor over a selection: the move cursor where a marquee press moves the outline,
+/// scissors where ⌘ (or the Move tool) cuts the selected pixels, a double arrow where ⌥ copies
+/// them, a hollow arrowhead while they are dragged, and a plain arrow over the floating piece.
+#[test]
+fn selection_cursor_follows_the_modifiers_and_the_floating_piece() {
+    use crate::canvas::{SelCursor, selection_cursor};
+    let (mut app, _) = painted();
+    let (inside, outside) = ([20.0, 20.0], [60.0, 50.0]);
+    let none = Modifiers::NONE;
+    let cmd_alt = Modifiers::COMMAND | Modifiers::ALT;
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, inside, none), Some(SelCursor::Outline));
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, outside, none), None);
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, inside, Modifiers::SHIFT), None);
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, inside, Modifiers::COMMAND), Some(SelCursor::Cut));
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, inside, cmd_alt), Some(SelCursor::Copy));
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, inside, Modifiers::ALT), None, "⌥ alone subtracts");
+    assert_eq!(selection_cursor(&app, Tool::Move, inside, none), Some(SelCursor::Cut));
+    assert_eq!(selection_cursor(&app, Tool::Move, outside, none), Some(SelCursor::Cut), "the Move tool moves them from anywhere");
+    assert_eq!(selection_cursor(&app, Tool::Move, inside, Modifiers::ALT), Some(SelCursor::Copy));
+    assert_eq!(selection_cursor(&app, Tool::Brush, inside, none), None);
+    // While the selected pixels are dragged, then once they float.
+    use crate::canvas::{ToolEvent, tool_event};
+    tool_event(&mut app, ToolEvent::Down { x: 20.0, y: 20.0, pressure: 1.0 }, Modifiers::COMMAND);
+    tool_event(&mut app, ToolEvent::Move { x: 35.0, y: 20.0, pressure: 1.0 }, Modifiers::COMMAND);
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, [35.0, 20.0], Modifiers::COMMAND), Some(SelCursor::Dragging));
+    tool_event(&mut app, ToolEvent::Up { x: 35.0, y: 20.0 }, Modifiers::COMMAND);
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, [35.0, 20.0], none), Some(SelCursor::Piece));
+    assert_eq!(selection_cursor(&app, Tool::Move, [35.0, 20.0], none), Some(SelCursor::Piece));
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, [35.0, 20.0], cmd_alt), Some(SelCursor::Copy), "a copy of the piece");
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, inside, none), None, "where it was cut from");
+    assert_eq!(selection_cursor(&app, Tool::Brush, [35.0, 20.0], none), None);
+    // The outline drag keeps the move cursor (#1428).
+    let (mut app, _) = painted();
+    tool_event(&mut app, ToolEvent::Down { x: 20.0, y: 20.0, pressure: 1.0 }, none);
+    tool_event(&mut app, ToolEvent::Move { x: 30.0, y: 20.0, pressure: 1.0 }, none);
+    assert_eq!(selection_cursor(&app, Tool::RectMarquee, [30.0, 20.0], none), Some(SelCursor::Outline));
 }

@@ -82,8 +82,9 @@ pub fn checked(app: &PhotocraftApp, id: &str) -> Option<bool> {
         "image.analysis.countTool" => Some(app.ui.tool == Tool::Count),
         _ => {
             // View › Proof Setup simulations: checked while that proof is shown.
+            // A check item with no document too: an item's kind never changes (native menus).
             let kind = id.strip_prefix("view.proofSetup.").and_then(photocraft_engine::proof_sim::ProofKind::from_id)?;
-            let d = app.session.active()?;
+            let Some(d) = app.session.active() else { return Some(false) };
             let pv = app.session.color.proof(d.doc.id);
             Some(pv.enabled && pv.setup.kind == kind)
         }
@@ -158,18 +159,18 @@ pub fn menu(app: &mut PhotocraftApp, id: &str, params: &Value) -> Option<Result<
             }
             r
         }
-        "file.import.notes" => {
-            let (name, bytes) = match app.pick_file_bytes()? {
-                Ok(picked) => picked,
-                Err(e) => return Some(Err(e)),
-            };
-            let r = photocraft_engine::notes_cmds::import_notes_from(&mut app.session, &name, &bytes).map_err(|e| e.to_string());
-            if r.is_ok() {
-                app.ui.analysis.notes = true;
-                app.sync_views();
-            }
-            r
-        }
+        "file.import.notes" => match app.active_doc_id() {
+            Ok(doc) => app.pick_file_bytes(move |app, name, bytes| {
+                app.refocus(doc)?;
+                let r = photocraft_engine::notes_cmds::import_notes_from(&mut app.session, &name, &bytes).map_err(|e| e.to_string());
+                if r.is_ok() {
+                    app.ui.analysis.notes = true;
+                    app.sync_views();
+                }
+                r
+            }),
+            Err(e) => Err(e),
+        },
         "measurementLog.export" => export_log(app, None),
         _ => return None,
     })
@@ -192,16 +193,17 @@ fn export_log(app: &mut PhotocraftApp, rows: Option<Vec<u64>>) -> Result<Value, 
     let p = rows.map_or(json!({}), |r| json!({"rows": r}));
     let csv = app.run("measurementLog.export", p)?;
     let text = csv["csv"].as_str().unwrap_or_default().to_string();
-    let path = app.services.pick_save.as_mut().and_then(|f| f("Measurements.csv")).ok_or("cancelled")?;
-    let write = app.services.write.as_mut().ok_or("no writer configured")?;
-    write(&path, text.as_bytes())?;
-    Ok(json!({"path": path, "rows": csv["rows"]}))
+    app.pick_save("Measurements.csv", move |app, path| {
+        let write = app.services.write.as_mut().ok_or("no writer configured")?;
+        write(&path, text.as_bytes())?;
+        Ok(json!({"path": path, "rows": csv["rows"]}))
+    })
 }
 
 // ------------------------------------------------------------------ tools
 
 fn tolerance(app: &PhotocraftApp) -> f64 {
-    7.0 / f64::from(app.current_zoom().max(0.01))
+    7.0 / f64::from(app.point_zoom().max(0.01))
 }
 
 fn dist(a: [f64; 2], b: [f64; 2]) -> f64 {
@@ -225,7 +227,7 @@ fn set_ruler(app: &mut PhotocraftApp, r: Ruler) {
 
 /// Pointer input for the Ruler, Count and Note tools. Returns true when consumed.
 pub fn pointer(app: &mut PhotocraftApp, ev: ToolEvent, mods: egui::Modifiers) -> bool {
-    let tool = app.ui.tool;
+    let tool = app.active_tool();
     if !matches!(tool, Tool::Ruler | Tool::Count | Tool::Note) {
         return false;
     }
@@ -291,7 +293,7 @@ pub fn pointer(app: &mut PhotocraftApp, ev: ToolEvent, mods: egui::Modifiers) ->
             }
         }
         (Tool::Note, ToolEvent::Down { x, y, .. }) => {
-            let z = f64::from(app.current_zoom().max(0.01));
+            let z = f64::from(app.point_zoom().max(0.01));
             let hit =
                 doc.notes.iter().rposition(|n| x >= n.position[0] && x <= n.position[0] + 16.0 / z && y >= n.position[1] && y <= n.position[1] + 20.0 / z);
             match hit {
@@ -454,9 +456,16 @@ pub fn options_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui, tool: Tool) -> bo
                 if crate::icons::button(ui, eye, 22.0, false, tl!("Toggle count group visibility")).clicked() {
                     let _ = app.run("count.setGroup", json!({"group": gi, "visible": !g.visible}));
                 }
-                let mut rgb = g.color.to_rgb();
-                if ui.color_edit_button_rgb(&mut rgb).changed() {
-                    let _ = app.run("count.setGroup", json!({"group": gi, "color": [rgb[0], rgb[1], rgb[2]], "coalesce": "count-color"}));
+                let rgb = g.color.to_rgb();
+                // PhotoCraft's Color Picker (sRGB), as everywhere else (#2144).
+                if crate::widgets::color_swatch_button(ui, color32(rgb), tl!("Color")).clicked() {
+                    crate::color_picker_ui::open_for_command(
+                        app,
+                        &crate::color_picker_ui::title_for(tl!("Color")),
+                        rgb,
+                        "count.setGroup",
+                        json!({"group": gi}),
+                    );
                 }
                 if crate::icons::button(ui, "trash", 22.0, false, tl!("Delete count group")).clicked() {
                     let _ = app.run("count.deleteGroup", json!({"group": gi}));
@@ -486,7 +495,10 @@ pub fn options_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui, tool: Tool) -> bo
             ui.label(RichText::new(tl!("Author:")).color(t.text_dim).size(11.0));
             ui.add(egui::TextEdit::singleline(&mut app.ui.analysis.note_author).desired_width(120.0));
             ui.label(RichText::new(tl!("Color:")).color(t.text_dim).size(11.0));
-            ui.color_edit_button_rgb(&mut app.ui.analysis.note_color);
+            let rgb = app.ui.analysis.note_color;
+            if crate::widgets::color_swatch_button(ui, color32(rgb), tl!("Color")).clicked() {
+                crate::color_picker_ui::open_for_target(app, "noteColor", &crate::color_picker_ui::title_for(tl!("Color")), rgb);
+            }
             if ui.add_enabled_ui(!doc.notes.is_empty(), |ui| crate::widgets::secondary_button(ui, tl!("Clear All"), 0.0)).inner.clicked() {
                 let _ = app.run("notes.delete", json!({"all": true}));
                 app.ui.analysis.note_selected = None;

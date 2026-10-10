@@ -233,14 +233,14 @@ impl Fetch for LoadFetch<'_> {
 pub(crate) fn load(src: &dyn Source, opts: &LoadOptions) -> Result<Document> {
     let m = read_manifest(src, opts)?;
     let mut fetch = LoadFetch { src, opts: *opts, total: 0, blobs: HashMap::new() };
-    let mut loader = Loader { fetch: &mut fetch, preserve_ids: opts.preserve_ids, max_id: 0, id_map: HashMap::new() };
-    let doc = loader.document(&m.document)?;
-    if opts.preserve_ids && !convert::reserve_ids_through(loader.max_id) {
-        // Ids far beyond our counter: remap instead of risking collisions.
-        let fresh = LoadOptions { preserve_ids: false, ..*opts };
-        return load(src, &fresh);
-    }
-    Ok(doc)
+    let mut loader = Loader {
+        fetch: &mut fetch,
+        preserve_ids: opts.preserve_ids,
+        id_map: HashMap::new(),
+        contents_id_map: HashMap::new(),
+        legacy_linked_contents: HashMap::new(),
+    };
+    loader.document(&m.document)
 }
 
 // ---------------------------------------------------------------------------
@@ -519,6 +519,12 @@ impl PcraftWriter {
             thumbnail: opts.thumbnail.as_ref().map(|_| THUMB.to_owned()),
             composite: opts.composite.as_ref().map(|_| COMPOSITE.to_owned()),
         };
+        // serde_json writes NaN and the infinities as `null`, which the manifest's float fields
+        // refuse on load (issue #1101): refuse the save instead, naming the value.
+        crate::finite::check(&manifest).map_err(|e| match e {
+            crate::finite::Problem::NonFinite { path } => FormatError::NonFinite { path },
+            crate::finite::Problem::Other(m) => FormatError::Unsupported(format!("manifest: {m}")),
+        })?;
         let manifest = serde_json::to_vec_pretty(&manifest)?;
         check_manifest_depth(&manifest)?;
         let stats = SaveStats { tiles_total: c.tiles.len(), blobs_total: c.blobs.len(), manifest_bytes: manifest.len(), ..Default::default() };

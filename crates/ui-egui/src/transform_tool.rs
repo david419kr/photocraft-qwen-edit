@@ -1,18 +1,19 @@
 //! Free Transform (⌘T): bounding box with handles over the canvas, live preview, commit via the
 //! engine's `edit.transform` (one quad for scale/rotate/skew/distort/perspective).
 //!
-//! Gestures follow Photoshop CC: corner drag scales proportionally (⇧ for free), edges scale one
-//! axis, ⌥ scales about the reference point, ⌘-drag a corner distorts (⌘⌥⇧: perspective), ⌘-drag
-//! an edge skews (⇧ along the edge), drag outside rotates (⇧ snaps to 15°), drag inside moves
-//! (⇧ locks to 8 directions), the reference point can be dragged and ⌥-click puts it under the
-//! pointer. Arrow keys nudge the box (move_mods.rs). ↩ commits, Esc cancels. Undo and Redo step
-//! through the session's own changes (`Steps`), not the document's history.
+//! Gestures follow Photoshop CC: corner and edge drags scale proportionally (⇧ for free: an edge
+//! then stretches its one axis), ⌥ scales about the reference point, ⌘-drag a corner distorts
+//! (⌘⌥⇧: perspective), ⌘-drag an edge skews (⇧ along the edge), drag outside rotates (⇧ snaps to
+//! 15°), drag inside moves (⇧ locks to 8 directions), the reference point can be dragged and
+//! ⌥-click puts it under the pointer. Arrow keys nudge the box (move_mods.rs). ↩ commits, Esc
+//! cancels. Undo and Redo step through the session's own changes (`Steps`), not the document's
+//! history.
 
 use std::sync::Arc;
 
 use egui::{Color32, CursorIcon, Pos2, Stroke, pos2, vec2};
 use photocraft_algo::transform::Homography;
-use photocraft_doc::{Document, LayerContent, LayerId};
+use photocraft_doc::{DocId, Document, LayerContent, LayerId};
 use photocraft_geom::warp::{BezierMesh, Warp, WarpStyle};
 use serde_json::json;
 
@@ -46,6 +47,14 @@ impl SplitTool {
     }
 }
 
+/// What a Warp-mode press grabbed. `pts0` is the mesh's control grid at the press.
+enum WarpDrag {
+    /// An anchor or handle: it follows the pointer (an anchor takes its handles along).
+    Point { index: usize, start: [f64; 2], pts0: Vec<[f64; 2]> },
+    /// Anywhere else on the grid: the surface under the pointer follows it.
+    Surface { s: f64, t: f64, start: [f64; 2], pts0: Vec<[f64; 2]> },
+}
+
 /// Preview state that isn't serialisable: the document without the transformed pixels, and
 /// full-resolution textures of those pixels (transform_tex.rs).
 pub struct TransformPreview {
@@ -53,9 +62,11 @@ pub struct TransformPreview {
     pub doc: Arc<Document>,
     pub texture: crate::transform_tex::PreviewTextures,
     pub opacity: f32,
+    /// The layers stacked over the moving one, drawn over its pixels ([`Above`]).
+    above: Option<Above>,
     gesture: Option<Gesture>,
-    /// Warp-mode drag: (control point, pointer start, mesh points at the start).
-    warp_drag: Option<(usize, [f64; 2], Vec<[f64; 2]>)>,
+    /// Warp-mode drag in progress.
+    warp_drag: Option<WarpDrag>,
     /// Armed split tool. None while the buttons are off and control points drag as usual.
     split_tool: Option<SplitTool>,
     /// Document point the split guide is following (a drag, or the hover while placing).
@@ -66,7 +77,25 @@ pub struct TransformPreview {
     steps: Steps,
     /// The tool the session began with: picking another one applies the transform.
     tool: Tool,
+    /// Free Transform Path: the path as it was, drawn through the box instead of pixels.
+    path: Option<photocraft_doc::vector::Path>,
+    /// A layer's session keeps `doc` and `opacity` up to date with edits made while the box is
+    /// open ([`follow_edits`]); `None` for a lone mask or channel and Transform Selection.
+    follow: Option<Follow>,
 }
+
+/// What [`follow_edits`] needs to rebuild the preview document.
+#[derive(Clone, Copy, Debug)]
+struct Follow {
+    /// The document revision `doc` was built from.
+    revision: u64,
+    /// The moving layer is hidden in `doc` (nothing was lifted out of it).
+    hidden: bool,
+}
+
+/// Photoshop's alert when Free Transform (⌘T, Edit › Transform, the Move tool's transform controls)
+/// starts on a layer locked in place, by its own lock or a group's.
+pub const LOCKED: &str = "Could not complete the Free Transform command because the layer is locked.";
 
 /// Grab radius of the box's handles, in screen points. Generous, so a corner is easy to catch;
 /// just beyond it, outside the box, a drag rotates.
@@ -74,7 +103,7 @@ pub const HANDLE_PX: f64 = 12.0;
 
 /// [`HANDLE_PX`] in document pixels at the current zoom.
 pub fn handle_tolerance(app: &PhotocraftApp) -> f64 {
-    HANDLE_PX / app.current_zoom().max(0.01) as f64
+    HANDLE_PX / app.point_zoom().max(0.01) as f64
 }
 
 /// The box as one undo step restores it.
@@ -131,15 +160,23 @@ fn corners(r: [f64; 4]) -> [[f64; 2]; 4] {
 /// Start Free Transform on the active layer (or its selected pixels), or on the targeted unlinked
 /// layer mask, alpha channel or Quick Mask.
 pub fn begin(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(), String> {
+    if let Some((params, path)) = crate::vector_ui::free_transform_path(app) {
+        return begin_path(app, ctx, params, path);
+    }
     let target = crate::canvas::paint_target(app);
     let st = app.session.active().ok_or("no document")?;
-    let doc = st.doc.clone();
+    let (doc, revision) = (st.doc.clone(), st.revision);
     let lone = photocraft_engine::transform_cmds::lone_target(&doc, st.active_layer, &json!({ "target": target })).map_err(|e| e.to_string())?.cloned();
     if let Some(surf) = lone {
         return begin_lone(app, ctx, doc, surf, target);
     }
     let id = st.active_layer.ok_or("no active layer")?;
     let layer = doc.layer(id).ok_or("no layer")?;
+    if photocraft_engine::transform_cmds::locked_for_transform(&doc, id) {
+        // Photoshop refuses before the box opens rather than when it is committed (#2585).
+        app.ui.open_dialog(crate::state::DialogKind::Error, json!({"message": tl!(LOCKED)}).as_object().cloned().unwrap_or_default());
+        return Err(LOCKED.into());
+    }
     if matches!(layer.content, LayerContent::Adjustment(_)) && layer.mask.is_none() {
         return Err("Adjustment layers have nothing to transform".into());
     }
@@ -155,7 +192,7 @@ pub fn begin(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(), String>
     let mut lifted = None;
     if let Some(sel) = doc.selection.clone().filter(|_| !layer.is_group() && layer.surface().is_some()) {
         if let Some(surf) = pd.layer_mut(id).and_then(|l| l.surface_mut()) {
-            let (l, rest) = photocraft_engine::transform_cmds::split_selected(surf, &sel);
+            let (l, rest) = photocraft_engine::transform_cmds::split_selected(surf, &sel).map_err(|e| e.to_string())?;
             *surf = rest;
             lifted = Some(l);
         }
@@ -164,6 +201,9 @@ pub fn begin(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(), String>
     }
     // egui reports the renderer's limit in the app; offscreen harnesses only through the device.
     let max_side = ctx.input(|i| i.max_texture_side).max(app.gpu.as_ref().map_or(1, |g| g.max_texture_side()));
+    // The layers covering the moving pixels draw over them instead of under them.
+    let above = Above::new(ctx, format!("transform-{session}-above"), &doc, id, max_side);
+    above.hide_in(&mut pd.layers);
     let (image, uv) = preview_image(&doc, id, lifted.as_ref(), b, max_side);
     let texture = crate::transform_tex::PreviewTextures::new(ctx, format!("transform-{session}"), image, uv);
     app.transform_preview = Some(TransformPreview {
@@ -171,6 +211,8 @@ pub fn begin(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(), String>
         doc: Arc::new(pd),
         texture,
         opacity: layer.opacity * layer.fill_opacity,
+        above: Some(above),
+        follow: Some(Follow { revision, hidden: lifted.is_none() }),
         gesture: None,
         warp_drag: None,
         split_tool: None,
@@ -179,6 +221,7 @@ pub fn begin(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(), String>
         split_quick: false,
         steps: Steps::default(),
         tool: app.ui.tool,
+        path: None,
     });
     app.ui.transform = Some(TransformSession {
         session,
@@ -190,6 +233,7 @@ pub fn begin(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(), String>
         warp: None,
         selection: false,
         target: None,
+        path: None,
         made: None,
         mode: Default::default(),
     });
@@ -201,9 +245,13 @@ pub fn begin(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(), String>
 /// its selected pixels, as Layer via Copy) and transforms the copy (#352).
 pub fn begin_copy(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(), String> {
     let selection = app.session.active().is_some_and(|d| d.doc.selection.is_some());
-    app.run(if selection { "layer.new.layerViaCopy" } else { "layer.duplicate" }, json!({}))?;
+    let params = if selection { json!({}) } else { json!({"inPlace": true}) };
+    app.run(if selection { "layer.new.layerViaCopy" } else { "layer.duplicate" }, params)?;
+    let made = app.session.active().and_then(|st| st.active_layer.map(|layer| (st.doc.id, layer)));
     if let Err(e) = begin(app, ctx) {
-        take_back_made(app);
+        if let Some((document, layer)) = made {
+            take_back_made(app, document, layer);
+        }
         return Err(e);
     }
     if let Some(t) = app.ui.transform.as_mut() {
@@ -224,10 +272,25 @@ pub fn begin_placed(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(), 
 
 /// Undoes the layer a cancelled or failed session made (⌥⌘T's copy, a placed file), leaving
 /// nothing to redo.
-fn take_back_made(app: &mut PhotocraftApp) {
-    app.session.undo();
-    if let Some(st) = app.session.active_mut() {
+fn take_back_made(app: &mut PhotocraftApp, document: DocId, layer: LayerId) {
+    // Tabs can move or close while transforming. Only undo the creation in its own document,
+    // and only while it is still the latest step (it may already have been undone).
+    let Some(index) = app.session.documents().iter().position(|st| {
+        st.doc.id == document
+            && st.doc.layer(layer).is_some()
+            && st.history.past_len().checked_sub(1).and_then(|i| st.history.state(i)).is_some_and(|before| before.layer(layer).is_none())
+    }) else {
+        return;
+    };
+    let active = app.session.active_index();
+    app.session.set_active(index);
+    if app.session.undo()
+        && let Some(st) = app.session.active_mut()
+    {
         st.history.clear_redo();
+    }
+    if let Some(active) = active {
+        app.session.set_active(active);
     }
     app.sync_views();
 }
@@ -268,7 +331,7 @@ fn begin_lone(
             &whole
         }
     };
-    let (lifted, rest) = tc::split_gray_selected(&surf, sel).ok_or("this channel can't be transformed")?;
+    let (lifted, rest) = tc::split_gray_selected(&surf, sel).map_err(|e| e.to_string())?.ok_or("this channel can't be transformed")?;
     crate::type_tool::commit(app);
     let layer = app.session.active().and_then(|st| st.active_layer).map_or(0, |l| l.0);
     let mut pd = (*doc).clone();
@@ -286,6 +349,8 @@ fn begin_lone(
         doc: Arc::new(pd),
         texture,
         opacity: 0.6,
+        above: None,
+        follow: None,
         gesture: None,
         warp_drag: None,
         split_tool: None,
@@ -294,6 +359,7 @@ fn begin_lone(
         split_quick: false,
         steps: Steps::default(),
         tool: app.ui.tool,
+        path: None,
     });
     app.ui.transform = Some(TransformSession {
         session,
@@ -305,11 +371,77 @@ fn begin_lone(
         warp: None,
         selection: false,
         target: Some(target),
+        path: None,
         made: None,
         mode: Default::default(),
     });
     start_steps(app);
     Ok(())
+}
+
+/// Edit › Free Transform Path: the box frames the path's anchors and handles and draws the
+/// path through it; OK commits one `path.transform` step.
+fn begin_path(app: &mut PhotocraftApp, ctx: &egui::Context, params: serde_json::Value, path: photocraft_doc::vector::Path) -> Result<(), String> {
+    let (x0, y0, x1, y1) = path.control_bounds().ok_or("the path has no points to transform")?;
+    let st = app.session.active().ok_or("no document")?;
+    let doc = st.doc.clone();
+    let layer = st.active_layer.or_else(|| doc.layers.first().map(|l| l.id)).ok_or("no layer")?;
+    crate::type_tool::commit(app);
+    // A straight horizontal or vertical path still gets a box to turn.
+    let rect = [x0, y0, x1.max(x0 + 1.0), y1.max(y0 + 1.0)];
+    let session = app.ui.alloc_id();
+    let texture =
+        crate::transform_tex::PreviewTextures::new(ctx, format!("transform-{session}"), egui::ColorImage::new([1, 1], vec![Color32::TRANSPARENT]), [1.0, 1.0]);
+    app.transform_preview = Some(TransformPreview {
+        session,
+        doc,
+        texture,
+        opacity: 1.0,
+        gesture: None,
+        warp_drag: None,
+        split_tool: None,
+        split_pointer: None,
+        split_placing: false,
+        split_quick: false,
+        steps: Steps::default(),
+        tool: app.ui.tool,
+        path: Some(path),
+        above: None,
+        follow: None,
+    });
+    app.ui.transform = Some(TransformSession {
+        session,
+        layer: layer.0,
+        rect,
+        quad: corners(rect),
+        pivot: [(rect[0] + rect[2]) / 2.0, (rect[1] + rect[3]) / 2.0],
+        interpolation: "bicubic".into(),
+        warp: None,
+        selection: false,
+        target: None,
+        path: Some(params),
+        made: None,
+        mode: Default::default(),
+    });
+    start_steps(app);
+    Ok(())
+}
+
+/// The affine map taking `rect`'s corners to `quad`'s; `None` when the box was distorted out of a
+/// parallelogram (Distort, Perspective), which an affine path transform can't follow.
+fn rect_to_quad_affine(r: [f64; 4], q: [[f64; 2]; 4]) -> Option<photocraft_geom::Affine> {
+    let (w, h) = (r[2] - r[0], r[3] - r[1]);
+    if w <= 0.0 || h <= 0.0 {
+        return None;
+    }
+    let tol = 1e-3 * (1.0 + w.max(h));
+    if (q[0][0] + q[2][0] - q[1][0] - q[3][0]).abs() > tol || (q[0][1] + q[2][1] - q[1][1] - q[3][1]).abs() > tol {
+        return None;
+    }
+    let (a, b) = ((q[1][0] - q[0][0]) / w, (q[1][1] - q[0][1]) / w);
+    let (c, d) = ((q[3][0] - q[0][0]) / h, (q[3][1] - q[0][1]) / h);
+    let m = [a, b, c, d, q[0][0] - a * r[0] - c * r[1], q[0][1] - b * r[0] - d * r[1]];
+    m.iter().all(|v| v.is_finite()).then_some(photocraft_geom::Affine { m })
 }
 
 /// Start Select › Transform Selection: the same box over the selection's bounds, previewing the
@@ -345,6 +477,8 @@ pub fn begin_selection(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(
         doc: Arc::new(pd),
         texture,
         opacity: 1.0,
+        above: None,
+        follow: None,
         gesture: None,
         warp_drag: None,
         split_tool: None,
@@ -353,6 +487,7 @@ pub fn begin_selection(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(
         split_quick: false,
         steps: Steps::default(),
         tool: app.ui.tool,
+        path: None,
     });
     app.ui.transform = Some(TransformSession {
         session,
@@ -364,6 +499,7 @@ pub fn begin_selection(app: &mut PhotocraftApp, ctx: &egui::Context) -> Result<(
         warp: None,
         selection: true,
         target: None,
+        path: None,
         made: None,
         mode: Default::default(),
     });
@@ -391,8 +527,8 @@ pub fn enter_warp(app: &mut PhotocraftApp) {
     let existing =
         app.session.active().and_then(|d| d.doc.layer(LayerId(app.ui.transform.as_ref()?.layer)).and_then(photocraft_engine::warp_cmds::smart_warp_doc_space));
     let Some(t) = app.ui.transform.as_mut() else { return };
-    // Warp moves layers only: a lone mask or channel keeps the box.
-    if t.warp.is_some() || t.target.is_some() {
+    // Warp moves layers only: a lone mask, channel or path keeps the box.
+    if t.warp.is_some() || t.target.is_some() || t.path.is_some() {
         return;
     }
     if t.quad == corners(t.rect)
@@ -482,11 +618,168 @@ fn preview_mask(l: &photocraft_doc::Layer, b: photocraft_geom::Rect) -> Option<c
     linked_pixel.map(|m| PreviewMask { surface: m.surface.clone(), density: m.density })
 }
 
+/// The layers covering the moving one ([`covering`]), composited on their own and drawn over its
+/// preview, so the layer keeps its place in the stack while the box is open (#2439): they cover
+/// it, as in Photoshop, instead of the moving pixels covering the whole document. The canvas
+/// under the box leaves them out ([`Above::hide_in`]). Built when the session starts and again
+/// when an edit changes the document; the box itself moves without re-compositing.
+struct Above {
+    ctx: egui::Context,
+    name: String,
+    max_side: usize,
+    /// The covering layers (whole layers or groups, at any depth).
+    ids: Vec<LayerId>,
+    /// Their composite and the canvas area it covers; `None` when nothing visible covers the layer.
+    shown: Option<(crate::transform_tex::PreviewTextures, photocraft_geom::Rect)>,
+}
+
+impl Above {
+    fn new(ctx: &egui::Context, name: String, doc: &Document, id: LayerId, max_side: usize) -> Self {
+        let mut a = Self { ctx: ctx.clone(), name, max_side, ids: Vec::new(), shown: None };
+        a.rebuild(doc, id);
+        a
+    }
+
+    /// Composite what covers layer `id` of `doc` (the live document) again.
+    fn rebuild(&mut self, doc: &Document, id: LayerId) {
+        self.ids.clear();
+        covering(&doc.layers, id, &mut self.ids);
+        let mut up = doc.clone();
+        show_only(&mut up.layers, &self.ids);
+        let canvas = up.bounds();
+        let rect = up
+            .layers
+            .iter()
+            .filter(|l| l.visible)
+            .fold(photocraft_geom::Rect::EMPTY, |r, l| r.union(&photocraft_compose::composite_bounds(l, canvas).unwrap_or(canvas)))
+            .intersect(&canvas);
+        self.shown = (!rect.is_empty()).then(|| {
+            let (image, uv) = composite_image(&up, rect, self.max_side);
+            (crate::transform_tex::PreviewTextures::new(&self.ctx, self.name.clone(), image, uv), rect)
+        });
+    }
+
+    /// Leave the covering layers out of `layers` (the document under the box).
+    fn hide_in(&self, layers: &mut [photocraft_doc::Layer]) {
+        for l in layers.iter_mut() {
+            if self.ids.contains(&l.id) {
+                l.visible = false;
+            } else if let LayerContent::Group(g) = &mut l.content {
+                self.hide_in(&mut g.children);
+            }
+        }
+    }
+
+    /// Draw the composite over the moving pixels.
+    fn draw(&self, painter: &egui::Painter, xf: &ViewXform) {
+        let Some((texture, r)) = &self.shown else { return };
+        let (tex, uv) = texture.pick(painter.ctx(), xf.zoom * painter.ctx().pixels_per_point(), 1.0, false);
+        let mut mesh = egui::Mesh::with_texture(tex);
+        let corners = [(r.x0, r.y0, 0.0, 0.0), (r.x1, r.y0, uv[0], 0.0), (r.x1, r.y1, uv[0], uv[1]), (r.x0, r.y1, 0.0, uv[1])];
+        for (x, y, u, v) in corners {
+            mesh.vertices.push(egui::epaint::Vertex { pos: xf.to_screen(x as f32, y as f32), uv: pos2(u, v), color: Color32::WHITE });
+        }
+        mesh.add_triangle(0, 1, 2);
+        mesh.add_triangle(0, 2, 3);
+        painter.add(mesh);
+    }
+}
+
+/// `rect` of `doc`'s composite as premultiplied texels: full resolution when it fits in
+/// `max_side`, composited in bands (no full-size float copy), else area-averaged down to fit.
+fn composite_image(doc: &Document, rect: photocraft_geom::Rect, max_side: usize) -> (egui::ColorImage, [f32; 2]) {
+    let (w, h) = (rect.width() as usize, rect.height() as usize);
+    let to_color = |p: &[u8; 4]| Color32::from_rgba_unmultiplied(p[0], p[1], p[2], p[3]);
+    if w.max(h) <= max_side.max(1) {
+        let mut px = Vec::with_capacity(w * h);
+        let _ = photocraft_compose::render_bands(doc, rect, 0, |band| {
+            px.extend(band.to_rgba8().pixels.as_chunks::<4>().0.iter().map(to_color));
+            Ok::<(), ()>(())
+        });
+        px.resize(w * h, Color32::TRANSPARENT);
+        return (egui::ColorImage::new([w, h], px), [1.0, 1.0]);
+    }
+    let k = w.max(h).div_ceil(max_side.max(1));
+    let (tw, th) = (w.div_ceil(k).max(1), h.div_ceil(k).max(1));
+    let buf = photocraft_compose::render_reduced_rect(doc, rect, tw as u32, th as u32);
+    let px: Vec<Color32> = buf.to_rgba8().pixels.as_chunks::<4>().0.iter().map(to_color).collect();
+    let [bw, bh] = [buf.rect.width() as usize, buf.rect.height() as usize];
+    if px.len() != bw * bh || bw == 0 || bh == 0 {
+        return (egui::ColorImage::new([1, 1], vec![Color32::TRANSPARENT]), [1.0, 1.0]);
+    }
+    (egui::ColorImage::new([bw, bh], px), [1.0, 1.0])
+}
+
+/// A layer that composites over anything the same as over transparency, so it can be drawn over
+/// the moving pixels on its own: a Normal layer that isn't an adjustment, or a Normal or Pass
+/// Through group of such layers (hidden layers count, they draw nothing). Adjustment layers and
+/// the other blend modes depend on what is under them.
+fn plain(l: &photocraft_doc::Layer) -> bool {
+    use photocraft_color::BlendMode;
+    !l.visible
+        || match &l.content {
+            LayerContent::Adjustment(_) => false,
+            LayerContent::Group(g) => matches!(l.blend, BlendMode::Normal | BlendMode::PassThrough) && g.children.iter().all(plain),
+            _ => l.blend == BlendMode::Normal,
+        }
+}
+
+/// The layers over `id` in `layers` (bottom to top, groups holding `id` searched too) that cover
+/// it in the preview: from the top down, while they are [`plain`]. The first layer that isn't
+/// stops the search, so it and everything under it stay in the document under the box as before
+/// (an adjustment there keeps applying to the layers under it). A clipping group goes as a whole,
+/// and the layers clipped to `id` (or to the group holding it) stay with it.
+fn covering(layers: &[photocraft_doc::Layer], id: LayerId, out: &mut Vec<LayerId>) {
+    let mut end = layers.len();
+    while end > 0 {
+        // The clipping group ending at `end`: its base and the layers clipped to it.
+        let mut start = end - 1;
+        while start > 0 && layers.get(start).is_some_and(|l| l.clipped) {
+            start -= 1;
+        }
+        let unit = layers.get(start..end).unwrap_or_default();
+        if unit.iter().any(|l| contains(l, id)) {
+            // A group holding `id` with nothing clipped to it: go on inside it.
+            if let [g] = unit
+                && g.id != id
+                && let LayerContent::Group(group) = &g.content
+                && matches!(g.blend, photocraft_color::BlendMode::Normal | photocraft_color::BlendMode::PassThrough)
+            {
+                covering(&group.children, id, out);
+            }
+            return;
+        }
+        if !unit.iter().all(plain) {
+            return;
+        }
+        out.extend(unit.iter().map(|l| l.id));
+        end = start;
+    }
+}
+
+/// Hide everything in `layers` but the `keep` layers and the groups holding them.
+fn show_only(layers: &mut [photocraft_doc::Layer], keep: &[LayerId]) {
+    for l in layers.iter_mut() {
+        if keep.contains(&l.id) {
+            continue;
+        }
+        match &mut l.content {
+            LayerContent::Group(g) if g.children.iter().any(|c| keep.iter().any(|k| contains(c, *k))) => show_only(&mut g.children, keep),
+            _ => l.visible = false,
+        }
+    }
+}
+
 fn contains(l: &photocraft_doc::Layer, id: LayerId) -> bool {
     l.id == id || matches!(&l.content, LayerContent::Group(g) if g.children.iter().any(|c| contains(c, id)))
 }
 
 pub fn commit(app: &mut PhotocraftApp) {
+    let document = app.transform_preview.as_ref().map(|pv| pv.doc.id);
+    if document.is_some_and(|id| app.session.active().is_none_or(|st| st.doc.id != id)) {
+        cancel(app);
+        return;
+    }
     let Some(t) = app.ui.transform.take() else { return };
     app.transform_preview = None;
     if t.selection {
@@ -498,6 +791,21 @@ pub fn commit(app: &mut PhotocraftApp) {
             None => p["quad"] = json!(t.quad),
         }
         if let Err(e) = app.run("select.transformSelection", p) {
+            app.ui.status = e;
+        }
+        return;
+    }
+    if let Some(target) = t.path {
+        if t.warp.is_some() || t.quad == corners(t.rect) {
+            return;
+        }
+        let Some(a) = rect_to_quad_affine(t.rect, t.quad) else {
+            app.ui.status = "Distort and Perspective can't be applied to a path".into();
+            return;
+        };
+        let mut p = target;
+        p["matrix"] = json!(a.m);
+        if let Err(e) = app.run("path.transform", p) {
             app.ui.status = e;
         }
         return;
@@ -525,8 +833,10 @@ pub fn commit(app: &mut PhotocraftApp) {
             }
         }
         Err(e) => {
-            if made.is_some() {
-                take_back_made(app);
+            if made.is_some()
+                && let Some(document) = document
+            {
+                take_back_made(app, document, LayerId(t.layer));
             }
             app.ui.status = e;
         }
@@ -534,22 +844,69 @@ pub fn commit(app: &mut PhotocraftApp) {
 }
 
 /// A transform whose layer or document went away (undo, close) ends silently; picking another tool
-/// applies it. Checked every frame and before each pointer event, so a press with a tool chosen
-/// just before it (`ui.pointer`'s `tool`) goes to that tool.
+/// or selecting another layer (Layers panel, ⌘-click, the control channel) applies it, so the box
+/// never stays on a layer that is no longer the active one (#1400). Checked every frame and before
+/// each pointer event, so a press with a tool chosen just before it (`ui.pointer`'s `tool`) goes to
+/// that tool.
 pub fn end_if_left(app: &mut PhotocraftApp) {
     let Some(t) = &app.ui.transform else { return };
-    if app.session.active().and_then(|s| s.doc.layer(LayerId(t.layer))).is_none() {
+    let Some(st) = app.session.active() else { return cancel(app) };
+
+    let layer = LayerId(t.layer);
+    let made = t.made;
+    let selection = t.selection;
+    let preview_doc_id = app.transform_preview.as_ref().map(|pv| pv.doc.id);
+    let switched_document = preview_doc_id.is_some_and(|id| id != st.doc.id);
+
+    let editing_placed_smart_object = switched_document
+        && made == Some(MadeLayer::Place)
+        && preview_doc_id
+            .is_some_and(|parent_id| app.session.smart_links.iter().any(|link| link.parent == parent_id && link.child == st.doc.id && link.layer == layer));
+
+    if editing_placed_smart_object {
+        app.ui.transform = None;
+        app.transform_preview = None;
+    } else if switched_document || st.doc.layer(layer).is_none() {
         cancel(app);
-    } else if app.transform_preview.as_ref().is_some_and(|pv| pv.tool != app.ui.tool) {
+    } else if app.transform_preview.as_ref().is_some_and(|pv| pv.tool != app.ui.tool)
+        || (!selection && st.active_layer.is_some_and(|active| active.0 != layer.0))
+    {
         commit(app);
     }
 }
 
+/// Edits made while the box is open show in the preview at once, not only after the commit
+/// (#1384): the moving layer's opacity, fill and visibility tint the moving pixels, and the
+/// document under them (other layers, and the part of the layer a selection leaves behind) is
+/// rebuilt from the current one. The moving pixels keep the session's. Called before the canvas
+/// reads the preview, so it never caches a revision with the old preview.
+pub fn follow_edits(app: &mut PhotocraftApp) {
+    let (Some(t), Some(pv)) = (&app.ui.transform, app.transform_preview.as_mut()) else { return };
+    let Some(follow) = pv.follow.as_mut() else { return };
+    let Some(st) = app.session.active().filter(|st| st.doc.id == pv.doc.id && st.revision != follow.revision) else { return };
+    let id = LayerId(t.layer);
+    let (Some(live), Some(moving)) = (st.doc.layer(id), pv.doc.layer(id)) else { return };
+    let mut pd = (*st.doc).clone();
+    if let Some(l) = pd.layer_mut(id) {
+        l.content = moving.content.clone();
+        l.visible = l.visible && !follow.hidden;
+    }
+    if let Some(a) = pv.above.as_mut() {
+        a.rebuild(&st.doc, id);
+        a.hide_in(&mut pd.layers);
+    }
+    pv.opacity = if live.visible { live.opacity * live.fill_opacity } else { 0.0 };
+    follow.revision = st.revision;
+    pv.doc = Arc::new(pd);
+}
+
 pub fn cancel(app: &mut PhotocraftApp) {
-    let made = app.ui.transform.take().is_some_and(|t| t.made.is_some());
-    app.transform_preview = None;
-    if made {
-        take_back_made(app);
+    let transform = app.ui.transform.take();
+    let preview = app.transform_preview.take();
+    if let (Some(t), Some(pv)) = (transform, preview)
+        && t.made.is_some()
+    {
+        take_back_made(app, pv.doc.id, LayerId(t.layer));
     }
 }
 
@@ -613,8 +970,8 @@ fn step(app: &mut PhotocraftApp, redo: bool) -> serde_json::Value {
 }
 
 /// Which part of the box a document point hits.
-#[derive(Clone, Copy, Debug, PartialEq)]
-enum Hit {
+#[derive(Clone, Copy, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+pub(crate) enum Hit {
     Corner(usize),
     Edge(usize),
     Pivot,
@@ -624,7 +981,7 @@ enum Hit {
 
 /// The nearest handle within `tol` (on a small box their grab areas overlap), else inside or
 /// outside the box.
-fn hit(t: &TransformSession, p: [f64; 2], tol: f64) -> Hit {
+pub(crate) fn hit(t: &TransformSession, p: [f64; 2], tol: f64) -> Hit {
     let d = |a: [f64; 2]| ((a[0] - p[0]).powi(2) + (a[1] - p[1]).powi(2)).sqrt();
     let mid = |i: usize| {
         let (a, b) = (t.quad[i], t.quad[(i + 1) % 4]);
@@ -651,12 +1008,12 @@ fn inside(q: &[[f64; 2]; 4], p: [f64; 2]) -> bool {
 }
 
 /// Transient drag state (kept in egui memory; not part of the serialised session).
-#[derive(Clone, Copy, Debug)]
-struct Gesture {
-    hit: Hit,
-    start: [f64; 2],
-    quad0: [[f64; 2]; 4],
-    pivot0: [f64; 2],
+#[derive(Clone, Copy, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+pub(crate) struct Gesture {
+    pub(crate) hit: Hit,
+    pub(crate) start: [f64; 2],
+    pub(crate) quad0: [[f64; 2]; 4],
+    pub(crate) pivot0: [f64; 2],
 }
 
 /// Pointer input while transforming. Returns false when no transform is active.
@@ -689,18 +1046,23 @@ pub fn pointer(app: &mut PhotocraftApp, ev: ToolEvent, mods: egui::Modifiers) ->
             }
             let legacy = app.session.prefs().general.use_legacy_free_transform;
             if let (Some(g), Some(s)) = (g, app.ui.transform.as_mut()) {
-                apply_drag(s, g, [x, y], mode_mods(t.mode, g.hit, corner_mods(legacy, g.hit, mods)));
+                apply_drag(s, g, [x, y], mode_mods(t.mode, g.hit, legacy_mods(legacy, g.hit, mods)));
             }
         }
     }
     true
 }
 
-/// Preferences › General › Use Legacy Free Transform: corner drags stretch freely and ⇧ keeps
-/// the proportions, the reverse of the default (proportional, ⇧ frees them).
-fn corner_mods(legacy: bool, hit: Hit, mut mods: egui::Modifiers) -> egui::Modifiers {
-    if legacy && matches!(hit, Hit::Corner(_)) && !mods.command {
-        mods.shift = !mods.shift;
+/// Preferences › General › Use Legacy Free Transform, Photoshop's scaling before CC 2019: corner
+/// drags stretch freely and ⇧ keeps the proportions, edge drags stretch their one axis whatever
+/// the keys. The default is proportional for both, with ⇧ freeing them.
+fn legacy_mods(legacy: bool, hit: Hit, mut mods: egui::Modifiers) -> egui::Modifiers {
+    if legacy && !mods.command {
+        match hit {
+            Hit::Corner(_) => mods.shift = !mods.shift,
+            Hit::Edge(_) => mods.shift = true,
+            _ => {}
+        }
     }
     mods
 }
@@ -725,7 +1087,41 @@ fn distort_allows(mode: TransformMode, h: Hit) -> bool {
     mode != TransformMode::Distort || !matches!(h, Hit::Outside | Hit::Edge(_))
 }
 
-fn apply_drag(s: &mut TransformSession, g: Gesture, p: [f64; 2], mods: egui::Modifiers) {
+/// The turn at each corner of a quad (cross products of consecutive edges): all the same sign
+/// for a convex quad, mixed for a concave or self-intersecting one.
+fn turns(q: &[[f64; 2]; 4]) -> [f64; 4] {
+    std::array::from_fn(|k| {
+        let (a, b, c) = (q[k], q[(k + 1) % 4], q[(k + 2) % 4]);
+        (b[0] - a[0]) * (c[1] - b[1]) - (b[1] - a[1]) * (c[0] - b[0])
+    })
+}
+
+/// Is `q` convex with the orientation `sign`, every corner turning by more than a sliver?
+fn convex(q: &[[f64; 2]; 4], sign: f64, min_turn: f64) -> bool {
+    turns(q).iter().all(|t| t * sign > min_turn)
+}
+
+/// Distort and Perspective stop a corner where the box would turn concave or fold over itself,
+/// as Photoshop does (#1323): the result moves from `from` towards `to` as far as the quad stays
+/// convex. A box that is not convex to begin with is left free.
+fn keep_convex(from: [[f64; 2]; 4], to: [[f64; 2]; 4]) -> [[f64; 2]; 4] {
+    let t0 = turns(&from);
+    let sign = t0[0].signum();
+    // A sliver: a thousandth of the starting box's smallest turn, so the stop is short of flat.
+    let min_turn = t0.iter().map(|t| t.abs()).fold(f64::INFINITY, f64::min) * 1e-3;
+    if !(min_turn.is_finite() && min_turn > 0.0 && convex(&from, sign, 0.0)) || convex(&to, sign, min_turn) {
+        return to;
+    }
+    let lerp = |t: f64| -> [[f64; 2]; 4] { std::array::from_fn(|k| [from[k][0] + (to[k][0] - from[k][0]) * t, from[k][1] + (to[k][1] - from[k][1]) * t]) };
+    let (mut lo, mut hi) = (0.0f64, 1.0f64);
+    for _ in 0..40 {
+        let mid = (lo + hi) / 2.0;
+        if convex(&lerp(mid), sign, min_turn) { lo = mid } else { hi = mid }
+    }
+    lerp(lo)
+}
+
+pub(crate) fn apply_drag(s: &mut TransformSession, g: Gesture, p: [f64; 2], mods: egui::Modifiers) {
     let (dx, dy) = (p[0] - g.start[0], p[1] - g.start[1]);
     match g.hit {
         Hit::Inside => {
@@ -776,13 +1172,18 @@ fn apply_drag(s: &mut TransformSession, g: Gesture, p: [f64; 2], mods: egui::Mod
                 _ => 1,
             };
             let (mx, my) = if horizontal { (dx, 0.0) } else { (0.0, dy) };
-            s.quad[i] = [g.quad0[i][0] + mx, g.quad0[i][1] + my];
-            s.quad[j] = [g.quad0[j][0] - mx, g.quad0[j][1] - my];
+            let mut q = g.quad0;
+            q[i] = [g.quad0[i][0] + mx, g.quad0[i][1] + my];
+            q[j] = [g.quad0[j][0] - mx, g.quad0[j][1] - my];
+            s.quad = keep_convex(g.quad0, q);
+            s.pivot = carry_pivot(g.quad0, s.quad, g.pivot0);
         }
         Hit::Corner(i) if mods.command => {
-            // Distort: move the corner freely.
-            s.quad = g.quad0;
-            s.quad[i] = [g.quad0[i][0] + dx, g.quad0[i][1] + dy];
+            // Distort: move the corner freely, up to where the box would fold over (#1323).
+            let mut q = g.quad0;
+            q[i] = [g.quad0[i][0] + dx, g.quad0[i][1] + dy];
+            s.quad = keep_convex(g.quad0, q);
+            s.pivot = carry_pivot(g.quad0, s.quad, g.pivot0);
         }
         Hit::Edge(i) if mods.command => {
             // Skew: the edge's two corners move together (⇧: only along the edge).
@@ -803,6 +1204,7 @@ fn apply_drag(s: &mut TransformSession, g: Gesture, p: [f64; 2], mods: egui::Mod
                 s.quad[c] = [g.quad0[c][0] - mx, g.quad0[c][1] - my];
                 s.quad[d] = [g.quad0[d][0] - mx, g.quad0[d][1] - my];
             }
+            s.pivot = carry_pivot(g.quad0, s.quad, g.pivot0);
         }
         Hit::Corner(_) | Hit::Edge(_) => {
             // Work in the box's own (unit) frame so rotated/skewed boxes scale along their axes.
@@ -849,9 +1251,26 @@ fn apply_drag(s: &mut TransformSession, g: Gesture, p: [f64; 2], mods: egui::Mod
                     r[1] = 2.0 * pv - r[3];
                 }
             }
-            // Corners scale proportionally by default; ⇧ frees them (the legacy preference swaps
-            // the two, `corner_mods`).
+            // Corners and edges scale proportionally by default; ⇧ frees them (the legacy
+            // preference swaps the two for corners and always stretches edges, `legacy_mods`).
             let corner = matches!(g.hit, Hit::Corner(_));
+            if !corner && !mods.shift {
+                // An edge sets the scale of its own axis, and the other axis follows by the same
+                // factor about the middle of the box (⌥: about the reference point, as for
+                // corners), so the opposite edge's handle stays put. Past the opposite edge only
+                // the dragged axis flips.
+                if mu.0 || mu.1 {
+                    let k = (r[2] - r[0]).abs();
+                    let c = if mods.alt { pv } else { 0.5 };
+                    r[1] = c - k / 2.0;
+                    r[3] = c + k / 2.0;
+                } else {
+                    let k = (r[3] - r[1]).abs();
+                    let c = if mods.alt { pu } else { 0.5 };
+                    r[0] = c - k / 2.0;
+                    r[2] = c + k / 2.0;
+                }
+            }
             if corner && !mods.shift {
                 let (sx, sy) = (r[2] - r[0], r[3] - r[1]);
                 let k = if sx.abs() > sy.abs() { sx.abs() } else { sy.abs() };
@@ -881,10 +1300,23 @@ fn apply_drag(s: &mut TransformSession, g: Gesture, p: [f64; 2], mods: egui::Mod
                 [x, y]
             };
             s.quad = [map(r[0], r[1]), map(r[2], r[1]), map(r[2], r[3]), map(r[0], r[3])];
-            let (x, y) = h.apply(pu, pv);
-            s.pivot = [x, y];
+            // ⌥ scales about the reference point, so it stays put; otherwise it rides along with
+            // the box, keeping its place in it (#1329).
+            s.pivot = if mods.alt { g.pivot0 } else { carry_pivot(g.quad0, s.quad, g.pivot0) };
         }
     }
+}
+
+/// Where the reference point lands when the box goes from `quad0` to `quad`: the same place
+/// within the box, as in Photoshop, where it is attached to the bounding box (#1329). A box
+/// that has collapsed leaves it where it was.
+fn carry_pivot(quad0: [[f64; 2]; 4], quad: [[f64; 2]; 4], pivot0: [f64; 2]) -> [f64; 2] {
+    let unit = [0.0, 0.0, 1.0, 1.0];
+    let (Some(h0), Some(h1)) = (Homography::rect_to_quad(unit, quad0), Homography::rect_to_quad(unit, quad)) else { return pivot0 };
+    let Some(inv) = h0.inverse() else { return pivot0 };
+    let (u, v) = inv.apply(pivot0[0], pivot0[1]);
+    let (x, y) = h1.apply(u, v);
+    if x.is_finite() && y.is_finite() { [x, y] } else { pivot0 }
 }
 
 /// An anchor or a handle on a section line. The inner control points of a patch are not shown.
@@ -912,8 +1344,15 @@ fn single_patch(mesh: &BezierMesh) -> bool {
     mesh.us.len() == 2 && mesh.vs.len() == 2
 }
 
-/// Option-click picks the split: crosswise in the open, and the perpendicular split when the
-/// pointer is close to an existing grid line.
+/// The surface parameters under `p` when it is inside the warped mesh, else None.
+fn surface_at(mesh: &BezierMesh, p: [f64; 2]) -> Option<(f64, f64)> {
+    let (s, t) = mesh.param_at(p);
+    let q = mesh.eval(s, t);
+    ((q[0] - p[0]).hypot(q[1] - p[1]) < 1.0).then_some((s, t))
+}
+
+/// Ctrl-click (or Option-click) picks the split: crosswise in the open, and the perpendicular
+/// split when the pointer is close to an existing grid line.
 fn quick_split_kind(mesh: &BezierMesh, bounds: [f64; 4], p: [f64; 2]) -> SplitTool {
     let (s, t) = mesh.param_at(p);
     let w = (bounds[2] - bounds[0]).abs().max(1.0);
@@ -945,7 +1384,7 @@ fn split_gesture(app: &mut PhotocraftApp, ev: ToolEvent, mods: egui::Modifiers) 
     let armed = app.transform_preview.as_ref().and_then(|p| p.split_tool);
     let placing = app.transform_preview.as_ref().is_some_and(|p| p.split_placing);
     match ev {
-        ToolEvent::Down { x, y, .. } if armed.is_some() || mods.alt => {
+        ToolEvent::Down { x, y, .. } if armed.is_some() || mods.alt || mods.command => {
             if let Some(pv) = app.transform_preview.as_mut() {
                 pv.split_placing = true;
                 pv.split_pointer = Some([x, y]);
@@ -983,9 +1422,10 @@ fn split_gesture(app: &mut PhotocraftApp, ev: ToolEvent, mods: egui::Modifiers) 
     }
 }
 
-/// Drags a warp control point. Anchors (patch corners) carry their handles along. Preset warps
-/// turn into a custom mesh on the first drag. An armed split tool (or Option) places a split
-/// where the pointer is released instead of moving a point.
+/// Drags the warp grid. A press on an anchor or handle moves that point (an anchor carries its
+/// handles along); a press anywhere else inside the grid pulls the surface under the pointer.
+/// Preset warps turn into a custom mesh when the press grabs something. An armed split tool, or
+/// Ctrl / Option held, places a split where the pointer is released instead.
 fn warp_pointer(app: &mut PhotocraftApp, ev: ToolEvent, tol: f64, mods: egui::Modifiers) {
     if split_gesture(app, ev, mods) {
         return;
@@ -996,29 +1436,20 @@ fn warp_pointer(app: &mut PhotocraftApp, ev: ToolEvent, tol: f64, mods: egui::Mo
         ToolEvent::Down { x, y, .. } => {
             // A preset warp becomes a custom mesh only when the press grabs one of its points.
             let custom = if w.mesh.is_none() || w.style != WarpStyle::Custom { Warp::custom(w.to_mesh(1, 1), w.bounds) } else { w.clone() };
-            pv.warp_drag = warp_hit(&custom, [x, y], tol).map(|i| (i, [x, y], custom.mesh.as_ref().map(|m| m.points.clone()).unwrap_or_default()));
+            let pts0 = custom.mesh.as_ref().map(|m| m.points.clone()).unwrap_or_default();
+            pv.warp_drag = warp_hit(&custom, [x, y], tol).map(|index| WarpDrag::Point { index, start: [x, y], pts0: pts0.clone() }).or_else(|| {
+                let (s, t) = surface_at(custom.mesh.as_ref()?, [x, y])?;
+                Some(WarpDrag::Surface { s, t, start: [x, y], pts0 })
+            });
             if pv.warp_drag.is_some() {
                 *w = custom;
             }
         }
         ToolEvent::Move { x, y, .. } | ToolEvent::Up { x, y } => {
-            if let (Some((i, start, pts0)), Some(m)) = (&pv.warp_drag, w.mesh.as_mut()) {
-                let (dx, dy) = (x - start[0], y - start[1]);
-                let nx = m.nx();
-                let (ci, cj) = (i % nx, i / nx);
-                let ny = m.ny();
-                let mut moved = vec![*i];
-                if ci % 3 == 0 && cj % 3 == 0 {
-                    for (di, dj) in [(-1i64, 0i64), (1, 0), (0, -1), (0, 1)] {
-                        let (a, b) = (ci as i64 + di, cj as i64 + dj);
-                        if a >= 0 && b >= 0 && (a as usize) < nx && (b as usize) < ny {
-                            moved.push(b as usize * nx + a as usize);
-                        }
-                    }
-                }
-                for k in moved {
-                    m.points[k] = [pts0[k][0] + dx, pts0[k][1] + dy];
-                }
+            match (&pv.warp_drag, w.mesh.as_mut()) {
+                (Some(WarpDrag::Point { index, start, pts0 }), Some(m)) => m.drag_point(pts0, *index, [x - start[0], y - start[1]]),
+                (Some(WarpDrag::Surface { s, t, start, pts0 }), Some(m)) => m.pull(pts0, *s, *t, [x - start[0], y - start[1]]),
+                _ => {}
             }
             if matches!(ev, ToolEvent::Up { .. }) {
                 pv.warp_drag = None;
@@ -1057,23 +1488,48 @@ pub fn split(app: &mut PhotocraftApp, id: &str, at: Option<[f64; 2]>) -> Result<
     edit_session_warp(app, id, &p)
 }
 
-/// Cursor for hovering a document point while transforming. `alt` is Option, which arms a quick
-/// split while a warp is active.
-pub fn cursor(app: &PhotocraftApp, p: [f64; 2], alt: bool) -> Option<CursorIcon> {
+/// True just outside a corner: rotate handle feedback lives here, not over the entire
+/// empty canvas. The actual rotation gesture continues to work farther away.
+fn near_rotate_corner(t: &TransformSession, p: [f64; 2], tol: f64) -> bool {
+    t.warp.is_none()
+        && t.mode != TransformMode::Distort
+        && hit(t, p, tol) == Hit::Outside
+        && t.quad.iter().any(|q| (p[0] - q[0]).hypot(p[1] - q[1]) <= tol * 3.0)
+}
+
+/// Clockwise degrees in canvas coordinates (positive Y points down).
+fn rotation_degrees(quad: [[f64; 2]; 4]) -> f64 {
+    let dx = quad[1][0] - quad[0][0];
+    let dy = quad[1][1] - quad[0][1];
+    if dx.is_finite() && dy.is_finite() && dx.hypot(dy) > 1e-9 { dy.atan2(dx).to_degrees() } else { 0.0 }
+}
+
+/// Cursor for hovering a document point while transforming. `quick_split` is Ctrl or Option,
+/// which arms a quick split while a warp is active.
+pub fn cursor(app: &PhotocraftApp, p: [f64; 2], quick_split: bool) -> Option<CursorIcon> {
     let t = app.ui.transform.as_ref()?;
     let tol = handle_tolerance(app);
     if let Some(w) = &t.warp {
         if let Some(tool) = app.transform_preview.as_ref().and_then(|pv| pv.split_tool) {
             return Some(split_cursor(tool));
         }
-        if alt {
+        if quick_split {
             return Some(split_cursor(quick_split_kind(&w.to_mesh(1, 1), w.bounds, p)));
         }
-        return Some(if w.style != WarpStyle::Custom || warp_hit(w, p, tol).is_some() { CursorIcon::Crosshair } else { CursorIcon::Default });
+        if w.style != WarpStyle::Custom || warp_hit(w, p, tol).is_some() {
+            return Some(CursorIcon::Crosshair);
+        }
+        return Some(if w.mesh.as_ref().and_then(|m| surface_at(m, p)).is_some() { CursorIcon::Grab } else { CursorIcon::Default });
     }
     let h = hit(t, p, tol);
     if !distort_allows(t.mode, h) {
         return Some(CursorIcon::Default);
+    }
+    if (near_rotate_corner(t, p, tol) || app.transform_preview.as_ref().is_some_and(|pv| pv.gesture.is_some_and(|g| g.hit == Hit::Outside)))
+        && t.mode != TransformMode::Distort
+    {
+        // The overlay paints the rotating arrow and pointer marker, including during a drag.
+        return Some(CursorIcon::None);
     }
     Some(match h {
         Hit::Corner(0 | 2) => CursorIcon::ResizeNwSe,
@@ -1093,7 +1549,7 @@ pub fn draw_overlay(app: &PhotocraftApp, painter: &egui::Painter, xf: &ViewXform
     if let Some(w) = &t.warp {
         let over_canvas = painter.ctx().input(|i| i.pointer.hover_pos()).filter(|p| xf.rect.contains(*p)).map(|p| xf.to_doc(p));
         let at = pv.split_pointer.or(over_canvas);
-        let alt = painter.ctx().input(|i| i.modifiers.alt);
+        let alt = painter.ctx().input(|i| i.modifiers.alt || i.modifiers.command);
         let guide = at.and_then(|p| {
             let tool = pv.split_tool.or_else(|| (alt || pv.split_quick).then(|| quick_split_kind(&w.to_mesh(1, 1), w.bounds, p)));
             tool.map(|tool| (tool, p))
@@ -1111,7 +1567,7 @@ pub fn draw_overlay(app: &PhotocraftApp, painter: &egui::Painter, xf: &ViewXform
             for i in 0..=n {
                 let (u, v) = (i as f64 / n as f64, j as f64 / n as f64);
                 let (x, y) = h.apply(u, v);
-                mesh.vertices.push(egui::epaint::Vertex { pos: xf.to_screen(x as f32, y as f32), uv: pos2(u as f32 * uv[0], v as f32 * uv[1]), color: tint });
+                mesh.vertices.push(egui::epaint::Vertex { pos: pos2(x as f32, y as f32), uv: pos2(u as f32 * uv[0], v as f32 * uv[1]), color: tint });
             }
         }
         for j in 0..n {
@@ -1121,9 +1577,23 @@ pub fn draw_overlay(app: &PhotocraftApp, painter: &egui::Painter, xf: &ViewXform
                 mesh.add_triangle(a, a + n as u32 + 2, a + n as u32 + 1);
             }
         }
-        painter.add(mesh);
+        painter.add(clip_to_canvas(mesh, canvas_size(pv), |p| xf.to_screen(p.x, p.y)));
+    }
+    if let Some(a) = &pv.above {
+        a.draw(painter, xf);
     }
     let accent = crate::theme::Tokens::get(painter.ctx()).accent;
+    if let (Some(path), Some(h)) = (&pv.path, Homography::rect_to_quad(t.rect, t.quad)) {
+        crate::vector_ui::draw_outline(
+            painter,
+            path,
+            &|q| {
+                let (x, y) = h.apply(q[0], q[1]);
+                xf.to_screen(x as f32, y as f32)
+            },
+            accent,
+        );
+    }
     let pts: Vec<Pos2> = t.quad.iter().map(|q| scr(*q)).collect();
     painter.add(egui::Shape::closed_line(pts.clone(), Stroke::new(1.0, accent)));
     let mids: Vec<Pos2> = (0..4).map(|i| pts[i].lerp(pts[(i + 1) % 4], 0.5)).collect();
@@ -1138,38 +1608,173 @@ pub fn draw_overlay(app: &PhotocraftApp, painter: &egui::Painter, xf: &ViewXform
     painter.circle_stroke(c, 5.0, Stroke::new(0.5, Color32::BLACK));
     painter.line_segment([c - vec2(8.0, 0.0), c + vec2(8.0, 0.0)], Stroke::new(1.0, Color32::WHITE));
     painter.line_segment([c - vec2(0.0, 8.0), c + vec2(0.0, 8.0)], Stroke::new(1.0, Color32::WHITE));
+    let rotating = pv.gesture.is_some_and(|g| g.hit == Hit::Outside);
+    if let Some(at) = painter.ctx().pointer_hover_pos().filter(|p| xf.rect.contains(*p)) {
+        let p = xf.to_doc(at);
+        let tol = HANDLE_PX / f64::from(xf.zoom.max(0.01));
+        if t.mode != TransformMode::Distort && (rotating || near_rotate_corner(t, p, tol)) {
+            draw_rotate_feedback(painter, at, rotating.then(|| rotation_degrees(t.quad)), xf.rect);
+        }
+    }
+}
+
+/// Width and height of the document being transformed, in document pixels.
+fn canvas_size(pv: &TransformPreview) -> [f32; 2] {
+    [pv.doc.size.width as f32, pv.doc.size.height as f32]
+}
+
+/// Clips `mesh` (positions in document pixels) to the canvas `[0, 0, size]` and maps it to the
+/// screen. Pixels past the canvas edge are never shown, also not while transforming (Photoshop;
+/// #2027): only the box and its handles reach over the pasteboard. Clipping in document space
+/// stays exact under a rotated or flipped view, where a screen clip rectangle would not.
+fn clip_to_canvas(mut mesh: egui::Mesh, size: [f32; 2], to_screen: impl Fn(Pos2) -> Pos2) -> egui::Mesh {
+    let inside = |p: Pos2| p.x >= 0.0 && p.y >= 0.0 && p.x <= size[0] && p.y <= size[1];
+    if mesh.vertices.iter().all(|v| inside(v.pos)) {
+        for v in &mut mesh.vertices {
+            v.pos = to_screen(v.pos);
+        }
+        return mesh;
+    }
+    let mut out = egui::Mesh::with_texture(mesh.texture_id);
+    for tri in mesh.indices.as_chunks::<3>().0 {
+        let mut poly: Vec<egui::epaint::Vertex> = tri.iter().filter_map(|i| mesh.vertices.get(*i as usize).copied()).collect();
+        // Sutherland–Hodgman against the four canvas edges (`dist` >= 0 is the canvas side).
+        for edge in 0..4 {
+            let dist = |v: &egui::epaint::Vertex| match edge {
+                0 => v.pos.x,
+                1 => size[0] - v.pos.x,
+                2 => v.pos.y,
+                _ => size[1] - v.pos.y,
+            };
+            let mut next = Vec::with_capacity(poly.len() + 2);
+            for (k, a) in poly.iter().enumerate() {
+                let Some(b) = poly.get((k + 1) % poly.len()) else { continue };
+                let (da, db) = (dist(a), dist(b));
+                if da >= 0.0 {
+                    next.push(*a);
+                }
+                if (da >= 0.0) != (db >= 0.0) && da != db {
+                    let t = da / (da - db);
+                    next.push(egui::epaint::Vertex { pos: a.pos.lerp(b.pos, t), uv: a.uv.lerp(b.uv, t), color: a.color });
+                }
+            }
+            poly = next;
+        }
+        if poly.len() < 3 {
+            continue;
+        }
+        let base = out.vertices.len() as u32;
+        out.vertices.extend(poly.iter().map(|v| egui::epaint::Vertex { pos: to_screen(v.pos), ..*v }));
+        for k in 1..poly.len() as u32 - 1 {
+            out.add_triangle(base, base + k, base + k + 1);
+        }
+    }
+    out
+}
+
+/// The transform's rotation handle is an arc, not the generic Alias pointer.
+fn draw_rotate_feedback(painter: &egui::Painter, at: Pos2, angle: Option<f64>, bounds: egui::Rect) {
+    let center = at + vec2(14.0, 11.0);
+    // Keep the visible cursor anchored to the actual pointer hotspot.
+    painter.circle_filled(at, 2.0, Color32::BLACK);
+    painter.circle_filled(at, 1.0, Color32::WHITE);
+    let points: Vec<Pos2> = (0..=18)
+        .map(|i| {
+            let rad = 0.5 + i as f32 * 4.6 / 18.0;
+            center + vec2(rad.cos(), rad.sin()) * 7.0
+        })
+        .collect();
+    painter.add(egui::Shape::line(points.clone(), Stroke::new(3.0, Color32::BLACK)));
+    painter.add(egui::Shape::line(points, Stroke::new(1.5, Color32::WHITE)));
+    let tip = center + vec2(4.1, -5.7);
+    painter.line_segment([tip, tip + vec2(-5.0, -1.0)], Stroke::new(2.0, Color32::WHITE));
+    painter.line_segment([tip, tip + vec2(-1.0, 5.0)], Stroke::new(2.0, Color32::WHITE));
+    if let Some(deg) = angle {
+        let pos = egui::pos2((at.x + 27.0).min(bounds.right() - 48.0).max(bounds.left()), (at.y - 14.0).max(bounds.top() + 17.0).min(bounds.bottom()));
+        painter.text(pos, egui::Align2::LEFT_BOTTOM, format!("{deg:.1}°"), egui::FontId::proportional(12.0), Color32::WHITE);
+    }
 }
 
 /// Warp preview (the moving pixels on a fine textured mesh) plus the control mesh. Patch
 /// boundaries are solid. A single patch (Grid › Default) also draws its rule-of-thirds guides;
 /// 3×3, 4×4 and 5×5 are just those even cells, with an anchor at every intersection. `guide` is
 /// the split line following the pointer.
+/// How near the pointer (screen px) a handle's anchor or the handle itself must be for the
+/// handle to show. Everything else stays out of the way: only anchors are always drawn.
+const HANDLE_REVEAL_PX: f32 = 56.0;
+
+/// The anchor a handle belongs to, as `(i, j)` in the control grid (an anchor is its own).
+fn handle_anchor(i: usize, j: usize) -> (usize, usize) {
+    if i.is_multiple_of(3) {
+        let aj = match j % 3 {
+            0 => j,
+            1 => j - 1,
+            _ => j + 1,
+        };
+        (i, aj)
+    } else {
+        (if i % 3 == 1 { i - 1 } else { i + 1 }, j)
+    }
+}
+/// Anchors always, small and quiet. A handle and its arm show only while the pointer is close to
+/// them or they are being dragged, so a dense grid does not bury the picture in dots.
+fn draw_warp_points(painter: &egui::Painter, m: &BezierMesh, scr: impl Fn([f64; 2]) -> Pos2, pv: &TransformPreview, line: Stroke) {
+    let (nx, ny) = (m.nx(), m.ny());
+    let hover = painter.ctx().input(|i| i.pointer.hover_pos());
+    let dragged = match &pv.warp_drag {
+        Some(WarpDrag::Point { index, .. }) => Some(handle_anchor(index % nx, index / nx)),
+        _ => None,
+    };
+    let near = |p: Pos2| hover.is_some_and(|h| h.distance(p) <= HANDLE_REVEAL_PX);
+    let faint = Stroke::new(0.75, line.color.gamma_multiply(0.8));
+    for j in 0..ny {
+        for i in 0..nx {
+            if !on_section_edge(i, j) {
+                continue;
+            }
+            let p = scr(m.point(i, j));
+            if i.is_multiple_of(3) && j.is_multiple_of(3) {
+                let r = egui::Rect::from_center_size(p, vec2(5.0, 5.0));
+                painter.rect_filled(r, 0.0, Color32::WHITE);
+                painter.rect_stroke(r, 0.0, faint, egui::StrokeKind::Inside);
+                continue;
+            }
+            let (ai, aj) = handle_anchor(i, j);
+            let a = scr(m.point(ai, aj));
+            if !(near(p) || near(a) || dragged == Some((ai, aj))) {
+                continue;
+            }
+            painter.line_segment([a, p], faint);
+            painter.circle_filled(p, 2.75, Color32::WHITE);
+            painter.circle_stroke(p, 2.75, faint);
+        }
+    }
+}
+
 fn draw_warp(painter: &egui::Painter, xf: &ViewXform, t: &TransformSession, w: &Warp, pv: &TransformPreview, guide: Option<(SplitTool, [f64; 2])>) {
     let scr = |q: [f64; 2]| xf.to_screen(q[0] as f32, q[1] as f32);
     let r = t.rect;
-    let n = 32;
+    let m = w.to_mesh(1, 1);
+    let (us, vs) = crate::warp_preview::samples(&m, xf.zoom as f64);
     let (tex, uv) = pv.texture.pick(painter.ctx(), xf.zoom * painter.ctx().pixels_per_point(), 1.0, t.interpolation == "nearest");
     let mut mesh = egui::Mesh::with_texture(tex);
     let tint = Color32::from_white_alpha((pv.opacity.clamp(0.0, 1.0) * 255.0) as u8);
-    for j in 0..=n {
-        for i in 0..=n {
-            let (u, v) = (i as f64 / n as f64, j as f64 / n as f64);
+    for v in &vs {
+        for u in &us {
             let (x, y) = w.map(r[0] + u * (r[2] - r[0]), r[1] + v * (r[3] - r[1]));
-            mesh.vertices.push(egui::epaint::Vertex { pos: xf.to_screen(x as f32, y as f32), uv: pos2(u as f32 * uv[0], v as f32 * uv[1]), color: tint });
+            mesh.vertices.push(egui::epaint::Vertex { pos: pos2(x as f32, y as f32), uv: pos2(*u as f32 * uv[0], *v as f32 * uv[1]), color: tint });
         }
     }
-    for j in 0..n {
-        for i in 0..n {
-            let a = (j * (n + 1) + i) as u32;
-            mesh.add_triangle(a, a + 1, a + n as u32 + 2);
-            mesh.add_triangle(a, a + n as u32 + 2, a + n as u32 + 1);
-        }
+    let pos: Vec<[f32; 2]> = mesh.vertices.iter().map(|v| [v.pos.x, v.pos.y]).collect();
+    let rest: Vec<[f32; 2]> = vs.iter().flat_map(|v| us.iter().map(move |u| [(r[0] + u * (r[2] - r[0])) as f32, (r[1] + v * (r[3] - r[1])) as f32])).collect();
+    mesh.indices = crate::warp_preview::triangle_order(&pos, &rest, us.len());
+    painter.add(clip_to_canvas(mesh, canvas_size(pv), |p| xf.to_screen(p.x, p.y)));
+    if let Some(a) = &pv.above {
+        a.draw(painter, xf);
     }
-    painter.add(mesh);
     let accent = crate::theme::Tokens::get(painter.ctx()).accent;
     let line = Stroke::new(1.0, accent);
     let thin = Stroke::new(0.75, accent.gamma_multiply(0.7));
-    let m = w.to_mesh(1, 1);
     let curve = |fixed_u: Option<f64>, fixed_v: Option<f64>| -> Vec<Pos2> {
         (0..=40)
             .map(|k| {
@@ -1205,27 +1810,7 @@ fn draw_warp(painter: &egui::Painter, xf: &ViewXform, t: &TransformSession, w: &
         painter.add(egui::Shape::line(curve(None, Some(win[1])), line));
     }
     if w.style == WarpStyle::Custom {
-        let (nx, ny) = (m.nx(), m.ny());
-        for j in 0..ny {
-            for i in 0..nx {
-                if !on_section_edge(i, j) {
-                    continue;
-                }
-                let p = scr(m.point(i, j));
-                let anchor = i.is_multiple_of(3) && j.is_multiple_of(3);
-                if anchor {
-                    let r = egui::Rect::from_center_size(p, vec2(7.0, 7.0));
-                    painter.rect_filled(r, 0.0, Color32::WHITE);
-                    painter.rect_stroke(r, 0.0, line, egui::StrokeKind::Inside);
-                } else {
-                    // Arm to the nearest anchor along the row/column.
-                    let (ai, aj) = if i.is_multiple_of(3) { (i, if j % 3 == 1 { j - 1 } else { j + 1 }) } else { (if i % 3 == 1 { i - 1 } else { i + 1 }, j) };
-                    painter.line_segment([scr(m.point(ai, aj)), p], line);
-                    painter.circle_filled(p, 3.5, Color32::WHITE);
-                    painter.circle_stroke(p, 3.5, line);
-                }
-            }
-        }
+        draw_warp_points(painter, &m, scr, pv, line);
     }
     if let Some((tool, p)) = guide {
         let (s, t) = m.param_at(p);
@@ -1267,27 +1852,48 @@ fn readout(t: &TransformSession) -> (f64, f64, f64, f64) {
 
 /// Width of the mode, cancel and commit cluster kept on the right of the options bar.
 const ACTIONS_W: f32 = 140.0;
+/// Width of the action buttons when they follow the Warp fields (one more than the box bar: Reset).
+const WARP_ACTIONS_W: f32 = 176.0;
 
-/// Options bar while transforming: reference point X/Y, W/H %, angle, interpolation, and, pinned
-/// to the right, the warp switch, cancel and commit.
+/// Reach of the reference point X/Y fields: the largest document side (`image.canvasSize`'s limit).
+const POSITION_LIMIT_PX: f32 = 300_000.0;
+/// Reach of the W/H fields. The engine takes any scale; this lets a 30 px layer span the largest
+/// document (#1267).
+const SCALE_LIMIT_PCT: f32 = 1_000_000.0;
+
+/// The W or H field's limit for a box side of `side` px: as far as the result stays within the
+/// largest document side, so a typed scale can't ask for an image too large to allocate.
+fn scale_limit_pct(side: f64) -> f32 {
+    let side = side.abs();
+    if !side.is_finite() || side < 1e-6 {
+        return SCALE_LIMIT_PCT;
+    }
+    ((f64::from(POSITION_LIMIT_PX) / side * 100.0) as f32).clamp(100.0, SCALE_LIMIT_PCT)
+}
+
+/// Options bar while transforming: the fields (reference point X/Y, W/H %, angle, interpolation,
+/// or the warp controls), then the mode switch, cancel and commit right after them. A bar too
+/// narrow for both pins the buttons to the right edge and clips the fields, so Commit and Cancel
+/// are always reachable.
 pub fn options_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
     let Some(t) = app.ui.transform.clone() else { return };
     let bar = ui.available_rect_before_wrap();
-    let split = (bar.right() - ACTIONS_W).max(bar.left());
+    let warping = t.warp.is_some();
+    let buttons_w = if warping { WARP_ACTIONS_W } else { ACTIONS_W };
+    let split = (bar.right() - buttons_w).max(bar.left());
     let fields = egui::Rect::from_min_max(bar.min, egui::pos2(split, bar.bottom()));
-    let actions = egui::Rect::from_min_max(egui::pos2(split, bar.top()), bar.max);
-    {
-        let mut row =
-            ui.new_child(egui::UiBuilder::new().id_salt("transform-fields").max_rect(fields).layout(egui::Layout::left_to_right(egui::Align::Center)));
-        row.set_clip_rect(fields);
-        if let Some(w) = t.warp.clone() {
-            warp_fields(app, &mut row, &w);
-        } else {
-            transform_fields(app, &mut row, &t);
-        }
+    let mut row = ui.new_child(egui::UiBuilder::new().id_salt("transform-fields").max_rect(fields).layout(egui::Layout::left_to_right(egui::Align::Center)));
+    row.set_clip_rect(fields);
+    if let Some(w) = t.warp.clone() {
+        warp_fields(app, &mut row, &w);
+    } else {
+        transform_fields(app, &mut row, &t);
     }
-    let mut row = ui.new_child(egui::UiBuilder::new().id_salt("transform-actions").max_rect(actions).layout(egui::Layout::right_to_left(egui::Align::Center)));
-    transform_actions(app, &mut row, t.warp.is_some());
+    crate::widgets::vline(&mut row, 22.0);
+    let start = row.min_rect().right().min(split);
+    let actions = egui::Rect::from_min_max(egui::pos2(start, bar.top()), egui::pos2(start + buttons_w, bar.bottom()));
+    let mut btns = ui.new_child(egui::UiBuilder::new().id_salt("transform-actions").max_rect(actions).layout(egui::Layout::right_to_left(egui::Align::Center)));
+    transform_actions(app, &mut btns, warping);
 }
 
 fn transform_fields(app: &mut PhotocraftApp, ui: &mut egui::Ui, t: &TransformSession) {
@@ -1299,9 +1905,9 @@ fn transform_fields(app: &mut PhotocraftApp, ui: &mut egui::Ui, t: &TransformSes
     let mut px = t.pivot[0] as f32;
     let mut py = t.pivot[1] as f32;
     lbl(ui, "X:");
-    let rx = crate::widgets::value_field(ui, &mut px, -30000.0..=30000.0, "px", 72.0);
+    let rx = crate::widgets::value_field(ui, &mut px, -POSITION_LIMIT_PX..=POSITION_LIMIT_PX, "px", 72.0);
     lbl(ui, "Y:");
-    let ry = crate::widgets::value_field(ui, &mut py, -30000.0..=30000.0, "px", 72.0);
+    let ry = crate::widgets::value_field(ui, &mut py, -POSITION_LIMIT_PX..=POSITION_LIMIT_PX, "px", 72.0);
     if (rx.changed() || ry.changed())
         && let Some(s) = app.ui.transform.as_mut()
     {
@@ -1311,8 +1917,9 @@ fn transform_fields(app: &mut PhotocraftApp, ui: &mut egui::Ui, t: &TransformSes
     }
     crate::widgets::vline(ui, 22.0);
     let (mut w, mut h) = (sx as f32, sy as f32);
+    let (wlim, hlim) = (scale_limit_pct(t.rect[2] - t.rect[0]), scale_limit_pct(t.rect[3] - t.rect[1]));
     lbl(ui, "W:");
-    let rw = crate::widgets::value_field(ui, &mut w, -10000.0..=10000.0, "%", 66.0);
+    let rw = crate::widgets::value_field(ui, &mut w, -wlim..=wlim, "%", 66.0);
     let link_id = egui::Id::new("transform-link");
     let mut link: bool = ui.data(|d| d.get_temp(link_id)).unwrap_or(true);
     if crate::icons::button(ui, if link { "link" } else { "unlink" }, 22.0, link, tl!("Maintain aspect ratio")).clicked() {
@@ -1320,10 +1927,12 @@ fn transform_fields(app: &mut PhotocraftApp, ui: &mut egui::Ui, t: &TransformSes
         ui.data_mut(|d| d.insert_temp(link_id, link));
     }
     lbl(ui, "H:");
-    let rh = crate::widgets::value_field(ui, &mut h, -10000.0..=10000.0, "%", 66.0);
+    let rh = crate::widgets::value_field(ui, &mut h, -hlim..=hlim, "%", 66.0);
     if rw.changed() || rh.changed() {
         let (kx, ky) = if link {
             let k = if rw.changed() { w as f64 / sx.max(1e-9) } else { h as f64 / sy.max(1e-9) };
+            // Linked, the other side follows: keep it within its own limit too.
+            let k = k.min(f64::from(wlim) / sx.abs().max(1e-9)).min(f64::from(hlim) / sy.abs().max(1e-9));
             (k, k)
         } else {
             (w as f64 / sx.max(1e-9), h as f64 / sy.max(1e-9))
@@ -1355,6 +1964,47 @@ fn warp_fields(app: &mut PhotocraftApp, ui: &mut egui::Ui, w: &Warp) {
     let lbl = |ui: &mut egui::Ui, s: &str| {
         ui.label(egui::RichText::new(s).color(tk.text_dim).size(12.0));
     };
+    // Split, Grid, then the warp style with its bend fields.
+    lbl(ui, tl!("Split:"));
+    let armed = app.transform_preview.as_ref().and_then(|p| p.split_tool);
+    for (tool, tip) in [
+        (SplitTool::Cross, tl!("Split Warp Crosswise")),
+        (SplitTool::Vertical, tl!("Split Warp Vertically")),
+        (SplitTool::Horizontal, tl!("Split Warp Horizontally")),
+    ] {
+        let on = armed == Some(tool);
+        if split_icon(ui, tool.icon(), tip, on).clicked()
+            && let Some(pv) = app.transform_preview.as_mut()
+        {
+            pv.split_tool = if on { None } else { Some(tool) };
+            pv.split_placing = false;
+            pv.split_pointer = None;
+            pv.split_quick = false;
+        }
+    }
+    crate::widgets::vline(ui, 22.0);
+    lbl(ui, tl!("Grid:"));
+    let mesh = w.mesh.clone().unwrap_or_else(|| BezierMesh::identity(w.bounds, 1, 1));
+    let mut grid = warp_grid_id(&mesh).to_string();
+    let opts = [
+        ("custom".to_string(), tl!("Custom")),
+        ("default".to_string(), tl!("Default")),
+        ("3".to_string(), tl!("3 x 3")),
+        ("4".to_string(), tl!("4 x 4")),
+        ("5".to_string(), tl!("5 x 5")),
+    ];
+    if crate::widgets::dropdown(ui, "warp-grid", &mut grid, &opts, 92.0)
+        && let Some(n) = match grid.as_str() {
+            "default" => Some(1),
+            "3" => Some(3),
+            "4" => Some(4),
+            "5" => Some(5),
+            _ => None,
+        }
+    {
+        let _ = edit_session_warp(app, "edit.transform.warpGrid", &json!({ "size": n }));
+    }
+    crate::widgets::vline(ui, 22.0);
     lbl(ui, tl!("Warp:"));
     let mut style = w.style;
     let opts: Vec<(WarpStyle, &str)> = WarpStyle::all().map(|s| (s, s.label())).collect();
@@ -1368,12 +2018,15 @@ fn warp_fields(app: &mut PhotocraftApp, ui: &mut egui::Ui, w: &Warp) {
             s => Warp { style: s, bend: if w.style.is_preset() { w.bend } else { 50.0 }, ..Warp::none(b) },
         });
     }
-    if w.style.is_preset() {
-        let mut vertical = w.vertical;
-        if crate::widgets::checkbox(ui, &mut vertical, tl!("Vertical")).changed()
+    // Orientation and the bend fields are always there, and only act on a preset style.
+    let preset = w.style.is_preset();
+    ui.add_enabled_ui(preset, |ui| {
+        let orient = crate::icons::button(ui, "arrow-left-right", 26.0, w.vertical, tl!("Vertical"));
+        orient.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, preset, "Change warp orientation"));
+        if orient.clicked()
             && let Some(Some(cur)) = app.ui.transform.as_mut().map(|t| t.warp.as_mut())
         {
-            cur.vertical = vertical;
+            cur.vertical = !cur.vertical;
         }
         let fields: [(&str, f64); 3] = [(tl!("Bend:"), w.bend), ("H:", w.h_distort), ("V:", w.v_distort)];
         for (k, (name, v)) in fields.iter().enumerate() {
@@ -1389,47 +2042,23 @@ fn warp_fields(app: &mut PhotocraftApp, ui: &mut egui::Ui, w: &Warp) {
                 }
             }
         }
-    } else {
-        crate::widgets::vline(ui, 22.0);
-        lbl(ui, tl!("Split:"));
-        let armed = app.transform_preview.as_ref().and_then(|p| p.split_tool);
-        for (tool, tip) in [
-            (SplitTool::Cross, tl!("Split Warp Crosswise")),
-            (SplitTool::Vertical, tl!("Split Warp Vertically")),
-            (SplitTool::Horizontal, tl!("Split Warp Horizontally")),
-        ] {
-            let on = armed == Some(tool);
-            if split_icon(ui, tool.icon(), tip, on).clicked()
-                && let Some(pv) = app.transform_preview.as_mut()
-            {
-                pv.split_tool = if on { None } else { Some(tool) };
-                pv.split_placing = false;
-                pv.split_pointer = None;
-                pv.split_quick = false;
-            }
-        }
-        crate::widgets::vline(ui, 22.0);
-        lbl(ui, tl!("Grid:"));
-        let mesh = w.mesh.clone().unwrap_or_else(|| BezierMesh::identity(w.bounds, 1, 1));
-        let mut grid = warp_grid_id(&mesh).to_string();
-        let opts = [
-            ("custom".to_string(), tl!("Custom")),
-            ("default".to_string(), tl!("Default")),
-            ("3".to_string(), tl!("3 x 3")),
-            ("4".to_string(), tl!("4 x 4")),
-            ("5".to_string(), tl!("5 x 5")),
-        ];
-        if crate::widgets::dropdown(ui, "warp-grid", &mut grid, &opts, 92.0)
-            && let Some(n) = match grid.as_str() {
-                "default" => Some(1),
-                "3" => Some(3),
-                "4" => Some(4),
-                "5" => Some(5),
-                _ => None,
-            }
-        {
-            let _ = edit_session_warp(app, "edit.transform.warpGrid", &json!({ "size": n }));
-        }
+    });
+}
+
+/// Back to the untouched box: the default one-patch grid over the box, no bend.
+pub fn reset_warp(app: &mut PhotocraftApp) {
+    let Some(t) = app.ui.transform.as_mut() else { return };
+    if t.warp.is_none() {
+        return;
+    }
+    let b = t.rect;
+    t.warp = Some(Warp::custom(BezierMesh::identity(b, 1, 1), b));
+    if let Some(pv) = app.transform_preview.as_mut() {
+        pv.warp_drag = None;
+        pv.split_tool = None;
+        pv.split_pointer = None;
+        pv.split_placing = false;
+        pv.split_quick = false;
     }
 }
 
@@ -1504,6 +2133,13 @@ fn transform_actions(app: &mut PhotocraftApp, ui: &mut egui::Ui, warping: bool) 
     if cancel_btn.clicked() {
         cancel(app);
     }
+    if warping {
+        let reset = crate::icons::button(ui, "undo-2", 26.0, false, tl!("Reset"));
+        reset.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, "Reset warp"));
+        if reset.clicked() {
+            reset_warp(app);
+        }
+    }
     crate::widgets::vline(ui, 22.0);
     let mode = crate::icons::button(ui, "grid-3x3", 26.0, warping, tl!("Switch between free transform and warp modes"));
     mode.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, "Switch between free transform and warp modes"));
@@ -1554,9 +2190,32 @@ mod tests {
             warp: None,
             selection: false,
             target: None,
+            path: None,
             made: None,
             mode: Default::default(),
         }
+    }
+
+    #[test]
+    fn rotate_feedback_only_appears_just_outside_corners() {
+        let mut t = session();
+        assert!(near_rotate_corner(&t, [-18.0, -18.0], 12.0));
+        assert!(!near_rotate_corner(&t, [50.0, 25.0], 12.0), "inside moves the box");
+        assert!(!near_rotate_corner(&t, [500.0, 500.0], 12.0), "far outside stays generic");
+        assert!(!near_rotate_corner(&t, [2.0, 2.0], 12.0), "corner handle resizes");
+        t.mode = TransformMode::Distort;
+        assert!(!near_rotate_corner(&t, [-18.0, -18.0], 12.0));
+    }
+
+    #[test]
+    fn angle_readout_tracks_rotated_quad_and_handles_degenerate_edges() {
+        let mut t = session();
+        assert_eq!(rotation_degrees(t.quad), 0.0);
+        let pivot = t.pivot;
+        t.quad = t.quad.map(|q| [pivot[0] - (q[1] - pivot[1]), pivot[1] + (q[0] - pivot[0])]);
+        assert!((rotation_degrees(t.quad) - 90.0).abs() < 1e-9);
+        t.quad[1] = t.quad[0];
+        assert_eq!(rotation_degrees(t.quad), 0.0);
     }
 
     #[test]
@@ -1592,6 +2251,140 @@ mod tests {
         h.get_by_label("Cancel transform").click();
         h.run_steps(2);
         assert!(h.state().ui.transform.is_none());
+    }
+
+    #[test]
+    fn free_transform_bar_buttons_follow_the_fields_on_a_wide_bar() {
+        use egui_kittest::Harness;
+        use egui_kittest::kittest::Queryable;
+        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        app.ui.transform = Some(session());
+        let width = 2400.0;
+        let mut h = Harness::builder().with_size(vec2(width, 48.0)).build_ui_state(
+            |ui, app: &mut PhotocraftApp| {
+                if !ui.ctx().fonts(|f| f.families().contains(&egui::FontFamily::Name("medium".into()))) {
+                    return;
+                }
+                ui.horizontal_centered(|ui| options_bar(app, ui));
+            },
+            app,
+        );
+        PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::Studio);
+        h.run_steps(6);
+        let commit = h.get_by_label("Commit transform").rect();
+        assert!(commit.right() < width * 0.7, "commit sits next to the fields, not at the far right: {commit:?}");
+    }
+
+    #[test]
+    fn warp_bar_buttons_follow_the_fields_on_a_wide_bar() {
+        use egui_kittest::Harness;
+        use egui_kittest::kittest::Queryable;
+        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        app.ui.transform = Some(session());
+        let width = 2000.0;
+        let mut h = Harness::builder().with_size(vec2(width, 48.0)).build_ui_state(
+            |ui, app: &mut PhotocraftApp| {
+                if !ui.ctx().fonts(|f| f.families().contains(&egui::FontFamily::Name("medium".into()))) {
+                    return;
+                }
+                ui.horizontal_centered(|ui| options_bar(app, ui));
+            },
+            app,
+        );
+        PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::Studio);
+        h.run_steps(6);
+        h.get_by_label("Switch between free transform and warp modes").click();
+        h.run_steps(4);
+        assert!(h.state().ui.transform.as_ref().unwrap().warp.is_some());
+        let commit = h.get_by_label("Commit transform").rect();
+        assert!(commit.right() < width / 2.0, "commit sits next to the fields, not at the far right: {commit:?}");
+        let reset = h.get_by_label("Reset warp").rect();
+        assert!(reset.right() < commit.left() + 1.0, "reset is left of commit");
+        h.get_by_label("Reset warp").click();
+        h.run_steps(2);
+        assert!(h.state().ui.transform.as_ref().unwrap().warp.as_ref().unwrap().is_identity());
+    }
+
+    /// Types `text` + Enter into the `n`th numeric field of the transform bar (X, Y, W, H, angle…).
+    fn type_into_bar_field(n: usize, text: &str) -> TransformSession {
+        use egui_kittest::Harness;
+        use egui_kittest::kittest::Queryable;
+        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        app.ui.transform = Some(session());
+        let mut h = Harness::builder().with_size(vec2(900.0, 48.0)).build_ui_state(
+            |ui, app: &mut PhotocraftApp| {
+                if !ui.ctx().fonts(|f| f.families().contains(&egui::FontFamily::Name("medium".into()))) {
+                    return;
+                }
+                ui.horizontal_centered(|ui| options_bar(app, ui));
+            },
+            app,
+        );
+        PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::Studio);
+        h.run_steps(6);
+        h.get_all_by_role(egui::accesskit::Role::SpinButton).nth(n).unwrap().click();
+        h.run();
+        for c in text.chars() {
+            h.event(egui::Event::Text(c.to_string()));
+            h.run();
+        }
+        h.key_press(egui::Key::Enter);
+        h.run_steps(2);
+        h.state().ui.transform.clone().unwrap()
+    }
+
+    #[test]
+    fn editing_the_contents_of_a_dropped_file_keeps_the_layer() {
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+
+        app.session.execute("layer.smartObjects.convertToSmartObject", json!({})).unwrap();
+        app.sync_views();
+
+        app.session.execute("layer.duplicate", json!({"inPlace": true})).unwrap();
+        app.sync_views();
+
+        let parent_id = app.session.active().unwrap().doc.id;
+        let placed_layer = app.session.active().unwrap().active_layer.unwrap();
+
+        begin_placed(&mut app, &egui::Context::default()).unwrap();
+
+        app.session.execute("layer.smartObjects.editContents", json!({})).unwrap();
+
+        assert_ne!(app.session.active().unwrap().doc.id, parent_id, "Edit Contents should activate the child document");
+
+        end_if_left(&mut app);
+
+        let parent = app.session.documents().iter().find(|st| st.doc.id == parent_id);
+
+        assert!(parent.is_some_and(|st| st.doc.layer(placed_layer).is_some()), "the placed Smart Object must remain in the parent document");
+        assert!(app.ui.transform.is_none(), "the transform session should end");
+        assert!(app.transform_preview.is_none(), "the transform preview should end");
+    }
+
+    /// Large documents need scales past 10000% and positions past 30000 px (#1267).
+    #[test]
+    fn transform_fields_reach_large_documents() {
+        let t = type_into_bar_field(2, "15000");
+        let (sx, sy, _, _) = readout(&t);
+        assert!((sx - 15000.0).abs() < 0.5 && (sy - 15000.0).abs() < 0.5, "{sx} {sy}");
+        assert!((t.quad[1][0] - t.quad[0][0] - 15_000.0).abs() < 1.0, "{:?}", t.quad);
+        let t = type_into_bar_field(0, "250000");
+        assert!((t.pivot[0] - 250_000.0).abs() < 1.0, "{:?}", t.pivot);
+    }
+
+    /// A typed scale stops where the box reaches the largest document side, not past what can be
+    /// allocated: the 100 × 50 px test box tops out at 300000 % wide.
+    #[test]
+    fn typed_scales_stay_within_the_largest_document() {
+        assert_eq!(scale_limit_pct(20.0), SCALE_LIMIT_PCT);
+        assert_eq!(scale_limit_pct(3000.0), 10_000.0);
+        assert_eq!(scale_limit_pct(1e9), 100.0);
+        assert_eq!(scale_limit_pct(0.0), SCALE_LIMIT_PCT);
+        assert_eq!(scale_limit_pct(f64::NAN), SCALE_LIMIT_PCT);
+        let t = type_into_bar_field(2, "99999999");
+        let (sx, sy, _, _) = readout(&t);
+        let side = t.rect[2] - t.rect[0];
+        assert!(sx <= f64::from(scale_limit_pct(side)) + 0.5 && sy <= f64::from(scale_limit_pct(t.rect[3] - t.rect[1])) + 0.5, "{sx} {sy}");
     }
 
     fn drag(s: &mut TransformSession, from: [f64; 2], to: [f64; 2], mods: egui::Modifiers) {
@@ -1735,14 +2528,89 @@ mod tests {
         assert!(close(s.quad, corners([0.0, 0.0, 200.0, 60.0])), "shift = free: {:?}", s.quad);
     }
 
+    /// Photoshop CC 2019 and later: an edge scales proportionally too, about the middle of the
+    /// opposite edge, and ⇧ stretches its one axis instead.
     #[test]
-    fn alt_scales_about_reference_point_and_edges_scale_one_axis() {
+    fn edge_drag_scales_proportionally_about_the_opposite_edge() {
+        // Right edge: 100 × 50 → 150 × 75; the left edge's middle (0, 25) stays, and so does the
+        // reference point's place in the box (its centre).
+        let mut s = session();
+        drag(&mut s, [100.0, 25.0], [150.0, 25.0], egui::Modifiers::NONE);
+        assert!(close(s.quad, corners([0.0, -12.5, 150.0, 62.5])), "{:?}", s.quad);
+        assert!(near(s.pivot, [75.0, 25.0]), "{:?}", s.pivot);
+        // Top edge to twice the height: twice the width, about x = 50.
+        let mut s = session();
+        drag(&mut s, [50.0, 0.0], [50.0, -50.0], egui::Modifiers::NONE);
+        assert!(close(s.quad, corners([-50.0, -50.0, 150.0, 50.0])), "{:?}", s.quad);
+        // Past the opposite edge: the dragged axis flips, the other only shrinks.
+        let mut s = session();
+        drag(&mut s, [100.0, 25.0], [-50.0, 25.0], egui::Modifiers::NONE);
+        assert!(close(s.quad, corners([0.0, 12.5, -50.0, 37.5])), "{:?}", s.quad);
+        // ⇧: one axis.
+        let mut s = session();
+        drag(&mut s, [50.0, 50.0], [50.0, 80.0], egui::Modifiers::SHIFT);
+        assert!(close(s.quad, corners([0.0, 0.0, 100.0, 80.0])), "{:?}", s.quad);
+    }
+
+    #[test]
+    fn alt_scales_edges_about_reference_point() {
         let mut s = session();
         drag(&mut s, [100.0, 25.0], [150.0, 25.0], egui::Modifiers::ALT);
-        assert!(close(s.quad, corners([-50.0, 0.0, 150.0, 50.0])), "{:?}", s.quad);
+        assert!(close(s.quad, corners([-50.0, -25.0, 150.0, 75.0])), "{:?}", s.quad);
+        // ⌥⇧: one axis, about the reference point.
         let mut s = session();
-        drag(&mut s, [50.0, 50.0], [50.0, 80.0], egui::Modifiers::NONE);
-        assert!(close(s.quad, corners([0.0, 0.0, 100.0, 80.0])), "{:?}", s.quad);
+        drag(&mut s, [100.0, 25.0], [150.0, 25.0], egui::Modifiers { alt: true, shift: true, ..Default::default() });
+        assert!(close(s.quad, corners([-50.0, 0.0, 150.0, 50.0])), "{:?}", s.quad);
+    }
+
+    fn near(a: [f64; 2], b: [f64; 2]) -> bool {
+        (a[0] - b[0]).abs() < 1e-6 && (a[1] - b[1]).abs() < 1e-6
+    }
+
+    /// The reference point is attached to the box (#1329): scaling, skewing, distorting and
+    /// perspective carry it along to the same place within the box; ⌥-scaling about it and
+    /// rotating about it leave it put.
+    #[test]
+    fn the_reference_point_moves_with_the_box() {
+        // Corner scale down: the centre stays the centre.
+        let mut s = session();
+        drag(&mut s, [100.0, 50.0], [50.0, 25.0], egui::Modifiers::NONE);
+        assert!(close(s.quad, corners([0.0, 0.0, 50.0, 25.0])), "{:?}", s.quad);
+        assert!(near(s.pivot, [25.0, 12.5]), "{:?}", s.pivot);
+        // A reference point set to a corner stays at that corner; an edge drag carries it too.
+        let mut s = session();
+        s.pivot = [100.0, 0.0];
+        drag(&mut s, [50.0, 50.0], [50.0, 80.0], egui::Modifiers::SHIFT);
+        assert!(near(s.pivot, [100.0, 0.0]), "{:?}", s.pivot);
+        drag(&mut s, [100.0, 40.0], [150.0, 40.0], egui::Modifiers::SHIFT);
+        assert!(near(s.pivot, s.quad[1]), "{:?} {:?}", s.pivot, s.quad);
+        drag(&mut s, [150.0, 40.0], [180.0, 40.0], egui::Modifiers::NONE);
+        assert!(near(s.pivot, s.quad[1]), "proportional edge drag: {:?} {:?}", s.pivot, s.quad);
+        // Skew: the centre follows the box's centre.
+        let mut s = session();
+        drag(&mut s, [50.0, 0.0], [70.0, 0.0], egui::Modifiers::COMMAND);
+        assert!(near(s.pivot, [60.0, 25.0]), "{:?}", s.pivot);
+        // Distort: a corner reference point stays on its corner.
+        let mut s = session();
+        s.pivot = [0.0, 50.0];
+        drag(&mut s, [0.0, 50.0], [-20.0, 70.0], egui::Modifiers::COMMAND);
+        assert!(near(s.pivot, [-20.0, 70.0]), "{:?}", s.pivot);
+        // Perspective: the centre stays inside the box, on the box's own centre lines.
+        let mut s = session();
+        drag(&mut s, [100.0, 0.0], [120.0, 0.0], egui::Modifiers { command: true, alt: true, shift: true, ..Default::default() });
+        let h = Homography::rect_to_quad([0.0, 0.0, 1.0, 1.0], s.quad).unwrap();
+        let (x, y) = h.apply(0.5, 0.5);
+        assert!(near(s.pivot, [x, y]), "{:?} vs {:?}", s.pivot, [x, y]);
+        // ⌥ scales about the reference point: it stays where it is.
+        let mut s = session();
+        drag(&mut s, [100.0, 50.0], [150.0, 75.0], egui::Modifiers::ALT);
+        assert!(near(s.pivot, [50.0, 25.0]), "{:?}", s.pivot);
+        // Rotation turns about it.
+        let mut s = session();
+        drag(&mut s, [150.0, 25.0], [50.0, 125.0], egui::Modifiers::NONE);
+        assert!(near(s.pivot, [50.0, 25.0]), "{:?}", s.pivot);
+        // From a box collapsed to a point there is no place within it to keep: it stays put.
+        assert_eq!(carry_pivot([[0.0, 0.0]; 4], corners([0.0, 0.0, 10.0, 10.0]), [5.0, 5.0]), [5.0, 5.0]);
     }
 
     #[test]
@@ -1828,6 +2696,164 @@ mod tests {
         assert_eq!(app.session.active().unwrap().doc.layers.len(), layers);
     }
 
+    /// #1099: cancel, frame cleanup and a commit before the next frame all belong to the
+    /// original document, including after tab reordering and with shared layer IDs.
+    #[test]
+    fn cancelling_a_copy_after_switching_documents_preserves_the_active_document() {
+        for reorder in [false, true] {
+            for finish in [cancel, end_if_left, commit] {
+                let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+                let original = app.session.active().unwrap().doc.clone();
+                let steps = app.session.active().unwrap().history.past_len();
+                begin_copy(&mut app, &egui::Context::default()).unwrap();
+                app.ui.transform.as_mut().unwrap().quad = corners([12.0, 8.0, 28.0, 24.0]);
+                // Cloning a document deliberately shares layer IDs, but gets a fresh document ID.
+                let other = app.session.active().unwrap().doc.as_ref().clone();
+                app.session.add_document(other, None);
+                app.run("layer.new.layer", json!({})).unwrap();
+                app.run("layer.new.layer", json!({})).unwrap();
+                assert!(app.session.undo());
+                let st = app.session.active().unwrap();
+                let (doc, history, redo, revision, layer) =
+                    (st.doc.clone(), st.history.entries(), st.history.redo_labels().map(str::to_owned).collect::<Vec<_>>(), st.revision, st.active_layer);
+                if reorder {
+                    app.session.move_document(0, 1);
+                }
+                finish(&mut app);
+                assert!(app.ui.transform.is_none() && app.transform_preview.is_none());
+                let st = app.session.active().unwrap();
+                assert!(Arc::ptr_eq(&st.doc, &doc), "the selected document's pixels are unchanged");
+                assert_eq!((st.history.entries(), st.revision, st.active_layer), (history, revision, layer));
+                assert_eq!(st.history.redo_labels().collect::<Vec<_>>(), redo);
+                let origin = app.session.documents().iter().find(|st| st.doc.id == original.id).unwrap();
+                assert!(Arc::ptr_eq(&origin.doc, &original), "only the originating copy is undone");
+                assert_eq!(origin.history.past_len(), steps);
+                assert!(!origin.history.can_redo());
+            }
+        }
+    }
+
+    #[test]
+    fn cancelling_a_copy_after_its_document_closes_does_not_undo_another_document() {
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        begin_copy(&mut app, &egui::Context::default()).unwrap();
+        app.run("file.new", json!({"width": 64, "height": 64})).unwrap();
+        app.run("layer.new.layer", json!({})).unwrap();
+        let doc = app.session.active().unwrap().doc.clone();
+        let steps = app.session.active().unwrap().history.past_len();
+        app.session.close(0);
+        end_if_left(&mut app);
+        let st = app.session.active().unwrap();
+        assert!(Arc::ptr_eq(&st.doc, &doc));
+        assert_eq!(st.history.past_len(), steps);
+        assert!(app.ui.transform.is_none() && app.transform_preview.is_none());
+    }
+
+    #[test]
+    fn cancelling_an_already_undone_copy_preserves_history_and_redo() {
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        begin_copy(&mut app, &egui::Context::default()).unwrap();
+        assert!(app.session.undo());
+        let st = app.session.active().unwrap();
+        let (doc, history, redo) = (st.doc.clone(), st.history.entries(), st.history.redo_labels().map(str::to_owned).collect::<Vec<_>>());
+        end_if_left(&mut app);
+        let st = app.session.active().unwrap();
+        assert!(Arc::ptr_eq(&st.doc, &doc));
+        assert_eq!(st.history.entries(), history);
+        assert_eq!(st.history.redo_labels().collect::<Vec<_>>(), redo);
+        assert!(app.ui.transform.is_none() && app.transform_preview.is_none());
+    }
+
+    #[test]
+    fn cancelling_a_copy_does_not_undo_a_later_edit() {
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        begin_copy(&mut app, &egui::Context::default()).unwrap();
+        app.run("layer.new.layer", json!({})).unwrap();
+        let st = app.session.active().unwrap();
+        let (doc, history) = (st.doc.clone(), st.history.entries());
+        cancel(&mut app);
+        let st = app.session.active().unwrap();
+        assert!(Arc::ptr_eq(&st.doc, &doc));
+        assert_eq!(st.history.entries(), history);
+    }
+
+    /// #1384: the Layers panel's opacity, fill, visibility and blend edits to the moving layer
+    /// and to the others show while the box is open, and survive the commit.
+    #[test]
+    fn edits_during_a_transform_show_in_the_preview() {
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        app.ui.tool = Tool::Move;
+        let bg = app.session.active().unwrap().doc.layers[0].id;
+        let mut h = egui_kittest::Harness::builder().with_size(vec2(1200.0, 800.0)).with_max_steps(64).build_eframe(move |cc| {
+            PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
+            app
+        });
+        h.run_steps(4);
+        let ctx = h.ctx.clone();
+        crate::menus::invoke(h.state_mut(), &ctx, "edit.freeTransform", json!({})).unwrap();
+        if let Some(t) = h.state_mut().ui.transform.as_mut() {
+            t.quad = t.quad.map(|[x, y]| [x + 20.0, y]);
+        }
+        h.run_steps(2);
+        let layer = h.state().ui.transform.as_ref().unwrap().layer;
+        assert_eq!(h.state().transform_preview.as_ref().unwrap().opacity, 1.0);
+
+        h.state_mut().run("layer.setProps", json!({"layer": layer, "opacity": 0.5, "fill": 0.6, "blend": "Multiply"})).unwrap();
+        h.state_mut().run("layer.setProps", json!({"layer": bg.0, "visible": false})).unwrap();
+        h.run_steps(2);
+        let app = h.state();
+        assert!(app.ui.transform.is_some(), "the edits leave the box open");
+        let pv = app.transform_preview.as_ref().unwrap();
+        assert!((pv.opacity - 0.3).abs() < 1e-6, "the moving pixels take the new opacity × fill: {}", pv.opacity);
+        assert!(!pv.doc.layer(bg).unwrap().visible, "the document under the box follows");
+        let moving = pv.doc.layer(LayerId(layer)).unwrap();
+        assert!(!moving.visible, "the moving layer stays out of the document under the box");
+        assert_eq!(moving.blend, photocraft_color::BlendMode::Multiply);
+
+        h.state_mut().run("layer.setProps", json!({"layer": layer, "visible": false})).unwrap();
+        h.run_steps(2);
+        assert_eq!(h.state().transform_preview.as_ref().unwrap().opacity, 0.0, "hiding the layer hides the moving pixels");
+        h.state_mut().run("layer.setProps", json!({"layer": layer, "visible": true})).unwrap();
+
+        commit(h.state_mut());
+        let st = h.state().session.active().unwrap();
+        let l = st.doc.layer(LayerId(layer)).unwrap();
+        assert_eq!((l.opacity, l.fill_opacity, l.blend), (0.5, 0.6, photocraft_color::BlendMode::Multiply));
+        assert_eq!(l.surface().unwrap().content_bounds(), photocraft_geom::Rect::new(28, 8, 44, 24));
+    }
+
+    /// #1384 with a selection: the pixels it leaves behind stay in the rebuilt preview without
+    /// the lifted ones, and take the layer's new properties.
+    #[test]
+    fn edits_during_a_selection_transform_keep_the_lifted_pixels_out() {
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        app.ui.tool = Tool::Move;
+        app.session.execute("select.rect", json!({"x": 8, "y": 8, "width": 8, "height": 16})).unwrap();
+        let mut h = egui_kittest::Harness::builder().with_size(vec2(1200.0, 800.0)).with_max_steps(64).build_eframe(move |cc| {
+            PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
+            app
+        });
+        h.run_steps(4);
+        let ctx = h.ctx.clone();
+        crate::menus::invoke(h.state_mut(), &ctx, "edit.freeTransform", json!({})).unwrap();
+        h.run_steps(2);
+        let layer = LayerId(h.state().ui.transform.as_ref().unwrap().layer);
+        // Alpha in the preview's copy of the layer: in the lifted half (x 8..16) and the rest (16..24).
+        let left = |app: &PhotocraftApp| {
+            let s = app.transform_preview.as_ref().unwrap().doc.layer(layer).unwrap().surface().unwrap().clone();
+            (s.sample_channel(10, 12, 3), s.sample_channel(20, 12, 3))
+        };
+        assert_eq!(left(h.state()), (0.0, 1.0), "the selected half is lifted out");
+
+        h.state_mut().run("layer.setProps", json!({"layer": layer.0, "opacity": 0.4})).unwrap();
+        h.run_steps(2);
+        let app = h.state();
+        assert_eq!(left(app), (0.0, 1.0), "still without the lifted pixels");
+        let moving = app.transform_preview.as_ref().unwrap().doc.layer(layer).unwrap();
+        assert!(moving.visible && (moving.opacity - 0.4).abs() < 1e-6, "what stays behind is drawn with the new opacity");
+        assert!((app.transform_preview.as_ref().unwrap().opacity - 0.4).abs() < 1e-6);
+    }
+
     /// #670: picking another tool applies the open transform, as one history step.
     #[test]
     fn picking_another_tool_applies_the_transform() {
@@ -1854,6 +2880,56 @@ mod tests {
         let st = app.session.active().unwrap();
         assert_eq!(st.history.past_len(), steps + 1);
         assert_eq!(st.doc.layer(st.active_layer.unwrap()).unwrap().surface().unwrap().content_bounds(), photocraft_geom::Rect::new(28, 8, 44, 24));
+    }
+
+    /// #1400: selecting another layer while transforming applies the box to the layer it was on,
+    /// and the next transform starts on the newly selected layer.
+    #[test]
+    fn selecting_another_layer_applies_the_transform_and_the_next_one_follows() {
+        let ctx = egui::Context::default();
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        let first = app.session.active().unwrap().active_layer.unwrap();
+        app.run("layer.new.layer", json!({})).unwrap();
+        app.session
+            .edit("paint", |doc, a| {
+                doc.layer_mut(a.unwrap()).unwrap().surface_mut().unwrap().fill_rect(photocraft_geom::Rect::new(40, 40, 56, 60), &[0.0, 0.0, 1.0, 1.0]);
+                Ok(())
+            })
+            .unwrap();
+        let second = app.session.active().unwrap().active_layer.unwrap();
+        app.run("layer.select", json!({"layer": first.0})).unwrap();
+        app.ui.tool = Tool::Move;
+        crate::menus::invoke(&mut app, &ctx, "edit.freeTransform", json!({})).unwrap();
+        if let Some(t) = app.ui.transform.as_mut() {
+            t.quad = t.quad.map(|[x, y]| [x + 20.0, y]);
+        }
+        let steps = app.session.active().unwrap().history.past_len();
+        app.run("layer.select", json!({"layer": second.0})).unwrap();
+        end_if_left(&mut app);
+        assert!(app.ui.transform.is_none() && app.transform_preview.is_none(), "the box left the old layer");
+        let st = app.session.active().unwrap();
+        assert_eq!(st.active_layer, Some(second));
+        assert_eq!(st.history.past_len(), steps + 1, "applied as one step");
+        let bounds = |id: LayerId| st.doc.layer(id).unwrap().surface().unwrap().content_bounds();
+        assert_eq!(bounds(first), photocraft_geom::Rect::new(28, 8, 44, 24), "applied to the layer it was on");
+        assert_eq!(bounds(second), photocraft_geom::Rect::new(40, 40, 56, 60), "the new layer is untouched");
+        crate::menus::invoke(&mut app, &ctx, "edit.freeTransform", json!({})).unwrap();
+        let t = app.ui.transform.as_ref().unwrap();
+        assert_eq!((t.layer, t.rect), (second.0, [40.0, 40.0, 56.0, 60.0]), "the next box is on the selected layer");
+    }
+
+    /// Transform Selection moves the selection outline, not a layer: selecting a layer keeps it open.
+    #[test]
+    fn selecting_another_layer_keeps_a_transform_selection_open() {
+        let ctx = egui::Context::default();
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        let first = app.session.active().unwrap().active_layer.unwrap();
+        app.run("layer.new.layer", json!({})).unwrap();
+        app.run("select.all", json!({})).unwrap();
+        begin_selection(&mut app, &ctx).unwrap();
+        app.run("layer.select", json!({"layer": first.0})).unwrap();
+        end_if_left(&mut app);
+        assert!(app.ui.transform.as_ref().is_some_and(|t| t.selection));
     }
 
     /// A control-channel stroke that picks another tool applies the box first, then paints.
@@ -1907,27 +2983,66 @@ mod tests {
     }
 
     #[test]
-    fn the_legacy_preference_swaps_corner_proportions() {
+    fn a_distort_corner_stops_before_the_box_folds_over() {
+        // #1323: dragging a corner across the opposite diagonal stops short of it, so the box
+        // stays convex instead of folding into a bow tie.
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        app.ui.extras.snap = false;
+        let ctx = egui::Context::default();
+        crate::menus::invoke(&mut app, &ctx, "edit.transform.distort", json!({})).unwrap();
+        let q0 = app.ui.transform.as_ref().unwrap().quad;
+        // Top-left far past the bottom-right corner.
+        press_drag(&mut app, q0[0], [60.0, 60.0], egui::Modifiers::NONE);
+        let q = app.ui.transform.as_ref().unwrap().quad;
+        let sign = turns(&q0)[0].signum();
+        assert!(turns(&q).iter().all(|t| t * sign > 0.0), "still convex: {q:?}");
+        assert_eq!([q[1], q[2], q[3]], [q0[1], q0[2], q0[3]], "the other corners stay put");
+        // It went as far as it could along the drag: up to the TR–BL diagonal (x + y = 32).
+        assert!(q[0][0] > 15.0 && q[0][0] < 16.0 && (q[0][0] - q[0][1]).abs() < 1e-6, "{q:?}");
+        // A drag that keeps the box convex is not held back.
+        press_drag(&mut app, q[0], [2.0, 4.0], egui::Modifiers::NONE);
+        assert_eq!(app.ui.transform.as_ref().unwrap().quad[0], [2.0, 4.0]);
+    }
+
+    #[test]
+    fn keep_convex_leaves_a_degenerate_start_alone() {
+        let flat = [[0.0, 0.0], [1.0, 0.0], [2.0, 0.0], [3.0, 0.0]];
+        let to = [[5.0, 5.0], [1.0, 0.0], [2.0, 0.0], [3.0, 0.0]];
+        assert_eq!(keep_convex(flat, to), to);
+        let nan = [[f64::NAN, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]];
+        let _ = keep_convex(nan, to);
+    }
+
+    #[test]
+    fn the_legacy_preference_swaps_corner_proportions_and_stretches_edges() {
         let none = egui::Modifiers::NONE;
         let corner = Hit::Corner(1);
+        let edge = Hit::Edge(1);
         // Default: proportional (⇧ frees), so the drag keeps its keys.
-        assert!(!corner_mods(false, corner, none).shift);
-        // Legacy: free by default, ⇧ keeps proportions; edges and ⌘ gestures are left alone.
-        assert!(corner_mods(true, corner, none).shift);
-        assert!(!corner_mods(true, corner, egui::Modifiers::SHIFT).shift);
-        assert!(!corner_mods(true, Hit::Edge(1), none).shift);
-        assert!(!corner_mods(true, corner, egui::Modifiers::COMMAND).shift);
-        // Through the box: a plain corner drag on a 16×16 square.
+        assert!(!legacy_mods(false, corner, none).shift);
+        assert!(!legacy_mods(false, edge, none).shift);
+        // Legacy: corners free by default, ⇧ keeps proportions; edges always stretch one axis;
+        // ⌘ gestures are left alone.
+        assert!(legacy_mods(true, corner, none).shift);
+        assert!(!legacy_mods(true, corner, egui::Modifiers::SHIFT).shift);
+        assert!(legacy_mods(true, edge, none).shift);
+        assert!(legacy_mods(true, edge, egui::Modifiers::SHIFT).shift);
+        assert!(!legacy_mods(true, corner, egui::Modifiers::COMMAND).shift);
+        assert!(!legacy_mods(true, edge, egui::Modifiers::COMMAND).shift);
+        // Through the box: a plain corner drag, then a plain right-edge drag, on a 16×16 square.
         for (legacy, proportional) in [(false, true), (true, false)] {
-            let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
-            app.ui.extras.snap = false;
-            app.session.prefs.edit(|p| p.general.use_legacy_free_transform = legacy);
-            begin(&mut app, &egui::Context::default()).unwrap();
-            let q0 = app.ui.transform.as_ref().unwrap().quad;
-            press_drag(&mut app, q0[2], [q0[2][0] + 16.0, q0[2][1]], none);
-            let q = app.ui.transform.as_ref().unwrap().quad;
-            let (w, h) = (q[2][0] - q[0][0], q[2][1] - q[0][1]);
-            assert_eq!((w - h).abs() < 1e-6, proportional, "legacy {legacy}: {w} × {h}");
+            for at_edge in [false, true] {
+                let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+                app.ui.extras.snap = false;
+                app.session.prefs.edit(|p| p.general.use_legacy_free_transform = legacy);
+                begin(&mut app, &egui::Context::default()).unwrap();
+                let q0 = app.ui.transform.as_ref().unwrap().quad;
+                let from = if at_edge { [q0[1][0], (q0[1][1] + q0[2][1]) / 2.0] } else { q0[2] };
+                press_drag(&mut app, from, [from[0] + 16.0, from[1]], none);
+                let q = app.ui.transform.as_ref().unwrap().quad;
+                let (w, h) = (q[2][0] - q[0][0], q[2][1] - q[0][1]);
+                assert_eq!((w - h).abs() < 1e-6, proportional, "legacy {legacy}, edge {at_edge}: {w} × {h}");
+            }
         }
     }
 
@@ -1944,6 +3059,36 @@ mod tests {
         assert_eq!(app.ui.transform.as_ref().unwrap().mode, TransformMode::Distort);
     }
 
+    #[test]
+    fn right_click_menu_warp_row_enters_warp_mode() {
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        let ctx = egui::Context::default();
+        begin(&mut app, &ctx).unwrap();
+        assert!(crate::canvas_tool_menu::open_transform(&mut app, [10.0, 10.0]));
+        let menu = app.ui.canvas_tool_menu.clone().unwrap();
+        assert!(crate::canvas_tool_menu::rows(&menu).iter().flatten().any(|e| e.1 == "edit.transform.warp"));
+        assert!(crate::canvas_tool_menu::available(&app, &menu, "edit.transform.warp"));
+        // Only the current mode (Free Transform) is checked: not Scale, Rotate or Warp.
+        let checked: Vec<&str> =
+            crate::canvas_tool_menu::rows(&menu).iter().flatten().map(|e| e.1).filter(|id| crate::canvas_tool_menu::mode_checked(&app, &menu, id)).collect();
+        assert_eq!(checked, ["edit.freeTransform"]);
+        crate::canvas_tool_menu::choose(&mut app, &ctx, "edit.transform.warp");
+        assert!(app.ui.transform.as_ref().unwrap().warp.is_some());
+        // Already warping: the row is no longer offered.
+        assert!(!crate::canvas_tool_menu::available(&app, &menu, "edit.transform.warp"));
+    }
+
+    #[test]
+    fn right_click_menu_warp_row_is_off_for_a_lone_path() {
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        let ctx = egui::Context::default();
+        begin(&mut app, &ctx).unwrap();
+        app.ui.transform.as_mut().unwrap().path = Some(json!({}));
+        assert!(crate::canvas_tool_menu::open_transform(&mut app, [10.0, 10.0]));
+        let menu = app.ui.canvas_tool_menu.clone().unwrap();
+        assert!(!crate::canvas_tool_menu::available(&app, &menu, "edit.transform.warp"));
+    }
+
     fn app_with_square(size: u32, fill: photocraft_geom::Rect) -> PhotocraftApp {
         let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
         app.session.execute("file.new", json!({"width": size, "height": size})).unwrap();
@@ -1956,6 +3101,92 @@ mod tests {
             })
             .unwrap();
         app
+    }
+
+    /// #2439: a layer under others keeps its place in the stack while the box is open. The
+    /// canvas under the box shows only the layers below it; the ones over it are composited on
+    /// their own and drawn over the moving pixels.
+    #[test]
+    fn free_transform_keeps_the_layer_under_the_layers_over_it() {
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 24, 24));
+        let red = app.session.active().unwrap().active_layer.unwrap();
+        app.session.execute("layer.new.layer", json!({})).unwrap();
+        app.session
+            .edit("paint", |doc, a| {
+                doc.layer_mut(a.unwrap()).unwrap().surface_mut().unwrap().fill_rect(photocraft_geom::Rect::new(16, 16, 40, 40), &[0.0, 0.0, 1.0, 1.0]);
+                Ok(())
+            })
+            .unwrap();
+        let blue = app.session.active().unwrap().active_layer.unwrap();
+        let bg = app.session.active().unwrap().doc.layers[0].id;
+        app.session.execute("layer.select", json!({"layer": red.0})).unwrap();
+        let ctx = gpu_ctx();
+        begin(&mut app, &ctx).unwrap();
+        let pv = app.transform_preview.as_ref().unwrap();
+        assert!(pv.doc.layer(bg).unwrap().visible, "the layers below show under the box");
+        assert!(!pv.doc.layer(blue).unwrap().visible, "the layer over it is drawn over the box instead");
+        let (texture, rect) = pv.above.as_ref().and_then(|a| a.shown.as_ref()).expect("something covers the layer");
+        assert_eq!(*rect, photocraft_geom::Rect::new(16, 16, 40, 40));
+        assert_eq!(texture.size(), [24, 24]);
+        cancel(&mut app);
+
+        // The top layer: nothing to draw over it.
+        app.session.execute("layer.select", json!({"layer": blue.0})).unwrap();
+        begin(&mut app, &ctx).unwrap();
+        let pv = app.transform_preview.as_ref().unwrap();
+        assert!(pv.above.as_ref().is_some_and(|a| a.shown.is_none()));
+        assert!(pv.doc.layer(red).unwrap().visible && pv.doc.layer(bg).unwrap().visible);
+        cancel(&mut app);
+    }
+
+    #[test]
+    fn plain_layers_from_the_top_cover_the_moving_one() {
+        use photocraft_color::BlendMode;
+        use photocraft_doc::Layer;
+        let px = |name: &str| Layer::raster(name, photocraft_color::PixelFormat::RGBA8);
+        let covers = |layers: &[Layer], id: LayerId| {
+            let mut out = Vec::new();
+            covering(layers, id, &mut out);
+            out
+        };
+        // In a group: the group's layers over it, then the ones over the group; never the layers
+        // clipped to it.
+        let (below, target, mut clip, inner_top, top) = (px("below"), px("target"), px("clip"), px("inner top"), px("top"));
+        clip.clipped = true;
+        let (t, c, inner, tp) = (target.id, clip.id, inner_top.id, top.id);
+        let mut layers = vec![below, Layer::group("group", vec![target, clip, inner_top]), top];
+        assert_eq!(covers(&layers, t), [tp, inner]);
+        assert_eq!(covers(&layers, c), [tp, inner], "a clipped layer: covered by what is over its clipping group");
+
+        // Under the box, the covering layers leave the document; over it, they alone show.
+        let above = Above { ctx: egui::Context::default(), name: String::new(), max_side: 64, ids: vec![tp, inner], shown: None };
+        let mut under = layers.clone();
+        above.hide_in(&mut under);
+        let vis = |ls: &[Layer]| [ls[0].visible, ls[1].visible, ls[2].visible];
+        assert_eq!(vis(&under), [true, true, false]);
+        let mut over = layers.clone();
+        show_only(&mut over, &above.ids);
+        assert_eq!(vis(&over), [false, true, true]);
+        let inside: Vec<bool> = match &over[1].content {
+            LayerContent::Group(g) => g.children.iter().map(|l| l.visible).collect(),
+            _ => Vec::new(),
+        };
+        assert_eq!(inside, [false, false, true]);
+
+        // A layer that blends with what is under it stops the search: it and everything under it
+        // stay in the document under the box.
+        layers[2].blend = BlendMode::Multiply;
+        assert!(covers(&layers, t).is_empty());
+        layers[2].blend = BlendMode::Normal;
+        let mut multiply = px("multiply");
+        multiply.blend = BlendMode::Multiply;
+        layers.insert(2, multiply);
+        assert_eq!(covers(&layers, t), [tp]);
+        // A group that isn't Normal or Pass Through keeps what is inside it.
+        layers[1].blend = BlendMode::Screen;
+        layers.remove(2);
+        assert_eq!(covers(&layers, t), [tp]);
+        assert_eq!(covers(&layers, LayerId::fresh()), [tp], "not in the stack: down to the first layer that isn't plain");
     }
 
     /// A context that reports a real GPU's texture limit (the default reports 2048).
@@ -1978,6 +3209,54 @@ mod tests {
         // At 100% the texture has at least as many texels as the box covers screen pixels.
         let t = app.ui.transform.as_ref().unwrap();
         assert!(pv.texture.size()[0] as f64 >= t.rect[2] - t.rect[0]);
+    }
+
+    /// The textured meshes `draw_overlay` paints for the moving pixels (not the box or handles).
+    fn preview_meshes(app: &PhotocraftApp, xf: &ViewXform) -> Vec<egui::Mesh> {
+        let ctx = gpu_ctx();
+        let mut out = ctx.run_ui(egui::RawInput { max_texture_side: Some(16384), ..Default::default() }, |ui| {
+            let painter = ui.ctx().layer_painter(egui::LayerId::background());
+            draw_overlay(app, &painter, xf);
+        });
+        out.textures_delta.clear();
+        out.shapes
+            .into_iter()
+            .filter_map(|s| match s.shape {
+                egui::Shape::Mesh(m) if m.texture_id != egui::TextureId::default() => Some((*m).clone()),
+                _ => None,
+            })
+            .collect()
+    }
+
+    #[test]
+    fn preview_pixels_past_the_canvas_are_hidden() {
+        // #2027: a box scaled past the canvas drew its pixels over the pasteboard.
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 56, 56));
+        begin(&mut app, &gpu_ctx()).unwrap();
+        scale_about_pivot(&mut app, 2.0, 2.0);
+        let q = app.ui.transform.as_ref().unwrap().quad;
+        assert!(q[0][0] < -10.0 && q[2][1] > 74.0, "the box reaches past the canvas: {q:?}");
+        let tol = 1e-3;
+        for (rotation, flip) in [(0.0, false), (30.0, false), (-75.0, true)] {
+            let xf = ViewXform { rect: egui::Rect::from_min_size(egui::Pos2::ZERO, vec2(400.0, 400.0)), zoom: 2.0, center: [32.0, 32.0], flip, rotation };
+            let meshes = preview_meshes(&app, &xf);
+            let verts: Vec<[f64; 2]> = meshes.iter().flat_map(|m| m.vertices.iter().map(|v| xf.to_doc(v.pos))).collect();
+            assert!(!verts.is_empty(), "the preview still draws (rotation {rotation})");
+            for d in &verts {
+                assert!(d[0] >= -tol && d[1] >= -tol && d[0] <= 64.0 + tol && d[1] <= 64.0 + tol, "vertex {d:?} off the canvas (rotation {rotation})");
+            }
+            // The clipped mesh still covers the whole canvas: the corners lie on it.
+            for corner in [[0.0, 0.0], [64.0, 0.0], [64.0, 64.0], [0.0, 64.0]] {
+                assert!(verts.iter().any(|d| (d[0] - corner[0]).abs() < 1e-2 && (d[1] - corner[1]).abs() < 1e-2), "corner {corner:?} (rotation {rotation})");
+            }
+        }
+        // Inside the canvas the mesh is drawn unchanged (24×24 grid).
+        cancel(&mut app);
+        begin(&mut app, &gpu_ctx()).unwrap();
+        let xf =
+            ViewXform { rect: egui::Rect::from_min_size(egui::Pos2::ZERO, vec2(200.0, 200.0)), zoom: 1.0, center: [32.0, 32.0], flip: false, rotation: 0.0 };
+        let meshes = preview_meshes(&app, &xf);
+        assert_eq!(meshes.iter().map(|m| m.vertices.len()).sum::<usize>(), 25 * 25);
     }
 
     #[test]
@@ -2044,7 +3323,13 @@ mod tests {
             let t0 = std::time::Instant::now();
             let _ = ctx.run_ui(egui::RawInput { max_texture_side: Some(16384), ..Default::default() }, |ui| {
                 let painter = ui.ctx().layer_painter(egui::LayerId::background());
-                let xf = ViewXform { rect: egui::Rect::from_min_size(egui::Pos2::ZERO, vec2(1600.0, 1000.0)), zoom, center: [3000.0, 2000.0], flip: false };
+                let xf = ViewXform {
+                    rect: egui::Rect::from_min_size(egui::Pos2::ZERO, vec2(1600.0, 1000.0)),
+                    zoom,
+                    center: [3000.0, 2000.0],
+                    flip: false,
+                    rotation: 0.0,
+                };
                 draw_overlay(&app, &painter, &xf);
             });
             t0.elapsed().as_secs_f64() * 1e3
@@ -2116,6 +3401,84 @@ mod tests {
         assert!(app.ui.transform.as_ref().unwrap().warp.is_none());
     }
 
+    fn warping_square() -> PhotocraftApp {
+        let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 32, 32));
+        begin_warp(&mut app, &egui::Context::default()).unwrap();
+        app
+    }
+
+    fn warp_mesh(app: &PhotocraftApp) -> BezierMesh {
+        app.ui.transform.as_ref().unwrap().warp.as_ref().unwrap().mesh.clone().unwrap()
+    }
+
+    #[test]
+    fn warp_drag_from_inside_the_grid_pulls_the_surface_under_the_pointer() {
+        let mut app = warping_square();
+        let before = warp_mesh(&app);
+        // (20, 20) is mid-cell, far from every anchor and handle.
+        warp_pointer(&mut app, ToolEvent::Down { x: 20.0, y: 20.0, pressure: 1.0 }, 2.0, egui::Modifiers::NONE);
+        assert!(matches!(app.transform_preview.as_ref().unwrap().warp_drag, Some(WarpDrag::Surface { .. })));
+        warp_pointer(&mut app, ToolEvent::Move { x: 30.0, y: 14.0, pressure: 1.0 }, 2.0, egui::Modifiers::NONE);
+        warp_pointer(&mut app, ToolEvent::Up { x: 30.0, y: 14.0 }, 2.0, egui::Modifiers::NONE);
+        let after = warp_mesh(&app);
+        let (s, t) = surface_at(&before, [20.0, 20.0]).unwrap();
+        let moved = after.eval(s, t);
+        assert!((moved[0] - 30.0).abs() < 1e-6 && (moved[1] - 14.0).abs() < 1e-6, "{moved:?}");
+        assert!(app.transform_preview.as_ref().unwrap().warp_drag.is_none());
+        // The picture keeps filling its frame: a pull in the middle leaves the box corners put.
+        assert!([0, 3, 12, 15].iter().all(|k| after.points[*k] == before.points[*k]));
+        assert!(after.points[5] != before.points[5], "the inside of the grid moved");
+    }
+
+    #[test]
+    fn a_handle_belongs_to_the_anchor_it_hangs_off() {
+        assert_eq!(handle_anchor(0, 1), (0, 0));
+        assert_eq!(handle_anchor(0, 2), (0, 3));
+        assert_eq!(handle_anchor(1, 0), (0, 0));
+        assert_eq!(handle_anchor(5, 3), (6, 3));
+        assert_eq!(handle_anchor(3, 3), (3, 3));
+    }
+
+    #[test]
+    fn reset_warp_returns_to_the_untouched_grid_and_keeps_the_session() {
+        let mut app = warping_square();
+        warp_pointer(&mut app, ToolEvent::Down { x: 20.0, y: 20.0, pressure: 1.0 }, 2.0, egui::Modifiers::NONE);
+        warp_pointer(&mut app, ToolEvent::Up { x: 30.0, y: 14.0 }, 2.0, egui::Modifiers::NONE);
+        assert!(!app.ui.transform.as_ref().unwrap().warp.as_ref().unwrap().is_identity());
+        reset_warp(&mut app);
+        let w = app.ui.transform.as_ref().unwrap().warp.as_ref().unwrap();
+        assert!(w.is_identity(), "back to the untouched box");
+        assert_eq!(w.mesh.as_ref().map(|m| (m.us.len(), m.vs.len())), Some((2, 2)));
+        assert!(app.transform_preview.as_ref().unwrap().warp_drag.is_none());
+        // Not warping: nothing to reset.
+        leave_warp(&mut app);
+        reset_warp(&mut app);
+        assert!(app.ui.transform.as_ref().unwrap().warp.is_none());
+    }
+
+    #[test]
+    fn warp_press_outside_the_grid_grabs_nothing() {
+        let mut app = warping_square();
+        let before = warp_mesh(&app);
+        warp_pointer(&mut app, ToolEvent::Down { x: 55.0, y: 55.0, pressure: 1.0 }, 2.0, egui::Modifiers::NONE);
+        assert!(app.transform_preview.as_ref().unwrap().warp_drag.is_none());
+        warp_pointer(&mut app, ToolEvent::Up { x: 60.0, y: 60.0 }, 2.0, egui::Modifiers::NONE);
+        assert_eq!(warp_mesh(&app), before);
+    }
+
+    #[test]
+    fn ctrl_click_cuts_the_grid_both_ways() {
+        let mut app = warping_square();
+        let ctrl = egui::Modifiers::COMMAND;
+        warp_pointer(&mut app, ToolEvent::Down { x: 20.0, y: 20.0, pressure: 1.0 }, 2.0, ctrl);
+        warp_pointer(&mut app, ToolEvent::Up { x: 20.0, y: 20.0 }, 2.0, ctrl);
+        let m = warp_mesh(&app);
+        // A cut each way at the pointer (the default grid's rule-of-thirds guides become real
+        // lines too, as with the Cross split tool).
+        assert!(m.us.iter().any(|u| (u - 0.5).abs() < 1e-6), "vertical cut: {:?}", m.us);
+        assert!(m.vs.iter().any(|v| (v - 0.5).abs() < 1e-6), "horizontal cut: {:?}", m.vs);
+    }
+
     #[test]
     fn replacing_the_warp_mesh_cancels_a_pending_point_drag() {
         let mut app = app_with_square(64, photocraft_geom::Rect::new(8, 8, 32, 32));
@@ -2126,7 +3489,7 @@ mod tests {
         }
 
         pointer(&mut app, ToolEvent::Down { x: 32.0, y: 32.0, pressure: 1.0 }, egui::Modifiers::NONE);
-        assert!(app.transform_preview.as_ref().unwrap().warp_drag.is_some(), "the anchor drag is armed");
+        assert!(matches!(app.transform_preview.as_ref().unwrap().warp_drag, Some(WarpDrag::Point { .. })), "the anchor drag is armed");
 
         split(&mut app, "edit.transform.removeWarpSplit", None).unwrap();
         assert!(app.transform_preview.as_ref().unwrap().warp_drag.is_none(), "the old mesh index is discarded");
@@ -2138,7 +3501,7 @@ mod tests {
     /// A press on a preset warp that misses its points leaves the preset alone (no invisible undo
     /// step); grabbing a point turns it into a custom mesh.
     #[test]
-    fn a_press_on_a_preset_warp_converts_it_only_when_it_grabs_a_point() {
+    fn a_press_on_a_preset_warp_converts_it_only_when_it_grabs_the_grid() {
         let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
         app.session.execute("file.new", json!({"width": 64, "height": 64})).unwrap();
         app.sync_views();
@@ -2153,9 +3516,15 @@ mod tests {
         let t = app.ui.transform.as_mut().unwrap();
         let preset = Warp::preset(WarpStyle::Arc, 50.0, t.rect);
         t.warp = Some(preset.clone());
-        warp_pointer(&mut app, ToolEvent::Down { x: 20.0, y: 20.0, pressure: 1.0 }, 2.0, egui::Modifiers::NONE);
-        warp_pointer(&mut app, ToolEvent::Up { x: 20.0, y: 20.0 }, 2.0, egui::Modifiers::NONE);
+        // Off the grid altogether: a miss.
+        warp_pointer(&mut app, ToolEvent::Down { x: 60.0, y: 60.0, pressure: 1.0 }, 2.0, egui::Modifiers::NONE);
+        warp_pointer(&mut app, ToolEvent::Up { x: 60.0, y: 60.0 }, 2.0, egui::Modifiers::NONE);
         assert_eq!(app.ui.transform.as_ref().unwrap().warp.as_ref(), Some(&preset), "a miss changes nothing");
+        // Inside the grid, away from every point: the surface is grabbed, so the preset converts.
+        warp_pointer(&mut app, ToolEvent::Down { x: 20.0, y: 20.0, pressure: 1.0 }, 2.0, egui::Modifiers::NONE);
+        assert_eq!(app.ui.transform.as_ref().unwrap().warp.as_ref().unwrap().style, WarpStyle::Custom);
+        warp_pointer(&mut app, ToolEvent::Up { x: 20.0, y: 20.0 }, 2.0, egui::Modifiers::NONE);
+        app.ui.transform.as_mut().unwrap().warp = Some(preset.clone());
         let corner = preset.to_mesh(1, 1).points[15];
         warp_pointer(&mut app, ToolEvent::Down { x: corner[0], y: corner[1], pressure: 1.0 }, 2.0, egui::Modifiers::NONE);
         assert_eq!(app.ui.transform.as_ref().unwrap().warp.as_ref().unwrap().style, WarpStyle::Custom);
@@ -2202,7 +3571,7 @@ mod tests {
         let st = app.session.active().unwrap();
         let sel = st.doc.selection.clone().unwrap();
         let id = st.active_layer.unwrap();
-        let (lifted, _) = photocraft_engine::transform_cmds::split_selected(st.doc.layer(id).unwrap().surface().unwrap(), &sel);
+        let (lifted, _) = photocraft_engine::transform_cmds::split_selected(st.doc.layer(id).unwrap().surface().unwrap(), &sel).unwrap();
         let b = photocraft_geom::Rect::new(8, 8, 20, 24);
         let (img, _) = preview_image(&st.doc, id, Some(&lifted), b, 4096);
         assert_eq!(texel_alpha(&img, 2, 4), 0, "masked");
@@ -2246,5 +3615,45 @@ mod tests {
         begin(&mut app, &ctx).unwrap();
         assert_eq!(app.ui.transform.as_ref().unwrap().target, None);
         assert_eq!(app.ui.transform.as_ref().unwrap().rect, [8.0, 8.0, 24.0, 24.0]);
+    }
+
+    /// ⌘T with Path Selection and a path transforms the path, not the layer's pixels, as one
+    /// undoable step; it works on the Background too.
+    #[test]
+    fn free_transform_moves_the_selected_path_not_pixels() {
+        let ctx = egui::Context::default();
+        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        app.session.execute("file.new", json!({"width": 64, "height": 64})).unwrap();
+        app.sync_views();
+        app.run("path.set", json!({"name": "work", "path": {"subpaths": [{"closed": true, "knots": [[10, 10], [30, 10], [30, 20], [10, 20]]}]}})).unwrap();
+        app.ui.tool = Tool::PathSelection;
+        assert!(crate::menus::is_enabled(&app, "edit.freeTransform"), "a path is transformable on the Background");
+        let pixels = app.session.active().unwrap().doc.layers[0].surface().cloned();
+        let steps = app.session.active().unwrap().history.past_len();
+        crate::menus::invoke(&mut app, &ctx, "edit.freeTransform", json!({})).unwrap();
+        let t = app.ui.transform.as_mut().unwrap();
+        assert_eq!(t.rect, [10.0, 10.0, 30.0, 20.0], "the box frames the path");
+        assert_eq!(t.path, Some(json!({"name": "work"})));
+        // Twice as wide and 5 px down.
+        t.quad = [[10.0, 15.0], [50.0, 15.0], [50.0, 25.0], [10.0, 25.0]];
+        commit(&mut app);
+        let st = app.session.active().unwrap();
+        assert_eq!(st.history.past_len(), steps + 1, "one step");
+        let wp = st.doc.work_path.as_ref().unwrap();
+        let anchors: Vec<[f64; 2]> = wp.subpaths[0].knots.iter().map(|k| [k.anchor.x, k.anchor.y]).collect();
+        assert_eq!(anchors, vec![[10.0, 15.0], [50.0, 15.0], [50.0, 25.0], [10.0, 25.0]]);
+        assert_eq!(st.doc.layers[0].surface().cloned(), pixels, "the pixels stay put");
+
+        // A box pulled out of a parallelogram (Distort) can't be applied to a path: an error, no step.
+        crate::menus::invoke(&mut app, &ctx, "edit.freeTransform", json!({})).unwrap();
+        app.ui.transform.as_mut().unwrap().quad[2] = [70.0, 40.0];
+        commit(&mut app);
+        assert_eq!(app.session.active().unwrap().history.past_len(), steps + 1);
+        assert!(!app.ui.status.is_empty());
+
+        // Without a path tool, ⌘T is the pixel transform again.
+        app.ui.tool = Tool::Move;
+        app.run("layer.new.layer", json!({})).unwrap();
+        assert!(crate::vector_ui::free_transform_path(&app).is_none());
     }
 }

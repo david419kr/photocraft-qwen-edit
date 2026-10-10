@@ -77,6 +77,11 @@ fn prompt_history_tracks_all_modes_translation_undo_redo_and_saved_files() {
             assert_eq!(ai_prompts::read(restored.metadata.xmp.as_deref()).unwrap(), entries, "{name}");
         }
     }
+    let options = photocraft_io::ExportOptions { tiff_layers: true, xmp: photocraft_io::XmpEmbed::None, ..Default::default() };
+    let file = photocraft_io::export(&s.active().unwrap().doc, "layered.tif", &options).unwrap();
+    let restored = photocraft_io::import("layered.tif", &file.bytes).unwrap().document;
+    assert_eq!(ai_prompts::read(restored.metadata.xmp.as_deref()).unwrap(), entries, "layered TIFF retains prompts");
+    assert_eq!(restored.layers.len(), s.active().unwrap().doc.layers.len());
     s.execute("edit.undo", json!({})).unwrap();
     s.execute("select.rect", json!({"x":40,"y":40,"width":12,"height":12})).unwrap();
     s.execute("edit.generativeFill", json!({"prompt":""})).unwrap();

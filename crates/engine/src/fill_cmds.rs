@@ -127,7 +127,7 @@ pub fn fill(s: &mut Session, p: &Value) -> Result<Value> {
             let mut source_doc = (*source_doc).clone();
             let (src, _) = crate::channel_cmds::target_surface(&mut source_doc, id, p)
                 .map_err(|_| EngineError::Other("the target did not exist (as pixels, a mask or a channel) in that history state".into()))?;
-            Source::Pixels(area, read_rgba(src, area))
+            Source::Pixels(area, read_rgba(src, area, "reading Fill's history source")?)
         }
         "contentAware" => {
             let sel = sel.as_ref().ok_or_else(|| EngineError::Other("Content-Aware fill needs a selection".into()))?;
@@ -149,16 +149,41 @@ pub fn fill(s: &mut Session, p: &Value) -> Result<Value> {
     s.edit("Fill", |doc, _| {
         let sel = doc.selection.clone();
         let (surf, lock) = crate::channel_cmds::target_surface(doc, id, p)?;
-        blend_into(surf, area, &source, sel.as_ref(), Blend { mode, opacity, keep_alpha: preserve || lock, restore });
+        blend_into(surf, area, &source, sel.as_ref(), Blend { mode, opacity, keep_alpha: preserve || lock, restore })?;
         Ok(())
     })?;
     Ok(out)
 }
 
-fn read_rgba(src: &Surface, area: Rect) -> Vec<[f32; 4]> {
-    let mut px = vec![[0.0f32; 4]; area.width() as usize * area.height() as usize];
+fn read_rgba(src: &Surface, area: Rect, purpose: &str) -> Result<Vec<[f32; 4]>> {
+    let len = (area.width() as usize)
+        .checked_mul(area.height() as usize)
+        .ok_or_else(|| EngineError::Other(format!("not enough memory for {purpose} (requested size overflowed); the document was not changed")))?;
+    let mut px = crate::allocation::filled(len, [0.0f32; 4], purpose)?;
     src.read_rgba_into(area, &mut px);
-    px
+    Ok(px)
+}
+
+/// `src` over `surf` across `area` (Normal, 100 %), each pixel weighted by `limit` when given:
+/// a paste into a layer mask or channel, which keeps the pasted pixels' luminosity (#1035).
+pub(crate) fn composite_over(surf: &mut Surface, src: &Surface, area: Rect, limit: Option<&Surface>) -> Result<()> {
+    let source = Source::Pixels(area, read_rgba(src, area, "pasting pixels")?);
+    blend_into(surf, area, &source, limit, Blend { mode: BlendMode::Normal, opacity: 1.0, keep_alpha: false, restore: false })
+}
+
+/// Reuse Edit › Fill's compositing for Edit › Stroke. The stroke's rasterized band
+/// is already a grayscale coverage mask; opacity, blend modes and alpha locking
+/// must behave identically for both commands at 8/16/32-bit depth.
+pub(crate) fn blend_color_mask(
+    surf: &mut Surface,
+    area: Rect,
+    color: [f32; 4],
+    coverage: &Surface,
+    mode: BlendMode,
+    opacity: f32,
+    preserve_transparency: bool,
+) -> Result<()> {
+    blend_into(surf, area, &Source::Color(color), Some(coverage), Blend { mode, opacity, keep_alpha: preserve_transparency, restore: false })
 }
 
 /// The selection filled from its surroundings (`photocraft_algo::content_aware`), as straight
@@ -169,15 +194,10 @@ fn content_aware(surf: &Surface, sel: &Surface, canvas: Rect, color_adaptation: 
     if hole_bounds.is_empty() {
         return Err(EngineError::Other("the selection is outside the canvas".into()));
     }
-    let ext = hole_bounds.width().max(hole_bounds.height());
-    let window = hole_bounds.inflate(i32::try_from(ext * 3 / 4).unwrap_or(i32::MAX).max(32)).intersect(&canvas);
+    let window = sampling_window(hole_bounds, canvas);
     let fmt = surf.format();
     let n = fmt.channels();
-    let (w, h) = (window.width() as usize, window.height() as usize);
-    // Same cap as other whole-image operations: refuse absurd windows instead of allocating.
-    if w.saturating_mul(h) > 400_000_000 {
-        return Err(EngineError::Other("the selection is too large for Content-Aware fill".into()));
-    }
+    let (w, h) = window_size(window)?;
     let img = surf.read_region(window);
     let mut hole = vec![false; w * h];
     for (i, hv) in hole.iter_mut().enumerate() {
@@ -200,6 +220,25 @@ fn content_aware(surf: &Surface, sel: &Surface, canvas: Rect, color_adaptation: 
     let filled = fill(w, h, n, &img, &hole, &source, &opts);
     let px = filled.chunks_exact(n.max(1)).map(|c| to_rgba(&fmt, c)).collect();
     Ok(Source::Pixels(window, px))
+}
+
+/// Photoshop's Content-Aware sampling window around the selection bounds `hole`
+/// ([`photocraft_algo::content_aware::sampling_window`]): Edit › Fill, the workspace's Rectangular
+/// and Auto areas and the retouching tools all copy from within it. Worked out in i64, so a loaded
+/// document declaring an absurd selection can't overflow it (#963).
+pub(crate) fn sampling_window(hole: Rect, canvas: Rect) -> Rect {
+    photocraft_algo::content_aware::sampling_window(hole.intersect(&canvas), canvas)
+}
+
+/// The size of a Content-Aware sampling window, or an error for a window too large to read and
+/// fill (#963). Same cap as other whole-image operations: refuse absurd windows instead of
+/// allocating.
+pub(crate) fn window_size(window: Rect) -> Result<(usize, usize)> {
+    let (w, h) = (window.width(), window.height());
+    if u64::from(w) * u64::from(h) > 400_000_000 {
+        return Err(EngineError::Other("the selection is too large for Content-Aware fill".into()));
+    }
+    Ok((w as usize, h as usize))
 }
 
 /// How the source goes onto the target.
@@ -226,7 +265,7 @@ fn lerp(d: [f32; 4], c: [f32; 4], k: f32) -> [f32; 4] {
 /// Blend `source` into `surf` over `area`: per pixel, the selection coverage times the opacity,
 /// in the blend mode.
 /// Works tile by tile in parallel on the encoded pixels (no full-surface f32 round trip).
-fn blend_into(surf: &mut Surface, area: Rect, source: &Source, sel: Option<&Surface>, b: Blend) {
+fn blend_into(surf: &mut Surface, area: Rect, source: &Source, sel: Option<&Surface>, b: Blend) -> Result<()> {
     use rayon::prelude::*;
     let fmt = surf.format();
     // An opaque colour in Normal mode at 100 % that may replace alpha: fully covered tiles become
@@ -239,24 +278,35 @@ fn blend_into(surf: &mut Surface, area: Rect, source: &Source, sel: Option<&Surf
         }
         _ => None,
     };
-    let tiles = surf.take_tiles(area);
-    let done: Vec<_> = tiles
-        .into_par_iter()
-        .map(|(tc, tile)| {
-            let tr = tc.rect().intersect(&area);
-            let mask = sel.map(|m| Mask { bytes: m.tile(tc).map_or(m.default_bytes(), |t| t.bytes()), fmt: m.format(), origin: tc.rect() });
-            if let Some(s) = &solid
-                && tr == tc.rect()
-                && mask.as_ref().is_none_or(|m| m.full(tr))
-            {
-                return (tc, s.clone());
-            }
-            let mut tile = std::sync::Arc::unwrap_or_clone(tile);
-            blend_tile(tile.bytes_mut(), &fmt, tc.rect(), tr, source, mask.as_ref(), b);
-            (tc, std::sync::Arc::new(tile))
-        })
-        .collect();
+    let count = area.tiles().count();
+    let done = crate::allocation::capacity(count, "blending pixels")?;
+    let tiles = surf
+        .try_take_tiles(area)
+        .map_err(|e| EngineError::Other(format!("not enough memory while preparing pixel tiles ({e}); the document was not changed")))?;
+    let done = std::sync::Mutex::new(done);
+    tiles.into_par_iter().try_for_each(|(tc, tile)| -> Result<()> {
+        let tr = tc.rect().intersect(&area);
+        let mask = sel.map(|m| Mask { bytes: m.tile(tc).map_or(m.default_bytes(), |t| t.bytes()), fmt: m.format(), origin: tc.rect() });
+        if let Some(s) = &solid
+            && tr == tc.rect()
+            && mask.as_ref().is_none_or(|m| m.full(tr))
+        {
+            done.lock().unwrap_or_else(std::sync::PoisonError::into_inner).push((tc, s.clone()));
+            return Ok(());
+        }
+        let mut tile = match std::sync::Arc::try_unwrap(tile) {
+            Ok(tile) => tile,
+            Err(tile) => tile
+                .try_clone()
+                .map_err(|e| EngineError::Other(format!("not enough memory while blending a pixel tile ({e}); the document was not changed")))?,
+        };
+        blend_tile(tile.bytes_mut(), &fmt, tc.rect(), tr, source, mask.as_ref(), b);
+        done.lock().unwrap_or_else(std::sync::PoisonError::into_inner).push((tc, std::sync::Arc::new(tile)));
+        Ok(())
+    })?;
+    let done = done.into_inner().unwrap_or_else(std::sync::PoisonError::into_inner);
     surf.put_tiles(done);
+    Ok(())
 }
 
 /// The selection's coverage over one tile (its channel 0).
@@ -465,8 +515,8 @@ mod tests {
         let st = s.active().unwrap();
         let mut surf = st.doc.layer(st.active_layer.unwrap()).unwrap().surface().unwrap().clone();
         let t = std::time::Instant::now();
-        crate::pixels::fill_surface(&mut surf, Rect::new(0, 0, 6000, 4000), [0.2, 0.4, 0.6, 1.0], None, false);
-        println!("{:<48} {:>8.1} ms", "old fill_surface, no selection", t.elapsed().as_secs_f64() * 1000.0);
+        crate::pixels::try_fill_surface(&mut surf, Rect::new(0, 0, 6000, 4000), [0.2, 0.4, 0.6, 1.0], None, false).unwrap();
+        println!("{:<48} {:>8.1} ms", "fallible fill_surface, no selection", t.elapsed().as_secs_f64() * 1000.0);
     }
 
     #[test]
@@ -491,5 +541,68 @@ mod tests {
         assert!(s.execute(CMD, json!({"contents": "contentAware"})).is_err());
         // Out-of-range opacity is clamped.
         s.execute(CMD, json!({"contents": "white", "opacity": 1e300})).unwrap();
+    }
+
+    /// A session whose canvas is `size` and whose selection is the given (sparse) rectangles, as
+    /// a loaded `.pcraft` can declare (#963): the canvas size is not capped on load and the
+    /// selection tiles can lie far apart. Nothing here allocates more than a few tiles.
+    fn huge_selection(size: (u32, u32), rects: &[Rect]) -> Session {
+        let mut s = session();
+        s.execute(CMD, json!({"contents": "color", "color": "#336699"})).unwrap();
+        let st = s.active_mut().unwrap();
+        let doc = std::sync::Arc::make_mut(&mut st.doc);
+        doc.size = photocraft_geom::Size::new(size.0, size.1);
+        let mut sel = Surface::new(photocraft_color::PixelFormat::GRAY8);
+        for r in rects {
+            sel.fill_rect(*r, &[1.0]);
+        }
+        doc.selection = Some(sel);
+        s
+    }
+
+    /// Content-Aware fill on a selection whose extent overflows the sampling-window arithmetic
+    /// (#963) returns the size error and leaves the document and history untouched.
+    #[test]
+    fn content_aware_huge_extent_is_an_error() {
+        // Largest extent whose `ext * 3` still fits in u32.
+        const EDGE: i32 = (u32::MAX / 3) as i32;
+        let max = i32::MAX;
+        let cases: [(&str, (u32, u32), Vec<Rect>); 7] = [
+            // The issue's repro: a second selection tile 5 600 000 tiles to the right.
+            ("issue repro", (2_000_000_000, 2_000_000_000), vec![Rect::new(0, 0, 8, 8), Rect::new(5_600_000 * TILE_SIZE, 0, 5_600_000 * TILE_SIZE + 8, 8)]),
+            ("wide, just above", (2_000_000_000, 2_000_000_000), vec![Rect::new(0, 0, 1, 1), Rect::new(EDGE, 0, EDGE + 1, 1)]),
+            ("tall, just above", (2_000_000_000, 2_000_000_000), vec![Rect::new(0, 0, 1, 1), Rect::new(0, EDGE, 1, EDGE + 1)]),
+            ("wide, just below", (2_000_000_000, 2_000_000_000), vec![Rect::new(0, 0, 1, 1), Rect::new(EDGE - 1, 0, EDGE, 1)]),
+            ("tall, just below", (2_000_000_000, 2_000_000_000), vec![Rect::new(0, 0, 1, 1), Rect::new(0, EDGE - 1, 1, EDGE)]),
+            // The largest canvas a Rect can hold, selected corner to corner, plus a piece off the
+            // canvas at the most negative coordinate.
+            (
+                "extreme coordinates",
+                (max as u32, max as u32),
+                vec![Rect::new(i32::MIN, i32::MIN, i32::MIN + 1, i32::MIN + 1), Rect::new(0, 0, 1, 1), Rect::new(max - 2, max - 2, max - 1, max - 1)],
+            ),
+            // A canvas wider than a Rect can hold is treated as empty, never as a panic.
+            ("canvas beyond i32", (u32::MAX, u32::MAX), vec![Rect::new(0, 0, 1, 1), Rect::new(max - 2, 0, max - 1, 1)]),
+        ];
+        for (name, size, rects) in cases {
+            let mut s = huge_selection(size, &rects);
+            let before = s.active().unwrap().doc.clone();
+            let past = s.active().unwrap().history.past_len();
+            let r = s.execute(CMD, json!({"contents": "contentAware", "colorAdaptation": false}));
+            let err = r.expect_err(name).to_string();
+            assert!(!err.contains("internal error"), "{name}: {err}");
+            if name != "canvas beyond i32" {
+                assert!(err.contains("too large for Content-Aware fill"), "{name}: {err}");
+            }
+            let st = s.active().unwrap();
+            assert!(std::sync::Arc::ptr_eq(&before, &st.doc), "{name}: the document changed");
+            assert_eq!(st.history.past_len(), past, "{name}: a history step was recorded");
+            assert!(close(px(&s, 5, 5), [0x33 as f32 / 255.0, 0x66 as f32 / 255.0, 0x99 as f32 / 255.0, 1.0]), "{name}");
+        }
+        // Control: an ordinary selection still fills from its surroundings.
+        let mut s = huge_selection((40, 30), &[Rect::new(15, 10, 21, 16)]);
+        s.execute(CMD, json!({"contents": "white"})).unwrap();
+        s.execute(CMD, json!({"contents": "contentAware", "colorAdaptation": false})).unwrap();
+        assert!(close(px(&s, 17, 12), [0x33 as f32 / 255.0, 0x66 as f32 / 255.0, 0x99 as f32 / 255.0, 1.0]), "{:?}", px(&s, 17, 12));
     }
 }

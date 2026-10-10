@@ -16,7 +16,9 @@
 //! overrides everything, and `--safe-gpu` forces the CPU path for one launch.
 //!
 //! "CPU" composites on the CPU and draws the window with a software adapter where the platform
-//! has one (WARP on Windows, llvmpipe over GL elsewhere).
+//! has one (WARP on Windows, llvmpipe over GL elsewhere). On Linux a GL adapter that can't present
+//! (NVIDIA's EGL, which also hides llvmpipe) falls back to a Vulkan adapter for the window only
+//! (#1337); before, CPU mode then couldn't start at all.
 
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Seek, SeekFrom, Write};
@@ -130,6 +132,14 @@ pub fn next_safer(tried: GpuBackend, os: Os) -> GpuBackend {
     }
 }
 
+/// Whether a start that returned an error (so it didn't crash in the driver) keeps its marker, so
+/// the next start tries a safer backend. Not when there is none: the CPU path is the end of every
+/// chain, and a marker left there pinned every later start to the same failing path. Not under
+/// `WGPU_BACKEND` either (no plan reads that marker).
+pub fn keep_marker_after_error(plan: &Plan, os: Os) -> bool {
+    plan.env.is_none() && next_safer(plan.backend, os) != plan.backend
+}
+
 /// Decide this launch's backend from the preference, a marker left by a start that crashed,
 /// `WGPU_BACKEND` and `--safe-gpu`.
 pub fn plan(pref: GpuBackend, crashed: Option<&Marker>, env: Option<&str>, safe_gpu: bool, os: Os) -> Plan {
@@ -173,6 +183,8 @@ pub fn backends(plan: &Plan, os: Os) -> Option<wgpu::Backends> {
         return None;
     }
     Some(match plan.backend {
+        // AMD's Windows OpenGL driver can crash during adapter enumeration before selection.
+        GpuBackend::Auto if os == Os::Windows => wgpu::Backends::PRIMARY,
         GpuBackend::Auto => return None,
         GpuBackend::Vulkan => wgpu::Backends::VULKAN,
         GpuBackend::Dx12 => wgpu::Backends::DX12,
@@ -181,7 +193,9 @@ pub fn backends(plan: &Plan, os: Os) -> Option<wgpu::Backends> {
         GpuBackend::Cpu => match os {
             Os::Windows => wgpu::Backends::DX12,
             Os::Mac => wgpu::Backends::METAL,
-            Os::Other => wgpu::Backends::GL,
+            // Vulkan only for the window when no GL adapter can present (`rank`): with NVIDIA's
+            // EGL the GL adapter can't, and CPU mode failed every start (#1337).
+            Os::Other => wgpu::Backends::GL | wgpu::Backends::VULKAN,
         },
     })
 }
@@ -214,8 +228,10 @@ pub struct Candidate {
 
 /// Rank of an adapter (lower is better): high-performance device types first (egui's power
 /// preference) or software adapters first for `cpu`; then backends, with DX12 before Vulkan for
-/// Intel on Windows.
-fn rank(a: &Candidate, backend: GpuBackend, os: Os) -> (u8, u8) {
+/// Intel on Windows. For `cpu`, any GL adapter comes before Vulkan, which is only the fallback
+/// for presenting the window (see [`backends`]).
+fn rank(a: &Candidate, backend: GpuBackend, os: Os) -> (u8, u8, u8) {
+    let fallback = u8::from(backend == GpuBackend::Cpu && a.backend == wgpu::Backend::Vulkan);
     let ty = match a.device_type {
         wgpu::DeviceType::DiscreteGpu => 0,
         wgpu::DeviceType::IntegratedGpu => 1,
@@ -235,7 +251,7 @@ fn rank(a: &Candidate, backend: GpuBackend, os: Os) -> (u8, u8) {
         wgpu::Backend::Gl => 3,
         wgpu::Backend::BrowserWebGpu | wgpu::Backend::Noop => 4,
     };
-    (ty, be)
+    (fallback, ty, be)
 }
 
 /// The adapter to use among `adapters` (`None` when there is none).
@@ -341,6 +357,12 @@ pub struct Sentinel {
 /// The sentinel, shared with eframe's adapter hook and the app's started hook.
 pub type SharedSentinel = Arc<Mutex<Option<Sentinel>>>;
 
+/// Only renderer errors should affect the next launch's graphics backend. Windowing errors
+/// (such as a missing Linux display) and app setup errors never indicate a driver failure.
+pub fn keep_marker_after_run(result: &eframe::Result) -> bool {
+    matches!(result, Err(eframe::Error::Wgpu(_)))
+}
+
 impl Sentinel {
     /// Open (creating) the marker in `dir` and lock it. Returns what a previous start left and,
     /// unless another instance holds the lock or the directory isn't writable, this start's
@@ -394,6 +416,17 @@ impl Sentinel {
     }
 }
 
+/// The Linux display-server preference (`performance.linuxDisplayServer`) from the preferences
+/// file, read before the window opens; `Auto` when the file or value is missing or unknown.
+#[cfg(any(target_os = "linux", test))]
+pub fn read_display_server(path: Option<&Path>) -> photocraft_engine::prefs::LinuxDisplayServer {
+    let v: Value = path.and_then(|p| std::fs::read_to_string(p).ok()).and_then(|t| serde_json::from_str(&t).ok()).unwrap_or(Value::Null);
+    v.get("performance")
+        .and_then(|p| serde_json::from_value::<photocraft_engine::prefs::Performance>(p.clone()).ok())
+        .map(|performance| performance.linux_display_server)
+        .unwrap_or_default()
+}
+
 /// Read the policy leniently at startup, including old settings without renderingMode.
 pub fn read_rendering_prefs(path: Option<&Path>) -> (GpuBackend, RenderingMode) {
     let v: Value = path.and_then(|p| std::fs::read_to_string(p).ok()).and_then(|t| serde_json::from_str(&t).ok()).unwrap_or(Value::Null);
@@ -412,6 +445,27 @@ mod tests {
 
     fn crashed(backend: &str, adapter_backend: &str) -> Marker {
         Marker { backend: backend.into(), adapter: "Intel(R) UHD Graphics".into(), adapter_backend: adapter_backend.into(), ..Default::default() }
+    }
+
+    #[test]
+    fn display_server_preference_is_read_before_the_window_opens() {
+        use photocraft_engine::prefs::LinuxDisplayServer;
+        let dir = std::env::temp_dir().join(format!("photocraft-display-server-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let file = dir.join("preferences.json");
+        let read = |json: &str| {
+            std::fs::write(&file, json).unwrap();
+            read_display_server(Some(&file))
+        };
+        assert_eq!(read(r#"{"performance":{"linuxDisplayServer":"x11"}}"#), LinuxDisplayServer::X11);
+        assert_eq!(read(r#"{"performance":{"linuxDisplayServer":"auto","gpuBackend":"vulkan"}}"#), LinuxDisplayServer::Auto);
+        // Unknown values, other types, broken JSON and a missing file all start as Auto.
+        assert_eq!(read(r#"{"performance":{"linuxDisplayServer":"wayland"}}"#), LinuxDisplayServer::Auto);
+        assert_eq!(read(r#"{"performance":{"linuxDisplayServer":11}}"#), LinuxDisplayServer::Auto);
+        assert_eq!(read("{not json"), LinuxDisplayServer::Auto);
+        assert_eq!(read_display_server(Some(&dir.join("missing.json"))), LinuxDisplayServer::Auto);
+        assert_eq!(read_display_server(None), LinuxDisplayServer::Auto);
+        let _ = std::fs::remove_dir_all(&dir);
     }
 
     #[test]
@@ -483,8 +537,18 @@ mod tests {
         let p = plan(Vulkan, Some(&crashed("vulkan", "vulkan")), None, true, Os::Other);
         assert_eq!((p.backend, p.remember), (Cpu, false));
         assert_eq!(backends(&p, Os::Windows), Some(wgpu::Backends::DX12));
-        assert_eq!(backends(&p, Os::Other), Some(wgpu::Backends::GL));
+        assert_eq!(backends(&p, Os::Other), Some(wgpu::Backends::GL | wgpu::Backends::VULKAN));
         assert_eq!(backends(&p, Os::Mac), Some(wgpu::Backends::METAL));
+    }
+
+    #[test]
+    fn windows_auto_does_not_initialize_the_crashing_gl_driver() {
+        let p = plan(GpuBackend::Auto, None, None, false, Os::Windows);
+        let selected = backends(&p, Os::Windows).expect("explicit native Windows backends");
+        assert!(!selected.contains(wgpu::Backends::GL));
+        assert!(selected.contains(wgpu::Backends::DX12));
+        assert!(selected.contains(wgpu::Backends::VULKAN));
+        assert_eq!(backends(&p, Os::Other), None);
     }
 
     fn cand(vendor: u32, device_type: wgpu::DeviceType, backend: wgpu::Backend) -> Candidate {
@@ -523,6 +587,28 @@ mod tests {
         assert_eq!(pick(&a[..1], Cpu, Os::Windows), Some(0));
     }
 
+    /// #1337: on Linux with NVIDIA, the only GL adapter (NVIDIA's EGL) can't present, so CPU mode
+    /// found no adapter and never started. GL still wins whenever it can present.
+    #[test]
+    fn cpu_on_linux_falls_back_to_vulkan_only_when_gl_cannot_present() {
+        use wgpu::{Backend as B, DeviceType as T};
+        const NVIDIA: u32 = 0x10de;
+        let llvmpipe = cand(0x10005, T::Cpu, B::Gl);
+        let nvidia_gl = cand(NVIDIA, T::DiscreteGpu, B::Gl);
+        let nvidia_vk = cand(NVIDIA, T::DiscreteGpu, B::Vulkan);
+        let lavapipe = cand(0x10005, T::Cpu, B::Vulkan);
+        // GL presents: same choice as GL-only, software first, then hardware GL over any Vulkan.
+        assert_eq!(pick(&[nvidia_vk, lavapipe, llvmpipe], Cpu, Os::Other), Some(2));
+        assert_eq!(pick(&[nvidia_vk, lavapipe, nvidia_gl], Cpu, Os::Other), Some(2));
+        // GL can't present: Vulkan for the window, software first.
+        let mut gl = nvidia_gl;
+        gl.surface_ok = false;
+        assert_eq!(pick(&[gl, nvidia_vk, lavapipe], Cpu, Os::Other), Some(2));
+        assert_eq!(pick(&[gl, nvidia_vk], Cpu, Os::Other), Some(1));
+        // Other backends rank as before.
+        assert_eq!(pick(&[nvidia_gl, nvidia_vk], Auto, Os::Other), Some(1));
+    }
+
     #[test]
     fn adapters_must_present_even_when_none_support_the_surface() {
         let mut a = cand(INTEL, wgpu::DeviceType::IntegratedGpu, wgpu::Backend::Dx12);
@@ -554,6 +640,43 @@ mod tests {
         assert_eq!(Marker::parse(r#"{"backend": "env:dx12"}"#).tried(), None);
         let long = format!(r#"{{"adapter": "{}"}}"#, "x".repeat(10_000));
         assert_eq!(Marker::parse(&long).adapter.len(), 256);
+    }
+
+    #[test]
+    fn a_failed_start_keeps_its_marker_only_when_a_safer_backend_exists() {
+        // GPU backends move down the chain on the next start.
+        assert!(keep_marker_after_error(&plan(Auto, None, None, false, Os::Other), Os::Other));
+        assert!(keep_marker_after_error(&plan(Gl, None, None, false, Os::Other), Os::Other));
+        assert!(keep_marker_after_error(&plan(Dx12, None, None, false, Os::Windows), Os::Windows));
+        assert!(keep_marker_after_error(&plan(Auto, None, None, false, Os::Mac), Os::Mac));
+        // The CPU path is the end of every chain, including the `--safe-gpu` retry.
+        for os in [Os::Windows, Os::Mac, Os::Other] {
+            assert!(!keep_marker_after_error(&plan(Cpu, None, None, false, os), os));
+            assert!(!keep_marker_after_error(&plan(Auto, None, None, true, os), os));
+        }
+        // `WGPU_BACKEND` is the user's choice; no plan reads its marker.
+        assert!(!keep_marker_after_error(&plan(Auto, None, Some("vulkan"), false, Os::Other), Os::Other));
+    }
+
+    /// A failed CPU start (no usable GL adapter under XWayland) left a `cpu` marker, so every
+    /// later start was planned on CPU and failed the same way until the marker was deleted by hand.
+    #[test]
+    fn a_failed_cpu_start_does_not_pin_later_starts() {
+        let dir = temp_dir("cpu-error");
+        let (_, s) = Sentinel::begin(&dir);
+        let mut s = s.expect("sentinel");
+        let failed = plan(Auto, None, None, true, Os::Other);
+        s.write(Marker { backend: failed.backend.name().into(), ..Default::default() }).unwrap();
+        // eframe returned an error: what `main` does with the marker.
+        if keep_marker_after_error(&failed, Os::Other) {
+            drop(s);
+        } else {
+            s.finish();
+        }
+        let (prev, _s) = Sentinel::begin(&dir);
+        assert_eq!(prev, Previous::Clean);
+        assert_eq!(plan(Auto, prev.crashed(), None, false, Os::Other).backend, Auto);
+        let _ = std::fs::remove_dir_all(&dir);
     }
 
     fn temp_dir(name: &str) -> PathBuf {
@@ -597,6 +720,33 @@ mod tests {
         let (prev, _s) = Sentinel::begin(&dir);
         assert_eq!(prev, Previous::Clean);
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn returned_non_graphics_errors_do_not_trigger_backend_recovery() {
+        let cases = [
+            ("success", Ok(()), false),
+            ("app-error", Err(eframe::Error::AppCreation(Box::new(std::io::Error::other("app setup failed")))), false),
+            ("gpu-error", Err(eframe::Error::Wgpu(egui_wgpu::WgpuError::CustomNativeAdapterSelectionError("no adapter".into()))), true),
+        ];
+        for (name, result, keep) in cases {
+            let dir = temp_dir(name);
+            let (_, s) = Sentinel::begin(&dir);
+            let mut s = s.expect("sentinel");
+            s.write(Marker { backend: "vulkan".into(), ..Default::default() }).unwrap();
+            if keep_marker_after_run(&result) {
+                drop(s);
+            } else {
+                s.finish();
+            }
+            let (previous, s) = Sentinel::begin(&dir);
+            assert_eq!(previous.crashed().is_some(), keep, "{name}: {result:?}");
+            if !keep {
+                assert_eq!(plan(Vulkan, previous.crashed(), None, false, Os::Other).backend, Vulkan);
+            }
+            s.expect("sentinel").finish();
+            let _ = std::fs::remove_dir_all(&dir);
+        }
     }
 
     #[test]

@@ -4,12 +4,17 @@
 //! smart object, recording a smart filter), respects the selection, and is
 //! undoable. `filter.lastFilter` re-runs the most recent filter command.
 
-use photocraft_algo::{self as algo, Distribution, FilterParams, PolarMode, Preserve, RadialMethod, RippleSize, SpherizeMode, UndefinedAreas, WaveType};
+use photocraft_algo::{
+    self as algo, Distribution, FilterParams, PolarMode, Preserve, RadialMethod, RadialQuality, RippleSize, SpherizeMode, UndefinedAreas, WaveType,
+};
 use photocraft_doc::{LayerContent, SmartFilter};
 use serde_json::{Value, json};
 
 use crate::commands::CommandSpec;
 use crate::{EngineError, Result, Session};
+
+mod validation;
+pub(crate) use validation::validate_params;
 
 fn f(p: &Value, k: &str, d: f32) -> f32 {
     p.get(k).and_then(Value::as_f64).map_or(d, |v| v as f32)
@@ -24,6 +29,10 @@ fn b(p: &Value, k: &str, d: bool) -> bool {
 }
 fn s<'a>(p: &'a Value, k: &str, d: &'a str) -> &'a str {
     p.get(k).and_then(Value::as_str).unwrap_or(d)
+}
+fn seed(p: &Value) -> u32 {
+    // New calls accept the entire documented u32 range; keep legacy record decoding otherwise.
+    p.get("seed").and_then(Value::as_u64).and_then(|n| u32::try_from(n).ok()).unwrap_or_else(|| i(p, "seed", 0) as u32)
 }
 fn undefined(p: &Value) -> UndefinedAreas {
     match s(p, "undefinedAreas", "wrap") {
@@ -53,7 +62,8 @@ fn preset(id: &str) -> Option<(&'static str, FilterParams)> {
 }
 
 /// Builds the algorithm parameters for a filter command id from JSON params
-/// (Photoshop dialog units).
+/// (Photoshop dialog units). Stored smart filters and previews retain their tolerant decoding;
+/// new command invocations pass through `validate_params` before any document changes.
 pub fn params_for(id: &str, p: &Value) -> Option<FilterParams> {
     if let Some((_, fp)) = preset(id) {
         return Some(fp);
@@ -65,6 +75,12 @@ pub fn params_for(id: &str, p: &Value) -> Option<FilterParams> {
         "filter.blur.radialBlur" => FilterParams::RadialBlur {
             amount: f(p, "amount", 10.0).clamp(1.0, 100.0),
             method: if s(p, "method", "spin") == "zoom" { RadialMethod::Zoom } else { RadialMethod::Spin },
+            quality: match s(p, "quality", "good") {
+                "draft" => RadialQuality::Draft,
+                "best" => RadialQuality::Best,
+                "good" => RadialQuality::Good,
+                _ => RadialQuality::Good,
+            },
             center_x: f(p, "centerX", 0.5),
             center_y: f(p, "centerY", 0.5),
         },
@@ -86,7 +102,7 @@ pub fn params_for(id: &str, p: &Value) -> Option<FilterParams> {
             amount: f(p, "amount", 12.5).clamp(0.1, 400.0),
             distribution: if s(p, "distribution", "uniform") == "gaussian" { Distribution::Gaussian } else { Distribution::Uniform },
             monochromatic: b(p, "monochromatic", false),
-            seed: i(p, "seed", 0) as u32,
+            seed: seed(p),
         },
         "filter.noise.median" => FilterParams::Median { radius: f(p, "radius", 1.0).clamp(1.0, 500.0) },
         "filter.noise.dustAndScratches" => {
@@ -123,7 +139,7 @@ pub fn params_for(id: &str, p: &Value) -> Option<FilterParams> {
                 _ => WaveType::Sine,
             },
             undefined: undefined(p),
-            seed: i(p, "seed", 0) as u32,
+            seed: seed(p),
         },
         "filter.distort.ripple" => FilterParams::Ripple {
             amount: f(p, "amount", 100.0).clamp(-999.0, 999.0),
@@ -187,11 +203,12 @@ pub(crate) fn has_filterable_layer(s: &Session) -> std::result::Result<(), Strin
     match &l.content {
         LayerContent::Raster(_) => Ok(()),
         LayerContent::Smart(sm) if sm.cache.is_some() => Ok(()),
-        other => Err(format!("filters need a pixel layer (active layer is a {} layer)", other.kind_name())),
+        other => Err(format!("filters need a pixel layer (active layer is {} {} layer)", other.article(), other.kind_name())),
     }
 }
 
 pub(crate) fn run_filter(s: &mut Session, id: &str, p: &Value) -> Result<Value> {
+    validate_params(id, p)?;
     // Session state some filters read (colours) becomes explicit params; external inputs resolve here.
     let prepared = crate::filters_ext::prepare(s, id, p);
     let p = &prepared;
@@ -232,7 +249,20 @@ pub(crate) fn run_filter(s: &mut Session, id: &str, p: &Value) -> Result<Value> 
                 *surf = filter(surf, &fp, area, bounds, selection.as_ref(), doc_bounds.union(&content))?;
                 return Ok(fp.clone());
             }
+            // Filters that make pixels transparent (Color to Alpha) turn the Background into a
+            // normal layer first, as the erasers do: it can't hold transparency.
+            if fp.makes_transparency() {
+                crate::extra_cmds::background_to_layer_for_mask(doc, layer);
+            }
+            let locks = doc.effective_locks(layer);
             let l = doc.layer_mut(layer).ok_or(EngineError::NoLayer(layer))?;
+            if locks.pixels || locks.all {
+                return Err(EngineError::Other(format!("Could not complete your request because the layer \"{}\" is locked", l.name)));
+            }
+            // Putting the old alpha back (below) would leave unmixed colours fully opaque.
+            if locks.transparency && fp.makes_transparency() && matches!(l.content, LayerContent::Raster(_)) {
+                return Err(EngineError::Other(format!("Could not complete your request because the transparency of layer \"{}\" is locked", l.name)));
+            }
             let mut fp = fp.clone();
             crate::filters_ext::resolve_in_layer(&mut fp, l, bounds);
             let surf = match &mut l.content {
@@ -245,13 +275,39 @@ pub(crate) fn run_filter(s: &mut Session, id: &str, p: &Value) -> Result<Value> 
                 }
                 _ => return Err(EngineError::Other("not a pixel layer".into())),
             };
+            let before = locks.transparency.then(|| surf.clone());
             let content = surf.content_bounds();
             let area = algo::output_area(&fp, content, bounds, sel_bounds);
             *surf = filter(surf, &fp, area, bounds, selection.as_ref(), doc_bounds.union(&content))?;
+            if let Some(before) = &before {
+                keep_alpha(before, surf);
+            }
             Ok(fp)
         },
         move |fp| json!({ "layer": layer_id, "filter": serde_json::to_value(&fp).unwrap_or(Value::Null) }),
     )
+}
+
+/// Lock transparency: put the layer's alpha back after a filter, in the tiles it changed.
+fn keep_alpha(old: &photocraft_raster::Surface, new: &mut photocraft_raster::Surface) {
+    if old.format() != new.format() || !new.format().alpha {
+        return;
+    }
+    let mut coords: Vec<_> = new.tiles().filter(|(c, t)| old.tile(**c).is_none_or(|o| !std::sync::Arc::ptr_eq(o, t))).map(|(c, _)| *c).collect();
+    coords.extend(old.tiles().filter(|(c, _)| new.tile(**c).is_none()).map(|(c, _)| *c));
+    let n = new.channels();
+    for c in coords {
+        let r = c.rect();
+        let o = old.read_region(r);
+        let mut v = new.read_region(r);
+        for (pn, po) in v.chunks_exact_mut(n).zip(o.chunks_exact(n)) {
+            if let (Some(a), Some(b)) = (pn.last_mut(), po.last()) {
+                *a = *b;
+            }
+        }
+        new.write_region(r, &v);
+    }
+    new.prune();
 }
 
 macro_rules! filter_cmd {
@@ -285,7 +341,7 @@ pub fn specs() -> Vec<CommandSpec> {
             "filter.blur.radialBlur",
             "Radial Blur…",
             ["Filter", "Blur"],
-            r##"{"amount":1..100=10,"method":"spin|zoom","centerX":0..1=0.5,"centerY":0..1=0.5}"##
+            r##"{"amount":1..100=10,"method":"spin|zoom","quality":"draft|good|best"="good","centerX":0..1=0.5,"centerY":0..1=0.5}"##
         ),
         filter_cmd!("filter.blur.surfaceBlur", "Surface Blur…", ["Filter", "Blur"], r##"{"radius":1..100=5,"threshold":2..255=15}"##),
         filter_cmd!(
@@ -351,9 +407,15 @@ pub fn specs() -> Vec<CommandSpec> {
     ]
 }
 
-/// The most recent filter command in the session journal.
+/// The most recent filter command in the session journal, retargeted at the active layer: dialogs
+/// such as the Filter Gallery record the layer they ran on, and Last Filter applies to the
+/// current layer, as in Photoshop (#1270).
 fn last_filter(s: &Session) -> Option<(String, Value)> {
-    s.journal.iter().rev().find(|(id, _)| params_for(id, &Value::Null).is_some() && id.starts_with("filter.")).cloned()
+    let (id, mut params) = s.journal.iter().rev().find(|(id, _)| params_for(id, &Value::Null).is_some() && id.starts_with("filter.")).cloned()?;
+    if let Value::Object(m) = &mut params {
+        m.remove("layer");
+    }
+    Some((id, params))
 }
 
 #[cfg(test)]
@@ -529,8 +591,30 @@ mod tests {
     }
 
     #[test]
+    fn last_filter_applies_to_the_active_layer() {
+        let mut s = session();
+        paint_pattern(&mut s);
+        let first = s.active().unwrap().active_layer.unwrap();
+        // Dialogs (Filter Gallery, Camera Raw…) record the layer they ran on.
+        s.execute("filter.other.offset", json!({"horizontal": 3, "layer": first.0})).unwrap();
+        let first_once = active_pixels(&s);
+        s.execute("layer.new.layer", json!({})).unwrap();
+        paint_pattern(&mut s);
+        let before = active_pixels(&s);
+        s.execute("filter.lastFilter", json!({})).unwrap();
+        assert_ne!(active_pixels(&s), before, "the active layer is filtered");
+        let d = s.active().unwrap();
+        let l = d.doc.layer(first).unwrap();
+        assert_eq!(l.surface().unwrap().read_region(photocraft_geom::Rect::new(0, 0, 48, 32)), first_once, "the first layer is left alone");
+    }
+
+    #[test]
     fn params_map_to_algorithm_units() {
         assert_eq!(params_for("filter.blur.gaussianBlur", &json!({"radius": 4.5})), Some(FilterParams::GaussianBlur { radius: 4.5 }));
+        assert_eq!(
+            params_for("filter.blur.radialBlur", &json!({"quality": "best"})),
+            Some(FilterParams::RadialBlur { amount: 10.0, method: RadialMethod::Spin, quality: RadialQuality::Best, center_x: 0.5, center_y: 0.5 })
+        );
         assert_eq!(
             params_for("filter.noise.addNoise", &json!({"amount": 10, "distribution": "gaussian", "monochromatic": true})),
             Some(FilterParams::AddNoise { amount: 10.0, distribution: Distribution::Gaussian, monochromatic: true, seed: 0 })
@@ -585,6 +669,7 @@ mod tests {
             let l = Layer::new(
                 "so",
                 LayerContent::Smart(SmartObject {
+                    contents_id: photocraft_doc::SmartContentsId::fresh(),
                     source: SmartSource::Linked { path: String::new() },
                     transform: photocraft_geom::Affine::IDENTITY,
                     smart_filters: vec![],

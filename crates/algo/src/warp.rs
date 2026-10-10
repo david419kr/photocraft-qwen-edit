@@ -30,31 +30,41 @@ const MAX_CELLS: usize = 512;
 /// through `warp` (source space) and then the affine `t` (source → document) in one resampling
 /// pass, an exact shift for whole-pixel translations (so conversions and re-renders are
 /// lossless), bicubic otherwise. Shared by the engine's re-render and PSD export's filter cache.
-pub fn place_source(src: &Surface, src_rect: Rect, t: &photocraft_geom::Affine, warp: Option<&photocraft_geom::warp::Warp>) -> Surface {
+pub fn place_source(
+    src: &Surface,
+    src_rect: Rect,
+    t: &photocraft_geom::Affine,
+    warp: Option<&photocraft_geom::warp::Warp>,
+) -> Result<Surface, photocraft_raster::AllocationError> {
     let [a, b, c, d, e, f] = t.m;
     if let Some(w) = warp.filter(|w| !w.is_identity()) {
         let map = |x: f64, y: f64| {
             let (u, v) = w.map(x, y);
             (a * u + c * v + e, b * u + d * v + f)
         };
-        return warp_mesh_surface(src, src_rect, &map, Interp::Bicubic);
+        return Ok(warp_mesh_surface(src, src_rect, &map, Interp::Bicubic));
     }
     let near = |x: f64, y: f64| (x - y).abs() < 1e-9;
     if near(a, 1.0) && near(b, 0.0) && near(c, 0.0) && near(d, 1.0) && near(e, e.round()) && near(f, f.round()) {
-        return crate::resample::translate_surface(src, e.round() as i32, f.round() as i32);
+        return Ok(crate::resample::translate_surface(src, e.round() as i32, f.round() as i32));
     }
     crate::transform::warp_surface(src, src_rect, &crate::transform::Homography([a, c, e, b, d, f, 0.0, 0.0, 1.0]), Interp::Bicubic)
 }
 
 /// [`place_source`] through a projective map `h` (source → document; Distort, Perspective): the
 /// warp first (in source space), then `h`.
-pub fn place_source_projective(src: &Surface, src_rect: Rect, h: &crate::transform::Homography, warp: Option<&photocraft_geom::warp::Warp>) -> Surface {
+pub fn place_source_projective(
+    src: &Surface,
+    src_rect: Rect,
+    h: &crate::transform::Homography,
+    warp: Option<&photocraft_geom::warp::Warp>,
+) -> Result<Surface, photocraft_raster::AllocationError> {
     if let Some(w) = warp.filter(|w| !w.is_identity()) {
         let map = |x: f64, y: f64| {
             let (u, v) = w.map(x, y);
             h.apply(u, v)
         };
-        return warp_mesh_surface(src, src_rect, &map, Interp::Bicubic);
+        return Ok(warp_mesh_surface(src, src_rect, &map, Interp::Bicubic));
     }
     crate::transform::warp_surface(src, src_rect, h, Interp::Bicubic)
 }
@@ -311,8 +321,10 @@ pub fn warp_mesh_gray(s: &Surface, f: &(dyn Fn(f64, f64) -> (f64, f64) + Sync), 
     let v = s.read_region(src);
     tmp.write_region(src, &v.iter().flat_map(|g| [*g, 1.0]).collect::<Vec<f32>>());
     let w = warp_mesh_surface(&tmp, src, f, interp);
-    let cover = src.union(&w.content_bounds());
-    out.write_region(cover, &vec![default; cover.width() as usize * cover.height() as usize]);
+    // Clear the old region and write the warped one separately, as `warp_gray` does: one dense
+    // `src ∪ warped` buffer grows with the square of how far a mesh moves the content (#995).
+    // `Surface` is tile-sparse, so a distant region costs only its own tiles.
+    out.write_region(src, &vec![default; src.width() as usize * src.height() as usize]);
     let b = w.content_bounds();
     if !b.is_empty() {
         let px = w.read_region(b);
@@ -338,6 +350,23 @@ mod tests {
             }
         }
         surf
+    }
+
+    #[test]
+    fn a_mesh_warp_far_off_canvas_writes_only_the_two_regions() {
+        // #995: the old and warped regions were cleared as one dense `src ∪ warped` buffer, about
+        // 37 GiB of floats for a 48 px selection moved 100000 px. Same fix as `warp_gray` (b70fbd4).
+        for sample in [SampleType::U8, SampleType::F32] {
+            let mut sel = Surface::new(PixelFormat::new(ColorMode::Grayscale, sample, false));
+            sel.fill_rect(Rect::new(8, 8, 56, 56), &[1.0]);
+            for d in [100_000.0, -100_000.0, 300.0] {
+                let out = warp_mesh_gray(&sel, &|x, y| (x + d, y + d), Interp::Bilinear);
+                let k = d as i32;
+                assert_eq!(out.content_bounds(), Rect::new(8 + k, 8 + k, 56 + k, 56 + k), "{sample:?} {d}");
+                assert_eq!(out.sample_channel(30 + k, 30 + k, 0), 1.0, "{sample:?} {d}: moved");
+                assert_eq!(out.sample_channel(30, 30, 0), 0.0, "{sample:?} {d}: old region cleared");
+            }
+        }
     }
 
     #[test]

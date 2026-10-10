@@ -9,6 +9,7 @@
 #![deny(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::unimplemented, clippy::todo, clippy::unreachable)]
 
 pub mod adjust;
+pub mod advanced;
 pub mod analysis;
 pub mod blend_if;
 pub mod comps;
@@ -26,6 +27,7 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
 
 pub use adjust::Adjustment;
+pub use advanced::{AdvancedBlending, Knockout};
 pub use analysis::{CountGroup, Measurement, MeasurementScale, Note, Ruler};
 pub use blend_if::{BlendIf, BlendRange};
 pub use comps::{Artboard, ArtboardBackground, CompAppearance, CompLayerState, LayerComp};
@@ -62,7 +64,17 @@ impl LayerId {
     }
 }
 
-/// Advance the process-wide id counter (shared by layer and document ids) past `max`, so ids
+/// Identity of the source contents shared by smart-object instances, independent of their bytes.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
+pub struct SmartContentsId(pub u64);
+
+impl SmartContentsId {
+    pub fn fresh() -> Self {
+        SmartContentsId(next_id())
+    }
+}
+
+/// Advance the process-wide id counter (shared by layer, document and smart-contents ids) past `max`, so ids
 /// loaded from a file never collide with ids minted later.
 pub fn ensure_ids_above(max: u64) {
     NEXT_ID.fetch_max(max.saturating_add(1), Ordering::Relaxed);
@@ -110,6 +122,97 @@ pub enum LabelColor {
     Blue,
     Violet,
     Gray,
+    Seafoam,
+    Indigo,
+    Magenta,
+    Fuchsia,
+}
+
+impl LabelColor {
+    /// Display order, independent of the PSD sheet-colour indices.
+    pub const ALL: [Self; 12] = [
+        Self::None,
+        Self::Red,
+        Self::Orange,
+        Self::Yellow,
+        Self::Green,
+        Self::Seafoam,
+        Self::Blue,
+        Self::Indigo,
+        Self::Magenta,
+        Self::Fuchsia,
+        Self::Violet,
+        Self::Gray,
+    ];
+
+    /// Stable, language-independent command and inspection value.
+    pub fn id(self) -> &'static str {
+        match self {
+            Self::None => "none",
+            Self::Red => "red",
+            Self::Orange => "orange",
+            Self::Yellow => "yellow",
+            Self::Green => "green",
+            Self::Seafoam => "seafoam",
+            Self::Blue => "blue",
+            Self::Indigo => "indigo",
+            Self::Magenta => "magenta",
+            Self::Fuchsia => "fuchsia",
+            Self::Violet => "violet",
+            Self::Gray => "gray",
+        }
+    }
+
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::None => "No Color",
+            Self::Red => "Red",
+            Self::Orange => "Orange",
+            Self::Yellow => "Yellow",
+            Self::Green => "Green",
+            Self::Seafoam => "Seafoam",
+            Self::Blue => "Blue",
+            Self::Indigo => "Indigo",
+            Self::Magenta => "Magenta",
+            Self::Fuchsia => "Fuchsia",
+            Self::Violet => "Violet",
+            Self::Gray => "Gray",
+        }
+    }
+
+    pub fn from_id(id: &str) -> Option<Self> {
+        Self::ALL.into_iter().find(|c| c.id() == id)
+    }
+}
+
+#[cfg(test)]
+mod label_color_tests {
+    use super::LabelColor;
+
+    #[test]
+    fn layer_color_ids_and_existing_serialized_names_stay_stable() {
+        for (name, color) in [
+            ("None", LabelColor::None),
+            ("Red", LabelColor::Red),
+            ("Orange", LabelColor::Orange),
+            ("Yellow", LabelColor::Yellow),
+            ("Green", LabelColor::Green),
+            ("Blue", LabelColor::Blue),
+            ("Violet", LabelColor::Violet),
+            ("Gray", LabelColor::Gray),
+        ] {
+            assert_eq!(serde_json::to_value(color).unwrap(), name);
+            assert_eq!(serde_json::from_value::<LabelColor>(serde_json::json!(name)).unwrap(), color);
+        }
+        for c in LabelColor::ALL {
+            assert_eq!(LabelColor::from_id(c.id()), Some(c));
+            assert_eq!(serde_json::from_value::<LabelColor>(serde_json::to_value(c).unwrap()).unwrap(), c);
+        }
+        for id in ["", "Red", "0", "unknown", "🔴"] {
+            assert_eq!(LabelColor::from_id(id), None);
+        }
+        assert!(serde_json::from_value::<LabelColor>(serde_json::json!("Unknown")).is_err());
+    }
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -244,6 +347,17 @@ impl Fill {
     pub fn gradient(stops: Vec<(f32, Color)>, angle: f32, scale: f32, style: GradientStyle, reverse: bool) -> Fill {
         Fill::Gradient { stops, angle, scale, style, reverse, opacity_stops: Vec::new(), midpoints: Vec::new(), offset: (0.0, 0.0), dither: false, align: true }
     }
+
+    /// This fill with its colours in `mode`'s model (see [`Color::in_mode`]): a fill layer's
+    /// colours are in its document's mode, which the compositors read them as.
+    pub fn in_mode(mut self, mode: ColorMode) -> Fill {
+        match &mut self {
+            Fill::Solid(c) => *c = c.in_mode(mode),
+            Fill::Gradient { stops, .. } => stops.iter_mut().for_each(|(_, c)| *c = c.in_mode(mode)),
+            Fill::Pattern { .. } => {}
+        }
+        self
+    }
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -353,6 +467,8 @@ fn normalize_runs<S: Clone>(text: &str, runs: Vec<(usize, S)>, base: S) -> Vec<(
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct SmartObject {
+    /// Ordinary layer duplicates share this identity; independent contents receive a fresh one.
+    pub contents_id: SmartContentsId,
     /// Embedded source file bytes (PSD, PNG, …) or linked path.
     pub source: SmartSource,
     pub transform: Affine,
@@ -384,6 +500,7 @@ impl SmartObject {
     /// A smart object with no filters and no PSD data.
     pub fn new(source: SmartSource, transform: Affine, cache: Option<Surface>) -> Self {
         Self {
+            contents_id: SmartContentsId::fresh(),
             source,
             transform,
             smart_filters: Vec::new(),
@@ -450,6 +567,14 @@ impl LayerContent {
             LayerContent::Smart(_) => "Smart Object",
         }
     }
+
+    /// English indefinite article for this layer kind ("an" for Adjustment, "a" for all others).
+    pub fn article(&self) -> &'static str {
+        match self {
+            LayerContent::Adjustment(_) => "an",
+            _ => "a",
+        }
+    }
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -495,6 +620,9 @@ pub struct Layer {
     /// outside which the layer's pixels are hidden. Default = everything blends. PSD layer-record
     /// blending ranges.
     pub blend_if: BlendIf,
+    /// Blending Options › Advanced Blending: knockout, blend interior effects / clipped layers as
+    /// group, transparency shapes layer, layer / vector mask hides effects. Default = Photoshop's.
+    pub advanced: AdvancedBlending,
     /// Layer › Video Layers frame stack (None for a normal layer).
     pub video: Option<VideoData>,
 }
@@ -521,6 +649,7 @@ impl Layer {
             link_group: None,
             excluded_channels: 0,
             blend_if: BlendIf::default(),
+            advanced: AdvancedBlending::default(),
             video: None,
         }
     }
@@ -634,6 +763,8 @@ pub type PsdGlobalBlock = ([u8; 4], [u8; 4], Arc<Vec<u8>>);
 pub struct Metadata {
     pub xmp: Option<String>,
     pub exif: Option<Arc<Vec<u8>>>,
+    /// Free-form image text (PNG tEXt/zTXt/iTXt, TIFF ASCII tags), including duplicate keys.
+    pub text: Vec<(String, String)>,
     /// Raw PSD image resources we don't model yet: (id, name, data), for lossless round-trip.
     pub psd_resources: Vec<(u16, String, Arc<Vec<u8>>)>,
     /// Raw PSD global additional-layer-info blocks: (signature, key, data),
@@ -806,7 +937,18 @@ impl Document {
     }
 
     pub fn path_of(&self, id: LayerId) -> Option<LayerPath> {
-        self.walk().into_iter().find(|(_, _, l)| l.id == id).map(|(p, _, _)| p)
+        fn rec(layers: &[Layer], id: LayerId, path: &mut LayerPath) -> bool {
+            for (i, l) in layers.iter().enumerate() {
+                path.push(i);
+                if l.id == id || l.children().is_some_and(|ch| rec(ch, id, path)) {
+                    return true;
+                }
+                path.pop();
+            }
+            false
+        }
+        let mut path = Vec::new();
+        rec(&self.layers, id, &mut path).then_some(path)
     }
 
     /// The locks in force on the layer at `path`: its own and those of every group around it,
@@ -821,13 +963,37 @@ impl Document {
     }
 
     pub fn layer(&self, id: LayerId) -> Option<&Layer> {
-        let path = self.path_of(id)?;
-        self.layer_at(&path)
+        fn rec(layers: &[Layer], id: LayerId) -> Option<&Layer> {
+            layers.iter().find_map(|l| if l.id == id { Some(l) } else { l.children().and_then(|ch| rec(ch, id)) })
+        }
+        rec(&self.layers, id)
     }
 
     pub fn layer_mut(&mut self, id: LayerId) -> Option<&mut Layer> {
         let path = self.path_of(id)?;
         self.layer_at_mut(&path)
+    }
+
+    /// A [`Layer::link_group`] id no layer uses yet: one above the highest stored id, or, when a
+    /// loaded file already holds `u64::MAX` (#961), the smallest free id from 1. Never wraps, so a
+    /// new link can't join an unrelated group. `None` only if every id is taken.
+    pub fn unused_link_group(&self) -> Option<u64> {
+        let mut used: Vec<u64> = self.walk().iter().filter_map(|(_, _, l)| l.link_group).collect();
+        used.sort_unstable();
+        used.dedup();
+        if let Some(next) = used.last().map_or(Some(1), |g| g.checked_add(1)) {
+            return Some(next);
+        }
+        let mut free = 1u64;
+        for g in used {
+            if g > free {
+                break;
+            }
+            if g == free {
+                free = free.checked_add(1)?;
+            }
+        }
+        Some(free)
     }
 
     pub fn layer_at(&self, path: &[usize]) -> Option<&Layer> {
@@ -894,6 +1060,23 @@ impl Document {
         (1..=names.len() + 1).map(|n| format!("{base} {n}")).find(|n| !names.contains(n.as_str())).unwrap_or_else(|| base.to_string())
     }
 
+    /// Name for a copy of a layer named `name`, unique in the document: "Layer 1 copy", then
+    /// "Layer 1 copy 2", "Layer 1 copy 3"… A name that already ends in "copy" (or "copy N") is
+    /// numbered from its root rather than growing another "copy".
+    pub fn copy_name(&self, name: &str) -> String {
+        let root = match name.rsplit_once(" copy") {
+            Some((root, rest)) if rest.is_empty() || rest.strip_prefix(' ').is_some_and(|n| !n.is_empty() && n.bytes().all(|b| b.is_ascii_digit())) => root,
+            _ => name,
+        };
+        let names: std::collections::HashSet<&str> = self.walk().into_iter().map(|(_, _, l)| l.name.as_str()).collect();
+        let first = format!("{root} copy");
+        if !names.contains(first.as_str()) {
+            return first;
+        }
+        // At most `names.len() + 1` candidates are needed, so the search always succeeds.
+        (2..=names.len() + 2).map(|n| format!("{root} copy {n}")).find(|n| !names.contains(n.as_str())).unwrap_or(first)
+    }
+
     /// Top-most layer id, useful as the default active layer.
     pub fn top_layer(&self) -> Option<LayerId> {
         self.layers.last().map(|l| l.id)
@@ -906,6 +1089,29 @@ mod tests {
 
     fn doc() -> Document {
         Document::with_background("t", Size::new(100, 50), ColorMode::Rgb, SampleType::U8, Color::WHITE)
+    }
+
+    #[test]
+    fn unused_link_group_never_wraps() {
+        let mut d = doc();
+        assert_eq!(d.unused_link_group(), Some(1));
+        let with = |d: &mut Document, groups: &[u64]| {
+            d.layers.truncate(1);
+            for g in groups {
+                let mut l = Layer::raster("l", PixelFormat::RGBA8);
+                l.link_group = Some(*g);
+                d.layers.push(l);
+            }
+        };
+        with(&mut d, &[3, 7]);
+        assert_eq!(d.unused_link_group(), Some(8));
+        with(&mut d, &[u64::MAX - 1]);
+        assert_eq!(d.unused_link_group(), Some(u64::MAX));
+        // A stored maximal id would wrap to 0 (#961): take the smallest free id instead.
+        with(&mut d, &[u64::MAX]);
+        assert_eq!(d.unused_link_group(), Some(1));
+        with(&mut d, &[0, 1, 2, 4, u64::MAX]);
+        assert_eq!(d.unused_link_group(), Some(3));
     }
 
     #[test]
@@ -1005,6 +1211,27 @@ mod tests {
         assert_eq!(d.layer_count(), 4);
     }
 
+    /// `layer` and `path_of` search the tree directly (no `walk`): they must agree with it at
+    /// every depth, and miss cleanly.
+    #[test]
+    fn layer_lookup_agrees_with_walk() {
+        let mut d = doc();
+        let format = d.pixel_format();
+        let leaf = |n: &str| Layer::raster(n, format);
+        let deep = Layer::group("A", vec![leaf("a0"), Layer::group("B", vec![leaf("b0"), Layer::group("C", vec![leaf("c0")]), leaf("b2")]), leaf("a2")]);
+        d.insert_above(None, deep);
+        d.insert_above(None, leaf("top"));
+        let walk: Vec<(LayerPath, LayerId)> = d.walk().into_iter().map(|(p, _, l)| (p, l.id)).collect();
+        assert_eq!(walk.len(), 10);
+        for (path, id) in &walk {
+            assert_eq!(d.path_of(*id).as_ref(), Some(path));
+            assert_eq!(d.layer(*id).map(|l| l.id), Some(*id));
+            assert_eq!(d.layer_mut(*id).map(|l| l.id), Some(*id));
+        }
+        let missing = Layer::raster("elsewhere", d.pixel_format()).id;
+        assert!(d.path_of(missing).is_none() && d.layer(missing).is_none() && d.layer_mut(missing).is_none());
+    }
+
     #[test]
     fn a_locked_group_locks_its_contents() {
         let mut d = doc();
@@ -1064,6 +1291,14 @@ mod tests {
         let bg = d.layers[0].id;
         d.layer_mut(bg).unwrap().surface_mut().unwrap().write_pixel(0, 0, &[0.0, 0.0, 0.0, 1.0]);
         assert_eq!(snap.layers[0].surface().unwrap().pixel(0, 0), vec![1.0; 4]);
+    }
+
+    #[test]
+    fn layer_content_article_and_kind_name() {
+        assert_eq!(LayerContent::Adjustment(Adjustment::Invert).article(), "an");
+        assert_eq!(LayerContent::Adjustment(Adjustment::Invert).kind_name(), "Adjustment");
+        assert_eq!(LayerContent::Raster(Surface::new(PixelFormat::RGBA8)).article(), "a");
+        assert_eq!(LayerContent::Group(Group { children: Vec::new(), expanded: true, artboard: None }).article(), "a");
     }
 }
 

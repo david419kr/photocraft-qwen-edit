@@ -136,3 +136,98 @@ fn inspect_reports_video_layer() {
     assert_eq!(vid["frames"], 2);
     assert_eq!(vid["source"]["file"].as_str(), Some(dir.as_str()));
 }
+
+fn layer_px(s: &Session, id: LayerId) -> Vec<f32> {
+    match &s.active().unwrap().doc.layer(id).unwrap().content {
+        LayerContent::Raster(r) => r.pixel(2, 2),
+        _ => panic!("not a raster"),
+    }
+}
+
+/// #1288: a fill on a video frame survives scrubbing away and back, and reaches Render Video.
+#[test]
+fn edits_to_a_frame_survive_scrubbing_and_render() {
+    let mut s = session();
+    let r = s.execute("layer.videoLayers.newBlankVideoLayer", json!({})).unwrap();
+    let id = LayerId(r["layer"].as_u64().unwrap());
+    s.execute("layer.videoLayers.insertBlankFrame", json!({})).unwrap();
+    s.execute("timeline.setFrame", json!({"frame": 0})).unwrap();
+    s.execute("edit.fill", json!({"color": "#ff0000"})).unwrap();
+    s.execute("timeline.setFrame", json!({"frame": 1})).unwrap();
+    assert!(layer_px(&s, id)[3] < 0.01, "frame 1 stays blank");
+    s.execute("timeline.setFrame", json!({"frame": 0})).unwrap();
+    let p = layer_px(&s, id);
+    assert!(p[0] > 0.99 && p[3] > 0.99, "frame 0 keeps its fill: {p:?}");
+    // Duplicate Frame copies the edited frame.
+    s.execute("layer.videoLayers.duplicateFrame", json!({})).unwrap();
+    s.execute("timeline.setFrame", json!({"frame": 1})).unwrap();
+    assert!(layer_px(&s, id)[0] > 0.99);
+
+    // Render Video picks up an edit made at the playhead without scrubbing first.
+    s.execute("edit.fill", json!({"color": "#0000ff"})).unwrap();
+    let out = tmpdir("edited");
+    s.execute("file.export.renderVideo", json!({"dir": out, "format": "png"})).unwrap();
+    let stem = s.active().unwrap().doc.name.rsplit_once('.').map_or(s.active().unwrap().doc.name.clone(), |(a, _)| a.to_string());
+    let f1 = std::fs::read(format!("{out}/{stem}_0001.png")).unwrap();
+    let doc = photocraft_io::import("f1.png", &f1).unwrap().document;
+    let flat = crate::file_cmds::flattened(&doc, doc.pixel_format());
+    let q = flat.pixel(2, 2);
+    assert!(q[2] > 0.99 && q[0] < 0.01, "rendered frame 1 is blue: {q:?}");
+}
+
+#[test]
+fn render_writer_progress_and_cancellation_leave_session_unchanged() {
+    let mut s = session();
+    s.execute("timeline.create", json!({"duration": 4, "fps": 4})).unwrap();
+    let before = s.active().unwrap().doc.clone();
+    for format in ["png", "gif"] {
+        let mut names = Vec::new();
+        let mut progress = Vec::new();
+        let r = render_video_with(
+            &s,
+            &json!({"format":format}),
+            |name, bytes| {
+                assert!(!bytes.is_empty());
+                names.push(name.to_owned());
+                Ok(())
+            },
+            |done, total| {
+                progress.push((done, total));
+                done < 2
+            },
+        );
+        assert!(r.unwrap_err().to_string().contains("cancelled"));
+        assert!(names.len() < 4);
+        assert_eq!(progress.first(), Some(&(0, 4)));
+        assert_eq!(progress.last(), Some(&(2, 4)));
+        assert_eq!(s.active().unwrap().doc.timeline, before.timeline);
+    }
+}
+
+/// A 16×12 32-bit Targa: red, alpha 255 on the left half and 0 on the right.
+fn write_tga(path: &str) {
+    let mut b = vec![0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 12, 0, 32, 8];
+    for _y in 0..12 {
+        for x in 0..16 {
+            b.extend_from_slice(&[0, 0, 255, if x < 8 { 255 } else { 0 }]);
+        }
+    }
+    std::fs::write(path, b).unwrap();
+}
+
+/// #2225: a Targa opens with its alpha as an "Alpha 1" channel (as in Photoshop), but an image
+/// sequence treats a frame's alpha as transparency, as video footage does, so TGA sequences
+/// keep their transparent areas.
+#[test]
+fn tga_sequence_frames_keep_their_transparency() {
+    let dir = tmpdir("tga");
+    write_tga(&format!("{dir}/f01.tga"));
+    write_tga(&format!("{dir}/f02.tga"));
+    let frames = load_frames(&dir, photocraft_color::PixelFormat::new(photocraft_color::ColorMode::Rgb, photocraft_color::SampleType::U8, true)).unwrap();
+    assert_eq!(frames.len(), 2);
+    for f in &frames {
+        assert_eq!(f.pixel(2, 6), vec![1.0, 0.0, 0.0, 1.0]);
+        assert_eq!(f.pixel(12, 6)[3], 0.0, "the right half stays transparent");
+    }
+    let _ = std::fs::remove_dir_all(&dir);
+}

@@ -17,6 +17,12 @@
 	Layer	Capa
 	Type	Texto
 	Select	Selección
+	Selected	Seleccionadas
+	Scope	Alcance
+	Top Left	Superior izquierda
+	Top Right	Superior derecha
+	Bottom Left	Inferior izquierda
+	Bottom Right	Inferior derecha
 	Filter	Filtro
 	View	Ver
 	Window	Ventana
@@ -26,6 +32,11 @@
 	New from Clipboard	Nuevo desde el portapapeles
 	Open…	Abrir…
 	Open As…	Abrir como…
+	Open EXR Parts…	Abrir partes EXR…
+	Add beauty precomp from the AOVs	Añadir la precomposición de belleza a partir de los AOV
+	Both	Ambas
+	Left	Izquierda
+	Right	Derecha
 	Open Recent	Archivos recientes
 	Clear Recent Files	Vaciar archivos recientes
 	Close	Cerrar
@@ -75,6 +86,8 @@
 	Import	Importar
 	Browse…	Examinar…
 	Reveal in Finder	Mostrar en Finder
+	Show in Explorer	Mostrar en el Explorador
+	Show in Folder	Mostrar en la carpeta
 	File Info…	Información del archivo…
 	Print…	Imprimir…
 	Print One Copy	Imprimir un ejemplar
@@ -99,6 +112,7 @@
 	Fill…	Rellenar…
 	Stroke…	Contornear…
 	Content-Aware Fill…	Relleno de contenido…
+	Delete and Fill Selection	Eliminar y rellenar selección
 	Content-Aware Scale	Escalado de contenido
 	Puppet Warp	Deformación de clavos
 	Perspective Warp	Deformación en perspectiva
@@ -663,7 +677,11 @@
 	Pro Medium Gray Theme	Tema Pro (gris medio)
 	Studio Theme	Tema Estudio
 	Studio Light Theme	Tema Estudio (claro)
+	Adwaita Light Theme	Tema Adwaita (claro)
+	Adwaita Dark Theme	Tema Adwaita (oscuro)
 	Classic Theme	Tema Clásico
+	Solarized dark	Solarized oscuro
+	Solarized Dark Theme	Tema Solarized oscuro
 	Next Theme	Tema siguiente
 	Actions	Acciones
 	Brush Settings	Ajustes del pincel
@@ -749,7 +767,7 @@
 	All Caps	Todo en mayúsculas
 	All Slices	Todas las secciones
 	All User Slices	Todas las secciones de usuario
-	All shortcuts reset to Photoshop defaults.	Se restablecieron todos los atajos a los valores predeterminados de Photoshop.
+	All shortcuts reset to PhotoCraft defaults.	Se restablecieron todos los atajos a los valores predeterminados de PhotoCraft.
 	Alt	Alt
 	Always use pressure for opacity	Usar siempre la presión para la opacidad
 	Always use pressure for size	Usar siempre la presión para el tamaño
@@ -797,7 +815,6 @@
 	Blending Options	Opciones de fusión
 	Blue	Azul
 	Blue, Red, Yellow	Azul, rojo, amarillo
-	Both	Ambos
 	Both Axes	Ambos ejes
 	Bottom	Inferior
 	Brightness	Brillo
@@ -937,6 +954,17 @@
 	Delete current channel	Eliminar el canal actual
 	Delete current state	Eliminar el estado actual
 	Delete effect layer	Eliminar capa de efecto
+
+# Layers-panel trash confirmation
+	Delete layer ‘{name}’?	¿Eliminar la capa «{name}»?
+	Delete {count} layers? {names}	¿Eliminar {count} capas? {names}
+	Delete layer?	¿Eliminar capa?
+	The document is closed	El documento está cerrado
+	The document or selected layers changed. Please request deletion again.	El documento o las capas seleccionadas han cambiado. Solicita la eliminación de nuevo.
+	Missing delete command	Falta el comando de eliminación
+	Invalid delete command	Comando de eliminación no válido
+	Layer deleted, but confirmation preference could not be saved: {error}	La capa se eliminó, pero no se pudo guardar la preferencia de confirmación: {error}
+
 	Delete layer	Eliminar capa
 	Delete layer comp	Eliminar composición de capa
 	Delete note	Eliminar nota
@@ -974,11 +1002,14 @@
 	Draw with the Pen tool (P) or make a work path from a selection.	Dibuja con la herramienta Pluma (P) o crea un trazado de trabajo a partir de una selección.
 	Drop an image or PSD anywhere to open it.	Suelte una imagen o un PSD en cualquier lugar para abrirlo.
 	Native file drag-and-drop is unavailable	El arrastrar y soltar archivos de forma nativa no está disponible en Wayland
-	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	El arrastrar y soltar archivos de forma nativa aún no está disponible en Wayland. Usa Archivo › Abrir o ejecuta PhotoCraft bajo XWayland con `WAYLAND_DISPLAY= photocraft`.
+	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or copy the image in your file manager and paste it with {paste}.	El arrastrar y soltar archivos de forma nativa aún no está disponible en Wayland. Usa Archivo › Abrir, o copia la imagen en tu gestor de archivos y pégala con {paste}.
+	To drop files, start PhotoCraft under XWayland: `{command}`	Para soltar archivos, inicia PhotoCraft bajo XWayland: `{command}`
+	Or set Preferences › Performance › Linux display server to X11: PhotoCraft then always starts under XWayland.	O establece Preferencias › Rendimiento › Servidor de pantalla de Linux en X11: PhotoCraft se iniciará siempre bajo XWayland.
+	Edit › Paste	Edición › Pegar
 	Duplicate Layers…	Duplicar capas…
 	Duplicate style	Duplicar estilo
 	Edit Toolbar…	Editar barra de herramientas…
-	Use File › Open to open an image.	Usa Archivo › Abrir para abrir una imagen.
+	Use File › Open, or paste a copied image with {paste}.	Usa Archivo › Abrir, o pega una imagen copiada con {paste}.
 	Edit in Quick Mask Mode  (Q)	Editar en modo de máscara rápida  (Q)
 	Edit in Standard Mode  (Q)	Editar en modo estándar  (Q)
 	Effects	Efectos
@@ -1013,6 +1044,7 @@
 	Fisheye	Ojo de pez
 	Fit	Encajar
 	Fit Screen	Encajar en pantalla
+	Fill Screen	Rellenar pantalla
 	Fit in View	Encajar en la vista
 	Fixed	Fijo
 	Fixed Ratio	Relación fija
@@ -1066,7 +1098,7 @@
 	Ignore All	Ignorar todo
 	Image Size	Tamaño de imagen
 	Import Brushes…	Importar pinceles…
-	Import Photoshop brushes (.abr)	Importar pinceles de Photoshop (.abr)
+	Import brushes (.abr)	Importar pinceles (.abr)
 	Import Presets	Importar preajustes
 	Imported	Importado
 	Indent First	Sangría primera
@@ -1101,7 +1133,6 @@
 	Leading	Interlínea
 	Leading (set to the font size × auto-leading when Auto)	Interlínea (al estar en Automático se iguala al tamaño de fuente × interlínea automática)
 	Leave as is (don't color manage)	Dejar como está (no gestionar el color)
-	Left	Izquierda
 	Left align text	Alinear texto a la izquierda
 	Length:	Longitud:
 	Level	Nivel
@@ -1116,7 +1147,6 @@
 	Liquify is not open	Licuar no está abierto
 	Load	Cargar
 	Load 3D LUT…	Cargar LUT 3D…
-	Load Photoshop brushes (.abr)	Cargar pinceles de Photoshop (.abr)
 	Load channel as selection	Cargar el canal como selección
 	Load…	Cargar…
 	Localized Color Clusters	Agrupaciones de color localizadas
@@ -1274,6 +1304,7 @@
 	Record ● a sequence of edits, then play ▶ it on any document.	Graba ● una secuencia de ediciones y reprodúcela ▶ en cualquier documento.
 	Red	Rojo
 	Redefine style by current selection	Redefinir el estilo con la selección actual
+	Refine	Refinar
 	Reflected Gradient	Degradado reflejado
 	Registration Marks	Marcas de registro
 	Regular	Normal
@@ -1283,6 +1314,7 @@
 	Remove All Pins	Quitar todos los pines
 	Remove Background	Quitar el fondo
 	Remove Planes	Quitar los planos
+	Remove Tool	Herramienta Quitar
 	Remove stop	Quitar punto
 	Remove variable	Quitar variable
 	Rename	Cambiar nombre
@@ -1292,6 +1324,17 @@
 	Rename…	Cambiar nombre…
 	Resample	Remuestrear
 	Reset All to Defaults	Restablecer todo a los valores predeterminados
+	Import Shortcuts…	Importar atajos…
+	Load a keyboard shortcut set saved as .kys	Cargar un conjunto de atajos de teclado guardado como .kys
+	Imported {n} shortcuts from {file}. Click OK to keep them.	Se importaron {n} atajos de {file}. Haz clic en OK para conservarlos.
+	{n} commands are not in PhotoCraft.	{n} comandos no existen en PhotoCraft.
+	Keyboard shortcuts imported	Atajos de teclado importados
+	Your keyboard shortcut set {set} is in use here: {n} shortcuts differ from the defaults. Edit › Keyboard Shortcuts shows them; Reset All to Defaults undoes this.	Tu conjunto de atajos de teclado {set} se usa aquí: {n} atajos difieren de los predeterminados. Edición › Atajos de teclado los muestra; Restablecer todo a valores predeterminados lo deshace.
+	Import keyboard shortcuts?	¿Importar atajos de teclado?
+	PhotoCraft found your keyboard shortcut set {set} from another image editor on this computer: {n} of its shortcuts differ from PhotoCraft's. Import it?	PhotoCraft encontró en este equipo tu conjunto de atajos de teclado {set} de otro editor de imágenes: {n} de sus atajos difieren de los de PhotoCraft. ¿Importarlo?
+	Edit › Keyboard Shortcuts › Reset All to Defaults undoes an import.	Edición › Atajos de teclado › Restablecer todo a valores predeterminados deshace una importación.
+	Don't Import	No importar
+	The keyboard shortcut set was not imported: {error}	No se importó el conjunto de atajos de teclado: {error}
 	Reset Section	Restablecer sección
 	Reset Transform	Restablecer transformación
 	Reset to defaults	Restablecer a los valores predeterminados
@@ -1300,7 +1343,6 @@
 	Restore All	Restaurar todo
 	Restore Defaults	Restaurar valores predeterminados
 	Restrictive (Web)	Restrictivo (web)
-	Right	Derecha
 	Right align text	Alinear texto a la derecha
 	Rigid	Rígido
 	Rotate:	Rotación:
@@ -1341,6 +1383,7 @@
 	Set background color	Establecer el color de fondo
 	Set foreground color	Establecer el color frontal
 	Set painting symmetry options	Establecer opciones de simetría de pintura
+	Symmetry Off	Simetría desactivada
 	Set shape fill type	Establecer el tipo de relleno de la forma
 	Set shape stroke type	Establecer el tipo de trazo de la forma
 	Set the text color	Establecer el color del texto
@@ -1382,6 +1425,8 @@
 	Stroke	Trazo
 	Stroke Catch-up	Poner al día del trazo
 	Stroke:	Trazo:
+	Location	Ubicación
+	Location:	Ubicación:
 	Style	Estilo
 	Style Options	Opciones de estilo
 	Style Options…	Opciones de estilo…
@@ -1460,6 +1505,9 @@
 	↑↓ navigate   {key} run   esc close	↑↓ navegar   {key} ejecutar   esc cerrar
 	Version {version}	Versión {version}
 	New Document	Documento nuevo
+	Save Preset…	Guardar ajuste preestablecido…
+	Preset Name	Nombre del ajuste preestablecido
+	No saved presets yet.	Todavía no hay ajustes preestablecidos guardados.
 	Error	Error
 	Command	Comando
 
@@ -1506,7 +1554,7 @@
 	Current Tool	Herramienta actual
 	Custom Shape Tool	Herramienta Forma personalizada
 	Cyans	Cianes
-	Default Photoshop Size	Tamaño predeterminado de Photoshop
+	Default PhotoCraft Size	Tamaño predeterminado de PhotoCraft
 	Delete Workspace	Eliminar espacio de trabajo
 	Diamond	Diamante
 	Dimensions:	Dimensiones:
@@ -1583,6 +1631,8 @@
 	Millimeters	Milímetros
 	Mobile	Móvil
 	Move Tool	Herramienta Mover
+	Could not use the move tool because the layer is locked.	No se pudo usar la herramienta Mover porque la capa está bloqueada.
+	Could not complete the Free Transform command because the layer is locked.	No se pudo completar el comando Transformación libre porque la capa está bloqueada.
 	Multiply	Multiplicar
 	My Brushes	Mis pinceles
 	Neutrals	Neutros
@@ -1627,6 +1677,7 @@
 	Quick Selection Tool	Herramienta Selección rápida
 	Radial	Radial
 	Rasterize Layer	Rasterizar capa
+	Rasterize Layers	Rasterizar capas
 	Ratio	Relación
 	Recent	Reciente
 	Rectangle Tool	Herramienta Rectángulo
@@ -1800,12 +1851,14 @@
 	Maximize psd compatibility	Maximizar la compatibilidad de PSD
 	Medium gray	Gris medio
 	Memory usage mb	Uso de memoria (MB)
+	Low resolution previews	Previsualizaciones de baja resolución
 	Missing glyph protection	Protección de glifos faltantes
 	Modern	Moderno
 	Nearest neighbor	Vecino más cercano
 	Never	Nunca
 	Normal tip	Punta normal
 	Open as smart object	Abrir como objeto inteligente
+	Open in camera raw	Abrir en Camera Raw
 	Open documents as tabs	Abrir los documentos como pestañas
 	Overscroll	Sobredesplazamiento
 	Performance	Rendimiento
@@ -1843,6 +1896,7 @@
 	Show slice numbers	Mostrar los números de sección
 	Show tooltips	Mostrar las descripciones emergentes
 	Show bounding box when dragging layer	Mostrar el cuadro delimitador al arrastrar la capa
+	System title bar	Barra de título del sistema
 	Show transformation values	Mostrar los valores de transformación
 	Slice color	Color de las secciones
 	Smart guide color	Color de las guías inteligentes
@@ -1852,6 +1906,8 @@
 	Standard	Estándar
 	Studio	Estudio
 	Studio light	Estudio (claro)
+	Adwaita	Adwaita
+	Adwaita dark	Adwaita (oscuro)
 	Subdivisions	Subdivisiones
 	System	Sistema
 	Text engine	Motor de texto
@@ -1903,6 +1959,7 @@
 	Collapse group  ({key}-click: all groups)	Contraer grupo  ({key}-clic: todos los grupos)
 	Create new brush from the current settings	Crear un pincel nuevo con los ajustes actuales
 	Create new brush from these settings	Crear un pincel nuevo con estos ajustes
+	Update the current brush with these settings	Actualizar el pincel actual con estos ajustes
 	Delete brush	Eliminar pincel
 	Drag the arrow to set the angle, the dots to set the roundness	Arrastre la flecha para fijar el ángulo y los puntos para fijar la redondez
 	Expand	Expandir
@@ -1926,6 +1983,7 @@
 	System Info…	Información del sistema…
 	System Info	Información del sistema
 	More panels	Más paneles
+	More documents	Más documentos
 	These settings aren't available in PhotoCraft yet.	Estos ajustes aún no están disponibles en PhotoCraft.
 	Graphics	Gráficos
 	Reset GPU Backend	Restablecer el backend de GPU
@@ -1954,10 +2012,13 @@
 	Brush Settings…  (F5): every option of this brush	Ajustes del pincel…  (F5): todas las opciones de este pincel
 	Rename Brush…	Cambiar el nombre del pincel…
 	Delete Brush	Eliminar pincel
+	New Brush Preset…	Nuevo preajuste de pincel…
+	Brush Preset Options	Opciones de preajustes de pincel
 	Group name	Nombre del grupo
 	Brush name	Nombre del pincel
-	Grid view	Vista de cuadrícula
-	List view	Vista de lista
+	Brush Name	Nombre del pincel
+	Brush Stroke	Trazo de pincel
+	Brush Tip	Punta del pincel
 	Off: the speed of the pointer sets the spacing	Desactivado: la velocidad del puntero establece el espaciado
 	Tilt Scale	Escala de inclinación
 	Brush Projection	Proyección del pincel
@@ -1977,7 +2038,13 @@
 	Align with layer	Alinear con la capa
 	Reset Alignment	Restablecer la alineación
 	Centre the gradient (offset 0, 0)	Centrar el degradado (desplazamiento 0, 0)
-	The current gradient (pick one in Window › Gradients)	El degradado actual (elija uno en Ventana › Degradados)
+# Gradient Editor window, opened from the options bar's gradient swatch.
+	Gradient Editor	Editor de degradados
+	Gradient picker	Selector de degradados
+	Save As Preset	Guardar como preajuste
+	The gradient the Gradient tool paints with	El degradado con el que pinta la herramienta Degradado
+	Adds the current gradient to the Gradients panel	Añade el degradado actual al panel Degradados
+	Gradient stops	Paradas de degradado
 	Select a type layer to edit its character and paragraph settings.	Seleccione una capa de texto para editar sus ajustes de carácter y párrafo.
 	Text color	Color del texto
 	Type Options	Opciones de texto
@@ -1995,6 +2062,8 @@
 	CPU (no GPU acceleration)	CPU (sin aceleración por GPU)
 	DirectX 12	DirectX 12
 	GPU backend	Backend de GPU
+	Linux display server	Servidor de pantalla de Linux
+	X11	X11
 	Metal	Metal
 	OpenGL	OpenGL
 	Use tablet pressure	Usar la presión de la tableta
@@ -2003,9 +2072,13 @@
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	No hay ningún trazado para crear una selección: dibuje uno con la herramienta Pluma o seleccione uno en el panel Trazados.
 	Cancel opening	Cancelar apertura
 	Cancelled opening {name}	Se canceló la apertura de {name}
+	Developing {name}	Revelando {name}
 	Cancelled {label}	Se canceló {label}
 	Esc to cancel	Esc para cancelar
 	Opening {name}	Abriendo {name}
+	Saving {name}	Guardando {name}
+	A save to {name} is still running; try again when it finishes	Todavía se está guardando {name}; inténtalo de nuevo cuando termine
+	{label} is writing the file and can no longer be cancelled	{label} está escribiendo el archivo y ya no se puede cancelar
 	Opening {name}…	Abriendo {name}…
 	Opening…	Abriendo…
 	Reading…	Leyendo…
@@ -2072,7 +2145,7 @@
 	Pixel	Píxel
 	Adjustment	Ajuste
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	Arrastre (lazo) o haga clic en los puntos (poligonal) · {add} añadir · {sub} restar
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Arrastre un marco de recorte · arrastre dentro para mover · los bordes cambian el tamaño ({ratio} proporción, {centre} centro) · Espacio mueve mientras dibuja · {commit} aplica · Esc cancela
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Arrastre un marco de recorte · arrastre dentro para mover · los bordes cambian el tamaño ({ratio} proporción, {centre} centro) · Espacio mueve mientras dibuja · flechas desplazan · X cambia orientación · {commit} aplica · Esc cancela
 	{mode} Color · {bits} bit	Color {mode} · {bits} bits
 	Scrubby Zoom	Zoom por arrastre
 	Auto Erase	Borrado automático
@@ -2127,6 +2200,7 @@
 cameraRaw	Light	Luz
 # Camera Raw: contextual controls and window title
 	Camera Raw Filter ({layer})	Filtro Camera Raw ({layer})
+	Camera Raw ({name})	Camera Raw ({name})
 cameraRaw	Lights	Tonos claros
 cameraRaw	Darks	Tonos oscuros
 cameraRaw	Red	Rojos
@@ -2144,6 +2218,7 @@ cameraRaw	Amount	Cantidad
 	Patch Tool	Herramienta Parche
 	Patch:	Parche:
 	Lasso around an area, then drag the selection	Rodee un área con el lazo y arrastre la selección
+	Now drag the selection onto another area	Ahora arrastre la selección a otra área
 	Edit Type	Editar texto
 
 
@@ -2172,6 +2247,7 @@ cameraRaw	Amount	Cantidad
 	Magnetic Lasso Tool	Herramienta Lazo magnético
 	Frequency	Frecuencia
 	Use tablet pressure to change pen width	Usar la presión de la tableta para cambiar la anchura del lápiz
+
 
 # About ▸ Contributors / Models (credits, craftrules standards/contributors.md)
 	About	Acerca de
@@ -2205,7 +2281,234 @@ cameraRaw	Amount	Cantidad
 	Lines +/−	Líneas +/−
 	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{binAdded} / −{binDeleted} binary assets, {first} – {last}	@{login}: {prs} PR, {commits} commits, +{added} / −{deleted} líneas (Δ {delta}), +{binAdded} / −{binDeleted} archivos binarios, {first} – {last}
 
-# ComfyUI generative image editing
+# Swatches panel
+	Create new swatch	Crear una muestra nueva
+	New Swatch…	Muestra nueva…
+	New Swatch Group…	Grupo de muestras nuevo…
+	Import Swatches…	Importar muestras…
+	Replace Swatches…	Reemplazar muestras…
+	Export Swatches…	Exportar muestras…
+	Export Swatches for Exchange…	Exportar muestras para intercambio…
+	Reset Swatches	Restablecer muestras
+	Add to Swatches	Añadir a muestras
+# Layer Style > Blending Options (Advanced Blending)
+	Blend If:	Combinar si:
+	Channels:	Canales:
+	Knockout	Cobertura
+	Apply At Canvas Bounds	Aplicar efecto en los límites del lienzo
+
+# Shared screen eyedropper and text Color Picker (#1128).
+	Color Picker (Text Color)	Selector de color (Color del texto)
+	Color Picker ({name})	Selector de color ({name})
+	Color Picker (Fill Color)	Selector de color (Color de relleno)
+	Fill color	Color de relleno
+	Color Picker (Stroke Color)	Selector de color (Color del trazo)
+	Stroke color	Color del trazo
+	Pick screen color	Elegir color de pantalla
+	Sample a pixel anywhere on the screen	Tomar un píxel en cualquier lugar de la pantalla
+	Click to pick · Esc to cancel	Clic para elegir · Esc para cancelar
+	Pick a screen pixel or press Esc to cancel	Elige un píxel de pantalla o pulsa Esc para cancelar
+	Scroll to zoom	Desplaza para ampliar
+	Show/Hide All Panels	Mostrar/ocultar todos los paneles
+	Show/Hide Panels	Mostrar/ocultar paneles
+	Could not open	No se pudo abrir
+	{path}: the path is not valid Unicode; rename the file and open it again.	{path}: la ruta no es Unicode válido; cambia el nombre del archivo y vuelve a abrirlo.
+
+# Fill dialog, layer style contours and Image Size
+	Contents:	Contenido:
+	Custom Pattern:	Patrón personalizado:
+	Foreground Color	Color frontal
+	Color…	Color…
+	50% Gray	Gris al 50%
+	{size} (was {old})	{size} (antes {old})
+	Cone	Cono
+	Cone (Inverted)	Cono (invertido)
+	Domed	Abovedado
+	Domed (Inverted)	Abovedado (invertido)
+	Diagonal (Descending)	Diagonal (descendente)
+
+	Red Eye Tool	Herramienta Ojos rojos
+	Red Eye	Ojos rojos
+	Pupil Size	Tamaño de pupila
+	Darken Amount	Cantidad de oscurecimiento
+	Click a red pupil to neutralize it	Haga clic en una pupila roja para corregirla
+	open source	código abierto
+	…and {n} more	…y {n} más
+
+	Eyedroppers:	Cuentagotas:
+	Set Black Point	Definir punto negro
+	Set Neutral Gray Point	Definir punto gris neutro
+	Set White Point	Definir punto blanco
+	Unavailable in this color mode	No disponible en este modo de color
+	Selection Preview:	Previsualización de selección:
+	Black Matte	Fondo negro
+	White Matte	Fondo blanco
+
+# Layer colour labels.
+	Seafoam	Espuma de mar
+	Indigo	Índigo
+	Fuchsia	Fucsia
+	Violet	Violeta
+	Reset	Restaurar
+	Large document: redrawing on the CPU	Documento grande: redibujando en la CPU
+	This redraw took {seconds} s on the CPU.	Este redibujado en la CPU tardó {seconds} s.
+	Edits that change the whole document, such as a layer's blend mode, opacity or visibility, redraw all of it.	Las ediciones que cambian todo el documento, como el modo de fusión, la opacidad o la visibilidad de una capa, lo redibujan por completo.
+	Its layers don't fit the GPU memory budget. Raising Memory usage in Preferences › Performance raises the budget, up to a quarter of this computer's memory.	Las capas no caben en el presupuesto de memoria de la GPU. Aumentar Uso de memoria en Preferencias › Rendimiento amplía el presupuesto, hasta una cuarta parte de la memoria de este equipo.
+	The GPU compositor wasn't used: {reason}	No se usó el compositor de GPU: {reason}
+fontWeight	Thin	Ultrafina
+fontWeight	ExtraLight	Extrafina
+fontWeight	Light	Fina
+fontWeight	Regular	Normal
+fontWeight	Medium	Medio
+fontWeight	SemiBold	Seminegrita
+fontWeight	Bold	Negrita
+fontWeight	ExtraBold	Extranegra
+fontWeight	Black	Ultraniegra
+fontWeight	Italic	Cursiva
+
+# Pattern Stamp tool
+	Pattern Stamp Tool	Herramienta Sello de motivo
+	Pattern Stamp	Sello de motivo
+	Impressionist	Impresionista
+	Rotate View	Rotar vista
+	Rotate View Tool	Herramienta Rotar vista
+	Reset View	Restablecer vista
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Arrastre alrededor del centro para rotar la vista  ·  Mayús fija a 15°
+
+# Painting symmetry presets.
+	Dual Axis	Doble eje
+	Diagonal	Diagonal
+	Transform Symmetry	Transformar simetría
+
+# Eyedropper Sample Size and Sample (#1649).
+	Point Sample	Muestra puntual
+	3 by 3 Average	Promedio de 3 × 3
+	5 by 5 Average	Promedio de 5 × 5
+	11 by 11 Average	Promedio de 11 × 11
+	31 by 31 Average	Promedio de 31 × 31
+	51 by 51 Average	Promedio de 51 × 51
+	101 by 101 Average	Promedio de 101 × 101
+	Sample Size:	Tamaño de muestra:
+	All Layers No Adjustments	Todas las capas sin ajustes
+	Current & Below No Adjustments	Actual e inferiores sin ajustes
+	Show Sampling Ring	Mostrar anillo de muestreo
+
+# Color Picker warnings
+	Out of gamut for printing: click for the nearest printable colour	Fuera de la gama de impresión: haga clic para el color imprimible más cercano
+	Not a web colour: click for the nearest web colour	No es un color web: haga clic para el color web más cercano
+	Color to Alpha…	Color a alfa…
+	Transparency Threshold	Umbral de transparencia
+	Opacity Threshold	Umbral de opacidad
+
+	Rasterize svg groups deeper than	Rasterizar grupos SVG con mayor profundidad
+	0 turns this threshold off; SVG groups nested deeper than 100 levels are always rasterized.	0 desactiva este umbral; los grupos SVG anidados a más de 100 niveles siempre se rasterizan.
+	Rule of Thirds	Regla de los tercios
+	Triangle	Triángulo
+	Golden Ratio	Proporción áurea
+	Golden Spiral	Espiral áurea
+	Auto Show Overlay	Mostrar superposición automáticamente
+	Always Show Overlay	Mostrar siempre la superposición
+	Never Show Overlay	No mostrar nunca la superposición
+	Cycle Overlay	Alternar superposición
+	Cycle Orientation	Alternar orientación
+	Set the overlay options for the Crop tool	Definir las opciones de superposición de la herramienta Recortar
+	Alt-click went to the desktop, which moves windows with Alt-drag. Set its window-move key to Super, or latch Alt in Window › Modifier Keys.	El Alt+clic lo recibió el escritorio, que mueve ventanas con Alt+arrastrar. Cambia su tecla para mover ventanas a Super o bloquea Alt en Ventana › Teclas modificadoras.
+
+# Shared Layer Style color picker
+	Color Picker (Layer Style Color)	Selector de color (color del estilo de capa)
+	Auto Hide Notifications	Ocultar notificaciones automáticamente
+	Notification Duration (seconds)	Duración de la notificación (segundos)
+	Appearance Mode	Modo de apariencia
+	Dark Theme	Tema oscuro
+	Light Theme	Tema claro
+	Pro Medium	Pro Medium
+	Studio Light	Studio Light
+	Next Appearance Mode	Siguiente modo de apariencia
+	Sync with system	Sincronizar con el sistema
+	Active	Activo
+	Color Picker (Solid Color)	Selector de color (color uniforme)
+	Straighten the image by drawing a line on it	Enderezar la imagen dibujando una línea en ella
+	Set additional Crop options	Definir opciones de recorte adicionales
+	Show Cropped Area	Mostrar área recortada
+	Enable Crop Shield	Activar escudo de recorte
+	Match Canvas	Igualar lienzo
+	Auto Adjust Opacity	Ajustar opacidad automáticamente
+	Crop Shield color	Color del escudo de recorte
+	Color Picker (Crop Shield Color)	Selector de color (Color del escudo de recorte)
+	From Center	Desde el centro
+	Link radii	Vincular radios
+	Star Ratio:	Relación de la estrella:
+	Create Rectangle	Crear rectángulo
+	Create Ellipse	Crear elipse
+	Create Triangle	Crear triángulo
+	Create Polygon	Crear polígono
+	Pressure curve	Curva de presión
+	Click to add a point, right-click to remove	Haz clic para añadir un punto; clic derecho para quitarlo
+	Some brush presets could not be loaded	No se pudieron cargar algunos ajustes preestablecidos de pincel
+	Retry saving presets	Reintentar guardar los ajustes preestablecidos
+	Brush preset changes are not saved: {error}	Los cambios en los ajustes preestablecidos de pincel no se han guardado: {error}
+	Keep this tab open to retain your brushes.	Mantén esta pestaña abierta para conservar tus pinceles.
+	Browser storage is unavailable; brushes are session-only. Keep this tab open to retain them.	El almacenamiento del navegador no está disponible; los pinceles solo duran esta sesión. Mantén esta pestaña abierta para conservarlos.
+	Saving brush presets… Keep this tab open until saving finishes.	Guardando ajustes preestablecidos de pincel… Mantén esta pestaña abierta hasta que termine.
+	Reflect	Reflejar
+	Glow	Resplandor
+	Negation	Negación
+	XOR	XOR
+	Color Burn (Paint.NET)	Sobreexponer color (Paint.NET)
+	Color Dodge (Paint.NET)	Aclarar color (Paint.NET)
+	Stroke Options	Opciones de trazo
+	Solid	Continuo
+	Dashed	Discontinuo
+	Dotted	Punteado
+	Alignment	Alineación
+	Caps	Extremos
+	Butt / Flat	Plano
+	Corners	Esquinas
+	Miter	Inglete
+	Round	Redondo
+	Bevel	Bisel
+	Miter limit	Límite de inglete
+	Dashed line	Línea discontinua
+	Dash	Guion
+	Gap	Espacio
+	Dash / gap lengths × stroke width	Longitudes de guion / espacio × anchura del trazo
+	Add pair	Añadir par
+	Remove pair	Quitar par
+	Dash offset	Desplazamiento de guiones
+	Open paths use centered strokes	Los trazados abiertos usan trazos centrados
+	Use finite lengths and a positive pattern total	Usa longitudes finitas y un total de patrón positivo
+	No subject found — try Object Selection or the Lasso	No se encontró ningún sujeto — pruebe Selección de objeto o el Lazo
+	Quick Selection found nothing there	Selección rápida no encontró nada ahí
+	Object Selection found nothing there — try a tighter rectangle	Selección de objeto no encontró nada ahí — pruebe un rectángulo más ajustado
+	No subject found — try a rectangle around the object	No se encontró ningún sujeto — pruebe un rectángulo alrededor del objeto
+
+# Add Noise, Reduce Noise and Smart Sharpen dialog controls (Filter > Noise, Filter > Sharpen).
+	Distribution	Distribución
+	Uniform	Uniforme
+	Gaussian	Gaussiana
+	Monochromatic	Monocromático
+	Seed	Semilla
+	Strength	Intensidad
+	Reduce Color Noise	Reducir ruido de color
+	Remove Jpeg Artifact	Quitar artefactos JPEG
+	Sharpen Details	Enfocar detalles
+	Reduce Noise	Reducir ruido
+	Use Classic Mode	Usar modo clásico
+	Auto Center Preview	Centrar previsualización automáticamente
+	Next Document	Documento siguiente
+	Previous Document	Documento anterior
+	W x H x Resolution	An. x Al. x Resolución
+	Front Image	Imagen frontal
+	All shortcuts reset to Photoshop defaults.	Se restablecieron todos los atajos a los valores predeterminados de Photoshop.
+	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	El arrastrar y soltar archivos de forma nativa aún no está disponible en Wayland. Usa Archivo › Abrir o ejecuta PhotoCraft bajo XWayland con `WAYLAND_DISPLAY= photocraft`.
+	Use File › Open to open an image.	Usa Archivo › Abrir para abrir una imagen.
+	Import Photoshop brushes (.abr)	Importar pinceles de Photoshop (.abr)
+	Load Photoshop brushes (.abr)	Cargar pinceles de Photoshop (.abr)
+	Default Photoshop Size	Tamaño predeterminado de Photoshop
+	Grid view	Vista de cuadrícula
+	List view	Vista de lista
+	The current gradient (pick one in Window › Gradients)	El degradado actual (elija uno en Ventana › Degradados)
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Arrastre un marco de recorte · arrastre dentro para mover · los bordes cambian el tamaño ({ratio} proporción, {centre} centro) · Espacio mueve mientras dibuja · {commit} aplica · Esc cancela
 	Prompt Edit	Editar con indicaciones
 	Generative Fill	Relleno generativo
 	Describe changes to the whole image	Describe los cambios en toda la imagen
@@ -2219,3 +2522,45 @@ cameraRaw	Amount	Cantidad
 	Waiting for ComfyUI generation	Esperando la generación de ComfyUI
 	Downloading generated image	Descargando imagen generada
 	Adding generated layer	Añadiendo capa generada
+	Prompt Generate	Generar con un prompt
+	Prompt Generate…	Generar con un prompt…
+	Regenerate AI Result	Regenerar el resultado de IA
+	Regenerate	Regenerar
+	Describe the image to generate	Describe la imagen que deseas generar
+	Sampling steps	Pasos de muestreo
+	Reset steps to model default	Restablecer los pasos predeterminados del modelo
+	Translate prompt to English	Traducir el prompt al inglés
+	Prompt translation model	Modelo de traducción de prompts
+	Prompt information	Información del prompt
+	AI Prompt History	Historial de prompts de IA
+	Original prompt	Prompt original
+	English translation	Traducción al inglés
+	No prompt (remove)	Sin prompt (eliminar)
+	All nine regions	Las nueve regiones
+	No AI prompts recorded	No hay prompts de IA registrados
+	Previous	Anterior
+	Next	Siguiente
+	Copy original prompt	Copiar el prompt original
+	Copy English translation	Copiar la traducción al inglés
+	Anime fusal	Anime FUSAL
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Turbo int8	Turbo INT8
+	Turbo q8	Turbo Q8_0
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Comfyui model	Modelo de ComfyUI
+	Comfyui translate prompt	Traducir el prompt al inglés
+	Comfyui translation model	Modelo de traducción de prompts

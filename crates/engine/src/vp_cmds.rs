@@ -69,7 +69,7 @@ fn has_layer(s: &Session) -> std::result::Result<(), String> {
     let d = s.active().ok_or("no document open")?;
     match d.active_layer.and_then(|id| d.doc.layer(id)).map(|l| &l.content) {
         Some(LayerContent::Raster(_)) => Ok(()),
-        Some(other) => Err(format!("Vanishing Point needs a pixel layer (active layer is a {} layer)", other.kind_name())),
+        Some(other) => Err(format!("Vanishing Point needs a pixel layer (active layer is {} {} layer)", other.article(), other.kind_name())),
         None => Err("no active layer".into()),
     }
 }
@@ -145,7 +145,7 @@ fn vanishing_point(s: &mut Session, p: &Value) -> Result<Value> {
         }
         let surf = l.surface_mut().ok_or_else(|| EngineError::Other("Vanishing Point needs a pixel layer".into()))?;
         for (plane, src, rect, at, width) in &pastes {
-            if let Some(out) = paste(&sc, *plane, src, *rect, *at, *width) {
+            if let Some(out) = paste(&sc, *plane, src, *rect, *at, *width)? {
                 over(surf, &out);
             }
         }

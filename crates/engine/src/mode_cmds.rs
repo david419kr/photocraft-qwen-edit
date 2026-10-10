@@ -53,7 +53,7 @@ pub fn rotated_size(size: Size, deg: f64) -> Size {
     Size::new(nw as u32, nh as u32)
 }
 
-fn rotate_arbitrary(s: &mut Session, p: &Value) -> Result<Value> {
+pub(crate) fn rotate_arbitrary(s: &mut Session, p: &Value) -> Result<Value> {
     const CMD: &str = "image.rotation.arbitrary";
     let angle = f64::from(num(p, "angle", 0.0));
     if !angle.is_finite() || angle.abs() > 3600.0 {
@@ -87,7 +87,7 @@ fn rotate_arbitrary(s: &mut Session, p: &Value) -> Result<Value> {
             if background && let Some(surf) = l.surface_mut() {
                 // The Background stays a Background: rotated pixels over the background colour.
                 let src = surf.content_bounds();
-                let rotated = photocraft_algo::transform::warp_surface(surf, src, &h, interp);
+                let rotated = photocraft_algo::transform::warp_surface(surf, src, &h, interp)?;
                 let mut base = Surface::new(fmt);
                 let fill = photocraft_raster::from_rgba(&fmt, bg);
                 base.write_region(canvas, &fill.repeat(canvas.width() as usize * canvas.height() as usize));
@@ -95,7 +95,7 @@ fn rotate_arbitrary(s: &mut Session, p: &Value) -> Result<Value> {
                 base.prune();
                 *surf = base;
                 if let Some(m) = l.mask.as_mut() {
-                    m.surface = crate::transform_cmds::warp_gray(&m.surface, &h, interp);
+                    m.surface = crate::transform_cmds::warp_gray(&m.surface, &h, interp)?;
                 }
             } else {
                 // Rotating the whole image moves locked layers too.
@@ -110,10 +110,10 @@ fn rotate_arbitrary(s: &mut Session, p: &Value) -> Result<Value> {
         }
         crate::canvas_geom::transform_doc_marks(doc, &a);
         for ch in doc.channels.iter_mut().chain(doc.quick_mask.as_mut()) {
-            ch.surface = crate::transform_cmds::warp_gray(&ch.surface, &h, interp);
+            ch.surface = crate::transform_cmds::warp_gray(&ch.surface, &h, interp)?;
         }
         if let Some(sel) = &doc.selection {
-            doc.selection = Some(crate::transform_cmds::warp_gray(sel, &h, Interp::Bilinear)).filter(|s| !s.content_bounds().is_empty());
+            doc.selection = Some(crate::transform_cmds::warp_gray(sel, &h, Interp::Bilinear)?).filter(|s| !s.content_bounds().is_empty());
         }
         // Type, shapes and smart objects re-render from their new geometry.
         crate::canvas_geom::refresh(doc, crate::canvas_geom::Refresh::All);
@@ -136,7 +136,13 @@ fn single_layer(doc: &mut Document, active: &mut Option<LayerId>, mode: ColorMod
     doc.mode = mode;
     doc.depth = SampleType::U8;
     let fmt = doc.pixel_format();
-    let data: Vec<f32> = px.iter().flat_map(|q| photocraft_raster::from_rgba(&fmt, *q)).collect();
+    // Reuse one format-sized pixel buffer instead of allocating a Vec for every pixel.
+    let mut pixel = vec![0.0; fmt.channels()];
+    let mut data = Vec::new();
+    for q in px {
+        photocraft_raster::from_rgba_into(&fmt, *q, &mut pixel);
+        data.extend_from_slice(&pixel);
+    }
     let mut l = Layer::raster(name, fmt);
     if background {
         l.locks.transparency = true;
@@ -185,7 +191,16 @@ fn indexed_color(s: &mut Session, p: &Value) -> Result<Value> {
         .ok_or_else(|| bad(CMD, "palette: exact|systemMac|systemWindows|web|uniform|perceptual|selective|adaptive"))?;
     let forced = parse_forced(str_or(p, "forced", "blackWhite")).ok_or_else(|| bad(CMD, "forced: none|blackWhite|primaries|web"))?;
     let dither = parse_dither(str_or(p, "dither", "diffusion")).ok_or_else(|| bad(CMD, "dither: none|diffusion|pattern|noise"))?;
-    let colors = num(p, "colors", 256.0).clamp(2.0, 256.0) as usize;
+    let colors = match p.get("colors") {
+        None => 256,
+        Some(value) => {
+            let value = value.as_f64().ok_or_else(|| bad(CMD, "colors must be an integer from 2 to 256"))?;
+            if !value.is_finite() || value.fract() != 0.0 || !(2.0..=256.0).contains(&value) {
+                return Err(bad(CMD, "colors must be an integer from 2 to 256"));
+            }
+            value as usize
+        }
+    };
     let amount = num(p, "amount", 75.0).clamp(0.0, 100.0) / 100.0;
     let transparency = p.get("transparency").and_then(Value::as_bool).unwrap_or(true);
     let (pal_len, transparent) = s.edit("Indexed Color", |doc, active| {
@@ -331,7 +346,8 @@ fn bitmap(s: &mut Session, p: &Value) -> Result<Value> {
         "diffusion" => BitmapMethod::Diffusion,
         "halftone" => {
             let freq = num(p, "frequency", 53.0).clamp(1.0, 999.0);
-            BitmapMethod::Halftone { cell: (dpi / freq).max(2.0), angle: num(p, "angle", 45.0), shape: HalftoneShape::from_id(str_or(p, "shape", "round")) }
+            let shape = HalftoneShape::from_id(str_or(p, "shape", "round")).ok_or_else(|| bad(CMD, "shape: round|ellipse|line|square|diamond|cross"))?;
+            BitmapMethod::Halftone { cell: (dpi / freq).max(2.0), angle: num(p, "angle", 45.0), shape }
         }
         m => {
             return Err(bad(CMD, format!("method `{m}` (threshold|pattern|diffusion|halftone)")));

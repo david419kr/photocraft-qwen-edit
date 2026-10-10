@@ -6,6 +6,8 @@
 //!     --script '[["ui.set", {"tool": "type"}], ["ui.menu.invoke", {"id": "image.imageSize"}]]'
 //! ```
 //!
+//! `--system-theme light|dark|none` supplies a deterministic OS appearance for theme captures.
+//!
 //! `--safe-gpu` draws the canvas on the CPU path, like the app's `--safe-gpu` launch.
 //! `--wayland-notice` previews the native file drag-and-drop guidance shown in Wayland sessions.
 //! `--custom-titlebar` draws the Windows/Linux title bar (caption buttons in the top bar).
@@ -72,7 +74,9 @@ fn main() {
         arg(&args, "--script").map(|s| serde_json::from_str::<Vec<(String, Value)>>(&s).expect("--script must be [[method, params], …]")).unwrap_or_default();
 
     let services = Services {
-        import: Some(Box::new(|name: &str, bytes: &[u8]| photocraft_io::import(name, bytes).map(|r| (r.document, r.warnings)).map_err(|e| e.to_string()))),
+        import: Some(Box::new(|name: &str, bytes: &[u8], depth: usize| {
+            photocraft_io::import_with_svg_group_depth(name, bytes, depth).map(|r| (r.document, r.warnings)).map_err(|e| e.to_string())
+        })),
         export: Some(Box::new(|doc: &photocraft_doc::Document, path: &str, settings: &photocraft_ui_egui::ExportSettings| {
             let mut opts = photocraft_io::ExportOptions::default();
             if let Some(q) = settings.jpeg_quality {
@@ -98,42 +102,68 @@ fn main() {
         Some(name) => photocraft_engine::prefs::ComfyUiModel::ALL.into_iter().filter(|model| model.name() == name).collect(),
         None => photocraft_engine::prefs::ComfyUiModel::ALL.to_vec(),
     };
+    let gpu_setup = egui_kittest::wgpu::default_wgpu_setup();
+    #[cfg(target_os = "windows")]
+    let gpu_setup = {
+        let mut setup = gpu_setup;
+        if std::env::var_os("WGPU_BACKEND").is_none()
+            && let eframe::egui_wgpu::WgpuSetup::CreateNew(create) = &mut setup
+        {
+            // Match native startup: skip AMD's crashing OpenGL adapter enumeration.
+            create.instance_descriptor.backends = eframe::egui_wgpu::wgpu::Backends::PRIMARY;
+        }
+        setup
+    };
     let mut harness =
-        egui_kittest::Harness::builder().with_size(egui::vec2(w, h)).with_pixels_per_point(scale).with_max_steps(64).wgpu().build_eframe(move |cc| {
-            PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
-            let mut services = services;
-            services.is_wayland = wayland_notice;
-            let mut session = photocraft_engine::Session::new();
-            if mock_ai {
-                session.ai_backend = Some(std::sync::Arc::new(MockAi(mock_models)));
-            } else if comfy_ai {
-                session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi));
-            }
-            let mut app = PhotocraftApp::new(session, services);
-            app.background_jobs = background_jobs;
-            app.custom_titlebar = custom_titlebar;
-            // `--safe-gpu`: the CPU canvas, as the desktop app's `--safe-gpu` launch.
-            if safe_gpu {
-                app.perf.gpu_info.selected = "cpu".into();
-                app.perf.gpu_info.canvas = "cpu".into();
-                app.perf.gpu_info.fallback = Some("--safe-gpu: CPU renderer for this launch".into());
-                if let Some(rs) = cc.wgpu_render_state.as_ref() {
-                    app.perf.gpu_info.set_adapter(&rs.adapter.get_info());
+        egui_kittest::Harness::builder().with_size(egui::vec2(w, h)).with_pixels_per_point(scale).with_max_steps(64).wgpu_setup(gpu_setup).build_eframe(
+            move |cc| {
+                PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
+                let mut services = services;
+                services.is_wayland = wayland_notice;
+                services.xwayland_command = wayland_notice.then(|| "WAYLAND_DISPLAY= photocraft".into());
+                let mut session = photocraft_engine::Session::new();
+                if mock_ai {
+                    session.ai_backend = Some(std::sync::Arc::new(MockAi(mock_models)));
+                } else if comfy_ai {
+                    session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi));
                 }
-            } else if let Some(rs) = cc.wgpu_render_state.as_ref() {
-                app.set_wgpu(rs.clone());
-            }
-            if let Some(path) = &open {
-                app.open_path(path).expect("open --open file");
-            }
-            app
-        });
+                let mut app = PhotocraftApp::new(session, services);
+                app.background_jobs = background_jobs;
+                app.custom_titlebar = custom_titlebar;
+                // `--safe-gpu`: the CPU canvas, as the desktop app's `--safe-gpu` launch.
+                if safe_gpu {
+                    app.perf.gpu_info.selected = "cpu".into();
+                    app.perf.gpu_info.canvas = "cpu".into();
+                    app.perf.gpu_info.fallback = Some("--safe-gpu: CPU renderer for this launch".into());
+                    if let Some(rs) = cc.wgpu_render_state.as_ref() {
+                        app.perf.gpu_info.set_adapter(&rs.adapter.get_info());
+                    }
+                } else if let Some(rs) = cc.wgpu_render_state.as_ref() {
+                    app.set_wgpu(rs.clone());
+                }
+                if let Some(path) = &open {
+                    app.open_path(path).expect("open --open file");
+                }
+                app
+            },
+        );
     if let Some((mw, mh)) = arg(&args, "--monitor").and_then(|s| s.split_once('x').and_then(|(a, b)| Some((a.parse::<f32>().ok()?, b.parse::<f32>().ok()?)))) {
         let top: f32 = arg(&args, "--window-top").and_then(|s| s.parse().ok()).unwrap_or(0.0);
         let v = harness.input_mut().viewports.entry(egui::ViewportId::ROOT).or_default();
         v.monitor_size = Some(egui::vec2(mw, mh));
         v.inner_rect = Some(egui::Rect::from_min_size(egui::pos2(0.0, top), egui::vec2(w, h)));
         v.maximized = Some(false);
+    }
+    if let Some(appearance) = arg(&args, "--system-theme") {
+        harness.input_mut().system_theme = match appearance.as_str() {
+            "light" => Some(egui::Theme::Light),
+            "dark" => Some(egui::Theme::Dark),
+            "none" => None,
+            _ => {
+                eprintln!("--system-theme must be light, dark or none");
+                std::process::exit(2);
+            }
+        };
     }
     harness.run_steps(4);
     let ctx = harness.ctx.clone();
