@@ -2739,3 +2739,6 @@ cameraRaw	Color	색상
 	Regenerate AI Result	AI 결과 재생성
 Sampling steps	샘플링 스텝 수
 Reset steps to model default	스텝 수 기본값 복원
+Translate prompt to English	프롬프트를 영어로 번역
+Translating prompt to English	프롬프트를 영어로 번역 중
+Prompt translation model	프롬프트 번역 모델

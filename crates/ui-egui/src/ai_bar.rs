@@ -3,7 +3,7 @@
 use egui::{Rect, Stroke, pos2, vec2};
 use photocraft_engine::ai_cmds::AiBackend;
 use photocraft_engine::ai_cmds::{EditMode, MAX_PROMPT_BYTES, contextual_mode, regeneration, selection_signature, supported_document};
-use photocraft_engine::prefs::ComfyUiModel;
+use photocraft_engine::prefs::{ComfyUiModel, ComfyUiTranslationModel};
 use photocraft_raster::Surface;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -26,6 +26,8 @@ pub struct AiUi {
     pub availability_error: Option<String>,
     #[serde(rename = "availableModels")]
     pub available_models: Vec<ComfyUiModel>,
+    #[serde(rename = "translationModels")]
+    pub translation_models: Vec<ComfyUiTranslationModel>,
     #[serde(skip)]
     document: Option<u64>,
     #[serde(skip)]
@@ -50,6 +52,7 @@ impl PartialEq for AiUi {
             && self.checking == other.checking
             && self.availability_error == other.availability_error
             && self.available_models == other.available_models
+            && self.translation_models == other.translation_models
     }
 }
 
@@ -61,7 +64,17 @@ pub(crate) struct ServiceProbe {
     pending: Option<ProbeSlot>,
 }
 
-type ProbeSlot = Arc<Mutex<Option<Result<Vec<ComfyUiModel>, String>>>>;
+struct Availability {
+    image: Vec<ComfyUiModel>,
+    translation: Vec<ComfyUiTranslationModel>,
+}
+type ProbeSlot = Arc<Mutex<Option<Result<Availability, String>>>>;
+
+fn probe(backend: &dyn AiBackend, endpoint: &str) -> Result<Availability, String> {
+    let image = backend.available_models(endpoint).map_err(|e| e.to_string())?;
+    let translation = backend.available_translation_models(endpoint).unwrap_or_default();
+    Ok(Availability { image, translation })
+}
 
 /// One bounded, read-only background check; never wait for HTTP on the UI thread.
 pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
@@ -71,6 +84,7 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         app.ui.ai.checking = false;
         app.ui.ai.availability_error = None;
         app.ui.ai.available_models.clear();
+        app.ui.ai.translation_models.clear();
         return;
     };
     let endpoint = app.session.prefs().integrations.comfyui_url.clone();
@@ -81,6 +95,7 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         app.ui.ai.checking = false;
         app.ui.ai.availability_error = None;
         app.ui.ai.available_models.clear();
+        app.ui.ai.translation_models.clear();
     }
     let now = ctx.input(|i| i.time);
     if !now.is_finite() {
@@ -92,7 +107,7 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         app.ai_probe.next_check = now + 15.0;
         app.ui.ai.checking = false;
         match result {
-            Ok(models) => {
+            Ok(Availability { image: models, translation }) => {
                 let single = match models.as_slice() {
                     [model] => Some(*model),
                     _ => None,
@@ -100,6 +115,15 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
                 app.ui.ai.available = !models.is_empty();
                 app.ui.ai.available_models = models;
                 app.ui.ai.availability_error = None;
+                let saved = app.session.prefs().integrations.comfyui_translation_model;
+                let next = (!translation.contains(&saved)).then(|| translation.first().copied()).flatten();
+                app.ui.ai.translation_models = translation;
+                if let Some(model) = next
+                    && let Err(error) = set_translation_pref(app, "integrations.comfyuiTranslationModel", json!(model.name()))
+                {
+                    app.ui.status = error;
+                    app.ui.status_error = true;
+                }
                 if let Some(model) = single
                     && model != app.session.prefs().integrations.comfyui_model
                     && let Err(error) = select_model(app, model)
@@ -111,6 +135,7 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
             Err(error) => {
                 app.ui.ai.available = false;
                 app.ui.ai.available_models.clear();
+                app.ui.ai.translation_models.clear();
                 app.ui.ai.availability_error = Some(error);
             }
         }
@@ -127,9 +152,9 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         {
             let repaint = ctx.clone();
             let spawned = std::thread::Builder::new().name("photocraft-ai-check".into()).spawn(move || {
-                let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| backend.available_models(&endpoint)))
+                let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| probe(backend.as_ref(), &endpoint)))
                     .map_err(|_| "AI availability check failed".to_owned())
-                    .and_then(|r| r.map_err(|e| e.to_string()));
+                    .and_then(|r| r);
                 *slot.lock().unwrap_or_else(PoisonError::into_inner) = Some(result);
                 repaint.request_repaint();
             });
@@ -143,7 +168,7 @@ pub(crate) fn poll_service(app: &mut PhotocraftApp, ctx: &egui::Context) {
         }
         #[cfg(target_arch = "wasm32")]
         {
-            *slot.lock().unwrap_or_else(PoisonError::into_inner) = Some(backend.available_models(&endpoint).map_err(|e| e.to_string()));
+            *slot.lock().unwrap_or_else(PoisonError::into_inner) = Some(probe(backend.as_ref(), &endpoint));
             ctx.request_repaint();
         }
     }
@@ -157,7 +182,49 @@ pub(crate) fn clear_document(state: &mut AiUi) {
     let (available, checking) = (state.available, state.checking);
     let error = state.availability_error.take();
     let available_models = std::mem::take(&mut state.available_models);
-    *state = AiUi { available, checking, availability_error: error, available_models, ..Default::default() };
+    let translation_models = std::mem::take(&mut state.translation_models);
+    *state = AiUi { available, checking, availability_error: error, available_models, translation_models, ..Default::default() };
+}
+
+fn set_translation_pref(app: &mut PhotocraftApp, path: &str, value: serde_json::Value) -> Result<(), String> {
+    app.run("prefs.set", json!({"path":path,"value":value}))?;
+    crate::prefs_ui::save_preferences(app)
+}
+
+fn translation_controls(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u64) {
+    if app.ui.ai.translation_models.is_empty() {
+        return;
+    }
+    let enabled = app.session.prefs().integrations.comfyui_translate_prompt;
+    let mut change = None;
+    let toggle = crate::icons::button(ui, "languages", 24.0, enabled, tl!("Translate prompt to English"));
+    toggle.widget_info(|| egui::WidgetInfo::selected(egui::WidgetType::Checkbox, ui.is_enabled(), enabled, tl!("Translate prompt to English")));
+    if toggle.clicked() {
+        change = Some(("integrations.comfyuiTranslatePrompt", json!(!enabled)));
+    }
+    if app.ui.ai.translation_models.len() > 1 {
+        let mut selected = app.session.prefs().integrations.comfyui_translation_model;
+        let old = selected;
+        egui::ComboBox::from_id_salt(("ai-translation-model", document))
+            .selected_text(selected.label().trim_start_matches("Hy-MT2 "))
+            .width(58.0)
+            .show_ui(ui, |ui| {
+                for model in &app.ui.ai.translation_models {
+                    ui.selectable_value(&mut selected, *model, model.label());
+                }
+            })
+            .response
+            .on_hover_text(format!("{} · {}", tl!("Prompt translation model"), selected.filename()));
+        if selected != old {
+            change = Some(("integrations.comfyuiTranslationModel", json!(selected.name())));
+        }
+    }
+    if let Some((path, value)) = change
+        && let Err(error) = set_translation_pref(app, path, value)
+    {
+        app.ui.status = error;
+        app.ui.status_error = true;
+    }
 }
 
 fn model_ready(app: &PhotocraftApp, model: ComfyUiModel) -> bool {
@@ -323,7 +390,14 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     // Scrollbar tracks must remain reachable beneath this foreground Area.
     let canvas = canvas.shrink2(vec2(20.0, 20.0));
     let repeat = regeneration(&app.session);
-    let width = (if repeat.is_some() { 576.0f32 } else { 540.0f32 }).min(canvas.width() - 16.0);
+    let translation_width = if !app.ui.ai.open || app.ui.ai.translation_models.is_empty() {
+        0.0
+    } else if app.ui.ai.translation_models.len() > 1 {
+        64.0
+    } else {
+        24.0
+    };
+    let width = ((if repeat.is_some() { 576.0f32 } else { 540.0f32 }) + translation_width).min(canvas.width() - 16.0);
     let buttons = if mode == EditMode::PromptGenerate { 1.0 } else { 2.0 };
     let model_width = if app.ui.ai.available_models.len() == 1 { 0.0 } else { 145.0 };
     let button_width =
@@ -412,6 +486,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                 ui.horizontal(|ui| {
                     ui.add_enabled_ui(!busy, |ui| model_selector(app, ui, doc.id.0));
                     ui.add_enabled_ui(!busy, |ui| step_controls(app, ui));
+                    ui.add_enabled_ui(!busy, |ui| translation_controls(app, ui, doc.id.0));
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         generate |= ui.add_enabled(can_generate, egui::Button::new(tl!("Generate"))).clicked();
                         close = ui.add_enabled(!busy, egui::Button::new(tl!("Cancel"))).clicked();
@@ -448,6 +523,34 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn prompt_translation_preferences_persist_and_detection_survives_document_reset() {
+        use super::*;
+        use crate::Services;
+        use photocraft_engine::Session;
+        let saved = Arc::new(Mutex::new(String::new()));
+        let sink = saved.clone();
+        let mut app = PhotocraftApp::new(
+            Session::new(),
+            Services {
+                save_prefs: Some(Box::new(move |text| {
+                    *sink.lock().unwrap() = text.to_owned();
+                    Ok(())
+                })),
+                ..Default::default()
+            },
+        );
+        set_translation_pref(&mut app, "integrations.comfyuiTranslatePrompt", json!(true)).unwrap();
+        set_translation_pref(&mut app, "integrations.comfyuiTranslationModel", json!(ComfyUiTranslationModel::HyMt7Abliterated.name())).unwrap();
+        let mut restored = Session::new();
+        restored.load_prefs_json(&saved.lock().unwrap()).unwrap();
+        assert!(restored.prefs().integrations.comfyui_translate_prompt);
+        assert_eq!(restored.prefs().integrations.comfyui_translation_model, ComfyUiTranslationModel::HyMt7Abliterated);
+        app.ui.ai.translation_models = ComfyUiTranslationModel::ALL.to_vec();
+        clear_document(&mut app.ui.ai);
+        assert_eq!(app.ui.ai.translation_models, ComfyUiTranslationModel::ALL);
+        assert!(app.session.prefs().integrations.comfyui_translate_prompt);
+    }
     use super::*;
     use crate::Services;
     use photocraft_engine::Session;

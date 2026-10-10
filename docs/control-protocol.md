@@ -406,3 +406,11 @@ the original source, selection, prompt, model and endpoint, and rejects an expli
 Use `wait:false` and the existing `jobs.list` / `jobs.cancel` to track the job.
 The desktop bridge supports these commands; unconfigured headless MCP sessions do not
 install an AI backend. See [ComfyUI editing](comfyui.md).
+
+`ai.translationModels` reports detected Hy-MT2 choices. Use `engine.execute`
+with `prefs.set` to set `integrations.comfyuiTranslatePrompt` (boolean) and
+`integrations.comfyuiTranslationModel` (`hyMt18Heretic` / `hyMt7Abliterated`).
+These settings are persisted by the prompt bar. Translation always targets English
+using the ComfyUI node's AI Prompt / Visual Tags style; no models means no translation.
+Empty-prompt removal and background removal bypass it; regeneration keeps the
+already-translated prompt captured by the original request.

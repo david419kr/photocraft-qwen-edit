@@ -24,6 +24,8 @@ const VAE_MODEL: &str = "qwen_image_2.1_vae_bf16.safetensors";
 #[derive(Default)]
 pub struct ComfyUi;
 
+mod translation;
+
 fn failure(message: impl std::fmt::Display) -> EngineError {
     EngineError::Other(format!("ComfyUI: {message}"))
 }
@@ -206,6 +208,14 @@ fn turbo_sampler(graph: &mut Value, request: &AiRequest) {
 }
 
 impl AiBackend for ComfyUi {
+    fn available_translation_models(&self, endpoint: &str) -> Result<Vec<crate::prefs::ComfyUiTranslationModel>> {
+        translation::models(endpoint)
+    }
+
+    fn translate(&self, endpoint: &str, model: crate::prefs::ComfyUiTranslationModel, prompt: &str, ctx: &JobCtx) -> Result<String> {
+        translation::translate(endpoint, model, prompt, ctx)
+    }
+
     fn check_available(&self, endpoint: &str) -> Result<()> {
         self.available_models(endpoint).map(|_| ())
     }

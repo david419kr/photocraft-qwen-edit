@@ -778,6 +778,24 @@ impl ComfyUiModel {
     }
 }
 
+choice!(ComfyUiTranslationModel { HyMt18Heretic = "hyMt18Heretic", HyMt7Abliterated = "hyMt7Abliterated" } default HyMt18Heretic);
+
+impl ComfyUiTranslationModel {
+    pub const ALL: [Self; 2] = [Self::HyMt18Heretic, Self::HyMt7Abliterated];
+    pub fn filename(self) -> &'static str {
+        match self {
+            Self::HyMt18Heretic => "Hy-MT2-1.8B-heretic.i1-Q4_K_M.gguf",
+            Self::HyMt7Abliterated => "HY-MT2-7B-Abliterated-Q4_K_M.gguf",
+        }
+    }
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::HyMt18Heretic => "Hy-MT2 1.8B",
+            Self::HyMt7Abliterated => "Hy-MT2 7B",
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase")]
 pub struct Integrations {
@@ -789,11 +807,20 @@ pub struct Integrations {
     pub comfyui_url: String,
     /// Diffusion checkpoint shared by Prompt Edit, Generative Fill and their quick actions.
     pub comfyui_model: ComfyUiModel,
+    pub comfyui_translate_prompt: bool,
+    pub comfyui_translation_model: ComfyUiTranslationModel,
 }
 
 impl Default for Integrations {
     fn default() -> Self {
-        Self { allow_agent_control: true, control_port: 0, comfyui_url: "http://127.0.0.1:8188".into(), comfyui_model: ComfyUiModel::default() }
+        Self {
+            allow_agent_control: true,
+            control_port: 0,
+            comfyui_url: "http://127.0.0.1:8188".into(),
+            comfyui_model: ComfyUiModel::default(),
+            comfyui_translate_prompt: false,
+            comfyui_translation_model: ComfyUiTranslationModel::default(),
+        }
     }
 }
 
@@ -952,13 +979,15 @@ pub const HIDDEN_UNTIL_IMPLEMENTED: &[&str] = &[
 
 /// Is the preference at `path` (`"section.key"`) hidden from the Preferences dialog?
 pub fn is_hidden(path: &str) -> bool {
-    HIDDEN_UNTIL_IMPLEMENTED.contains(&path)
+    // Translation settings are shown only in the contextual prompt bar when models exist.
+    matches!(path, "integrations.comfyuiTranslatePrompt" | "integrations.comfyuiTranslationModel") || HIDDEN_UNTIL_IMPLEMENTED.contains(&path)
 }
 
 /// Choices of an enumerated preference (dotted path, e.g. `"cursors.painting"`).
 pub fn choices(path: &str) -> Option<&'static [&'static str]> {
     Some(match path {
         "integrations.comfyuiModel" => ComfyUiModel::NAMES,
+        "integrations.comfyuiTranslationModel" => ComfyUiTranslationModel::NAMES,
         "general.colorPicker" => ColorPicker::NAMES,
         "general.imageInterpolation" => Interpolation::NAMES,
         "interface.theme" => Theme::NAMES,

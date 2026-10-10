@@ -93,6 +93,12 @@ pub trait AiBackend: Send + Sync {
         self.check_available(endpoint)?;
         Ok(crate::prefs::ComfyUiModel::ALL.to_vec())
     }
+    fn available_translation_models(&self, _endpoint: &str) -> Result<Vec<crate::prefs::ComfyUiTranslationModel>> {
+        Ok(Vec::new())
+    }
+    fn translate(&self, _endpoint: &str, _model: crate::prefs::ComfyUiTranslationModel, _prompt: &str, _ctx: &JobCtx) -> Result<String> {
+        Err(EngineError::Other("Prompt translation is not configured in this frontend".into()))
+    }
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image>;
 }
 
@@ -277,18 +283,18 @@ fn remove_background(s: &mut Session, p: &Value) -> Result<Value> {
     let mut params = p.as_object().cloned().ok_or_else(|| bad(REMOVE_BACKGROUND_COMMAND, "params must be an object"))?;
     params.insert("prompt".into(), json!(REMOVE_BACKGROUND_PROMPT));
     params.entry("name").or_insert_with(|| json!("Remove Background"));
-    run(s, &Value::Object(params), EditMode::PromptEdit)
+    run(s, &Value::Object(params), EditMode::PromptEdit, false)
 }
 
 fn prompt_edit(s: &mut Session, p: &Value) -> Result<Value> {
-    run(s, p, EditMode::PromptEdit)
+    run(s, p, EditMode::PromptEdit, true)
 }
 fn prompt_generate(s: &mut Session, p: &Value) -> Result<Value> {
     can_generate(s).map_err(EngineError::Other)?;
-    run(s, p, EditMode::PromptGenerate)
+    run(s, p, EditMode::PromptGenerate, true)
 }
 fn generative_fill(s: &mut Session, p: &Value) -> Result<Value> {
-    run(s, p, EditMode::GenerativeFill)
+    run(s, p, EditMode::GenerativeFill, true)
 }
 
 fn default_seed() -> u64 {
@@ -303,7 +309,7 @@ fn default_seed() -> u64 {
     }
 }
 
-fn run(s: &mut Session, p: &Value, mode: EditMode) -> Result<Value> {
+fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) -> Result<Value> {
     let command = mode.command();
     if !p.is_object() {
         return Err(bad(command, "params must be an object"));
@@ -337,6 +343,8 @@ fn run(s: &mut Session, p: &Value, mode: EditMode) -> Result<Value> {
     let backend = s.ai_backend.clone().ok_or_else(|| EngineError::Other("ComfyUI is not configured in this frontend".into()))?;
     let endpoint = s.prefs().integrations.comfyui_url.clone();
     let model = s.prefs().integrations.comfyui_model;
+    let translate_prompt = translate_user_prompt && s.prefs().integrations.comfyui_translate_prompt && !prompt.trim().is_empty();
+    let translation_model = s.prefs().integrations.comfyui_translation_model;
     let steps = match p.get("steps") {
         Some(value) => {
             value.as_u64().filter(|steps| (1..=u64::from(MAX_STEPS)).contains(steps)).ok_or_else(|| bad(command, "steps must be an integer within 1..1000"))?
@@ -353,6 +361,19 @@ fn run(s: &mut Session, p: &Value, mode: EditMode) -> Result<Value> {
         true,
         move |ctx| {
             let input = prepare(&source, mode, ctx)?;
+            let mut prompt = prompt;
+            if translate_prompt {
+                let available = backend.available_translation_models(&endpoint)?;
+                if let Some(selected) = available.iter().find(|model| **model == translation_model).or(available.first()) {
+                    ctx.check()?;
+                    ctx.progress(0.06, "Translating prompt to English");
+                    prompt = backend.translate(&endpoint, *selected, &prompt, ctx)?;
+                    if prompt.trim().is_empty() || prompt.len() > MAX_PROMPT_BYTES {
+                        return Err(EngineError::Other("Translated prompt must contain 1..8192 bytes".into()));
+                    }
+                }
+            }
+            ctx.check()?;
             let request = AiRequest {
                 image: input.image,
                 prompt: shaped_prompt(mode, &prompt),

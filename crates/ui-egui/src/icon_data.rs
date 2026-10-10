@@ -1,6 +1,7 @@
 //! Lucide icons (ISC licence), embedded and tinted at runtime.
 
 pub static ICONS: &[(&str, &[u8])] = &[
+    ("languages", include_bytes!("../../../assets/icons/languages.svg")),
     ("align-center", include_bytes!("../../../assets/icons/align-center.svg")),
     ("align-justify", include_bytes!("../../../assets/icons/align-justify.svg")),
     ("align-left", include_bytes!("../../../assets/icons/align-left.svg")),

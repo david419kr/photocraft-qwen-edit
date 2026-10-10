@@ -22,6 +22,58 @@ fn session(depth: u32) -> Session {
 }
 
 #[test]
+fn prompt_translation_precedes_mask_shaping_and_reroll_reuses_result() {
+    use crate::prefs::ComfyUiTranslationModel;
+    use std::sync::Mutex;
+    #[derive(Default)]
+    struct Translator {
+        models: Mutex<Vec<ComfyUiTranslationModel>>,
+        prompts: Mutex<Vec<String>>,
+        requests: Mutex<Vec<String>>,
+    }
+    impl AiBackend for Translator {
+        fn available_translation_models(&self, _: &str) -> Result<Vec<ComfyUiTranslationModel>> {
+            Ok(self.models.lock().unwrap().clone())
+        }
+        fn translate(&self, _: &str, model: ComfyUiTranslationModel, prompt: &str, _: &JobCtx) -> Result<String> {
+            assert_eq!(model, ComfyUiTranslationModel::HyMt7Abliterated);
+            self.prompts.lock().unwrap().push(prompt.to_owned());
+            if prompt == "error" {
+                return Err(EngineError::Other("translation failed".into()));
+            }
+            Ok("a red teapot".into())
+        }
+        fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
+            self.requests.lock().unwrap().push(request.prompt.clone());
+            Solid.generate(request, ctx)
+        }
+    }
+    let backend = Arc::new(Translator::default());
+    *backend.models.lock().unwrap() = vec![ComfyUiTranslationModel::HyMt7Abliterated];
+    let mut s = session(8);
+    s.ai_backend = Some(backend.clone());
+    s.execute("prefs.set", json!({"path":"integrations.comfyuiTranslatePrompt","value":true})).unwrap();
+    s.execute("edit.promptGenerate", json!({"prompt":"빨간 주전자"})).unwrap();
+    s.execute(REGENERATE_COMMAND, json!({})).unwrap();
+    assert_eq!(backend.prompts.lock().unwrap().len(), 1);
+    assert_eq!(*backend.requests.lock().unwrap(), vec!["a red teapot", "a red teapot"]);
+    s.execute("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
+    s.execute("edit.generativeFill", json!({"prompt":"빨간 주전자"})).unwrap();
+    assert_eq!(backend.requests.lock().unwrap().last().unwrap(), &shaped_prompt(EditMode::GenerativeFill, "a red teapot"));
+    s.execute("edit.generativeFill", json!({"prompt":""})).unwrap();
+    assert_eq!(backend.prompts.lock().unwrap().len(), 2);
+    s.execute("select.all", json!({})).unwrap();
+    s.execute(REMOVE_BACKGROUND_COMMAND, json!({})).unwrap();
+    assert_eq!(backend.prompts.lock().unwrap().len(), 2);
+    let layers = s.active().unwrap().doc.layers.len();
+    assert!(s.execute("edit.promptEdit", json!({"prompt":"error"})).is_err());
+    assert_eq!(s.active().unwrap().doc.layers.len(), layers);
+    backend.models.lock().unwrap().clear();
+    s.execute("edit.promptEdit", json!({"prompt":"untranslated"})).unwrap();
+    assert_eq!(backend.requests.lock().unwrap().last().unwrap(), "untranslated");
+}
+
+#[test]
 fn t2i_only_for_transparent_or_pure_white_without_partial_selection() {
     for depth in [8, 16, 32] {
         let mut s = session(depth);

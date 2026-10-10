@@ -1,5 +1,63 @@
 # ComfyUI Qwen Image 2.1 generation and editing
 
+## Optional local prompt translation
+
+The expanded prompt editor's bottom row has a **Languages** icon toggle when a
+supported local Hy-MT2 model is detected in ComfyUI. No translation models means
+the existing UI and generation behavior stay the same. One detected model is
+used automatically without a selector; multiple models show a compact 1.8B/7B
+selector. The toggle and selection are persisted through the normal preference
+store as `integrations.comfyuiTranslatePrompt` (default false) and
+`integrations.comfyuiTranslationModel` (default `hyMt18Heretic`).
+
+Supported files, stored under ComfyUI `models/LLM/GGUF`:
+
+- `Hy-MT2-1.8B-heretic.i1-Q4_K_M.gguf` — `hyMt18Heretic`
+- `HY-MT2-7B-Abliterated-Q4_K_M.gguf` — `hyMt7Abliterated`
+
+Install [ComfyUI-Hy-MT2](https://github.com/1038lab/ComfyUI-Hy-MT2) and run
+`install-comfyui-hymt2.ps1 -ComfyRoot <your ComfyUI directory>` from this build's
+folder. The helper and `hy-mt2-runtime/` folder also ship beside the executable.
+The installer requires `uv`, creates a private Python 3.13 `.venv` inside that
+node, and installs a pinned CUDA 12.8 `llama-cpp-python` wheel there. This PC's
+CUDA 12.8 toolkit supplies its native CUDA libraries. ComfyUI's shared Python
+packages are not replaced. Restart ComfyUI after installation. After updating
+the node, rerun the helper to reapply the load/unload integration.
+
+The node imports a small proxy; that proxy starts its dedicated Python worker
+and exchanges UTF-8 JSON over stdin/stdout. The worker imports its own
+`llama-cpp-python`. It opens no HTTP port and requires no standalone LLM server.
+Switching models, explicit node unload and ComfyUI termination release the
+worker. `unload_after_run=false` avoids an explicit unload after translation;
+the model stays loaded while ComfyUI retains that node instance. ComfyUI may
+release the instance when switching to a different graph. Its ordinary Torch
+model-unload API does not directly manage these worker models.
+
+PhotoCraft submits `HyMT_Translation_GGUF -> PreviewAny` through the existing
+ComfyUI API with `translate_to=English`, `translate_style=AI Prompt / Visual Tags`
+and `unload_after_run=false`. Only the user-entered prompt is translated. The
+existing mask-edit prompt shaping is applied afterward. Empty-prompt removal
+and the built-in English background-removal action skip translation. Reroll
+reuses the original translated request. Translation errors leave the document
+unchanged, and empty or oversized outputs are reported rather than submitted.
+Model detection checks actual advertised filenames; the node's automatic-download
+presets do not count as installed supported models.
+
+The supplied 1.8B Heretic GGUF stores EOS token ID 3 (`$`), while its vocabulary
+and the [official tokenizer configuration](https://huggingface.co/Tencent/HY-MT2-1.8B/blob/main/config.json)
+use ID 120020. The dedicated worker overrides this one metadata value at load
+time for that file, without modifying its weights or the node's prompts and
+sampler settings. Before the correction, a short Korean request produced a long
+repeated response. Afterward, the actual ComfyUI node returned a short English
+translation in 1.35 s; the 7B node returned a short translation in 3.07 s on this
+PC. These calls demonstrate integration, not universal translation accuracy.
+The native PhotoCraft transport also detected both models and received short
+English results. The Korean prompt bar was visually checked offscreen, and the
+static-CRT portable build includes the icon, saved controls and runtime installer.
+
+The user confirmed local prompt translation works in the updated build on
+2026-10-11. No additional tests were run before committing.
+
 This branch adds native AI commands and a contextual canvas bar. Generation runs in an
 existing local ComfyUI server. Original pixel data remains intact; each successful request
 adds one new top-level layer in one undo step. Whole-image edits also hide the previous layers
