@@ -70,11 +70,15 @@ choice under `integrations.comfyuiModel`):
 
 - `qwen_image_2.1_int8_convrot.safetensors`
 - `NoctQ_V4_int8_convrot.safetensors` (NoctQ V4, `noctQv4`; default remains `qwenImage21`)
+- `qwen_image_2.1_anime_fusal_int8_convrot.safetensors` (Anime FUSAL, `animeFusal`; see below)
+- `NoctQ_V4_FUSAL_int8_convrot.safetensors` (Noct-Q FUSAL, `noctQFusal`; see below)
 
-Both use the same support models:
+The Base and NoctQ choices use the same text encoder:
 
 - `qwen3vl_8b_int8_convrot.safetensors` (`qwen_image` CLIP type)
-- `qwen_image_2.1_vae_bf16.safetensors`
+
+Both FUSAL choices use their matching Heretic encoder; all choices share
+`qwen_image_2.1_vae_bf16.safetensors`.
 
 Before uploading an image, PhotoCraft queries `/object_info/UNETLoader`,
 `/object_info/CLIPLoader` and `/object_info/VAELoader` for their model lists. The exact filenames
@@ -85,9 +89,9 @@ multiple subfolder matches produce an explicit ambiguity error. Missing models o
 model lists fail before uploading or submitting a generation. A detected supported checkpoint
 plus the encoder/VAE and required nodes makes the bars available. If exactly one supported
 checkpoint is detected, it is selected automatically, saved and used regardless of the previous
-choice; the selector is hidden on both closed bars and the expanded prompt editor. If both are
+choice; the selector is hidden on both closed bars and the expanded prompt editor. If multiple are
 detected, the selector appears and keeps the saved choice. No detected checkpoint (or missing
-shared models/nodes) hides the bars. Model changes are saved through the normal preferences store and also
+required support models/nodes) hides the bars. Model changes are saved through the normal preferences store and also
 apply to Remove Background / Remove. Different model variants or
 renamed filenames are not substituted automatically. The server, not PhotoCraft, controls
 which model directories and extra model paths are searched. These metadata requests do not
@@ -119,6 +123,74 @@ and the open prompt bar.
 Preference restoration and availability/UI tests passed; engine/UI Clippy, wasm, layering
 and static-CRT portable release build also passed. Saved model choice is shared across image
 tabs and both editing modes; a job keeps the model that was selected when it was submitted.
+
+### Anime FUSAL checkpoint (2026-10-10)
+
+The selector also recognises `qwen_image_2.1_anime_fusal_int8_convrot.safetensors` as
+**Anime FUSAL** (`animeFusal`). It uses the original, non-Turbo Qwen Image 2.1 sampling
+graph at 25 default steps, CFG 1.0, Euler/simple. The matching
+`qwen3-vl-8b-heretic-1.3.0_bf16.safetensors` text encoder is required for this choice;
+other model choices keep `qwen3vl_8b_int8_convrot.safetensors`. If the FUSAL encoder is
+absent, availability omits the FUSAL choices. The shared Qwen Image 2.1 VAE is still required.
+No prompt text or mask prompt shaping is changed. For the model author's suggested style
+trigger, users may include `fusal style.` in their own prompt.
+
+The installed checkpoint was made from the official Qwen Image 2.1 BF16 Base plus
+[Anime FUSAL's Exact rank-80 LoRA](https://huggingface.co/MicksHF/Qwen-Image-2.1-Anime-Fusal?not-for-all-audiences=true)
+at strength 1.0, then quantized once with
+[Comfy-Org's INT8 ConvRot tool](https://github.com/Comfy-Org/comfy-model-tools).
+The pinned source revisions were `Comfy-Org/Qwen-Image-2.1@df94239739eef7205973a145ffa6f441f7b64e84`
+and `MicksHF/Qwen-Image-2.1-Anime-Fusal@10adaec162abbf0ce8f88c41e3db16e90d19d38f`.
+This avoids merging into an already quantized checkpoint. The LoRA author recommends
+30–40 steps and the matching Heretic BF16 encoder. Their LoRA is for the original Base,
+not Turbo. The installed checkpoint has 649 tensors, with the same names, shapes and
+types as the official INT8 checkpoint; the 192 quantized layers had mean 0.890% and
+worst 1.006% relative reconstruction error against the merged BF16 weights. Weights
+live only in ComfyUI model folders, not the PhotoCraft repository or executable.
+The installed INT8 file is 7,256,783,288 bytes, SHA-256
+`cf909682a3893ef5c435ba377b15211d05fb1431a99ee4081988871b4d64078d`.
+Upstream Qwen Research and Heretic Apache 2.0 license files are stored beside the
+respective model files. The FUSAL repository's model card and license govern usage.
+The original BF16 base and Exact LoRA were retained for reproducibility. The
+temporary merged BF16 output was removed after quantization and inference checks.
+Do not load the Exact LoRA on top of the Anime FUSAL INT8 checkpoint: it is already
+merged at strength 1.0.
+
+Before the default was lowered to 25, a real PhotoCraft engine request on the local
+RTX 4090 generated a 768×768 anime illustration at 35 steps in 16.11 s. A second request edited the blue
+teapot to red in 12.78 s, creating a separate layer and preserving the source.
+An empty-prompt selected Generative Fill also removed the teapot in 11.88 s
+without replacing the document's other layers. All three outputs were visually
+inspected. This checks the installed model, matching encoder and PhotoCraft
+transport for those requests; other prompts and masks may behave differently.
+PhotoCraft's live availability probe found Anime FUSAL among six installed
+supported checkpoints. The native static-CRT portable executable was rebuilt
+successfully at `dist/photocraft-comfyui-korean/photocraft.exe`.
+
+### Noct-Q FUSAL trial checkpoint (2026-10-10)
+
+`NoctQ_V4_FUSAL_int8_convrot.safetensors` appears as **Noct-Q FUSAL** (`noctQFusal`)
+in both floating bars and uses 25 default steps, CFG 1.0, the matching Heretic BF16
+text encoder and the shared Qwen VAE. Anime FUSAL's default was also lowered to 25
+at the user's request. Existing prompt shaping and selection behavior are unchanged.
+
+This trial combines the installed NoctQ V4 INT8 ConvRot checkpoint with the same
+Exact rank-80 FUSAL LoRA at strength 1.0. Noct-Q does not provide a public BF16 base.
+For each of the 192 affected matrices, the converter reconstructs the rotated
+weights in FP32 as `INT8 * scale`, rotates the LoRA A matrix to the same coordinates,
+adds `B * rotated(A)` and requantizes using per-row absmax scales. It creates no
+intermediate BF16 checkpoint. The other tensors and ConvRot settings are retained.
+The output is 7,256,783,416 bytes. Additional quantization reconstruction error
+against the combined reconstructed source was mean 0.651% and maximum 0.821%; this
+does not measure Noct-Q's original quantization loss or generated image quality.
+The source NoctQ file is preserved. Do not load the FUSAL LoRA again on this checkpoint.
+
+The author trained FUSAL on official Base Qwen, so its combination with Noct-Q is an
+experimental choice. No additional inference or test suite was run for this change,
+as requested. Model weights and conversion scripts stay outside tracked app source.
+
+The user confirmed the updated build works on 2026-10-10. This is a user-reported
+runtime result; no further automated tests were run before committing.
 
 The API graphs follow the supplied `03_Edit_AutoINT8Cache.json` and
 `04_MaskEdit_AutoINT8Cache.json`: 25 steps, CFG 1, Euler/simple, denoise 1, and

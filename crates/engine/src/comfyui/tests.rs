@@ -14,19 +14,44 @@ fn request(mode: EditMode) -> AiRequest {
 }
 
 #[test]
-fn both_models_use_the_same_edit_and_fill_graph_and_resolve_nested_paths() {
+fn supported_models_use_the_same_edit_and_fill_graph_and_resolve_nested_paths() {
     for model in ComfyUiModel::ALL {
         for mode in [EditMode::PromptEdit, EditMode::GenerativeFill] {
             let mut input = request(mode);
             input.model = model;
             let graph = workflow(&input, "source.png", "models");
             assert_eq!(graph["37"]["inputs"]["unet_name"], model.filename());
-            assert_eq!(graph["38"]["inputs"]["clip_name"], CLIP_MODEL);
+            assert_eq!(graph["38"]["inputs"]["clip_name"], model.clip_filename());
             assert_eq!(graph["39"]["inputs"]["vae_name"], VAE_MODEL);
         }
         let nested = format!("Qwen/{}", model.filename());
         let info = json!({"UNETLoader":{"input":{"required":{"unet_name":[[nested],{}]}}}});
         assert_eq!(model_name(&info, "UNETLoader", "unet_name", model.filename()).unwrap(), nested);
+    }
+}
+
+#[test]
+fn fusal_models_use_matching_encoder_and_base_sampling_in_all_modes() {
+    for model in [ComfyUiModel::AnimeFusal, ComfyUiModel::NoctQFusal] {
+        assert_eq!(model.default_steps(), 25);
+        assert!(!model.is_turbo());
+        assert!(!model.is_gguf());
+        for mode in [EditMode::PromptGenerate, EditMode::PromptEdit, EditMode::GenerativeFill] {
+            let mut input = request(mode);
+            input.model = model;
+            input.steps = model.default_steps();
+            let graph = workflow(&input, "source.png", "fusal");
+            assert_eq!(graph["37"]["class_type"], "UNETLoader");
+            assert_eq!(graph["37"]["inputs"]["unet_name"], model.filename());
+            assert_eq!(graph["38"]["inputs"]["clip_name"], model.clip_filename());
+            assert_eq!(graph["3"]["class_type"], "KSampler");
+            assert_eq!(graph["3"]["inputs"]["steps"], 25);
+            assert_eq!(graph["3"]["inputs"]["cfg"], 1.0);
+            assert!(graph.get("91").is_none());
+            if mode != EditMode::PromptGenerate {
+                assert_eq!(graph["64"]["inputs"]["prompt"], input.prompt);
+            }
+        }
     }
 }
 
@@ -180,7 +205,7 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
             let (mime, response) = if let Some(node) = path.strip_prefix("/object_info/") {
                 let (input, filename) = match node {
                     "UNETLoader" | "UnetLoaderGGUF" => ("unet_name", if selected.loader() == node { selected.filename() } else { "missing-model" }),
-                    "CLIPLoader" => ("clip_name", CLIP_MODEL),
+                    "CLIPLoader" => ("clip_name", selected.clip_filename()),
                     "VAELoader" => ("vae_name", VAE_MODEL),
                     "TextEncodeQwenImage21" | "QwenImage21Cache" | "SamplerCustom" | "ManualSigmas" | "KSamplerSelect" => ("model", "unused"),
                     _ => panic!("unexpected model list request {path}"),
@@ -200,7 +225,7 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
                     assert_eq!(submitted["prompt"]["64"]["inputs"]["prompt"], "plain prompt");
                 }
                 assert_eq!(submitted["prompt"]["37"]["inputs"]["unet_name"], format!("Qwen/{}", selected.filename()));
-                assert_eq!(submitted["prompt"]["38"]["inputs"]["clip_name"], format!("Qwen/{CLIP_MODEL}"));
+                assert_eq!(submitted["prompt"]["38"]["inputs"]["clip_name"], format!("Qwen/{}", selected.clip_filename()));
                 assert_eq!(submitted["prompt"]["39"]["inputs"]["vae_name"], format!("Qwen/{VAE_MODEL}"));
                 ("application/json", serde_json::to_vec(&json!({"prompt_id":job,"number":1,"node_errors":{}})).unwrap())
             } else if path.starts_with("/api/jobs/") {

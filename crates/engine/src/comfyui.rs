@@ -19,7 +19,6 @@ const MAX_JSON_BYTES: u64 = 1 << 20;
 const GENERATION_TIMEOUT: Duration = Duration::from_secs(20 * 60);
 #[cfg(test)]
 const UNET_MODEL: &str = "qwen_image_2.1_int8_convrot.safetensors";
-const CLIP_MODEL: &str = "qwen3vl_8b_int8_convrot.safetensors";
 const VAE_MODEL: &str = "qwen_image_2.1_vae_bf16.safetensors";
 
 #[derive(Default)]
@@ -79,9 +78,11 @@ fn client(connect: Duration, timeout: Duration) -> Result<Client> {
 
 fn model_inputs(client: &Client, base: &Url, ctx: &JobCtx, model: ComfyUiModel) -> Result<Vec<(&'static str, &'static str, String)>> {
     let mut models = Vec::with_capacity(3);
-    for (id, node, input, filename) in
-        [("37", model.loader(), "unet_name", model.filename()), ("38", "CLIPLoader", "clip_name", CLIP_MODEL), ("39", "VAELoader", "vae_name", VAE_MODEL)]
-    {
+    for (id, node, input, filename) in [
+        ("37", model.loader(), "unet_name", model.filename()),
+        ("38", "CLIPLoader", "clip_name", model.clip_filename()),
+        ("39", "VAELoader", "vae_name", VAE_MODEL),
+    ] {
         ctx.check()?;
         let url = base.join(&format!("object_info/{node}")).map_err(failure)?;
         let info = read_json(client.get(url).send().map_err(failure)?)?;
@@ -121,7 +122,7 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
     if request.mode == EditMode::PromptGenerate {
         let mut graph = json!({
             "37":loader,
-            "38":{"class_type":"CLIPLoader","inputs":{"clip_name":CLIP_MODEL,"type":"qwen_image","device":"default"}},
+            "38":{"class_type":"CLIPLoader","inputs":{"clip_name":request.model.clip_filename(),"type":"qwen_image","device":"default"}},
             "39":{"class_type":"VAELoader","inputs":{"vae_name":VAE_MODEL}},
             "6":{"class_type":"CLIPTextEncode","inputs":{"clip":["38",0],"text":request.prompt}},
             "63":{"class_type":"ConditioningZeroOut","inputs":{"conditioning":["6",0]}},
@@ -137,7 +138,7 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
     let cache = if masked { "82" } else { "79" };
     let mut graph = json!({
         "37":loader,
-        "38":{"class_type":"CLIPLoader","inputs":{"clip_name":CLIP_MODEL,"type":"qwen_image","device":"default"}},
+        "38":{"class_type":"CLIPLoader","inputs":{"clip_name":request.model.clip_filename(),"type":"qwen_image","device":"default"}},
         "39":{"class_type":"VAELoader","inputs":{"vae_name":VAE_MODEL}},
         "78":{"class_type":"LoadImage","inputs":{"image":filename}},
         "77":{"class_type":"ResizeImageMaskNode","inputs":{"input":["78",0],"resize_type":"scale to multiple","resize_type.multiple":32,"scale_method":"bicubic"}},
@@ -224,10 +225,13 @@ impl AiBackend for ComfyUi {
         if models.is_empty() {
             return Err(failure("no supported Qwen Image 2.1 checkpoint found"));
         }
-        for (node, input, filename) in [("CLIPLoader", "clip_name", CLIP_MODEL), ("VAELoader", "vae_name", VAE_MODEL)] {
-            let info = read_json(client.get(base.join(&format!("object_info/{node}")).map_err(failure)?).send().map_err(failure)?)?;
-            model_name(&info, node, input, filename)?;
+        let clip_info = read_json(client.get(base.join("object_info/CLIPLoader").map_err(failure)?).send().map_err(failure)?)?;
+        models.retain(|model| model_name(&clip_info, "CLIPLoader", "clip_name", model.clip_filename()).is_ok());
+        if models.is_empty() {
+            return Err(failure("supported text encoder not found"));
         }
+        let vae_info = read_json(client.get(base.join("object_info/VAELoader").map_err(failure)?).send().map_err(failure)?)?;
+        model_name(&vae_info, "VAELoader", "vae_name", VAE_MODEL)?;
         for node in ["TextEncodeQwenImage21", "QwenImage21Cache"] {
             let info = read_json(client.get(base.join(&format!("object_info/{node}")).map_err(failure)?).send().map_err(failure)?)?;
             if !info.get(node).is_some_and(Value::is_object) {

@@ -695,13 +695,16 @@ choice!(ComfyUiModel {
     QwenImage21 = "qwenImage21", NoctQv4 = "noctQv4", TurboInt8 = "turboInt8",
     TurboQ8 = "turboQ8", TurboAdQ2 = "turboAdQ2", TurboAdQ3 = "turboAdQ3",
     TurboAdQ4 = "turboAdQ4", TurboAdQ5 = "turboAdQ5", TurboAdQ6 = "turboAdQ6", TurboBf16Gguf = "turboBf16Gguf",
-    TurboQ3KM = "turboQ3KM", TurboQ4KM = "turboQ4KM", TurboQ4KS = "turboQ4KS", TurboQ5KM = "turboQ5KM", TurboQ6K = "turboQ6K"
+    TurboQ3KM = "turboQ3KM", TurboQ4KM = "turboQ4KM", TurboQ4KS = "turboQ4KS", TurboQ5KM = "turboQ5KM", TurboQ6K = "turboQ6K",
+    AnimeFusal = "animeFusal", NoctQFusal = "noctQFusal"
 } default QwenImage21);
 
 impl ComfyUiModel {
-    pub const ALL: [Self; 15] = [
+    pub const ALL: [Self; 17] = [
         Self::QwenImage21,
         Self::NoctQv4,
+        Self::AnimeFusal,
+        Self::NoctQFusal,
         Self::TurboInt8,
         Self::TurboQ8,
         Self::TurboAdQ4,
@@ -717,7 +720,7 @@ impl ComfyUiModel {
         Self::TurboQ3KM,
     ];
     pub fn is_turbo(self) -> bool {
-        !matches!(self, Self::QwenImage21 | Self::NoctQv4)
+        !matches!(self, Self::QwenImage21 | Self::NoctQv4 | Self::AnimeFusal | Self::NoctQFusal)
     }
     pub fn is_gguf(self) -> bool {
         self.is_turbo() && self != Self::TurboInt8
@@ -728,10 +731,15 @@ impl ComfyUiModel {
     pub fn default_steps(self) -> u32 {
         if self.is_turbo() { 8 } else { 25 }
     }
+    pub fn clip_filename(self) -> &'static str {
+        if matches!(self, Self::AnimeFusal | Self::NoctQFusal) { "qwen3-vl-8b-heretic-1.3.0_bf16.safetensors" } else { "qwen3vl_8b_int8_convrot.safetensors" }
+    }
     pub fn filename(self) -> &'static str {
         match self {
             Self::QwenImage21 => "qwen_image_2.1_int8_convrot.safetensors",
             Self::NoctQv4 => "NoctQ_V4_int8_convrot.safetensors",
+            Self::AnimeFusal => "qwen_image_2.1_anime_fusal_int8_convrot.safetensors",
+            Self::NoctQFusal => "NoctQ_V4_FUSAL_int8_convrot.safetensors",
             Self::TurboInt8 => "qwen_image_2.1_turbo_int8_convrot.safetensors",
             Self::TurboQ8 => "Qwen-Image-2.1-Turbo-Q8_0.gguf",
             Self::TurboAdQ2 => "Qwen-Image-2.1-Turbo-AD-Q2_K.gguf",
@@ -751,6 +759,8 @@ impl ComfyUiModel {
         match self {
             Self::QwenImage21 => "Qwen 2.1",
             Self::NoctQv4 => "NoctQ V4",
+            Self::AnimeFusal => "Anime FUSAL",
+            Self::NoctQFusal => "Noct-Q FUSAL",
             Self::TurboInt8 => "Turbo INT8",
             Self::TurboQ8 => "Turbo Q8_0",
             Self::TurboAdQ2 => "Turbo AD-Q2_K",
