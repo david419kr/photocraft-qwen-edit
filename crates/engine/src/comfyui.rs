@@ -88,7 +88,8 @@ fn model_inputs(client: &Client, base: &Url, ctx: &JobCtx, model: ComfyUiModel) 
         ctx.check()?;
         let url = base.join(&format!("object_info/{node}")).map_err(failure)?;
         let info = read_json(client.get(url).send().map_err(failure)?)?;
-        models.push((id, input, model_name(&info, node, input, filename)?));
+        let name = if node == "CLIPLoader" { clip_model_name(&info, model)? } else { model_name(&info, node, input, filename)? };
+        models.push((id, input, name));
     }
     Ok(models)
 }
@@ -112,6 +113,19 @@ fn model_name(info: &Value, node: &str, input: &str, filename: &str) -> Result<S
         [] => Err(failure(format!("model not found: {filename} ({node}.{input}); check ComfyUI's model folders"))),
         _ => Err(failure(format!("multiple models named {filename}: {}; keep one copy or place the intended model in the root folder", matches.join(", ")))),
     }
+}
+
+fn clip_model_name(info: &Value, model: ComfyUiModel) -> Result<String> {
+    let names = info
+        .pointer("/CLIPLoader/input/required/clip_name/0")
+        .and_then(Value::as_array)
+        .ok_or_else(|| failure("model list unavailable for CLIPLoader.clip_name"))?;
+    for filename in model.clip_filenames() {
+        if names.iter().filter_map(Value::as_str).any(|name| name.rsplit(['/', '\\']).next().is_some_and(|base| base.eq_ignore_ascii_case(filename))) {
+            return model_name(info, "CLIPLoader", "clip_name", filename);
+        }
+    }
+    Err(failure(format!("supported text encoder not found; expected {}", model.clip_filenames().join(" or "))))
 }
 
 /// Built from the user's 03 Edit / 04 MaskEdit graphs, with UI-only widgets removed.
@@ -236,7 +250,7 @@ impl AiBackend for ComfyUi {
             return Err(failure("no supported Qwen Image 2.1 checkpoint found"));
         }
         let clip_info = read_json(client.get(base.join("object_info/CLIPLoader").map_err(failure)?).send().map_err(failure)?)?;
-        models.retain(|model| model_name(&clip_info, "CLIPLoader", "clip_name", model.clip_filename()).is_ok());
+        models.retain(|model| clip_model_name(&clip_info, *model).is_ok());
         if models.is_empty() {
             return Err(failure("supported text encoder not found"));
         }

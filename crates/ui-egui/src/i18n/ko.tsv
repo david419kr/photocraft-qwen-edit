@@ -2812,3 +2812,5 @@ prompt-region	Bottom right	우하단
 	Stroke Path	패스 선 그리기
 	Transform Path	패스 변형
 	Warp Grid	격자 뒤틀기
+	Copy original prompt	입력 프롬프트 복사
+	Copy English translation	영어 번역 복사

@@ -1,1 +1,0 @@
-llama-cpp-python @ https://github.com/JamePeng/llama-cpp-python/releases/download/v0.4.2-cu128-win-20261003/llama_cpp_python-0.4.2%2Bcu128-cp313-cp313-win_amd64.whl#sha256=c3caac5948904c547357478a9186ed7ed4d5703b6aab19188e73adb5e0fc48ad

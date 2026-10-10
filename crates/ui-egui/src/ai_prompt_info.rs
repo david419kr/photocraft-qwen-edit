@@ -44,6 +44,48 @@ fn text(ui: &mut egui::Ui, value: &str) {
     ui.add(egui::Label::new(value).wrap().selectable(true));
 }
 
+fn prompt_text(ui: &mut egui::Ui, number: usize, field: &str, value: &str, copy_label: &str) {
+    ui.horizontal_top(|ui| {
+        let button_size = 24.0;
+        let width = (ui.available_width() - button_size - ui.spacing().item_spacing.x).max(1.0);
+        let id = ui.make_persistent_id(("ai-prompt-text", number, field));
+        let menu_selection = id.with("copy-selection");
+        let previous_range = egui::text_edit::TextEditState::load(ui.ctx(), id).and_then(|state| state.cursor.char_range());
+        // An immutable TextBuffer still gets text focus, so Copy is not routed to canvas pixels.
+        let mut read_only = value;
+        let output = egui::TextEdit::multiline(&mut read_only)
+            .id(id)
+            .font(egui::TextStyle::Body)
+            .frame(egui::Frame::NONE)
+            .margin(0)
+            .desired_rows(1)
+            .desired_width(width)
+            .show(ui);
+        // egui collapses a text selection on a secondary mouse press and when the menu takes focus.
+        if (output.response.contains_pointer() && ui.input(|input| input.pointer.button_pressed(egui::PointerButton::Secondary)))
+            || output.response.secondary_clicked()
+        {
+            let selected = previous_range.filter(|range| !range.is_empty()).map(|range| range.slice_str(value)).unwrap_or(value);
+            ui.ctx().data_mut(|data| data.insert_temp(menu_selection, selected.to_owned()));
+            let mut state = output.state.clone();
+            state.cursor.set_char_range(previous_range);
+            state.store(ui.ctx(), id);
+        }
+        output.response.context_menu(|ui| {
+            if ui.button(tl!("Copy")).clicked() {
+                let selected = ui.ctx().data_mut(|data| data.remove_temp::<String>(menu_selection)).unwrap_or_else(|| value.to_owned());
+                ui.ctx().copy_text(selected);
+                ui.close();
+            }
+        });
+        let copy = crate::icons::button(ui, "copy", button_size, false, copy_label);
+        copy.widget_info(|| egui::WidgetInfo::selected(egui::WidgetType::Button, ui.is_enabled(), false, copy_label));
+        if copy.clicked() {
+            ui.ctx().copy_text(value.to_owned());
+        }
+    });
+}
+
 fn entry(ui: &mut egui::Ui, number: usize, entry: &Entry) {
     ui.label(RichText::new(format!("{number}. {}", tl!(entry.mode.label()))).strong());
     if !entry.regions.is_empty() {
@@ -56,14 +98,14 @@ fn entry(ui: &mut egui::Ui, number: usize, entry: &Entry) {
     }
     if let Some(translation) = &entry.translated {
         ui.label(tl!("Original prompt"));
-        text(ui, &entry.original);
+        prompt_text(ui, number, "original", &entry.original, tl!("Copy original prompt"));
         ui.add_space(4.0);
         ui.label(tl!("English translation"));
-        text(ui, translation);
+        prompt_text(ui, number, "translation", translation, tl!("Copy English translation"));
     } else if entry.original.trim().is_empty() {
         ui.label(tl!("No prompt (remove)"));
     } else {
-        text(ui, &entry.original);
+        prompt_text(ui, number, "original", &entry.original, tl!("Copy original prompt"));
     }
     ui.add_space(8.0);
     ui.separator();
@@ -133,4 +175,116 @@ pub(crate) fn show(app: &mut PhotocraftApp, ctx: &Context) {
     );
     app.ui.ai.prompt_info_open = open;
     app.ui.ai.prompt_info_page = page;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use egui::{Event, Key, Modifiers, PointerButton};
+    use egui_kittest::{Harness, kittest::Queryable};
+    use photocraft_engine::{Session, ai_cmds::EditMode};
+    use serde_json::json;
+
+    const ORIGINAL: &str = "원문 한글 🌙\n두 번째 줄";
+    const ENGLISH: &str = "A girl on a hill\nDraw a moon.";
+
+    fn harness() -> Harness<'static, PhotocraftApp> {
+        let mut session = Session::new();
+        session.execute("file.new", json!({"width":64,"height":64})).unwrap();
+        session.execute("prefs.set", json!({"path":"interface.language","value":"en"})).unwrap();
+        let record = Entry { mode: EditMode::PromptEdit, regions: Vec::new(), original: ORIGINAL.into(), translated: Some(ENGLISH.into()) };
+        session
+            .edit("Prompt fixture", |doc, _| {
+                doc.metadata.xmp = Some(photocraft_engine::ai_prompts::append(None, &record).unwrap());
+                Ok(())
+            })
+            .unwrap();
+        let mut h = Harness::builder().with_size(vec2(1200.0, 900.0)).with_max_steps(64).build_eframe(move |cc| {
+            PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
+            let mut app = PhotocraftApp::new(session, crate::Services::default());
+            app.ui.ai.prompt_info_open = true;
+            app
+        });
+        h.run_steps(6);
+        h
+    }
+
+    fn copied(h: &Harness<'_, PhotocraftApp>) -> Vec<String> {
+        h.output()
+            .platform_output
+            .commands
+            .iter()
+            .filter_map(|command| match command {
+                egui::OutputCommand::CopyText(value) => Some(value.clone()),
+                _ => None,
+            })
+            .collect()
+    }
+
+    fn focus_original(h: &mut Harness<'_, PhotocraftApp>) {
+        let center = h.get_by_value(ORIGINAL).rect().center();
+        h.hover_at(center);
+        h.drag_at(center);
+        h.drop_at(center);
+        h.step();
+        assert!(h.ctx.text_edit_focused());
+    }
+
+    #[test]
+    fn prompt_copy_buttons_copy_only_each_complete_prompt() {
+        let mut h = harness();
+        h.get_by_label("Copy original prompt").click();
+        h.step();
+        assert_eq!(copied(&h), vec![ORIGINAL]);
+        h.get_by_label("Copy English translation").click();
+        h.step();
+        assert_eq!(copied(&h), vec![ENGLISH]);
+        assert!(h.state().session.clipboard.is_none());
+    }
+
+    #[test]
+    fn prompt_copy_keeps_text_focus_and_never_edits_saved_history() {
+        let mut h = harness();
+        let xmp = h.state().session.active().unwrap().doc.metadata.xmp.clone();
+        focus_original(&mut h);
+        h.key_press_modifiers(Modifiers::COMMAND, Key::A);
+        h.step();
+        // Native Ctrl+C arrives as Copy; the app's real raw_input_hook must preserve it.
+        let ctx = h.ctx.clone();
+        let mut raw = egui::RawInput { events: vec![Event::Copy], ..Default::default() };
+        eframe::App::raw_input_hook(h.state_mut(), &ctx, &mut raw);
+        assert_eq!(raw.events, vec![Event::Copy]);
+        for event in raw.events {
+            h.event(event);
+        }
+        h.step();
+        assert_eq!(copied(&h), vec![ORIGINAL]);
+        assert!(h.state().session.clipboard.is_none());
+        h.event(Event::Paste("replace".into()));
+        h.event(Event::Text("typing".into()));
+        h.key_press(Key::Delete);
+        h.step();
+        assert_eq!(h.state().session.active().unwrap().doc.metadata.xmp, xmp);
+        assert!(h.query_by_value(ORIGINAL).is_some());
+    }
+
+    #[test]
+    fn prompt_context_menu_copies_unicode_selection() {
+        let mut h = harness();
+        focus_original(&mut h);
+        let id = h.ctx.memory(|memory| memory.focused()).unwrap();
+        let mut state = egui::text_edit::TextEditState::load(&h.ctx, id).unwrap();
+        state.cursor.set_char_range(Some(egui::text::CCursorRange::two(egui::text::CCursor::new(0), egui::text::CCursor::new(2))));
+        state.store(&h.ctx, id);
+        let center = h.get_by_value(ORIGINAL).rect().center();
+        h.hover_at(center);
+        for pressed in [true, false] {
+            h.event(Event::PointerButton { pos: center, button: PointerButton::Secondary, pressed, modifiers: Modifiers::NONE });
+        }
+        h.step();
+        h.get_by_label("Copy").click();
+        h.step();
+        assert_eq!(copied(&h), vec!["원문"]);
+        assert!(h.state().session.clipboard.is_none());
+    }
 }

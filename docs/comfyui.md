@@ -15,14 +15,33 @@ Supported files, stored under ComfyUI `models/LLM/GGUF`:
 - `Hy-MT2-1.8B-heretic.i1-Q4_K_M.gguf` — `hyMt18Heretic`
 - `HY-MT2-7B-Abliterated-Q4_K_M.gguf` — `hyMt7Abliterated`
 
-Install [ComfyUI-Hy-MT2](https://github.com/1038lab/ComfyUI-Hy-MT2) and run
-`install-comfyui-hymt2.ps1 -ComfyRoot <your ComfyUI directory>` from this build's
-folder. The helper and `hy-mt2-runtime/` folder also ship beside the executable.
-The installer requires `uv`, creates a private Python 3.13 `.venv` inside that
-node, and installs a pinned CUDA 12.8 `llama-cpp-python` wheel there. This PC's
-CUDA 12.8 toolkit supplies its native CUDA libraries. ComfyUI's shared Python
-packages are not replaced. Restart ComfyUI after installation. After updating
-the node, rerun the helper to reapply the load/unload integration.
+Use the [isolated-runtime fork](https://github.com/david419kr/ComfyUI-Hy-MT2).
+Copy **both** `install-comfyui-hymt2.cmd` and `install-comfyui-hymt2.ps1` from this
+build's folder into `ComfyUI_windows_portable`, beside `ComfyUI` and
+`python_embeded`. Close ComfyUI, double-click the CMD file, then restart ComfyUI.
+The installer detects paths by folder structure. It downloads private uv and
+extracts a verified Python 3.13.12 archive without version links, creates the
+node's `.venv` using the actual interpreter path, and installs the pinned llama-cpp-python wheel
+and CUDA 12.8 runtime/cuBLAS/NVRTC libraries there. System Python, uv, Git,
+CUDA Toolkit and a C++ compiler do not need to be installed beforehand. A working
+Windows x64 NVIDIA ComfyUI portable installation, suitable NVIDIA driver and
+network access are required. GGUF model weights are installed separately.
+ComfyUI's llama-cpp-python/Torch packages are not replaced; a missing host
+huggingface-hub package is installed if needed. Git-free machines use the fork ZIP.
+Existing non-fork nodes are backed up under `.hymt2-backups` outside `custom_nodes`;
+clean Git forks update with fast-forward only. Rerun the installer after moving
+the portable folder to repair its environment. No global PATH is changed.
+
+If an older installer failed at `Failed to create Python minor version link
+directory`, download the updated root PS1 and run the same CMD again. A valid
+patch-version Python extracted before the failure is reused. No manual deletion
+is needed; `uv python install` and its minor-version junction step are bypassed.
+
+Verified on 2026-10-11: Windows PowerShell 5.1 installation in a separate path
+containing spaces/Korean, Git update, Git-free ZIP installation with backup and
+environment reuse, and CUDA loading without system Toolkit paths. The installed
+node translated a short Korean greeting to English with the 1.8B Heretic model
+and released its worker. Other PCs/hardware have not been tested.
 
 The node imports a small proxy; that proxy starts its dedicated Python worker
 and exchanges UTF-8 JSON over stdin/stdout. The worker imports its own
@@ -84,6 +103,18 @@ regions in a 3×3 canvas grid (top left through bottom right); selections spanni
 several regions list them together. Empty prompts are shown as removal. Model, seed,
 steps, CFG and other generation parameters are not recorded. Prompt inspection remains
 available when ComfyUI is offline, via an information-only floating bar.
+
+Each original/translated prompt has a copy icon on its right. It copies only that
+complete prompt, preserving line breaks and excluding headings, numbering and
+region labels. Prompts are read-only selectable text fields: Ctrl+C copies the
+selection, and the right-click Copy menu copies the selection (or the whole
+prompt if no text is selected). Typing/pasting cannot alter the stored history.
+
+Copy validation on 2026-10-11: three focused UI tests passed for exact original/
+English button output, native Copy-event routing without canvas-image copying,
+read-only history preservation and a Korean selection in the right-click menu.
+The Korean offscreen layout was inspected; UI Clippy (all targets), wasm/layering
+checks and the static-CRT portable release build passed.
 
 PNG, JPEG, WebP, TIFF, AVIF, PSD and PhotoCraft native files preserve this history on
 save and reopening. It lives in XMP under `urn:photocraft:ai-prompts:1`, as a
@@ -249,8 +280,12 @@ tabs and both editing modes; a job keeps the model that was selected when it was
 The selector also recognises `qwen_image_2.1_anime_fusal_int8_convrot.safetensors` as
 **Anime FUSAL** (`animeFusal`). It uses the original, non-Turbo Qwen Image 2.1 sampling
 graph at 25 default steps, CFG 1.0, Euler/simple. The matching
-`qwen3-vl-8b-heretic-1.3.0_bf16.safetensors` text encoder is required for this choice;
-other model choices keep `qwen3vl_8b_int8_convrot.safetensors`. If the FUSAL encoder is
+Heretic text encoder is required for this choice: prefer
+`qwen3-vl-8b-heretic-1.3.0-int8convrot.safetensors`, then
+`qwen3-vl-8b-heretic-1.3.0_bf16.safetensors`. Other model choices prefer
+`qwen3vl_8b_int8_convrot.safetensors`; if absent, use Heretic INT8 ConvRot,
+then Heretic BF16. Detection and actual workflow submission use the same priority,
+including files in subfolders. If the FUSAL encoder is
 absent, availability omits the FUSAL choices. The shared Qwen Image 2.1 VAE is still required.
 No prompt text or mask prompt shaping is changed. For the model author's suggested style
 trigger, users may include `fusal style.` in their own prompt.
@@ -290,8 +325,8 @@ successfully at `dist/photocraft-comfyui-korean/photocraft.exe`.
 ### Noct-Q FUSAL trial checkpoint (2026-10-10)
 
 `NoctQ_V4_FUSAL_int8_convrot.safetensors` appears as **Noct-Q FUSAL** (`noctQFusal`)
-in both floating bars and uses 25 default steps, CFG 1.0, the matching Heretic BF16
-text encoder and the shared Qwen VAE. Anime FUSAL's default was also lowered to 25
+in both floating bars and uses 25 default steps, CFG 1.0, the matching Heretic
+text encoder (INT8 ConvRot preferred over BF16) and the shared Qwen VAE. Anime FUSAL's default was also lowered to 25
 at the user's request. Existing prompt shaping and selection behavior are unchanged.
 
 This trial combines the installed NoctQ V4 INT8 ConvRot checkpoint with the same

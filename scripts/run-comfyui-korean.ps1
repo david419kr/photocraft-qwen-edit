@@ -33,7 +33,15 @@ try {
     Copy-Item -LiteralPath (Join-Path $repoRoot 'crates\codecs\licenses\avif-encoder.txt') -Destination $licenseDir -Force
     Copy-Item -LiteralPath (Join-Path $repoRoot 'scripts\fix-comfyui-gguf-qwen21.ps1') -Destination $bundleDir -Force
     Copy-Item -LiteralPath (Join-Path $repoRoot 'scripts\install-comfyui-hymt2.ps1') -Destination $bundleDir -Force
-    Copy-Item -LiteralPath (Join-Path $repoRoot 'scripts\hy-mt2-runtime') -Destination $bundleDir -Recurse -Force
+    Copy-Item -LiteralPath (Join-Path $repoRoot 'scripts\install-comfyui-hymt2.cmd') -Destination $bundleDir -Force
+    $legacyRuntime = Join-Path $bundleDir 'hy-mt2-runtime'
+    foreach ($name in @('isolated_llama.py', 'llama_worker.py', 'requirements.txt')) {
+        $legacyFile = Join-Path $legacyRuntime $name
+        if (Test-Path -LiteralPath $legacyFile -PathType Leaf) { Remove-Item -LiteralPath $legacyFile }
+    }
+    if ((Test-Path -LiteralPath $legacyRuntime -PathType Container) -and !(Get-ChildItem -LiteralPath $legacyRuntime -Force)) {
+        Remove-Item -LiteralPath $legacyRuntime
+    }
     # Remove only the runtime bundled by the previous development launcher.
     $oldRuntime = Join-Path $bundleDir 'VCRUNTIME140.dll'
     if (Test-Path -LiteralPath $oldRuntime -PathType Leaf) {

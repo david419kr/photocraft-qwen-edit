@@ -732,7 +732,14 @@ impl ComfyUiModel {
         if self.is_turbo() { 8 } else { 25 }
     }
     pub fn clip_filename(self) -> &'static str {
-        if matches!(self, Self::AnimeFusal | Self::NoctQFusal) { "qwen3-vl-8b-heretic-1.3.0_bf16.safetensors" } else { "qwen3vl_8b_int8_convrot.safetensors" }
+        self.clip_filenames().first().copied().unwrap_or("qwen3vl_8b_int8_convrot.safetensors")
+    }
+    pub fn clip_filenames(self) -> &'static [&'static str] {
+        if matches!(self, Self::AnimeFusal | Self::NoctQFusal) {
+            &["qwen3-vl-8b-heretic-1.3.0-int8convrot.safetensors", "qwen3-vl-8b-heretic-1.3.0_bf16.safetensors"]
+        } else {
+            &["qwen3vl_8b_int8_convrot.safetensors", "qwen3-vl-8b-heretic-1.3.0-int8convrot.safetensors", "qwen3-vl-8b-heretic-1.3.0_bf16.safetensors"]
+        }
     }
     pub fn filename(self) -> &'static str {
         match self {

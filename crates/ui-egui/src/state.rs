@@ -846,7 +846,7 @@ pub struct UiState {
 impl Default for UiState {
     fn default() -> Self {
         Self {
-            tool: Tool::Brush,
+            tool: Tool::Lasso,
             recent_files: Vec::new(),
             text_edit: None,
             transform: None,
