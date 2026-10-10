@@ -36,7 +36,12 @@ model-unload API does not directly manage these worker models.
 PhotoCraft submits `HyMT_Translation_GGUF -> PreviewAny` through the existing
 ComfyUI API with `translate_to=English`, `translate_style=Default`
 and `unload_after_run=false`. Only the user-entered prompt is translated. The
-existing mask-edit prompt shaping is applied afterward. Empty-prompt removal
+existing mask-edit prompt shaping is applied afterward. A quick character check
+skips translation when there are no non-ASCII alphabetic characters: English
+letters, numbers, whitespace, punctuation (including typographic punctuation)
+and emoji pass through unchanged even with the toggle on. Mixed/non-English
+letters still take the translation route. This is a character heuristic, not a
+language classifier for languages that use only ASCII letters. Empty-prompt removal
 and the built-in English background-removal action skip translation. Reroll
 reuses the original translated request. Translation errors leave the document
 unchanged, and empty or oversized outputs are reported rather than submitted.
@@ -68,9 +73,10 @@ Regeneration replaces the previous AI result layer in one undo step.
 
 The **ⓘ** icon at the far right of either floating bar opens the current document's
 ordered AI prompt history. Each successful generation, whole-image edit, generative
-fill, background removal or reroll adds an entry. Failed/cancelled requests add
+fill or background removal adds an entry. Failed/cancelled requests add
 nothing. Undo, Redo and history navigation restore the entries with the corresponding
-document snapshot. Reroll records another use even though it replaces the result layer.
+document snapshot. Reroll replaces the previous result layer and retains that
+operation's existing prompt record; repeated rerolls do not append duplicates.
 
 Entries contain the operation type, original prompt and, when translation was used,
 the translated English prompt. Generative Fill also records the meaningful selected
@@ -103,6 +109,21 @@ no actual Qwen generation or translation inference was needed for this change.
 
 The user confirmed the updated build works on 2026-10-11. No additional tests
 were run before committing this change.
+
+Prompt refinements on 2026-10-11: English/punctuation-only requests skip the
+translator even with its toggle enabled, and rerolls retain the existing prompt
+history instead of appending a duplicate. All 26 AI command regression tests
+passed, covering all three modes, repeated rerolls and undo/redo. Engine Clippy,
+wasm and layering checks passed, and the portable release build was updated.
+A broader `prompt` filter also included the unchanged Turbo mock-API test, which
+failed with `no supported Qwen Image 2.1 checkpoint found`; the focused command
+tests passed. No live ComfyUI generation or translation was called for these
+refinements.
+
+The user approved committing these two refinements on 2026-10-11. No further
+tests were run for that commit. The failed Turbo check used a test-only mock
+server, not the running ComfyUI installation; its exact failure cause remains
+unconfirmed.
 
 ## AVIF import/export (2026-10-09)
 

@@ -326,6 +326,10 @@ fn default_seed() -> u64 {
     }
 }
 
+fn needs_translation(prompt: &str) -> bool {
+    prompt.chars().any(|ch| ch.is_alphabetic() && !ch.is_ascii_alphabetic())
+}
+
 fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) -> Result<Value> {
     let command = mode.command();
     if !p.is_object() {
@@ -360,7 +364,7 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
     let backend = s.ai_backend.clone().ok_or_else(|| EngineError::Other("ComfyUI is not configured in this frontend".into()))?;
     let endpoint = s.prefs().integrations.comfyui_url.clone();
     let model = s.prefs().integrations.comfyui_model;
-    let translate_prompt = translate_user_prompt && s.prefs().integrations.comfyui_translate_prompt && !prompt.trim().is_empty();
+    let translate_prompt = translate_user_prompt && s.prefs().integrations.comfyui_translate_prompt && needs_translation(prompt);
     let translation_model = s.prefs().integrations.comfyui_translation_model;
     let steps = match p.get("steps") {
         Some(value) => {
@@ -454,7 +458,8 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
     let id = layer.id;
     let prompt_entry = last.prompt_entry.clone();
     s.edit(label, move |doc, active| {
-        let prompt_xmp = crate::ai_prompts::append(doc.metadata.xmp.as_deref(), &prompt_entry).map_err(EngineError::Other)?;
+        let prompt_xmp =
+            if replace.is_none() { Some(crate::ai_prompts::append(doc.metadata.xmp.as_deref(), &prompt_entry).map_err(EngineError::Other)?) } else { None };
         if let Some(old) = replace {
             let target = doc.layers.iter_mut().find(|l| l.id == old).ok_or_else(|| EngineError::Other("previous AI layer was removed".into()))?;
             *target = layer;
@@ -467,7 +472,9 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
             doc.layers.push(layer);
         }
         *active = Some(id);
-        doc.metadata.xmp = Some(prompt_xmp);
+        if let Some(xmp) = prompt_xmp {
+            doc.metadata.xmp = Some(xmp);
+        }
         Ok(())
     })?;
     let st = s.active().ok_or(EngineError::NoDocument)?;

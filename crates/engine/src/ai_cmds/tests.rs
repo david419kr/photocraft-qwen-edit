@@ -56,11 +56,11 @@ fn prompt_history_tracks_all_modes_translation_undo_redo_and_saved_files() {
     assert!(info["entries"][0].get("seed").is_none());
     // Regeneration is intentionally allowed only while its result revision is unchanged.
     s.execute(REGENERATE_COMMAND, json!({})).unwrap();
-    assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap().len(), 5);
+    assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap(), entries);
     s.execute("edit.undo", json!({})).unwrap();
     assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap(), entries);
     s.execute("edit.redo", json!({})).unwrap();
-    assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap().len(), 5);
+    assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap(), entries);
     s.execute("edit.undo", json!({})).unwrap();
     s.execute("edit.undo", json!({})).unwrap();
     assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap().len(), 3);
@@ -125,7 +125,7 @@ fn prompt_translation_precedes_mask_shaping_and_reroll_reuses_result() {
         fn translate(&self, _: &str, model: ComfyUiTranslationModel, prompt: &str, _: &JobCtx) -> Result<String> {
             assert_eq!(model, ComfyUiTranslationModel::HyMt7Abliterated);
             self.prompts.lock().unwrap().push(prompt.to_owned());
-            if prompt == "error" {
+            if prompt == "번역 오류" {
                 return Err(EngineError::Other("translation failed".into()));
             }
             Ok("a red teapot".into())
@@ -153,11 +153,53 @@ fn prompt_translation_precedes_mask_shaping_and_reroll_reuses_result() {
     s.execute(REMOVE_BACKGROUND_COMMAND, json!({})).unwrap();
     assert_eq!(backend.prompts.lock().unwrap().len(), 2);
     let layers = s.active().unwrap().doc.layers.len();
-    assert!(s.execute("edit.promptEdit", json!({"prompt":"error"})).is_err());
+    assert!(s.execute("edit.promptEdit", json!({"prompt":"번역 오류"})).is_err());
     assert_eq!(s.active().unwrap().doc.layers.len(), layers);
     backend.models.lock().unwrap().clear();
-    s.execute("edit.promptEdit", json!({"prompt":"untranslated"})).unwrap();
-    assert_eq!(backend.requests.lock().unwrap().last().unwrap(), "untranslated");
+    s.execute("edit.promptEdit", json!({"prompt":"모델 없는 원문"})).unwrap();
+    assert_eq!(backend.requests.lock().unwrap().last().unwrap(), "모델 없는 원문");
+}
+
+#[test]
+fn english_prompts_skip_translation_and_rerolls_preserve_history_in_all_modes() {
+    struct NoTranslation;
+    impl AiBackend for NoTranslation {
+        fn available_translation_models(&self, _: &str) -> Result<Vec<crate::prefs::ComfyUiTranslationModel>> {
+            Err(EngineError::Other("English prompt must not probe translation models".into()))
+        }
+        fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
+            Solid.generate(request, ctx)
+        }
+    }
+    for command in ["edit.promptGenerate", "edit.promptEdit", "edit.generativeFill"] {
+        for prompt in ["Draw a red teapot — please! (3:2) 😀", "…?! 123 [] ()"] {
+            let mut s = session(8);
+            s.ai_backend = Some(Arc::new(NoTranslation));
+            s.execute("prefs.set", json!({"path":"integrations.comfyuiTranslatePrompt","value":true})).unwrap();
+            if command == "edit.generativeFill" {
+                s.execute("select.rect", json!({"x":2,"y":3,"width":5,"height":5})).unwrap();
+            }
+            s.execute(command, json!({"prompt":prompt})).unwrap();
+            let before = s.active().unwrap().doc.metadata.xmp.clone();
+            let history = crate::ai_prompts::read(before.as_deref()).unwrap();
+            assert_eq!(history.len(), 1);
+            assert_eq!(history[0].original, prompt);
+            assert!(history[0].translated.is_none());
+            for _ in 0..2 {
+                s.execute(REGENERATE_COMMAND, json!({})).unwrap();
+                assert_eq!(s.active().unwrap().doc.metadata.xmp, before);
+                assert_eq!(s.active().unwrap().doc.layers.len(), 2);
+            }
+            s.execute("edit.undo", json!({})).unwrap();
+            assert_eq!(s.active().unwrap().doc.metadata.xmp, before);
+            s.execute("edit.redo", json!({})).unwrap();
+            assert_eq!(s.active().unwrap().doc.metadata.xmp, before);
+        }
+    }
+    for prompt in ["Draw 달", "月を追加", "画一只猫", "café", "Привет"] {
+        assert!(needs_translation(prompt), "{prompt}");
+    }
+    assert!(!needs_translation(" \n\t"));
 }
 
 #[test]
