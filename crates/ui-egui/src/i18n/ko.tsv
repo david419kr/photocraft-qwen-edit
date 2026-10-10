@@ -2737,3 +2737,5 @@ cameraRaw	Color	색상
 	Describe the image to generate	생성할 이미지를 설명하세요
 	Regenerate	재생성
 	Regenerate AI Result	AI 결과 재생성
+Sampling steps	샘플링 스텝 수
+Reset steps to model default	스텝 수 기본값 복원

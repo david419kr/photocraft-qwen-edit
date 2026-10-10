@@ -92,7 +92,7 @@ fn regeneration_keeps_source_prompt_model_mask_and_replaces_one_layer_with_undo(
             s.execute("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
         }
         s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"noctQv4"})).unwrap();
-        let result = s.execute(mode.command(), json!({"prompt":"blue","seed":42})).unwrap();
+        let result = s.execute(mode.command(), json!({"prompt":"blue","seed":42,"steps":13})).unwrap();
         let before = s.active().unwrap().doc.clone();
         s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"qwenImage21"})).unwrap();
         let rerolled = s.execute(REGENERATE_COMMAND, json!({})).unwrap();
@@ -103,6 +103,8 @@ fn regeneration_keeps_source_prompt_model_mask_and_replaces_one_layer_with_undo(
         assert_eq!(received.len(), 2);
         assert_eq!(received[0].image.pixels, received[1].image.pixels);
         assert_eq!(received[0].prompt, received[1].prompt);
+        assert_eq!(received[0].steps, 13);
+        assert_eq!(received[1].steps, 13);
         assert_eq!(received[1].model, crate::prefs::ComfyUiModel::NoctQv4);
         assert_eq!(received[0].mode, received[1].mode);
         drop(received);
@@ -115,6 +117,21 @@ fn regeneration_keeps_source_prompt_model_mask_and_replaces_one_layer_with_undo(
         assert!(s.execute(REGENERATE_COMMAND, json!({"seed":42})).is_err());
         s.execute("select.rect", json!({"x":1,"y":1,"width":2,"height":2})).unwrap();
         assert!(s.execute(REGENERATE_COMMAND, json!({})).is_err());
+    }
+}
+
+#[test]
+fn sampling_steps_default_by_model_and_reject_invalid_values() {
+    for model in crate::prefs::ComfyUiModel::ALL {
+        let mut s = session(8);
+        s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":model.name()})).unwrap();
+        for steps in [json!(0), json!(1001), json!(-1), json!(1.5), json!("8"), Value::Null] {
+            assert!(s.execute("edit.promptEdit", json!({"prompt":"test","steps":steps})).is_err());
+        }
+        let output = s.execute("edit.promptEdit", json!({"prompt":"test"})).unwrap();
+        assert_eq!(output["steps"], model.default_steps());
+        let custom = s.execute("edit.promptEdit", json!({"prompt":"test","steps":6})).unwrap();
+        assert_eq!(custom["steps"], 6);
     }
 }
 
@@ -493,6 +510,7 @@ fn fill_blending_excludes_padding_and_handles_missing_context_bad_buffers_and_ca
                 endpoint: "".into(),
                 seed: 1,
                 model: crate::prefs::ComfyUiModel::default(),
+                steps: 25,
             },
             &JobCtx::new(),
         )

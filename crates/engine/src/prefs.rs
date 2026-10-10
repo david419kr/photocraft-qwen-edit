@@ -691,20 +691,79 @@ impl Default for RawDefaults {
     }
 }
 
-choice!(ComfyUiModel { QwenImage21 = "qwenImage21", NoctQv4 = "noctQv4" } default QwenImage21);
+choice!(ComfyUiModel {
+    QwenImage21 = "qwenImage21", NoctQv4 = "noctQv4", TurboInt8 = "turboInt8",
+    TurboQ8 = "turboQ8", TurboAdQ2 = "turboAdQ2", TurboAdQ3 = "turboAdQ3",
+    TurboAdQ4 = "turboAdQ4", TurboAdQ5 = "turboAdQ5", TurboAdQ6 = "turboAdQ6", TurboBf16Gguf = "turboBf16Gguf",
+    TurboQ3KM = "turboQ3KM", TurboQ4KM = "turboQ4KM", TurboQ4KS = "turboQ4KS", TurboQ5KM = "turboQ5KM", TurboQ6K = "turboQ6K"
+} default QwenImage21);
 
 impl ComfyUiModel {
-    pub const ALL: [Self; 2] = [Self::QwenImage21, Self::NoctQv4];
+    pub const ALL: [Self; 15] = [
+        Self::QwenImage21,
+        Self::NoctQv4,
+        Self::TurboInt8,
+        Self::TurboQ8,
+        Self::TurboAdQ4,
+        Self::TurboAdQ6,
+        Self::TurboAdQ5,
+        Self::TurboAdQ3,
+        Self::TurboAdQ2,
+        Self::TurboBf16Gguf,
+        Self::TurboQ6K,
+        Self::TurboQ5KM,
+        Self::TurboQ4KM,
+        Self::TurboQ4KS,
+        Self::TurboQ3KM,
+    ];
+    pub fn is_turbo(self) -> bool {
+        !matches!(self, Self::QwenImage21 | Self::NoctQv4)
+    }
+    pub fn is_gguf(self) -> bool {
+        self.is_turbo() && self != Self::TurboInt8
+    }
+    pub fn loader(self) -> &'static str {
+        if self.is_gguf() { "UnetLoaderGGUF" } else { "UNETLoader" }
+    }
+    pub fn default_steps(self) -> u32 {
+        if self.is_turbo() { 8 } else { 25 }
+    }
     pub fn filename(self) -> &'static str {
         match self {
             Self::QwenImage21 => "qwen_image_2.1_int8_convrot.safetensors",
             Self::NoctQv4 => "NoctQ_V4_int8_convrot.safetensors",
+            Self::TurboInt8 => "qwen_image_2.1_turbo_int8_convrot.safetensors",
+            Self::TurboQ8 => "Qwen-Image-2.1-Turbo-Q8_0.gguf",
+            Self::TurboAdQ2 => "Qwen-Image-2.1-Turbo-AD-Q2_K.gguf",
+            Self::TurboAdQ3 => "Qwen-Image-2.1-Turbo-AD-Q3_K.gguf",
+            Self::TurboAdQ4 => "Qwen-Image-2.1-Turbo-AD-Q4_K.gguf",
+            Self::TurboAdQ5 => "Qwen-Image-2.1-Turbo-AD-Q5_K.gguf",
+            Self::TurboAdQ6 => "Qwen-Image-2.1-Turbo-AD-Q6_K.gguf",
+            Self::TurboBf16Gguf => "Qwen-Image-2.1-Turbo-BF16.gguf",
+            Self::TurboQ3KM => "qwen_image_2.1_turbo_Q3_K_M.gguf",
+            Self::TurboQ4KM => "qwen_image_2.1_turbo_Q4_K_M.gguf",
+            Self::TurboQ4KS => "qwen_image_2.1_turbo_Q4_K_S.gguf",
+            Self::TurboQ5KM => "qwen_image_2.1_turbo_Q5_K_M.gguf",
+            Self::TurboQ6K => "qwen_image_2.1_turbo_Q6_K.gguf",
         }
     }
     pub fn label(self) -> &'static str {
         match self {
             Self::QwenImage21 => "Qwen 2.1",
             Self::NoctQv4 => "NoctQ V4",
+            Self::TurboInt8 => "Turbo INT8",
+            Self::TurboQ8 => "Turbo Q8_0",
+            Self::TurboAdQ2 => "Turbo AD-Q2_K",
+            Self::TurboAdQ3 => "Turbo AD-Q3_K",
+            Self::TurboAdQ4 => "Turbo AD-Q4_K",
+            Self::TurboAdQ5 => "Turbo AD-Q5_K",
+            Self::TurboAdQ6 => "Turbo AD-Q6_K",
+            Self::TurboBf16Gguf => "Turbo BF16 GGUF",
+            Self::TurboQ3KM => "Turbo Q3_K_M",
+            Self::TurboQ4KM => "Turbo Q4_K_M",
+            Self::TurboQ4KS => "Turbo Q4_K_S",
+            Self::TurboQ5KM => "Turbo Q5_K_M",
+            Self::TurboQ6K => "Turbo Q6_K",
         }
     }
 }

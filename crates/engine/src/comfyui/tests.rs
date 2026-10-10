@@ -9,6 +9,7 @@ fn request(mode: EditMode) -> AiRequest {
         removal: false,
         endpoint: "http://127.0.0.1:8188".into(),
         seed: 1234,
+        steps: 25,
     }
 }
 
@@ -33,7 +34,7 @@ fn both_models_use_the_same_edit_and_fill_graph_and_resolve_nested_paths() {
 fn noct_only_server_is_available_and_receives_the_selected_checkpoint() {
     let (endpoint, server) = mock_server_model(None, Some(true), ComfyUiModel::NoctQv4);
     assert_eq!(ComfyUi.available_models(&endpoint).unwrap(), vec![ComfyUiModel::NoctQv4]);
-    assert_eq!(server.join().unwrap().len(), 5);
+    assert_eq!(server.join().unwrap().len(), 6);
     for mode in [EditMode::PromptEdit, EditMode::GenerativeFill] {
         let (endpoint, server) = mock_server_model(None, None, ComfyUiModel::NoctQv4);
         let mut input = request(mode);
@@ -67,6 +68,42 @@ fn exact_qwen_graph_and_mask_wiring() {
     assert_eq!(annotated["80"]["inputs"]["mask"], json!(["78", 1]));
     assert_eq!(annotated["64"]["inputs"]["images.image_1"], json!(["80", 0]));
     assert!(annotated["64"]["inputs"].get("images.image_2").is_none());
+}
+
+#[test]
+fn turbo_loader_schedule_and_steps_preserve_existing_prompts_and_masks() {
+    let expected = "1.000000,0.978453,0.954180,0.926626,0.895080,0.845148,0.704534,0.414568,0.000000";
+    assert_eq!(turbo_sigmas(8), expected);
+    for model in ComfyUiModel::ALL.into_iter().filter(|model| model.is_turbo()) {
+        for mode in [EditMode::PromptGenerate, EditMode::PromptEdit, EditMode::GenerativeFill] {
+            let mut input = request(mode);
+            input.model = model;
+            input.steps = model.default_steps();
+            let graph = workflow(&input, "source.png", "turbo");
+            assert_eq!(input.steps, 8);
+            assert_eq!(graph["37"]["class_type"], model.loader());
+            assert_eq!(graph["3"]["class_type"], "SamplerCustom");
+            assert_eq!(graph["3"]["inputs"]["cfg"], 1.0);
+            assert_eq!(graph["3"]["inputs"]["noise_seed"], input.seed);
+            assert_eq!(graph["91"]["inputs"]["sigmas"], expected);
+            if mode != EditMode::PromptGenerate {
+                assert_eq!(graph["64"]["inputs"]["prompt"], input.prompt);
+                assert_eq!(graph["64"]["inputs"]["negative_prompt"], "");
+                let cache = if mode == EditMode::GenerativeFill { "82" } else { "79" };
+                assert_eq!(graph[cache]["inputs"]["dtype"], if model.is_gguf() { "default" } else { "int8" });
+            }
+            input.steps = 4;
+            let custom = workflow(&input, "source.png", "custom");
+            let sigmas: Vec<f64> = custom["91"]["inputs"]["sigmas"].as_str().unwrap().split(',').map(|s| s.parse().unwrap()).collect();
+            assert_eq!(sigmas.len(), 5);
+            assert_eq!(sigmas.first(), Some(&1.0));
+            assert_eq!(sigmas.last(), Some(&0.0));
+            assert!(sigmas.windows(2).all(|pair| pair[0] >= pair[1]));
+        }
+    }
+    let (endpoint, server) = mock_server_model(None, Some(true), ComfyUiModel::TurboAdQ4);
+    assert_eq!(ComfyUi.available_models(&endpoint).unwrap(), vec![ComfyUiModel::TurboAdQ4]);
+    assert_eq!(server.join().unwrap().len(), 9);
 }
 
 #[test]
@@ -111,7 +148,7 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
     let endpoint = format!("http://{}", listener.local_addr().unwrap());
     listener.set_nonblocking(true).unwrap();
     let server = std::thread::spawn(move || {
-        let deadline = Instant::now() + Duration::from_secs(15);
+        let deadline = Instant::now() + Duration::from_secs(30);
         let mut paths = Vec::new();
         let mut job = String::new();
         while Instant::now() < deadline {
@@ -142,10 +179,10 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
             reader.read_exact(&mut body).unwrap();
             let (mime, response) = if let Some(node) = path.strip_prefix("/object_info/") {
                 let (input, filename) = match node {
-                    "UNETLoader" => ("unet_name", selected.filename()),
+                    "UNETLoader" | "UnetLoaderGGUF" => ("unet_name", if selected.loader() == node { selected.filename() } else { "missing-model" }),
                     "CLIPLoader" => ("clip_name", CLIP_MODEL),
                     "VAELoader" => ("vae_name", VAE_MODEL),
-                    "TextEncodeQwenImage21" | "QwenImage21Cache" => ("model", "unused"),
+                    "TextEncodeQwenImage21" | "QwenImage21Cache" | "SamplerCustom" | "ManualSigmas" | "KSamplerSelect" => ("model", "unused"),
                     _ => panic!("unexpected model list request {path}"),
                 };
                 let filename = if probe == Some(false) { "missing.safetensors" } else { filename };
@@ -188,12 +225,12 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
             // Finish the HTTP connection gracefully on Windows rather than resetting a peer
             // that is still receiving the response when this fixture drops its socket.
             stream.shutdown(std::net::Shutdown::Write).unwrap();
-            stream.set_read_timeout(Some(Duration::from_millis(250))).unwrap();
+            stream.set_read_timeout(Some(Duration::from_secs(2))).unwrap();
             let _ = std::io::Read::by_ref(&mut stream).take(8192).read_to_end(&mut Vec::new());
             let finished = path.starts_with("/view?")
                 || path.ends_with("/cancel")
                 || probe == Some(false)
-                || probe == Some(true) && path == "/object_info/QwenImage21Cache";
+                || probe == Some(true) && path == if selected.is_turbo() { "/object_info/KSamplerSelect" } else { "/object_info/QwenImage21Cache" };
             paths.push(path);
             if finished {
                 break;
@@ -223,6 +260,7 @@ fn text_to_image_matches_workflow_one_and_never_uploads_source_image() {
     for model in ComfyUiModel::ALL {
         let mut input = request(EditMode::PromptGenerate);
         input.model = model;
+        input.steps = model.default_steps();
         let graph = workflow(&input, "unused.png", "t2i");
         assert_eq!(graph["6"]["class_type"], "CLIPTextEncode");
         assert_eq!(graph["63"]["class_type"], "ConditioningZeroOut");
@@ -258,6 +296,6 @@ fn availability_checks_models_and_nodes_without_upload_or_generation() {
         let paths = server.join().unwrap();
         assert_eq!(available.is_ok(), present, "{available:?}");
         assert!(paths.iter().all(|path| path.starts_with("/object_info/")), "{paths:?}");
-        assert_eq!(paths.len(), if present { 5 } else { 1 });
+        assert_eq!(paths.len(), if present { 6 } else { 1 });
     }
 }

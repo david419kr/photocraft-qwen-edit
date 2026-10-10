@@ -80,7 +80,7 @@ fn client(connect: Duration, timeout: Duration) -> Result<Client> {
 fn model_inputs(client: &Client, base: &Url, ctx: &JobCtx, model: ComfyUiModel) -> Result<Vec<(&'static str, &'static str, String)>> {
     let mut models = Vec::with_capacity(3);
     for (id, node, input, filename) in
-        [("37", "UNETLoader", "unet_name", model.filename()), ("38", "CLIPLoader", "clip_name", CLIP_MODEL), ("39", "VAELoader", "vae_name", VAE_MODEL)]
+        [("37", model.loader(), "unet_name", model.filename()), ("38", "CLIPLoader", "clip_name", CLIP_MODEL), ("39", "VAELoader", "vae_name", VAE_MODEL)]
     {
         ctx.check()?;
         let url = base.join(&format!("object_info/{node}")).map_err(failure)?;
@@ -113,23 +113,30 @@ fn model_name(info: &Value, node: &str, input: &str, filename: &str) -> Result<S
 
 /// Built from the user's 03 Edit / 04 MaskEdit graphs, with UI-only widgets removed.
 pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
+    let loader = if request.model.is_gguf() {
+        json!({"class_type":"UnetLoaderGGUF","inputs":{"unet_name":request.model.filename()}})
+    } else {
+        json!({"class_type":"UNETLoader","inputs":{"unet_name":request.model.filename(),"weight_dtype":"default"}})
+    };
     if request.mode == EditMode::PromptGenerate {
-        return json!({
-            "37":{"class_type":"UNETLoader","inputs":{"unet_name":request.model.filename(),"weight_dtype":"default"}},
+        let mut graph = json!({
+            "37":loader,
             "38":{"class_type":"CLIPLoader","inputs":{"clip_name":CLIP_MODEL,"type":"qwen_image","device":"default"}},
             "39":{"class_type":"VAELoader","inputs":{"vae_name":VAE_MODEL}},
             "6":{"class_type":"CLIPTextEncode","inputs":{"clip":["38",0],"text":request.prompt}},
             "63":{"class_type":"ConditioningZeroOut","inputs":{"conditioning":["6",0]}},
             "62":{"class_type":"EmptyLatentImage","inputs":{"width":request.image.width,"height":request.image.height,"batch_size":1}},
-            "3":{"class_type":"KSampler","inputs":{"model":["37",0],"positive":["6",0],"negative":["63",0],"latent_image":["62",0],"seed":request.seed,"steps":25,"cfg":1.0,"sampler_name":"euler","scheduler":"simple","denoise":1.0}},
+            "3":{"class_type":"KSampler","inputs":{"model":["37",0],"positive":["6",0],"negative":["63",0],"latent_image":["62",0],"seed":request.seed,"steps":request.steps,"cfg":1.0,"sampler_name":"euler","scheduler":"simple","denoise":1.0}},
             "8":{"class_type":"VAEDecode","inputs":{"samples":["3",0],"vae":["39",0]}},
             "56":{"class_type":"SaveImage","inputs":{"images":["8",0],"filename_prefix":format!("PhotoCraft/{job}/result")}}
         });
+        turbo_sampler(&mut graph, request);
+        return graph;
     }
     let masked = request.mode == EditMode::GenerativeFill;
     let cache = if masked { "82" } else { "79" };
     let mut graph = json!({
-        "37":{"class_type":"UNETLoader","inputs":{"unet_name":request.model.filename(),"weight_dtype":"default"}},
+        "37":loader,
         "38":{"class_type":"CLIPLoader","inputs":{"clip_name":CLIP_MODEL,"type":"qwen_image","device":"default"}},
         "39":{"class_type":"VAELoader","inputs":{"vae_name":VAE_MODEL}},
         "78":{"class_type":"LoadImage","inputs":{"image":filename}},
@@ -137,12 +144,12 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
         "76":{"class_type":"GetImageSize","inputs":{"image":["77",0]}},
         "62":{"class_type":"EmptyLatentImage","inputs":{"width":["76",0],"height":["76",1],"batch_size":1}},
         "64":{"class_type":"TextEncodeQwenImage21","inputs":{"clip":["38",0],"vae":["39",0],"prompt":request.prompt,"negative_prompt":"","resolution":0,"images.image_1":["77",0]}},
-        "3":{"class_type":"KSampler","inputs":{"model":[cache,0],"positive":["64",0],"negative":["64",1],"latent_image":["62",0],"seed":request.seed,"steps":25,"cfg":1.0,"sampler_name":"euler","scheduler":"simple","denoise":1.0}},
+        "3":{"class_type":"KSampler","inputs":{"model":[cache,0],"positive":["64",0],"negative":["64",1],"latent_image":["62",0],"seed":request.seed,"steps":request.steps,"cfg":1.0,"sampler_name":"euler","scheduler":"simple","denoise":1.0}},
         "8":{"class_type":"VAEDecode","inputs":{"samples":["3",0],"vae":["39",0]}},
         "56":{"class_type":"SaveImage","inputs":{"images":["8",0],"filename_prefix":format!("PhotoCraft/{job}/result")}}
     });
     if let Some(object) = graph.as_object_mut() {
-        object.insert(cache.into(), json!({"class_type":"QwenImage21Cache","inputs":{"model":["37",0],"device":"auto","dtype":"int8"}}));
+        object.insert(cache.into(), json!({"class_type":"QwenImage21Cache","inputs":{"model":["37",0],"device":"auto","dtype":if request.model.is_gguf() { "default" } else { "int8" }}}));
         if masked && request.removal {
             // Put the annotation in the primary reference; a secondary binary silhouette
             // can target the wrong object, and a secondary colour guide can be copied.
@@ -160,7 +167,41 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
             }
         }
     }
+    turbo_sampler(&mut graph, request);
     graph
+}
+
+/// Resample the checkpoint's published eight-step curve for explicit user overrides.
+fn turbo_sigmas(steps: u32) -> String {
+    const SIGMAS: [f64; 9] = [1.0, 0.978453, 0.95418, 0.926626, 0.89508, 0.845148, 0.704534, 0.414568, 0.0];
+    let steps = steps.clamp(1, crate::ai_cmds::MAX_STEPS);
+    (0..=steps)
+        .map(|i| {
+            let position = f64::from(i) * 8.0 / f64::from(steps);
+            let index = position.floor() as usize;
+            let start = SIGMAS.get(index).copied().unwrap_or(0.0);
+            let end = SIGMAS.get(index.saturating_add(1)).copied().unwrap_or(start);
+            format!("{:.6}", start + (end - start) * position.fract())
+        })
+        .collect::<Vec<_>>()
+        .join(",")
+}
+
+fn turbo_sampler(graph: &mut Value, request: &AiRequest) {
+    if !request.model.is_turbo() {
+        return;
+    }
+    let Some(inputs) = graph.get("3").and_then(|node| node.get("inputs")).and_then(Value::as_object).cloned() else { return };
+    let Some(nodes) = graph.as_object_mut() else { return };
+    nodes.insert("90".into(), json!({"class_type":"KSamplerSelect","inputs":{"sampler_name":"euler"}}));
+    nodes.insert("91".into(), json!({"class_type":"ManualSigmas","inputs":{"sigmas":turbo_sigmas(request.steps)}}));
+    nodes.insert(
+        "3".into(),
+        json!({"class_type":"SamplerCustom","inputs":{
+            "model":inputs.get("model"),"positive":inputs.get("positive"),"negative":inputs.get("negative"),"latent_image":inputs.get("latent_image"),
+            "add_noise":true,"noise_seed":request.seed,"cfg":1.0,"sampler":["90",0],"sigmas":["91",0]
+        }}),
+    );
 }
 
 impl AiBackend for ComfyUi {
@@ -172,9 +213,16 @@ impl AiBackend for ComfyUi {
         let base = endpoint_url(endpoint)?;
         let client = client(Duration::from_secs(1), Duration::from_secs(2))?;
         let info = read_json(client.get(base.join("object_info/UNETLoader").map_err(failure)?).send().map_err(failure)?)?;
-        let models: Vec<_> = ComfyUiModel::ALL.into_iter().filter(|m| model_name(&info, "UNETLoader", "unet_name", m.filename()).is_ok()).collect();
+        let gguf_info = client.get(base.join("object_info/UnetLoaderGGUF").map_err(failure)?).send().ok().and_then(|response| read_json(response).ok());
+        let mut models: Vec<_> = ComfyUiModel::ALL
+            .into_iter()
+            .filter(|model| {
+                let source = if model.is_gguf() { gguf_info.as_ref() } else { Some(&info) };
+                source.is_some_and(|source| model_name(source, model.loader(), "unet_name", model.filename()).is_ok())
+            })
+            .collect();
         if models.is_empty() {
-            return Err(failure("no supported Qwen Image 2.1 or NoctQ V4 checkpoint found"));
+            return Err(failure("no supported Qwen Image 2.1 checkpoint found"));
         }
         for (node, input, filename) in [("CLIPLoader", "clip_name", CLIP_MODEL), ("VAELoader", "vae_name", VAE_MODEL)] {
             let info = read_json(client.get(base.join(&format!("object_info/{node}")).map_err(failure)?).send().map_err(failure)?)?;
@@ -185,6 +233,18 @@ impl AiBackend for ComfyUi {
             if !info.get(node).is_some_and(Value::is_object) {
                 return Err(failure(format!("required node not found: {node}")));
             }
+        }
+        if models.iter().any(|model| model.is_turbo()) {
+            for node in ["SamplerCustom", "ManualSigmas", "KSamplerSelect"] {
+                let info = read_json(client.get(base.join(&format!("object_info/{node}")).map_err(failure)?).send().map_err(failure)?)?;
+                if !info.get(node).is_some_and(Value::is_object) {
+                    models.retain(|model| !model.is_turbo());
+                    break;
+                }
+            }
+        }
+        if models.is_empty() {
+            return Err(failure("Turbo sampling nodes are unavailable; update ComfyUI"));
         }
         Ok(models)
     }

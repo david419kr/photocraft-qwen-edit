@@ -143,6 +143,20 @@ pub fn pill_tab(ui: &mut Ui, label: &str, selected: bool) -> Response {
 
 /// Monospace numeric field with a dimmed unit suffix, Photoshop style. Drag to scrub.
 pub fn value_field(ui: &mut Ui, value: &mut f32, range: std::ops::RangeInclusive<f32>, suffix: &str, width: f32) -> Response {
+    let fine = range.end() - range.start() <= 10.0;
+    value_field_impl(ui, value, range, suffix, width, fine, if fine { 0.01 } else { 0.5 })
+}
+
+pub fn integer_value_field(ui: &mut Ui, value: &mut u32, range: std::ops::RangeInclusive<u32>, width: f32) -> Response {
+    let mut number = *value as f32;
+    let response = value_field_impl(ui, &mut number, *range.start() as f32..=*range.end() as f32, "", width, false, 1.0);
+    if response.changed() {
+        *value = number.round() as u32;
+    }
+    response
+}
+
+fn value_field_impl(ui: &mut Ui, value: &mut f32, range: std::ops::RangeInclusive<f32>, suffix: &str, width: f32, fine: bool, speed: f64) -> Response {
     let t = Tokens::get(ui.ctx());
     let (rect, _) = ui.allocate_exact_size(vec2(width, 24.0), Sense::hover());
     surface(ui, rect, t.field, false);
@@ -152,7 +166,6 @@ pub fn value_field(ui: &mut Ui, value: &mut f32, range: std::ops::RangeInclusive
     let suffix_w = if suffix.is_empty() { 0.0 } else { 16.0 };
     let field = Rect::from_min_max(rect.min + vec2(4.0, 2.0), rect.max - vec2(4.0 + suffix_w, 2.0));
     // Small ranges (gamma 0.01–9.99, 0–1 centres) need two decimals and a finer drag, like Photoshop.
-    let fine = range.end() - range.start() <= 10.0;
     // new_child (not scope_builder): a scope would move the parent cursor back to the child rect.
     let mut child = ui.new_child(egui::UiBuilder::new().max_rect(field));
     let resp = {
@@ -166,7 +179,7 @@ pub fn value_field(ui: &mut Ui, value: &mut f32, range: std::ops::RangeInclusive
             ui.style_mut().override_font_id = Some(theme::mono(12.0));
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                 let layout = egui::Layout::centered_and_justified(ui.layout().main_dir());
-                ui.allocate_ui_with_layout(field.size(), layout, |ui| number_edit(ui, value, range, fine)).inner
+                ui.allocate_ui_with_layout(field.size(), layout, |ui| number_edit(ui, value, range, fine, speed)).inner
             })
             .inner
         }
@@ -180,7 +193,7 @@ pub fn value_field(ui: &mut Ui, value: &mut f32, range: std::ops::RangeInclusive
 /// The number in a [`value_field`]. A typed number applies as it's typed; arithmetic waits for
 /// Enter, Tab or click-away, because per keystroke `5/2` would land first and a caller that
 /// rounds it would cut `5/2*2` short. `changed()` means a new value, not just a keystroke.
-fn number_edit(ui: &mut Ui, value: &mut f32, range: std::ops::RangeInclusive<f32>, fine: bool) -> Response {
+fn number_edit(ui: &mut Ui, value: &mut f32, range: std::ops::RangeInclusive<f32>, fine: bool, speed: f64) -> Response {
     let (id, ctx) = (ui.next_auto_id(), ui.ctx().clone());
     if ui.is_enabled() && ui.rect_contains_pointer(ui.max_rect()) {
         // Target DragValue's increment/decrement actions without taking keyboard focus.
@@ -217,7 +230,7 @@ fn number_edit(ui: &mut Ui, value: &mut f32, range: std::ops::RangeInclusive<f32
     let mut resp = ui.add(
         egui::DragValue::new(value)
             .range(range)
-            .speed(if fine { 0.01 } else { 0.5 })
+            .speed(speed)
             .custom_formatter(move |v, _| if fine { fmt_num2(v) } else { fmt_num(v) })
             .update_while_editing(!math)
             // Focus is read when parsing, not above: Tab hands it on inside `ui.add`.
@@ -917,6 +930,29 @@ mod tests {
             h.event(wheel(-1.0));
             h.run();
             assert_eq!(*h.state(), *range.end());
+        }
+    }
+
+    #[test]
+    fn integer_field_wheel_uses_whole_steps_in_both_directions() {
+        use egui_kittest::{Harness, kittest::Queryable};
+        let mut h = Harness::builder().with_size(egui::vec2(300.0, 100.0)).build_ui_state(
+            |ui, value: &mut u32| {
+                super::integer_value_field(ui, value, 1..=1000, 38.0);
+            },
+            8,
+        );
+        h.get_by_role(egui::accesskit::Role::SpinButton).hover();
+        for (dy, expected) in [(1.0, 9), (-1.0, 8), (-1.0, 7)] {
+            h.event(egui::Event::MouseWheel {
+                unit: egui::MouseWheelUnit::Line,
+                delta: egui::vec2(0.0, dy),
+                phase: egui::TouchPhase::Move,
+                modifiers: egui::Modifiers::NONE,
+            });
+            h.run();
+            assert_eq!(*h.state(), expected);
+            assert!(h.ctx.memory(|memory| memory.focused()).is_none());
         }
     }
 

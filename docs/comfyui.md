@@ -124,6 +124,45 @@ The API graphs follow the supplied `03_Edit_AutoINT8Cache.json` and
 `04_MaskEdit_AutoINT8Cache.json`: 25 steps, CFG 1, Euler/simple, denoise 1, and
 QwenImage21Cache auto/INT8. The user's GUI workflow files are not rewritten.
 
+### Turbo checkpoints and sampling (2026-10-10)
+
+The model selector also recognises the official `qwen_image_2.1_turbo_int8_convrot.safetensors`
+and the GGUF filenames from [AtomicChat's Turbo collection](https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-GGUF)
+(Q8_0, AD-Q2_K/Q3_K/Q4_K/Q5_K/Q6_K and BF16), plus the standard Turbo
+Q3_K_M/Q4_K_M/Q4_K_S/Q5_K_M/Q6_K filenames. Only detected models appear in the menu. This PC
+has the official INT8 ConvRot, AtomicChat Q8_0 and AD-Q4_K; the other quantizations are
+registered for installations that actually contain them. Neither weights nor outputs are
+included in the PhotoCraft repository or portable executable.
+
+Base Qwen 2.1 and NoctQ retain 25 steps. Turbo defaults to eight steps with CFG 1.0 and the
+[published eight-step sigma schedule](https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/blob/main/model_index.json),
+using ComfyUI's ManualSigmas/KSamplerSelect/SamplerCustom nodes. The little number field in each
+closed or expanded bar accepts 1–1000 steps; the adjacent circular arrow restores the selected
+model's 25/8 default. Changing the model also restores its default. The UI override lasts for the
+current document until it changes; `ui.set {"aiSteps":null}` restores the default.
+Other step counts linearly resample the published curve and are experimental; the model maker
+evaluated the eight-step setting. All existing prompt shaping, mask handling, colour correction,
+layer visibility and one-click regeneration remain the same. Regeneration uses the original
+request's step count even if the field has since changed.
+
+For GGUF, install [ComfyUI-GGUF](https://github.com/city96/ComfyUI-GGUF) and its `gguf` Python
+dependency in the ComfyUI portable environment. AtomicChat's files omit architecture metadata;
+the currently installed GGUF loader also passes Q8_0's packed one-dimensional norm weights
+directly to Qwen's fused operator. Run the bundled `fix-comfyui-gguf-qwen21.ps1 -ComfyRoot
+<your ComfyUI directory>` once, then restart ComfyUI. This small compatibility patch recognises
+Qwen Image 2.1 and unpacks one-dimensional norm weights in memory. It leaves GGUF files and
+their quantization unchanged. Reapply it after a GGUF node update if that update has not yet
+included equivalent support. The official INT8 variant uses stock UNETLoader and needs no GGUF
+node. Keep the common text encoder and VAE from the original setup.
+
+On the local RTX 4090, the AtomicChat Q8_0 model completed a real 1021×765 canvas T2I request
+at a 1024×768 working size, plus a new-seed reroll, whole-image edit, background cutout,
+selection removal and a custom six-step edit. The first T2I took 15.68 s; its PNG and edit
+result were inspected without visible corruption. The reported `[136]` versus `[128]` error
+occurred before the norm-loader fix and did not recur in those calls. The user separately
+confirmed that AD-Q4_K works and the official INT8 ConvRot runs much faster. These observations
+cover those requests, not every prompt, size, or GPU.
+
 ### Blank canvas: Prompt Generate
 
 Under the normal whole-image condition (no selection or a full selection), an entirely

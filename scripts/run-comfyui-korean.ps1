@@ -31,6 +31,7 @@ try {
     New-Item -ItemType Directory -Path $licenseDir -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $repoRoot 'crates\codecs\licenses\oxideav-MIT.txt') -Destination $licenseDir -Force
     Copy-Item -LiteralPath (Join-Path $repoRoot 'crates\codecs\licenses\avif-encoder.txt') -Destination $licenseDir -Force
+    Copy-Item -LiteralPath (Join-Path $repoRoot 'scripts\fix-comfyui-gguf-qwen21.ps1') -Destination $bundleDir -Force
     # Remove only the runtime bundled by the previous development launcher.
     $oldRuntime = Join-Path $bundleDir 'VCRUNTIME140.dll'
     if (Test-Path -LiteralPath $oldRuntime -PathType Leaf) {

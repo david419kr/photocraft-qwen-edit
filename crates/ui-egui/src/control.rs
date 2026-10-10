@@ -70,7 +70,7 @@ pub enum Outcome {
 
 /// The fields `ui.set` reads. Anything else is rejected before a field is applied, so a typo or
 /// a field the method doesn't have can't reply with success while nothing changes (#412).
-pub const UI_SET_FIELDS: [&str; 21] = [
+pub const UI_SET_FIELDS: [&str; 22] = [
     "tool",
     "panels",
     "dock",
@@ -91,6 +91,7 @@ pub const UI_SET_FIELDS: [&str; 21] = [
     "gradientBlendMode",
     "gradientClassic",
     "aiPrompt",
+    "aiSteps",
     "aiOpen",
 ];
 
@@ -237,7 +238,15 @@ fn dispatch(app: &mut PhotocraftApp, ctx: &egui::Context, req: &ControlRequest) 
                 },
                 None => None,
             };
-            if ai_open == Some(true) || ai_prompt.is_some() {
+            let ai_steps = match p.get("aiSteps") {
+                Some(Value::Null) => Some(None),
+                Some(value) => match value.as_u64().filter(|steps| (1..=u64::from(photocraft_engine::ai_cmds::MAX_STEPS)).contains(steps)) {
+                    Some(steps) => Some(Some(steps as u32)),
+                    None => return err("aiSteps must be null or an integer within 1..1000"),
+                },
+                None => None,
+            };
+            if ai_open == Some(true) || ai_prompt.is_some() || ai_steps.is_some() {
                 let Some(state) = app.session.active() else { return err("no document open") };
                 if let Err(e) = photocraft_engine::ai_cmds::supported_document(&state.doc) {
                     return err(e);
@@ -262,6 +271,11 @@ fn dispatch(app: &mut PhotocraftApp, ctx: &egui::Context, req: &ControlRequest) 
                 && let Err(e) = crate::ai_bar::set_prompt(app, prompt)
             {
                 return err(e);
+            }
+            if let Some(steps) = ai_steps
+                && let Err(error) = crate::ai_bar::set_steps(app, steps)
+            {
+                return err(error);
             }
             let gradient_before = app.ui.tool_options.clone();
             if let Some(mode) = gradient_blend {
@@ -812,7 +826,7 @@ mod tests {
         assert_eq!(r["ok"], true);
         let r = call(&mut app, &ctx, "ui.inspect", json!({}));
         assert_eq!(r["result"]["ai"]["prompt"], "하늘에 달 추가");
-        assert_eq!(r["result"]["ai"]["mode"], "promptEdit");
+        assert_eq!(r["result"]["ai"]["mode"], "promptGenerate");
         let r = call(&mut app, &ctx, "ui.set", json!({"tool":"move","aiPrompt":false}));
         assert_eq!(r["ok"], false);
         assert_eq!(app.ui.tool, Tool::Brush);
@@ -839,6 +853,21 @@ mod tests {
         assert!(app.ui.color_panel.background);
         assert_eq!(call(&mut app, &ctx, "ui.set", json!({"colorPanel": {"background": "yes"}}))["ok"], false);
         assert!(app.ui.color_panel.background, "a bad value changes nothing");
+    }
+
+    #[test]
+    fn ui_set_sampling_steps_checks_bounds_and_resets_to_model_default() {
+        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let ctx = egui::Context::default();
+        app.run("file.new", json!({"width":20,"height":20})).unwrap();
+        assert_eq!(call(&mut app, &ctx, "ui.set", json!({"aiSteps":13}))["ok"], true);
+        assert_eq!(app.ui.ai.steps, Some(13));
+        for invalid in [json!(0), json!(1001), json!(-1), json!(1.5), json!("8")] {
+            assert_eq!(call(&mut app, &ctx, "ui.set", json!({"aiSteps":invalid}))["ok"], false);
+            assert_eq!(app.ui.ai.steps, Some(13));
+        }
+        assert_eq!(call(&mut app, &ctx, "ui.set", json!({"aiSteps":null}))["ok"], true);
+        assert_eq!(app.ui.ai.steps, None);
     }
 
     #[test]

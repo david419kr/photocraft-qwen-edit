@@ -394,6 +394,9 @@ visibility reset when the dialog opens. HDR scopes are not implemented. See
 
 `ui.inspect` includes `ai` with `open`, `prompt`, `mode` and the screen-space `rect`.
 `ui.set {aiOpen: bool, aiPrompt: string}` drives the prompt bar without starting inference.
+`ui.set {aiSteps: 1..1000}` changes its sampling-step override; `aiSteps: null` restores the
+selected model's default (25 for base checkpoints, 8 for Turbo). AI engine commands also accept
+an optional integer `steps` parameter; one-click regeneration retains its captured step count.
 `ui.menu.invoke` for `edit.promptGenerate`, `edit.promptEdit` or `edit.generativeFill` without params opens it.
 With params, `engine.execute` dispatches the same command as the Generate button.
 `edit.promptGenerate` requires an entirely transparent or pure-white canvas and no partial

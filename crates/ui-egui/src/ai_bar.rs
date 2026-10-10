@@ -16,6 +16,8 @@ use crate::PhotocraftApp;
 pub struct AiUi {
     pub open: bool,
     pub prompt: String,
+    /// None uses the selected checkpoint's 25/8 default.
+    pub steps: Option<u32>,
     pub mode: Option<EditMode>,
     pub rect: Option<[f32; 4]>,
     pub available: bool,
@@ -41,6 +43,7 @@ impl PartialEq for AiUi {
     fn eq(&self, other: &Self) -> bool {
         self.open == other.open
             && self.prompt == other.prompt
+            && self.steps == other.steps
             && self.mode == other.mode
             && self.rect == other.rect
             && self.available == other.available
@@ -164,6 +167,7 @@ fn model_ready(app: &PhotocraftApp, model: ComfyUiModel) -> bool {
 
 fn select_model(app: &mut PhotocraftApp, model: ComfyUiModel) -> Result<(), String> {
     app.run("prefs.set", json!({"path":"integrations.comfyuiModel","value":model.name()}))?;
+    app.ui.ai.steps = None;
     crate::prefs_ui::save_preferences(app)
 }
 
@@ -175,9 +179,10 @@ fn model_selector(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u64) {
     let old = selected;
     egui::ComboBox::from_id_salt(("ai-model", document))
         .selected_text(selected.label())
-        .width(105.0)
+        .width(135.0)
         .show_ui(ui, |ui| {
-            for model in ComfyUiModel::ALL {
+            let models = if app.ui.ai.available_models.is_empty() { ComfyUiModel::ALL.to_vec() } else { app.ui.ai.available_models.clone() };
+            for model in models {
                 ui.add_enabled_ui(model_ready(app, model), |ui| {
                     ui.selectable_value(&mut selected, model, model.label());
                 });
@@ -193,6 +198,17 @@ fn model_selector(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u64) {
                 app.ui.status_error = true;
             }
         }
+    }
+}
+
+fn step_controls(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
+    let default = app.session.prefs().integrations.comfyui_model.default_steps();
+    let mut steps = app.ui.ai.steps.unwrap_or(default);
+    if crate::widgets::integer_value_field(ui, &mut steps, 1..=photocraft_engine::ai_cmds::MAX_STEPS, 38.0).on_hover_text(tl!("Sampling steps")).changed() {
+        app.ui.ai.steps = Some(steps);
+    }
+    if crate::icons::button(ui, "rotate-cw", 16.0, false, &format!("{} ({default})", tl!("Reset steps to model default"))).clicked() {
+        app.ui.ai.steps = None;
     }
 }
 
@@ -212,6 +228,15 @@ pub fn set_prompt(app: &mut PhotocraftApp, prompt: String) -> Result<(), String>
     let mode = contextual_mode(&app.session, st);
     sync(&mut app.ui.ai, &st.doc, mode);
     app.ui.ai.prompt = prompt;
+    Ok(())
+}
+
+pub fn set_steps(app: &mut PhotocraftApp, steps: Option<u32>) -> Result<(), String> {
+    let st = app.session.active().ok_or("no document open")?;
+    supported_document(&st.doc)?;
+    let mode = contextual_mode(&app.session, st);
+    sync(&mut app.ui.ai, &st.doc, mode);
+    app.ui.ai.steps = steps;
     Ok(())
 }
 
@@ -247,8 +272,14 @@ fn quick_label(mode: EditMode) -> &'static str {
 fn quick_action(app: &mut PhotocraftApp, mode: EditMode) -> Result<(), String> {
     let result = match mode {
         EditMode::PromptGenerate => Err("enter a prompt to generate an image".into()),
-        EditMode::PromptEdit => app.run(photocraft_engine::ai_cmds::REMOVE_BACKGROUND_COMMAND, json!({"name":quick_label(mode)})),
-        EditMode::GenerativeFill => app.run(mode.command(), json!({"prompt":"","name":quick_label(mode)})),
+        EditMode::PromptEdit => app.run(
+            photocraft_engine::ai_cmds::REMOVE_BACKGROUND_COMMAND,
+            json!({"name":quick_label(mode),"steps":app.ui.ai.steps.unwrap_or(app.session.prefs().integrations.comfyui_model.default_steps())}),
+        ),
+        EditMode::GenerativeFill => app.run(
+            mode.command(),
+            json!({"prompt":"","name":quick_label(mode),"steps":app.ui.ai.steps.unwrap_or(app.session.prefs().integrations.comfyui_model.default_steps())}),
+        ),
     };
     result.map(|_| {
         app.ui.ai.open = false;
@@ -292,11 +323,11 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     // Scrollbar tracks must remain reachable beneath this foreground Area.
     let canvas = canvas.shrink2(vec2(20.0, 20.0));
     let repeat = regeneration(&app.session);
-    let width = (if repeat.is_some() { 476.0f32 } else { 440.0f32 }).min(canvas.width() - 16.0);
+    let width = (if repeat.is_some() { 576.0f32 } else { 540.0f32 }).min(canvas.width() - 16.0);
     let buttons = if mode == EditMode::PromptGenerate { 1.0 } else { 2.0 };
-    let model_width = if app.ui.ai.available_models.len() == 1 { 0.0 } else { 115.0 };
+    let model_width = if app.ui.ai.available_models.len() == 1 { 0.0 } else { 145.0 };
     let button_width =
-        ((width - 16.0 - model_width - if repeat.is_some() { 32.0 } else { 0.0 } - ui.spacing().item_spacing.x * (buttons + 1.0)) / buttons).max(1.0);
+        ((width - 16.0 - model_width - 80.0 - if repeat.is_some() { 32.0 } else { 0.0 } - ui.spacing().item_spacing.x * (buttons + 2.0)) / buttons).max(1.0);
     let text_width = if app.ui.ai.open { width - 32.0 } else { button_width - 16.0 };
     let button_text =
         ui.painter().layout(label(mode).to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text, text_width.max(1.0));
@@ -333,6 +364,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                     ui.add_enabled_ui(!busy, |ui| {
                         ui.horizontal(|ui| {
                             model_selector(app, ui, doc.id.0);
+                            step_controls(app, ui);
                             if ui.add_sized(vec2(button_width, button_height), egui::Button::new(label(mode)).wrap()).clicked() {
                                 app.ui.ai.open = true;
                                 app.ui.ai.focus = true;
@@ -379,6 +411,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                 generate = submitted == Some(doc.id.0) && can_generate;
                 ui.horizontal(|ui| {
                     ui.add_enabled_ui(!busy, |ui| model_selector(app, ui, doc.id.0));
+                    ui.add_enabled_ui(!busy, |ui| step_controls(app, ui));
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                         generate |= ui.add_enabled(can_generate, egui::Button::new(tl!("Generate"))).clicked();
                         close = ui.add_enabled(!busy, egui::Button::new(tl!("Cancel"))).clicked();
@@ -406,7 +439,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
         return;
     }
     if generate && !close {
-        let params = json!({"prompt":app.ui.ai.prompt,"name":label(mode)});
+        let params = json!({"prompt":app.ui.ai.prompt,"name":label(mode),"steps":app.ui.ai.steps.unwrap_or(app.session.prefs().integrations.comfyui_model.default_steps())});
         if app.run(mode.command(), params).is_ok() {
             app.ui.ai.open = false;
         }
@@ -535,7 +568,7 @@ mod tests {
             app.ai_probe.next_check = 0.0;
             poll_service(&mut app, &ctx);
             finish_probe(&mut app, &ctx);
-            assert_eq!(app.ui.ai.available_models.len(), 2);
+            assert_eq!(app.ui.ai.available_models.len(), ComfyUiModel::ALL.len());
             assert_eq!(app.session.prefs().integrations.comfyui_model, other);
             assert_eq!(saved.lock().unwrap().len(), 2);
 
@@ -713,5 +746,20 @@ mod tests {
         app.run("select.all", json!({})).unwrap();
         open(&mut app).unwrap();
         assert_eq!(app.ui.ai.mode, Some(EditMode::PromptGenerate));
+    }
+
+    #[test]
+    fn model_changes_restore_sampling_defaults_without_touching_prompt() {
+        let mut app = PhotocraftApp::new(Session::new(), Services::default());
+        app.ui.ai.prompt = "unchanged user prompt".into();
+        app.ui.ai.steps = Some(13);
+        select_model(&mut app, ComfyUiModel::TurboAdQ4).unwrap();
+        assert!(app.ui.ai.steps.is_none());
+        assert_eq!(app.session.prefs().integrations.comfyui_model.default_steps(), 8);
+        app.ui.ai.steps = Some(6);
+        select_model(&mut app, ComfyUiModel::QwenImage21).unwrap();
+        assert!(app.ui.ai.steps.is_none());
+        assert_eq!(app.session.prefs().integrations.comfyui_model.default_steps(), 25);
+        assert_eq!(app.ui.ai.prompt, "unchanged user prompt");
     }
 }

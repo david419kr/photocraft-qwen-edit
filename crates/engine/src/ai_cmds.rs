@@ -17,6 +17,7 @@ use crate::{EngineError, Result, Session};
 
 pub const MAX_DOCUMENT_PIXELS: u64 = 36_000_000;
 pub const MAX_PROMPT_BYTES: usize = 8192;
+pub const MAX_STEPS: u32 = 1000;
 pub const MAX_WORKING_SIDE: u32 = 1536;
 pub const REMOVE_BACKGROUND_COMMAND: &str = "edit.aiRemoveBackground";
 pub const REGENERATE_COMMAND: &str = "edit.aiRegenerate";
@@ -62,6 +63,7 @@ pub struct AiRequest {
     pub endpoint: String,
     pub seed: u64,
     pub model: crate::prefs::ComfyUiModel,
+    pub steps: u32,
 }
 
 /// In-memory reroll snapshot; never serialised into document or preferences files.
@@ -234,7 +236,7 @@ pub fn specs() -> Vec<CommandSpec> {
             },
             menu: &["Edit"],
             shortcut: None,
-            params: "{\"prompt\":str (blank removes content for Generative Fill),\"seed\":u64?,\"name\":str?} → {layer,mode,seed,workingSize}",
+            params: "{\"prompt\":str (blank removes content for Generative Fill),\"steps\":u32? (1..1000; default 25/8 by model),\"seed\":u64?,\"name\":str?} → {layer,mode,seed,steps,workingSize}",
             enabled: match mode {
                 EditMode::PromptGenerate => can_generate,
                 EditMode::PromptEdit => can_edit,
@@ -263,7 +265,7 @@ pub fn specs() -> Vec<CommandSpec> {
         label: "Remove Background",
         menu: &[],
         shortcut: None,
-        params: "{\"seed\":u64?,\"name\":str?} → {layer,mode,seed,workingSize} (AI cutout as a new layer; hides source layers)",
+        params: "{\"steps\":u32?,\"seed\":u64?,\"name\":str?} → {layer,mode,seed,steps,workingSize} (AI cutout as a new layer; hides source layers)",
         enabled: can_edit,
         run: remove_background,
         journal: true,
@@ -335,6 +337,13 @@ fn run(s: &mut Session, p: &Value, mode: EditMode) -> Result<Value> {
     let backend = s.ai_backend.clone().ok_or_else(|| EngineError::Other("ComfyUI is not configured in this frontend".into()))?;
     let endpoint = s.prefs().integrations.comfyui_url.clone();
     let model = s.prefs().integrations.comfyui_model;
+    let steps = match p.get("steps") {
+        Some(value) => {
+            value.as_u64().filter(|steps| (1..=u64::from(MAX_STEPS)).contains(steps)).ok_or_else(|| bad(command, "steps must be an integer within 1..1000"))?
+                as u32
+        }
+        None => model.default_steps(),
+    };
     let prompt = prompt.to_owned();
     let source = s.active().ok_or(EngineError::NoDocument)?.doc.clone();
     let label = mode.label();
@@ -352,6 +361,7 @@ fn run(s: &mut Session, p: &Value, mode: EditMode) -> Result<Value> {
                 endpoint,
                 seed,
                 model,
+                steps,
             };
             let generated = backend.generate(&request, ctx)?;
             let layer = result_layer(&source, &generated, &request.image, input.content_size, &name, mode, ctx)?;
@@ -413,7 +423,7 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
     let st = s.active().ok_or(EngineError::NoDocument)?;
     last.result_layer = id;
     last.result_revision = st.revision;
-    let result = json!({"layer":id.0,"mode":mode,"seed":last.request.seed,"workingSize":[last.request.image.width,last.request.image.height]});
+    let result = json!({"layer":id.0,"mode":mode,"seed":last.request.seed,"steps":last.request.steps,"workingSize":[last.request.image.width,last.request.image.height]});
     let doc_id = st.doc.id;
     s.ai_runs.insert(doc_id, last);
     Ok(result)
