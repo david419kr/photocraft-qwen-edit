@@ -20,6 +20,7 @@ pub mod adjust_editors;
 pub mod adjust_preview;
 pub mod adjust_ui;
 pub mod ai_bar;
+mod ai_prompt_info;
 pub mod analysis_ui;
 pub mod artboard_ui;
 mod brand;
@@ -997,6 +998,7 @@ impl eframe::App for PhotocraftApp {
         monitor_status::poll(self, ctx);
         // Control requests and persisted preferences can change the language in this frame.
         i18n::sync_context(ctx, &self.session.prefs().interface.language);
+        ai_prompt_info::show(self, ctx);
         // A window bigger than its display (1440 × 900 on 1366 × 768) runs under the taskbar:
         // maximize it into the work area once (#315).
         work_area::fit_window(ctx);

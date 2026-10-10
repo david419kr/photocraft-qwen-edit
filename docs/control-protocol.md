@@ -411,6 +411,15 @@ install an AI backend. See [ComfyUI editing](comfyui.md).
 with `prefs.set` to set `integrations.comfyuiTranslatePrompt` (boolean) and
 `integrations.comfyuiTranslationModel` (`hyMt18Heretic` / `hyMt7Abliterated`).
 These settings are persisted by the prompt bar. Translation always targets English
-using the ComfyUI node's AI Prompt / Visual Tags style; no models means no translation.
-Empty-prompt removal and background removal bypass it; regeneration keeps the
+using the ComfyUI node's Default style; no models means no translation.
+Empty-prompt removal and background removal bypass translation; regeneration keeps the
 already-translated prompt captured by the original request.
+
+`engine.execute` with command `document.aiPrompts` and `{}` params returns
+`{"entries":[...]}` for the active document, including imported image metadata.
+Each entry has `mode` (`promptGenerate`, `promptEdit`, `generativeFill`), `original`,
+optional `translated`, and optional `regions` (3×3 positions: `topLeft`, `top`,
+`topRight`, `left`, `center`, `right`, `bottomLeft`, `bottom`, `bottomRight`).
+The command is read-only and works without ComfyUI. `ui.set` with
+`{"aiPromptInfo":true}` opens the same ⓘ history window. Undo/Redo restores the
+list with the document; no generation parameters are exposed in these entries.

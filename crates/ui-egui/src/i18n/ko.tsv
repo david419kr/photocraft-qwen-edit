@@ -2737,8 +2737,78 @@ cameraRaw	Color	색상
 	Describe the image to generate	생성할 이미지를 설명하세요
 	Regenerate	재생성
 	Regenerate AI Result	AI 결과 재생성
-Sampling steps	샘플링 스텝 수
-Reset steps to model default	스텝 수 기본값 복원
-Translate prompt to English	프롬프트를 영어로 번역
-Translating prompt to English	프롬프트를 영어로 번역 중
-Prompt translation model	프롬프트 번역 모델
+	Sampling steps	샘플링 스텝 수
+	Reset steps to model default	스텝 수 기본값 복원
+	Translate prompt to English	프롬프트를 영어로 번역
+	Translating prompt to English	프롬프트를 영어로 번역 중
+	Prompt translation model	프롬프트 번역 모델
+	Prompt information	프롬프트 정보
+	AI Prompt History	AI 프롬프트 기록
+	Original prompt	입력 프롬프트
+	English translation	영어 번역
+	No prompt (remove)	프롬프트 없이 제거
+	No AI prompts recorded	저장된 AI 프롬프트가 없습니다
+	Whole image	전체 영역
+	All nine regions	전체 9구역
+prompt-region	Top left	좌상단
+prompt-region	Top center	상단 중앙
+prompt-region	Top right	우상단
+prompt-region	Middle left	왼쪽 중앙
+prompt-region	Center	중앙
+prompt-region	Middle right	오른쪽 중앙
+prompt-region	Bottom left	좌하단
+prompt-region	Bottom center	하단 중앙
+prompt-region	Bottom right	우하단
+	Change Gradient Fill	그레이디언트 채우기 변경
+	Change Pattern Fill	패턴 채우기 변경
+	Clear Clipping Path	클리핑 패스 해제
+	Clear Count	개수 표시 지우기
+	Clear Layer Comp Warnings	레이어 구성 요소 경고 지우기
+	Clipping Path	클리핑 패스
+	Color Replacement	색상 대체
+	Contact Sheet	밀착 인화
+	Convert to Working RGB	작업 RGB로 변환
+	Count Group Options	개수 그룹 옵션
+	Create Layers	레이어 만들기
+	Cut Pixels	픽셀 잘라내기
+	Delete All Notes	모든 메모 삭제
+	Delete Slice	분할 영역 삭제
+	Discard Profile	프로파일 제거
+	Divide Slice	분할 영역 나누기
+	Duplicate Layer Comp	레이어 구성 요소 복제
+	Edit Artboard	아트보드 편집
+	Edit Vector Mask	벡터 마스크 편집
+	Empty selection	빈 선택 영역
+	Fill Path	패스 채우기
+	Hide	숨기기
+	Import Notes	메모 가져오기
+	Layer Comp Options	레이어 구성 요소 옵션
+	Make Selection	선택 영역 만들기
+	Make Work Path	작업 패스 만들기
+	Mode Change	색상 모드 변경
+	Modify Adjustment	조정 변경
+	Move Selected Pixels	선택한 픽셀 이동
+	New Artboard	새 아트보드
+	New Color Fill Layer	새 단색 채우기 레이어
+	New Count Group	새 개수 그룹
+	New Gradient Fill Layer	새 그레이디언트 채우기 레이어
+	New Group	새 그룹
+	New Layer Comp	새 레이어 구성 요소
+	New Note	새 메모
+	New Pattern Fill Layer	새 패턴 채우기 레이어
+	Promote to User Slice	사용자 분할 영역으로 변환
+	Rasterize Vector Mask	벡터 마스크 래스터화
+	Rasterize Video	비디오 래스터화
+	Rename Layer Comp	레이어 구성 요소 이름 변경
+	Rename Pattern	패턴 이름 변경
+	Reorder Layers	레이어 순서 변경
+	Replace All Text	모든 문자 바꾸기
+	Replace Missing Fonts	누락된 글꼴 바꾸기
+	Replace Text	문자 바꾸기
+	Restore Last Document State	이전 문서 상태 복원
+	Rotate Canvas	캔버스 회전
+	Select Sky	하늘 선택
+	Stamp Layers	합성 레이어 만들기
+	Stroke Path	패스 선 그리기
+	Transform Path	패스 변형
+	Warp Grid	격자 뒤틀기

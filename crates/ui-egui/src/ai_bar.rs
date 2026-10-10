@@ -28,6 +28,22 @@ pub struct AiUi {
     pub available_models: Vec<ComfyUiModel>,
     #[serde(rename = "translationModels")]
     pub translation_models: Vec<ComfyUiTranslationModel>,
+    #[serde(rename = "promptInfoOpen")]
+    pub prompt_info_open: bool,
+    #[serde(rename = "hasPromptHistory")]
+    pub has_prompt_history: bool,
+    #[serde(skip)]
+    pub(crate) prompt_presence_key: Option<(u64, u64)>,
+    #[serde(skip)]
+    pub(crate) prompt_records_key: Option<(u64, u64)>,
+    #[serde(skip)]
+    pub(crate) prompt_records_xmp: Option<String>,
+    #[serde(skip)]
+    pub(crate) prompt_records: Vec<photocraft_engine::ai_prompts::Entry>,
+    #[serde(skip)]
+    pub(crate) prompt_info_error: Option<String>,
+    #[serde(skip)]
+    pub(crate) prompt_info_page: usize,
     #[serde(skip)]
     document: Option<u64>,
     #[serde(skip)]
@@ -53,6 +69,8 @@ impl PartialEq for AiUi {
             && self.availability_error == other.availability_error
             && self.available_models == other.available_models
             && self.translation_models == other.translation_models
+            && self.prompt_info_open == other.prompt_info_open
+            && self.has_prompt_history == other.has_prompt_history
     }
 }
 
@@ -373,13 +391,19 @@ pub(crate) fn keys(app: &mut PhotocraftApp, ctx: &egui::Context) -> bool {
 
 pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, image: Rect, selection: Option<Rect>) {
     let submitted = app.ui.ai.submit.take();
-    if !app.ui.ai.available {
+    let Some(st) = app.session.documents().get(index) else { return };
+    let doc = st.doc.clone();
+    let revision = st.revision;
+    let has_history = crate::ai_prompt_info::has_history(app, &doc, revision);
+    if !app.ui.ai.available || supported_document(&doc).is_err() {
         app.ui.ai.rect = None;
+        if has_history {
+            crate::ai_prompt_info::only_bar(app, ui.ctx(), doc.id.0, canvas, image);
+        }
         return;
     }
     let Some(st) = app.session.documents().get(index) else { return };
     let classified = contextual_mode(&app.session, st);
-    let doc = st.doc.clone();
     if !app.ui.dialogs.is_empty() || supported_document(&doc).is_err() || canvas.width() < 180.0 || canvas.height() < 100.0 {
         app.ui.ai.rect = None;
         return;
@@ -397,11 +421,11 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     } else {
         24.0
     };
-    let width = ((if repeat.is_some() { 576.0f32 } else { 540.0f32 }) + translation_width).min(canvas.width() - 16.0);
+    let width = ((if repeat.is_some() { 576.0f32 } else { 540.0f32 }) + translation_width + 32.0).min(canvas.width() - 16.0);
     let buttons = if mode == EditMode::PromptGenerate { 1.0 } else { 2.0 };
     let model_width = if app.ui.ai.available_models.len() == 1 { 0.0 } else { 145.0 };
     let button_width =
-        ((width - 16.0 - model_width - 80.0 - if repeat.is_some() { 32.0 } else { 0.0 } - ui.spacing().item_spacing.x * (buttons + 2.0)) / buttons).max(1.0);
+        ((width - 48.0 - model_width - 80.0 - if repeat.is_some() { 32.0 } else { 0.0 } - ui.spacing().item_spacing.x * (buttons + 2.0)) / buttons).max(1.0);
     let text_width = if app.ui.ai.open { width - 32.0 } else { button_width - 16.0 };
     let button_text =
         ui.painter().layout(label(mode).to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text, text_width.max(1.0));
@@ -453,6 +477,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                                         crate::icons::button(ui, "rotate-cw", 24.0, false, &format!("{} · {}", tl!("Regenerate"), model.label())).clicked();
                                 });
                             }
+                            crate::ai_prompt_info::button(app, ui);
                         })
                     });
                     return;
@@ -488,6 +513,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                     ui.add_enabled_ui(!busy, |ui| step_controls(app, ui));
                     ui.add_enabled_ui(!busy, |ui| translation_controls(app, ui, doc.id.0));
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                        crate::ai_prompt_info::button(app, ui);
                         generate |= ui.add_enabled(can_generate, egui::Button::new(tl!("Generate"))).clicked();
                         close = ui.add_enabled(!busy, egui::Button::new(tl!("Cancel"))).clicked();
                         if let Some((_, model)) = repeat {

@@ -145,7 +145,13 @@ pub(crate) fn encode(f: Format, src: &Image, plan: Plan, opts: &EncodeOptions) -
     match f {
         #[cfg(feature = "avif")]
         Format::Avif => {
-            let enc = image::codecs::avif::AvifEncoder::new_with_speed_quality(&mut cursor, 8, opts.jpeg_quality.clamp(1, 100));
+            use image::ImageEncoder;
+            let mut enc = image::codecs::avif::AvifEncoder::new_with_speed_quality(&mut cursor, 8, opts.jpeg_quality.clamp(1, 100));
+            if opts.embed_metadata
+                && let Some(xmp) = &src.meta.xmp
+            {
+                enc.set_exif_metadata(super::avif_xmp::exif_packet(&crate::upright_xmp(xmp))?).map_err(|e| CodecError::encode(f, e))?;
+            }
             dynimg.write_with_encoder(enc).map_err(|e| CodecError::encode(f, e))?;
         }
         _ => {

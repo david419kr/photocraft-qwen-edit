@@ -75,6 +75,7 @@ pub(crate) struct LastRun {
     name: String,
     result_layer: photocraft_doc::LayerId,
     result_revision: u64,
+    prompt_entry: crate::ai_prompts::Entry,
 }
 
 pub fn regeneration(s: &Session) -> Option<(EditMode, crate::prefs::ComfyUiModel)> {
@@ -267,6 +268,22 @@ pub fn specs() -> Vec<CommandSpec> {
         journal: true,
     });
     commands.push(CommandSpec {
+        id: "document.aiPrompts",
+        label: "AI Prompt History",
+        menu: &[],
+        shortcut: None,
+        params: "{} → {entries:[{mode,regions,original,translated?}]} (ordered AI prompts for the current undo state)",
+        enabled: |s| s.active().map(|_| ()).ok_or_else(|| "No document".into()),
+        run: |s, p| {
+            if !p.is_object() {
+                return Err(bad("document.aiPrompts", "params must be an object"));
+            }
+            let doc = &s.active().ok_or(EngineError::NoDocument)?.doc;
+            Ok(json!({"entries":crate::ai_prompts::read(doc.metadata.xmp.as_deref()).map_err(EngineError::Other)?}))
+        },
+        journal: false,
+    });
+    commands.push(CommandSpec {
         id: REMOVE_BACKGROUND_COMMAND,
         label: "Remove Background",
         menu: &[],
@@ -361,7 +378,9 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
         true,
         move |ctx| {
             let input = prepare(&source, mode, ctx)?;
+            let original = prompt.clone();
             let mut prompt = prompt;
+            let mut translated = None;
             if translate_prompt {
                 let available = backend.available_translation_models(&endpoint)?;
                 if let Some(selected) = available.iter().find(|model| **model == translation_model).or(available.first()) {
@@ -371,6 +390,7 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
                     if prompt.trim().is_empty() || prompt.len() > MAX_PROMPT_BYTES {
                         return Err(EngineError::Other("Translated prompt must contain 1..8192 bytes".into()));
                     }
+                    translated = Some(prompt.clone());
                 }
             }
             ctx.check()?;
@@ -386,7 +406,13 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
             };
             let generated = backend.generate(&request, ctx)?;
             let layer = result_layer(&source, &generated, &request.image, input.content_size, &name, mode, ctx)?;
-            let last = LastRun { source, request, content_size: input.content_size, name, result_layer: layer.id, result_revision: 0 };
+            let prompt_entry = crate::ai_prompts::Entry {
+                mode,
+                regions: if mode == EditMode::GenerativeFill { crate::ai_prompts::regions(&request.image, input.content_size) } else { Vec::new() },
+                original,
+                translated,
+            };
+            let last = LastRun { source, request, content_size: input.content_size, name, result_layer: layer.id, result_revision: 0, prompt_entry };
             Ok((layer, last))
         },
         move |s, (layer, last)| apply_result(s, layer, last, None, label),
@@ -426,7 +452,9 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
         layer.id = id;
     }
     let id = layer.id;
+    let prompt_entry = last.prompt_entry.clone();
     s.edit(label, move |doc, active| {
+        let prompt_xmp = crate::ai_prompts::append(doc.metadata.xmp.as_deref(), &prompt_entry).map_err(EngineError::Other)?;
         if let Some(old) = replace {
             let target = doc.layers.iter_mut().find(|l| l.id == old).ok_or_else(|| EngineError::Other("previous AI layer was removed".into()))?;
             *target = layer;
@@ -439,6 +467,7 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
             doc.layers.push(layer);
         }
         *active = Some(id);
+        doc.metadata.xmp = Some(prompt_xmp);
         Ok(())
     })?;
     let st = s.active().ok_or(EngineError::NoDocument)?;

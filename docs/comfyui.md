@@ -34,7 +34,7 @@ release the instance when switching to a different graph. Its ordinary Torch
 model-unload API does not directly manage these worker models.
 
 PhotoCraft submits `HyMT_Translation_GGUF -> PreviewAny` through the existing
-ComfyUI API with `translate_to=English`, `translate_style=AI Prompt / Visual Tags`
+ComfyUI API with `translate_to=English`, `translate_style=Default`
 and `unload_after_run=false`. Only the user-entered prompt is translated. The
 existing mask-edit prompt shaping is applied afterward. Empty-prompt removal
 and the built-in English background-removal action skip translation. Reroll
@@ -64,6 +64,46 @@ adds one new top-level layer in one undo step. Whole-image edits also hide the p
 on success so the new result's transparency is visible; Undo restores their visibility.
 Regeneration replaces the previous AI result layer in one undo step.
 
+## Prompt history (2026-10-11)
+
+The **ⓘ** icon at the far right of either floating bar opens the current document's
+ordered AI prompt history. Each successful generation, whole-image edit, generative
+fill, background removal or reroll adds an entry. Failed/cancelled requests add
+nothing. Undo, Redo and history navigation restore the entries with the corresponding
+document snapshot. Reroll records another use even though it replaces the result layer.
+
+Entries contain the operation type, original prompt and, when translation was used,
+the translated English prompt. Generative Fill also records the meaningful selected
+regions in a 3×3 canvas grid (top left through bottom right); selections spanning
+several regions list them together. Empty prompts are shown as removal. Model, seed,
+steps, CFG and other generation parameters are not recorded. Prompt inspection remains
+available when ComfyUI is offline, via an information-only floating bar.
+
+PNG, JPEG, WebP, TIFF, AVIF, PSD and PhotoCraft native files preserve this history on
+save and reopening. It lives in XMP under `urn:photocraft:ai-prompts:1`, as a
+versioned JSON list compressed with zlib and encoded as hexadecimal text. The
+ordinary Export As metadata filters retain this property while removing other XMP
+when requested. Formats without XMP support (such as BMP/GIF) cannot preserve the
+history and retain their normal metadata-loss warnings. JPEG's 64 KiB XMP limit
+can reject a very long history; save in another supported format in that case.
+Third-party tools that strip metadata also strip the history.
+
+The History panel reuses the selected UI language's menu/tool translations,
+including Korean. Stored engine history labels and automation responses remain
+stable English strings.
+
+Validation on 2026-10-11: eight focused regression tests passed, including all three
+AI modes, bilingual prompts, mask regions, undo/redo, branching after undo and reroll.
+The same four-entry history survived 14 save/reopen cases (seven formats, both XMP
+filters). AVIF XMLPacket and indexed PNG XMP tests passed. Korean offscreen views
+were inspected with AI available and unavailable. Native library Clippy with
+`-D warnings`, wasm checks for the changed crates, layering and menu parity passed;
+the static-CRT portable release build was updated. AI tests used a synthetic backend;
+no actual Qwen generation or translation inference was needed for this change.
+
+The user confirmed the updated build works on 2026-10-11. No additional tests
+were run before committing this change.
+
 ## AVIF import/export (2026-10-09)
 
 The development portable build also includes a pure-Rust AVIF reader. Open or drag/drop
@@ -74,7 +114,8 @@ AVIF is refused explicitly; see `crates/codecs/README.md` for decoder limits.
 The desktop and CLI builds also enable AVIF writing. Use File > Save As and choose AVIF,
 or File > Export > Export As and select AVIF. Export As offers quality 1–100 and transparency;
 Save As uses the codec's default quality (90). The output is a flattened 8-bit RGB/RGBA image.
-HDR/high-depth export and ICC/EXIF/XMP preservation are deferred; existing export warnings
+XMP (including prompt history) is preserved through the Exif TIFF XMLPacket tag 700.
+HDR/high-depth export and ICC/other EXIF preservation are deferred; existing export warnings
 report depth/metadata/layer loss. Colours are converted to sRGB when the document carries
 another RGB profile. The encoder's license notices ship under `licenses/avif-encoder.txt`.
 CLI example: `photocraft-cli convert input.png output.avif --quality 85`.

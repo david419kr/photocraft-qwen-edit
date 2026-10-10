@@ -14,6 +14,93 @@ impl AiBackend for Solid {
     }
 }
 
+#[test]
+fn prompt_history_tracks_all_modes_translation_undo_redo_and_saved_files() {
+    use crate::ai_prompts::{self, Region};
+    struct Translated;
+    impl AiBackend for Translated {
+        fn available_translation_models(&self, _: &str) -> Result<Vec<crate::prefs::ComfyUiTranslationModel>> {
+            Ok(vec![crate::prefs::ComfyUiTranslationModel::HyMt18Heretic])
+        }
+        fn translate(&self, _: &str, _: crate::prefs::ComfyUiTranslationModel, prompt: &str, _: &JobCtx) -> Result<String> {
+            Ok(if prompt == "언덕 위에 소녀" { "A girl on a hill" } else { "Draw the moon in the sky" }.into())
+        }
+        fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
+            Solid.generate(request, ctx)
+        }
+    }
+    let mut s = Session::new();
+    s.execute("file.new", json!({"width":96,"height":96,"background":"white"})).unwrap();
+    s.ai_backend = Some(Arc::new(Translated));
+    s.execute("prefs.set", json!({"path":"integrations.comfyuiTranslatePrompt","value":true})).unwrap();
+    s.execute("edit.promptGenerate", json!({"prompt":"언덕 위에 소녀"})).unwrap();
+    s.execute("edit.promptEdit", json!({"prompt":"하늘에 달을 그려줘"})).unwrap();
+    s.execute("prefs.set", json!({"path":"integrations.comfyuiTranslatePrompt","value":false})).unwrap();
+    s.execute("select.rect", json!({"x":2,"y":2,"width":12,"height":12})).unwrap();
+    s.execute("edit.generativeFill", json!({"prompt":"Draw the sun"})).unwrap();
+    s.execute("select.rect", json!({"x":78,"y":78,"width":12,"height":12})).unwrap();
+    s.execute("edit.generativeFill", json!({"prompt":"Draw a cow"})).unwrap();
+    let entries = ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap();
+    assert_eq!(entries.len(), 4);
+    assert_eq!(
+        entries.iter().map(|e| e.mode).collect::<Vec<_>>(),
+        vec![EditMode::PromptGenerate, EditMode::PromptEdit, EditMode::GenerativeFill, EditMode::GenerativeFill]
+    );
+    assert_eq!(entries[0].original, "언덕 위에 소녀");
+    assert_eq!(entries[0].translated.as_deref(), Some("A girl on a hill"));
+    assert_eq!(entries[2].regions, vec![Region::TopLeft]);
+    assert_eq!(entries[3].regions, vec![Region::BottomRight]);
+    assert!(entries[2].translated.is_none());
+    let info = s.execute("document.aiPrompts", json!({})).unwrap();
+    assert_eq!(info["entries"].as_array().unwrap().len(), 4);
+    assert!(info["entries"][0].get("seed").is_none());
+    // Regeneration is intentionally allowed only while its result revision is unchanged.
+    s.execute(REGENERATE_COMMAND, json!({})).unwrap();
+    assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap().len(), 5);
+    s.execute("edit.undo", json!({})).unwrap();
+    assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap(), entries);
+    s.execute("edit.redo", json!({})).unwrap();
+    assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap().len(), 5);
+    s.execute("edit.undo", json!({})).unwrap();
+    s.execute("edit.undo", json!({})).unwrap();
+    assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap().len(), 3);
+    s.execute("edit.redo", json!({})).unwrap();
+    assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap(), entries);
+    for name in ["out.png", "out.jpg", "out.webp", "out.tif", "out.psd", "out.pcraft", "out.avif"] {
+        if name.ends_with("avif") && (!photocraft_codecs::Format::Avif.caps().write || !photocraft_codecs::Format::Avif.caps().read) {
+            continue;
+        }
+        for xmp in [photocraft_io::XmpEmbed::All, photocraft_io::XmpEmbed::None] {
+            let options = photocraft_io::ExportOptions { xmp, ..Default::default() };
+            let file = photocraft_io::export(&s.active().unwrap().doc, name, &options).unwrap_or_else(|e| panic!("{name}: {e}"));
+            let restored = photocraft_io::import(name, &file.bytes).unwrap().document;
+            assert_eq!(ai_prompts::read(restored.metadata.xmp.as_deref()).unwrap(), entries, "{name}");
+        }
+    }
+    s.execute("edit.undo", json!({})).unwrap();
+    s.execute("select.rect", json!({"x":40,"y":40,"width":12,"height":12})).unwrap();
+    s.execute("edit.generativeFill", json!({"prompt":""})).unwrap();
+    let branched = ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap();
+    assert_eq!(branched.len(), 4);
+    assert_eq!(branched[3].regions, vec![Region::Center]);
+    assert!(branched[3].original.is_empty());
+    s.execute("select.all", json!({})).unwrap();
+    s.execute(REMOVE_BACKGROUND_COMMAND, json!({})).unwrap();
+    assert_eq!(ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap().len(), 5);
+}
+
+#[test]
+fn prompt_history_query_is_read_only_and_rejects_invalid_params_without_a_backend() {
+    let mut s = Session::new();
+    assert!(s.execute("document.aiPrompts", json!({})).is_err());
+    s.execute("file.new", json!({"width":8,"height":8})).unwrap();
+    let revision = s.active().unwrap().revision;
+    assert!(s.execute("document.aiPrompts", Value::Null).is_err());
+    assert_eq!(s.execute("document.aiPrompts", json!({})).unwrap(), json!({"entries":[]}));
+    assert_eq!(s.active().unwrap().revision, revision);
+    assert!(!s.active().unwrap().history.can_undo());
+}
+
 fn session(depth: u32) -> Session {
     let mut s = Session::new();
     s.execute("file.new", json!({"width":17,"height":13,"depth":depth,"background":"white"})).unwrap();

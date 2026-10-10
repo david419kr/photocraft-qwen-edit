@@ -278,6 +278,25 @@ pub fn tr(lang: Lang, s: &str) -> &str {
     lang.catalog().plain(s).unwrap_or(s)
 }
 
+/// Keep history labels stable in the engine and reuse menu/tool translations at display time.
+pub fn history_label(lang: Lang, label: &str) -> &str {
+    if let Some(value) = lang.catalog().history(label) {
+        return value;
+    }
+    let source = match label.trim().to_ascii_lowercase().as_str() {
+        "select rectangle" => "Rectangular Marquee Tool",
+        "select ellipse" => "Elliptical Marquee Tool",
+        "move selected pixels" => "Move Tool",
+        "new color fill layer" => "Solid Color…",
+        "new gradient fill layer" => "Gradient…",
+        "new pattern fill layer" => "Pattern…",
+        "new group" => "Group…",
+        "rotate canvas" => "Image Rotation",
+        _ => label,
+    };
+    lang.catalog().history(source).unwrap_or(label)
+}
+
 /// Like [`tr`], for an English string that needs a disambiguating `context`.
 pub fn tr_ctx<'a>(lang: Lang, context: &str, s: &'a str) -> &'a str {
     lang.catalog().contextual(context, s).unwrap_or_else(|| tr(lang, s))
@@ -708,3 +727,25 @@ mod tests {
 
 #[cfg(test)]
 mod live_tests;
+
+#[cfg(test)]
+mod history_tests {
+    use super::*;
+
+    #[test]
+    fn history_labels_reuse_korean_menus_tools_and_keep_engine_text_unchanged() {
+        let ko = Lang::from_code("ko").unwrap();
+        for (source, translated) in
+            [("Open", "열기"), ("Brush Tool", "브러시 도구"), ("Lasso", "올가미"), ("Fill Path", "패스 채우기"), ("Prompt Generate", "프롬프트로 생성")]
+        {
+            assert_eq!(history_label(ko, source), translated);
+            assert_eq!(history_label(Lang::EN, source), source);
+        }
+        assert_eq!(history_label(ko, "  select rectangle  "), history_label(ko, "Select Rectangle"));
+        assert_eq!(history_label(ko, "OPEN…"), "열기");
+        assert_eq!(history_label(ko, "user supplied layer name"), "user supplied layer name");
+        for source in ["Sampling steps", "Translate prompt to English", "Prompt information", "AI Prompt History", "Original prompt", "English translation"] {
+            assert_ne!(tr(ko, source), source);
+        }
+    }
+}

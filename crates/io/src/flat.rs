@@ -290,7 +290,7 @@ pub fn export_flat(doc: &Document, format: Format, opts: &ExportOptions) -> Resu
     if opts.xmp == XmpEmbed::None {
         // Export As's Metadata: None: the packet lists the text of every type layer and one id
         // per placed document (#647).
-        img.meta.xmp = None;
+        img.meta.xmp = crate::ai_metadata::only_history(img.meta.xmp.as_deref()).map_err(IoError::Unsupported)?;
     }
     if img.layout().has_alpha() && !format.caps().alpha {
         // Flattened over white, as saving a transparent document without transparency does.
@@ -315,6 +315,11 @@ pub fn export_flat(doc: &Document, format: Format, opts: &ExportOptions) -> Resu
         }
     }
     for w in codecs::fidelity_warnings_with(&img, format, &opts.encode) {
+        if crate::ai_metadata::has_history(img.meta.xmp.as_deref()) && matches!(w, codecs::FidelityWarning::MetadataTooLarge { what: "XMP", .. }) {
+            return Err(IoError::Unsupported(
+                "AI prompt history is too large for JPEG metadata; save as PNG, WebP, TIFF, AVIF, PSD or PhotoCraft instead".into(),
+            ));
+        }
         if w.is_fatal() {
             return Err(IoError::Unsupported(w.to_string()));
         }
@@ -416,7 +421,19 @@ fn export_mode_specific(doc: &Document, format: Format, opts: &ExportOptions) ->
                 }));
                 Ok(())
             });
-            let bytes = codecs::encode_png_indexed(doc.size.width, doc.size.height, &idx, &table.colors, table.transparent)?;
+            let xmp = if opts.xmp == XmpEmbed::None {
+                crate::ai_metadata::only_history(doc.metadata.xmp.as_deref()).map_err(IoError::Unsupported)?
+            } else {
+                doc.metadata.xmp.clone()
+            };
+            let bytes = codecs::encode_png_indexed_with_xmp(
+                doc.size.width,
+                doc.size.height,
+                &idx,
+                &table.colors,
+                table.transparent,
+                xmp.as_deref().filter(|_| opts.encode.embed_metadata),
+            )?;
             Ok(Some(ExportResult { bytes, warnings: vec![format!("written as an 8-bit palette PNG ({} colours)", table.colors.len())] }))
         }
         ColorMode::Duotone => {

@@ -2046,7 +2046,13 @@ fn history(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
                 12.0,
                 if is_redo { t.text_faint } else { t.icon },
             );
-            ui.painter().text(pos2(rect.left() + 58.0, rect.center().y), Align2::LEFT_CENTER, &e, egui::FontId::proportional(12.0), color);
+            ui.painter().text(
+                pos2(rect.left() + 58.0, rect.center().y),
+                Align2::LEFT_CENTER,
+                crate::i18n::history_label(crate::i18n::current(), &e),
+                egui::FontId::proportional(12.0),
+                color,
+            );
             if resp.clicked() {
                 target = Some(i as isize - current as isize);
             }

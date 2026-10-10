@@ -389,7 +389,19 @@ fn adler32_combine(a1: u32, a2: u32, len2: usize) -> u32 {
 /// Writes an 8-bit palette PNG (PNG-8): `indices` row-major, `palette` RGB entries (≤ 256),
 /// optional fully transparent entry (`tRNS`). Used for Indexed Color documents.
 pub fn encode_indexed(width: u32, height: u32, indices: &[u8], palette: &[[u8; 3]], transparent: Option<u8>) -> Result<Vec<u8>, CodecError> {
-    if width == 0 || height == 0 || indices.len() != width as usize * height as usize {
+    encode_indexed_with_xmp(width, height, indices, palette, transparent, None)
+}
+
+/// Palette PNG with optional XMP, including document prompt provenance.
+pub fn encode_indexed_with_xmp(
+    width: u32,
+    height: u32,
+    indices: &[u8],
+    palette: &[[u8; 3]],
+    transparent: Option<u8>,
+    xmp: Option<&str>,
+) -> Result<Vec<u8>, CodecError> {
+    if width == 0 || height == 0 || (width as usize).checked_mul(height as usize) != Some(indices.len()) {
         return Err(CodecError::InvalidImage("index data does not match the size".into()));
     }
     if palette.is_empty() || palette.len() > 256 || indices.iter().any(|&i| usize::from(i) >= palette.len()) {
@@ -406,7 +418,10 @@ pub fn encode_indexed(width: u32, height: u32, indices: &[u8], palette: &[[u8; 3
     }
     let mut out = Vec::new();
     {
-        let encoder = png::Encoder::with_info(&mut out, info).map_err(|e| CodecError::encode(F, e))?;
+        let mut encoder = png::Encoder::with_info(&mut out, info).map_err(|e| CodecError::encode(F, e))?;
+        if let Some(xmp) = xmp {
+            encoder.add_itxt_chunk(XMP_KEYWORD.into(), crate::orientation::upright_xmp(xmp).into_owned()).map_err(|e| CodecError::encode(F, e))?;
+        }
         let mut writer = encoder.write_header().map_err(|e| CodecError::encode(F, e))?;
         writer.write_image_data(indices).map_err(|e| CodecError::encode(F, e))?;
         writer.finish().map_err(|e| CodecError::encode(F, e))?;
@@ -417,6 +432,13 @@ pub fn encode_indexed(width: u32, height: u32, indices: &[u8], palette: &[[u8; 3
 #[cfg(test)]
 mod indexed_tests {
     use super::*;
+
+    #[test]
+    fn indexed_png_prompt_history_keeps_unicode_xmp() {
+        let xml = "<x>언덕 위에 소녀</x>";
+        let bytes = encode_indexed_with_xmp(2, 1, &[0, 1], &[[0, 0, 0], [255, 255, 255]], None, Some(xml)).unwrap();
+        assert_eq!(decode(&bytes, &Limits::default()).unwrap().meta.xmp.as_deref(), Some(xml));
+    }
 
     #[test]
     fn png8_roundtrips_through_the_decoder() {

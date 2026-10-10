@@ -25,6 +25,7 @@
 
 pub mod abr_map;
 mod adjust_map;
+pub mod ai_metadata;
 pub mod annotations_map;
 pub mod blocks;
 mod channel_map;

@@ -7,6 +7,7 @@ use std::collections::HashMap;
 pub struct Catalog {
     /// context-free strings: English source → translation (the hot path, looked up every frame)
     plain: HashMap<String, String>,
+    history: HashMap<String, String>,
     /// strings with a disambiguating context, keyed `context \u{1} source`
     contextual: HashMap<String, String>,
     /// command-id keyed strings
@@ -66,6 +67,11 @@ impl Catalog {
         for (ctx, src, tr) in parse_entries(text).0 {
             match ctx.as_str() {
                 "" => {
+                    let value = tr.trim_end_matches(['…', '.']).to_owned();
+                    c.history.insert(history_key(&src), value.clone());
+                    if let Some(tool) = src.strip_suffix(" Tool") {
+                        c.history.entry(history_key(tool)).or_insert(value);
+                    }
                     c.plain.insert(src, tr);
                 }
                 "@id" => {
@@ -86,6 +92,10 @@ impl Catalog {
         self.plain.get(s).map(String::as_str)
     }
 
+    pub fn history(&self, s: &str) -> Option<&str> {
+        self.history.get(&history_key(s)).map(String::as_str)
+    }
+
     pub fn contextual(&self, ctx: &str, s: &str) -> Option<&str> {
         self.contextual.get(&format!("{ctx}\u{1}{s}")).map(String::as_str)
     }
@@ -99,6 +109,10 @@ impl Catalog {
         let forms = self.plurals.get(&format!("{one}|{other}"))?;
         forms.get(index.min(forms.len().saturating_sub(1))).map(String::as_str)
     }
+}
+
+fn history_key(text: &str) -> String {
+    text.trim().trim_end_matches(['…', '.']).to_lowercase()
 }
 
 /// `{name}` placeholders of a template, in order of appearance.

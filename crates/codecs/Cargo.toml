@@ -12,7 +12,7 @@ corpus = []
 default = []
 # Native apps enable this bundled reader; web builds can opt in without growing by default.
 avif-decode = ["dep:oxideav-avif", "dep:oxideav-heif"]
-# Optional AVIF *encode* via ravif (pure Rust), restricted to U8 without metadata.
+# Optional AVIF encode via ravif (pure Rust): U8 and XMP via Exif XMLPacket.
 avif = ["image/avif"]
 # HEIC/HEIF decode via the optional photocraft-heif crate (heic-rs, pure Rust). Off by default so
 # distributors choose it at build time; official builds and CI enable it (`--features heif` on the

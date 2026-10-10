@@ -32,6 +32,7 @@ photocraft-vector = { workspace = true }
 photocraft-format = { path = "../format" }
 thiserror = { workspace = true }
 serde_json = { workspace = true }
+roxmltree = "0.20"
 blake3 = { version = "1.8", default-features = false, features = ["pure"] }
 
 [dev-dependencies]

@@ -1,4 +1,6 @@
 pub(crate) mod avif;
+#[cfg(any(feature = "avif", feature = "avif-decode", test))]
+mod avif_xmp;
 pub(crate) mod deep_exr;
 pub(crate) mod exr;
 pub(crate) mod heif;

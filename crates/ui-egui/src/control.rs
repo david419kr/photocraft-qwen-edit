@@ -70,7 +70,7 @@ pub enum Outcome {
 
 /// The fields `ui.set` reads. Anything else is rejected before a field is applied, so a typo or
 /// a field the method doesn't have can't reply with success while nothing changes (#412).
-pub const UI_SET_FIELDS: [&str; 22] = [
+pub const UI_SET_FIELDS: [&str; 23] = [
     "tool",
     "panels",
     "dock",
@@ -93,6 +93,7 @@ pub const UI_SET_FIELDS: [&str; 22] = [
     "aiPrompt",
     "aiSteps",
     "aiOpen",
+    "aiPromptInfo",
 ];
 
 fn ok(v: Value) -> Outcome {
@@ -246,6 +247,20 @@ fn dispatch(app: &mut PhotocraftApp, ctx: &egui::Context, req: &ControlRequest) 
                 },
                 None => None,
             };
+            let ai_prompt_info = match p.get("aiPromptInfo") {
+                Some(value) => match value.as_bool() {
+                    Some(open) => Some(open),
+                    None => return err("aiPromptInfo must be a boolean"),
+                },
+                None => None,
+            };
+            if ai_prompt_info == Some(true) && app.session.active().is_none() {
+                return err("no document open");
+            }
+            if let Some(open) = ai_prompt_info {
+                app.ui.ai.prompt_info_open = open;
+                app.ui.ai.prompt_info_page = 0;
+            }
             if ai_open == Some(true) || ai_prompt.is_some() || ai_steps.is_some() {
                 let Some(state) = app.session.active() else { return err("no document open") };
                 if let Err(e) = photocraft_engine::ai_cmds::supported_document(&state.doc) {

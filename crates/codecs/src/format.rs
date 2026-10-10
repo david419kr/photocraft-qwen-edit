@@ -58,7 +58,7 @@ pub const ASYMMETRIC_EXCEPTIONS: &[(Format, &str)] = &[
         Format::Avif,
         "AVIF decode uses oxideav (pure Rust) through avif-decode, enabled by native apps; writing \
          uses ravif through the non-default avif feature. Builds can enable reading independently \
-         of writing. Encoder capabilities are U8 RGB/RGBA without metadata; decode also keeps \
+         of writing. Encoder capabilities are U8 RGB/RGBA with XMP; decode also keeps \
          10/12-bit precision (U16), ICC, EXIF and XMP.",
     ),
     (
@@ -207,7 +207,7 @@ pub fn caps(format: Format) -> FormatCaps {
         Format::OpenExr => FormatCaps { depths: &[S::F16, S::F32], layouts: RGB_GRAY, ..base },
         Format::Hdr => FormatCaps { depths: &[S::F32], layouts: &[L::Rgb], alpha: false, lossy: true, ..base },
         // Depth/metadata describe the encoder's guarantee, not the broader decoder support.
-        Format::Avif => FormatCaps { read: cfg!(feature = "avif-decode"), write: cfg!(feature = "avif"), animation: true, lossy: true, ..base },
+        Format::Avif => FormatCaps { read: cfg!(feature = "avif-decode"), write: cfg!(feature = "avif"), xmp: true, animation: true, lossy: true, ..base },
         Format::Heif => {
             FormatCaps { read: cfg!(feature = "heif"), write: false, depths: &[S::U8, S::U16], icc: true, exif: true, xmp: true, lossy: true, ..base }
         }

@@ -23,7 +23,7 @@ pub(super) fn models(endpoint: &str) -> Result<Vec<ComfyUiTranslationModel>> {
 
 fn workflow(model: &str, prompt: &str) -> Value {
     json!({
-        "901":{"class_type":NODE,"inputs":{"model":model,"translate_style":"AI Prompt / Visual Tags","translate_to":"English","text":prompt,"unload_after_run":false}},
+        "901":{"class_type":NODE,"inputs":{"model":model,"translate_style":"Default","translate_to":"English","text":prompt,"unload_after_run":false}},
         "902":{"class_type":"PreviewAny","inputs":{"source":["901",0]}}
     })
 }
@@ -96,11 +96,11 @@ pub(super) fn translate(endpoint: &str, model: ComfyUiTranslationModel, prompt: 
 mod tests {
     use super::*;
     #[test]
-    fn translation_graph_is_local_english_visual_tags_and_keeps_model_loaded() {
+    fn translation_graph_is_local_english_default_style_and_keeps_model_loaded() {
         let graph = workflow(ComfyUiTranslationModel::HyMt18Heretic.filename(), "파란 주전자로 바꿔주세요");
         assert_eq!(graph["901"]["class_type"], NODE);
         assert_eq!(graph["901"]["inputs"]["translate_to"], "English");
-        assert_eq!(graph["901"]["inputs"]["translate_style"], "AI Prompt / Visual Tags");
+        assert_eq!(graph["901"]["inputs"]["translate_style"], "Default");
         assert_eq!(graph["901"]["inputs"]["unload_after_run"], false);
         assert_eq!(graph["902"]["inputs"]["source"], json!(["901", 0]));
     }

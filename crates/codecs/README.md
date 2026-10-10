@@ -44,7 +44,7 @@ let out = encode(&img, Format::Tiff, &EncodeOptions::default())?;
 | QOI | yes | yes | U8 | RGB, RGBA | yes | no | no | no | no | no | no | `image` |
 | OpenEXR | yes | yes | F16, F32 | Y, YA, RGB, RGBA | yes | no | no | no | no | no | no | `exr` |
 | Radiance HDR | yes | yes | F32 | RGB | no | no | no | no | no | no | yes (RGBE) | `image` |
-| AVIF | feature `avif-decode` (native apps enable it) | only with feature `avif` | U8 write; U8/U16 read (8/10/12-bit) | RGB, RGBA | yes | read only | read only | read only | no | no | yes | `oxideav-avif` read; `image` + `ravif` write |
+| AVIF | feature `avif-decode` (native apps enable it) | only with feature `avif` | U8 write; U8/U16 read (8/10/12-bit) | RGB, RGBA | yes | read only | read only | yes | no | no | yes | `oxideav-avif` read; `image` + `ravif` write |
 | HEIF/HEIC | with feature `heif` | **no** | U8, U16 (10/12-bit decodes to U16) | RGB, RGBA | yes (auxiliary alpha) | yes (`colr` prof) | yes | yes | no | no | n/a | `heic-rs` |
 
 "Native" means the data is stored and read back without conversion. Anything else is converted by
@@ -86,7 +86,9 @@ the same.
   ordinary sRGB AVIF and files with embedded ICC profiles open. Unsupported codec/container
   features and damaged files return errors. Decode limits apply before pixel conversion.
   Native desktop/CLI builds also enable writing through `ravif` (`avif` feature): U8 RGB/RGBA
-  with alpha, quality 1–100 (`EncodeOptions::jpeg_quality`), without metadata. `FormatCaps`
+  with alpha, quality 1–100 (`EncodeOptions::jpeg_quality`) and XMP stored in the Exif
+  TIFF XMLPacket tag 700. The decoder also reads this tag when native MIME XMP is absent.
+  ICC and other EXIF fields are not preserved by the encoder. `FormatCaps`
   continues to describe those encoder depth/metadata guarantees so export warnings remain
   correct. It is listed in `ASYMMETRIC_EXCEPTIONS` because reading and writing are independent.
   Standalone codec/web builds opt in with `avif-decode`; default web bundles keep their size.

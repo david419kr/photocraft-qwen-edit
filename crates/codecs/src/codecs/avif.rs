@@ -135,10 +135,13 @@ fn pixels(decoded: oxideav_avif::AvifImage, limits: &Limits, premultiplied: bool
     })
     .map_err(malformed)?;
     out.icc = decoded.metadata.icc;
-    out.meta = Metadata {
-        exif: decoded.metadata.exif,
-        xmp: decoded.metadata.xmp.map(String::from_utf8).transpose().map_err(|e| CodecError::malformed(Format::Avif, e))?,
-        ..Default::default()
-    };
+    let xmp = decoded
+        .metadata
+        .xmp
+        .map(String::from_utf8)
+        .transpose()
+        .map_err(|e| CodecError::malformed(Format::Avif, e))?
+        .or_else(|| decoded.metadata.exif.as_deref().and_then(super::avif_xmp::xmp));
+    out.meta = Metadata { exif: decoded.metadata.exif, xmp, ..Default::default() };
     Ok(out)
 }
