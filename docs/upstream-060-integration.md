@@ -82,6 +82,14 @@ Git 텍스트 충돌은 36개 파일이다. 기존 ComfyUI 연동을 대체해�
   배포 앱의 자동 모드에도 같은 GL 초기화 경로가 있어 Windows PRIMARY로 제한했고,
   이 조건을 검사하는 회귀 테스트를 추가했다. 그래픽 시작 설정 테스트 20개 통과.
   수정된 오프스크린 도구는 환경변수 지정 없이 정상 렌더링했다(DX12/WARP).
-  전체 관련 테스트는 222개 통과. 배포용 빌드 결과는 완료 시 기록한다.
+  전체 관련 테스트는 222개 통과.
+- `run-comfyui-korean.ps1 -NoRun` 정적 CRT 릴리스 빌드 통과(12분 54초).
+  산출물: `dist/photocraft-comfyui-korean/photocraft.exe`, 버전 0.6.0.
+- 새 배포 실행 파일의 실제 시작 확인: 별도 설정 폴더와 로컬 control 채널로
+  `ui.inspect` 확인 후 `app.quit`, 종료 코드 0. 기본 도구 Lasso, 자동 선택
+  NVIDIA GeForce RTX 4090 / Vulkan / GPU, fallback 및 device loss 없음.
+  기존 사용자 설정·작업 문서는 테스트에 사용하지 않았다.
+- 통합 코드 커밋: `816448de`. 처음 요청한 push는 통합 전 `14cc84b8` 상태의
+  원격 백업이며, 이번 통합 결과는 로컬 브랜치에 커밋했다.
 
-실제 ComfyUI 모델 추론과 전체 원본 코퍼스/픽셀 비교는 이번 통합 검증과 별개다.
+실제 ComfyUI 모델 추론과 전체 원본 코퍼스/픽셀 비교는 재실행하지 않았다.
