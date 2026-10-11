@@ -134,8 +134,7 @@ pub struct ExportResult {
     pub warnings: Vec<String>,
 }
 
-/// Which part of the document's XMP packet and free-form text a flat export embeds.
-/// PSD/PSB always keep XMP; `.pcraft` keeps both. Save As and conversions keep the whole packet, as
+/// Whether export keeps descriptive metadata. Save As and conversions keep it by default, as
 /// Photoshop's Save As does; Export As starts at `None`, because the packet lists the text of
 /// every type layer and one id per placed document (#647).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
@@ -143,7 +142,8 @@ pub enum XmpEmbed {
     /// Embed the document's whole XMP packet and free-form text.
     #[default]
     All,
-    /// Embed no XMP or free-form text.
+    /// Remove XMP (including AI history), EXIF and text; flat codecs also omit ICC/DPI.
+    /// PNG additionally fixes alpha LSBs to one to remove the hidden payload carrier.
     None,
 }
 
@@ -268,6 +268,16 @@ fn has_extension(name: &str, expected: &str) -> bool {
 /// Exports `doc` to the format named by `name_or_ext` (a file name, path or
 /// bare extension).
 pub fn export(doc: &Document, name_or_ext: &str, opts: &ExportOptions) -> Result<ExportResult, IoError> {
+    let mut clean;
+    let doc = if opts.xmp == XmpEmbed::None {
+        clean = doc.clone();
+        clean.metadata.xmp = None;
+        clean.metadata.exif = None;
+        clean.metadata.text.clear();
+        &clean
+    } else {
+        doc
+    };
     let ext = extension(name_or_ext);
     if ext == "pdn" {
         return Err(IoError::Unsupported("PDN is import-only; save as .pcraft to preserve all layers and blend modes".into()));

@@ -119,8 +119,19 @@ checks and the static-CRT portable release build passed.
 PNG, JPEG, WebP, TIFF, AVIF, PSD and PhotoCraft native files preserve this history on
 save and reopening. It lives in XMP under `urn:photocraft:ai-prompts:1`, as a
 versioned JSON list compressed with zlib and encoded as hexadecimal text. The
-ordinary Export As metadata filters retain this property while removing other XMP
-when requested. Formats without XMP support (such as BMP/GIF) cannot preserve the
+normal Save / Save As and Export As with Metadata: All retain this property.
+Metadata: None removes it along with other XMP, EXIF and text; flat image exports
+also omit ICC/DPI. PNG additionally fixes each encoded alpha sample's lowest bit
+to one, matching the desktop metadata-cleaner script. This clears the alpha-LSB
+hidden payload carrier without changing RGB samples, at a maximum alpha change of
+1/255 (8-bit) or 1/65535 (16-bit). Palette transparency is scrubbed too. This policy
+also applies to Save for Web and Quick Export when their metadata setting is None.
+No external ImageMagick installation is needed. Export changes neither the open
+document's prompt history nor Undo/Redo. AVIF Export As now offers None/All like
+the other formats. Removing ICC does not perform an extra colour conversion;
+profile-dependent colours can appear different in an untagged viewer.
+This targets alpha-LSB hidden data, not arbitrary RGB or higher-bit steganography.
+Formats without XMP support (such as BMP/GIF) cannot preserve the
 history and retain their normal metadata-loss warnings. JPEG's 64 KiB XMP limit
 can reject a very long history; save in another supported format in that case.
 Third-party tools that strip metadata also strip the history.
@@ -131,8 +142,9 @@ stable English strings.
 
 Validation on 2026-10-11: eight focused regression tests passed, including all three
 AI modes, bilingual prompts, mask regions, undo/redo, branching after undo and reroll.
-The same four-entry history survived 14 save/reopen cases (seven formats, both XMP
-filters). AVIF XMLPacket and indexed PNG XMP tests passed. Korean offscreen views
+At the initial implementation, the same four-entry history survived 14 save/reopen
+cases (seven formats, both XMP filters). The stricter Metadata: None policy above
+supersedes that retention behavior; default/All still retain it. AVIF XMLPacket and indexed PNG XMP tests passed. Korean offscreen views
 were inspected with AI available and unavailable. Native library Clippy with
 `-D warnings`, wasm checks for the changed crates, layering and menu parity passed;
 the static-CRT portable release build was updated. AI tests used a synthetic backend;

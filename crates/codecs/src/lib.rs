@@ -25,6 +25,7 @@ pub mod web;
 
 pub use crate::codecs::exr_cryptomatte::{cryptomatte_id, cryptomatte_key, cryptomatte_preview_color};
 pub use crate::codecs::png::encode_indexed as encode_png_indexed;
+pub use crate::codecs::png::encode_indexed_clean as encode_png_indexed_clean;
 pub use crate::codecs::png::encode_indexed_with_xmp as encode_png_indexed_with_xmp;
 pub use crate::codecs::tiff::{PhotoshopTags as TiffPhotoshopTags, photoshop_tags as tiff_photoshop_tags, writes_little_endian as tiff_writes_little_endian};
 pub use crate::codecs::tiff_ifd::{TiffInfo, TiffPage, TiffPageKind};

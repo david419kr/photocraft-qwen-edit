@@ -1,6 +1,24 @@
 use super::*;
 use photocraft_doc::{Layer, LayerContent};
 
+#[test]
+fn metadata_none_clears_png_alpha_carriers_for_web_and_quick_export_paths() {
+    let pixels = [[0.2, 0.4, 0.6, 0.0], [0.2, 0.4, 0.6, 0.4], [0.2, 0.4, 0.6, 0.8], [0.2, 0.4, 0.6, 1.0]];
+    for format in [WebFormat::Png24, WebFormat::Png8] {
+        let options = WebSettings { format, metadata: WebMetadata::None, transparency: true, embed_icc: true, ..Default::default() };
+        let output = optimize(&pixels, 4, Rect::new(0, 0, 4, 1), &options, Some(&[1, 2, 3]), Some("<private>prompt</private>"), 300.0, false).unwrap();
+        let image = photocraft_codecs::decode(&output.bytes).unwrap();
+        assert!(image.icc.is_none());
+        assert!(image.meta.xmp.is_none());
+        assert!(image.meta.exif.is_none());
+        assert!(image.meta.dpi.is_none());
+        assert!(image.meta.text.is_empty());
+        for pixel in image.data().chunks_exact(image.layout().channels()) {
+            assert_eq!(pixel.last().unwrap() & 1, 1);
+        }
+    }
+}
+
 fn tmp(name: &str) -> String {
     let d = std::env::temp_dir().join(format!("photocraft-web-{}-{name}", std::process::id()));
     let _ = std::fs::remove_dir_all(&d);

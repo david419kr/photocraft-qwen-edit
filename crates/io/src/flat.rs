@@ -388,7 +388,8 @@ pub fn export_flat(doc: &Document, format: Format, opts: &ExportOptions) -> Resu
     if opts.xmp == XmpEmbed::None {
         // Export As's Metadata: None: the packet lists the text of every type layer and one id
         // per placed document (#647).
-        img.meta.xmp = crate::ai_metadata::only_history(img.meta.xmp.as_deref()).map_err(IoError::Unsupported)?;
+        img.meta.xmp = None;
+        img.meta.exif = None;
         img.meta.text.clear();
     }
     if img.layout().has_alpha() && !format.caps().alpha {
@@ -477,7 +478,13 @@ fn tga_alpha_channel(doc: &Document, img: Image, warnings: &mut Vec<String>) -> 
 /// every flat export, and of a layered TIFF (whose composite is a flat image to other readers),
 /// so export-wide policies on the image's metadata apply to both.
 pub(crate) fn encode_image(img: &Image, format: Format, opts: &ExportOptions, mut warnings: Vec<String>) -> Result<ExportResult, IoError> {
-    for w in codecs::fidelity_warnings_with(img, format, &opts.encode) {
+    let mut encode = opts.encode.clone();
+    if opts.xmp == XmpEmbed::None {
+        encode.embed_metadata = false;
+        encode.embed_icc = false;
+        encode.png_scrub_alpha_lsb = true;
+    }
+    for w in codecs::fidelity_warnings_with(img, format, &encode) {
         if crate::ai_metadata::has_history(img.meta.xmp.as_deref()) && matches!(w, codecs::FidelityWarning::MetadataTooLarge { what: "XMP", .. }) {
             return Err(IoError::Unsupported(
                 "AI prompt history is too large for JPEG metadata; save as PNG, WebP, TIFF, AVIF, PSD or PhotoCraft instead".into(),
@@ -488,7 +495,7 @@ pub(crate) fn encode_image(img: &Image, format: Format, opts: &ExportOptions, mu
         }
         warnings.push(w.to_string());
     }
-    let bytes = codecs::encode(img, format, &opts.encode)?;
+    let bytes = codecs::encode(img, format, &encode)?;
     Ok(ExportResult { bytes, warnings })
 }
 
@@ -635,19 +642,19 @@ fn export_mode_specific(doc: &Document, format: Format, opts: &ExportOptions) ->
                 }));
                 Ok(())
             });
-            let xmp = if opts.xmp == XmpEmbed::None {
-                crate::ai_metadata::only_history(doc.metadata.xmp.as_deref()).map_err(IoError::Unsupported)?
+            let xmp = if opts.xmp == XmpEmbed::None { None } else { doc.metadata.xmp.clone() };
+            let bytes = if opts.xmp == XmpEmbed::None {
+                codecs::encode_png_indexed_clean(doc.size.width, doc.size.height, &idx, &table.colors, table.transparent)?
             } else {
-                doc.metadata.xmp.clone()
+                codecs::encode_png_indexed_with_xmp(
+                    doc.size.width,
+                    doc.size.height,
+                    &idx,
+                    &table.colors,
+                    table.transparent,
+                    xmp.as_deref().filter(|_| opts.encode.embed_metadata),
+                )?
             };
-            let bytes = codecs::encode_png_indexed_with_xmp(
-                doc.size.width,
-                doc.size.height,
-                &idx,
-                &table.colors,
-                table.transparent,
-                xmp.as_deref().filter(|_| opts.encode.embed_metadata),
-            )?;
             let mut warnings = vec![format!("written as an 8-bit palette PNG ({} colours)", table.colors.len())];
             if opts.encode.embed_metadata && opts.xmp == XmpEmbed::All && !doc.metadata.text.is_empty() {
                 warnings.push("text metadata is not supported by the palette PNG exporter; it will be dropped".into());

@@ -116,6 +116,9 @@ pub struct EncodeOptions {
     pub png_compression: PngCompression,
     /// Write Adam7-interlaced PNG.
     pub png_interlaced: bool,
+    /// Fix every PNG alpha sample's least-significant bit to one, removing alpha-LSB payloads.
+    /// Matches the metadata cleaner's `(alpha & !1) | 1`; colour samples are unchanged.
+    pub png_scrub_alpha_lsb: bool,
     /// WebP: lossless (VP8L, via `image-webp`) or lossy (our VP8 encoder, see
     /// `codecs::vp8`) with [`Self::webp_quality`].
     pub webp_lossless: bool,
@@ -139,6 +142,7 @@ impl Default for EncodeOptions {
             jpeg_chroma_subsampling: true,
             png_compression: PngCompression::Default,
             png_interlaced: false,
+            png_scrub_alpha_lsb: false,
             webp_lossless: true,
             webp_quality: 80,
             tiff_compression: TiffCompression::Deflate,

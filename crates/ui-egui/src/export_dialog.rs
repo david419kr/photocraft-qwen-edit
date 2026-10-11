@@ -23,7 +23,7 @@ pub fn open(app: &mut PhotocraftApp) -> Result<u64, String> {
     f.insert("lossless".into(), json!(app.session.prefs().export.webp_lossless));
     f.insert("transparency".into(), json!(true));
     f.insert("scale".into(), json!(100));
-    f.insert("metadata".into(), json!("none"));
+    f.insert("metadata".into(), json!("all"));
     f.insert("__w".into(), json!(st.doc.size.width));
     f.insert("__h".into(), json!(st.doc.size.height));
     Ok(app.ui.open_dialog(DialogKind::Command, f))
@@ -133,7 +133,7 @@ fn settings(f: &Map<String, Value>) -> ExportSettings {
         jpeg_quality: matches!(fmt.as_str(), "jpg" | "avif").then_some(quality),
         webp_lossless: fmt != "webp" || lossless(f),
         webp_quality: (fmt == "webp" && !lossless(f)).then_some(quality),
-        xmp_all: fmt != "avif" && s(f, "metadata") == "all",
+        xmp_all: s(f, "metadata") == "all",
         ..Default::default()
     }
 }
@@ -186,16 +186,14 @@ pub fn body(app: &mut PhotocraftApp, ui: &mut egui::Ui, f: &mut Map<String, Valu
                 crate::widgets::checkbox(ui, &mut tr, tl!("Transparency"));
                 f.insert("transparency".into(), json!(tr));
             }
-            if fmt != "avif" {
-                ui.horizontal(|ui| {
-                    ui.label(egui::RichText::new(tl!("Metadata")).color(t.text_dim));
-                    let mut m = s(f, "metadata");
-                    let opts: Vec<(String, &str)> = vec![("none".into(), tl!("None")), ("all".into(), tl!("All"))];
-                    if crate::widgets::dropdown(ui, "export-metadata", &mut m, &opts, 130.0) {
-                        f.insert("metadata".into(), json!(m));
-                    }
-                });
-            }
+            ui.horizontal(|ui| {
+                ui.label(egui::RichText::new(tl!("Metadata")).color(t.text_dim));
+                let mut m = s(f, "metadata");
+                let opts: Vec<(String, &str)> = vec![("none".into(), tl!("None")), ("all".into(), tl!("All"))];
+                if crate::widgets::dropdown(ui, "export-metadata", &mut m, &opts, 130.0) {
+                    f.insert("metadata".into(), json!(m));
+                }
+            });
             ui.add_space(8.0);
             ui.label(egui::RichText::new(tl!("Image Size")).font(crate::theme::semibold(12.0)).color(t.text));
             let mut sc = n(f, "scale", 100.0) as f32;
@@ -314,7 +312,7 @@ mod tests {
         f.insert("quality".into(), json!(72));
         f.insert("metadata".into(), json!("all"));
         assert_eq!(settings(&f).jpeg_quality, Some(72));
-        assert!(!settings(&f).xmp_all);
+        assert!(settings(&f).xmp_all);
         let mut doc = Document::new("alpha", photocraft_doc::Size::new(4, 2), photocraft_doc::ColorMode::Rgb, photocraft_doc::SampleType::U8);
         doc.layers.push(photocraft_doc::Layer::raster("transparent", doc.pixel_format()));
         let transparent = export_document(&doc, &f, None).unwrap();

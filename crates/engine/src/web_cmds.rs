@@ -359,6 +359,8 @@ pub fn web_xmp(doc: &Document, m: WebMetadata) -> Option<String> {
 /// the file looks like (the dialog's panes); exports skip it.
 #[allow(clippy::too_many_arguments)]
 pub fn optimize(px: &[[f32; 4]], bw: usize, rect: Rect, st: &WebSettings, icc: Option<&[u8]>, xmp: Option<&str>, dpi: f32, preview: bool) -> Result<Optimized> {
+    let icc = icc.filter(|_| st.metadata != WebMetadata::None);
+    let xmp = xmp.filter(|_| st.metadata != WebMetadata::None);
     let (w, h) = (rect.width() as usize, rect.height() as usize);
     if w == 0 || h == 0 {
         return Err(other("empty slice"));
@@ -392,8 +394,9 @@ pub fn optimize(px: &[[f32; 4]], bw: usize, rect: Rect, st: &WebSettings, icc: O
             let img = photocraft_codecs::Image::from_u8(ww, hh, layout, data).map_err(e)?.with_icc(icc.map(<[u8]>::to_vec)).with_meta(meta);
             let opts = photocraft_codecs::EncodeOptions {
                 png_interlaced: st.interlaced,
-                embed_icc: icc.is_some(),
+                embed_icc: st.embed_icc && icc.is_some() && st.metadata != WebMetadata::None,
                 embed_metadata: xmp.is_some(),
+                png_scrub_alpha_lsb: st.metadata == WebMetadata::None,
                 ..Default::default()
             };
             (photocraft_codecs::encode(&img, photocraft_codecs::Format::Png, &opts).map_err(e)?, None)
@@ -406,8 +409,18 @@ pub fn optimize(px: &[[f32; 4]], bw: usize, rect: Rect, st: &WebSettings, icc: O
             }
             // Save for Web's 0–100 quality → encoder 1–100.
             let q = st.quality.max(1);
-            let bytes = photocraft_codecs::web::encode_jpeg_rgb8(ww, hh, &rgb, q, st.progressive, st.optimized, icc.filter(|_| st.embed_icc), Some(dpi), xmp)
-                .map_err(e)?;
+            let bytes = photocraft_codecs::web::encode_jpeg_rgb8(
+                ww,
+                hh,
+                &rgb,
+                q,
+                st.progressive,
+                st.optimized,
+                icc.filter(|_| st.embed_icc && st.metadata != WebMetadata::None),
+                (st.metadata != WebMetadata::None).then_some(dpi),
+                xmp,
+            )
+            .map_err(e)?;
             if preview {
                 // The preview shows the compression artefacts.
                 look = match photocraft_codecs::decode(&bytes) {
@@ -489,6 +502,8 @@ pub fn optimize(px: &[[f32; 4]], bw: usize, rect: Rect, st: &WebSettings, icc: O
             let tt = t.map(|v| v as u8);
             let bytes = if st.format == WebFormat::Gif {
                 photocraft_codecs::web::encode_gif_indexed(ww, hh, &idx, &pal, tt, st.interlaced).map_err(e)?
+            } else if st.metadata == WebMetadata::None {
+                photocraft_codecs::encode_png_indexed_clean(ww, hh, &idx, &pal, tt).map_err(e)?
             } else {
                 photocraft_codecs::encode_png_indexed(ww, hh, &idx, &pal, tt).map_err(e)?
             };
@@ -918,7 +933,16 @@ fn quick_export(s: &mut Session, p: &Value) -> Result<Value> {
             // Keeping quality absent preserves the historical lossless Quick Export behavior.
             let (wdoc, _, _) = web_document(&doc, &json!({}), &WebSettings { convert_to_srgb: prefs.convert_to_srgb, ..Default::default() })?;
             let quality = if prefs.webp_lossless { None } else { Some((f64::from(prefs.webp_quality.clamp(1, 100)) - 1.0) * 12.0 / 99.0) };
-            let warnings = crate::file_cmds::save_doc(&wdoc, &path, quality)?;
+            let warnings = if metadata == "none" {
+                let mut opts = photocraft_io::ExportOptions { xmp: photocraft_io::XmpEmbed::None, ..Default::default() };
+                opts.encode.webp_lossless = prefs.webp_lossless;
+                opts.encode.webp_quality = prefs.webp_quality.clamp(1, 100) as u8;
+                let result = photocraft_io::export(&wdoc, &path, &opts).map_err(other)?;
+                write_file(&path, &result.bytes)?;
+                result.warnings
+            } else {
+                crate::file_cmds::save_doc(&wdoc, &path, quality)?
+            };
             crate::automate_cmds::fire_event(s, "export");
             return Ok(json!({"path": path, "format": fmt, "warnings": warnings}));
         }
@@ -1220,7 +1244,7 @@ pub fn specs() -> Vec<CommandSpec> {
             "file.export.saveForWebLegacy",
             "Save for Web (Legacy)…",
             &["File", "Export"],
-            Some("Cmd+Alt+Shift+S"),
+            Some("Cmd+Alt+Shift+W"),
             r##"{"preset":"GIF 128 Dithered|JPEG High|PNG-24|…"?,"format":"gif|png8|png24|jpeg|wbmp"="png24","palette":"perceptual|selective|adaptive|restrictive|exact|systemMac|systemWindows|uniform"="selective","colors":2..256=256,"dither":"none|diffusion|pattern|noise"="diffusion","ditherAmount":0..100=88,"transparency":bool=true,"matte":"#rrggbb|none"="#ffffff","interlaced":bool=false,"webSnap":0..100=0,"quality":0..100=60,"progressive":bool=false,"optimized":bool=true,"embedIcc":bool=false,"metadata":"none|copyright|copyrightAndContact|all"="copyright","convertToSrgb":bool=true,"width"|"height"|"percent"? (image size),"resample":"bicubic|bilinear|nearest"?,"path":file? (whole image),"dir":folder? (one file per slice in images/),"html":bool=false,"slices":"all|user"="all","numbers":[n]?} → no path/dir: {bytes,width,height,colors} estimate; else {files, html, bytes}"##,
             has_doc,
             save_for_web

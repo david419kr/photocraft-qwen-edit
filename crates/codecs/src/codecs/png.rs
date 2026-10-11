@@ -250,6 +250,15 @@ pub(crate) fn encode(src: &Image, plan: Plan, opts: &EncodeOptions) -> Result<Ve
             c.copy_from_slice(&v.to_be_bytes());
         }
     }
+    if opts.png_scrub_alpha_lsb && img.layout().has_alpha() {
+        // Samples are big-endian here, so the last byte is the alpha's low byte at either depth.
+        let pixel_bytes = img.layout().channels() * img.sample_type().bytes();
+        for pixel in data.to_mut().chunks_exact_mut(pixel_bytes) {
+            if let Some(alpha_low) = pixel.last_mut() {
+                *alpha_low |= 1;
+            }
+        }
+    }
 
     let mut info = png::Info::with_size(w, h);
     info.color_type = color;
@@ -535,6 +544,23 @@ pub fn encode_indexed_with_xmp(
     transparent: Option<u8>,
     xmp: Option<&str>,
 ) -> Result<Vec<u8>, CodecError> {
+    encode_indexed_impl(width, height, indices, palette, transparent, xmp, false)
+}
+
+/// A palette PNG without metadata, with the alpha-LSB payload carrier cleared.
+pub fn encode_indexed_clean(width: u32, height: u32, indices: &[u8], palette: &[[u8; 3]], transparent: Option<u8>) -> Result<Vec<u8>, CodecError> {
+    encode_indexed_impl(width, height, indices, palette, transparent, None, true)
+}
+
+fn encode_indexed_impl(
+    width: u32,
+    height: u32,
+    indices: &[u8],
+    palette: &[[u8; 3]],
+    transparent: Option<u8>,
+    xmp: Option<&str>,
+    clean: bool,
+) -> Result<Vec<u8>, CodecError> {
     if width == 0 || height == 0 || (width as usize).checked_mul(height as usize) != Some(indices.len()) {
         return Err(CodecError::InvalidImage("index data does not match the size".into()));
     }
@@ -547,7 +573,7 @@ pub fn encode_indexed_with_xmp(
     info.palette = Some(palette.iter().flatten().copied().collect::<Vec<u8>>().into());
     if let Some(t) = transparent.filter(|&t| usize::from(t) < palette.len()) {
         let mut trns = vec![255u8; usize::from(t) + 1];
-        trns[usize::from(t)] = 0;
+        trns[usize::from(t)] = u8::from(clean);
         info.trns = Some(trns.into());
     }
     let mut out = Vec::new();

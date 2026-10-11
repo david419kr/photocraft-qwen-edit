@@ -1,6 +1,6 @@
 //! #647: Export As's Metadata: None (`XmpEmbed::None`) embeds none of the document's XMP (the
 //! packet lists the text of every type layer and one id per placed document); the default,
-//! `XmpEmbed::All`, keeps it as Save As does, and layered saves (PSD, `.pcraft`) always keep it.
+//! `XmpEmbed::All`, keeps it as Save As does. An explicit None also removes it from layered files.
 
 use photocraft_color::{ColorMode, SampleType};
 use photocraft_doc::{Document, Layer, LayerContent, Size};
@@ -46,11 +46,11 @@ fn all_embeds_the_whole_packet_and_is_the_default() {
 }
 
 #[test]
-fn layered_saves_keep_the_xmp_whatever_the_option() {
+fn layered_saves_keep_xmp_by_default_and_remove_it_for_explicit_none() {
     for opts in [ExportOptions::default(), ExportOptions { xmp: XmpEmbed::None, ..ExportOptions::default() }] {
         let psd = export(&doc_with_xmp(), "out.psd", &opts).expect("psd");
-        assert!(leaks_xmp(&psd.bytes), "PSD always keeps the document XMP");
+        assert_eq!(leaks_xmp(&psd.bytes), opts.xmp == XmpEmbed::All, "PSD respects metadata selection");
         let pcraft = export(&doc_with_xmp(), "out.pcraft", &opts).expect("pcraft");
-        assert!(leaks_xmp(&pcraft.bytes), ".pcraft always keeps the document XMP");
+        assert_eq!(leaks_xmp(&pcraft.bytes), opts.xmp == XmpEmbed::All, ".pcraft respects metadata selection");
     }
 }
