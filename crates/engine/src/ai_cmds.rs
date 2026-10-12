@@ -21,6 +21,7 @@ pub const MAX_STEPS: u32 = 1000;
 pub const MAX_WORKING_SIDE: u32 = 1536;
 pub const REMOVE_BACKGROUND_COMMAND: &str = "edit.aiRemoveBackground";
 pub const REGENERATE_COMMAND: &str = "edit.aiRegenerate";
+pub const UNLOAD_MODELS_COMMAND: &str = "ai.unloadModels";
 const MAX_GENERATION_SIDE: u32 = 16_384;
 /// 05_BackgroundRemoval_AutoINT8Cache, generalised beyond its example woman.
 pub const REMOVE_BACKGROUND_PROMPT: &str = "This is an RGBA image with transparency. Extract only the foreground subject or subjects, including hair, fur, clothing and held objects. Everything else must be fully transparent. Preserve clean edges and fine hair or fur strands.";
@@ -91,6 +92,13 @@ pub fn regeneration(s: &Session) -> Option<(EditMode, crate::prefs::ComfyUiModel
 
 /// Installed by native frontends; tests use a fake backend and never load an AI model.
 pub trait AiBackend: Send + Sync {
+    fn unload_models(&self, _endpoint: &str, _ctx: &JobCtx) -> Result<()> {
+        Ok(())
+    }
+    /// Resolve a changed image model before translation loads its own weights.
+    fn prepare_models(&self, _request: &AiRequest, _ctx: &JobCtx) -> Result<()> {
+        Ok(())
+    }
     /// Read-only service/model availability; fake backends need no external service.
     fn check_available(&self, _endpoint: &str) -> Result<()> {
         Ok(())
@@ -231,6 +239,9 @@ pub fn shaped_prompt(mode: EditMode, prompt: &str) -> String {
 }
 
 fn can_edit(s: &Session) -> std::result::Result<(), String> {
+    if s.jobs().iter().any(|job| job.command == UNLOAD_MODELS_COMMAND) {
+        return Err("AI model unloading is in progress".into());
+    }
     supported_document(&s.active().ok_or("no document open")?.doc)
 }
 fn can_fill(s: &Session) -> std::result::Result<(), String> {
@@ -249,6 +260,7 @@ fn can_generate(s: &Session) -> std::result::Result<(), String> {
 }
 
 fn can_regenerate(s: &Session) -> std::result::Result<(), String> {
+    can_edit(s)?;
     if regeneration(s).is_some() { Ok(()) } else { Err("no unchanged AI result to regenerate".into()) }
 }
 
@@ -278,6 +290,23 @@ pub fn specs() -> Vec<CommandSpec> {
             journal: true,
         })
         .collect();
+    commands.push(CommandSpec {
+        id: UNLOAD_MODELS_COMMAND,
+        label: "Unload AI Models",
+        menu: &[],
+        shortcut: None,
+        params: "{} → {unloaded:true}; release all ComfyUI models and workflow caches",
+        enabled: |s| s.ai_backend.as_ref().map(|_| ()).ok_or_else(|| "ComfyUI is not configured".into()),
+        run: |s, p| {
+            if !p.is_object() || p.as_object().is_some_and(|p| !p.is_empty()) {
+                return Err(bad(UNLOAD_MODELS_COMMAND, "use an empty object"));
+            }
+            let backend = s.ai_backend.clone().ok_or_else(|| EngineError::Other("ComfyUI is not configured".into()))?;
+            let endpoint = s.prefs().integrations.comfyui_url.clone();
+            crate::jobs::run(s, "Unload AI Models", false, move |ctx| backend.unload_models(&endpoint, ctx), |_, ()| Ok(json!({"unloaded":true})))
+        },
+        journal: false,
+    });
     commands.push(CommandSpec {
         id: REGENERATE_COMMAND,
         label: "Regenerate AI Result",
@@ -436,6 +465,23 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
             let negative_original = (!negative.is_empty()).then(|| negative.clone());
             let mut negative = negative;
             let mut negative_translated = None;
+            let text_encoder = backend.resolve_text_encoder(&endpoint, settings.text_encoder.as_deref(), &registered_encoders)?;
+            let mut request = AiRequest {
+                image: input.image,
+                prompt: String::new(),
+                mode,
+                removal: mode == EditMode::GenerativeFill && prompt.trim().is_empty(),
+                endpoint: endpoint.clone(),
+                seed,
+                model,
+                custom_model,
+                text_encoder,
+                cfg,
+                negative_prompt: String::new(),
+                turbo: settings.turbo,
+                steps,
+            };
+            backend.prepare_models(&request, ctx)?;
             if translate_prompt || translate_negative {
                 let available = backend.available_translation_models(&endpoint)?;
                 if let Some(selected) = available.iter().find(|model| **model == translation_model).or(available.first()) {
@@ -458,22 +504,8 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
                 }
             }
             ctx.check()?;
-            let text_encoder = backend.resolve_text_encoder(&endpoint, settings.text_encoder.as_deref(), &registered_encoders)?;
-            let request = AiRequest {
-                image: input.image,
-                prompt: shaped_prompt(mode, &prompt),
-                mode,
-                removal: mode == EditMode::GenerativeFill && prompt.trim().is_empty(),
-                endpoint,
-                seed,
-                model,
-                custom_model,
-                text_encoder,
-                cfg,
-                negative_prompt: negative,
-                turbo: settings.turbo,
-                steps,
-            };
+            request.prompt = shaped_prompt(mode, &prompt);
+            request.negative_prompt = negative;
             let generated = backend.generate(&request, ctx)?;
             let layer = result_layer(&source, &generated, &request.image, input.content_size, &name, mode, ctx)?;
             let prompt_entry = crate::ai_prompts::Entry {

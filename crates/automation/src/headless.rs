@@ -52,7 +52,7 @@ impl Headless {
         #[cfg(not(target_arch = "wasm32"))]
         let session = {
             let mut session = session;
-            session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi));
+            session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi::default()));
             session
         };
         Self { session, writers: HashMap::new(), filesystem: Filesystem::TrustedLocal }

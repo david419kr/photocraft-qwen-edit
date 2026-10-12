@@ -1,6 +1,105 @@
 use super::*;
 
 #[test]
+fn model_switches_release_both_backends_and_use_an_ordered_queue_marker() {
+    use std::io::{BufRead, BufReader, Write};
+    use std::net::TcpListener;
+    let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+    let endpoint = format!("http://{}", listener.local_addr().unwrap());
+    listener.set_nonblocking(true).unwrap();
+    let server = std::thread::spawn(move || {
+        let deadline = Instant::now() + Duration::from_secs(10);
+        let mut paths = Vec::new();
+        let mut job = String::new();
+        let mut connections = Vec::new();
+        while paths.len() < 12 && Instant::now() < deadline {
+            let Ok((stream, _)) = listener.accept() else {
+                std::thread::sleep(Duration::from_millis(5));
+                continue;
+            };
+            stream.set_nonblocking(false).unwrap();
+            stream.set_read_timeout(Some(Duration::from_secs(2))).unwrap();
+            let mut reader = BufReader::new(stream);
+            let mut line = String::new();
+            reader.read_line(&mut line).unwrap();
+            let path = line.split_whitespace().nth(1).unwrap().to_owned();
+            let mut length = 0;
+            loop {
+                line.clear();
+                reader.read_line(&mut line).unwrap();
+                if line == "\r\n" {
+                    break;
+                }
+                if let Some(value) = line.to_lowercase().strip_prefix("content-length:") {
+                    length = value.trim().parse::<usize>().unwrap();
+                }
+            }
+            assert!(length < 8192);
+            let mut body = vec![0; length];
+            reader.read_exact(&mut body).unwrap();
+            let response = if path == "/free" {
+                assert_eq!(serde_json::from_slice::<Value>(&body).unwrap(), json!({"unload_models":true,"free_memory":true}));
+                json!({})
+            } else if path == "/prompt" {
+                let value: Value = serde_json::from_slice(&body).unwrap();
+                job = value["prompt_id"].as_str().unwrap().to_owned();
+                assert_eq!(value["prompt"]["990"]["class_type"], "PreviewAny");
+                assert_eq!(value["prompt"]["990"]["inputs"]["source"], job);
+                json!({"prompt_id":job})
+            } else {
+                assert_eq!(path, format!("/history/{job}"));
+                json!({job.clone():{"status":{"completed":true,"status_str":"success"}}})
+            };
+            paths.push(path);
+            let data = response.to_string();
+            let mut stream = reader.into_inner();
+            write!(stream, "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}", data.len(), data).unwrap();
+            stream.flush().unwrap();
+            connections.push(stream);
+        }
+        for mut stream in connections {
+            stream.set_read_timeout(Some(Duration::from_millis(50))).unwrap();
+            let _ = std::io::Read::by_ref(&mut stream).take(8192).read_to_end(&mut Vec::new());
+        }
+        paths
+    });
+    let backend = ComfyUi::default();
+    let ctx = JobCtx::new();
+    let first = vec![("37", "unet_name", "a.safetensors".into())];
+    let second = vec![("37", "unet_name", "b.safetensors".into())];
+    backend.image_models(&endpoint, &first, &ctx).unwrap();
+    backend.translation_model(&endpoint, "translator-a.gguf", &ctx).unwrap();
+    let cancelled = JobCtx::new();
+    cancelled.cancel();
+    assert!(backend.release_models(&endpoint, &cancelled).is_err());
+    // A cancelled/failed release must be retried even if the filenames match.
+    backend.image_models(&endpoint, &first, &ctx).unwrap();
+    backend.translation_model(&endpoint, "translator-a.gguf", &ctx).unwrap();
+    backend.image_models(&endpoint, &second, &ctx).unwrap();
+    backend.translation_model(&endpoint, "translator-a.gguf", &ctx).unwrap();
+    backend.translation_model(&endpoint, "translator-b.gguf", &ctx).unwrap();
+    backend.release_models(&endpoint, &ctx).unwrap();
+    backend.image_models(&endpoint, &second, &ctx).unwrap();
+    backend.translation_model(&endpoint, "translator-b.gguf", &ctx).unwrap();
+    let paths = server.join().unwrap();
+    assert_eq!(paths.len(), 12);
+    for group in paths.chunks_exact(3) {
+        assert_eq!(group[0], "/free");
+        assert_eq!(group[1], "/prompt");
+        assert!(group[2].starts_with("/history/"));
+    }
+}
+
+#[test]
+fn unload_rejects_nonlocal_endpoints_and_honours_cancellation_before_posting() {
+    let backend = ComfyUi::default();
+    assert!(backend.release_models("https://example.com", &JobCtx::new()).is_err());
+    let ctx = JobCtx::new();
+    ctx.cancel();
+    assert!(matches!(backend.release_models("http://127.0.0.1:1", &ctx), Err(EngineError::Cancelled)));
+}
+
+#[test]
 fn cfg_negative_encoder_and_custom_turbo_are_carried_to_every_workflow() {
     for mode in [EditMode::PromptGenerate, EditMode::PromptEdit, EditMode::GenerativeFill] {
         let mut input = request(mode);
@@ -132,7 +231,7 @@ fn turbo_loader_schedule_and_steps_preserve_existing_prompts_and_masks() {
         }
     }
     let (endpoint, server) = mock_server_model(None, Some(true), ComfyUiModel::TurboInt8);
-    assert_eq!(ComfyUi.available_models(&endpoint).unwrap(), vec![ComfyUiModel::TurboInt8]);
+    assert_eq!(ComfyUi::default().available_models(&endpoint).unwrap(), vec![ComfyUiModel::TurboInt8]);
     assert_eq!(server.join().unwrap().len(), 8);
 }
 
@@ -181,6 +280,7 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
         let deadline = Instant::now() + Duration::from_secs(30);
         let mut paths = Vec::new();
         let mut job = String::new();
+        let mut connections = Vec::new();
         while Instant::now() < deadline {
             let Ok((stream, _)) = listener.accept() else {
                 std::thread::sleep(Duration::from_millis(10));
@@ -252,11 +352,8 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
             wire.extend_from_slice(&response);
             stream.write_all(&wire).unwrap();
             stream.flush().unwrap();
-            // Finish the HTTP connection gracefully on Windows rather than resetting a peer
-            // that is still receiving the response when this fixture drops its socket.
-            stream.shutdown(std::net::Shutdown::Write).unwrap();
-            stream.set_read_timeout(Some(Duration::from_secs(2))).unwrap();
-            let _ = std::io::Read::by_ref(&mut stream).take(8192).read_to_end(&mut Vec::new());
+            // Retain sockets until the client has finished all fixture requests.
+            connections.push(stream);
             let finished = path.starts_with("/view?")
                 || path.ends_with("/cancel")
                 || probe == Some(false) && path == "/object_info/VAELoader"
@@ -265,6 +362,10 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
             if finished {
                 break;
             }
+        }
+        for mut stream in connections {
+            stream.set_read_timeout(Some(Duration::from_millis(50))).unwrap();
+            let _ = std::io::Read::by_ref(&mut stream).take(8192).read_to_end(&mut Vec::new());
         }
         paths
     });
@@ -276,7 +377,7 @@ fn round_trip_through_a_mock_server_never_uses_a_real_model() {
     let (endpoint, server) = mock_server(None, None);
     let mut request = request(EditMode::PromptEdit);
     request.endpoint = endpoint;
-    let result = ComfyUi.generate(&request, &JobCtx::new());
+    let result = ComfyUi::default().generate(&request, &JobCtx::new());
     let paths = server.join().unwrap();
     let result = result.unwrap_or_else(|error| panic!("{error:?}; served paths: {paths:?}"));
     assert_eq!(result.pixels.get(..4), Some([80, 80, 80, 255].as_slice()));
@@ -299,7 +400,7 @@ fn text_to_image_matches_workflow_one_and_never_uploads_source_image() {
         assert_eq!(graph["62"]["inputs"]["width"], 32);
         let (endpoint, server) = mock_server_model(None, None, model);
         input.endpoint = endpoint;
-        assert!(ComfyUi.generate(&input, &JobCtx::new()).is_ok());
+        assert!(ComfyUi::default().generate(&input, &JobCtx::new()).is_ok());
         assert!(!server.join().unwrap().iter().any(|p| p == "/upload/image"));
     }
 }
@@ -310,7 +411,7 @@ fn cancellation_targets_only_the_submitted_job() {
     let (endpoint, server) = mock_server(Some(ctx.clone()), None);
     let mut request = request(EditMode::GenerativeFill);
     request.endpoint = endpoint;
-    let result = ComfyUi.generate(&request, &ctx);
+    let result = ComfyUi::default().generate(&request, &ctx);
     let paths = server.join().unwrap();
     assert!(matches!(result, Err(EngineError::Cancelled)), "{result:?}; served paths: {paths:?}");
     assert!(paths.len() >= 4);
@@ -322,7 +423,7 @@ fn cancellation_targets_only_the_submitted_job() {
 fn availability_checks_models_and_nodes_without_upload_or_generation() {
     for present in [true, false] {
         let (endpoint, server) = mock_server(None, Some(present));
-        let available = ComfyUi.check_available(&endpoint);
+        let available = ComfyUi::default().check_available(&endpoint);
         let paths = server.join().unwrap();
         assert_eq!(available.is_ok(), present, "{available:?}");
         assert!(paths.iter().all(|path| path.starts_with("/object_info/")), "{paths:?}");

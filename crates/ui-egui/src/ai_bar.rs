@@ -291,8 +291,23 @@ pub(crate) fn clear_document(state: &mut AiUi) {
 }
 
 fn set_translation_pref(app: &mut PhotocraftApp, path: &str, value: serde_json::Value) -> Result<(), String> {
+    let old = app.session.prefs().integrations.comfyui_translation_model;
     app.run("prefs.set", json!({"path":path,"value":value}))?;
-    crate::prefs_ui::save_preferences(app)
+    crate::prefs_ui::save_preferences(app)?;
+    if old != app.session.prefs().integrations.comfyui_translation_model {
+        unload_models(app)?;
+    }
+    Ok(())
+}
+
+fn unload_models(app: &mut PhotocraftApp) -> Result<(), String> {
+    if app.session.jobs().iter().any(|job| job.command == photocraft_engine::ai_cmds::UNLOAD_MODELS_COMMAND) {
+        return Ok(());
+    }
+    if app.session.ai_backend.is_some() {
+        app.run(photocraft_engine::ai_cmds::UNLOAD_MODELS_COMMAND, json!({}))?;
+    }
+    Ok(())
 }
 
 fn translation_controls(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u64) {
@@ -344,15 +359,25 @@ fn model_ready(app: &PhotocraftApp, model: ComfyUiModel) -> bool {
 }
 
 fn select_model(app: &mut PhotocraftApp, model: ComfyUiModel) -> Result<(), String> {
+    let changed = model != app.session.prefs().integrations.comfyui_model;
     app.run("prefs.set", json!({"path":"integrations.comfyuiModel","value":model.name()}))?;
     app.ui.ai.steps = None;
     app.ui.ai.cfg = None;
-    crate::prefs_ui::save_preferences(app)
+    crate::prefs_ui::save_preferences(app)?;
+    if changed {
+        unload_models(app)?;
+    }
+    Ok(())
 }
 
 fn select_custom_model(app: &mut PhotocraftApp, name: &str) -> Result<(), String> {
+    let changed = app.session.prefs().integrations.comfyui_model == ComfyUiModel::Custom && app.session.prefs().integrations.comfyui_custom_model != name;
     app.run("prefs.set", json!({"path":"integrations.comfyuiCustomModel","value":name}))?;
-    select_model(app, ComfyUiModel::Custom)
+    select_model(app, ComfyUiModel::Custom)?;
+    if changed {
+        unload_models(app)?;
+    }
+    Ok(())
 }
 
 fn model_count(app: &PhotocraftApp) -> usize {
@@ -783,7 +808,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     }
     let x = (anchor.center().x - width * 0.5).clamp(canvas.left() + 8.0, canvas.right() - width - 8.0);
     let y = (anchor.bottom() + 10.0).clamp(canvas.top() + 8.0, (canvas.bottom() - height - 8.0).max(canvas.top() + 8.0));
-    let busy = app.session.job_on(doc.id).is_some();
+    let busy = app.session.job_on(doc.id).is_some() || app.session.jobs().iter().any(|job| job.command == photocraft_engine::ai_cmds::UNLOAD_MODELS_COMMAND);
     let ready = model_ready(app, app.session.prefs().integrations.comfyui_model);
     let tokens = crate::theme::Tokens::get(ui.ctx());
     let mut generate = false;
@@ -947,6 +972,39 @@ mod tests {
     use super::*;
     use crate::Services;
     use photocraft_engine::Session;
+
+    #[test]
+    fn model_selectors_unload_once_on_change_but_not_on_toggle_or_reselection() {
+        struct Recorder(Arc<Mutex<usize>>);
+        impl photocraft_engine::ai_cmds::AiBackend for Recorder {
+            fn unload_models(&self, _: &str, _: &photocraft_engine::jobs::JobCtx) -> photocraft_engine::Result<()> {
+                *self.0.lock().unwrap() += 1;
+                Ok(())
+            }
+            fn generate(
+                &self,
+                _: &photocraft_engine::ai_cmds::AiRequest,
+                _: &photocraft_engine::jobs::JobCtx,
+            ) -> photocraft_engine::Result<photocraft_raster::Rgba8Image> {
+                Err(photocraft_engine::EngineError::Other("unused".into()))
+            }
+        }
+        let calls = Arc::new(Mutex::new(0));
+        let mut session = Session::new();
+        session.ai_backend = Some(Arc::new(Recorder(calls.clone())));
+        session.edit_prefs(|prefs| prefs.integrations.comfyui_custom_models = "first.safetensors\nsecond.safetensors".into());
+        let mut app = PhotocraftApp::new(session, Services::default());
+        select_model(&mut app, ComfyUiModel::QwenImage21).unwrap();
+        select_model(&mut app, ComfyUiModel::TurboInt8).unwrap();
+        select_model(&mut app, ComfyUiModel::TurboInt8).unwrap();
+        select_custom_model(&mut app, "first.safetensors").unwrap();
+        select_custom_model(&mut app, "second.safetensors").unwrap();
+        select_custom_model(&mut app, "second.safetensors").unwrap();
+        set_translation_pref(&mut app, "integrations.comfyuiTranslationModel", json!(ComfyUiTranslationModel::HyMt7Abliterated.name())).unwrap();
+        set_translation_pref(&mut app, "integrations.comfyuiTranslatePrompt", json!(true)).unwrap();
+        assert_eq!(*calls.lock().unwrap(), 4);
+        assert!(app.session.execute(photocraft_engine::ai_cmds::UNLOAD_MODELS_COMMAND, json!({"unexpected":true})).is_err());
+    }
 
     #[test]
     fn model_settings_save_profiles_encoders_and_preserve_negative_draft_on_cfg_change() {

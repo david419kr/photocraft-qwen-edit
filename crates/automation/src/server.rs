@@ -242,7 +242,10 @@ pub struct UiSetParams {
     /// color ("matchCanvas" or "custom"), custom_color ([r, g, b]), opacity (0..100),
     /// auto_adjust, classic_mode and auto_center_preview), shapeStroke (an object patching width, align, cap, join, miterLimit,
     /// dashes, dashOffset and opacity; null disables the stroke). Shape stroke fields use
-    /// `shape.edit` names and units; colour comes from `tools.setColors`. Other fields are an error.
+    /// `shape.edit` names and units; colour comes from `tools.setColors`.
+    /// AI fields: aiPrompt, aiNegativePrompt (strings), aiSteps, aiCfg (sampling overrides),
+    /// aiOpen, aiPromptInfo, aiModelSettings (bool), aiModelSettingsTab (settings tab).
+    /// Other fields are an error.
     pub fields: Value,
 }
 

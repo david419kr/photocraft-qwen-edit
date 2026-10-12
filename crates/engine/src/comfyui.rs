@@ -22,8 +22,11 @@ const UNET_MODEL: &str = "qwen_image_2.1_int8_convrot.safetensors";
 const VAE_MODEL: &str = "qwen_image_2.1_vae_bf16.safetensors";
 
 #[derive(Default)]
-pub struct ComfyUi;
+pub struct ComfyUi {
+    models: std::sync::Mutex<std::collections::HashMap<String, residency::Models>>,
+}
 
+mod residency;
 mod translation;
 
 fn failure(message: impl std::fmt::Display) -> EngineError {
@@ -230,11 +233,22 @@ fn turbo_sampler(graph: &mut Value, request: &AiRequest) {
 }
 
 impl AiBackend for ComfyUi {
+    fn unload_models(&self, endpoint: &str, ctx: &JobCtx) -> Result<()> {
+        self.release_models(endpoint, ctx)
+    }
+
+    fn prepare_models(&self, request: &AiRequest, ctx: &JobCtx) -> Result<()> {
+        let base = endpoint_url(&request.endpoint)?;
+        let client = client(Duration::from_secs(3), Duration::from_secs(5))?;
+        let models = model_inputs(&client, &base, ctx, request)?;
+        self.image_models(&request.endpoint, &models, ctx)
+    }
     fn available_translation_models(&self, endpoint: &str) -> Result<Vec<crate::prefs::ComfyUiTranslationModel>> {
         translation::models(endpoint)
     }
 
     fn translate(&self, endpoint: &str, model: crate::prefs::ComfyUiTranslationModel, prompt: &str, ctx: &JobCtx) -> Result<String> {
+        self.translation_model(endpoint, model.filename(), ctx)?;
         translation::translate(endpoint, model, prompt, ctx)
     }
 
@@ -311,6 +325,7 @@ impl AiBackend for ComfyUi {
         let client = client(Duration::from_secs(3), Duration::from_secs(5))?;
         ctx.check()?;
         let models = model_inputs(&client, &base, ctx, request)?;
+        self.image_models(&request.endpoint, &models, ctx)?;
         ctx.check()?;
         let job = uuid::Uuid::new_v4().to_string();
         let filename = if request.mode == EditMode::PromptGenerate {

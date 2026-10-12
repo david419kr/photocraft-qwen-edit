@@ -349,7 +349,7 @@ fn main() -> eframe::Result {
                 }
             }
             let mut session = Session::new();
-            session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi));
+            session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi::default()));
             let mut app = PhotocraftApp::new(session, services);
             app.integrated_titlebar = cfg!(target_os = "macos");
             app.custom_titlebar = custom_titlebar;

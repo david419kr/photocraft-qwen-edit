@@ -4,6 +4,7 @@ $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 $fork = 'https://github.com/david419kr/ComfyUI-Hy-MT2'
+$nodeRevision = '22ea3d7ebc8938515c0f60dbcd991edbb46ae8d5'
 $uvVersion = '0.10.11'
 $uvHash = '9ee74df98582f37fdd6069e1caac80d2616f9a489f5dbb2b1c152f30be69c58e'
 $pythonUrl = 'https://github.com/astral-sh/python-build-standalone/releases/download/20260310/cpython-3.13.12%2B20260310-x86_64-pc-windows-msvc-install_only_stripped.tar.gz'
@@ -121,10 +122,12 @@ try {
         if ($LASTEXITCODE -eq 0 -and $origin.TrimEnd('/').Replace('.git','') -eq $fork) {
             $dirty = & $git.Source @nodeGitArgs status --porcelain
             if ($LASTEXITCODE -ne 0 -or $dirty) { throw 'The fork has local source changes; commit or back them up before updating.' }
-            $branch = & $git.Source @nodeGitArgs branch --show-current
-            if ($LASTEXITCODE -ne 0 -or $branch -ne 'main') { throw 'The installed fork must be on main to update automatically.' }
-            & $git.Source @nodeGitArgs pull --ff-only origin main
+            & $git.Source @nodeGitArgs fetch origin $nodeRevision
             if ($LASTEXITCODE -ne 0) { throw 'Fork update failed; existing files were preserved.' }
+            & $git.Source @nodeGitArgs merge-base --is-ancestor HEAD $nodeRevision
+            if ($LASTEXITCODE -ne 0) { throw 'The installed fork has a different revision history; back it up before replacing it with the pinned release.' }
+            & $git.Source @nodeGitArgs checkout --detach $nodeRevision
+            if ($LASTEXITCODE -ne 0) { throw 'Could not select the pinned Hy-MT2 revision.' }
             $update = $true
         }
     }
@@ -132,16 +135,18 @@ try {
         $stage = Checked-Path (Join-Path $tools ('node-' + [Guid]::NewGuid().ToString('N')))
         New-Item -ItemType Directory -Path $stage -Force | Out-Null
         if ($git) {
-            $source = Join-Path $stage 'source'
+            $source = Checked-Path (Join-Path $stage 'source')
             & $git.Source clone ($fork + '.git') $source
             if ($LASTEXITCODE -ne 0) { throw 'Hy-MT2 fork download failed.' }
+            & $git.Source -c ('safe.directory=' + $source.Replace('\','/')) -C $source checkout --detach $nodeRevision
+            if ($LASTEXITCODE -ne 0) { throw 'Could not select the pinned Hy-MT2 revision.' }
         } else {
             $archive = Join-Path $stage 'node.zip'
-            Download ($fork + '/archive/refs/heads/main.zip') $archive
+            Download ($fork + '/archive/' + $nodeRevision + '.zip') $archive
             Expand-Archive -LiteralPath $archive -DestinationPath $stage
-            $source = Join-Path $stage 'ComfyUI-Hy-MT2-main'
+            $source = Join-Path $stage ('ComfyUI-Hy-MT2-' + $nodeRevision)
         }
-        if (!(Test-Path -LiteralPath (Join-Path $source 'runtime/llama_worker.py'))) { throw 'Downloaded fork is missing its private runtime.' }
+        if (!(Test-Path -LiteralPath (Join-Path $source 'runtime/llama_worker.py')) -or !(Test-Path -LiteralPath (Join-Path $source 'py/residency.py'))) { throw 'Downloaded fork is missing its private runtime or residency support.' }
         $backup = $null
         if (Test-Path -LiteralPath $node) {
             $backups = Checked-Path (Join-Path $PortableRoot '.hymt2-backups')
@@ -194,6 +199,7 @@ try {
         [Environment]::SetEnvironmentVariable('UV_PYTHON_DOWNLOADS', $oldDownloads)
     }
     Write-Host "Hy-MT2 fork installed: $node"
+    Write-Host "Pinned revision: $nodeRevision (persistent translation and image loader cache)"
     Write-Host "Private Python/CUDA runtime: $venv"
     Write-Host 'Restart ComfyUI. GGUF files belong in ComfyUI/models/LLM/GGUF.'
 } catch {

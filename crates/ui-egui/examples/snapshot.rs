@@ -125,7 +125,7 @@ fn main() {
                 if mock_ai {
                     session.ai_backend = Some(std::sync::Arc::new(MockAi(mock_models)));
                 } else if comfy_ai {
-                    session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi));
+                    session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi::default()));
                 }
                 let mut app = PhotocraftApp::new(session, services);
                 app.background_jobs = background_jobs;
