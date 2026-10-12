@@ -21,6 +21,20 @@ function Show-Section([string]$Title) {
     Write-Host ''
 }
 
+function Read-Selection([string]$Title, [string]$Supplied, [string]$Default) {
+    do {
+        $answer = if ($Supplied) { $Supplied } else { Read-Host "$Title [$Default]" }
+        if (!$answer.Trim()) { $answer = $Default }
+        $items = @($answer.Split(',') | ForEach-Object { $_.Trim() })
+        if ($items.Count -eq 1 -and $items[0] -eq '0') { return '0' }
+        if ($items.Count -gt 0 -and !($items | Where-Object { $_ -notin @('1','2') })) {
+            return (($items | Select-Object -Unique) -join ',')
+        }
+        if ($Supplied) { throw "Invalid $Title value. Use 0, 1, 2 or 1,2." }
+        Write-Host 'Enter 0, 1, 2 or 1,2.' -ForegroundColor Yellow
+    } while ($true)
+}
+
 function New-InstallerShortcuts {
     Show-Section 'Ready to use'
     $shell = New-Object -ComObject WScript.Shell
@@ -160,11 +174,55 @@ try {
             if ($remembered -and (Test-Path -LiteralPath (Join-Path $remembered 'python_embeded/python.exe'))) { $default = $remembered }
         }
         Write-Host ''
-        $answer = Read-Host "Install folder [$default]"
+        Write-Host 'Press Enter to use the default folder shown below, or type a different full folder path.'
+        $answer = Read-Host "Install folder (Enter = default) [$default]"
         $PortableRoot = if ($answer.Trim()) { $answer.Trim().Trim('"') } else { $default }
     }
     $PortableRoot = [IO.Path]::GetFullPath($PortableRoot)
     if ($PortableRoot -eq [IO.Path]::GetPathRoot($PortableRoot)) { throw 'Choose a dedicated folder, not a drive root.' }
+    $saved = $null
+    $stateFile = Join-Path $PortableRoot '.qwen-setup/install-state.json'
+    if (Test-Path -LiteralPath $stateFile) {
+        try { $saved = Get-Content -LiteralPath $stateFile -Raw -Encoding UTF8 | ConvertFrom-Json }
+        catch { Write-Host 'Saved selections could not be read; using setup defaults.' -ForegroundColor Yellow }
+    }
+    Show-Section 'Setup choices - answer now, then installation runs unattended'
+    Write-Host 'Press Enter to keep each suggested selection. Use commas for multiple choices.'
+    Write-Host ''
+    Write-Host 'Qwen image models'
+    Write-Host '  [1] Standard - 25 steps'
+    Write-Host '  [2] Turbo    - 8 steps'
+    Write-Host '  [1,2] Both models'
+    Write-Host '  [0] Add models manually later'
+    $modelDefault = if ($saved -and $null -ne $saved.models) { if (@($saved.models).Count) { @($saved.models) -join ',' } else { '0' } } else { '2' }
+    if ($modelDefault -notmatch '^(0|[12](,[12])*)$') { $modelDefault = '2' }
+    $Models = Read-Selection 'Select Qwen models' $Models $modelDefault
+    if ($Models -ne '0') { $DownloadShared = 'Yes' }
+    elseif (!$DownloadShared) {
+        Write-Host ''
+        Write-Host 'Manual image models also need the official text encoder and VAE.'
+        Write-Host 'Without these shared files, manually adding an image model is not enough to generate images.' -ForegroundColor Yellow
+        $sharedDefault = if ($saved -and $saved.shared -eq $false) { 'No' } else { 'Yes' }
+        do {
+            $answer = (Read-Host "Download the official INT8 text encoder and VAE? [$sharedDefault]").Trim()
+            if (!$answer) { $answer = $sharedDefault }
+            if ($answer -in @('y','yes')) { $DownloadShared = 'Yes' }
+            elseif ($answer -in @('n','no')) { $DownloadShared = 'No' }
+            else { Write-Host 'Enter Yes or No, or press Enter for the default.' -ForegroundColor Yellow }
+        } while (!$DownloadShared)
+    }
+    Write-Host ''
+    Write-Host 'Optional prompt translation'
+    Write-Host '  [1] Hy-MT2 1.8B - i1-Q4_K_M (Recommended)'
+    Write-Host '  [2] Hy-MT2 7B   - Q4_K_M'
+    Write-Host '  [1,2] Both models'
+    Write-Host '  [0] Do not install translation'
+    Write-Host '1.8B uses less VRAM and coexists more easily with the image model. 7B uses more VRAM.'
+    $translationDefault = if ($saved -and $null -ne $saved.translations -and @($saved.translations).Count) { @($saved.translations) -join ',' } else { '0' }
+    if ($translationDefault -notmatch '^(0|[12](,[12])*)$') { $translationDefault = '0' }
+    $TranslationModels = Read-Selection 'Select translation models' $TranslationModels $translationDefault
+    Write-Host ''
+    Write-Host 'All questions are answered. Installation now continues without further prompts.' -ForegroundColor Green
     New-Item -ItemType Directory -Force -Path $PortableRoot | Out-Null
     $python = Join-Path $PortableRoot 'python_embeded/python.exe'
     $main = Join-Path $PortableRoot 'ComfyUI/main.py'
@@ -229,9 +287,7 @@ try {
     $to = Join-Path $PortableRoot 'install-qwen-image21.cmd'
     if ([IO.Path]::GetFullPath($from) -ne [IO.Path]::GetFullPath($to)) { Copy-Item -LiteralPath $from -Destination $to -Force }
     $arguments = @('-s','-X','utf8',(Join-Path $support 'qwen-image21-setup.py'),'install','--root',$PortableRoot)
-    if ($Models) { $arguments += @('--models',$Models) }
-    if ($DownloadShared) { $arguments += @('--shared',$DownloadShared.ToLowerInvariant()) }
-    if ($TranslationModels) { $arguments += @('--translations',$TranslationModels) }
+    $arguments += @('--models',$Models,'--shared',$DownloadShared.ToLowerInvariant(),'--translations',$TranslationModels)
     & $python @arguments
     if ($LASTEXITCODE -ne 0) { throw 'Qwen setup did not complete. Check the log and rerun.' }
     # Retain the old launcher support until the new launcher has been written successfully.

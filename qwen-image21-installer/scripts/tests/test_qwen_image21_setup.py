@@ -6,6 +6,7 @@ import io
 from pathlib import Path
 import subprocess
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -17,6 +18,15 @@ PAYLOAD = bytes(range(256)) * 1024
 
 class InstallerTests(unittest.TestCase):
     url = 'https://example.invalid/test-model'
+
+    def test_missing_or_invalid_choices_fail_before_any_environment_work(self):
+        with tempfile.TemporaryDirectory() as folder, patch('builtins.input') as ask, patch.object(setup.subprocess, 'run') as run:
+            with self.assertRaisesRegex(RuntimeError, 'answer setup questions first'):
+                setup.install(Path(folder), SimpleNamespace(models=None, shared=None, translations=None))
+            with self.assertRaises(ValueError):
+                setup.install(Path(folder), SimpleNamespace(models='3', shared='yes', translations='0'))
+            ask.assert_not_called()
+            run.assert_not_called()
 
     def test_resume_verify_and_no_duplicate_download(self):
         with tempfile.TemporaryDirectory(prefix='qwen installer 한글 ') as folder:

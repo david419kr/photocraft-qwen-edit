@@ -5,9 +5,12 @@
 1. **Extract the ZIP** into a folder of your choice. Do not run a CMD directly inside the ZIP.
 2. Double-click **`install-qwen-image21.cmd`**. Python, Git, and 7-Zip do not need to be installed system-wide.
 3. Choose the installation folder. The default is `ComfyUI_windows_portable` beside the installer. A previously selected folder is remembered.
+   **Press Enter to keep the displayed default folder**, or enter a different full path.
 4. Choose image models: `1` Standard (25 steps), `2` Turbo (8 steps), `1,2` both, or `0` to add models manually.
 5. Selecting an image model also downloads the official INT8 text encoder and VAE. With `0`, you can choose whether to download these shared files.
-6. Choose optional translation: `1` Hy-MT2 1.8B Heretic i1-Q4_K_M, `2` Hy-MT2 7B Abliterated Q4_K_M, `1,2` both, or `0` none.
+6. Choose optional translation: `1` Hy-MT2 1.8B Heretic i1-Q4_K_M **(Recommended)**, `2` Hy-MT2 7B Abliterated Q4_K_M, `1,2` both, or `0` none. The 1.8B model uses less VRAM and is easier to keep resident alongside the image model; 7B uses more VRAM and may require unloading/offloading on smaller GPUs.
+
+All questions are asked before downloading or extracting ComfyUI. After the selection phase, installation proceeds without more configuration prompts; leave the console open until completion.
 
 After setup, double-click **`0. Run-Qwen-Image21.lnk` in the installer folder**.
 

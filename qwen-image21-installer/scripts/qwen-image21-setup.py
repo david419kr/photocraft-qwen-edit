@@ -386,12 +386,23 @@ def write_launcher(root, sage):
 
 
 def install(root, options):
+    if any(getattr(options, name, None) is None for name in ('models', 'shared', 'translations')):
+        raise RuntimeError('Run install-qwen-image21.cmd to answer setup questions first, or supply --models, --shared and --translations.')
+    models = choose('Select Qwen models', options.models, '2')
+    shared = bool(models) or options.shared == 'yes'
+    translations = choose('Select translation models', options.translations, '0')
     root = root.resolve()
     python = root / 'python_embeded/python.exe'
     cache = root / '.qwen-setup'
     cache.mkdir(exist_ok=True)
     state_file = cache / 'install-state.json'
-    state = json.loads(state_file.read_text(encoding='utf-8')) if state_file.exists() else {}
+    try:
+        state = json.loads(state_file.read_text(encoding='utf-8')) if state_file.exists() else {}
+    except (OSError, ValueError):
+        print('[Setup] Saved state could not be read; using a fresh state.', flush=True)
+        state = {}
+    if not isinstance(state, dict):
+        state = {}
     verified = state.setdefault('verified_downloads', {})
     # Updating packages while this exact installation is running is unsafe.
     command = ['$p=Get-CimInstance Win32_Process; $p | Where-Object {$_.Name -match "python" -and $_.CommandLine -match "main.py"} | Select-Object -ExpandProperty ExecutablePath']
@@ -410,18 +421,8 @@ def install(root, options):
     sage = setup_sage(python, cache, info, verified)
     state['sage_attention'] = sage
     check_nodes(root)
-    section('[3/5] Choose models and translation')
-    print('Qwen image models\n  [1] Standard - 25 steps\n  [2] Turbo    - 8 steps\n  [1,2] Both models\n  [0] Add models manually later\n')
-    models = choose('Select Qwen models', options.models, ','.join(state.get('models', ['2'])) or '0')
-    shared = bool(models)
-    if not models:
-        print('\n[Manual setup]\n  Put image models in ComfyUI/models/diffusion_models.\n  A text encoder and VAE are also required for image generation.\n')
-        if options.shared is None:
-            shared = (input('Download the official INT8 text encoder and VAE? [Y/n]: ').strip().lower() or 'y') in ('y', 'yes')
-        else:
-            shared = options.shared == 'yes'
-    print('\nOptional prompt translation\n  [1] Hy-MT2 1.8B - i1-Q4_K_M\n  [2] Hy-MT2 7B   - Q4_K_M\n  [1,2] Both models\n  [0] Do not install translation\n')
-    translations = choose('Select translation models', options.translations, ','.join(state.get('translations', [])) or '0')
+    section('[3/5] Selected configuration')
+    print(f"Image models: {','.join(models) or 'manual'} | Shared encoder/VAE: {'yes' if shared else 'no'} | Translation: {','.join(translations) or 'none'}", flush=True)
     state.update(models=models, shared=shared, translations=translations, completed=False)
     atomic_json(state_file, state)
     write_launcher(root, sage)
