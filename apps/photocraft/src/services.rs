@@ -466,7 +466,7 @@ mod tests {
     #[test]
     fn save_filters_lead_with_every_export_format() {
         for ext in ["png", "jpg", "webp", "avif", "tif", "tga"] {
-            assert!(save_filters(&format!("photo.{ext}"))[0].1.contains(&ext), "{ext}");
+            assert!(save_filters(&format!("photo.{ext}"))[0].1.iter().any(|e| e == ext), "{ext}");
         }
     }
 
