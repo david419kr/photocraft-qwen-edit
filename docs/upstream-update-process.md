@@ -41,6 +41,26 @@ semantic merge complete without the full supplied handoff text.
    an existing release/tag/asset to conceal a failed attempt. Address a draft
    by release ID when its tag lookup returns 404.
 
+## Public release notes
+
+Use the actual previous release's English, user-facing format. The reference
+is `261012-0.6.0`, retained by `261013-0.7.0` after its notes were corrected:
+
+- Title: `PhotoCraft Local Qwen AI - YYMMDD (upstream VERSION)`.
+- Opening: date build and upstream version, explaining what each tracks.
+- `Download and start`: ZIP extraction, README, installer and launch sequence;
+  Windows/NVIDIA/CUDA requirements, separate model downloads and optional
+  translation guidance.
+- `Included`: concise user-visible changes and retained fork features.
+- `Guides`: English and Korean guide links, followed by ZIP layout, excluded
+  personal/model files, bundled CRT and SHA256-sidecar information.
+
+Keep the notes in English. Put detailed SHA lists, CI counts, debugging logs
+and build provenance in the PR and provenance attachment rather than the
+release introduction. State meaningful known limitations briefly and link
+their details. Update requirements only when the release actually changes
+them. Editing release prose never authorizes replacing tags or assets.
+
 ## One-time 0.7.0 exception
 
 Release `261013-0.7.0` uses source `df715bc41646f7d434a07be774297eaa71e3f444`.
