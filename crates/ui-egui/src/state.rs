@@ -1204,14 +1204,13 @@ mod tests {
         assert_eq!(Tool::from_name("nope"), None);
     }
 
-    /// The README's "Everything in the box" tool heading and list name exactly the tools a user can
-    /// pick, `Tool::ALL` (#996).
+    /// The developer inventory names exactly the tools a user can pick, `Tool::ALL` (#996).
     #[test]
-    fn readme_tool_list_matches_tool_all() {
-        let readme = include_str!("../../../README.md");
-        let (_, rest) = readme.split_once("<h4>🧰 ").unwrap();
+    fn documented_tool_list_matches_tool_all() {
+        let inventory = include_str!("../../../docs/native-tools.md");
+        let (_, rest) = inventory.split_once("<h4>🧰 ").unwrap();
         let (count, rest) = rest.split_once(" tools</h4>").unwrap();
-        assert_eq!(count.parse::<usize>().unwrap(), Tool::ALL.len(), "README.md tool heading");
+        assert_eq!(count.parse::<usize>().unwrap(), Tool::ALL.len(), "native tool inventory heading");
         let list = rest.trim_start().lines().next().unwrap();
         // "Rectangular and Elliptical Marquee" names two tools: "Rectangular Marquee", "Elliptical Marquee".
         let mut named: Vec<String> = Vec::new();
@@ -1224,7 +1223,7 @@ mod tests {
         named.sort();
         let mut labels: Vec<String> = Tool::ALL.iter().map(|tool| tool.label().trim_end_matches(" Tool").to_owned()).collect();
         labels.sort();
-        assert_eq!(named, labels, "README.md tool list");
+        assert_eq!(named, labels, "native tool inventory list");
     }
 
     #[test]

@@ -19,7 +19,7 @@ def main():
         ("ui-history", ["-p", "photocraft-ui-egui", "--lib", "history"]),
         ("ui-catalogs", ["-p", "photocraft-ui-egui", "--lib", "i18n::tests::"]),
         ("ui-preference-labels", ["-p", "photocraft-ui-egui", "--lib", "preference_labels_are_translated"]),
-        ("ui-readme-tools", ["-p", "photocraft-ui-egui", "--lib", "readme_tool_list_matches_tool_all"]),
+        ("ui-documented-tools", ["-p", "photocraft-ui-egui", "--lib", "documented_tool_list_matches_tool_all"]),
         ("avif", ["-p", "photocraft-codecs", "--features", "avif,avif-decode", "--test", "avif"]),
         ("png-metadata", ["-p", "photocraft-codecs", "--test", "png_clean_metadata"]),
         ("io-metadata", ["-p", "photocraft-io", "--test", "metadata_clean"]),
