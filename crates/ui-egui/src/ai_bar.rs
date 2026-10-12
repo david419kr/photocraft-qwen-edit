@@ -789,18 +789,20 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let width = ((if repeat.is_some() { 576.0f32 } else { 540.0f32 }) + translation_width + 112.0).min(canvas.width() - 16.0);
     let buttons = if mode == EditMode::PromptGenerate { 1.0 } else { 2.0 };
     let model_width = if model_count(app) == 1 { 0.0 } else { 145.0 };
-    let button_width =
-        ((width - 128.0 - model_width - 80.0 - if repeat.is_some() { 32.0 } else { 0.0 } - ui.spacing().item_spacing.x * (buttons + 3.0)) / buttons).max(1.0);
-    let text_width = if app.ui.ai.open { width - 32.0 } else { button_width - 16.0 };
+    // Measure one line: wrapped estimates inflated even single-line English buttons.
     let button_text =
-        ui.painter().layout(label(mode).to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text, text_width.max(1.0));
-    let quick_text = ui.painter().layout(
-        quick_label(mode).to_owned(),
-        egui::TextStyle::Button.resolve(ui.style()),
-        crate::theme::Tokens::get(ui.ctx()).text,
-        text_width.max(1.0),
-    );
-    let button_height = (button_text.size().y.max(quick_text.size().y) + 8.0).max(24.0);
+        ui.painter().layout_no_wrap(label(mode).to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text);
+    let quick_text =
+        ui.painter().layout_no_wrap(quick_label(mode).to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text);
+    let controls_width = 128.0 + model_width + 80.0 + if repeat.is_some() { 32.0 } else { 0.0 } + ui.spacing().item_spacing.x * (buttons + 3.0);
+    let label_width = if mode == EditMode::PromptGenerate { button_text.size().x } else { button_text.size().x.max(quick_text.size().x) };
+    let width = if app.ui.ai.open {
+        width
+    } else {
+        width.max(controls_width + buttons * (label_width + ui.spacing().button_padding.x * 2.0)).min(canvas.width() - 16.0)
+    };
+    let button_width = ((width - controls_width) / buttons).max(1.0);
+    let button_height = (button_text.size().y.max(quick_text.size().y) + ui.spacing().button_padding.y * 2.0).max(24.0);
     let height = if app.ui.ai.open { if cfg > 1.0 { 184.0 } else { 128.0 } } else { button_height + 16.0 };
     if canvas.height() < height + 16.0 {
         app.ui.ai.rect = None;
@@ -830,13 +832,18 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                             model_selector(app, ui, doc.id.0);
                             cfg_controls(app, ui);
                             step_controls(app, ui);
-                            if ui.add_sized(vec2(button_width, button_height), egui::Button::new(label(mode)).wrap()).clicked() {
+                            if ui.add_sized(vec2(button_width, button_height), egui::Button::new(label(mode)).truncate()).on_hover_text(label(mode)).clicked() {
                                 app.ui.ai.open = true;
                                 app.ui.ai.focus = true;
                             }
                             if mode != EditMode::PromptGenerate {
-                                quick =
-                                    ui.add_enabled(ready, egui::Button::new(quick_label(mode)).min_size(vec2(button_width, button_height)).wrap()).clicked();
+                                quick = ui
+                                    .add_enabled_ui(ready, |ui| {
+                                        ui.add_sized(vec2(button_width, button_height), egui::Button::new(quick_label(mode)).truncate())
+                                            .on_hover_text(quick_label(mode))
+                                    })
+                                    .inner
+                                    .clicked();
                             }
                             if let Some((_, model)) = repeat {
                                 ui.add_enabled_ui(model_ready(app, model), |ui| {
@@ -1384,5 +1391,49 @@ mod tests {
         assert!(app.ui.ai.steps.is_none());
         assert_eq!(app.session.prefs().integrations.selected_settings().steps, 25);
         assert_eq!(app.ui.ai.prompt, "unchanged user prompt");
+    }
+
+    #[test]
+    fn closed_bar_stays_single_row_in_english_and_korean() {
+        use egui_kittest::{Harness, kittest::Queryable};
+        for lang in [crate::i18n::Lang::EN, crate::i18n::Lang::from_pref("ko")] {
+            for mode in [EditMode::PromptGenerate, EditMode::PromptEdit, EditMode::GenerativeFill] {
+                for width in [800.0, 480.0] {
+                    let mut app = PhotocraftApp::new(Session::new(), Services::default());
+                    app.run("file.new", json!({"width":20,"height":20,"background":"white"})).unwrap();
+                    if mode != EditMode::PromptGenerate {
+                        app.run("edit.fill", json!({"contents":"gray"})).unwrap();
+                    }
+                    if mode == EditMode::GenerativeFill {
+                        app.run("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
+                    }
+                    app.ui.ai.available = true;
+                    app.ui.ai.available_models = ComfyUiModel::ALL.to_vec();
+                    let mut h = Harness::builder().with_size(vec2(width, 600.0)).build_ui_state(
+                        move |ui, app| {
+                            if !ui.ctx().fonts(|f| f.families().contains(&egui::FontFamily::Name("medium".into()))) {
+                                return;
+                            }
+                            crate::i18n::with_language(lang, || {
+                                let canvas = Rect::from_min_size(egui::Pos2::ZERO, vec2(width, 600.0));
+                                let image = Rect::from_min_size(pos2(60.0, 60.0), vec2(width - 120.0, 300.0));
+                                show(app, ui, 0, canvas, image, Some(image));
+                            });
+                        },
+                        app,
+                    );
+                    PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
+                    h.run_steps(4);
+                    let rect = h.state().ui.ai.rect.unwrap();
+                    assert!(rect[3] - rect[1] <= 44.0, "{lang:?} {mode:?} width {width}: {rect:?}");
+                    let primary = h.get_by_label(crate::i18n::with_language(lang, || label(mode))).rect();
+                    assert!(primary.height() <= 28.0, "{lang:?} {mode:?}: {primary:?}");
+                    if mode != EditMode::PromptGenerate {
+                        let quick = h.get_by_label(crate::i18n::with_language(lang, || quick_label(mode))).rect();
+                        assert!(quick.height() <= 28.0, "{lang:?} {mode:?}: {quick:?}");
+                    }
+                }
+            }
+        }
     }
 }

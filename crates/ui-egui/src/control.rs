@@ -1499,7 +1499,7 @@ mod tests {
             assert!(r["error"].as_str().unwrap().contains("unknown field"), "{r}");
         }
         assert_eq!(app.ui.theme, ThemeKind::StudioLight);
-        assert_eq!(app.ui.tool, Tool::Lasso, "a rejected call applies none of its fields");
+        assert_eq!(app.ui.tool, Tool::Brush, "a rejected call applies none of its fields");
         // Every field the method reads gets past the check (a bad value is its own error).
         for field in UI_SET_FIELDS {
             let r = call(&mut app, &ctx, "ui.set", json!({ field: null }));
@@ -1520,7 +1520,7 @@ mod tests {
         assert_eq!(r["result"]["ai"]["mode"], "promptGenerate");
         let r = call(&mut app, &ctx, "ui.set", json!({"tool":"move","aiPrompt":false}));
         assert_eq!(r["ok"], false);
-        assert_eq!(app.ui.tool, Tool::Lasso);
+        assert_eq!(app.ui.tool, Tool::Brush);
     }
 
     #[test]
