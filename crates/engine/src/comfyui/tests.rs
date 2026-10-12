@@ -12,7 +12,7 @@ fn model_switches_release_both_backends_and_use_an_ordered_queue_marker() {
         let mut paths = Vec::new();
         let mut job = String::new();
         let mut connections = Vec::new();
-        while paths.len() < 12 && Instant::now() < deadline {
+        while paths.len() < 20 && Instant::now() < deadline {
             let Ok((stream, _)) = listener.accept() else {
                 std::thread::sleep(Duration::from_millis(5));
                 continue;
@@ -82,11 +82,13 @@ fn model_switches_release_both_backends_and_use_an_ordered_queue_marker() {
     backend.image_models(&endpoint, &second, &ctx).unwrap();
     backend.translation_model(&endpoint, "translator-b.gguf", &ctx).unwrap();
     let paths = server.join().unwrap();
-    assert_eq!(paths.len(), 12);
-    for group in paths.chunks_exact(3) {
+    assert_eq!(paths.len(), 20);
+    for group in paths.chunks_exact(5) {
         assert_eq!(group[0], "/free");
         assert_eq!(group[1], "/prompt");
         assert!(group[2].starts_with("/history/"));
+        assert_eq!(group[3], "/prompt");
+        assert!(group[4].starts_with("/history/"));
     }
 }
 

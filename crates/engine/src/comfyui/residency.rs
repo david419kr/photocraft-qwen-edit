@@ -57,35 +57,40 @@ fn free_models(base: &Url, ctx: &JobCtx) -> Result<()> {
         .send()
         .and_then(Response::error_for_status)
         .map_err(|error| failure(format!("{error:?}")))?;
-    // /free only sets worker flags. A queued marker forces a worker iteration
-    // before the next real job; flags are handled before that next job executes.
-    let job = uuid::Uuid::new_v4().to_string();
-    let marker = read_json(
-        client
-            .post(base.join("prompt").map_err(failure)?)
-            .json(&json!({"prompt_id":job,"client_id":job,"prompt":{"990":{"class_type":"PreviewAny","inputs":{"source":job}}}}))
-            .send()
-            .map_err(failure)?,
-    )?;
-    if marker.get("prompt_id").and_then(Value::as_str) != Some(job.as_str()) {
-        return Err(failure("unexpected unload marker id"));
-    }
-    let history = base.join(&format!("history/{job}")).map_err(failure)?;
-    let started = Instant::now();
-    loop {
+    // History becomes visible before the worker handles /free flags. The first
+    // marker forces a worker iteration; the second confirms its cleanup ended
+    // before another image prompt can record new loader keepalive keys.
+    for _ in 0..2 {
         ctx.check()?;
-        if started.elapsed() > Duration::from_secs(30) {
-            return Err(failure("model unload queue timed out"));
+        let job = uuid::Uuid::new_v4().to_string();
+        let marker = read_json(
+            client
+                .post(base.join("prompt").map_err(failure)?)
+                .json(&json!({"prompt_id":job,"client_id":job,"prompt":{"990":{"class_type":"PreviewAny","inputs":{"source":job}}}}))
+                .send()
+                .map_err(failure)?,
+        )?;
+        if marker.get("prompt_id").and_then(Value::as_str) != Some(job.as_str()) {
+            return Err(failure("unexpected unload marker id"));
         }
-        let result = read_json(client.get(history.clone()).send().map_err(failure)?)?;
-        if let Some(record) = result.get(&job) {
-            if record.pointer("/status/status_str").and_then(Value::as_str) == Some("error") {
-                return Err(failure("model unload marker failed"));
+        let history = base.join(&format!("history/{job}")).map_err(failure)?;
+        let started = Instant::now();
+        loop {
+            ctx.check()?;
+            if started.elapsed() > Duration::from_secs(30) {
+                return Err(failure("model unload queue timed out"));
             }
-            if record.pointer("/status/completed").and_then(Value::as_bool) == Some(true) {
-                return Ok(());
+            let result = read_json(client.get(history.clone()).send().map_err(failure)?)?;
+            if let Some(record) = result.get(&job) {
+                if record.pointer("/status/status_str").and_then(Value::as_str) == Some("error") {
+                    return Err(failure("model unload marker failed"));
+                }
+                if record.pointer("/status/completed").and_then(Value::as_bool) == Some(true) {
+                    break;
+                }
             }
+            std::thread::sleep(Duration::from_millis(50));
         }
-        std::thread::sleep(Duration::from_millis(50));
     }
+    Ok(())
 }
