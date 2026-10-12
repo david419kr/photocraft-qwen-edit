@@ -506,6 +506,10 @@ the named call again if desired.
 
 `ui.inspect` includes `ai` with `open`, `prompt`, `mode` and the screen-space `rect`.
 `ui.set {aiOpen: bool, aiPrompt: string}` drives the prompt bar without starting inference.
+`ui.set {aiModelSettings: bool, aiModelSettingsTab: "models"|"encoders"}` drives the model settings window.
+`ui.set {aiCfg: null|1..100, aiNegativePrompt: string}` drives guidance/negative drafts without inference.
+Stock Turbo refuses CFG overrides above 1. A null CFG restores the selected model default.
+AI command params also accept `cfg` and `negativePrompt`; negatives are used only above CFG 1.
 `ui.set {aiSteps: 1..1000}` changes its sampling-step override; `aiSteps: null` restores the
 selected model's default (25 for base checkpoints, 8 for Turbo). AI engine commands also accept
 an optional integer `steps` parameter; one-click regeneration retains its captured step count.

@@ -74,7 +74,7 @@ pub enum Outcome {
 /// field's value is validated before the first one is applied, so a typo, an unknown field, a
 /// bad value or a bad nested key can't reply with success while nothing — or only half of it —
 /// changed (#412).
-pub const UI_SET_FIELDS: [&str; 37] = [
+pub const UI_SET_FIELDS: [&str; 41] = [
     "tool",
     "panels",
     "dock",
@@ -104,6 +104,10 @@ pub const UI_SET_FIELDS: [&str; 37] = [
     "aiSteps",
     "aiOpen",
     "aiPromptInfo",
+    "aiModelSettings",
+    "aiCfg",
+    "aiNegativePrompt",
+    "aiModelSettingsTab",
     "eyedropperSampleSize",
     "eyedropperSample",
     "eyedropperRing",
@@ -503,6 +507,33 @@ fn dispatch(app: &mut PhotocraftApp, ctx: &egui::Context, req: &ControlRequest) 
                 };
                 let ai_open = bool_field(p, "aiOpen")?;
                 let ai_prompt_info = bool_field(p, "aiPromptInfo")?;
+                let ai_model_settings = bool_field(p, "aiModelSettings")?;
+                let model_settings_tab = match p.get("aiModelSettingsTab") {
+                    Some(value) => Some(match value.as_str() {
+                        Some("models") => false,
+                        Some("encoders") => true,
+                        _ => return Err("Tab must be models or encoders".into()),
+                    }),
+                    None => None,
+                };
+                let ai_cfg = match p.get("aiCfg") {
+                    Some(Value::Null) => Some(None),
+                    Some(value) => {
+                        Some(Some(value.as_f64().filter(|value| value.is_finite() && (1.0..=100.0).contains(value)).ok_or("aiCfg must be within 1..100")?))
+                    }
+                    None => None,
+                };
+                if ai_cfg.flatten().is_some_and(|value| value != 1.0)
+                    && app.session.prefs().integrations.comfyui_model == photocraft_engine::prefs::ComfyUiModel::TurboInt8
+                {
+                    return Err("Stock Turbo CFG is fixed at 1".into());
+                }
+                let ai_negative = match p.get("aiNegativePrompt") {
+                    Some(value) => Some(
+                        value.as_str().filter(|text| text.len() <= photocraft_engine::ai_cmds::MAX_PROMPT_BYTES).ok_or("Invalid negative prompt")?.to_owned(),
+                    ),
+                    None => None,
+                };
                 let ai_steps = match p.get("aiSteps") {
                     Some(Value::Null) => Some(None),
                     Some(value) => Some(Some(
@@ -537,6 +568,22 @@ fn dispatch(app: &mut PhotocraftApp, ctx: &egui::Context, req: &ControlRequest) 
                 if let Some(open) = ai_prompt_info {
                     app.ui.ai.prompt_info_open = open;
                     app.ui.ai.prompt_info_page = 0;
+                }
+                if let Some(open) = ai_model_settings {
+                    if open {
+                        crate::ai_bar::open_model_settings(app);
+                    } else {
+                        app.ui.ai.model_settings_open = false;
+                    }
+                }
+                if let Some(cfg) = ai_cfg {
+                    app.ui.ai.cfg = cfg;
+                }
+                if let Some(negative) = ai_negative {
+                    app.ui.ai.negative_prompt = negative;
+                }
+                if let Some(tab) = model_settings_tab {
+                    app.ui.ai.model_settings_te_tab = tab;
                 }
                 // Apply (nothing below can fail).
                 if let Some(stroke) = shape_stroke {

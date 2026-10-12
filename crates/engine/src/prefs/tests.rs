@@ -1,5 +1,35 @@
 use super::*;
 
+#[test]
+fn retired_model_ids_do_not_discard_unrelated_preferences_or_custom_registrations() {
+    let mut s = Session::new();
+    s.load_prefs_json(r#"{"interface":{"language":"ko"},"integrations":{"comfyuiModel":"retiredModel","comfyuiCustomModels":"mine.safetensors"}}"#).unwrap();
+    assert_eq!(s.prefs().integrations.comfyui_model, ComfyUiModel::QwenImage21);
+    assert_eq!(s.prefs().interface.language, "ko");
+    assert_eq!(s.prefs().integrations.comfyui_custom_models, "mine.safetensors");
+}
+
+#[test]
+fn custom_checkpoint_text_validates_extensions_and_round_trips() {
+    assert_eq!(
+        custom_model_names(" \nfirst.safetensors\r\nfolder/second.SAFETENSORS\nfirst.safetensors\n").unwrap(),
+        ["first.safetensors", "folder/second.SAFETENSORS"]
+    );
+    for bad in ["model.gguf", "model.safetensors.txt", "model"] {
+        assert!(custom_model_names(bad).is_err());
+    }
+    let mut session = session();
+    session.execute("prefs.set", json!({"path":"integrations.comfyuiCustomModels","value":"first.safetensors\nfolder/second.SAFETENSORS"})).unwrap();
+    session.execute("prefs.set", json!({"path":"integrations.comfyuiCustomModel","value":"first.safetensors"})).unwrap();
+    session.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"custom"})).unwrap();
+    assert!(session.execute("prefs.set", json!({"path":"integrations.comfyuiCustomModels","value":"bad.gguf"})).is_err());
+    let mut reopened = Session::new();
+    reopened.load_prefs_json(&session.prefs_to_json()).unwrap();
+    assert_eq!(reopened.prefs().integrations, session.prefs().integrations);
+    assert_eq!(ComfyUiModel::Custom.default_steps(), 25);
+    assert!(!ComfyUiModel::Custom.is_gguf());
+}
+
 fn session() -> Session {
     let mut s = Session::new();
     s.execute("file.new", json!({"width": 32, "height": 32})).unwrap();

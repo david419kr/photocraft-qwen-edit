@@ -1,8 +1,53 @@
 use super::*;
 
+#[test]
+fn cfg_negative_encoder_and_custom_turbo_are_carried_to_every_workflow() {
+    for mode in [EditMode::PromptGenerate, EditMode::PromptEdit, EditMode::GenerativeFill] {
+        let mut input = request(mode);
+        input.cfg = 3.5;
+        input.text_encoder = "user_te.safetensors".into();
+        input.negative_prompt = "blur, noise".into();
+        let graph = workflow(&input, "source.png", "test");
+        assert_eq!(graph["38"]["inputs"]["clip_name"], "user_te.safetensors");
+        assert_eq!(graph["3"]["inputs"]["cfg"], 3.5);
+        if mode == EditMode::PromptGenerate {
+            assert_eq!(graph["63"]["inputs"]["text"], "blur, noise");
+        } else {
+            assert_eq!(graph["64"]["inputs"]["negative_prompt"], "blur, noise");
+        }
+        input.model = ComfyUiModel::Custom;
+        input.custom_model = Some("custom_turbo.safetensors".into());
+        input.turbo = true;
+        assert_eq!(workflow(&input, "source.png", "test")["3"]["class_type"], "SamplerCustom");
+    }
+}
+
+#[test]
+fn custom_checkpoint_reuses_all_qwen_workflows_without_prompt_changes() {
+    for mode in [EditMode::PromptGenerate, EditMode::PromptEdit, EditMode::GenerativeFill] {
+        let builtin = request(mode);
+        let mut custom = builtin.clone();
+        custom.model = ComfyUiModel::Custom;
+        custom.custom_model = Some("folder/user_model.safetensors".into());
+        let mut graph = workflow(&custom, "source.png", "output");
+        assert_eq!(graph["37"]["class_type"], "UNETLoader");
+        assert_eq!(graph["37"]["inputs"]["unet_name"], "folder/user_model.safetensors");
+        graph["37"]["inputs"]["unet_name"] = json!(builtin.model.filename());
+        assert_eq!(graph, workflow(&builtin, "source.png", "output"));
+        let info = json!({"UNETLoader":{"input":{"required":{"unet_name":[["nested/user_model.safetensors"]]}}}});
+        assert_eq!(model_name(&info, "UNETLoader", "unet_name", "user_model.safetensors").unwrap(), "nested/user_model.safetensors");
+        assert_eq!(model_name(&info, "UNETLoader", "unet_name", "nested\\user_model.safetensors").unwrap(), "nested/user_model.safetensors");
+    }
+}
+
 fn request(mode: EditMode) -> AiRequest {
     AiRequest {
         model: ComfyUiModel::default(),
+        custom_model: None,
+        text_encoder: crate::ai_models::DEFAULT_ENCODER.into(),
+        cfg: 1.0,
+        negative_prompt: String::new(),
+        turbo: false,
         image: Rgba8Image { width: 32, height: 32, pixels: vec![255; 32 * 32 * 4] },
         prompt: "plain prompt".into(),
         mode,
@@ -27,46 +72,6 @@ fn supported_models_use_the_same_edit_and_fill_graph_and_resolve_nested_paths() 
         let nested = format!("Qwen/{}", model.filename());
         let info = json!({"UNETLoader":{"input":{"required":{"unet_name":[[nested],{}]}}}});
         assert_eq!(model_name(&info, "UNETLoader", "unet_name", model.filename()).unwrap(), nested);
-    }
-}
-
-#[test]
-fn fusal_models_use_matching_encoder_and_base_sampling_in_all_modes() {
-    for model in [ComfyUiModel::AnimeFusal, ComfyUiModel::NoctQFusal] {
-        assert_eq!(model.default_steps(), 25);
-        assert!(!model.is_turbo());
-        assert!(!model.is_gguf());
-        for mode in [EditMode::PromptGenerate, EditMode::PromptEdit, EditMode::GenerativeFill] {
-            let mut input = request(mode);
-            input.model = model;
-            input.steps = model.default_steps();
-            let graph = workflow(&input, "source.png", "fusal");
-            assert_eq!(graph["37"]["class_type"], "UNETLoader");
-            assert_eq!(graph["37"]["inputs"]["unet_name"], model.filename());
-            assert_eq!(graph["38"]["inputs"]["clip_name"], model.clip_filename());
-            assert_eq!(graph["3"]["class_type"], "KSampler");
-            assert_eq!(graph["3"]["inputs"]["steps"], 25);
-            assert_eq!(graph["3"]["inputs"]["cfg"], 1.0);
-            assert!(graph.get("91").is_none());
-            if mode != EditMode::PromptGenerate {
-                assert_eq!(graph["64"]["inputs"]["prompt"], input.prompt);
-            }
-        }
-    }
-}
-
-#[test]
-fn noct_only_server_is_available_and_receives_the_selected_checkpoint() {
-    let (endpoint, server) = mock_server_model(None, Some(true), ComfyUiModel::NoctQv4);
-    assert_eq!(ComfyUi.available_models(&endpoint).unwrap(), vec![ComfyUiModel::NoctQv4]);
-    assert_eq!(server.join().unwrap().len(), 6);
-    for mode in [EditMode::PromptEdit, EditMode::GenerativeFill] {
-        let (endpoint, server) = mock_server_model(None, None, ComfyUiModel::NoctQv4);
-        let mut input = request(mode);
-        input.endpoint = endpoint;
-        input.model = ComfyUiModel::NoctQv4;
-        assert!(ComfyUi.generate(&input, &JobCtx::new()).is_ok());
-        assert!(server.join().unwrap().iter().any(|p| p == "/prompt"));
     }
 }
 
@@ -126,9 +131,9 @@ fn turbo_loader_schedule_and_steps_preserve_existing_prompts_and_masks() {
             assert!(sigmas.windows(2).all(|pair| pair[0] >= pair[1]));
         }
     }
-    let (endpoint, server) = mock_server_model(None, Some(true), ComfyUiModel::TurboAdQ4);
-    assert_eq!(ComfyUi.available_models(&endpoint).unwrap(), vec![ComfyUiModel::TurboAdQ4]);
-    assert_eq!(server.join().unwrap().len(), 9);
+    let (endpoint, server) = mock_server_model(None, Some(true), ComfyUiModel::TurboInt8);
+    assert_eq!(ComfyUi.available_models(&endpoint).unwrap(), vec![ComfyUiModel::TurboInt8]);
+    assert_eq!(server.join().unwrap().len(), 8);
 }
 
 #[test]
@@ -254,7 +259,7 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
             let _ = std::io::Read::by_ref(&mut stream).take(8192).read_to_end(&mut Vec::new());
             let finished = path.starts_with("/view?")
                 || path.ends_with("/cancel")
-                || probe == Some(false)
+                || probe == Some(false) && path == "/object_info/VAELoader"
                 || probe == Some(true) && path == if selected.is_turbo() { "/object_info/KSamplerSelect" } else { "/object_info/QwenImage21Cache" };
             paths.push(path);
             if finished {
@@ -321,6 +326,6 @@ fn availability_checks_models_and_nodes_without_upload_or_generation() {
         let paths = server.join().unwrap();
         assert_eq!(available.is_ok(), present, "{available:?}");
         assert!(paths.iter().all(|path| path.starts_with("/object_info/")), "{paths:?}");
-        assert_eq!(paths.len(), if present { 6 } else { 1 });
+        assert_eq!(paths.len(), if present { 5 } else { 3 });
     }
 }

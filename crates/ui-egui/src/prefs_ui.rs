@@ -1319,6 +1319,24 @@ fn section_fields(ui: &mut egui::Ui, section: &str, obj: &mut Map<String, Value>
                     obj.insert(k, json!(format!("#{:02x}{:02x}{:02x}", rgb[0], rgb[1], rgb[2])));
                     let _ = color_of(s);
                 }
+                #[cfg(not(target_arch = "wasm32"))]
+                Value::String(s) if path == "integrations.comfyuiUrl" => {
+                    ui.label(RichText::new(&label).color(t.text_dim));
+                    let mut endpoint = s.clone();
+                    ui.vertical(|ui| {
+                        ui.add(egui::TextEdit::singleline(&mut endpoint).desired_width(260.0));
+                        ui.horizontal(|ui| {
+                            ui.label(tl!("ComfyUI port"));
+                            let mut port = crate::ai_bar::endpoint_port(&endpoint);
+                            if crate::widgets::integer_value_field(ui, &mut port, 1..=65535, 70.0).changed()
+                                && let Ok(updated) = crate::ai_bar::with_endpoint_port(&endpoint, port)
+                            {
+                                endpoint = updated;
+                            }
+                        });
+                    });
+                    obj.insert(k, json!(endpoint));
+                }
                 Value::String(s) => {
                     ui.label(RichText::new(tl!(&label)).color(t.text_dim));
                     let mut s = s.clone();

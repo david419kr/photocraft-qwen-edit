@@ -47,6 +47,10 @@ pub struct Entry {
     pub original: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub translated: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub negative_original: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub negative_translated: Option<String>,
 }
 #[derive(Deserialize)]
 struct Packet {
@@ -84,7 +88,11 @@ pub fn read(xmp: Option<&str>) -> Result<Vec<Entry>, String> {
     if packet.version != 1
         || packet.entries.len() > MAX_ENTRIES
         || packet.entries.iter().any(|entry| {
-            entry.original.len() > MAX_PROMPT_BYTES || entry.translated.as_ref().is_some_and(|text| text.len() > MAX_PROMPT_BYTES) || entry.regions.len() > 9
+            entry.original.len() > MAX_PROMPT_BYTES
+                || entry.translated.as_ref().is_some_and(|text| text.len() > MAX_PROMPT_BYTES)
+                || entry.regions.len() > 9
+                || entry.negative_original.as_ref().is_some_and(|text| text.len() > MAX_PROMPT_BYTES)
+                || entry.negative_translated.as_ref().is_some_and(|text| text.len() > MAX_PROMPT_BYTES)
         })
     {
         return Err("Unsupported or oversized prompt history".into());
@@ -95,6 +103,11 @@ pub fn read(xmp: Option<&str>) -> Result<Vec<Entry>, String> {
 pub fn append(xmp: Option<&str>, entry: &Entry) -> Result<String, String> {
     if entry.original.len() > MAX_PROMPT_BYTES || entry.translated.as_ref().is_some_and(|text| text.len() > MAX_PROMPT_BYTES) || entry.regions.len() > 9 {
         return Err("Invalid prompt history entry".into());
+    }
+    if entry.negative_original.as_ref().is_some_and(|text| text.len() > MAX_PROMPT_BYTES)
+        || entry.negative_translated.as_ref().is_some_and(|text| text.len() > MAX_PROMPT_BYTES)
+    {
+        return Err("Invalid negative prompt history entry".into());
     }
     let mut entries = read(xmp)?;
     if entries.len() >= MAX_ENTRIES {
@@ -148,10 +161,14 @@ mod tests {
     #[test]
     fn prompt_history_round_trips_unicode_preserves_foreign_xmp_and_rejects_corruption() {
         let foreign = "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\"><r:RDF xmlns:r=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"><r:Description xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><dc:title>원본 제목</dc:title></r:Description></r:RDF></x:xmpmeta>";
-        let entry =
-            Entry {
-                mode: EditMode::PromptGenerate, regions: Vec::new(), original: "언덕 위 소녀 <&> 🌙".into(), translated: Some("A girl on a hill".into())
-            };
+        let entry = Entry {
+            mode: EditMode::PromptGenerate,
+            regions: Vec::new(),
+            original: "언덕 위 소녀 <&> 🌙".into(),
+            translated: Some("A girl on a hill".into()),
+            negative_original: None,
+            negative_translated: None,
+        };
         let first = append(Some(foreign), &entry).unwrap();
         let second = append(Some(&first), &entry).unwrap();
         assert_eq!(read(Some(&second)).unwrap(), vec![entry.clone(), entry]);

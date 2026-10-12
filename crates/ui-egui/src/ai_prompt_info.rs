@@ -107,6 +107,14 @@ fn entry(ui: &mut egui::Ui, number: usize, entry: &Entry) {
     } else {
         prompt_text(ui, number, "original", &entry.original, tl!("Copy original prompt"));
     }
+    if let Some(negative) = &entry.negative_original {
+        ui.label(tl!("Negative prompt"));
+        prompt_text(ui, number, "negative", negative, tl!("Copy negative prompt"));
+        if let Some(translation) = &entry.negative_translated {
+            ui.label(tl!("English translation"));
+            prompt_text(ui, number, "negative-translation", translation, tl!("Copy English translation"));
+        }
+    }
     ui.add_space(8.0);
     ui.separator();
 }
@@ -192,7 +200,14 @@ mod tests {
         let mut session = Session::new();
         session.execute("file.new", json!({"width":64,"height":64})).unwrap();
         session.execute("prefs.set", json!({"path":"interface.language","value":"en"})).unwrap();
-        let record = Entry { mode: EditMode::PromptEdit, regions: Vec::new(), original: ORIGINAL.into(), translated: Some(ENGLISH.into()) };
+        let record = Entry {
+            mode: EditMode::PromptEdit,
+            regions: Vec::new(),
+            original: ORIGINAL.into(),
+            translated: Some(ENGLISH.into()),
+            negative_original: None,
+            negative_translated: None,
+        };
         session
             .edit("Prompt fixture", |doc, _| {
                 doc.metadata.xmp = Some(photocraft_engine::ai_prompts::append(None, &record).unwrap());

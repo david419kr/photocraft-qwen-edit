@@ -860,101 +860,60 @@ impl Default for RawDefaults {
     }
 }
 
-choice!(ComfyUiModel {
-    QwenImage21 = "qwenImage21", NoctQv4 = "noctQv4", TurboInt8 = "turboInt8",
-    TurboQ8 = "turboQ8", TurboAdQ2 = "turboAdQ2", TurboAdQ3 = "turboAdQ3",
-    TurboAdQ4 = "turboAdQ4", TurboAdQ5 = "turboAdQ5", TurboAdQ6 = "turboAdQ6", TurboBf16Gguf = "turboBf16Gguf",
-    TurboQ3KM = "turboQ3KM", TurboQ4KM = "turboQ4KM", TurboQ4KS = "turboQ4KS", TurboQ5KM = "turboQ5KM", TurboQ6K = "turboQ6K",
-    AnimeFusal = "animeFusal", NoctQFusal = "noctQFusal"
-} default QwenImage21);
+choice!(ComfyUiModel { QwenImage21 = "qwenImage21", TurboInt8 = "turboInt8", Custom = "custom" } default QwenImage21);
 
 impl ComfyUiModel {
-    pub const ALL: [Self; 17] = [
-        Self::QwenImage21,
-        Self::NoctQv4,
-        Self::AnimeFusal,
-        Self::NoctQFusal,
-        Self::TurboInt8,
-        Self::TurboQ8,
-        Self::TurboAdQ4,
-        Self::TurboAdQ6,
-        Self::TurboAdQ5,
-        Self::TurboAdQ3,
-        Self::TurboAdQ2,
-        Self::TurboBf16Gguf,
-        Self::TurboQ6K,
-        Self::TurboQ5KM,
-        Self::TurboQ4KM,
-        Self::TurboQ4KS,
-        Self::TurboQ3KM,
-    ];
+    pub const ALL: [Self; 2] = [Self::QwenImage21, Self::TurboInt8];
     pub fn is_turbo(self) -> bool {
-        !matches!(self, Self::QwenImage21 | Self::NoctQv4 | Self::AnimeFusal | Self::NoctQFusal)
+        self == Self::TurboInt8
     }
     pub fn is_gguf(self) -> bool {
-        self.is_turbo() && self != Self::TurboInt8
+        false
     }
     pub fn loader(self) -> &'static str {
-        if self.is_gguf() { "UnetLoaderGGUF" } else { "UNETLoader" }
+        "UNETLoader"
     }
     pub fn default_steps(self) -> u32 {
         if self.is_turbo() { 8 } else { 25 }
     }
     pub fn clip_filename(self) -> &'static str {
-        self.clip_filenames().first().copied().unwrap_or("qwen3vl_8b_int8_convrot.safetensors")
-    }
-    pub fn clip_filenames(self) -> &'static [&'static str] {
-        if matches!(self, Self::AnimeFusal | Self::NoctQFusal) {
-            &["qwen3-vl-8b-heretic-1.3.0-int8convrot.safetensors", "qwen3-vl-8b-heretic-1.3.0_bf16.safetensors"]
-        } else {
-            &["qwen3vl_8b_int8_convrot.safetensors", "qwen3-vl-8b-heretic-1.3.0-int8convrot.safetensors", "qwen3-vl-8b-heretic-1.3.0_bf16.safetensors"]
-        }
+        crate::ai_models::DEFAULT_ENCODER
     }
     pub fn filename(self) -> &'static str {
         match self {
             Self::QwenImage21 => "qwen_image_2.1_int8_convrot.safetensors",
-            Self::NoctQv4 => "NoctQ_V4_int8_convrot.safetensors",
-            Self::AnimeFusal => "qwen_image_2.1_anime_fusal_int8_convrot.safetensors",
-            Self::NoctQFusal => "NoctQ_V4_FUSAL_int8_convrot.safetensors",
             Self::TurboInt8 => "qwen_image_2.1_turbo_int8_convrot.safetensors",
-            Self::TurboQ8 => "Qwen-Image-2.1-Turbo-Q8_0.gguf",
-            Self::TurboAdQ2 => "Qwen-Image-2.1-Turbo-AD-Q2_K.gguf",
-            Self::TurboAdQ3 => "Qwen-Image-2.1-Turbo-AD-Q3_K.gguf",
-            Self::TurboAdQ4 => "Qwen-Image-2.1-Turbo-AD-Q4_K.gguf",
-            Self::TurboAdQ5 => "Qwen-Image-2.1-Turbo-AD-Q5_K.gguf",
-            Self::TurboAdQ6 => "Qwen-Image-2.1-Turbo-AD-Q6_K.gguf",
-            Self::TurboBf16Gguf => "Qwen-Image-2.1-Turbo-BF16.gguf",
-            Self::TurboQ3KM => "qwen_image_2.1_turbo_Q3_K_M.gguf",
-            Self::TurboQ4KM => "qwen_image_2.1_turbo_Q4_K_M.gguf",
-            Self::TurboQ4KS => "qwen_image_2.1_turbo_Q4_K_S.gguf",
-            Self::TurboQ5KM => "qwen_image_2.1_turbo_Q5_K_M.gguf",
-            Self::TurboQ6K => "qwen_image_2.1_turbo_Q6_K.gguf",
+            Self::Custom => "",
         }
     }
     pub fn label(self) -> &'static str {
         match self {
             Self::QwenImage21 => "Qwen 2.1",
-            Self::NoctQv4 => "NoctQ V4",
-            Self::AnimeFusal => "Anime FUSAL",
-            Self::NoctQFusal => "Noct-Q FUSAL",
             Self::TurboInt8 => "Turbo INT8",
-            Self::TurboQ8 => "Turbo Q8_0",
-            Self::TurboAdQ2 => "Turbo AD-Q2_K",
-            Self::TurboAdQ3 => "Turbo AD-Q3_K",
-            Self::TurboAdQ4 => "Turbo AD-Q4_K",
-            Self::TurboAdQ5 => "Turbo AD-Q5_K",
-            Self::TurboAdQ6 => "Turbo AD-Q6_K",
-            Self::TurboBf16Gguf => "Turbo BF16 GGUF",
-            Self::TurboQ3KM => "Turbo Q3_K_M",
-            Self::TurboQ4KM => "Turbo Q4_K_M",
-            Self::TurboQ4KS => "Turbo Q4_K_S",
-            Self::TurboQ5KM => "Turbo Q5_K_M",
-            Self::TurboQ6K => "Turbo Q6_K",
+            Self::Custom => "Custom",
         }
     }
 }
 
 choice!(ComfyUiTranslationModel { HyMt18Heretic = "hyMt18Heretic", HyMt7Abliterated = "hyMt7Abliterated" } default HyMt18Heretic);
+
+/// Parse the additional checkpoint list without inspecting files or loading models.
+pub fn custom_model_names(text: &str) -> std::result::Result<Vec<String>, String> {
+    let mut names = Vec::new();
+    for (line, name) in text.lines().enumerate() {
+        let name = name.trim();
+        if name.is_empty() {
+            continue;
+        }
+        if !name.to_ascii_lowercase().ends_with(".safetensors") {
+            return Err(format!("Line {}: filename must end with .safetensors", line + 1));
+        }
+        if !names.iter().any(|existing| existing == name) {
+            names.push(name.to_owned());
+        }
+    }
+    Ok(names)
+}
 
 impl ComfyUiTranslationModel {
     pub const ALL: [Self; 2] = [Self::HyMt18Heretic, Self::HyMt7Abliterated];
@@ -983,6 +942,11 @@ pub struct Integrations {
     pub comfyui_url: String,
     /// Diffusion checkpoint shared by Prompt Edit, Generative Fill and their quick actions.
     pub comfyui_model: ComfyUiModel,
+    /// User checkpoint filenames, one per line; compatibility is the user's responsibility.
+    pub comfyui_custom_models: String,
+    pub comfyui_custom_model: String,
+    pub comfyui_custom_encoders: String,
+    pub comfyui_model_settings: BTreeMap<String, crate::ai_models::ModelSettings>,
     pub comfyui_translate_prompt: bool,
     pub comfyui_translation_model: ComfyUiTranslationModel,
 }
@@ -994,6 +958,10 @@ impl Default for Integrations {
             control_port: 0,
             comfyui_url: "http://127.0.0.1:8188".into(),
             comfyui_model: ComfyUiModel::default(),
+            comfyui_custom_models: String::new(),
+            comfyui_custom_model: String::new(),
+            comfyui_custom_encoders: String::new(),
+            comfyui_model_settings: BTreeMap::new(),
             comfyui_translate_prompt: false,
             comfyui_translation_model: ComfyUiTranslationModel::default(),
         }
@@ -1147,8 +1115,14 @@ pub const HIDDEN_UNTIL_IMPLEMENTED: &[&str] = &[
 
 /// Is the preference at `path` (`"section.key"`) hidden from the Preferences dialog?
 pub fn is_hidden(path: &str) -> bool {
-    matches!(path, "integrations.comfyuiTranslatePrompt" | "integrations.comfyuiTranslationModel")
-        || HIDDEN_UNTIL_IMPLEMENTED.contains(&path)
+    matches!(
+        path,
+        "integrations.comfyuiTranslatePrompt"
+            | "integrations.comfyuiTranslationModel"
+            | "integrations.comfyuiCustomModel"
+            | "integrations.comfyuiCustomEncoders"
+            | "integrations.comfyuiModelSettings"
+    ) || HIDDEN_UNTIL_IMPLEMENTED.contains(&path)
         || (!cfg!(target_os = "linux") && LINUX_ONLY.contains(&path))
 }
 
@@ -1300,6 +1274,31 @@ fn set_path(root: &mut Value, path: &str, value: Value) -> std::result::Result<(
 
 /// Validate one value for `path` before it is stored (choices, ranges, colours).
 fn check_value(path: &str, v: &Value) -> std::result::Result<(), String> {
+    if path == "integrations" {
+        let config: Integrations = serde_json::from_value(v.clone()).map_err(|e| e.to_string())?;
+        custom_model_names(&config.comfyui_custom_models)?;
+        custom_model_names(&config.comfyui_custom_encoders)?;
+        for (name, settings) in &config.comfyui_model_settings {
+            custom_model_names(name)?;
+            settings.validate()?;
+            if crate::ai_models::builtin(name) == Some(ComfyUiModel::TurboInt8) && settings.cfg != 1.0 {
+                return Err("Stock Turbo CFG is fixed at 1".into());
+            }
+        }
+    }
+    if matches!(path, "integrations.comfyuiCustomModels" | "integrations.comfyuiCustomModel" | "integrations.comfyuiCustomEncoders") {
+        custom_model_names(v.as_str().ok_or("Model filenames must be plain text")?)?;
+    }
+    if path == "integrations.comfyuiModelSettings" {
+        let settings: BTreeMap<String, crate::ai_models::ModelSettings> = serde_json::from_value(v.clone()).map_err(|e| e.to_string())?;
+        for (name, config) in settings {
+            custom_model_names(&name)?;
+            config.validate()?;
+            if crate::ai_models::builtin(&name) == Some(ComfyUiModel::TurboInt8) && config.cfg != 1.0 {
+                return Err("Stock Turbo CFG is fixed at 1".into());
+            }
+        }
+    }
     if path == "performance.renderingMode" && v.is_null() {
         return Ok(()); // Legacy policy, resolved from useGpu and gpuBackend.
     }
@@ -1608,6 +1607,11 @@ impl Session {
             interface.insert("appearanceMode".into(), json!(mode));
             interface.insert(slot.into(), json!(theme.name()));
         }
+        if let Some(integrations) = v.get_mut("integrations").and_then(Value::as_object_mut)
+            && integrations.get("comfyuiModel").and_then(Value::as_str).is_some_and(|value| ComfyUiModel::parse(value).is_none())
+        {
+            integrations.insert("comfyuiModel".into(), json!("qwenImage21"));
+        }
         let color = v.as_object_mut().and_then(|m| m.remove("colorSettings"));
         let presets = v.as_object_mut().and_then(|m| m.remove("presets"));
         let prefs: Preferences = serde_json::from_value(v).map_err(|e| format!("preferences: {e}"))?;
@@ -1657,7 +1661,12 @@ impl Session {
                     self.set_pref("colorSettings", v.clone())?;
                     continue;
                 }
-                if v.is_object() && !p.starts_with("shortcuts") && !p.ends_with(".colors") && next.get(&p).is_some_and(|c| c.is_object()) {
+                if v.is_object()
+                    && !p.starts_with("shortcuts")
+                    && !p.ends_with(".colors")
+                    && p != "integrations.comfyuiModelSettings"
+                    && next.get(&p).is_some_and(|c| c.is_object())
+                {
                     for (k2, v2) in v.as_object().into_iter().flatten() {
                         next.set(&format!("{p}.{k2}"), v2.clone())?;
                     }

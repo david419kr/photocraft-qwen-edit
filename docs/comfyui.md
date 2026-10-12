@@ -1,5 +1,50 @@
 # ComfyUI Qwen Image 2.1 generation and editing
 
+## Model and text-encoder settings
+
+ComfyUI port can be changed at the top of this window (default 8188, range 1–65535).
+Edit > Preferences > Integrations also exposes it, so it can be corrected while the
+AI bar is hidden. Saving updates the existing endpoint URL and keeps its host/path;
+the normal bounded service probe reconnects automatically.
+
+The leftmost gear opens Models / Text encoders tabs. Only installed stock
+`qwen_image_2.1_int8_convrot.safetensors` and
+`qwen_image_2.1_turbo_int8_convrot.safetensors` are pinned model entries; only the
+installed `qwen3vl_8b_int8_convrot.safetensors` is the pinned default encoder.
+The stock checkpoints cannot be removed. No other model or Heretic encoder preset
+is detected implicitly. Register their `.safetensors` filenames yourself if wanted.
+GGUF registration is not supported.
+
+Model rows select a TE, default CFG, steps, and a Normal/Turbo sampling profile for
+custom checkpoints. Base/custom defaults are CFG 1 and 25 steps; stock Turbo starts
+at eight steps and locks CFG to 1 in both settings and the bar. Stock base CFG/steps
+and stock Turbo steps remain configurable. Custom Turbo changes the sigma schedule;
+its configured step count is still user-owned. All registrations check filenames only,
+not actual checkpoint compatibility or output quality.
+
+Default TE selection prefers the stock encoder. If absent, exactly one detected
+registered encoder is used automatically. Zero/multiple encoders require an explicit
+assignment. A missing explicitly assigned TE does not silently switch to another one.
+Models/encoders resolve exact relative paths or unambiguous names in subfolders.
+When the service is reachable but no model has a usable TE, a gear-only bar permits
+configuration; generation stays disabled. A stopped/unavailable service hides that bar.
+
+The CFG box sits left of steps. Above CFG 1, the expanded bar adds a negative prompt
+with Ctrl+Enter support; lowering CFG to 1 retains the draft but excludes it from the
+request and provenance. Translation, prompt information/copy, image metadata and
+Undo/Redo cover both prompts. Reroll captures the resolved TE, CFG, steps, sampling
+profile and translated prompts, changing only seed.
+
+Persistent keys: `integrations.comfyuiCustomModels` and `comfyuiCustomEncoders` are
+newline-delimited filename registries. `comfyuiModelSettings` maps filenames to
+`{textEncoder: null|string, cfg: number, steps: integer, turbo: bool}`. Existing custom
+registrations survive upgrade; retired preset IDs fall back to stock base without
+resetting unrelated preferences. Bar CFG/step overrides last for the current document.
+
+The installation and preset-specific runtime notes below describe older builds where
+NoctQ/FUSAL/GGUF presets were embedded. They remain historical evidence, not the current
+built-in catalog.
+
 ## Optional local prompt translation
 
 The expanded prompt editor's bottom row has a **Languages** icon toggle when a

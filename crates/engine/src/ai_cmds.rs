@@ -63,6 +63,11 @@ pub struct AiRequest {
     pub endpoint: String,
     pub seed: u64,
     pub model: crate::prefs::ComfyUiModel,
+    pub custom_model: Option<String>,
+    pub text_encoder: String,
+    pub cfg: f64,
+    pub negative_prompt: String,
+    pub turbo: bool,
     pub steps: u32,
 }
 
@@ -93,6 +98,22 @@ pub trait AiBackend: Send + Sync {
     fn available_models(&self, endpoint: &str) -> Result<Vec<crate::prefs::ComfyUiModel>> {
         self.check_available(endpoint)?;
         Ok(crate::prefs::ComfyUiModel::ALL.to_vec())
+    }
+    fn available_models_with_custom(&self, endpoint: &str, _names: &[String]) -> Result<(Vec<crate::prefs::ComfyUiModel>, Vec<String>)> {
+        self.available_models(endpoint).map(|models| (models, Vec::new()))
+    }
+    fn model_catalog(&self, endpoint: &str, config: &crate::prefs::Integrations) -> Result<crate::ai_models::Catalog> {
+        let names = crate::prefs::custom_model_names(&config.comfyui_custom_models).map_err(EngineError::Other)?;
+        let (models, custom) = self.available_models_with_custom(endpoint, &names)?;
+        let mut files: Vec<_> =
+            models.into_iter().filter(|model| *model != crate::prefs::ComfyUiModel::Custom).map(|model| model.filename().to_owned()).collect();
+        files.extend(custom);
+        let mut encoders = vec![crate::ai_models::DEFAULT_ENCODER.to_owned()];
+        encoders.extend(crate::prefs::custom_model_names(&config.comfyui_custom_encoders).map_err(EngineError::Other)?);
+        Ok(crate::ai_models::Catalog { models: files, encoders, turbo_available: true })
+    }
+    fn resolve_text_encoder(&self, _endpoint: &str, configured: Option<&str>, _registered: &[String]) -> Result<String> {
+        Ok(configured.unwrap_or(crate::ai_models::DEFAULT_ENCODER).to_owned())
     }
     fn available_translation_models(&self, _endpoint: &str) -> Result<Vec<crate::prefs::ComfyUiTranslationModel>> {
         Ok(Vec::new())
@@ -243,7 +264,7 @@ pub fn specs() -> Vec<CommandSpec> {
             },
             menu: &["Edit"],
             shortcut: None,
-            params: "{\"prompt\":str (blank removes content for Generative Fill),\"steps\":u32? (1..1000; default 25/8 by model),\"seed\":u64?,\"name\":str?} → {layer,mode,seed,steps,workingSize}",
+            params: "{\"prompt\":str (blank removes content for Generative Fill),\"cfg\":number? (1..100; stock Turbo fixed 1),\"negativePrompt\":str? (used above CFG 1),\"steps\":u32? (1..1000; model settings default),\"seed\":u64?,\"name\":str?} → {layer,mode,seed,steps,workingSize}",
             enabled: match mode {
                 EditMode::PromptGenerate => can_generate,
                 EditMode::PromptEdit => can_edit,
@@ -364,14 +385,41 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
     let backend = s.ai_backend.clone().ok_or_else(|| EngineError::Other("ComfyUI is not configured in this frontend".into()))?;
     let endpoint = s.prefs().integrations.comfyui_url.clone();
     let model = s.prefs().integrations.comfyui_model;
+    let settings = s.prefs().integrations.selected_settings();
+    let cfg = p
+        .get("cfg")
+        .map_or(Some(settings.cfg), Value::as_f64)
+        .filter(|value| value.is_finite() && (1.0..=100.0).contains(value))
+        .ok_or_else(|| bad(command, "CFG must be within 1..100"))?;
+    if crate::ai_models::builtin(s.prefs().integrations.selected_filename()) == Some(crate::prefs::ComfyUiModel::TurboInt8) && cfg != 1.0 {
+        return Err(bad(command, "Stock Turbo CFG is fixed at 1"));
+    }
+    let negative = p
+        .get("negativePrompt")
+        .map_or(Some(""), Value::as_str)
+        .filter(|text| text.len() <= MAX_PROMPT_BYTES)
+        .ok_or_else(|| bad(command, "Negative prompt must contain at most 8192 bytes"))?;
+    let negative = if cfg > 1.0 { negative.to_owned() } else { String::new() };
+    let registered_encoders = crate::prefs::custom_model_names(&s.prefs().integrations.comfyui_custom_encoders).map_err(|e| bad(command, e))?;
+    let custom_model = if model == crate::prefs::ComfyUiModel::Custom {
+        let name = s.prefs().integrations.comfyui_custom_model.trim().to_owned();
+        let names = crate::prefs::custom_model_names(&s.prefs().integrations.comfyui_custom_models).map_err(|e| bad(command, e))?;
+        if !names.contains(&name) {
+            return Err(bad(command, "selected custom model is not registered"));
+        }
+        Some(name)
+    } else {
+        None
+    };
     let translate_prompt = translate_user_prompt && s.prefs().integrations.comfyui_translate_prompt && needs_translation(prompt);
+    let translate_negative = s.prefs().integrations.comfyui_translate_prompt && needs_translation(&negative);
     let translation_model = s.prefs().integrations.comfyui_translation_model;
     let steps = match p.get("steps") {
         Some(value) => {
             value.as_u64().filter(|steps| (1..=u64::from(MAX_STEPS)).contains(steps)).ok_or_else(|| bad(command, "steps must be an integer within 1..1000"))?
                 as u32
         }
-        None => model.default_steps(),
+        None => settings.steps,
     };
     let prompt = prompt.to_owned();
     let source = s.active().ok_or(EngineError::NoDocument)?.doc.clone();
@@ -385,19 +433,32 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
             let original = prompt.clone();
             let mut prompt = prompt;
             let mut translated = None;
-            if translate_prompt {
+            let negative_original = (!negative.is_empty()).then(|| negative.clone());
+            let mut negative = negative;
+            let mut negative_translated = None;
+            if translate_prompt || translate_negative {
                 let available = backend.available_translation_models(&endpoint)?;
                 if let Some(selected) = available.iter().find(|model| **model == translation_model).or(available.first()) {
                     ctx.check()?;
                     ctx.progress(0.06, "Translating prompt to English");
-                    prompt = backend.translate(&endpoint, *selected, &prompt, ctx)?;
-                    if prompt.trim().is_empty() || prompt.len() > MAX_PROMPT_BYTES {
+                    if translate_prompt {
+                        prompt = backend.translate(&endpoint, *selected, &prompt, ctx)?;
+                        translated = Some(prompt.clone());
+                    }
+                    if translate_prompt && (prompt.trim().is_empty() || prompt.len() > MAX_PROMPT_BYTES) {
                         return Err(EngineError::Other("Translated prompt must contain 1..8192 bytes".into()));
                     }
-                    translated = Some(prompt.clone());
+                    if translate_negative {
+                        negative = backend.translate(&endpoint, *selected, &negative, ctx)?;
+                        if negative.trim().is_empty() || negative.len() > MAX_PROMPT_BYTES {
+                            return Err(EngineError::Other("Invalid translated negative prompt".into()));
+                        }
+                        negative_translated = Some(negative.clone());
+                    }
                 }
             }
             ctx.check()?;
+            let text_encoder = backend.resolve_text_encoder(&endpoint, settings.text_encoder.as_deref(), &registered_encoders)?;
             let request = AiRequest {
                 image: input.image,
                 prompt: shaped_prompt(mode, &prompt),
@@ -406,6 +467,11 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
                 endpoint,
                 seed,
                 model,
+                custom_model,
+                text_encoder,
+                cfg,
+                negative_prompt: negative,
+                turbo: settings.turbo,
                 steps,
             };
             let generated = backend.generate(&request, ctx)?;
@@ -415,6 +481,8 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
                 regions: if mode == EditMode::GenerativeFill { crate::ai_prompts::regions(&request.image, input.content_size) } else { Vec::new() },
                 original,
                 translated,
+                negative_original,
+                negative_translated,
             };
             let last = LastRun { source, request, content_size: input.content_size, name, result_layer: layer.id, result_revision: 0, prompt_entry };
             Ok((layer, last))

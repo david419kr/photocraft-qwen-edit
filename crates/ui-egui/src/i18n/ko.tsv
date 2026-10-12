@@ -3100,3 +3100,16 @@ fontWeight	Italic	기울임
 	Comfyui model	ComfyUI 모델
 	Comfyui translate prompt	프롬프트를 영어로 번역
 	Comfyui translation model	프롬프트 번역 모델
+	Additional AI models	추가 AI 모델
+	One .safetensors filename per line. Compatibility is not checked.	.safetensors 파일명을 한 줄에 하나씩 입력하세요. 호환성은 검사하지 않습니다.
+	Comfyui custom models	추가 ComfyUI 모델
+	AI model settings	AI 모델 설정
+	Text encoders	텍스트 인코더
+	Text encoder	텍스트 인코더
+	Filename	파일명
+	Steps	스텝
+	Custom model filenames (one per line)	커스텀 모델 파일명 (한 줄에 하나씩)
+	Negative prompt	네거티브 프롬프트
+	Copy negative prompt	네거티브 프롬프트 복사
+	Sampling profile	샘플링 방식
+	ComfyUI port	ComfyUI 포트

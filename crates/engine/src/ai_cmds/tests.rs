@@ -3,6 +3,57 @@ use photocraft_color::SampleType;
 use std::sync::Arc;
 
 struct Solid;
+
+#[test]
+fn negative_translation_history_and_regeneration_capture_the_resolved_model_settings() {
+    use std::sync::Mutex;
+    struct Backend(Mutex<Vec<AiRequest>>);
+    impl AiBackend for Backend {
+        fn available_translation_models(&self, _: &str) -> Result<Vec<crate::prefs::ComfyUiTranslationModel>> {
+            Ok(vec![crate::prefs::ComfyUiTranslationModel::HyMt18Heretic])
+        }
+        fn translate(&self, _: &str, _: crate::prefs::ComfyUiTranslationModel, value: &str, _: &JobCtx) -> Result<String> {
+            Ok(if value == "흐림" { "blur" } else { "a cat" }.into())
+        }
+        fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
+            self.0.lock().unwrap().push(request.clone());
+            Solid.generate(request, ctx)
+        }
+    }
+    let backend = Arc::new(Backend(Mutex::new(Vec::new())));
+    let mut s = Session::new();
+    s.ai_backend = Some(backend.clone());
+    s.execute("file.new", json!({"width":32,"height":32,"background":"transparent"})).unwrap();
+    s.execute("prefs.set", json!({"path":"integrations.comfyuiTranslatePrompt","value":true})).unwrap();
+    s.execute("prefs.set", json!({"path":"integrations.comfyuiCustomEncoders","value":"custom_te.safetensors"})).unwrap();
+    let file = crate::prefs::ComfyUiModel::QwenImage21.filename();
+    s.execute("prefs.set", json!({"path":"integrations.comfyuiModelSettings","value":{(file):{"textEncoder":"custom_te.safetensors","cfg":3.5,"steps":19}}}))
+        .unwrap();
+    s.execute("edit.promptGenerate", json!({"prompt":"고양이","negativePrompt":"흐림"})).unwrap();
+    let records = crate::ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap();
+    assert_eq!(records[0].negative_original.as_deref(), Some("흐림"));
+    assert_eq!(records[0].negative_translated.as_deref(), Some("blur"));
+    s.execute("prefs.set", json!({"path":"integrations.comfyuiModelSettings","value":{}})).unwrap();
+    s.execute(REGENERATE_COMMAND, json!({})).unwrap();
+    let requests = backend.0.lock().unwrap();
+    assert_eq!(requests.len(), 2);
+    for request in requests.iter() {
+        assert_eq!(request.cfg, 3.5);
+        assert_eq!(request.steps, 19);
+        assert_eq!(request.text_encoder, "custom_te.safetensors");
+        assert_eq!(request.negative_prompt, "blur");
+    }
+    assert_ne!(requests[0].seed, requests[1].seed);
+    drop(requests);
+    assert_eq!(crate::ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap(), records);
+    s.execute("edit.undo", json!({})).unwrap();
+    s.execute("edit.redo", json!({})).unwrap();
+    assert_eq!(crate::ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap(), records);
+    s.execute("edit.promptEdit", json!({"prompt":"blue","cfg":1.0,"negativePrompt":"ignored"})).unwrap();
+    assert!(backend.0.lock().unwrap().last().unwrap().negative_prompt.is_empty());
+    let entries = crate::ai_prompts::read(s.active().unwrap().doc.metadata.xmp.as_deref()).unwrap();
+    assert!(entries.last().unwrap().negative_original.is_none());
+}
 impl AiBackend for Solid {
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
         ctx.check()?;
@@ -278,7 +329,7 @@ fn regeneration_keeps_source_prompt_model_mask_and_replaces_one_layer_with_undo(
         if mode == EditMode::GenerativeFill {
             s.execute("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
         }
-        s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"noctQv4"})).unwrap();
+        s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"turboInt8"})).unwrap();
         let result = s.execute(mode.command(), json!({"prompt":"blue","seed":42,"steps":13})).unwrap();
         let before = s.active().unwrap().doc.clone();
         s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"qwenImage21"})).unwrap();
@@ -292,7 +343,7 @@ fn regeneration_keeps_source_prompt_model_mask_and_replaces_one_layer_with_undo(
         assert_eq!(received[0].prompt, received[1].prompt);
         assert_eq!(received[0].steps, 13);
         assert_eq!(received[1].steps, 13);
-        assert_eq!(received[1].model, crate::prefs::ComfyUiModel::NoctQv4);
+        assert_eq!(received[1].model, crate::prefs::ComfyUiModel::TurboInt8);
         assert_eq!(received[0].mode, received[1].mode);
         drop(received);
         s.execute("edit.undo", json!({})).unwrap();
@@ -348,7 +399,7 @@ fn preference_selects_models_for_edit_fill_and_background_removal() {
     let calls = Arc::new(std::sync::Mutex::new(Vec::new()));
     let mut s = session(8);
     s.ai_backend = Some(Arc::new(Capture(calls.clone())));
-    s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"noctQv4"})).unwrap();
+    s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"turboInt8"})).unwrap();
     s.execute("edit.promptEdit", json!({"prompt":"blue"})).unwrap();
     s.execute(REMOVE_BACKGROUND_COMMAND, json!({})).unwrap();
     s.execute("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
@@ -359,9 +410,9 @@ fn preference_selects_models_for_edit_fill_and_background_removal() {
     assert_eq!(
         *calls.lock().unwrap(),
         vec![
-            crate::prefs::ComfyUiModel::NoctQv4,
-            crate::prefs::ComfyUiModel::NoctQv4,
-            crate::prefs::ComfyUiModel::NoctQv4,
+            crate::prefs::ComfyUiModel::TurboInt8,
+            crate::prefs::ComfyUiModel::TurboInt8,
+            crate::prefs::ComfyUiModel::TurboInt8,
             crate::prefs::ComfyUiModel::QwenImage21
         ]
     );
@@ -697,6 +748,11 @@ fn fill_blending_excludes_padding_and_handles_missing_context_bad_buffers_and_ca
                 endpoint: "".into(),
                 seed: 1,
                 model: crate::prefs::ComfyUiModel::default(),
+                custom_model: None,
+                text_encoder: crate::ai_models::DEFAULT_ENCODER.into(),
+                cfg: 1.0,
+                negative_prompt: String::new(),
+                turbo: false,
                 steps: 25,
             },
             &JobCtx::new(),
