@@ -67,7 +67,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    needs: regressions
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.7.0'
     runs-on: windows-2022
     timeout-minutes: 120
     env:
@@ -75,6 +75,15 @@ jobs:
       PHOTOCRAFT_REQUIRE_WINRES: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check candidate ancestry
+        shell: pwsh
+        run: |
+          git merge-base --is-ancestor $env:QWEN_UPSTREAM_SHA HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Upstream release SHA is not an ancestor.' }
+          git merge-base --is-ancestor $env:QWEN_BASE_SHA HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Fork base SHA is not an ancestor.' }
       - uses: dtolnay/rust-toolchain@1.95.0
         with:
           targets: x86_64-pc-windows-msvc
