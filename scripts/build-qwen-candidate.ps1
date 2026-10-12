@@ -57,6 +57,8 @@ $metadata = [ordered]@{
     built_at_utc = [DateTimeOffset]::UtcNow.ToString('o')
 }
 $metadata | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 dist/candidate-build.json
+# Keep provenance inspectable through the job-log API when artifact transfer is unavailable.
+$metadata | ConvertTo-Json -Depth 4 | Write-Output
 if ($env:GITHUB_STEP_SUMMARY) {
     @"
 ### Windows candidate (not a release)
