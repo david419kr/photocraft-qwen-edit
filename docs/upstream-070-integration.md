@@ -97,5 +97,7 @@ Main merge and public release remain separate, explicitly approved steps.
 
 - The fork base already had a Unix save-filter test comparing `Vec<String>` with `&&str`, which failed to compile. Compare string contents with `iter().any()`; retain every format including AVIF.
 - The unchanged legacy PNG roundtrip test contradicted the fork's Metadata None implementation and dedicated privacy regression: it expected DPI and ICC to survive. Assert removal of all metadata for None, preservation of DPI/ICC/XMP for All, and an unchanged source document. No metadata implementation changed.
-- The first browser build produced 25,194,637 bytes against the unchanged 25,165,824-byte gate. Request Binaryen `--converge` through Trunk's supported `data-wasm-opt-params` attribute; repeat size optimization without dropping functionality or raising the limit. The final CI result determines whether this is sufficient.
+- The first browser build produced 25,194,637 bytes against the unchanged 25,165,824-byte gate. Request Binaryen `--converge` through Trunk's supported `data-wasm-opt-params` attribute; repeat size optimization without dropping functionality or raising the limit. CI measured 25,150,403 bytes with convergence, below the unchanged gate (15,421 bytes of headroom).
 - A local whole-workspace test attempt exhausted the 32 GiB cloud disk during linking (linker bus errors); this is an incomplete run, not a passing suite. Focused regressions and GitHub's platform jobs provide separate evidence.
+
+- The unchanged EXIF orientation test made the same legacy None assumption. Assert that None removes EXIF while retaining upright pixels; All still normalizes EXIF and XMP to Orientation 1, and the source document stays unchanged.
