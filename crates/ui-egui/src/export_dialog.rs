@@ -23,7 +23,7 @@ pub fn open(app: &mut PhotocraftApp) -> Result<u64, String> {
     f.insert("lossless".into(), json!(app.session.prefs().export.webp_lossless));
     f.insert("transparency".into(), json!(true));
     f.insert("scale".into(), json!(100));
-    f.insert("metadata".into(), json!("all"));
+    f.insert("metadata".into(), json!("none"));
     f.insert("__w".into(), json!(st.doc.size.width));
     f.insert("__h".into(), json!(st.doc.size.height));
     Ok(app.ui.open_dialog(DialogKind::Command, f))
@@ -304,6 +304,17 @@ fn quick_export(app: &mut PhotocraftApp, p: Value) -> Result<Value, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn opening_export_uses_upstream_png_and_metadata_defaults() {
+        let mut session = photocraft_engine::Session::new();
+        session.execute("file.new", json!({"width":8,"height":8})).unwrap();
+        let mut app = PhotocraftApp::new(session, crate::Services::default());
+        let id = open(&mut app).unwrap();
+        let dialog = app.ui.dialogs.iter().find(|dialog| dialog.id == id).unwrap();
+        assert_eq!(dialog.fields.get("format"), Some(&json!("png")));
+        assert_eq!(dialog.fields.get("metadata"), Some(&json!("none")));
+    }
 
     #[test]
     fn avif_export_uses_quality_and_keeps_transparency() {
