@@ -1,0 +1,11 @@
+/ComfyUI_windows_portable/
+/.qwen-setup/
+/.hymt2-tools/
+/.hymt2-backups/
+/scripts/install-location.json
+/scripts/legacy/
+/scripts/legacy-shortcuts/
+*.lnk
+*.part
+*.zip
+__pycache__/

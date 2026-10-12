@@ -32,7 +32,7 @@ try {
     Copy-Item -LiteralPath (Join-Path $repoRoot 'crates\codecs\licenses\oxideav-MIT.txt') -Destination $licenseDir -Force
     Copy-Item -LiteralPath (Join-Path $repoRoot 'crates\codecs\licenses\avif-encoder.txt') -Destination $licenseDir -Force
     Copy-Item -LiteralPath (Join-Path $repoRoot 'scripts\fix-comfyui-gguf-qwen21.ps1') -Destination $bundleDir -Force
-    Copy-Item -LiteralPath (Join-Path $repoRoot 'scripts\install-comfyui-hymt2.ps1') -Destination $bundleDir -Force
+    Copy-Item -LiteralPath (Join-Path $repoRoot 'qwen-image21-installer\scripts\install-comfyui-hymt2.ps1') -Destination $bundleDir -Force
     Copy-Item -LiteralPath (Join-Path $repoRoot 'scripts\install-comfyui-hymt2.cmd') -Destination $bundleDir -Force
     $legacyRuntime = Join-Path $bundleDir 'hy-mt2-runtime'
     foreach ($name in @('isolated_llama.py', 'llama_worker.py', 'requirements.txt')) {
