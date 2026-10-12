@@ -41,6 +41,10 @@ The Linux job runs the handoff's focused regressions with
 stores command results and logs. It also runs fmt, Clippy, layers, wasm,
 parity/scorecard checks and installer/package-validator tests.
 
+The Windows job runs independently so its build diagnostics and artifact are
+available even if a Linux gate fails. Both job results must be checked for the
+same source SHA; artifact availability alone is not acceptance.
+
 The Windows job uses Rust 1.95.0, `x86_64-pc-windows-msvc`, and
 `CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS=-C target-feature=+crt-static`.
 The desktop manifest enables both AVIF decoding and encoding. Optional HEIF
@@ -59,11 +63,14 @@ executable and ZIP digests, PE inspection, version output and build log.
 Artifacts expire after 14 days; rebuild the same source SHA if they expire.
 The date in the ZIP filename uses Asia/Tokyo and does not create a release tag.
 
-## Validation status
+## Validation evidence
 
-Local validation is in progress. This document must be updated with measured
-results before treating the candidate as ready. A successful Linux test or a
-synthetic package test is not a Windows executable build or live GPU test.
+Check the PR and the workflow run for the exact candidate SHA for measured
+results and outstanding gates. Local focused results are written to
+`target/qwen-regressions/results.json`, with one log per command. A successful
+Linux test or a synthetic package test is not a Windows executable build or
+live GPU test. The 634-item parity floor includes both new upstream commands
+and the fork's AI entries; no test or corpus floor was lowered.
 
 ## Windows local acceptance (after a real candidate artifact exists)
 
