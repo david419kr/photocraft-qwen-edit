@@ -3520,3 +3520,16 @@ cameraRaw	Roughness	Chropowatość
 	Comfyui translation model	Model tłumaczenia poleceń
 	Search settings…	Szukaj ustawień…
 	No matching settings	Brak pasujących ustawień
+
+# Qwen model settings and negative prompt controls.
+	AI model settings	Ustawienia modelu AI
+	ComfyUI port	Port ComfyUI
+	Copy negative prompt	Kopiuj negatywny prompt
+	Custom model filenames (one per line)	Nazwy plików modeli niestandardowych (jedna w wierszu)
+	Negative prompt	Negatywny prompt
+	One .safetensors filename per line. Compatibility is not checked.	Jedna nazwa pliku .safetensors w wierszu. Zgodność nie jest sprawdzana.
+	Text encoders	Kodery tekstu
+	Comfyui custom encoders	Niestandardowe kodery ComfyUI
+	Comfyui custom model	Niestandardowy model ComfyUI
+	Comfyui custom models	Niestandardowe modele ComfyUI
+	Comfyui model settings	Ustawienia modeli ComfyUI

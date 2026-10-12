@@ -2788,3 +2788,16 @@ fontWeight	Italic	Курсив
 	Rasterize Layer Style	Растрировать стиль слоя
 	Search settings…	Поиск настроек…
 	No matching settings	Нет подходящих настроек
+
+# Qwen model settings and negative prompt controls.
+	AI model settings	Настройки модели ИИ
+	ComfyUI port	Порт ComfyUI
+	Copy negative prompt	Копировать негативный промпт
+	Custom model filenames (one per line)	Имена файлов пользовательских моделей (по одному в строке)
+	Negative prompt	Негативный промпт
+	One .safetensors filename per line. Compatibility is not checked.	Одно имя файла .safetensors в строке. Совместимость не проверяется.
+	Text encoders	Текстовые энкодеры
+	Comfyui custom encoders	Пользовательские энкодеры ComfyUI
+	Comfyui custom model	Пользовательская модель ComfyUI
+	Comfyui custom models	Пользовательские модели ComfyUI
+	Comfyui model settings	Настройки моделей ComfyUI

@@ -101,3 +101,5 @@ Main merge and public release remain separate, explicitly approved steps.
 - A local whole-workspace test attempt exhausted the 32 GiB cloud disk during linking (linker bus errors); this is an incomplete run, not a passing suite. Focused regressions and GitHub's platform jobs provide separate evidence.
 
 - The unchanged EXIF orientation test made the same legacy None assumption. Assert that None removes EXIF while retaining upright pixels; All still normalizes EXIF and XMP to Orientation 1, and the source document stays unchanged.
+
+- Full UI unit tests additionally found two identical Korean theme entries introduced by the automatic merge. Deduplicate by context/source without changing either translation. Complete the fork's previously missing model-setting/negative-prompt labels across all 16 complete catalogs (retain existing Korean wording), and add upstream's tested 55-tool inventory to the fork README without replacing its distribution identity. No localization coverage gate was relaxed.

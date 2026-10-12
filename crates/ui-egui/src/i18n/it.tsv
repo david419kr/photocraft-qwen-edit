@@ -2574,3 +2574,16 @@ fontWeight	Italic	Corsivo
 	Comfyui translation model	Modello di traduzione dei prompt
 	Search settings…	Cerca impostazioni…
 	No matching settings	Nessuna impostazione corrispondente
+
+# Qwen model settings and negative prompt controls.
+	AI model settings	Impostazioni del modello IA
+	ComfyUI port	Porta ComfyUI
+	Copy negative prompt	Copia prompt negativo
+	Custom model filenames (one per line)	Nomi dei file dei modelli personalizzati (uno per riga)
+	Negative prompt	Prompt negativo
+	One .safetensors filename per line. Compatibility is not checked.	Un nome di file .safetensors per riga. La compatibilità non viene verificata.
+	Text encoders	Codificatori di testo
+	Comfyui custom encoders	Codificatori personalizzati ComfyUI
+	Comfyui custom model	Modello personalizzato ComfyUI
+	Comfyui custom models	Modelli personalizzati ComfyUI
+	Comfyui model settings	Impostazioni dei modelli ComfyUI

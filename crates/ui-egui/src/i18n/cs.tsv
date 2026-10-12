@@ -2505,3 +2505,16 @@ fontWeight	Italic	Kurzíva
 	Comfyui translation model	Model pro překlad zadání
 	Search settings…	Hledat nastavení…
 	No matching settings	Žádná odpovídající nastavení
+
+# Qwen model settings and negative prompt controls.
+	AI model settings	Nastavení modelu AI
+	ComfyUI port	Port ComfyUI
+	Copy negative prompt	Kopírovat negativní prompt
+	Custom model filenames (one per line)	Názvy souborů vlastních modelů (jeden na řádek)
+	Negative prompt	Negativní prompt
+	One .safetensors filename per line. Compatibility is not checked.	Jeden název souboru .safetensors na řádek. Kompatibilita se nekontroluje.
+	Text encoders	Textové enkodéry
+	Comfyui custom encoders	Vlastní enkodéry ComfyUI
+	Comfyui custom model	Vlastní model ComfyUI
+	Comfyui custom models	Vlastní modely ComfyUI
+	Comfyui model settings	Nastavení modelů ComfyUI

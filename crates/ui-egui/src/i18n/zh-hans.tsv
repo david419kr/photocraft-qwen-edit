@@ -2512,3 +2512,16 @@ fontWeight	Italic	斜体
 	Comfyui translation model	提示词翻译模型
 	Search settings…	搜索设置…
 	No matching settings	没有匹配的设置
+
+# Qwen model settings and negative prompt controls.
+	AI model settings	AI 模型设置
+	ComfyUI port	ComfyUI 端口
+	Copy negative prompt	复制负面提示词
+	Custom model filenames (one per line)	自定义模型文件名（每行一个）
+	Negative prompt	负面提示词
+	One .safetensors filename per line. Compatibility is not checked.	每行一个 .safetensors 文件名。不检查兼容性。
+	Text encoders	文本编码器
+	Comfyui custom encoders	ComfyUI 自定义编码器
+	Comfyui custom model	ComfyUI 自定义模型
+	Comfyui custom models	ComfyUI 自定义模型列表
+	Comfyui model settings	ComfyUI 模型设置

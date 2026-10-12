@@ -3609,3 +3609,16 @@ cameraRaw	Masking	Маскування
 	Search settings…	Пошук налаштувань…
 	No matching settings	Немає відповідних налаштувань
 	PhotoCraft — Screen Color Picker	PhotoCraft — Піпетка кольору екрана
+
+# Qwen model settings and negative prompt controls.
+	AI model settings	Налаштування моделі ШІ
+	ComfyUI port	Порт ComfyUI
+	Copy negative prompt	Копіювати негативний промпт
+	Custom model filenames (one per line)	Назви файлів власних моделей (одна в рядку)
+	Negative prompt	Негативний промпт
+	One .safetensors filename per line. Compatibility is not checked.	Одна назва файлу .safetensors у рядку. Сумісність не перевіряється.
+	Text encoders	Текстові енкодери
+	Comfyui custom encoders	Власні енкодери ComfyUI
+	Comfyui custom model	Власна модель ComfyUI
+	Comfyui custom models	Власні моделі ComfyUI
+	Comfyui model settings	Налаштування моделей ComfyUI

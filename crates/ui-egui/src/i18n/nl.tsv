@@ -3677,3 +3677,16 @@ cameraRaw	Whites	Witten
 	Search settings…	Instellingen zoeken…
 	No matching settings	Geen overeenkomende instellingen
 	PhotoCraft — Screen Color Picker	PhotoCraft — Schermkleurkiezer
+
+# Qwen model settings and negative prompt controls.
+	AI model settings	AI-modelinstellingen
+	ComfyUI port	ComfyUI-poort
+	Copy negative prompt	Negatieve prompt kopiëren
+	Custom model filenames (one per line)	Bestandsnamen van aangepaste modellen (één per regel)
+	Negative prompt	Negatieve prompt
+	One .safetensors filename per line. Compatibility is not checked.	Eén .safetensors-bestandsnaam per regel. Compatibiliteit wordt niet gecontroleerd.
+	Text encoders	Tekstencoders
+	Comfyui custom encoders	Aangepaste ComfyUI-encoders
+	Comfyui custom model	Aangepast ComfyUI-model
+	Comfyui custom models	Aangepaste ComfyUI-modellen
+	Comfyui model settings	ComfyUI-modelinstellingen

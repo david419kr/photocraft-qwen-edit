@@ -2844,8 +2844,6 @@ prompt-region	Bottom right	우하단
 	Delete and Fill Selection	선택 영역 삭제 및 채우기
 	Adwaita Light Theme	Adwaita 밝은 테마
 	Adwaita Dark Theme	Adwaita 어두운 테마
-	Solarized dark	Solarized 어두움
-	Solarized Dark Theme	Solarized 어두운 테마
 	All shortcuts reset to PhotoCraft defaults.	모든 단축키를 PhotoCraft 기본값으로 초기화했습니다.
 	Reset	재설정
 	Delete layer ‘{name}’?	레이어 ‘{name}’을(를) 삭제하시겠습니까?
@@ -3138,3 +3136,8 @@ fontWeight	Italic	기울임
 	ComfyUI port	ComfyUI 포트
 	Search settings…	설정 검색…
 	No matching settings	일치하는 설정 없음
+
+# Qwen model settings and negative prompt controls.
+	Comfyui custom encoders	추가 ComfyUI 인코더
+	Comfyui custom model	사용자 ComfyUI 모델
+	Comfyui model settings	ComfyUI 모델 설정

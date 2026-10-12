@@ -3607,3 +3607,16 @@ fontWeight	Thin	Πολύ λεπτά
 	Comfyui translation model	Μοντέλο μετάφρασης προτροπών
 	Search settings…	Αναζήτηση ρυθμίσεων…
 	No matching settings	Δεν βρέθηκαν ρυθμίσεις
+
+# Qwen model settings and negative prompt controls.
+	AI model settings	Ρυθμίσεις μοντέλου AI
+	ComfyUI port	Θύρα ComfyUI
+	Copy negative prompt	Αντιγραφή αρνητικής προτροπής
+	Custom model filenames (one per line)	Ονόματα αρχείων προσαρμοσμένων μοντέλων (ένα ανά γραμμή)
+	Negative prompt	Αρνητική προτροπή
+	One .safetensors filename per line. Compatibility is not checked.	Ένα όνομα αρχείου .safetensors ανά γραμμή. Δεν ελέγχεται η συμβατότητα.
+	Text encoders	Κωδικοποιητές κειμένου
+	Comfyui custom encoders	Προσαρμοσμένοι κωδικοποιητές ComfyUI
+	Comfyui custom model	Προσαρμοσμένο μοντέλο ComfyUI
+	Comfyui custom models	Προσαρμοσμένα μοντέλα ComfyUI
+	Comfyui model settings	Ρυθμίσεις μοντέλων ComfyUI

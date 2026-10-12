@@ -2911,3 +2911,16 @@ fontWeight	Italic	Miring
 	Comfyui translation model	Model penerjemahan prompt
 	Search settings…	Cari pengaturan…
 	No matching settings	Tidak ada pengaturan yang cocok
+
+# Qwen model settings and negative prompt controls.
+	AI model settings	Pengaturan model AI
+	ComfyUI port	Port ComfyUI
+	Copy negative prompt	Salin prompt negatif
+	Custom model filenames (one per line)	Nama berkas model kustom (satu per baris)
+	Negative prompt	Prompt negatif
+	One .safetensors filename per line. Compatibility is not checked.	Satu nama berkas .safetensors per baris. Kompatibilitas tidak diperiksa.
+	Text encoders	Encoder teks
+	Comfyui custom encoders	Encoder kustom ComfyUI
+	Comfyui custom model	Model kustom ComfyUI
+	Comfyui custom models	Model-model kustom ComfyUI
+	Comfyui model settings	Pengaturan model ComfyUI
