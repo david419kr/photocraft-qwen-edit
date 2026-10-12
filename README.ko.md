@@ -1,12 +1,14 @@
 # PhotoCraft — 로컬 Qwen AI 기능
 
-[English](README.md) · [포터블 릴리스 다운로드](https://github.com/david419kr/photocraft/releases/latest)
+[English](README.md) · [포터블 릴리스 다운로드](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 
 PhotoCraft에 **포토샵 스타일의 로컬 생성형 AI 편집**을 추가한 fork입니다. ComfyUI의 Qwen Image 2.1을 사용하고 결과를 새 레이어로 추가하며, 프롬프트 기록도 저장합니다. AVIF 열기·저장·내보내기도 지원합니다. 아래는 이 fork의 추가 기능 안내입니다.
 
 ## 설치와 실행
 
 전제 환경은 **Windows x64 + NVIDIA RTX GPU**, CUDA 13을 지원하는 NVIDIA 드라이버입니다. 최초 다운로드에는 인터넷이 필요하며, 이후 생성·번역은 로컬에서 실행됩니다.
+
+RTX 3090(24GB), RTX 4090(24GB), RTX 4090 Laptop(16GB)에서 테스트되었습니다.
 
 1. 릴리스 ZIP을 쓰기 가능한 폴더에 압축 해제합니다. 간단한 오프라인 안내는 `README.txt`에 있습니다.
 2. `install-qwen-image21.cmd`를 실행합니다. **기본 설치 경로를 쓰려면 Enter만 누르세요.** 경로·모델·번역 선택 질문은 처음에 모두 받으며, 이후에는 완료될 때까지 기다리면 됩니다.

@@ -79,13 +79,13 @@ Original upstream shortcuts, Brush startup and export defaults are retained.
 Models, ComfyUI, personal settings and private documents are not bundled here.
 
 SOURCE AND SCREENSHOT GUIDES
-https://github.com/david419kr/photocraft
+https://github.com/david419kr/photocraft-qwen-edit
 English: README.md in the repository; Korean: README.ko.md.
 Licenses and original attribution are in the licenses folder.
 '@
 $readme += "`r`nRelease: $ReleaseId`r`nUpstream base: PhotoCraft $version`r`nThe date tracks this fork; the version suffix tracks upstream.`r`n"
 [IO.File]::WriteAllText((Join-Path $stage 'README.txt'), $readme, $utf8)
-$zipPath = Join-Path $dist ('photocraft-' + $ReleaseId + '-windows-x64.zip')
+$zipPath = Join-Path $dist ('photocraft-qwen-edit-' + $ReleaseId + '-windows-x64.zip')
 Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $stream = [IO.File]::Open($zipPath, [IO.FileMode]::Create)

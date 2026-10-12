@@ -1,12 +1,14 @@
 # PhotoCraft — Local Qwen AI
 
-[한국어](README.ko.md) · [Download the portable release](https://github.com/david419kr/photocraft/releases/latest)
+[한국어](README.ko.md) · [Download the portable release](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 
 A native Rust PhotoCraft fork focused on **Photoshop-style local generative editing** through ComfyUI and Qwen Image 2.1, with optional prompt translation, new result layers and saved prompt history. AVIF opening, saving and export are also included.
 
 ## Setup
 
 This release targets **Windows x64 + NVIDIA RTX**, with a CUDA 13 compatible NVIDIA driver. Initial downloads need internet access; generation and translation then run locally.
+
+Tested on RTX 3090 (24 GB), RTX 4090 (24 GB), and RTX 4090 Laptop (16 GB).
 
 1. Extract the release ZIP into a writable folder. The short offline guide is `README.txt`.
 2. Run `install-qwen-image21.cmd`. **Press Enter to keep the displayed install folder.** All setup questions are collected at the start; installation then runs unattended.
