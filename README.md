@@ -4,6 +4,12 @@
 
 A native Rust PhotoCraft fork focused on **Photoshop-style local generative editing** through ComfyUI and Qwen Image 2.1, with optional prompt translation, new result layers and saved prompt history. AVIF opening, saving and export are also included.
 
+## Demo video
+
+English UI walkthrough: generate an image, edit it, and fill or remove selected content.
+
+https://github.com/user-attachments/assets/4e88073f-a747-476b-ac18-3a0c43262e91
+
 ## Setup
 
 This release targets **Windows x64 + NVIDIA RTX**, with a CUDA 13 compatible NVIDIA driver. Initial downloads need internet access; generation and translation then run locally.
@@ -16,9 +22,21 @@ Tested on RTX 3090 (24 GB), RTX 4090 (24 GB), and RTX 4090 Laptop (16 GB).
 4. Translation is optional. **Hy-MT2 1.8B is recommended**: its lower VRAM use makes it easier to keep resident alongside the image model. The 7B model uses more VRAM and may require unloading/offloading on smaller GPUs.
 5. Start **`0. Run-Qwen-Image21`**, wait for ComfyUI, then run `photocraft.exe`. No browser opens automatically. The default endpoint is `http://127.0.0.1:8188`.
 
-Rerun setup later to add models or translation. An existing compatible ComfyUI can also be used. The AI bar appears when the service and required models are detected; translation controls appear only when a supported translation model is detected.
+**Keep the ComfyUI backend running before using AI features.** The AI generation/editing floating bar appears only when a running compatible ComfyUI with the required models and nodes is detected; otherwise it stays hidden. Settings or saved prompt-history controls may still be available.
+
+Rerun setup later to add models or translation. An existing compatible ComfyUI can also be used. Translation controls appear only when a supported translation model is detected.
 
 [Detailed installer guide and source](qwen-image21-installer/README.md)
+
+## AI model settings
+
+Click the gear on the AI bar to set the **ComfyUI port**, register custom `.safetensors` filenames, and choose each model's **text encoder, CFG, steps and Normal/Turbo sampling profile**. Official standard/Turbo models and the default encoder are pinned when detected. Custom model files must already be installed in ComfyUI; registration does not download or verify their compatibility.
+
+![AI model settings: model filenames, text encoders, CFG, steps and sampling profiles](docs/screenshots/ai/en-model-settings.png)
+
+In **Text encoders**, register additional `.safetensors` encoder filenames, one per line. Then select an encoder for a model in the Models tab. Subfolder paths and unambiguous filenames are supported.
+
+![AI model settings: additional text-encoder registration](docs/screenshots/ai/en-text-encoder-settings.png)
 
 ## Generate and edit
 

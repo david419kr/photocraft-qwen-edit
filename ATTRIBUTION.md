@@ -66,6 +66,8 @@ generated locally with official Qwen Image 2.1 Turbo for these examples.
 |---|---|---|---|---|
 | `docs/images/photocraft-*.jpg` | PhotoCraft screenshots | PhotoCraft contributors (UI) | Rendered offscreen with the `snapshot` example | MIT OR Apache-2.0 (UI); the artwork in each is public domain, listed below |
 | `docs/images/preferences-apply-*.png` | Preferences before and after adding Apply (no artwork) | PhotoCraft contributors | PhotoCraft control-channel capture and offscreen `snapshot` example | MIT OR Apache-2.0 |
+| `docs/screenshots/ai/en-model-settings.png`, `docs/screenshots/ai/en-text-encoder-settings.png` | AI model and text-encoder settings | @david419kr (capture), PhotoCraft contributors (UI) | Screenshots supplied by the fork maintainer | MIT OR Apache-2.0, [`LICENSE.txt`](docs/screenshots/ai/LICENSE.txt) |
+| Videos embedded in `README.md` and `README.ko.md` ([English](https://github.com/user-attachments/assets/4e88073f-a747-476b-ac18-3a0c43262e91), [Korean](https://github.com/user-attachments/assets/b1adb633-e5b2-4351-b3a0-af4eb670736e)) | Local Qwen generation, editing and selection-fill walkthroughs | @david419kr (recordings), PhotoCraft contributors (UI) | Maintainer-supplied `video-eng.mp4` and `video-kor.mp4`; documentation copies retain their resolution and duration | MIT OR Apache-2.0 (UI/recordings); example artwork generated with Qwen |
 
 Artwork shown in the screenshots (all public domain, via Wikimedia Commons; details in
 [`docs/images/SOURCES.md`](docs/images/SOURCES.md)):
