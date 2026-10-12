@@ -57,6 +57,7 @@ fn screen(h: &Harness<'static, PhotocraftApp>, p: [f64; 2]) -> Pos2 {
         center: v.center,
         flip: app.ui.view.flip_horizontal,
         rotation: v.rotation,
+        aspect: app.ui.view.display_aspect(),
     };
     xf.to_screen(p[0] as f32, p[1] as f32)
 }
@@ -222,6 +223,24 @@ fn the_hand_tool_does_not_steal_a_free_transform_drag() {
     let q1 = quad(&h);
     assert!(!close(q1, q0), "the drag scaled the box, not the view: {q1:?}");
     assert_eq!(h.state().ui.views[0].center, center0, "the Hand did not pan");
+    key(&mut h, Modifiers::NONE, Key::Enter);
+    assert!(h.state().ui.transform.is_none(), "the transform committed");
+    assert!(width(&h) > 150, "the committed resize applied: {}", width(&h));
+}
+
+/// With the (freehand) Lasso selected, a Free Transform of a lasso selection follows the drag: the
+/// Lasso reads its own pointer events, and dropped the moves and release of a drag it hadn't
+/// started, so the box never changed (#2153).
+#[test]
+fn the_lasso_tool_does_not_swallow_a_free_transform_drag() {
+    let mut h = harness_tool(Tool::Lasso);
+    let outline = json!([[90, 90], [210, 90], [210, 170], [90, 170]]);
+    h.state_mut().run("select.lasso", json!({"points": outline})).unwrap();
+    begin(&mut h);
+    let q0 = quad(&h);
+    drag(&mut h, q0[2], [300.0, 220.0]);
+    let q1 = quad(&h);
+    assert!(!close(q1, q0), "the drag scaled the box: {q1:?}");
     key(&mut h, Modifiers::NONE, Key::Enter);
     assert!(h.state().ui.transform.is_none(), "the transform committed");
     assert!(width(&h) > 150, "the committed resize applied: {}", width(&h));

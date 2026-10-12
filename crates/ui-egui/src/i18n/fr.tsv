@@ -45,6 +45,8 @@
 	Right	Droite
 	Open Recent	Ouvrir un fichier récent
 	Clear Recent Files	Effacer la liste des fichiers récents
+	Remove from Recent	Retirer des fichiers récents
+	Remove {name} from Recent	Retirer {name} des fichiers récents
 	Close	Fermer
 	Minimize	Réduire
 	Maximize	Agrandir
@@ -262,6 +264,7 @@
 	Layer via Cut	Calque par coupe
 	Layer From Background…	Calque d'après l'arrière-plan…
 	Layer from Background…	Calque d'après l'arrière-plan…
+	Background From Layer	Arrière-plan d'après le calque
 	New Shape Layer	Nouveau calque de forme
 	New Type Layer	Nouveau calque de texte
 	New Fill Layer	Nouveau calque de remplissage
@@ -582,6 +585,10 @@
 	100%	100 %
 	200%	200 %
 	75%	75 %
+	80%	80 %
+	85%	85 %
+	90%	90 %
+	95%	95 %
 	125%	125 %
 	150%	150 %
 	175%	175 %
@@ -674,6 +681,10 @@
 	Classic Theme	Thème Classique
 	Solarized dark	Solarized sombre
 	Solarized Dark Theme	Thème Solarized sombre
+	Breeze dark	Breeze sombre
+	Breeze Dark Theme	Thème Breeze sombre
+	Breeze light	Breeze clair
+	Breeze Light Theme	Thème Breeze clair
 	Next Theme	Thème suivant
 	Actions	Actions
 	Brush Settings	Paramètres du pinceau
@@ -1506,6 +1517,7 @@
 	Blur Tool	Outil Flou
 	Bold	Gras
 	Brush	Pinceau
+	Block	Carré
 	Brush Pose	Position du pinceau
 	Brush Tip Shape	Forme de la pointe
 	Brush Tool	Outil Pinceau
@@ -1554,6 +1566,8 @@
 	Efficiency: 100%	Efficacité : 100 %
 	Ellipse Tool	Outil Ellipse
 	Elliptical Marquee Tool	Outil Sélection elliptique
+	Single Row Marquee Tool	Outil Sélection de ligne unique
+	Single Column Marquee Tool	Outil Sélection de colonne unique
 	Emboss	Relief
 	Eraser	Gomme
 	Eraser Tool	Outil Gomme
@@ -1718,6 +1732,7 @@
 	Scratch: {size}	Travail : {size}
 	Untagged {mode}	{mode} sans profil
 	{w} px x {h} px ({ppi} ppi)	{w} px × {h} px ({ppi} ppp)
+	{w} {unit} x {h} {unit} ({ppi} ppi)	{w} {unit} × {h} {unit} ({ppi} ppp)
 	Resolution: {dpi} pixels/inch	Résolution : {dpi} pixels/pouce
 	Doc: {w} × {h} px	Doc : {w} × {h} px
 	Frame {current} / {total}	Image {current} / {total}
@@ -1868,6 +1883,7 @@
 	Show only crosshair while painting	N'afficher que le réticule pendant la peinture
 	Show slice numbers	Afficher les numéros de tranche
 	Show tooltips	Afficher les info-bulles
+	Show highlight on rollover	Afficher la mise en surbrillance au survol
 	Show transformation values	Afficher les valeurs de transformation
 	Slice color	Couleur des tranches
 	Smart guide color	Couleur des repères intelligents
@@ -1969,6 +1985,7 @@
 	Create Warped Text	Créer un texte déformé
 	Rasterize Smart Object	Rastériser l'objet intelligent
 	Rasterize Fill Content	Rastériser le contenu du remplissage
+	Rasterize Layer Style	Rastériser le style de calque
 	Unlock: picking a preset replaces these settings	Déverrouiller : choisir un préréglage remplace ces paramètres
 	Lock: keep these settings when picking another preset	Verrouiller : conserver ces paramètres en choisissant un autre préréglage
 	Diameter:	Diamètre :
@@ -2751,6 +2768,7 @@ fontWeight	Italic	Italique
 	Color to Alpha…	Couleur vers alpha…
 	Transparency Threshold	Seuil de transparence
 	Opacity Threshold	Seuil d'opacité
+	PhotoCraft — Screen Color Picker	PhotoCraft — Sélecteur de couleur d'écran
 
 	Rasterize svg groups deeper than	Pixelliser les groupes SVG au-delà de cette profondeur
 	0 turns this threshold off; SVG groups nested deeper than 100 levels are always rasterized.	0 désactive ce seuil ; les groupes SVG imbriqués sur plus de 100 niveaux sont toujours pixellisés.
@@ -2904,3 +2922,5 @@ fontWeight	Italic	Italique
 	Comfyui model	Modèle ComfyUI
 	Comfyui translate prompt	Traduire le prompt en anglais
 	Comfyui translation model	Modèle de traduction des prompts
+	Search settings…	Rechercher des réglages…
+	No matching settings	Aucun réglage correspondant

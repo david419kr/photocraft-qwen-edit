@@ -25,6 +25,8 @@
 	Right	Δεξιά
 	Open Recent	Πρόσφατα αρχεία
 	Clear Recent Files	Εκκαθάριση πρόσφατων αρχείων
+	Remove from Recent	Αφαίρεση από τα πρόσφατα
+	Remove {name} from Recent	Αφαίρεση του {name} από τα πρόσφατα
 	Close	Κλείσιμο
 	Minimize	Ελαχιστοποίηση
 	Maximize	Μεγιστοποίηση
@@ -1436,6 +1438,7 @@
 	Show only crosshair while painting	Εμφάνιση μόνο σταυρονήματος κατά τη ζωγραφική
 	Show slice numbers	Εμφάνιση αριθμών τομών
 	Show tooltips	Εμφάνιση επεξηγήσεων
+	Show highlight on rollover	Εμφάνιση επισήμανσης κατά την κατάδειξη
 	Show bounding box when dragging layer	Εμφάνιση πλαισίου οριοθέτησης κατά τη μετακίνηση επιπέδου
 	Show transformation values	Εμφάνιση τιμών μετασχηματισμού
 	Slice color	Χρώμα τομής
@@ -1484,6 +1487,7 @@
 	Create Warped Text	Δημιουργία παραμορφωμένου κειμένου
 	Rasterize Smart Object	Ραστεροποίηση έξυπνου αντικειμένου
 	Rasterize Fill Content	Ραστεροποίηση περιεχομένου γεμίσματος
+	Rasterize Layer Style	Ραστεροποίηση στυλ επιπέδου
 	Unlock: picking a preset replaces these settings	Ξεκλείδωμα: η επιλογή προεπιλογής αντικαθιστά αυτές τις ρυθμίσεις
 	Lock: keep these settings when picking another preset	Κλείδωμα: διατήρηση ρυθμίσεων κατά την αλλαγή προεπιλογής
 	Diameter:	Διάμετρος:
@@ -1725,6 +1729,7 @@
 	Layer via Cut	Επίπεδο μέσω αποκοπής
 	Layer From Background…	Επίπεδο από φόντο…
 	Layer from Background…	Επίπεδο από φόντο…
+	Background From Layer	Φόντο από επίπεδο
 	New Shape Layer	Νέο επίπεδο σχήματος
 	New Type Layer	Νέο επίπεδο κειμένου
 	New Fill Layer	Νέο επίπεδο γεμίσματος
@@ -2068,6 +2073,10 @@
 	Classic Theme	Κλασικό θέμα
 	Solarized dark	Solarized σκούρο
 	Solarized Dark Theme	Σκούρο θέμα Solarized
+	Breeze dark	Breeze σκούρο
+	Breeze Dark Theme	Σκούρο θέμα Breeze
+	Breeze light	Breeze φωτεινό
+	Breeze Light Theme	Φωτεινό θέμα Breeze
 	Clear Canvas Guides	Απαλοιφή οδηγών καμβά
 	Clear Override	Απαλοιφή παράκαμψης
 	Clear Samples	Απαλοιφή δειγμάτων
@@ -3215,6 +3224,8 @@ cameraRaw	Yellow	Κίτρινο
 	Dodge Tool	Φωτισμός (Dodge Tool)
 	Ellipse Tool	Έλλειψη (Ellipse Tool)
 	Elliptical Marquee Tool	Ελλειπτική επιλογή (Elliptical Marquee Tool)
+	Single Row Marquee Tool	Επιλογή μίας γραμμής (Single Row Marquee Tool)
+	Single Column Marquee Tool	Επιλογή μίας στήλης (Single Column Marquee Tool)
 	Eraser Tool	Γόμα (Eraser Tool)
 	Eyedropper Tool	Σταγονόμετρο (Eyedropper Tool)
 	Gradient Tool	Διαβάθμιση (Gradient Tool)
@@ -3340,6 +3351,7 @@ cameraRaw	Yellow	Κίτρινο
 	open source	ανοιχτού κώδικα
 	{size} (was {old})	{size} (ήταν {old})
 	{w} px x {h} px ({ppi} ppi)	{w} px x {h} px ({ppi} ppi)
+	{w} {unit} x {h} {unit} ({ppi} ppi)	{w} {unit} x {h} {unit} ({ppi} ppi)
 	…and {n} more	…και {n} ακόμη
 	125%	125%
 	150%	150%
@@ -3348,12 +3360,18 @@ cameraRaw	Yellow	Κίτρινο
 	300%	300%
 	50% Gray	50% γκρι
 	75%	75%
+	80%	80%
+	85%	85%
+	90%	90%
+	95%	95%
 	Adobe	Adobe
 	Adobe rgb	Adobe RGB
 	Android 1080p	Android 1080p
 	Apple Watch 45mm	Apple Watch 45mm
 	Black Matte	Μαύρο ματ
 	Brush	Πινέλο
+	Pencil	Μολύβι
+	Block	Μπλοκ
 	Color…	Χρώμα…
 	Cone (Inverted)	Κώνος (αντεστραμμένος)
 	Could not open	Δεν ήταν δυνατό το άνοιγμα
@@ -3440,6 +3458,7 @@ fontWeight	Thin	Πολύ λεπτά
 	Color to Alpha…	Χρώμα σε άλφα…
 	Transparency Threshold	Κατώφλι διαφάνειας
 	Opacity Threshold	Κατώφλι αδιαφάνειας
+	PhotoCraft — Screen Color Picker	PhotoCraft — Επιλογή χρώματος οθόνης
 
 	Rasterize svg groups deeper than	Ραστεροποίηση ομάδων SVG πέρα από αυτό το βάθος
 	0 turns this threshold off; SVG groups nested deeper than 100 levels are always rasterized.	Το 0 απενεργοποιεί αυτό το όριο· ομάδες SVG με ένθεση βαθύτερη από 100 επίπεδα ραστεροποιούνται πάντα.
@@ -3586,3 +3605,5 @@ fontWeight	Thin	Πολύ λεπτά
 	Comfyui model	Μοντέλο ComfyUI
 	Comfyui translate prompt	Μετάφραση προτροπής στα αγγλικά
 	Comfyui translation model	Μοντέλο μετάφρασης προτροπών
+	Search settings…	Αναζήτηση ρυθμίσεων…
+	No matching settings	Δεν βρέθηκαν ρυθμίσεις

@@ -40,6 +40,8 @@
 	Right	Правий
 	Open Recent	Нещодавні файли
 	Clear Recent Files	Очистити список нещодавніх файлів
+	Remove from Recent	Вилучити з нещодавніх
+	Remove {name} from Recent	Вилучити {name} з нещодавніх
 	Close	Закрити
 	Minimize	Згорнути
 	Maximize	Розгорнути
@@ -141,6 +143,7 @@
 	Rename Layer	Перейменувати шар
 	Layer From Background…	Шар із фону…
 	Layer from Background…	Шар із фону…
+	Background From Layer	Фон із шару
 	Group Layers	Згрупувати шари
 	Group…	Група…
 	Ungroup Layers	Розгрупувати шари
@@ -371,6 +374,10 @@
 	100%	100%
 	200%	200%
 	75%	75%
+	80%	80%
+	85%	85%
+	90%	90%
+	95%	95%
 	125%	125%
 	150%	150%
 	175%	175%
@@ -466,6 +473,7 @@
 	Wand	Чарівна паличка
 	Eyedropper	Піпетка
 	Brush	Пензель
+	Block	Блок
 	Pencil	Олівець
 	Eraser	Гумка
 	Clone Stamp	Клонувальний штамп
@@ -620,6 +628,7 @@
 	Resolution:	Роздільність:
 	Resolution: {dpi} pixels/inch	Роздільність: {dpi} пікселів/дюйм
 	{w} px x {h} px ({ppi} ppi)	{w} пкс x {h} пкс ({ppi} ppi)
+	{w} {unit} x {h} {unit} ({ppi} ppi)	{w} {unit} x {h} {unit} ({ppi} ppi)
 	Pixels:	Пікселі:
 	Pixel Length:	Довжина в пікселях:
 	Logical Length:	Логічна довжина:
@@ -1366,6 +1375,10 @@
 	Classic Theme	Класична тема
 	Solarized dark	Solarized темна
 	Solarized Dark Theme	Темна тема Solarized
+	Breeze dark	Breeze темна
+	Breeze Dark Theme	Темна тема Breeze
+	Breeze light	Breeze світла
+	Breeze Light Theme	Світла тема Breeze
 	Adwaita Light Theme	Світла тема Adwaita
 	Adwaita Dark Theme	Темна тема Adwaita
 	Adwaita	Adwaita
@@ -1497,6 +1510,8 @@
 	Could not complete the Free Transform command because the layer is locked.	Не вдалося виконати команду «Вільна трансформація», бо шар заблоковано.
 	Rectangular Marquee Tool	Інструмент «Прямокутне виділення»
 	Elliptical Marquee Tool	Інструмент «Еліптичне виділення»
+	Single Row Marquee Tool	Інструмент «Виділення одного рядка»
+	Single Column Marquee Tool	Інструмент «Виділення одного стовпця»
 	Brush Tool	Інструмент «Пензель»
 	Pencil Tool	Інструмент «Олівець»
 	Eraser Tool	Інструмент «Гумка»
@@ -2290,6 +2305,7 @@
 	Show only crosshair while painting	Показувати лише перехрестя під час малювання
 	Show slice numbers	Показувати номери фрагментів
 	Show tooltips	Показувати підказки
+	Show highlight on rollover	Показувати підсвічування під час наведення
 	Show bounding box when dragging layer	Показувати рамку під час перетягування шару
 	System title bar	Системний рядок заголовка
 	Show transformation values	Показувати значення трансформації
@@ -2764,6 +2780,7 @@ fontWeight	Italic	Курсивний
 	Create Warped Text	Створити деформований текст
 	Rasterize Smart Object	Растеризувати смартоб'єкт
 	Rasterize Fill Content	Растеризувати вміст заливки
+	Rasterize Layer Style	Растеризувати стиль шару
 	Toggle the Brush Settings panel  (F5)	Перемкнути панель налаштувань пензля  (F5)
 	Create new brush preset from the current settings	Створити новий набір пензля з поточних параметрів
 	Brush Settings…  (F5): every option of this brush	Налаштування пензля…  (F5): усі параметри цього пензля
@@ -3589,3 +3606,6 @@ cameraRaw	Masking	Маскування
 	Comfyui model	Модель ComfyUI
 	Comfyui translate prompt	Перекласти промпт англійською
 	Comfyui translation model	Модель перекладу промптів
+	Search settings…	Пошук налаштувань…
+	No matching settings	Немає відповідних налаштувань
+	PhotoCraft — Screen Color Picker	PhotoCraft — Піпетка кольору екрана

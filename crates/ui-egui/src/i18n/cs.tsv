@@ -47,6 +47,8 @@
 	Right	Vpravo
 	Open Recent	Otevřít nedávné
 	Clear Recent Files	Vymazat nedávné soubory
+	Remove from Recent	Odebrat z nedávných
+	Remove {name} from Recent	Odebrat {name} z nedávných
 	Close	Zavřít
 	Minimize	Minimalizovat
 	Maximize	Maximalizovat
@@ -271,6 +273,8 @@
 	Layer via Cut	Vrstva vyjmutím
 	Layer From Background…	Vrstva z pozadí…
 	Layer from Background…	Vrstva z pozadí…
+	Background from Layer	Pozadí z vrstvy
+	Background From Layer	Pozadí z vrstvy
 	New Shape Layer	Nová vrstva tvaru
 	New Type Layer	Nová textová vrstva
 	New Fill Layer	Nová vrstva výplně
@@ -598,6 +602,10 @@
 	100%	100 %
 	200%	200 %
 	75%	75 %
+	80%	80 %
+	85%	85 %
+	90%	90 %
+	95%	95 %
 	125%	125 %
 	150%	150 %
 	175%	175 %
@@ -690,6 +698,10 @@
 	Classic Theme	Klasický motiv
 	Solarized dark	Solarized tmavý
 	Solarized Dark Theme	Tmavý motiv Solarized
+	Breeze dark	Breeze tmavý
+	Breeze Dark Theme	Tmavý motiv Breeze
+	Breeze light	Breeze světlý
+	Breeze Light Theme	Světlý motiv Breeze
 	Next Theme	Další motiv
 	Actions	Akce
 	Brush Settings	Nastavení štětce
@@ -1543,6 +1555,8 @@
 	Blur Tool	Nástroj rozostření
 	Bold	Tučné
 	Brush	Štětec
+	Pencil	Tužka
+	Block	Blok
 	Brush Pose	Poloha štětce
 	Brush Tip Shape	Tvar hrotu štětce
 	Brush Tool	Nástroj štětec
@@ -1591,6 +1605,8 @@
 	Efficiency: 100%	Efektivita: 100 %
 	Ellipse Tool	Nástroj elipsa
 	Elliptical Marquee Tool	Nástroj eliptický výběr
+	Single Row Marquee Tool	Nástroj výběr jednoho řádku
+	Single Column Marquee Tool	Nástroj výběr jednoho sloupce
 	Emboss	Reliéf
 	Eraser	Guma
 	Eraser Tool	Nástroj guma
@@ -1759,6 +1775,7 @@
 	Invalid {mode} profile	Neplatný profil {mode}
 	Unnamed {mode} profile	Bezejmenný profil {mode}
 	{w} px x {h} px ({ppi} ppi)	{w} px × {h} px ({ppi} ppi)
+	{w} {unit} x {h} {unit} ({ppi} ppi)	{w} {unit} × {h} {unit} ({ppi} ppi)
 	Resolution: {dpi} pixels/inch	Rozlišení: {dpi} pixelů/palec
 	Doc: {w} × {h} px	Dok.: {w} × {h} px
 	Frame {current} / {total}	Snímek {current} / {total}
@@ -1911,6 +1928,7 @@
 	Show only crosshair while painting	Při malování zobrazit jen nitkový kříž
 	Show slice numbers	Zobrazit čísla řezů
 	Show tooltips	Zobrazit popisky nástrojů
+	Show highlight on rollover	Zobrazit zvýraznění při přejetí
 	Show bounding box when dragging layer	Při přetahování vrstvy zobrazit ohraničovací rámeček
 	System title bar	Systémové záhlaví okna
 	Show transformation values	Zobrazit hodnoty transformace
@@ -2018,6 +2036,7 @@
 	Create Warped Text	Vytvořit deformovaný text
 	Rasterize Smart Object	Rastrovat chytrý objekt
 	Rasterize Fill Content	Rastrovat obsah výplně
+	Rasterize Layer Style	Rastrovat styl vrstvy
 	Unlock: picking a preset replaces these settings	Odemknout: výběr přednastavení tato nastavení nahradí
 	Lock: keep these settings when picking another preset	Zamknout: zachovat tato nastavení při výběru jiného přednastavení
 	Diameter:	Průměr:
@@ -2331,6 +2350,7 @@ fontWeight	Italic	Kurzíva
 	Color to Alpha…	Barva na alfu…
 	Transparency Threshold	Práh průhlednosti
 	Opacity Threshold	Práh krytí
+	PhotoCraft — Screen Color Picker	PhotoCraft — Výběr barvy obrazovky
 
 	Rasterize svg groups deeper than	Rasterizovat skupiny SVG hlubší než tato úroveň
 	0 turns this threshold off; SVG groups nested deeper than 100 levels are always rasterized.	0 vypne tento práh; skupiny SVG vnořené hlouběji než 100 úrovní se rastrují vždy.
@@ -2483,3 +2503,5 @@ fontWeight	Italic	Kurzíva
 	Comfyui model	Model ComfyUI
 	Comfyui translate prompt	Přeložit zadání do angličtiny
 	Comfyui translation model	Model pro překlad zadání
+	Search settings…	Hledat nastavení…
+	No matching settings	Žádná odpovídající nastavení

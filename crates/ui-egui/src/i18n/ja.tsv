@@ -43,6 +43,8 @@
 	Right	右
 	Open Recent	最近使ったファイルを開く
 	Clear Recent Files	最近使ったファイルを消去
+	Remove from Recent	最近使ったファイルから削除
+	Remove {name} from Recent	{name} を最近使ったファイルから削除
 	Close	閉じる
 	Minimize	最小化
 	Maximize	最大化
@@ -267,6 +269,7 @@
 	Layer via Cut	切り取ったレイヤー
 	Layer From Background…	背景からレイヤーへ…
 	Layer from Background…	背景からレイヤーへ…
+	Background From Layer	レイヤーから背景
 	New Shape Layer	新規シェイプレイヤー
 	New Type Layer	新規文字レイヤー
 	New Fill Layer	新規塗りつぶしレイヤー
@@ -594,6 +597,10 @@
 	100%	100%
 	200%	200%
 	75%	75%
+	80%	80%
+	85%	85%
+	90%	90%
+	95%	95%
 	125%	125%
 	150%	150%
 	175%	175%
@@ -686,6 +693,10 @@
 	Classic Theme	クラシックテーマ
 	Solarized dark	Solarized ダーク
 	Solarized Dark Theme	Solarized ダークテーマ
+	Breeze dark	Breeze ダーク
+	Breeze Dark Theme	Breeze ダークテーマ
+	Breeze light	Breeze ライト
+	Breeze Light Theme	Breeze ライトテーマ
 	Next Theme	次のテーマ
 	Actions	アクション
 	Brush Settings	ブラシ設定
@@ -1530,6 +1541,7 @@
 	Blur Tool	ぼかしツール
 	Bold	ボールド
 	Brush	ブラシ
+	Block	ブロック
 	Brush Pose	ブラシの姿勢
 	Brush Tip Shape	ブラシ先端のシェイプ
 	Brush Tool	ブラシツール
@@ -1579,6 +1591,8 @@
 	Efficiency: 100%	効率: 100%
 	Ellipse Tool	楕円形ツール
 	Elliptical Marquee Tool	楕円形選択ツール
+	Single Row Marquee Tool	一行選択ツール
+	Single Column Marquee Tool	一列選択ツール
 	Emboss	エンボス
 	Eraser	消しゴム
 	Eraser Tool	消しゴムツール
@@ -1747,6 +1761,7 @@
 	Invalid {mode} profile	無効な {mode} プロファイル
 	Unnamed {mode} profile	名前のない {mode} プロファイル
 	{w} px x {h} px ({ppi} ppi)	{w} px × {h} px ({ppi} ppi)
+	{w} {unit} x {h} {unit} ({ppi} ppi)	{w} {unit} × {h} {unit} ({ppi} ppi)
 	Resolution: {dpi} pixels/inch	解像度: {dpi} ピクセル/インチ
 	Doc: {w} × {h} px	ドキュメント: {w} × {h} px
 	Frame {current} / {total}	フレーム {current} / {total}
@@ -1899,6 +1914,7 @@
 	Show only crosshair while painting	描画中は十字線のみ表示
 	Show slice numbers	スライス番号を表示
 	Show tooltips	ツールチップを表示
+	Show highlight on rollover	ロールオーバー時にハイライトを表示
 	Show bounding box when dragging layer	レイヤーのドラッグ中にバウンディングボックスを表示
 	System title bar	システムのタイトルバー
 	Show transformation values	変形値を表示
@@ -2006,6 +2022,7 @@
 	Create Warped Text	ワープテキストを作成
 	Rasterize Smart Object	スマートオブジェクトをラスタライズ
 	Rasterize Fill Content	塗りの内容をラスタライズ
+	Rasterize Layer Style	レイヤースタイルをラスタライズ
 	Unlock: picking a preset replaces these settings	ロック解除: プリセットを選ぶとこの設定は置き換わります
 	Lock: keep these settings when picking another preset	ロック: 別のプリセットを選んでもこの設定を保持します
 	Diameter:	直径:
@@ -3354,6 +3371,7 @@ fontWeight	Italic	斜体
 	Color to Alpha…	カラーを透明に…
 	Transparency Threshold	透明のしきい値
 	Opacity Threshold	不透明度のしきい値
+	PhotoCraft — Screen Color Picker	PhotoCraft — スクリーンカラーピッカー
 
 	Rasterize svg groups deeper than	この深さを超える SVG グループをラスタライズ
 	0 turns this threshold off; SVG groups nested deeper than 100 levels are always rasterized.	0 でこのしきい値は無効になります。100 階層を超えて入れ子になった SVG グループは常にラスタライズされます。
@@ -3501,3 +3519,5 @@ fontWeight	Italic	斜体
 	Comfyui model	ComfyUIモデル
 	Comfyui translate prompt	プロンプトを英語に翻訳
 	Comfyui translation model	プロンプトの翻訳モデル
+	Search settings…	設定を検索…
+	No matching settings	一致する設定はありません

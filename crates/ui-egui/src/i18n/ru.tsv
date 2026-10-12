@@ -49,6 +49,8 @@
 	Right	Правый
 	Open Recent	Открыть недавние
 	Clear Recent Files	Очистить список недавних файлов
+	Remove from Recent	Удалить из недавних
+	Remove {name} from Recent	Удалить {name} из недавних
 	Close	Закрыть
 	Minimize	Свернуть
 	Maximize	Развернуть
@@ -150,6 +152,8 @@
 	Rename Layer	Переименовать слой
 	Layer From Background…	Слой из фона…
 	Layer from Background…	Слой из фона…
+	Background from Layer	Фон из слоя
+	Background From Layer	Фон из слоя
 	Group Layers	Сгруппировать слои
 	Group…	Группировать…
 	Ungroup Layers	Разгруппировать слои
@@ -391,6 +395,10 @@
 	100%	100%
 	200%	200%
 	75%	75%
+	80%	80%
+	85%	85%
+	90%	90%
+	95%	95%
 	125%	125%
 	150%	150%
 	175%	175%
@@ -486,6 +494,7 @@
 	Wand	Волшебная палочка
 	Eyedropper	Пипетка
 	Brush	Кисть
+	Block	Квадрат
 	Pencil	Карандаш
 	Eraser	Ластик
 	Clone Stamp	Штамп
@@ -640,6 +649,7 @@
 	Resolution:	Разрешение:
 	Resolution: {dpi} pixels/inch	Разрешение: {dpi} пикс./дюйм
 	{w} px x {h} px ({ppi} ppi)	{w} px × {h} px ({ppi} ppi)
+	{w} {unit} x {h} {unit} ({ppi} ppi)	{w} {unit} × {h} {unit} ({ppi} ppi)
 	Pixels:	Пикселы:
 	Pixel Length:	Длина в пикселах:
 	Logical Length:	Логическая длина:
@@ -1385,6 +1395,10 @@
 	Classic Theme	Классическая тема
 	Solarized dark	Solarized тёмная
 	Solarized Dark Theme	Тёмная тема Solarized
+	Breeze dark	Breeze тёмная
+	Breeze Dark Theme	Тёмная тема Breeze
+	Breeze light	Breeze светлая
+	Breeze Light Theme	Светлая тема Breeze
 	Studio Theme	Тема Studio
 	Studio Light Theme	Светлая тема Studio
 	Adwaita Light Theme	Светлая тема Adwaita
@@ -1514,6 +1528,8 @@
 	Could not complete the Free Transform command because the layer is locked.	Не удалось выполнить команду «Свободное трансформирование», потому что слой заблокирован.
 	Rectangular Marquee Tool	Прямоугольная область
 	Elliptical Marquee Tool	Овальная область
+	Single Row Marquee Tool	Область (горизонтальная строка)
+	Single Column Marquee Tool	Область (вертикальная строка)
 	Brush Tool	Кисть
 	Pencil Tool	Карандаш
 	Eraser Tool	Ластик
@@ -2312,6 +2328,7 @@
 	Show only crosshair while painting	Только перекрестье при рисовании
 	Show slice numbers	Показывать номера фрагментов
 	Show tooltips	Показывать подсказки
+	Show highlight on rollover	Показывать подсветку при наведении
 	Show bounding box when dragging layer	Показывать рамку при перетаскивании слоя
 	System title bar	Системная строка заголовка
 	Show transformation values	Показывать значения трансформации
@@ -2604,6 +2621,7 @@ fontWeight	Italic	Курсив
 	Color to Alpha…	Цвет в альфа-канал…
 	Transparency Threshold	Порог прозрачности
 	Opacity Threshold	Порог непрозрачности
+	PhotoCraft — Screen Color Picker	PhotoCraft — Пипетка цвета экрана
 
 	Rasterize svg groups deeper than	Растеризовать группы SVG глубже этого уровня
 	0 turns this threshold off; SVG groups nested deeper than 100 levels are always rasterized.	0 отключает этот порог; группы SVG с вложенностью более 100 уровней всегда растрируются.
@@ -2767,3 +2785,6 @@ fontWeight	Italic	Курсив
 	Comfyui model	Модель ComfyUI
 	Comfyui translate prompt	Перевести промпт на английский
 	Comfyui translation model	Модель перевода промптов
+	Rasterize Layer Style	Растрировать стиль слоя
+	Search settings…	Поиск настроек…
+	No matching settings	Нет подходящих настроек

@@ -103,6 +103,7 @@ pub mod menu_catalog;
 pub mod menu_nav;
 pub mod menus;
 pub mod monitor_status;
+pub mod move_hover;
 pub mod move_lock;
 pub mod move_mods;
 pub mod move_ui;
@@ -164,6 +165,7 @@ mod tool_cursor;
 pub mod tool_feedback;
 pub mod transform_tex;
 pub mod transform_tool;
+mod type_font_preview;
 pub mod type_panels_ui;
 pub mod type_tool;
 mod type_transform;
@@ -425,6 +427,8 @@ pub struct PhotocraftApp {
     pub(crate) menu_cache: Option<menus::ItemCache>,
     /// Move tool drag shown live (`move_ui`).
     pub(crate) move_preview: Option<move_ui::MovePreview>,
+    /// Move tool › Show Highlight on Rollover: the last hover answer (`move_hover`).
+    pub(crate) move_hover: Option<move_hover::Hover>,
     /// A blend mode hovered in the Layers panel, shown live (`blend_preview`).
     pub(crate) blend_preview: Option<blend_preview::BlendPreview>,
     /// Patch Tool drag: the healed document at the pointer (`patch_preview`).
@@ -572,6 +576,8 @@ pub struct PhotocraftApp {
     /// Type tool layout cache: ((doc, revision, layer), layout).
     pub(crate) type_layout: Option<((u64, u64, u64), std::sync::Arc<photocraft_text::TextLayout>)>,
     pub(crate) type_transform_preview: Option<type_transform::Preview>,
+    /// A font hovered in the Type tool's font picker, shown live (`type_font_preview`).
+    pub(crate) type_font_preview: Option<type_font_preview::TypeFontPreview>,
     /// Channel thumbnails for one document snapshot; view-only revisions reuse their pixels.
     channel_thumbs: Option<(DocId, std::sync::Weak<Document>, bool, Vec<egui::TextureHandle>)>,
     /// Channels panel overlays / channel views drawn over the canvas, per document id.
@@ -628,6 +634,7 @@ impl PhotocraftApp {
             trail: None,
             menu_cache: None,
             move_preview: None,
+            move_hover: None,
             blend_preview: None,
             patch_preview: None,
             shape_stroke_preview: None,
@@ -679,6 +686,7 @@ impl PhotocraftApp {
             channel_views: HashMap::new(),
             type_layout: None,
             type_transform_preview: None,
+            type_font_preview: None,
             guide_drag: None,
             crop: Default::default(),
             hover_doc: None,
@@ -959,6 +967,13 @@ impl PhotocraftApp {
         self.session.prefs.edit(|p| p.file_handling.recent_files.clear());
     }
 
+    /// Take one file off the recent list (the Home screen's × or Remove from Recent, #2691). The
+    /// file stays on disk, and opening it again lists it again.
+    pub fn remove_recent(&mut self, path: &str) {
+        self.ui.recent_files.retain(|p| p != path);
+        self.session.prefs.edit(|p| p.file_handling.recent_files.retain(|r| r != path));
+    }
+
     /// How many recent files to remember ("Recent File List Contains", 0–100).
     pub fn recent_cap(&self) -> usize {
         self.session.prefs().file_handling.recent_file_count.min(100) as usize
@@ -1096,19 +1111,69 @@ impl PhotocraftApp {
     /// [`Self::save_as`] once the path is known.
     fn save_to(&mut self, path: String) -> Result<Value, String> {
         // A layered TIFF asks about its layers first (Preferences › File Handling); the save
-        // continues from the prompt.
+        // continues from the prompt, which records the step once answered.
         if tiff_options_ui::wants_prompt(self, &path) {
             tiff_options_ui::park(self, path.clone())?;
             return Ok(serde_json::json!({"path": path, "warnings": []}));
         }
+        self.save_as_step(path, None)
+    }
+
+    /// File › Save back to the document's own layered file, recorded as a `file.save` step.
+    pub(crate) fn save_in_place(&mut self, path: String) -> Result<Value, String> {
+        if self.tiff_options.is_some() {
+            return Err("Answer TIFF Options before starting another save".into());
+        }
+        let r = self.write_save(path, None)?;
+        self.session.journal.push(("file.save".into(), Value::Object(Default::default())));
+        Ok(r)
+    }
+
+    /// Writes the Save As and journals it as a `file.saveAs` step with its path (and TIFF
+    /// answer), so an action being recorded keeps it (#2032).
+    fn save_as_step(&mut self, path: String, tiff_layers: Option<bool>) -> Result<Value, String> {
+        let r = self.write_save(path.clone(), tiff_layers)?;
+        let mut step = serde_json::json!({"path": path});
+        if let Some(layers) = tiff_layers {
+            step["tiffLayers"] = layers.into();
+        }
+        self.session.journal.push(("file.saveAs".into(), step));
+        Ok(r)
+    }
+
+    /// Replays a recorded `file.save` / `file.saveAs` step: no dialog or prompt, and the
+    /// recorded TIFF answer (if any) stands in for the TIFF Options prompt.
+    pub(crate) fn replay_save(&mut self, id: &str, params: &Value) -> Result<Value, String> {
+        if self.tiff_options.is_some() {
+            return Err("Answer TIFF Options before starting another save".into());
+        }
+        if id == "file.save" {
+            let path = self
+                .session
+                .active()
+                .ok_or("no document")?
+                .path
+                .clone()
+                .filter(|p| photocraft_engine::file_cmds::saves_in_place(p))
+                .ok_or("Save writes back only to the document's own PSD, PSB or .pcraft file")?;
+            return self.save_in_place(path);
+        }
+        let path = params.get("path").and_then(Value::as_str).filter(|p| !p.is_empty()).ok_or("Save As needs a `path`")?;
+        self.save_as_step(path.to_string(), params.get("tiffLayers").and_then(Value::as_bool))
+    }
+
+    /// Writes the active document to a known path. `tiff_layers` is the TIFF Options answer:
+    /// `Some(false)` discards the layers and saves a copy.
+    fn write_save(&mut self, path: String, tiff_layers: Option<bool>) -> Result<Value, String> {
         // A flat file that can't hold the document (its layers, or the layered file it lives in)
         // is written as a copy, as in Photoshop: the document keeps its file, so Save still
         // writes the layered original and the edits stay unsaved (#2550).
         let st = self.session.active().ok_or("no document")?;
         let layered =
             |p: &str| photocraft_engine::file_cmds::saves_in_place(p) || matches!(photocraft_engine::file_cmds::extension(p).as_deref(), Some("tif" | "tiff"));
-        let copy = !layered(&path) && (plain_raster(&st.doc).is_none() || st.path.as_deref().is_some_and(layered));
-        match self.write_document(path.clone(), &ExportSettings::default(), copy)? {
+        let copy = tiff_layers == Some(false) || (!layered(&path) && (plain_raster(&st.doc).is_none() || st.path.as_deref().is_some_and(layered)));
+        let settings = ExportSettings { tiff_layers: tiff_layers.unwrap_or(ExportSettings::default().tiff_layers), ..Default::default() };
+        match self.write_document(path.clone(), &settings, copy)? {
             Some((path, warnings)) => Ok(serde_json::json!({"path": path, "warnings": warnings})),
             None => Ok(serde_json::json!({"path": path, "warnings": [], "pending": true, "job": self.jobs.last_started.map(|j| j.0)})),
         }
@@ -1199,7 +1264,7 @@ impl PhotocraftApp {
         while let Ok(req) = rx.try_recv() {
             let reply = req.reply.clone();
             if req.deadline.is_some_and(|deadline| std::time::Instant::now() >= deadline) {
-                let _ = reply.send(serde_json::json!({"ok": false, "error": "timeout"}));
+                let _ = reply.send(serde_json::json!({"ok": false, "error": control::timeout_error()}));
                 continue;
             }
             match control::handle(self, ctx, &req) {
@@ -1281,6 +1346,7 @@ impl eframe::App for PhotocraftApp {
         }
         self.last_frame_time = now;
         self.sync_views();
+        crate::type_font_preview::follow_hover(self, ctx);
         self.check_gpu(ctx);
         #[cfg(all(debug_assertions, not(target_arch = "wasm32")))]
         if self.live_tokens.poll(ctx, self.ui.theme) {
@@ -1926,7 +1992,7 @@ impl PhotocraftApp {
         let r = photocraft_geom::Rect::new(0, 0, w as i32, h as i32);
         let mut surface = photocraft_raster::Surface::from_interleaved(photocraft_color::PixelFormat::RGBA8, r, &bytes);
         surface.prune();
-        self.session.clipboard = Some(photocraft_engine::edit_cmds::Clip { surface, bounds: r });
+        self.session.clipboard = Some(photocraft_engine::edit_cmds::Clip { surface, bounds: r, layers: None });
         self.os_clip_sig = Some(sig);
         self.clip_external = true;
         true
@@ -1943,7 +2009,13 @@ mod input_tests;
 mod pencil_tests;
 
 #[cfg(test)]
+mod pixel_aspect_tests;
+
+#[cfg(test)]
 mod transform_undo_tests;
+
+#[cfg(test)]
+mod transform_type_tests;
 
 #[cfg(test)]
 mod save_identity_tests;

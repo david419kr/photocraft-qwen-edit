@@ -39,6 +39,8 @@
 	Right	右
 	Open Recent	打开最近文件
 	Clear Recent Files	清除最近文件
+	Remove from Recent	从最近文件中移除
+	Remove {name} from Recent	从最近文件中移除 {name}
 	Close	关闭
 	Minimize	最小化
 	Maximize	最大化
@@ -266,6 +268,7 @@
 	Layer via Cut	通过剪切创建图层
 	Layer From Background…	从背景创建图层…
 	Layer from Background…	从背景创建图层…
+	Background From Layer	从图层创建背景
 	Background from Layer	从图层创建背景
 	New Shape Layer	新建形状图层
 	New Type Layer	新建文字图层
@@ -594,6 +597,10 @@
 	100%	100%
 	200%	200%
 	75%	75%
+	80%	80%
+	85%	85%
+	90%	90%
+	95%	95%
 	125%	125%
 	150%	150%
 	175%	175%
@@ -686,6 +693,10 @@
 	Classic Theme	经典主题
 	Solarized dark	Solarized 深色
 	Solarized Dark Theme	Solarized 深色主题
+	Breeze dark	Breeze 深色
+	Breeze Dark Theme	Breeze 深色主题
+	Breeze light	Breeze 浅色
+	Breeze Light Theme	Breeze 浅色主题
 	Next Theme	下一代主题
 	Actions	动作
 	Brush Settings	画笔设置
@@ -1538,6 +1549,8 @@
 	Blur Tool	模糊工具
 	Bold	粗体
 	Brush	画笔
+	Pencil	铅笔
+	Block	块
 	Brush Pose	画笔姿态
 	Brush Tip Shape	画笔笔尖形状
 	Brush Tool	画笔工具
@@ -1587,6 +1600,8 @@
 	Efficiency: 100%	效率：100%
 	Ellipse Tool	椭圆工具
 	Elliptical Marquee Tool	椭圆选框工具
+	Single Row Marquee Tool	单行选框工具
+	Single Column Marquee Tool	单列选框工具
 	Emboss	浮雕
 	Eraser	橡皮擦
 	Eraser Tool	橡皮擦工具
@@ -1755,6 +1770,7 @@
 	Invalid {mode} profile	无效的 {mode} 配置文件
 	Unnamed {mode} profile	未命名的 {mode} 配置文件
 	{w} px x {h} px ({ppi} ppi)	{w} px x {h} px ({ppi} ppi)
+	{w} {unit} x {h} {unit} ({ppi} ppi)	{w} {unit} x {h} {unit} ({ppi} ppi)
 	Resolution: {dpi} pixels/inch	分辨率：{dpi} 像素/英寸
 	Doc: {w} × {h} px	文档：{w} × {h} px
 	Frame {current} / {total}	帧 {current} / {total}
@@ -1904,6 +1920,7 @@
 	Show only crosshair while painting	绘画时仅显示十字线
 	Show slice numbers	显示切片编号
 	Show tooltips	显示工具提示
+	Show highlight on rollover	鼠标悬停时显示高亮
 	Show bounding box when dragging layer	拖动图层时显示边界框
 	System title bar	系统标题栏
 	Show transformation values	显示变换值
@@ -2061,6 +2078,7 @@ cameraRaw	Blending	混合
 	Create Warped Text	创建变形文字
 	Rasterize Smart Object	栅格化智能对象
 	Rasterize Fill Content	栅格化填充内容
+	Rasterize Layer Style	栅格化图层样式
 	Unlock: picking a preset replaces these settings	解锁：选择预设时替换这些设置
 	Lock: keep these settings when picking another preset	锁定：选择其他预设时保留这些设置
 	Diameter:	直径：
@@ -2339,6 +2357,7 @@ fontWeight	Italic	斜体
 	Color to Alpha…	颜色转为 Alpha…
 	Transparency Threshold	透明度阈值
 	Opacity Threshold	不透明度阈值
+	PhotoCraft — Screen Color Picker	PhotoCraft — 屏幕取色器
 
 	Rasterize svg groups deeper than	栅格化超过此深度的 SVG 组
 	0 turns this threshold off; SVG groups nested deeper than 100 levels are always rasterized.	设为 0 可关闭此阈值；嵌套超过 100 层的 SVG 组始终会被栅格化。
@@ -2491,3 +2510,5 @@ fontWeight	Italic	斜体
 	Comfyui model	ComfyUI 模型
 	Comfyui translate prompt	将提示词翻译为英语
 	Comfyui translation model	提示词翻译模型
+	Search settings…	搜索设置…
+	No matching settings	没有匹配的设置

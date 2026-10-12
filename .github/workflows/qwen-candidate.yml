@@ -1,0 +1,117 @@
+name: Qwen Windows candidate
+
+on:
+  push:
+    branches: ['update/0.7.0']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qwen-candidate-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: never
+  CARGO_INCREMENTAL: 0
+  RUST_BACKTRACE: 1
+  PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
+  QWEN_UPSTREAM_SHA: 79261615956ab21334e49ca1d384390272e647da
+  QWEN_BASE_SHA: 5a9c9a2b21e25e976cf3f19a9ad13a264bb4c9de
+
+jobs:
+  regressions:
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.7.0'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check candidate ancestry
+        run: |
+          git merge-base --is-ancestor "$QWEN_UPSTREAM_SHA" HEAD
+          git merge-base --is-ancestor "$QWEN_BASE_SHA" HEAD
+      - uses: dtolnay/rust-toolchain@1.95.0
+        with:
+          components: rustfmt, clippy
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: qwen-candidate-linux
+      - name: Native UI dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libgtk-3-dev
+      - name: Focused fork regressions (zero tests is an error)
+        run: python3 scripts/check-qwen-regressions.py
+      - name: Formatting, lint and architecture
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --locked -p photocraft-engine -p photocraft-ui-egui -p photocraft-codecs -p photocraft-io --all-targets --features avif,avif-decode -- -D warnings
+          cargo xtask layers
+          cargo xtask wasm
+          cargo xtask parity
+          cargo xtask scorecard --check
+          git diff --exit-code -- docs/parity-checklist.md
+      - name: Installer and package verifier tests
+        run: |
+          python3 -X utf8 qwen-image21-installer/scripts/tests/test_qwen_image21_setup.py -v
+          python3 -m unittest discover -s scripts/tests -p 'test_*.py' -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qwen-regressions-${{ github.sha }}
+          path: target/qwen-regressions/
+          if-no-files-found: error
+
+  windows:
+    needs: regressions
+    runs-on: windows-2022
+    timeout-minutes: 120
+    env:
+      CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS: '-C target-feature=+crt-static'
+      PHOTOCRAFT_REQUIRE_WINRES: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.95.0
+        with:
+          targets: x86_64-pc-windows-msvc
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: qwen-candidate-windows-static-crt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Parse package and installer PowerShell
+        shell: pwsh
+        run: |
+          $files = @(Get-ChildItem scripts/*.ps1) + @(Get-ChildItem qwen-image21-installer/scripts/*.ps1)
+          foreach ($file in $files) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors) { throw ($errors | Out-String) }
+          }
+      - name: Build Windows x64 with static CRT and AVIF
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist | Out-Null
+          cargo +1.95.0 build --locked -p photocraft --release --target x86_64-pc-windows-msvc 2>&1 | Tee-Object -FilePath dist/candidate-build.log
+          if ($LASTEXITCODE -ne 0) { throw 'Windows candidate build failed.' }
+      - name: Package and verify candidate
+        shell: pwsh
+        run: ./scripts/build-qwen-candidate.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qwen-windows-x64-${{ github.sha }}
+          path: |
+            dist/*.zip
+            dist/*.zip.sha256
+            dist/candidate-build.json
+            dist/candidate-dependents.txt
+            dist/candidate-headers.txt
+            dist/candidate-version.txt
+            dist/candidate-build.log
+          if-no-files-found: error
+          retention-days: 14

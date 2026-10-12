@@ -39,6 +39,8 @@
 	Right	Destra
 	Open Recent	Apri recenti
 	Clear Recent Files	Cancella file recenti
+	Remove from Recent	Rimuovi dai recenti
+	Remove {name} from Recent	Rimuovi {name} dai recenti
 	Close	Chiudi
 	Minimize	Riduci a icona
 	Maximize	Ingrandisci
@@ -263,6 +265,8 @@
 	Layer via Cut	Livello tramite taglia
 	Layer From Background…	Livello dallo sfondo…
 	Layer from Background…	Livello dallo sfondo…
+	Background from Layer	Sfondo da livello
+	Background From Layer	Sfondo da livello
 	New Shape Layer	Nuovo livello forma
 	New Type Layer	Nuovo livello testo
 	New Fill Layer	Nuovo livello riempimento
@@ -588,6 +592,10 @@
 	100%	100%
 	200%	200%
 	75%	75%
+	80%	80%
+	85%	85%
+	90%	90%
+	95%	95%
 	125%	125%
 	150%	150%
 	175%	175%
@@ -680,6 +688,10 @@
 	Classic Theme	Tema classico
 	Solarized dark	Solarized scuro
 	Solarized Dark Theme	Tema Solarized scuro
+	Breeze dark	Breeze scuro
+	Breeze Dark Theme	Tema Breeze scuro
+	Breeze light	Breeze chiaro
+	Breeze Light Theme	Tema Breeze chiaro
 	Next Theme	Tema successivo
 	Actions	Azioni
 	Brush Settings	Impostazioni pennello
@@ -1525,6 +1537,7 @@
 	Blur Tool	Strumento Sfoca
 	Bold	Grassetto
 	Brush	Pennello
+	Block	Blocco
 	Brush Pose	Posa pennello
 	Brush Tip Shape	Forma punta pennello
 	Brush Tool	Strumento Pennello
@@ -1573,6 +1586,8 @@
 	Efficiency: 100%	Efficienza: 100%
 	Ellipse Tool	Strumento Ellisse
 	Elliptical Marquee Tool	Strumento Selezione ellittica
+	Single Row Marquee Tool	Strumento Selezione singola riga
+	Single Column Marquee Tool	Strumento Selezione singola colonna
 	Emboss	Rilievo
 	Eraser	Gomma
 	Eraser Tool	Strumento Gomma
@@ -1741,6 +1756,7 @@
 	Invalid {mode} profile	Profilo {mode} non valido
 	Unnamed {mode} profile	Profilo {mode} senza nome
 	{w} px x {h} px ({ppi} ppi)	{w} px × {h} px ({ppi} ppi)
+	{w} {unit} x {h} {unit} ({ppi} ppi)	{w} {unit} × {h} {unit} ({ppi} ppi)
 	Resolution: {dpi} pixels/inch	Risoluzione: {dpi} pixel/pollice
 	Doc: {w} × {h} px	Doc: {w} × {h} px
 	Frame {current} / {total}	Fotogramma {current} / {total}
@@ -1893,6 +1909,7 @@
 	Show only crosshair while painting	Mostra solo mirino durante pittura
 	Show slice numbers	Mostra numeri sezioni
 	Show tooltips	Mostra tooltip
+	Show highlight on rollover	Mostra evidenziazione al passaggio del mouse
 	Show bounding box when dragging layer	Mostra riquadro selezione al trascinamento livello
 	System title bar	Barra del titolo di sistema
 	Show transformation values	Mostra valori trasformazione
@@ -2000,6 +2017,7 @@
 	Create Warped Text	Crea testo deformato
 	Rasterize Smart Object	Rasterizza oggetto avanzato
 	Rasterize Fill Content	Rasterizza contenuto riempimento
+	Rasterize Layer Style	Rasterizza stile livello
 	Unlock: picking a preset replaces these settings	Sblocca: scegliendo un predefinito sostituisce queste impostazioni
 	Lock: keep these settings when picking another preset	Blocca: mantiene queste impostazioni scegliendo altro predefinito
 	Diameter:	Diametro:
@@ -2401,6 +2419,7 @@ fontWeight	Italic	Corsivo
 	Color to Alpha…	Colore ad alfa…
 	Transparency Threshold	Soglia di trasparenza
 	Opacity Threshold	Soglia di opacità
+	PhotoCraft — Screen Color Picker	PhotoCraft — Selettore colore schermo
 
 	Rasterize svg groups deeper than	Rasterizza i gruppi SVG oltre questa profondità
 	0 turns this threshold off; SVG groups nested deeper than 100 levels are always rasterized.	0 disattiva questa soglia; i gruppi SVG annidati oltre 100 livelli vengono sempre rasterizzati.
@@ -2553,3 +2572,5 @@ fontWeight	Italic	Corsivo
 	Comfyui model	Modello ComfyUI
 	Comfyui translate prompt	Traduci il prompt in inglese
 	Comfyui translation model	Modello di traduzione dei prompt
+	Search settings…	Cerca impostazioni…
+	No matching settings	Nessuna impostazione corrispondente

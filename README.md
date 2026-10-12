@@ -73,7 +73,7 @@ With enough VRAM, the image and translation models stay resident between jobs. C
 
 Added features: local AI generation/edit/fill/removal, background removal, reroll, optional English translation, prompt metadata/history, model settings, Korean UI additions and AVIF read/write/export. Numeric-field wheel input and AI Ctrl+Enter remain available. Original upstream shortcuts, Brush startup and export defaults are retained. AVIF export currently targets SDR; HDR preservation is outside the current scope.
 
-Tags use **`YYMMDD-upstreamVersion`**, for example `261012-0.6.0`: the date identifies this fork's build and the suffix identifies the upstream base. Current base: **PhotoCraft 0.6.0**. Setup pins official ComfyUI **v0.39.0** and the [resident Hy-MT2 fork](https://github.com/david419kr/ComfyUI-Hy-MT2).
+Tags use **`YYMMDD-upstreamVersion`**, for example `261012-0.6.0`: the date identifies this fork's build and the suffix identifies the upstream base. Candidate base: **PhotoCraft 0.7.0** (not released). Setup pins official ComfyUI **v0.39.0** and the [resident Hy-MT2 fork](https://github.com/david419kr/ComfyUI-Hy-MT2).
 
 [AI notes](docs/comfyui.md) · [Architecture](docs/architecture.md) · [Development](docs/development.md)
 
