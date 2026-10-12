@@ -92,10 +92,27 @@ The node imports a small proxy; that proxy starts its dedicated Python worker
 and exchanges UTF-8 JSON over stdin/stdout. The worker imports its own
 `llama-cpp-python`. It opens no HTTP port and requires no standalone LLM server.
 Switching models, explicit node unload and ComfyUI termination release the
-worker. `unload_after_run=false` avoids an explicit unload after translation;
-the model stays loaded while ComfyUI retains that node instance. ComfyUI may
-release the instance when switching to a different graph. Its ordinary Torch
-model-unload API does not directly manage these worker models.
+worker. With the residency update, `unload_after_run=false` retains one shared
+translation worker even when ComfyUI discards the translation node instance.
+Translation-only jobs preserve the preceding standalone UNET/CLIP/VAE loader
+cache keys without executing those loaders, so image weights can stay resident.
+Previously the default RAM-pressure cache targeted up to all available system
+RAM for inactive entries and evicted image loader outputs during translation,
+even when VRAM had room. The node now hooks ComfyUI's memory-pressure path to
+release an idle translator only when the requested VRAM budget is short, and
+requests a finite weights/KV-buffer budget when loading it. DynamicVRAM virtual
+weight sizes alone do not trigger eviction. Explicit model unload (`/free`),
+model switching and `unload_after_run=true` still release it. Actual RAM pressure
+can still evict image cache entries. Restart ComfyUI after updating the node;
+this change does not require a new PhotoCraft binary.
+
+Verified locally on 2026-10-12 with the 1.8B Heretic translator and a 512x512
+Turbo INT8 graph: sequential translation/image alternation reused the worker
+and all three image loader cache entries. Free VRAM stayed around 7.96 GiB
+through the switches instead of clearing the image model. Explicit `/free`
+released both and returned free VRAM to about 22.39 GiB. Insufficient-memory
+branches were covered by focused node tests; physical VRAM exhaustion was
+not induced. Evidence is in `log/hymt-residency/` (local, not committed).
 
 PhotoCraft submits `HyMT_Translation_GGUF -> PreviewAny` through the existing
 ComfyUI API with `translate_to=English`, `translate_style=Default`
