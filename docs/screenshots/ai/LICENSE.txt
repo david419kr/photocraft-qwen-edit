@@ -1,0 +1,5 @@
+The PhotoCraft UI screenshots in this directory are original documentation assets
+for this fork, licensed under MIT OR Apache-2.0 (see the repository root licenses).
+
+The fictional cabin artwork was generated locally with official Qwen Image 2.1
+Turbo INT8 ConvRot for this documentation. No ArtCraft trademark logo is included.

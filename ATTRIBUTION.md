@@ -57,9 +57,13 @@ The other built-in ICC profiles and the generated LUT looks are produced by code
 
 ## Documentation and README
 
+The six `docs/screenshots/ai/{en,ko}-{edit,fill,history}.png` screenshots are
+original documentation assets by this fork's contributors (MIT OR Apache-2.0;
+[`LICENSE.txt`](docs/screenshots/ai/LICENSE.txt)). The fictional cabin artwork was
+generated locally with official Qwen Image 2.1 Turbo for these examples.
+
 | Path | Title | Author | Source | License |
 |---|---|---|---|---|
-| `docs/brand/` (all files) | ArtCraft name, wordmark and mark | ArtCraft Team | getartcraft.com | Not open source; trademarks of the ArtCraft Team, [`docs/brand/LICENSE-brand.txt`](docs/brand/LICENSE-brand.txt) |
 | `docs/images/photocraft-*.jpg` | PhotoCraft screenshots | PhotoCraft contributors (UI) | Rendered offscreen with the `snapshot` example | MIT OR Apache-2.0 (UI); the artwork in each is public domain, listed below |
 | `docs/images/preferences-apply-*.png` | Preferences before and after adding Apply (no artwork) | PhotoCraft contributors | PhotoCraft control-channel capture and offscreen `snapshot` example | MIT OR Apache-2.0 |
 
