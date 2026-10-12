@@ -78,10 +78,3 @@ Tags use **`YYMMDD-upstreamVersion`**, for example `261012-0.6.0`: the date iden
 [AI notes](docs/comfyui.md) · [Architecture](docs/architecture.md) · [Development](docs/development.md)
 
 Based on [PhotoCraft](https://github.com/storytold/photocraft) by the ArtCraft team and contributors. This is an independent modified version; ArtCraft trademark logos are excluded. Original licenses and attribution remain: [MIT](LICENSE-MIT), [Apache-2.0](LICENSE-APACHE), [NOTICE](NOTICE), [third-party attribution](ATTRIBUTION.md).
-
-## Native editing tools
-
-The upstream native editing tools remain available alongside the Qwen AI workflow.
-
-<h4>🧰 55 tools</h4>
-Move · Rectangular and Elliptical Marquee · Single Row Marquee · Single Column Marquee · Lasso · Polygonal Lasso · Magnetic Lasso · Object Selection · Quick Selection · Magic Wand · Crop · Slice · Slice Select · Eyedropper · Ruler · Note · Count · Remove · Spot Healing Brush · Healing Brush · Patch · Content-Aware Move · Red Eye · Brush · Pencil · Mixer Brush · Clone Stamp · Pattern Stamp · History Brush · Eraser · Background Eraser · Magic Eraser · Gradient · Paint Bucket · Blur · Sharpen · Smudge · Dodge · Burn · Sponge · Pen · Horizontal and Vertical Type · Path Selection · Direct Selection · Rectangle · Ellipse · Triangle · Polygon · Line · Custom Shape · Hand · Rotate View · Zoom
