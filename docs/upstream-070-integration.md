@@ -24,10 +24,13 @@ or change the ComfyUI/HyMT installation pins.
   preferences, shortcut and save paths. Upstream's Save action recording still
   reaches the same metadata-preserving save implementation; export metadata
   None retains its separate removal policy.
-- The AI command/backend/model/history implementations, green-annotation
-  removal, two-marker full-free protocol, installer source and Windows GPU
-  startup policy are unchanged from the fork base. Shared registration and UI
-  changes require the regression gates below despite a clean textual merge.
+- The AI routing/model/history contracts, green-annotation removal,
+  two-marker full-free protocol, installer source and Windows GPU startup
+  policy are preserved from the fork base. The only later AI implementation
+  adjustment uses fixed-size array chunks for the same pixel/history loops,
+  as required by Rust 1.99 Clippy; chunk widths, order and remainder handling
+  are unchanged. Shared registration and UI changes require the regression
+  gates below despite a clean textual merge.
 
 ## Candidate build
 
@@ -103,3 +106,6 @@ Main merge and public release remain separate, explicitly approved steps.
 - The unchanged EXIF orientation test made the same legacy None assumption. Assert that None removes EXIF while retaining upright pixels; All still normalizes EXIF and XMP to Orientation 1, and the source document stays unchanged.
 
 - Full UI unit tests additionally found two identical Korean theme entries introduced by the automatic merge. Deduplicate by context/source without changing either translation. Complete the fork's previously missing model-setting/negative-prompt labels across all 16 complete catalogs (retain existing Korean wording), and add upstream's tested 55-tool inventory to the fork README without replacing its distribution identity. No localization coverage gate was relaxed.
+
+- Restore the Unix-only condition on the portal-glob open-filter test; Windows/macOS keep their existing literal-extension test. Full Linux and Windows workspace tests then passed, including Linux's HEIF-off and craft-fonts variants.
+- Upstream CI follows stable Rust (1.99.0 during this run), whereas the portable candidate is pinned to 1.95.0. Stable Clippy added `chunks_exact_to_as_chunks`: use `as_chunks`/`as_chunks_mut` in the fork's fixed-size loops and related test fixtures. The APIs also compile on Rust 1.95.0. Odd-length history payload rejection remains before decoding; array destructuring makes the former impossible short-pair branch unnecessary. No lint suppression, toolchain downgrade, test deletion or threshold relaxation is used.

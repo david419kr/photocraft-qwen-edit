@@ -58,7 +58,7 @@ impl AiBackend for Solid {
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
         ctx.check()?;
         let mut image = request.image.clone();
-        for pixel in image.pixels.chunks_exact_mut(4) {
+        for pixel in image.pixels.as_chunks_mut::<4>().0.iter_mut() {
             pixel.copy_from_slice(&[40, 180, 90, 255]);
         }
         Ok(image)
@@ -316,7 +316,7 @@ fn regeneration_keeps_source_prompt_model_mask_and_replaces_one_layer_with_undo(
             calls.push(request.clone());
             let value = if calls.len() % 2 == 1 { 35 } else { 185 };
             let mut image = request.image.clone();
-            for pixel in image.pixels.chunks_exact_mut(4) {
+            for pixel in image.pixels.as_chunks_mut::<4>().0.iter_mut() {
                 pixel.copy_from_slice(&[value, 80, 120, 255]);
             }
             Ok(image)
@@ -569,7 +569,7 @@ impl AiBackend for Transparent {
         assert_eq!(request.mode, EditMode::PromptEdit);
         assert!(!request.removal);
         let mut image = request.image.clone();
-        for p in image.pixels.chunks_exact_mut(4) {
+        for p in image.pixels.as_chunks_mut::<4>().0.iter_mut() {
             p.copy_from_slice(&[60, 120, 180, 0]);
         }
         Ok(image)
@@ -695,7 +695,7 @@ impl AiBackend for DriftRemoval {
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
         ctx.check()?;
         let mut image = request.image.clone();
-        for pixel in image.pixels.chunks_exact_mut(4) {
+        for pixel in image.pixels.as_chunks_mut::<4>().0.iter_mut() {
             pixel.copy_from_slice(&[96, 128, 160, 255]);
         }
         // A new texture detail must survive colour harmonisation.
@@ -759,7 +759,7 @@ fn fill_blending_excludes_padding_and_handles_missing_context_bad_buffers_and_ca
         )
         .unwrap();
     let blended = harmonize_fill(&generated, &input.image, input.content_size, &JobCtx::new()).unwrap();
-    assert!(blended.chunks_exact(3).all(|p| (p[0] - 40.0 / 255.0).abs() < 1e-6));
+    assert!(blended.as_chunks::<3>().0.iter().all(|p| (p[0] - 40.0 / 255.0).abs() < 1e-6));
     assert!(harmonize_fill(&generated, &input.image, [0, 13], &JobCtx::new()).is_err());
     let mut malformed = generated.clone();
     malformed.pixels.pop();

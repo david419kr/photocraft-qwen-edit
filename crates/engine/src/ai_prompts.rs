@@ -70,8 +70,8 @@ pub fn read(xmp: Option<&str>) -> Result<Vec<Entry>, String> {
     }
     let mut compressed = Vec::new();
     compressed.try_reserve_exact(payload.len() / 2).map_err(|_| "Not enough memory for prompt history")?;
-    for pair in payload.as_bytes().chunks_exact(2) {
-        let [a, b] = pair else { return Err("Invalid prompt history encoding".into()) };
+    for pair in payload.as_bytes().as_chunks::<2>().0.iter() {
+        let [a, b] = pair;
         let a = char::from(*a).to_digit(16).ok_or("Invalid prompt history encoding")?;
         let b = char::from(*b).to_digit(16).ok_or("Invalid prompt history encoding")?;
         compressed.push((a * 16 + b) as u8);
@@ -143,7 +143,7 @@ pub fn regions(image: &Rgba8Image, size: [u32; 2]) -> Vec<Region> {
     }
     let mut weights = [0u64; 9];
     for (y, row) in image.pixels.chunks_exact(stride).take(height as usize).enumerate() {
-        for (x, pixel) in row.chunks_exact(4).take(width as usize).enumerate() {
+        for (x, pixel) in row.as_chunks::<4>().0.iter().take(width as usize).enumerate() {
             let weight = pixel.get(3).map_or(0, |alpha| u64::from(255 - *alpha));
             let cell = (y * 3 / height as usize).min(2) * 3 + (x * 3 / width as usize).min(2);
             if let Some(total) = weights.get_mut(cell) {
@@ -186,7 +186,7 @@ mod tests {
     #[test]
     fn prompt_history_regions_use_mask_coverage_and_exclude_padding() {
         let mut image = Rgba8Image::new(32, 32);
-        for px in image.pixels.chunks_exact_mut(4) {
+        for px in image.pixels.as_chunks_mut::<4>().0.iter_mut() {
             px[3] = 255;
         }
         for (x, y) in [(0usize, 0usize), (8, 8)] {

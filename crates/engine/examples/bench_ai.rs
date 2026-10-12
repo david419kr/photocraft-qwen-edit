@@ -13,7 +13,7 @@ impl AiBackend for Echo {
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
         ctx.check()?;
         let mut image = request.image.clone();
-        for pixel in image.pixels.chunks_exact_mut(4) {
+        for pixel in image.pixels.as_chunks_mut::<4>().0.iter_mut() {
             if request.mode == photocraft_engine::ai_cmds::EditMode::GenerativeFill {
                 for value in pixel.iter_mut().take(3) {
                     *value = value.saturating_sub(16);
