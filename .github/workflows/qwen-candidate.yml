@@ -136,8 +136,8 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force dist | Out-Null
           $version = [regex]::Match((Get-Content Cargo.toml -Raw), '(?s)\[workspace\.package\].*?version\s*=\s*"([^"]+)"').Groups[1].Value
-          $day = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow, 'Tokyo Standard Time').ToString('yyMMdd')
-          $env:PHOTOCRAFT_RELEASE_TAG = "$day-$version"
+          $env:PHOTOCRAFT_RELEASE_TAG = (Get-Content release-tag.txt -Raw).Trim()
+          if (!$env:PHOTOCRAFT_RELEASE_TAG.EndsWith("-$version")) { throw 'Release tag does not match workspace version.' }
           cargo +1.95.0 build --locked -p photocraft --release --target x86_64-pc-windows-msvc 2>&1 | Tee-Object -FilePath dist/candidate-build.log
           if ($LASTEXITCODE -ne 0) { throw 'Windows candidate build failed.' }
       - name: Package and verify candidate

@@ -3,9 +3,11 @@
 The Windows x64 desktop app checks the public stable releases of
 `david419kr/photocraft-qwen-edit` once at startup. It never checks upstream
 `storytold/photocraft`, downloads a prerelease, or updates without consent.
-The latest release must have a newer `YYMMDD-major.minor.patch` tag, a
+The latest release must have a newer `YYMMDD-major.minor.patch` or
+`YYMMDD-N-major.minor.patch` tag (N is a same-day revision, starting at 2), a
 `photocraft-qwen-edit-<tag>-windows-x64.zip` asset, and a GitHub SHA-256 digest.
-Same-day versions compare numerically (`0.8.10` is newer than `0.8.2`).
+Dates, upstream versions and then same-version revisions compare numerically.
+`261013-2-0.8.2` is newer than `261013-0.8.2`; revision 10 is newer than 2.
 
 The update prompt has Yes / No and **Don't show again**. Help → About PhotoCraft
 has **Automatically check for updates** and **Check for updates now**.
@@ -36,8 +38,9 @@ app or original executable usable.
 About shows the fork release identity and repository first, with the upstream
 engine version separately. `PHOTOCRAFT_RELEASE_TAG` embeds the packaging tag;
 source builds default to `release-tag.txt`. Update that file for a new source
-baseline. The Qwen build workflow and Korean portable build script set the tag
-from the Tokyo build date and workspace version before Cargo runs. Packaging
+baseline. The Qwen candidate workflow embeds `release-tag.txt` before Cargo runs and
+packaging verifies that the reported tag matches it exactly. The Korean local
+build script still uses its Tokyo build date and workspace version. Packaging
 uses the embedded tag to avoid a mismatch at midnight. Release tags must be
 unique; publishing a different binary under an existing tag is not an update.
 
@@ -85,3 +88,15 @@ Full CI run `38384184579` then found the scorecard staleness gate: the new
 to 165. `cargo xtask scorecard` regenerated only those two count occurrences;
 the 27 unread settings and all floors remain unchanged. The focused staleness
 test and `cargo xtask scorecard --check` pass after regeneration.
+
+## Same-day second release
+
+For the approved `261013-2-0.8.2` publication, the updater accepts a numeric
+same-day revision before the upstream version. Unnumbered tags mean revision 1;
+numbered tags start at 2. Comparison remains date, upstream semantic version,
+then revision. Tests cover forward updates, equality, downgrade rejection,
+revision 10 versus 2, a newer upstream version, and malformed tags.
+The committed release identity and candidate EXE must both be
+`261013-2-0.8.2`; a ZIP renamed around an older embedded identity is not valid.
+The user's local acceptance covered candidate `dd761a85b1023fd894ef118d5c2ccf5924530c36`;
+the release follow-up changes version parsing/identity and retains main's cron removals.

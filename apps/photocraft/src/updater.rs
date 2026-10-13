@@ -52,13 +52,30 @@ fn bounded(mut reader: impl Read, limit: u64) -> Result<Vec<u8>, String> {
     Ok(bytes)
 }
 
-fn release_key(tag: &str) -> Option<(u32, u32, u32, u32)> {
-    let (day, version) = tag.split_once('-')?;
+fn release_key(tag: &str) -> Option<(u32, u32, u32, u32, u32)> {
+    let (day, rest) = tag.split_once('-')?;
     if day.len() != 6 || !day.bytes().all(|c| c.is_ascii_digit()) {
         return None;
     }
+    let (revision, version) = match rest.split_once('-') {
+        Some((revision, version)) => {
+            if revision.starts_with('0') || !revision.bytes().all(|c| c.is_ascii_digit()) {
+                return None;
+            }
+            let revision = revision.parse::<u32>().ok().filter(|n| *n >= 2)?;
+            (revision, version)
+        }
+        None => (1, rest),
+    };
     let mut numbers = version.split('.');
-    let key = (day.parse().ok()?, numbers.next()?.parse().ok()?, numbers.next()?.parse().ok()?, numbers.next()?.parse().ok()?);
+    let mut number = || {
+        let value = numbers.next()?;
+        if value.is_empty() || !value.bytes().all(|c| c.is_ascii_digit()) {
+            return None;
+        }
+        value.parse::<u32>().ok()
+    };
+    let key = (day.parse().ok()?, number()?, number()?, number()?, revision);
     numbers.next().is_none().then_some(key)
 }
 
@@ -283,6 +300,20 @@ mod tests {
         let mut pre = release("261014-0.8.2");
         pre.prerelease = true;
         assert!(select(pre, "261013-0.8.2").unwrap().is_none());
+    }
+
+    #[test]
+    fn same_day_release_revisions_sort_numerically_and_keep_version_order() {
+        assert!(select(release("261013-2-0.8.2"), "261013-0.8.2").unwrap().is_some());
+        assert!(select(release("261013-10-0.8.2"), "261013-2-0.8.2").unwrap().is_some());
+        assert!(select(release("261013-0.8.10"), "261013-2-0.8.2").unwrap().is_some());
+        assert!(select(release("261014-0.8.2"), "261013-10-0.8.2").unwrap().is_some());
+        assert!(select(release("261013-2-0.8.2"), "261013-2-0.8.2").unwrap().is_none());
+        assert!(select(release("261013-0.8.2"), "261013-2-0.8.2").unwrap().is_none());
+        for tag in ["261013-0-0.8.2", "261013-1-0.8.2", "261013-02-0.8.2", "261013-x-0.8.2", "261013-2-0.8.2-rc.1", "261013-2-+0.8.2"] {
+            assert!(release_key(tag).is_none(), "{tag}");
+        }
+        assert!(release_key(photocraft_engine::build_info::release_tag()).is_some());
     }
 
     #[test]
