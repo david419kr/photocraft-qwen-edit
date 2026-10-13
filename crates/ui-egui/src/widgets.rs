@@ -764,8 +764,8 @@ fn number_edit(
                     true
                 }
             });
-            // Also consume the smoothed tail so the surrounding panel does not scroll.
-            input.smooth_scroll_delta = Vec2::ZERO;
+            // Consume the vertical tail, but preserve horizontal scrolling of tool options.
+            input.smooth_scroll_delta.y = 0.0;
             input.events.extend(actions.into_iter().map(|action| {
                 egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
                     action,

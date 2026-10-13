@@ -70,3 +70,8 @@ translation/model switching and All/None metadata plus AVIF roundtrips.
   warnings. Run the 1.95-specific Clippy step before focused tests too; the
   complete latest-stable Clippy job still gates all native test jobs. Rebuild
   and verify the portable artifact against the resulting SHA.
+- The first full Linux UI run exposed two more integration issues: Turkish
+  bit-depth labels remained identical to the English keys, and the fork's
+  numeric hover-wheel handler cleared horizontal scroll as well as vertical.
+  Translate the bit-depth labels and preserve horizontal scroll so narrow tool
+  options can reach their final control. Keep both existing tests unchanged.
