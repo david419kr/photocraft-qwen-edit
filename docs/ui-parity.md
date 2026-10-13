@@ -1,6 +1,6 @@
 # UI parity: tools, handles, modifiers and feel
 
-> **Last reviewed:** 2026-10-10 · **Last updated:** 2026-10-12 · **Change:** minor (⇧-dragged guides land on ruler ticks; layer and selection keys; tool keys) · **Target:** Adobe Photoshop 2026
+> **Last reviewed:** 2026-10-10 · **Last updated:** 2026-10-13 · **Change:** minor (last selected tool restored at launch; ⇧-dragged guides land on ruler ticks; layer and selection keys; tool keys) · **Target:** Adobe Photoshop 2026
 
 How PhotoCraft's direct manipulation compares with Photoshop 2026 (27.11.0): the toolbox, the
 handles and modifier keys of each gesture, nudging, snapping, numeric precision, navigation,
@@ -53,6 +53,7 @@ Triangle and Curvature Pen (minus legacy Rounded Rectangle and Targeted Adjustme
 | Group remembers the last tool used | partial | L always resets to Lasso (#2608) |
 | Press-and-hold or click-drag opens the flyout | missing | right-click only (#2301) |
 | Edit Toolbar customization | done | `edit.toolbar` |
+| Last selected tool restored after quitting and relaunching; temporary tool switches excluded | done | `tool_memory.rs`; `prefs_ui::tests::selected_tool_survives_a_restart_without_option_changes`, `selected_tool_excludes_temporary_switches` |
 
 ## Free Transform (⌘T) and transform handles
 

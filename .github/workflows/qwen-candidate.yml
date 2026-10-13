@@ -45,7 +45,7 @@ jobs:
 
   regressions:
     needs: lint
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.ref == 'refs/heads/update/0.8.2' || github.ref == 'refs/heads/feature/auto-upate')
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.8.2' || github.ref == 'refs/heads/feature/auto-upate')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -91,7 +91,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.ref == 'refs/heads/update/0.8.2' || github.ref == 'refs/heads/feature/auto-upate')
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.8.2' || github.ref == 'refs/heads/feature/auto-upate')
     runs-on: windows-2022
     timeout-minutes: 120
     env:

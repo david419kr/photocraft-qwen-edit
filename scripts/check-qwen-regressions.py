@@ -11,6 +11,7 @@ def main():
     output = root / "target" / "qwen-regressions"
     output.mkdir(parents=True, exist_ok=True)
     cases = [
+        ("ui-selected-tool", ["-p", "photocraft-ui-egui", "--lib", "selected_tool_"]),
         ("app-updater", ["-p", "photocraft", "--bin", "photocraft", "updater::tests"]),
         ("ui-updates", ["-p", "photocraft-ui-egui", "--lib", "updates::tests"]),
         ("engine-ai", ["-p", "photocraft-engine", "--lib", "ai_"]),

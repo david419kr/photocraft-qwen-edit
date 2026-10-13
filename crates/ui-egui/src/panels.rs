@@ -160,16 +160,16 @@ pub fn toolbar(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
                                         paint_toolbar_flyout_indicator(ui, &t, &resp);
                                     }
                                     if resp.clicked() && ui.data(|d| d.get_temp::<egui::Id>(held_id)) != Some(key) {
-                                        app.ui.tool = tool;
+                                        crate::tool_memory::select(app, tool);
                                     }
                                     // Double-clicking the Hand tool fits the image on screen (Photoshop).
                                     if resp.double_clicked() && tool == Tool::Hand {
-                                        app.ui.tool = tool;
+                                        crate::tool_memory::select(app, tool);
                                         // With no document open there is nothing to fit.
                                         let _ = app.run("view.fitOnScreen", json!({}));
                                     }
                                     if resp.double_clicked() && tool == Tool::Zoom {
-                                        app.ui.tool = tool;
+                                        crate::tool_memory::select(app, tool);
                                         let _ = app.run("view.actualPixels", json!({}));
                                     }
                                     // Right-click or long-press opens the flyout (Photoshop).
@@ -252,7 +252,7 @@ pub fn toolbar(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
                                                             );
                                                         }
                                                         if ir.clicked() {
-                                                            app.ui.tool = item;
+                                                            crate::tool_memory::select(app, item);
                                                             ui.data_mut(|d| d.remove::<(egui::Id, Rect)>(flyout_id));
                                                         }
                                                     }
