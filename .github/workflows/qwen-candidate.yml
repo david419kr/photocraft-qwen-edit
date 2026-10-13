@@ -1,97 +1,25 @@
 name: Qwen Windows candidate
 
 on:
-  push:
-    branches: ['update/0.8.2', 'feature/auto-upate']
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: qwen-candidate-${{ github.ref }}
-  cancel-in-progress: true
+  group: qwen-261014-identity
+  cancel-in-progress: false
 
 env:
   CARGO_TERM_COLOR: never
   CARGO_INCREMENTAL: 0
   RUST_BACKTRACE: 1
-  PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
+  PHOTOCRAFT_BUILD_SHA: 970a5c7dc7c086ab8263d6ccb200ab231e106faf
   QWEN_UPSTREAM_SHA: d43db3e153c76aefce9b32cef9099e458eaf17a8
   QWEN_BASE_SHA: b9d8ea92e0e668f010ca1935853a243f52a38ac9
 
 jobs:
-  lint:
-    name: early Clippy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Linux system dependencies (egui/winit/rfd)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev \
-            libgl1-mesa-dev libgtk-3-dev
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy
-      - uses: Swatinem/rust-cache@v2
-        with:
-          key: early-clippy
-          save-if: ${{ github.ref == 'refs/heads/main' }}
-          cache-on-failure: true
-      - name: Clippy across the complete workspace
-        run: cargo clippy --workspace --all-targets --locked --features heif -- -D warnings
-
-  regressions:
-    needs: lint
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.8.2' || github.ref == 'refs/heads/feature/auto-upate')
-    runs-on: ubuntu-24.04
-    timeout-minutes: 90
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Check candidate ancestry
-        run: |
-          git merge-base --is-ancestor "$QWEN_UPSTREAM_SHA" HEAD
-          git merge-base --is-ancestor "$QWEN_BASE_SHA" HEAD
-      - uses: dtolnay/rust-toolchain@1.95.0
-        with:
-          components: rustfmt, clippy
-          targets: wasm32-unknown-unknown
-      - uses: Swatinem/rust-cache@v2
-        with:
-          key: qwen-candidate-linux
-      - name: Native UI dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libgtk-3-dev
-      - name: Rust 1.95 Clippy before regressions
-        run: cargo clippy --locked -p photocraft-engine -p photocraft-ui-egui -p photocraft-codecs -p photocraft-io --all-targets --features avif,avif-decode -- -D warnings
-      - name: Focused fork regressions (zero tests is an error)
-        run: python3 scripts/check-qwen-regressions.py
-      - name: Formatting, lint and architecture
-        run: |
-          cargo fmt --all -- --check
-          cargo xtask layers
-          cargo xtask wasm
-          cargo xtask parity
-          cargo xtask scorecard --check
-          git diff --exit-code -- docs/parity-checklist.md
-      - name: Installer and package verifier tests
-        run: |
-          python3 -X utf8 qwen-image21-installer/scripts/tests/test_qwen_image21_setup.py -v
-          python3 -m unittest discover -s scripts/tests -p 'test_*.py' -v
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: qwen-regressions-${{ github.sha }}
-          path: target/qwen-regressions/
-          if-no-files-found: error
-
   windows:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.8.2' || github.ref == 'refs/heads/feature/auto-upate')
     runs-on: windows-2022
     timeout-minutes: 120
     env:
@@ -101,6 +29,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: 970a5c7dc7c086ab8263d6ccb200ab231e106faf
+      - name: Verify identity-only source change
+        shell: pwsh
+        run: |
+          if ((git rev-parse HEAD) -ne $env:PHOTOCRAFT_BUILD_SHA) { throw 'Wrong source checkout.' }
+          $changed = @(git diff --name-only a8b31bac74306b77d42ad7f6c63b0c49ae67c45d HEAD)
+          if ($changed.Count -ne 1 -or $changed[0] -ne 'release-tag.txt') { throw 'Source differs beyond release identity.' }
+          if ((Get-Content release-tag.txt -Raw).Trim() -ne '261014-0.8.2') { throw 'Wrong release identity.' }
       - name: Check candidate ancestry
         shell: pwsh
         run: |
@@ -145,7 +81,7 @@ jobs:
         run: ./scripts/build-qwen-candidate.ps1
       - uses: actions/upload-artifact@v4
         with:
-          name: qwen-windows-x64-${{ github.sha }}
+          name: qwen-windows-x64-970a5c7dc7c086ab8263d6ccb200ab231e106faf
           path: |
             dist/*.zip
             dist/*.zip.sha256
