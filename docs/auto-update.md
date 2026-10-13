@@ -79,3 +79,9 @@ rollback and staging-cleanup assertions. This gate runs before the release build
 The focused regression runner also executes the updater and update UI Rust tests
 and rejects empty test selections. Final CI and portable artifact provenance are
 recorded by the candidate workflow for each tested source SHA.
+
+Full CI run `38384184579` then found the scorecard staleness gate: the new
+`automatic_update_check` preference raises the audited setting count from 164
+to 165. `cargo xtask scorecard` regenerated only those two count occurrences;
+the 27 unread settings and all floors remain unchanged. The focused staleness
+test and `cargo xtask scorecard --check` pass after regeneration.
