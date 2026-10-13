@@ -204,6 +204,7 @@ mod type_font_preview;
 pub mod type_panels_ui;
 pub mod type_tool;
 mod type_transform;
+pub mod updates;
 mod variables_ui;
 pub mod vector_ui;
 pub mod view_cmds;
@@ -368,6 +369,7 @@ pub type WindowFrameFn = Box<dyn FnMut()>;
 /// I/O dependencies.
 #[derive(Default)]
 pub struct Services {
+    pub updates: Option<updates::Service>,
     /// User-initiated desktop/browser pixel sampling.
     pub screen_pick: Option<screen_picker::Service>,
     /// Decode a file's bytes into a document (PSD, PNG, JPEG, …).
@@ -463,6 +465,7 @@ pub(crate) type HistJob = (DocId, u64, std::sync::mpsc::Receiver<(DocId, f64, st
 type InfoSampleKey = (i32, i32, u64, u32);
 
 pub struct PhotocraftApp {
+    pub updates: updates::State,
     pub session: Session,
     pub ui: UiState,
     pub services: Services,
@@ -807,6 +810,7 @@ impl PhotocraftApp {
             hist_job: None,
             gpu: None,
             started: None,
+            updates: Default::default(),
             perf: Default::default(),
             prefs_rt: Default::default(),
             discard: None,
@@ -1550,6 +1554,7 @@ impl eframe::App for PhotocraftApp {
             self.fonts_ready = true;
         }
         self.frame += 1;
+        updates::poll(self, ctx);
         let now = ctx.input(|i| i.time);
         let dt = (now - self.last_frame_time) as f32;
         if dt > 0.0 {
@@ -1723,6 +1728,7 @@ impl eframe::App for PhotocraftApp {
         workspace_ui::windows(self, &ctx);
         palette::show(self, &ctx);
         dialogs::show(self, &ctx);
+        updates::show(self, &ctx);
         jobs_ui::dialog(self, &ctx);
         discard_ui::show(self, &ctx);
         tiff_options_ui::show(self, &ctx);

@@ -18,6 +18,9 @@ try {
     if (-not $NoBuild) {
         # Match official Windows packaging: include the CRT in the executable.
         [Environment]::SetEnvironmentVariable($targetFlagsKey, ($previousTargetFlags + ' -C target-feature=+crt-static').Trim())
+        $version = [regex]::Match((Get-Content (Join-Path $repoRoot 'Cargo.toml') -Raw), '(?s)\[workspace\.package\].*?version\s*=\s*"([^"]+)"').Groups[1].Value
+        $day = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow, 'Tokyo Standard Time').ToString('yyMMdd')
+        $env:PHOTOCRAFT_RELEASE_TAG = "$day-$version"
         $cargoArgs = @('+1.95.0', 'build', '-p', 'photocraft', '--target', $targetTriple)
         if (-not $DebugBuild) { $cargoArgs += '--release' }
         & cargo @cargoArgs

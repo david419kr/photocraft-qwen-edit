@@ -13,6 +13,17 @@
 /// The workspace version, such as `0.1.0` or `0.2.0-rc.1`.
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 
+/// This fork's release identity, independent of the upstream workspace version.
+pub const FORK_REPOSITORY: &str = "david419kr/photocraft-qwen-edit";
+
+pub fn release_tag() -> &'static str {
+    option_env!("PHOTOCRAFT_RELEASE_TAG").unwrap_or(include_str!("../../../release-tag.txt")).trim()
+}
+
+pub fn fork_version() -> String {
+    format_long(release_tag(), short_sha(), build_date())
+}
+
 /// The full git commit this build was made from, when the build environment recorded it.
 pub fn git_sha() -> Option<&'static str> {
     option_env!("PHOTOCRAFT_BUILD_SHA").map(str::trim).filter(|s| !s.is_empty())
@@ -25,7 +36,7 @@ pub fn build_date() -> Option<&'static str> {
 
 /// The commit shortened for display.
 pub fn short_sha() -> Option<&'static str> {
-    git_sha().map(|s| &s[..s.len().min(9)])
+    git_sha().map(|s| s.get(..s.len().min(9)).unwrap_or(s))
 }
 
 /// `0.1.0 (3f2a9c1d0, 2026-10-01)`, or `0.1.0 (dev build)` without provenance.

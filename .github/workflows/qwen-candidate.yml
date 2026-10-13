@@ -2,7 +2,7 @@ name: Qwen Windows candidate
 
 on:
   push:
-    branches: ['update/0.8.2']
+    branches: ['update/0.8.2', 'feature/auto-upate']
   workflow_dispatch:
 
 permissions:
@@ -45,7 +45,7 @@ jobs:
 
   regressions:
     needs: lint
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.8.2'
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.ref == 'refs/heads/update/0.8.2' || github.ref == 'refs/heads/feature/auto-upate')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -91,7 +91,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.8.2'
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.ref == 'refs/heads/update/0.8.2' || github.ref == 'refs/heads/feature/auto-upate')
     runs-on: windows-2022
     timeout-minutes: 120
     env:
@@ -130,8 +130,16 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force dist | Out-Null
+          $version = [regex]::Match((Get-Content Cargo.toml -Raw), '(?s)\[workspace\.package\].*?version\s*=\s*"([^"]+)"').Groups[1].Value
+          $day = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow, 'Tokyo Standard Time').ToString('yyMMdd')
+          $env:PHOTOCRAFT_RELEASE_TAG = "$day-$version"
           cargo +1.95.0 build --locked -p photocraft --release --target x86_64-pc-windows-msvc 2>&1 | Tee-Object -FilePath dist/candidate-build.log
           if ($LASTEXITCODE -ne 0) { throw 'Windows candidate build failed.' }
+      - name: Test Windows executable replacement and rollback
+        shell: pwsh
+        run: |
+          $env:PHOTOCRAFT_TEST_PWSH = Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
+          python -m unittest scripts.tests.test_auto_updater -v
       - name: Package and verify candidate
         shell: pwsh
         run: ./scripts/build-qwen-candidate.ps1

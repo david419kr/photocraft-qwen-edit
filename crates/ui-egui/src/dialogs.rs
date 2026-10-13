@@ -419,7 +419,10 @@ fn about_tab_body(app: &mut PhotocraftApp, ui: &mut egui::Ui, tab: &str) {
         "models" => crate::credits::models_ui(ui),
         _ => {
             ui.label(tl!("PhotoCraft — an open-source, native image editor written in Rust."));
-            ui.label(crate::i18n::fmt(tl!("Version {version}"), &[("version", &photocraft_engine::build_info::long_version())]));
+            ui.label(format!("PhotoCraft Local Qwen AI · {}", photocraft_engine::build_info::fork_version()));
+            ui.hyperlink_to(photocraft_engine::build_info::FORK_REPOSITORY, "https://github.com/david419kr/photocraft-qwen-edit");
+            ui.weak(format!("Upstream PhotoCraft {}", photocraft_engine::build_info::VERSION));
+            crate::updates::about(app, ui);
             ui.add_space(12.0);
             ui.vertical_centered(|ui| {
                 crate::links::discord_button(app, ui, 220.0);

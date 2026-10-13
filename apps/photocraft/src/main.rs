@@ -35,6 +35,7 @@ mod gpu_startup;
 mod mac_menu;
 #[cfg(target_os = "macos")]
 mod mac_window;
+mod updater;
 // Pure logic is tested on every platform; only Linux runs the check.
 #[cfg(any(target_os = "linux", test))]
 mod linux_libs;
@@ -197,7 +198,7 @@ fn main() -> eframe::Result {
             Some("--safe-gpu") => safe_gpu = true,
             Some("--in-window-menus") => in_window_menus = true,
             Some("--version") => {
-                println!("photocraft {}", photocraft_engine::build_info::long_version());
+                println!("PhotoCraft Local Qwen AI {} (upstream {})", photocraft_engine::build_info::fork_version(), photocraft_engine::build_info::VERSION);
                 return Ok(());
             }
             // Old macOS passes a process serial number when launched from Finder.
@@ -463,6 +464,7 @@ fn main() -> eframe::Result {
                     log::warn!("couldn't remember GPU backend {}: {e}", b.name());
                 }
             });
+            app.services.updates = Some(updater::service(cc.egui_ctx.clone()));
             if let Some((port, token, _)) = control {
                 let rx = control_server::start(port, token, cc.egui_ctx.clone());
                 app = app.with_control(rx);

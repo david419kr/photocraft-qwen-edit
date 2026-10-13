@@ -98,6 +98,9 @@ pub const UI_COMMANDS: &[(&str, &str, &[&str], Option<&str>)] = &[
     ("help.reportIssue", "Report an Issue…", &["Help"], None),
     ("help.systemInfo", "System Info…", &["Help"], None),
     ("help.about", "About PhotoCraft", &["Help"], None),
+    ("help.update.check", "Check for updates now", &[], None),
+    ("help.update.install", "Update PhotoCraft", &[], None),
+    ("help.update.dismiss", "Dismiss update", &[], None),
 ];
 
 /// Window › <document>: the open documents, listed at the end of the Window menu as in Photoshop.
@@ -384,6 +387,9 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
             Ok(Value::Null)
         }
         "help.about" => Ok(json!({"dialog": app.ui.open_dialog(DialogKind::About, Default::default())})),
+        "help.update.check" => crate::updates::check(app),
+        "help.update.install" => crate::updates::install(app),
+        "help.update.dismiss" => crate::updates::dismiss(app),
         "help.systemInfo" => {
             let mut fields = serde_json::Map::new();
             fields.insert("systemInfo".into(), json!(true));
@@ -697,6 +703,9 @@ pub fn is_enabled(app: &PhotocraftApp, id: &str) -> bool {
         return e;
     }
     match id {
+        "help.update.check" => app.services.updates.is_some(),
+        "help.update.install" => app.updates.available.is_some() && app.services.updates.as_ref().is_some_and(|s| s.supported),
+        "help.update.dismiss" => app.updates.available.is_some(),
         "window.panel.activate" | "window.panel.layout" => true,
         "window.panel.group" | "window.panel.move" | "window.panel.float" | "window.panel.dock" | "window.panel.close" => !app.session.prefs().workspace_locked,
         "file.open" | "file.exit" | "file.clearRecent" | "file.removeRecent" | "help.about" | "help.systemInfo" | "edit.search" => true,

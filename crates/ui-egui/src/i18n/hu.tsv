@@ -4037,3 +4037,13 @@ prompt-region	Bottom left	Bal alsó
 prompt-region	Bottom center	Lent középen
 prompt-region	Bottom right	Jobb alsó
 	Enable animations	Animációk engedélyezése
+
+	PhotoCraft update available	PhotoCraft-frissítés érhető el
+	Update PhotoCraft and restart now?	Frissíti a PhotoCraftot és újraindítja most?
+	Automatically check for updates	Frissítések automatikus keresése
+	Check for updates now	Frissítések keresése most
+	You can check for updates again in Help → About PhotoCraft.	Újra kereshet frissítéseket a Súgó → A PhotoCraft névjegye menüben.
+	Downloading update…	Frissítés letöltése…
+	PhotoCraft is up to date.	A PhotoCraft naprakész.
+	Update PhotoCraft	PhotoCraft frissítése
+	Dismiss update	Frissítési értesítés bezárása

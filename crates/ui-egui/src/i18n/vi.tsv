@@ -3604,3 +3604,13 @@ prompt-region	Middle right	Giữa phải
 prompt-region	Bottom left	Dưới trái
 prompt-region	Bottom center	Dưới giữa
 prompt-region	Bottom right	Dưới phải
+
+	PhotoCraft update available	Có bản cập nhật PhotoCraft
+	Update PhotoCraft and restart now?	Cập nhật PhotoCraft và khởi động lại ngay?
+	Automatically check for updates	Tự động kiểm tra cập nhật
+	Check for updates now	Kiểm tra cập nhật ngay
+	You can check for updates again in Help → About PhotoCraft.	Bạn có thể kiểm tra cập nhật lại trong Trợ giúp → Giới thiệu PhotoCraft.
+	Downloading update…	Đang tải bản cập nhật…
+	PhotoCraft is up to date.	PhotoCraft đã là phiên bản mới nhất.
+	Update PhotoCraft	Cập nhật PhotoCraft
+	Dismiss update	Đóng thông báo cập nhật

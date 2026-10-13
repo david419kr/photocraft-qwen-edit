@@ -9,6 +9,7 @@
 //! `--system-theme light|dark|none` supplies a deterministic OS appearance for theme captures.
 //!
 //! `--safe-gpu` draws the canvas on the CPU path, like the app's `--safe-gpu` launch.
+//! `--mock-update` shows the fork update offer without HTTP or an installer.
 //! `--wayland-notice` previews the native file drag-and-drop guidance shown in Wayland sessions.
 //! `--custom-titlebar` draws the Windows/Linux title bar (caption buttons in the top bar).
 //!
@@ -69,6 +70,7 @@ fn main() {
     let scale: f32 = arg(&args, "--scale").and_then(|s| s.parse().ok()).unwrap_or(2.0);
     let wayland_notice = args.iter().any(|a| a == "--wayland-notice");
     let mock_ai = args.iter().any(|a| a == "--mock-ai");
+    let mock_update = args.iter().any(|a| a == "--mock-update");
     let comfy_ai = args.iter().any(|a| a == "--comfy-ai");
     let script: Vec<(String, Value)> =
         arg(&args, "--script").map(|s| serde_json::from_str::<Vec<(String, Value)>>(&s).expect("--script must be [[method, params], …]")).unwrap_or_default();
@@ -129,6 +131,15 @@ fn main() {
                     session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi::default()));
                 }
                 let mut app = PhotocraftApp::new(session, services);
+                if mock_update {
+                    app.updates.available = Some(photocraft_ui_egui::updates::Release {
+                        tag: "261014-0.8.3".into(),
+                        asset_name: String::new(),
+                        url: String::new(),
+                        size: 1,
+                        sha256: String::new(),
+                    });
+                }
                 app.background_jobs = background_jobs;
                 app.custom_titlebar = custom_titlebar;
                 // `--safe-gpu`: the CPU canvas, as the desktop app's `--safe-gpu` launch.
