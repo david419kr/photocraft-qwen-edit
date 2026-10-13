@@ -61,3 +61,21 @@ native Rust fixture executables, covering exit waiting, Unicode paths, argument
 quoting, successful replacement, checksum failure, rollback after restart
 failure, preservation of settings, and cleanup. The Windows candidate workflow
 runs them with Windows PowerShell 5.1, including Windows EXE file locking.
+
+## Windows helper CI regression (2026-10-13)
+
+The initial feature commit `723c94e672878598b9a1f06592fd67e25090770b`
+compiled successfully, but candidate run `38381222919` failed the replacement
+success test. Diagnostic run `38383396048` at
+`d4d431aa4eea16c80d6e53fbe9a255bf11f4584e` exposed the actual error:
+Windows PowerShell could not resolve `Get-FileHash`. The two rollback tests had
+passed through this same earlier error rather than their intended failure paths.
+
+The helper now computes SHA256 through the .NET stream API without PowerShell
+module discovery, and reports caught errors even when GUI dialogs are suppressed.
+The Windows tests require the specific checksum/restart failure paths, run an
+actual old EXE while waiting for exit, and retain argument, settings, binary,
+rollback and staging-cleanup assertions. This gate runs before the release build.
+The focused regression runner also executes the updater and update UI Rust tests
+and rejects empty test selections. Final CI and portable artifact provenance are
+recorded by the candidate workflow for each tested source SHA.

@@ -28,7 +28,8 @@ class HelperTests(unittest.TestCase):
         for version in ["old", "new"]:
             root = Path(cls.fixtures.name)
             source = root / f"{version}.rs"
-            source.write_text('fn main() { let args: Vec<_> = std::env::args().skip(1).collect(); '
+            source.write_text('fn main() { if std::env::args().nth(1).as_deref() == Some("--wait") { '
+                              'std::thread::sleep(std::time::Duration::from_secs(30)); return; } let args: Vec<_> = std::env::args().skip(1).collect(); '
                               f'let text = format!("{version}\\n{{}}", args.join("\\n")); '
                               'std::fs::write(std::env::var("UPDATE_TEST_LOG").unwrap(), text).unwrap(); }')
             binary = root / f"{version}.exe"
@@ -57,7 +58,7 @@ class HelperTests(unittest.TestCase):
             staged.chmod(0o755)
             log = root / "restarted.txt"
             arguments = ["space value", 'quote"value', "한글", "backslash\\", ""]
-            old = subprocess.Popen([os.sys.executable, "-c", "import time; time.sleep(30)"])
+            old = subprocess.Popen([str(target), "--wait"])
             manifest = stage / "update.json"
             manifest.write_text(json.dumps({"pid":old.pid, "target":str(target), "staged":str(staged),
                 "directory":str(stage), "cwd":str(root), "arguments":arguments,
@@ -74,6 +75,14 @@ class HelperTests(unittest.TestCase):
                 old.wait(timeout=5)
                 out, err = helper.communicate(timeout=20)
                 self.assertEqual(helper.returncode, 0, (out, err))
+                if mode == "success":
+                    self.assertNotIn(b"PhotoCraft update failed:", out, (out, err))
+                elif mode == "checksum-failure":
+                    self.assertIn(b"Staged executable checksum changed.", out, (out, err))
+                else:
+                    self.assertIn(b"PhotoCraft update failed:", out, (out, err))
+                    self.assertNotIn(b"Staged executable checksum changed.", out, (out, err))
+                    self.assertIn(b'"Start"', out, (out, err))
                 deadline = time.monotonic() + 5
                 while not log.exists() and time.monotonic() < deadline:
                     time.sleep(0.05)

@@ -24,7 +24,17 @@ try {
     $old = Get-Process -Id $m.pid -ErrorAction SilentlyContinue
     if ($old -and -not $old.WaitForExit(120000)) { throw 'PhotoCraft did not exit; update cancelled.' }
     $exited = $true
-    if ((Get-FileHash -LiteralPath $m.staged -Algorithm SHA256).Hash.ToLowerInvariant() -ne $m.sha256) { throw 'Staged executable checksum changed.' }
+    # Avoid PowerShell module discovery: the helper can inherit a PowerShell 7
+    # module path while running under Windows PowerShell 5.1.
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    $stream = [IO.File]::OpenRead($m.staged)
+    try {
+        $actualHash = [BitConverter]::ToString($sha256.ComputeHash($stream)).Replace('-', '').ToLowerInvariant()
+    } finally {
+        $stream.Dispose()
+        $sha256.Dispose()
+    }
+    if ($actualHash -ne $m.sha256) { throw 'Staged executable checksum changed.' }
     Move-Item -LiteralPath $m.target -Destination $backup
     $moved = $true
     Move-Item -LiteralPath $m.staged -Destination $m.target
