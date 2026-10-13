@@ -1,0 +1,84 @@
+name: Windows test build
+
+on:
+  push:
+    branches: [feature/remember-last-tool]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-test-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    name: Windows x64 portable
+    runs-on: windows-2022
+    timeout-minutes: 90
+    env:
+      CARGO_INCREMENTAL: '0'
+      CARGO_TERM_COLOR: always
+      CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS: '-C target-feature=+crt-static'
+      # Local testing needs an optimized executable, without the production build's slow LTO.
+      CARGO_PROFILE_RELEASE_LTO: 'false'
+      CARGO_PROFILE_RELEASE_CODEGEN_UNITS: '16'
+      PHOTOCRAFT_REQUIRE_WINRES: '1'
+      PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
+      CRAFT_FONTS_DIR: ${{ github.workspace }}/craft-fonts
+      CRAFT_FONTS_REQUIRED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out bundled fonts
+        uses: actions/checkout@v4
+        with:
+          repository: storytold/craft-fonts
+          ref: abb83316d96aa59c1cf64784289e378fe9fa5695
+          path: craft-fonts
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+          components: rustfmt
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: windows-test-build-x64-static-crt
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Build Windows executable
+        shell: pwsh
+        run: |
+          $env:PHOTOCRAFT_BUILD_DATE = (Get-Date).ToUniversalTime().ToString('yyyy-MM-dd')
+          cargo build --release --locked -p photocraft --features heif --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Windows build failed.' }
+      - name: Verify and package portable executable
+        shell: pwsh
+        run: |
+          $exe = 'target/x86_64-pc-windows-msvc/release/photocraft.exe'
+          $bytes = [System.IO.File]::ReadAllBytes((Resolve-Path $exe))
+          $pe = [BitConverter]::ToInt32($bytes, 0x3C)
+          if ([BitConverter]::ToUInt16($bytes, $pe + 4) -ne 0x8664) { throw 'Expected an x64 executable.' }
+          if ([BitConverter]::ToUInt16($bytes, $pe + 0x5C) -ne 2) { throw 'Expected a Windows GUI executable.' }
+          New-Item -ItemType Directory -Force dist/portable | Out-Null
+          Copy-Item $exe dist/portable/photocraft.exe
+          Copy-Item packaging/windows/portable.txt dist/portable/portable.txt
+          @(
+            'PhotoCraft Windows x64 test build (unsigned)'
+            "Commit: $env:PHOTOCRAFT_BUILD_SHA"
+            "Branch: $env:GITHUB_REF_NAME"
+            'Extract the ZIP into a writable folder and run photocraft.exe.'
+            'Choose a tool, close the app, then restart to verify the tool is restored.'
+            'Settings are stored in PhotoCraftData beside the executable.'
+          ) | Set-Content -Encoding utf8 dist/portable/BUILD-INFO.txt
+          $zip = "dist/photocraft-windows-x64-test-$($env:GITHUB_SHA.Substring(0, 8)).zip"
+          Compress-Archive -Path dist/portable/* -DestinationPath $zip
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  $([System.IO.Path]::GetFileName($zip))" | Set-Content -Encoding ascii "$zip.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: photocraft-windows-x64-test-${{ github.sha }}
+          path: |
+            dist/*.zip
+            dist/*.sha256
+          if-no-files-found: error
+          retention-days: 14
