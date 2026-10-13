@@ -31,7 +31,7 @@ candidate PR and CI provenance; no main merge, tag or release is authorized.
   scrub-label API, retaining the fork's hover-wheel behavior and its test.
 - Combine translation catalogs by context/source, retaining fork-only AI
   labels and Korean text. Keep both upstream and fork license attributions.
-- Retain the existing 634 parity floor; regenerate derived documents from
+- Raise the existing 634 parity floor to the measured 635; regenerate derived documents from
   the combined source without lowering any test, corpus or web-size gate.
 - ComfyUI/HyMT installer pins, models/TE/CFG/sigma, green-annotation removal,
   two-marker full-free ordering, Windows static CRT, restricted-brand asset
