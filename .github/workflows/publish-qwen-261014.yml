@@ -1,0 +1,54 @@
+name: Publish verified Qwen 261014
+on:
+  push:
+    branches: ['publish/261014-0.8.2']
+permissions:
+  contents: read
+concurrency:
+  group: publish-qwen-261014-0.8.2
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/publish/261014-0.8.2'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Check out exact verified release source
+        uses: actions/checkout@v4
+        with:
+          ref: 8a97a1b43d963286cd4ce171319b46a706e39fbd
+          fetch-depth: 0
+          path: source
+          persist-credentials: false
+      - name: Check out publication helper
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: publisher
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download exact verified Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: 11826371667
+          run-id: 38418113107
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: candidate
+      - name: Verify, upload, publish and download-check
+        working-directory: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python ../publisher/release-support/261014/publish.py ../candidate
+      - name: Preserve publication evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-261014-publication-evidence-${{ github.run_id }}
+          path: source/dist/publication-verification.json
+          if-no-files-found: ignore

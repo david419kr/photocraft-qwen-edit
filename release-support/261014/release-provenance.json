@@ -1,0 +1,154 @@
+{
+  "tag": "261014-0.8.2",
+  "title": "PhotoCraft Local Qwen AI - 261014 (upstream 0.8.2)",
+  "base_sha": "97508da87e4bfa256b9e8b5c7ac575666caffe20",
+  "candidate_sha": "970a5c7dc7c086ab8263d6ccb200ab231e106faf",
+  "tree_sha": "d87c607a8a0989d585c2626146890e58d6cf9956",
+  "main_sha": "8a97a1b43d963286cd4ce171319b46a706e39fbd",
+  "tag_object_sha": "1e9076e008335c033c783e7c33bdc07446f21f48",
+  "zip_sha256": "21d83ef2939d21d7a948a001fe3ca9d2730e4bd8ec84cec300544c21405fa566",
+  "exe_sha256": "8e1d8d9ee811e01d75cb092a31fe67eab511dfe940d0802afcd759f130933854",
+  "ci_runs": [
+    {
+      "id": 38407988482,
+      "sha": "a8b31bac74306b77d42ad7f6c63b0c49ae67c45d"
+    },
+    {
+      "id": 38407999704,
+      "sha": "a8b31bac74306b77d42ad7f6c63b0c49ae67c45d"
+    },
+    {
+      "id": 38407999142,
+      "sha": "a8b31bac74306b77d42ad7f6c63b0c49ae67c45d"
+    },
+    {
+      "id": 38408000429,
+      "sha": "a8b31bac74306b77d42ad7f6c63b0c49ae67c45d"
+    },
+    {
+      "id": 38418113107,
+      "sha": "caee3fc2d58183c6ed675bfc13feb25759912e0c"
+    },
+    {
+      "id": 38418277211,
+      "sha": "fba6e591ef2adbaa03f9d4c7d63f6783979a3ea3"
+    },
+    {
+      "id": 38418275551,
+      "sha": "fba6e591ef2adbaa03f9d4c7d63f6783979a3ea3"
+    }
+  ],
+  "artifact_id": 11826371667,
+  "artifact_run": 38418113107,
+  "pr": 5,
+  "pr_head_sha": "a8b31bac74306b77d42ad7f6c63b0c49ae67c45d",
+  "pr_merge_sha": "fba6e591ef2adbaa03f9d4c7d63f6783979a3ea3",
+  "build_workflow_sha": "caee3fc2d58183c6ed675bfc13feb25759912e0c",
+  "metadata_only_checks": "Exact source/tree comparison; existing functional CI on a8b31bac; fresh Windows 1.95 static CRT build, real updater replacement/rollback tests, exact version/PE/imports/ZIP/provenance validation.",
+  "upstream_release_id": 410949848,
+  "upstream_tag": "v0.8.2",
+  "upstream_sha": "d43db3e153c76aefce9b32cef9099e458eaf17a8",
+  "fork_integration_base_sha": "b9d8ea92e0e668f010ca1935853a243f52a38ac9",
+  "unchanged_from_functional_ci_sha": "a8b31bac74306b77d42ad7f6c63b0c49ae67c45d",
+  "metadata_only_changed_paths": [
+    "release-tag.txt"
+  ],
+  "redundant_main_ci_cancelled": [
+    38418275633,
+    38418333886
+  ],
+  "artifact_sha256": "5b53480592bf4c5381a65c5d5ffe36f6d75e94e8ca16dfa7bda180a6b77ca51a",
+  "build": {
+    "source_sha": "970a5c7dc7c086ab8263d6ccb200ab231e106faf",
+    "fork_base_sha": "b9d8ea92e0e668f010ca1935853a243f52a38ac9",
+    "upstream_tag": "v0.8.2",
+    "upstream_release_id": 410949848,
+    "upstream_sha": "d43db3e153c76aefce9b32cef9099e458eaf17a8",
+    "toolchain": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "target": "x86_64-pc-windows-msvc",
+    "rustflags": "-C target-feature=+crt-static",
+    "features": "desktop manifest: avif,avif-decode; no optional heif or craft-fonts",
+    "executable_sha256": "8e1d8d9ee811e01d75cb092a31fe67eab511dfe940d0802afcd759f130933854",
+    "zip_sha256": "21d83ef2939d21d7a948a001fe3ca9d2730e4bd8ec84cec300544c21405fa566",
+    "zip": "photocraft-qwen-edit-261014-0.8.2-windows-x64.zip",
+    "imported_dlls": [
+      "bcryptprimitives.dll",
+      "kernel32.dll",
+      "oleaut32.dll",
+      "user32.dll",
+      "uiautomationcore.dll",
+      "advapi32.dll",
+      "gdi32.dll",
+      "ntdll.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "combase.dll",
+      "ole32.dll",
+      "opengl32.dll",
+      "setupapi.dll",
+      "dxgi.dll",
+      "dwmapi.dll",
+      "shell32.dll",
+      "ws2_32.dll",
+      "ADVAPI32.dll",
+      "imm32.dll",
+      "bcrypt.dll",
+      "uxtheme.dll"
+    ],
+    "actual_gpu_ui_tested": false,
+    "ci_run_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/38418113107",
+    "built_at_utc": "2026-10-13T15:12:35.5522121+00:00"
+  },
+  "portable_verification": {
+    "source_sha": "970a5c7dc7c086ab8263d6ccb200ab231e106faf",
+    "release_tag": "261014-0.8.2",
+    "zip_sha256": "21d83ef2939d21d7a948a001fe3ca9d2730e4bd8ec84cec300544c21405fa566",
+    "executable_sha256": "8e1d8d9ee811e01d75cb092a31fe67eab511dfe940d0802afcd759f130933854",
+    "pe_machine": "0x8664",
+    "static_crt": true,
+    "files": 18,
+    "roots": 6,
+    "version": "PhotoCraft Local Qwen AI 261014-0.8.2 (970a5c7dc) (upstream 0.8.2)",
+    "imported_dlls": [
+      "bcryptprimitives.dll",
+      "kernel32.dll",
+      "oleaut32.dll",
+      "user32.dll",
+      "uiautomationcore.dll",
+      "advapi32.dll",
+      "gdi32.dll",
+      "ntdll.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "combase.dll",
+      "ole32.dll",
+      "opengl32.dll",
+      "setupapi.dll",
+      "dxgi.dll",
+      "dwmapi.dll",
+      "shell32.dll",
+      "ws2_32.dll",
+      "ADVAPI32.dll",
+      "imm32.dll",
+      "bcrypt.dll",
+      "uxtheme.dll"
+    ],
+    "actual_gpu_ui_tested": false
+  },
+  "functional_verification": {
+    "windows_test_log_totals": {
+      "passed": 7606,
+      "failed": 0,
+      "ignored": 61
+    },
+    "focused_fork_regressions": {
+      "passed": 295,
+      "groups": 18,
+      "failed": 0
+    },
+    "metadata_only_source_delta": true,
+    "actual_gpu_ui_tested": false
+  },
+  "previous_release_preserved": {
+    "tag": "261013-0.8.2",
+    "id": 411304264
+  }
+}
