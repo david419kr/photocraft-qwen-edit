@@ -680,7 +680,7 @@ fn dispatch(app: &mut PhotocraftApp, ctx: &egui::Context, req: &ControlRequest) 
                     }
                 }
                 if let Some(t) = tool {
-                    app.ui.tool = t;
+                    crate::tool_memory::select(app, t);
                     // Each tool keeps its own brush (#218), so switch it in before `brushSize`
                     // below sets the new tool's size.
                     crate::paint_mouse::sync_tool_brush(app);
@@ -1003,7 +1003,7 @@ fn dispatch(app: &mut PhotocraftApp, ctx: &egui::Context, req: &ControlRequest) 
             let secondary = matches!(button.as_str(), "secondary" | "right");
             let mods = modifiers_from(&m);
             if let Some(t) = tool {
-                app.ui.tool = t;
+                crate::tool_memory::select(app, t);
             }
             // Space held: the Crop tool moves the frame being drawn, a marquee, lasso or shape
             // being drawn moves instead of growing (hold_keys.rs). Like a modifier flag, it may be

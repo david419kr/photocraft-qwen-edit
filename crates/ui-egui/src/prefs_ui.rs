@@ -2674,6 +2674,19 @@ mod tests {
     }
 
     #[test]
+    fn selected_tool_explicit_eraser_survives_exit_during_pen_override() {
+        use crate::state::Tool;
+        let (mut app, store) = app_with_store();
+        app.stylus.tool_before_eraser = Some(Tool::Zoom);
+        app.ui.tool = Tool::Eraser;
+        crate::tool_memory::select(&mut app, Tool::Eraser);
+        assert_eq!(app.stylus.tool_before_eraser, None);
+        crate::tool_memory::save_on_exit(&mut app).unwrap();
+        let (restored, _) = app_with_saved(store.lock().unwrap().clone());
+        assert_eq!(restored.ui.tool, Tool::Eraser);
+    }
+
+    #[test]
     fn invalid_selected_tool_preserves_other_preferences() {
         for bad in [json!(null), json!("FutureTool"), json!(42), json!({}), json!([])] {
             let (app, _) = app_with_saved(Some(

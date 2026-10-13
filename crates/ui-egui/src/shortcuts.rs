@@ -569,11 +569,12 @@ pub fn handle(app: &mut PhotocraftApp, ctx: &egui::Context) {
         let cycle_shift = shift_switch && ctx.input_mut(|i| i.consume_key(Modifiers::SHIFT, k));
         if cycle_shift || pressed(k) {
             let group: Vec<Tool> = Tool::ALL.iter().copied().filter(|x| x.key() == t.key()).collect();
-            app.ui.tool = match group.iter().position(|x| *x == app.ui.tool) {
+            let tool = match group.iter().position(|x| *x == app.ui.tool) {
                 Some(i) if shift_switch && !cycle_shift => group[i],
                 Some(i) => group[(i + 1) % group.len()],
                 None => app.ui.group_tool(t.key()).unwrap_or(group[0]),
             };
+            crate::tool_memory::select(app, tool);
             return;
         }
     }

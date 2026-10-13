@@ -966,7 +966,7 @@ fn tool_id(t: Tool) -> String {
 pub fn select_tool_preset(app: &mut PhotocraftApp, name: &str) {
     let Some(r) = run(app, "tool.presets.select", json!({"preset": name})) else { return };
     if let Some(tool) = r["tool"].as_str().and_then(Tool::from_name) {
-        app.ui.tool = tool;
+        crate::tool_memory::select(app, tool);
         // Each tool keeps its own brush (#218), so switch it in before the preset's brush lands
         // on it, and re-apply the brush the command just set for the old tool.
         crate::paint_mouse::sync_tool_brush(app);

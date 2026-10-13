@@ -11,6 +11,12 @@ use serde_json::{Map, Value};
 use crate::PhotocraftApp;
 use crate::state::{Tool, ToolOptions};
 
+/// Explicit choices override a temporary pen eraser, even when Eraser is already active.
+pub(crate) fn select(app: &mut PhotocraftApp, tool: Tool) {
+    app.stylus.tool_before_eraser = None;
+    app.ui.tool = tool;
+}
+
 /// Temporary canvas overrides do not change `ui.tool`. The pen's eraser end does, so remember
 /// the tool it will return to instead. A different explicit tool choice takes precedence.
 fn selected(app: &PhotocraftApp) -> Tool {
