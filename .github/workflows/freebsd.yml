@@ -9,8 +9,6 @@ name: FreeBSD
 # or dependency change: a drifted dependency still shows up within a day. PRs that change the
 # FreeBSD packaging itself still run it.
 on:
-  schedule:
-    - cron: "17 2 * * *"
   pull_request:
     paths:
       - .github/workflows/freebsd.yml
