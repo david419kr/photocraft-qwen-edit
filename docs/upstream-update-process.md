@@ -73,3 +73,11 @@ the published EXE and tag remain unchanged.
 
 Scheduling is managed outside this repository by the user's parent workflow.
 Do not create an additional scheduler as part of a candidate update.
+
+## Fork CI schedule policy
+
+On 2026-10-13 the user explicitly removed the `schedule` triggers from
+`.github/workflows/perf-nightly.yml`, `freebsd.yml` and `windows-arm64.yml`.
+Preserve this fork choice during upstream updates: do not restore their cron
+schedules without new approval. Keep their manual dispatch, existing PR
+triggers and all jobs/checks; ordinary CI and Qwen candidate validation remain.
