@@ -30,3 +30,30 @@ fn metadata_none_removes_private_chunks_and_alpha_bits_only_in_the_export() {
     assert!(kept.meta.exif.is_some());
     assert!(!kept.meta.text.is_empty());
 }
+
+#[test]
+fn background_exports_keep_metadata_none_and_indexed_all_contracts() {
+    use photocraft_color::{Color, ColorMode, SampleType};
+    use photocraft_doc::{ColorTable, Document, Size};
+    let mut doc = Document::with_background("indexed", Size::new(2, 1), ColorMode::Rgb, SampleType::U8, Color::rgba(1.0, 0.0, 0.0, 1.0));
+    doc.mode = ColorMode::Indexed;
+    doc.color_table = Some(ColorTable { colors: vec![[255, 0, 0]], transparent: None });
+    doc.resolution_dpi = 300.0;
+    doc.metadata.xmp = Some("<private>한국어 prompt history</private>".into());
+    let original = doc.clone();
+    for policy in [XmpEmbed::All, XmpEmbed::None] {
+        let opts = ExportOptions { xmp: policy, ..Default::default() };
+        let foreground = export(&doc, "png", &opts).unwrap();
+        let background = photocraft_io::export_with(&doc, "png", &opts, &photocraft_raster::Interrupt::NONE).unwrap();
+        assert_eq!(foreground.bytes, background.bytes);
+        let decoded = photocraft_codecs::decode(&background.bytes).unwrap();
+        if policy == XmpEmbed::All {
+            assert_eq!(decoded.meta.xmp, doc.metadata.xmp);
+            assert!((decoded.meta.dpi.unwrap().0 - 300.0).abs() < 0.01);
+        } else {
+            assert_eq!(decoded.meta, Metadata::default());
+            assert!(decoded.icc.is_none());
+        }
+    }
+    assert_eq!(doc, original);
+}

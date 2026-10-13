@@ -1123,7 +1123,7 @@ mod tests {
         ) -> photocraft_engine::Result<photocraft_raster::Rgba8Image> {
             self.0.lock().unwrap().push(request.removal);
             let mut image = request.image.clone();
-            for pixel in image.pixels.chunks_exact_mut(4) {
+            for pixel in image.pixels.as_chunks_mut::<4>().0.iter_mut() {
                 pixel[3] = 255;
             }
             Ok(image)
@@ -1145,7 +1145,7 @@ mod tests {
         ) -> photocraft_engine::Result<photocraft_raster::Rgba8Image> {
             self.requests.lock().unwrap().push(request.model);
             let mut image = request.image.clone();
-            for pixel in image.pixels.chunks_exact_mut(4) {
+            for pixel in image.pixels.as_chunks_mut::<4>().0.iter_mut() {
                 pixel[3] = 255;
             }
             Ok(image)

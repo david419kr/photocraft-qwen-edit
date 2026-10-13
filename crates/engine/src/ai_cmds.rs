@@ -620,7 +620,7 @@ fn prepare(doc: &Document, mode: EditMode, ctx: &JobCtx) -> Result<Prepared> {
     let mut image = Rgba8Image::new(pw, ph);
     for (y, row) in image.pixels.chunks_exact_mut(pw as usize * 4).enumerate() {
         ctx.check()?;
-        for (x, pixel) in row.chunks_exact_mut(4).enumerate() {
+        for (x, pixel) in row.as_chunks_mut::<4>().0.iter_mut().enumerate() {
             let sx = x.min(w as usize - 1);
             let sy = y.min(h as usize - 1);
             let rgba = buf.px.get(sy * w as usize + sx).ok_or_else(|| EngineError::Other("incomplete image composite".into()))?;
@@ -680,7 +680,7 @@ fn harmonize_fill(image: &Rgba8Image, reference: &Rgba8Image, size: [u32; 2], ct
         ctx.check()?;
         let row = row.get(..w * 4).ok_or_else(|| EngineError::Other("short generated row".into()))?;
         let original = original.get(..w * 4).ok_or_else(|| EngineError::Other("short reference row".into()))?;
-        for (pixel, original) in row.chunks_exact(4).zip(original.chunks_exact(4)) {
+        for (pixel, original) in row.as_chunks::<4>().0.iter().zip(original.as_chunks::<4>().0.iter()) {
             mask.push(original.get(3).copied().unwrap_or(255) < 255);
             for (generated, source) in pixel.iter().take(3).zip(original.iter()) {
                 rgb.push(*generated as f32 / 255.0);
@@ -695,7 +695,7 @@ fn harmonize_fill(image: &Rgba8Image, reference: &Rgba8Image, size: [u32; 2], ct
         .stage(0.91, 0.94, "Adding generated layer", |ctl| photocraft_algo::poisson::membrane_fill_with(w, h, 3, &difference, &mask, ctl))
         .map_err(|_| EngineError::Cancelled)?;
     ctx.check()?;
-    for ((pixel, correction), selected) in rgb.chunks_exact_mut(3).zip(correction.chunks_exact(3)).zip(mask) {
+    for ((pixel, correction), selected) in rgb.as_chunks_mut::<3>().0.iter_mut().zip(correction.as_chunks::<3>().0.iter()).zip(mask) {
         if selected {
             for (value, delta) in pixel.iter_mut().zip(correction) {
                 *value = (*value + delta).clamp(0.0, 1.0);
@@ -724,7 +724,7 @@ fn result_layer(doc: &Document, image: &Rgba8Image, reference: &Rgba8Image, size
         if let Some(rgb) = &harmonized {
             let stride = w as usize * 3;
             let rgb = rgb.get(y * stride..(y + 1) * stride).ok_or_else(|| EngineError::Other("short blended row".into()))?;
-            for (pixel, rgb) in values.chunks_exact_mut(4).zip(rgb.chunks_exact(3)) {
+            for (pixel, rgb) in values.as_chunks_mut::<4>().0.iter_mut().zip(rgb.as_chunks::<3>().0.iter()) {
                 pixel.get_mut(..3).ok_or_else(|| EngineError::Other("short blended pixel".into()))?.copy_from_slice(rgb);
             }
         }

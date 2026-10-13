@@ -42,7 +42,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Cannot resolve Rust version.' }
 $metadata = [ordered]@{
     source_sha = $source
     fork_base_sha = $env:QWEN_BASE_SHA
-    upstream_tag = 'v0.7.0'
+    upstream_tag = 'v0.8.2'
+    upstream_release_id = 410949848
     upstream_sha = $env:QWEN_UPSTREAM_SHA
     toolchain = $rust
     target = 'x86_64-pc-windows-msvc'

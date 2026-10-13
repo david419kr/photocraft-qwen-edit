@@ -83,7 +83,7 @@ fn model_switches_release_both_backends_and_use_an_ordered_queue_marker() {
     backend.translation_model(&endpoint, "translator-b.gguf", &ctx).unwrap();
     let paths = server.join().unwrap();
     assert_eq!(paths.len(), 20);
-    for group in paths.chunks_exact(5) {
+    for group in paths.as_chunks::<5>().0.iter() {
         assert_eq!(group[0], "/free");
         assert_eq!(group[1], "/prompt");
         assert!(group[2].starts_with("/history/"));
