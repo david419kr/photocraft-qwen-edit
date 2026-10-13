@@ -432,7 +432,7 @@ fn decode_result(bytes: &[u8], width: u32, height: u32) -> Result<Rgba8Image> {
     let pixels = if image.layout() == ChannelLayout::Rgba {
         image.into_data()
     } else {
-        image.data().chunks_exact(3).flat_map(|p| p.iter().copied().chain(std::iter::once(255))).collect()
+        image.data().as_chunks::<3>().0.iter().flat_map(|p| p.iter().copied().chain(std::iter::once(255))).collect()
     };
     Ok(Rgba8Image { width, height, pixels })
 }

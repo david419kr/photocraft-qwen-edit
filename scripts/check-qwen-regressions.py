@@ -19,7 +19,7 @@ def main():
         ("ui-history", ["-p", "photocraft-ui-egui", "--lib", "history"]),
         ("ui-catalogs", ["-p", "photocraft-ui-egui", "--lib", "i18n::tests::"]),
         ("ui-preference-labels", ["-p", "photocraft-ui-egui", "--lib", "preference_labels_are_translated"]),
-        ("ui-readme-tools", ["-p", "photocraft-ui-egui", "--lib", "readme_tool_list_matches_tool_all"]),
+        ("ui-documented-tools", ["-p", "photocraft-ui-egui", "--lib", "documented_tool_list_matches_tool_all"]),
         ("avif", ["-p", "photocraft-codecs", "--features", "avif,avif-decode", "--test", "avif"]),
         ("png-metadata", ["-p", "photocraft-codecs", "--test", "png_clean_metadata"]),
         ("io-metadata", ["-p", "photocraft-io", "--test", "metadata_clean"]),
@@ -27,6 +27,7 @@ def main():
         ("io-flat", ["-p", "photocraft-io", "--test", "flat"]),
         ("panic-hunt", ["-p", "photocraft-engine", "--test", "panic_hunt", "--", "--ignored"]),
     ]
+    source_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
     results = []
     for name, args in cases:
         command = ["cargo", "test", "--locked", *args]
@@ -37,11 +38,12 @@ def main():
         counts = re.findall(r"test result: (?:ok|FAILED)\. (\d+) passed; (\d+) failed; (\d+) ignored", text)
         passed = sum(int(p) for p, _, _ in counts)
         failed = sum(int(f) for _, f, _ in counts)
+        ignored = sum(int(i) for _, _, i in counts)
         ok = completed.returncode == 0 and passed > 0 and failed == 0
         results.append(dict(name=name, command=command, exit_code=completed.returncode,
-                            passed=passed, failed=failed, ok=ok))
+                            passed=passed, failed=failed, ignored=ignored, source_sha=source_sha, ok=ok))
         (output / "results.json").write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
-        print(f"{name}: {passed} passed, {failed} failed, exit {completed.returncode}", flush=True)
+        print(f"{name}: {passed} passed, {failed} failed, {ignored} ignored, exit {completed.returncode}", flush=True)
         if not ok:
             print(text[-12000:])
             raise SystemExit(f"{name} failed or selected no executed tests; remaining cases were not run")

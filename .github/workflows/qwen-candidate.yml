@@ -2,7 +2,7 @@ name: Qwen Windows candidate
 
 on:
   push:
-    branches: ['update/0.7.0']
+    branches: ['update/0.8.2']
   workflow_dispatch:
 
 permissions:
@@ -17,12 +17,35 @@ env:
   CARGO_INCREMENTAL: 0
   RUST_BACKTRACE: 1
   PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
-  QWEN_UPSTREAM_SHA: 79261615956ab21334e49ca1d384390272e647da
-  QWEN_BASE_SHA: 5a9c9a2b21e25e976cf3f19a9ad13a264bb4c9de
+  QWEN_UPSTREAM_SHA: d43db3e153c76aefce9b32cef9099e458eaf17a8
+  QWEN_BASE_SHA: b9d8ea92e0e668f010ca1935853a243f52a38ac9
 
 jobs:
+  lint:
+    name: early Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Linux system dependencies (egui/winit/rfd)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev \
+            libgl1-mesa-dev libgtk-3-dev
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: early-clippy
+          save-if: ${{ github.ref == 'refs/heads/main' }}
+          cache-on-failure: true
+      - name: Clippy across the complete workspace
+        run: cargo clippy --workspace --all-targets --locked --features heif -- -D warnings
+
   regressions:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.7.0'
+    needs: lint
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.8.2'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -67,7 +90,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.7.0'
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.8.2'
     runs-on: windows-2022
     timeout-minutes: 120
     env:
