@@ -1542,6 +1542,12 @@ impl PhotocraftApp {
 }
 
 impl eframe::App for PhotocraftApp {
+    fn on_exit(&mut self) {
+        if let Err(err) = tool_memory::save_on_exit(self) {
+            log::warn!("Preferences: could not save the final tool selection: {err}");
+        }
+    }
+
     fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
         i18n::set_current(i18n::Lang::from_pref(&self.session.prefs().interface.language));
         // Caps Lock state read from the OS once per frame (see `Services::caps_lock`): the canvas

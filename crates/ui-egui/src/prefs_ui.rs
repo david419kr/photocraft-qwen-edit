@@ -52,6 +52,7 @@ pub struct Runtime {
     show_rulers: Option<bool>,
     /// Tool options as last remembered in the preferences (see `tool_memory`).
     pub(crate) tool_options: Option<crate::state::ToolOptions>,
+    pub(crate) selected_tool: Option<crate::state::Tool>,
 }
 
 /// The GPU canvas colours from Preferences › Transparency & Gamut.
@@ -2640,6 +2641,79 @@ mod tests {
         tick(&mut app3, &ctx);
         assert_eq!(app3.ui.brush_picker_list.scale, *crate::brush_picker::SCALE_RANGE.end());
         assert!(app3.ui.brush_picker_list.show_name && app3.ui.brush_picker_list.show_stroke && app3.ui.brush_picker_list.show_tip);
+    }
+
+    #[test]
+    fn selected_tool_survives_a_restart_without_option_changes() {
+        use crate::state::Tool;
+        let (mut app, store) = app_with_store();
+        let ctx = egui::Context::default();
+        tick(&mut app, &ctx);
+        assert_eq!(app.ui.tool, Tool::Brush);
+        // Every tool, including flyout-only tools, can be restored. Return to Brush last to
+        // prove selecting the default overwrites a previously remembered nondefault tool.
+        for tool in Tool::ALL.into_iter().chain([Tool::Brush]) {
+            app.ui.tool = tool;
+            crate::tool_memory::persist(&mut app, &ctx);
+            tick(&mut app, &ctx);
+            assert_eq!(stored(&store)["selectedTool"], serde_json::to_value(tool).unwrap());
+            let (app2, _) = app_with_saved(store.lock().unwrap().clone());
+            assert_eq!(app2.ui.tool, tool, "restored before the first frame");
+            assert_eq!(app2.ui.group_tool(tool.key()), Some(tool));
+            assert_eq!(app2.ui.tool_options, crate::state::ToolOptions::default());
+        }
+    }
+
+    #[test]
+    fn selected_tool_is_flushed_on_exit_without_another_frame() {
+        let (mut app, store) = app_with_store();
+        app.ui.tool = crate::state::Tool::Move;
+        crate::tool_memory::save_on_exit(&mut app).unwrap();
+        let (app2, _) = app_with_saved(store.lock().unwrap().clone());
+        assert_eq!(app2.ui.tool, crate::state::Tool::Move);
+    }
+
+    #[test]
+    fn invalid_selected_tool_preserves_other_preferences() {
+        for bad in [json!(null), json!("FutureTool"), json!(42), json!({}), json!([])] {
+            let (app, _) = app_with_saved(Some(
+                json!({
+                    "selectedTool": bad, "toolOptions": {"feather": 12.0}
+                })
+                .to_string(),
+            ));
+            assert_eq!(app.ui.tool, crate::state::Tool::Brush, "{bad}");
+            assert_eq!(app.ui.tool_options.feather, 12.0);
+        }
+    }
+
+    #[test]
+    fn selected_tool_excludes_temporary_switches() {
+        use crate::state::Tool;
+        let (mut app, store) = app_with_store();
+        let ctx = egui::Context::default();
+        app.ui.tool = Tool::Move;
+        crate::tool_memory::persist(&mut app, &ctx);
+        tick(&mut app, &ctx);
+        app.tool_override = Some(Tool::Hand);
+        crate::tool_memory::persist(&mut app, &ctx);
+        tick(&mut app, &ctx);
+        assert_eq!(stored(&store)["selectedTool"], json!("Move"));
+        app.tool_override = None;
+        app.ui.tool = Tool::Zoom;
+        crate::tool_memory::persist(&mut app, &ctx);
+        tick(&mut app, &ctx);
+        assert_eq!(stored(&store)["selectedTool"], json!("Zoom"));
+        app.stylus.tool_before_eraser = Some(Tool::Zoom);
+        app.ui.tool = Tool::Eraser;
+        crate::tool_memory::persist(&mut app, &ctx);
+        tick(&mut app, &ctx);
+        assert_eq!(stored(&store)["selectedTool"], json!("Zoom"));
+        // An explicit selection during a temporary switch takes precedence.
+        app.ui.tool = Tool::PolygonLasso;
+        crate::tool_memory::persist(&mut app, &ctx);
+        tick(&mut app, &ctx);
+        assert_eq!(stored(&store)["selectedTool"], json!("PolygonLasso"));
     }
 
     #[test]
