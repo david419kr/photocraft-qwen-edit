@@ -54,3 +54,9 @@ cloud. Follow the Windows local acceptance checklist in
 folder with existing 0.7.0 settings/models/ComfyUI preserved. Check Generate,
 Edit, Fill, Remove, reroll, cancellation, Undo/Redo, tab routing, Korean UI,
 translation/model switching and All/None metadata plus AVIF roundtrips.
+
+## CI repairs
+
+- Initial packaging run 38339889173 failed ShellCheck SC2015 in upstream
+  `packaging/linux/AppRun`. Replace the ambiguous and/or condition with an
+  explicit equivalent `if`; retain external-integrator detection and its tests.
