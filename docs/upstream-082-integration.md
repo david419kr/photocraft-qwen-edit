@@ -64,3 +64,9 @@ translation/model switching and All/None metadata plus AVIF roundtrips.
   `Enable animations`; add real translations without weakening completeness.
 - Korean Qwen model settings and prompt bar were rendered and visually checked
   offscreen with the mock backend and CPU canvas; this is not CUDA validation.
+- Candidate run 38340337827 passed all 15 focused regression groups but Rust
+  1.95 Clippy rejected upstream PSD raster-block filtering (`nonminimal_bool`).
+  Apply the equivalent De Morgan condition without suppressing either compiler's
+  warnings. Run the 1.95-specific Clippy step before focused tests too; the
+  complete latest-stable Clippy job still gates all native test jobs. Rebuild
+  and verify the portable artifact against the resulting SHA.

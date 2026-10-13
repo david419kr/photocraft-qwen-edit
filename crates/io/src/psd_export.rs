@@ -602,7 +602,7 @@ impl Ex {
             // pixel layers, so it stays. A vector mask (`vmsk`/`vsms`, `vogk`) stays.
             LayerContent::Raster(_) => {
                 let masked = l.vector_mask.is_some();
-                raw.retain(|(k, _)| !RASTER_STALE_KEYS.contains(&k) && !adjust_map::ADJUSTMENT_KEYS.contains(&k) && k != b"CgEd" && !(k == b"vstk" && masked));
+                raw.retain(|(k, _)| !(RASTER_STALE_KEYS.contains(&k) || adjust_map::ADJUSTMENT_KEYS.contains(&k) || k == b"CgEd" || k == b"vstk" && masked));
             }
             LayerContent::Group(_) => {}
         }

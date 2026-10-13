@@ -67,12 +67,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libgtk-3-dev
+      - name: Rust 1.95 Clippy before regressions
+        run: cargo clippy --locked -p photocraft-engine -p photocraft-ui-egui -p photocraft-codecs -p photocraft-io --all-targets --features avif,avif-decode -- -D warnings
       - name: Focused fork regressions (zero tests is an error)
         run: python3 scripts/check-qwen-regressions.py
       - name: Formatting, lint and architecture
         run: |
           cargo fmt --all -- --check
-          cargo clippy --locked -p photocraft-engine -p photocraft-ui-egui -p photocraft-codecs -p photocraft-io --all-targets --features avif,avif-decode -- -D warnings
           cargo xtask layers
           cargo xtask wasm
           cargo xtask parity
