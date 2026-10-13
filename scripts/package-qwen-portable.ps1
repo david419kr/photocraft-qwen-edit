@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 param(
-    [Parameter(Mandatory=$true)][ValidatePattern('^\d{6}-\d+\.\d+\.\d+$')][string]$ReleaseId,
+    [Parameter(Mandatory=$true)][ValidatePattern('^\d{6}-(?:(?:[2-9]|[1-9]\d+)-)?\d+\.\d+\.\d+$')][string]$ReleaseId,
     [string]$Executable = ''
 )
 $ErrorActionPreference = 'Stop'

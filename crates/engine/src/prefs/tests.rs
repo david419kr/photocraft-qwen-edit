@@ -1,6 +1,19 @@
 use super::*;
 
 #[test]
+fn automatic_update_check_defaults_and_round_trips() {
+    let mut s = Session::new();
+    s.load_prefs_json(r#"{"general":{"beepWhenDone":true}}"#).unwrap();
+    assert!(s.prefs().general.automatic_update_check);
+    s.execute("prefs.set", json!({"path":"general.automaticUpdateCheck","value":false})).unwrap();
+    assert!(s.execute("prefs.set", json!({"path":"general.automaticUpdateCheck","value":"no"})).is_err());
+    let mut loaded = Session::new();
+    loaded.load_prefs_json(&s.prefs_to_json()).unwrap();
+    assert!(!loaded.prefs().general.automatic_update_check);
+    assert!(loaded.prefs().general.beep_when_done);
+}
+
+#[test]
 fn retired_model_ids_do_not_discard_unrelated_preferences_or_custom_registrations() {
     let mut s = Session::new();
     s.load_prefs_json(r#"{"interface":{"language":"ko"},"integrations":{"comfyuiModel":"retiredModel","comfyuiCustomModels":"mine.safetensors"}}"#).unwrap();

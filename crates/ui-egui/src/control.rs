@@ -1332,6 +1332,7 @@ pub fn inspect(app: &PhotocraftApp, ctx: &egui::Context) -> Value {
         "statusError": app.ui.status_error,
         "notices": app.ui.notices,
         "gpuFallbackNotice": app.ui.gpu_fallback_notice,
+        "update": crate::updates::inspect(app),
         "kysOffer": app.ui.kys_offer,
         "frame": app.frame,
         "session": photocraft_engine::inspect::session(&app.session),

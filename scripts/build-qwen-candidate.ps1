@@ -31,6 +31,11 @@ $process = Start-Process -FilePath $exe -ArgumentList '--version' -Wait -PassThr
 if ($process.ExitCode -ne 0) { throw 'Candidate --version failed.' }
 $reported = Get-Content dist/candidate-version.txt -Raw
 if ($reported -notmatch [regex]::Escape($version)) { throw 'Candidate version does not match Cargo.toml.' }
+if ($reported -notmatch 'PhotoCraft Local Qwen AI (\d{6}-(?:(?:[2-9]|[1-9]\d+)-)?\d+\.\d+\.\d+)') { throw 'Candidate is missing its fork release tag.' }
+# Use the identity embedded at build time, including builds that cross midnight.
+$releaseId = $Matches[1]
+$expectedReleaseId = (Get-Content release-tag.txt -Raw).Trim()
+if ($releaseId -ne $expectedReleaseId) { throw 'Embedded release tag does not match release-tag.txt.' }
 & ./scripts/package-qwen-portable.ps1 -ReleaseId $releaseId -Executable $exe
 $zip = Join-Path $repo "dist/photocraft-qwen-edit-$releaseId-windows-x64.zip"
 python scripts/verify-qwen-portable.py --zip $zip --executable $exe

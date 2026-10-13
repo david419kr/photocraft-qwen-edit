@@ -1026,6 +1026,7 @@ pub fn body(app: &mut PhotocraftApp, ui: &mut egui::Ui, f: &mut Map<String, Valu
 
 fn humanize(key: &str) -> String {
     match key {
+        "automaticUpdateCheck" => return "Automatically check for updates".into(),
         "appearanceMode" => return "Appearance Mode".into(),
         "darkTheme" => return "Dark Theme".into(),
         "lightTheme" => return "Light Theme".into(),

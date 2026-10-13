@@ -3849,3 +3849,13 @@ prompt-region	Bottom left	Sol alt
 prompt-region	Bottom center	Alt orta
 prompt-region	Bottom right	Sağ alt
 	Enable animations	Animasyonları etkinleştir
+
+	PhotoCraft update available	PhotoCraft güncellemesi mevcut
+	Update PhotoCraft and restart now?	PhotoCraft güncellensin ve şimdi yeniden başlatılsın mı?
+	Automatically check for updates	Güncellemeleri otomatik denetle
+	Check for updates now	Güncellemeleri şimdi denetle
+	You can check for updates again in Help → About PhotoCraft.	Yardım → PhotoCraft Hakkında menüsünden güncellemeleri yeniden denetleyebilirsiniz.
+	Downloading update…	Güncelleme indiriliyor…
+	PhotoCraft is up to date.	PhotoCraft güncel.
+	Update PhotoCraft	PhotoCraft uygulamasını güncelle
+	Dismiss update	Güncelleme bildirimini kapat
