@@ -60,3 +60,7 @@ translation/model switching and All/None metadata plus AVIF roundtrips.
 - Initial packaging run 38339889173 failed ShellCheck SC2015 in upstream
   `packaging/linux/AppRun`. Replace the ambiguous and/or condition with an
   explicit equivalent `if`; retain external-integrator detection and its tests.
+- The preference-label gate found upstream Hungarian/Turkish missing
+  `Enable animations`; add real translations without weakening completeness.
+- Korean Qwen model settings and prompt bar were rendered and visually checked
+  offscreen with the mock backend and CPU canvas; this is not CUDA validation.

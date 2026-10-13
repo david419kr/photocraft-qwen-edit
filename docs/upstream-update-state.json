@@ -1,5 +1,5 @@
 {
-  "status": "candidate-in-progress",
+  "status": "candidate-validation",
   "upstream_repository": "storytold/photocraft",
   "upstream_release_id": 410949848,
   "upstream_tag": "v0.8.2",
@@ -35,5 +35,8 @@
     "public_download_verified": true,
     "known_ci_failure": "Rust 1.99 Clippy chunks_exact_to_as_chunks; functional tests passed",
     "user_exception_scope": "This release only; future updates require full CI and fresh merge/release approval"
-  }
+  },
+  "pull_request": 4,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/4",
+  "validation_record": "PR #4: exact final candidate SHA, workflow runs, pass/fail/not-run and Windows artifact SHA256"
 }
