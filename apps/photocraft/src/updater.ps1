@@ -32,6 +32,7 @@ try {
     Relaunch
 } catch {
     $failure = $_.Exception.Message
+    Write-Warning ("PhotoCraft update failed: " + $failure)
     # Keep the original recoverable even if permissions prevent restoration.
     if ($moved) {
         try {

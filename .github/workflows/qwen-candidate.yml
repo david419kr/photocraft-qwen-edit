@@ -126,6 +126,11 @@ jobs:
             [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
             if ($errors) { throw ($errors | Out-String) }
           }
+      - name: Test Windows executable replacement and rollback
+        shell: pwsh
+        run: |
+          $env:PHOTOCRAFT_TEST_PWSH = Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
+          python -m unittest scripts.tests.test_auto_updater -v
       - name: Build Windows x64 with static CRT and AVIF
         shell: pwsh
         run: |
@@ -135,11 +140,6 @@ jobs:
           $env:PHOTOCRAFT_RELEASE_TAG = "$day-$version"
           cargo +1.95.0 build --locked -p photocraft --release --target x86_64-pc-windows-msvc 2>&1 | Tee-Object -FilePath dist/candidate-build.log
           if ($LASTEXITCODE -ne 0) { throw 'Windows candidate build failed.' }
-      - name: Test Windows executable replacement and rollback
-        shell: pwsh
-        run: |
-          $env:PHOTOCRAFT_TEST_PWSH = Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
-          python -m unittest scripts.tests.test_auto_updater -v
       - name: Package and verify candidate
         shell: pwsh
         run: ./scripts/build-qwen-candidate.ps1

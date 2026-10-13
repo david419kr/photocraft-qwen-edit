@@ -78,7 +78,7 @@ class HelperTests(unittest.TestCase):
                 while not log.exists() and time.monotonic() < deadline:
                     time.sleep(0.05)
                 expected = "new" if mode == "success" else "old"
-                self.assertEqual(log.read_text(encoding="utf-8"), expected + "\n" + "\n".join(arguments))
+                self.assertEqual(log.read_text(encoding="utf-8"), expected + "\n" + "\n".join(arguments), (out, err))
                 self.assertEqual(target.read_bytes(), self.binaries[expected])
                 self.assertEqual(settings.read_text(), '{"automaticUpdateCheck":false}')
                 self.assertFalse(stage.exists(), "ZIP, helper, manifest and backup must be removed")
