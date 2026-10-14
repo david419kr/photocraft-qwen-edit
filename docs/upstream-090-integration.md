@@ -45,3 +45,8 @@ credential helper or permission settings were changed. The earlier Actions token
 workflow restriction remains a separate limitation. Draft PR #6 now tracks the
 candidate. Rust 1.95 dependency resolution repaired the merged Cargo.lock and
 the generated scorecard reports 26 unread settings out of 167.
+
+The first full CI at b587574e caught a String/&str mismatch in the merged AVIF/ICO
+preview proxy selector. Convert the owned format to a string slice for matching.
+The numeric field keeps speed and wrapped-drag settings together without adding
+a lint exemption. Native, wasm and web checks must rerun on the repaired SHA.

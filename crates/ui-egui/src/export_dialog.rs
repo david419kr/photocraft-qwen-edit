@@ -292,7 +292,7 @@ fn preview_proxy(doc: &Document, f: &Map<String, Value>) -> Result<Document, Str
     export_document(
         doc,
         f,
-        Some(match s_fmt(f) {
+        Some(match s_fmt(f).as_str() {
             "avif" => 128,
             "ico" => 256,
             _ => 512,

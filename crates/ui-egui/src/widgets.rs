@@ -567,7 +567,7 @@ fn value_field_box(
             ui.spacing_mut().button_padding = Vec2::ZERO;
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                 let layout = egui::Layout::centered_and_justified(ui.layout().main_dir());
-                ui.allocate_ui_with_layout(field.size(), layout, |ui| number_edit(ui, value, range, fine, decimals, units, speed, wrap_drag)).inner
+                ui.allocate_ui_with_layout(field.size(), layout, |ui| number_edit(ui, value, range, fine, decimals, units, (speed, wrap_drag))).inner
             })
             .inner
         }
@@ -775,9 +775,9 @@ fn number_edit(
     fine: bool,
     decimals: Option<u32>,
     units: crate::numeric_expression::Units,
-    speed: Option<f64>,
-    wrap_drag: bool,
+    drag: (Option<f64>, bool),
 ) -> Response {
+    let (speed, wrap_drag) = drag;
     let (id, ctx) = (ui.next_auto_id(), ui.ctx().clone());
     if ui.is_enabled() && ui.rect_contains_pointer(ui.max_rect()) {
         // Target DragValue's increment/decrement actions without taking keyboard focus.
