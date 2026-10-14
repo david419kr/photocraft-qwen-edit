@@ -14,13 +14,15 @@ use crate::state::{Tool, ToolOptions};
 /// Explicit choices override a temporary pen eraser, even when Eraser is already active.
 pub(crate) fn select(app: &mut PhotocraftApp, tool: Tool) {
     app.stylus.tool_before_eraser = None;
+    app.ui.spring = None;
     app.ui.tool = tool;
 }
 
 /// Temporary canvas overrides do not change `ui.tool`. The pen's eraser end does, so remember
 /// the tool it will return to instead. A different explicit tool choice takes precedence.
 fn selected(app: &PhotocraftApp) -> Tool {
-    if app.ui.tool == Tool::Eraser { app.stylus.tool_before_eraser.unwrap_or(app.ui.tool) } else { app.ui.tool }
+    let tool = if app.ui.tool == Tool::Eraser { app.stylus.tool_before_eraser.unwrap_or(app.ui.tool) } else { app.ui.tool };
+    app.ui.spring.as_ref().filter(|spring| spring.tool == tool).map_or(tool, |spring| spring.previous)
 }
 
 /// The options that differ from the defaults, as JSON (`Null` when none do).

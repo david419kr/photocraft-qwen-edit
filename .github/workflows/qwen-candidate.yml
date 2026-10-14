@@ -2,7 +2,7 @@ name: Qwen Windows candidate
 
 on:
   push:
-    branches: ['update/0.8.2', 'feature/auto-upate']
+    branches: ['update/0.9.0', 'feature/auto-upate']
   workflow_dispatch:
 
 permissions:
@@ -16,9 +16,11 @@ env:
   CARGO_TERM_COLOR: never
   CARGO_INCREMENTAL: 0
   RUST_BACKTRACE: 1
+  PHOTOCRAFT_NO_PRINT: "1"
+  LPDEST: photocraft-no-such-printer
   PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
-  QWEN_UPSTREAM_SHA: d43db3e153c76aefce9b32cef9099e458eaf17a8
-  QWEN_BASE_SHA: b9d8ea92e0e668f010ca1935853a243f52a38ac9
+  QWEN_UPSTREAM_SHA: c699e3cda69f4852b43c0b191ab0091aaeff9d6a
+  QWEN_BASE_SHA: 8a97a1b43d963286cd4ce171319b46a706e39fbd
 
 jobs:
   lint:
@@ -45,7 +47,7 @@ jobs:
 
   regressions:
     needs: lint
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.8.2' || github.ref == 'refs/heads/feature/auto-upate')
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.9.0' || github.ref == 'refs/heads/feature/auto-upate')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -91,7 +93,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.8.2' || github.ref == 'refs/heads/feature/auto-upate')
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.9.0' || github.ref == 'refs/heads/feature/auto-upate')
     runs-on: windows-2022
     timeout-minutes: 120
     env:
