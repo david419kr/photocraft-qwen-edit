@@ -1,0 +1,45 @@
+{
+  "status": "blocked-before-remote-candidate-CI",
+  "upstream_release_id": 412944200,
+  "upstream_tag": "v0.9.0",
+  "upstream_sha": "c699e3cda69f4852b43c0b191ab0091aaeff9d6a",
+  "upstream_published_at": "2026-10-14T16:36:26Z",
+  "fork_base_sha": "8a97a1b43d963286cd4ce171319b46a706e39fbd",
+  "local_initial_merge_sha": "7b990a47e5d2c496a1420d8a7b93e6a8b49ffd90",
+  "local_initial_tree": "3e79b5e1ab170390c53bfe4d8e373cab2eec803e",
+  "local_worktree": "/workspace/photocraft-update-090",
+  "remote_candidate_branch": null,
+  "draft_pr": null,
+  "windows_artifact": null,
+  "source_transport_run": 38611523568,
+  "source_artifact_id": 11918900855,
+  "candidate_transport_blob": "fee6d29291b6ab4171229bb3eacbd21c55105c80",
+  "candidate_bundle_sha256": "c298ff24256e74acd44d2ab73408d91da24e416b4c9ce65a0ec457135bddddbc",
+  "blocked_import_run": 38612204594,
+  "blocked_import_job": 116018138697,
+  "blockers": [
+    "Cloud shell GH_TOKEN invalid; Git fetch/push cannot authenticate",
+    "Actions GITHUB_TOKEN push rejected: refusing to allow a GitHub App to create or update workflow .github/workflows/ci.yml without workflows permission"
+  ],
+  "not_run": [
+    "Candidate stable and Rust1.95 compilation/lint (offline missing craft-print revision)",
+    "Focused fork Rust regressions",
+    "Full upstream candidate CI",
+    "Windows x64 portable build and actual ZIP verification",
+    "CUDA/VRAM/interactive UI"
+  ],
+  "unvalidated_work": [
+    "Cargo.lock merge requires dependency resolution",
+    "Derived scorecard regeneration remains pending",
+    "Semantic integration review and new spring/tool regression must pass CI"
+  ],
+  "main_merge_authorized": false,
+  "public_release_authorized": false,
+  "passed_checks": [
+    "Rust 1.95 cargo fmt --all -- --check",
+    "Installer Python tests: 14 passed",
+    "Portable verifier unit tests: 5 passed",
+    "Exact merge parents/tree and bundle validation",
+    "README, core Qwen files, installer pins and removed schedules unchanged from fork base"
+  ]
+}
