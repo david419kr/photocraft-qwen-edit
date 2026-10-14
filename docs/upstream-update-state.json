@@ -1,5 +1,5 @@
 {
-  "status": "integration-in-progress",
+  "status": "candidate-validation",
   "upstream_repository": "storytold/photocraft",
   "upstream_release_id": 412944200,
   "upstream_tag": "v0.9.0",
@@ -21,7 +21,10 @@
   "transport": {
     "method": "connected GitHub app and read-only fork Actions source bundle; shell GH_TOKEN invalid",
     "source_run": 38611523568,
-    "artifact_id": 11918900855
+    "artifact_id": 11918900855,
+    "current": "Existing shell GH_TOKEN and ordinary Git read/push verified; no account or permission changes. Earlier Actions GITHUB_TOKEN workflows rejection was separate."
   },
-  "validation": "Pending exact candidate CI; local latest stable Clippy blocked by missing offline craft-print revision. No CUDA/GPU/UI run."
+  "validation": "Initial local fmt/installer14/package5 passed. Cargo.lock resolved through Rust 1.95 metadata. Full exact-SHA CI and Windows artifact pending.",
+  "pull_request": 6,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/6"
 }

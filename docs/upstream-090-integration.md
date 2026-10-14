@@ -36,3 +36,12 @@ Main merge, tags and public release are not authorized. Real CUDA inference,
 VRAM residency and interactive hardware/UI acceptance are not run in the cloud.
 Use the local checklist in `upstream-070-integration.md` on a separate candidate
 folder after a verified artifact exists, preserving current settings/models.
+
+## Resumed validation
+
+The existing shell GH_TOKEN subsequently passed gh auth status, repository
+permission lookup, Git remote read and an ordinary candidate push. No account,
+credential helper or permission settings were changed. The earlier Actions token
+workflow restriction remains a separate limitation. Draft PR #6 now tracks the
+candidate. Rust 1.95 dependency resolution repaired the merged Cargo.lock and
+the generated scorecard reports 26 unread settings out of 167.
