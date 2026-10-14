@@ -61,6 +61,15 @@
         "web size 25208562 > 25165824 bytes; ineffective serde profile experiment reverted"
       ],
       "superseded": "Stronger Binaryen -Ozz optimization; remaining previous-head CI superseded"
+    },
+    {
+      "candidate_sha": "c9c49b5a8ec9920067c67ff0060269f9504f2d66",
+      "ci_run": 38625511949,
+      "candidate_run": 38625503433,
+      "failed": [
+        "Trunk 0.21.14 rejects wasm-opt level zz before compilation; restored supported z"
+      ],
+      "repair": "Build-only Zopfli 0.8.4 for existing DEFLATE font/catalog streams; measured 121676 bytes saved with identical inflated contents"
     }
   ]
 }

@@ -73,3 +73,13 @@ CI 38624277794 passed stable early Clippy and wasm32 checks, but its web size
 was 25,208,562 bytes. The serialization profile experiment did not help and is
 reverted. Use Binaryen's stronger size optimization (`-Ozz`) in the existing
 Trunk pipeline, with the same convergence pass, formats and 24 MiB gate.
+
+The `-Ozz` attempt was rejected by pinned Trunk 0.21.14 (`unknown wasm-opt
+level zz`) at c9c49b5a, before compilation. Restore the supported original `z`.
+A local lossless compression probe measured 2,232,787 -> 2,111,111 bytes across
+the existing packed catalogs/fonts, saving 121,676 bytes with Zopfli 0.8.4
+(already present in Cargo.lock). Every stream was inflated and compared with
+its original bytes. Use that exact version only as a build dependency in text
+and ui-egui; keep the runtime DEFLATE decoder and all font/catalog contents.
+Existing font-oracle and catalog round-trip tests plus the actual web gate must
+pass. This changes embedded storage, not languages, fonts or model versions.

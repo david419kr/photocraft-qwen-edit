@@ -43,7 +43,6 @@ fn main() {
 
 /// Deflate the bundled fonts into `OUT_DIR/fonts/` (`fonts::BUNDLED` includes them).
 fn deflate_bundled_fonts() {
-    use std::io::Write as _;
     let src = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../assets/fonts");
     let out = PathBuf::from(std::env::var_os("OUT_DIR").unwrap_or_default()).join("fonts");
     let result = (|| -> std::io::Result<()> {
@@ -51,9 +50,9 @@ fn deflate_bundled_fonts() {
         for name in ["Inter-Regular.ttf", "Inter-Medium.ttf", "Inter-SemiBold.ttf", "JetBrainsMono-Regular.ttf"] {
             let path = src.join(name);
             println!("cargo::rerun-if-changed={}", path.display());
-            let mut z = flate2::write::DeflateEncoder::new(Vec::new(), flate2::Compression::best());
-            z.write_all(&std::fs::read(&path)?)?;
-            std::fs::write(out.join(format!("{name}.deflate")), z.finish()?)?;
+            let mut compressed = Vec::new();
+            zopfli::compress(zopfli::Options::default(), zopfli::Format::Deflate, std::fs::read(&path)?.as_slice(), &mut compressed)?;
+            std::fs::write(out.join(format!("{name}.deflate")), compressed)?;
         }
         Ok(())
     })();

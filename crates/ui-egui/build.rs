@@ -35,7 +35,6 @@ fn main() {
 /// `egui_fonts.rs`. The app builds egui without `default_fonts`, which would embed the same 1.4 MB
 /// uncompressed; deflated they take 0.78 MB (the web build's 24 MiB size gate).
 fn deflate_egui_fonts() {
-    use std::io::Write as _;
     let out = std::path::PathBuf::from(std::env::var_os("OUT_DIR").unwrap_or_default()).join("egui_fonts");
     let fonts = [
         ("Hack-Regular", epaint_default_fonts::HACK_REGULAR),
@@ -46,15 +45,21 @@ fn deflate_egui_fonts() {
     let result = (|| -> std::io::Result<()> {
         std::fs::create_dir_all(&out)?;
         for (name, bytes) in fonts {
-            let mut z = flate2::write::DeflateEncoder::new(Vec::new(), flate2::Compression::best());
-            z.write_all(bytes)?;
-            std::fs::write(out.join(format!("{name}.ttf.deflate")), z.finish()?)?;
+            std::fs::write(out.join(format!("{name}.ttf.deflate")), deflate(bytes)?)?;
         }
         Ok(())
     })();
     if let Err(e) = result {
         println!("cargo::error=deflating egui's default fonts into {}: {e}", out.display());
     }
+}
+
+/// Spend compression time at build time, retaining the exact bytes and runtime DEFLATE decoder.
+/// The round-trip catalog and font oracle tests cover all of these embedded inputs.
+fn deflate(bytes: &[u8]) -> std::io::Result<Vec<u8>> {
+    let mut compressed = Vec::new();
+    zopfli::compress(zopfli::Options::default(), zopfli::Format::Deflate, bytes, &mut compressed)?;
+    Ok(compressed)
 }
 
 /// Whether a catalog line is an entry (`context<TAB>source<TAB>translation`, source and
@@ -81,15 +86,9 @@ fn catalog_entry(line: &str) -> Option<(&str, &str)> {
 /// Both are deflated. A catalog that can't be written is a build error (`include_bytes!` would
 /// fail on it anyway, with a less helpful message).
 fn pack_catalogs() {
-    use std::io::Write as _;
     let src = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src/i18n");
     let out = std::path::PathBuf::from(std::env::var_os("OUT_DIR").unwrap_or_default()).join("i18n");
     println!("cargo::rerun-if-changed={}", src.display());
-    let deflate = |bytes: &[u8]| -> std::io::Result<Vec<u8>> {
-        let mut z = flate2::write::DeflateEncoder::new(Vec::new(), flate2::Compression::best());
-        z.write_all(bytes)?;
-        z.finish()
-    };
     let result = (|| -> std::io::Result<()> {
         std::fs::create_dir_all(&out)?;
         let mut catalogs = Vec::new();

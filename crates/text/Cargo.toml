@@ -29,5 +29,5 @@ flate2 = { workspace = true }
 parley = { version = "0.11", default-features = false, features = ["std", "complex-scripts"] }
 
 [build-dependencies]
-# Deflates the bundled fonts (build.rs); `flate2` above inflates them.
-flate2 = { workspace = true }
+# Build-only lossless compression; the runtime still inflates with flate2.
+zopfli = "=0.8.4"

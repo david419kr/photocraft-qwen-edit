@@ -62,8 +62,8 @@ photocraft-testkit = { workspace = true }
 photocraft-psd = { workspace = true }
 
 [build-dependencies]
-# Deflates the translation catalogs and egui's default fonts (build.rs); already linked at run time to inflate them.
-flate2 = { workspace = true }
+# Build-only lossless compression; the runtime still inflates with flate2.
+zopfli = "=0.8.4"
 # egui's default fonts, deflated by build.rs for egui_fonts.rs (the same version egui uses).
 epaint_default_fonts = "0.36"
 serde_json = { workspace = true }
