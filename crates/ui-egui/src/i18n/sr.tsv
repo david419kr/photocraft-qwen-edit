@@ -4219,3 +4219,57 @@ shape	Appearance	Izgled
 	Ink Characteristics	Karakteristike mastila
 	Solidity:	Punoća:
 	Redrawing	Ponovno iscrtavanje
+
+# Fork AI and update controls.
+	AI Prompt History	Istorija AI upita
+	AI model settings	Podešavanja AI modela
+	All nine regions	Svih devet oblasti
+	Automatically check for updates	Automatski proveravaj ažuriranja
+	Check for updates now	Proveri ažuriranja sada
+	ComfyUI port	ComfyUI port
+	Comfyui custom encoders	Prilagođeni ComfyUI koderi
+	Comfyui custom model	Prilagođeni ComfyUI model
+	Comfyui custom models	Prilagođeni ComfyUI modeli
+	Comfyui model	ComfyUI model
+	Comfyui model settings	Podešavanja ComfyUI modela
+	Comfyui translate prompt	Prevedi upit za ComfyUI
+	Comfyui translation model	Model za prevođenje za ComfyUI
+	Comfyui url	Adresa ComfyUI servera
+	Copy English translation	Kopiraj engleski prevod
+	Copy negative prompt	Kopiraj negativni upit
+	Copy original prompt	Kopiraj izvorni upit
+	Custom model filenames (one per line)	Nazivi datoteka prilagođenih modela (jedan po redu)
+	Describe changes to the whole image	Opišite izmene cele slike
+	Describe changes, or leave blank to remove	Opišite izmene ili ostavite prazno za uklanjanje
+	Describe the image to generate	Opišite sliku koju želite da generišete
+	Dismiss update	Odbaci ažuriranje
+	Downloading update…	Preuzimanje ažuriranja…
+	English translation	Engleski prevod
+	Generative Fill	Generativna ispuna
+	Generative Fill…	Generativna ispuna…
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Negative prompt	Negativni upit
+	No AI prompts recorded	Nema zabeleženih AI upita
+	No prompt (remove)	Bez upita (uklanjanje)
+	One .safetensors filename per line. Compatibility is not checked.	Jedan naziv .safetensors datoteke po redu. Kompatibilnost se ne proverava.
+	Original prompt	Izvorni upit
+	PhotoCraft is up to date.	PhotoCraft je ažuran.
+	PhotoCraft update available	Dostupno je ažuriranje za PhotoCraft
+	Prompt Edit	Uređivanje pomoću upita
+	Prompt Edit…	Uređivanje pomoću upita…
+	Prompt Generate	Generisanje pomoću upita
+	Prompt Generate…	Generisanje pomoću upita…
+	Prompt information	Podaci o upitu
+	Prompt translation model	Model za prevođenje upita
+	Qwen image21	Qwen Image 2.1
+	Regenerate	Ponovo generiši
+	Regenerate AI Result	Ponovo generiši AI rezultat
+	Reset steps to model default	Vrati podrazumevani broj koraka modela
+	Sampling steps	Koraci uzorkovanja
+	Text encoders	Koderi teksta
+	Translate prompt to English	Prevedi upit na engleski
+	Turbo int8	Turbo INT8
+	Update PhotoCraft	Ažuriraj PhotoCraft
+	Update PhotoCraft and restart now?	Ažurirati PhotoCraft i ponovo ga pokrenuti sada?
+	You can check for updates again in Help → About PhotoCraft.	Možete ponovo proveriti ažuriranja u meniju Pomoć → O programu PhotoCraft.

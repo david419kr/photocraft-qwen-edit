@@ -50,3 +50,16 @@ The first full CI at b587574e caught a String/&str mismatch in the merged AVIF/I
 preview proxy selector. Convert the owned format to a string slice for matching.
 The numeric field keeps speed and wrapped-drag settings together without adding
 a lint exemption. Native, wasm and web checks must rerun on the repaired SHA.
+
+At candidate `3009a8f390aa7d4c1c15dd4c5c7a4e6233548fab`, CI run
+38613834074 passed stable early Clippy, wasm32 checking and corpus tests. Both
+native test jobs reached the UI suite and failed the same three translation
+coverage tests: the new Serbian catalog lacked fork AI/update controls. Add
+actual Serbian translations without relaxing coverage. Candidate run 38613825458
+built Windows artifact 11920147545, but Rust 1.95 Clippy stopped regressions on
+CR3's nested match condition; express the same preview limit as a match guard.
+The web build produced 25,205,976 bytes, exceeding the unchanged 25,165,824-byte
+gate. Extend size optimization to serde/serde_core's serialization code, retaining
+pixel processing optimization and all formats. Gate acceptance requires a new
+measurement. Restrict the native-only display chunk constant to native builds
+instead of suppressing the wasm warning. The previous artifact is not final.
