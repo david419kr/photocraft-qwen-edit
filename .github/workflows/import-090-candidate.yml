@@ -1,0 +1,27 @@
+name: Import exact 0.9.0 candidate
+on:
+  push:
+    branches: ['prepare/0.9.0-source']
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 8a97a1b43d963286cd4ce171319b46a706e39fbd
+          fetch-depth: 0
+      - name: Import and verify candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git fetch https://github.com/storytold/photocraft.git c699e3cda69f4852b43c0b191ab0091aaeff9d6a
+          gh api repos/david419kr/photocraft-qwen-edit/git/blobs/fee6d29291b6ab4171229bb3eacbd21c55105c80 --jq .content | base64 --decode > /tmp/candidate.bundle
+          git bundle verify /tmp/candidate.bundle
+          git fetch /tmp/candidate.bundle HEAD
+          test "$(git rev-parse FETCH_HEAD)" = 7b990a47e5d2c496a1420d8a7b93e6a8b49ffd90
+          test "$(git rev-parse FETCH_HEAD^{tree})" = 3e79b5e1ab170390c53bfe4d8e373cab2eec803e
+          test "$(git show -s --format=%P FETCH_HEAD)" = '8a97a1b43d963286cd4ce171319b46a706e39fbd c699e3cda69f4852b43c0b191ab0091aaeff9d6a'
+          test -z "$(git ls-remote origin refs/heads/update/0.9.0)"
+          git push origin 7b990a47e5d2c496a1420d8a7b93e6a8b49ffd90:refs/heads/update/0.9.0
