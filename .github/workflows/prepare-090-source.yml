@@ -1,0 +1,30 @@
+name: Prepare exact 0.9.0 source
+on:
+  push:
+    branches: ['prepare/0.9.0-source']
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 8a97a1b43d963286cd4ce171319b46a706e39fbd
+          fetch-depth: 0
+      - name: Fetch exact release and create transport bundle
+        run: |
+          git fetch https://github.com/storytold/photocraft.git refs/tags/v0.9.0
+          test "$(git rev-parse FETCH_HEAD^{commit})" = c699e3cda69f4852b43c0b191ab0091aaeff9d6a
+          git branch verified-upstream-090 c699e3cda69f4852b43c0b191ab0091aaeff9d6a
+          git merge-base --is-ancestor d43db3e153c76aefce9b32cef9099e458eaf17a8 verified-upstream-090
+          mkdir -p transport
+          git bundle create transport/upstream-090.bundle verified-upstream-090 ^d43db3e153c76aefce9b32cef9099e458eaf17a8
+          git bundle verify transport/upstream-090.bundle
+          sha256sum transport/upstream-090.bundle > transport/upstream-090.bundle.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: upstream-090-source-bundle
+          path: transport/*
+          if-no-files-found: error
+          retention-days: 14
