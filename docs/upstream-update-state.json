@@ -19,12 +19,48 @@
     "upstream_release_id": 410949848
   },
   "transport": {
-    "method": "connected GitHub app and read-only fork Actions source bundle; shell GH_TOKEN invalid",
+    "method": "Initial connected GitHub app source bundle; resumed through existing authorized shell Git credential",
     "source_run": 38611523568,
     "artifact_id": 11918900855,
     "current": "Existing shell GH_TOKEN and ordinary Git read/push verified; no account or permission changes. Earlier Actions GITHUB_TOKEN workflows rejection was separate."
   },
-  "validation": "Initial local fmt/installer14/package5 passed. Cargo.lock resolved through Rust 1.95 metadata. Full exact-SHA CI and Windows artifact pending.",
+  "validation": "Pending exact-head full CI and final Windows ZIP verification. PR #6 records every candidate/run and final acceptance; no Clippy exception applies.",
   "pull_request": 6,
-  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/6"
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/6",
+  "validation_history": [
+    {
+      "candidate_sha": "3009a8f390aa7d4c1c15dd4c5c7a4e6233548fab",
+      "ci_run": 38613834074,
+      "candidate_run": 38613825458,
+      "passed": [
+        "stable early Clippy",
+        "wasm32",
+        "corpus",
+        "Windows x64 static CRT package (provisional artifact 11920147545)"
+      ],
+      "failed": [
+        "native UI Serbian translation coverage (3 tests on both platforms)",
+        "web size 25205976 > 25165824 bytes",
+        "Rust 1.95 CR3 collapsible_match; focused regressions not run"
+      ]
+    },
+    {
+      "candidate_sha": "096e29567ad9ad9a5db2a580546705b947326ce0",
+      "ci_run": 38624277794,
+      "candidate_run": 38624268472,
+      "local_passed": {
+        "full_rust_195_clippy": true,
+        "translation_tests": 45,
+        "selected_tool_tests": 6,
+        "export_dialog_tests": 13,
+        "menu_parity": "635/635",
+        "layering": true,
+        "mock_cpu_korean_ui_visual": true
+      },
+      "failed": [
+        "web size 25208562 > 25165824 bytes; ineffective serde profile experiment reverted"
+      ],
+      "superseded": "Stronger Binaryen -Ozz optimization; remaining previous-head CI superseded"
+    }
+  ]
 }
