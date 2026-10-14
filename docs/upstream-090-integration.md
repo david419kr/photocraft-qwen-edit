@@ -63,3 +63,13 @@ gate. Extend size optimization to serde/serde_core's serialization code, retaini
 pixel processing optimization and all formats. Gate acceptance requires a new
 measurement. Restrict the native-only display chunk constant to native builds
 instead of suppressing the wasm warning. The previous artifact is not final.
+
+At `096e29567ad9ad9a5db2a580546705b947326ce0`, local full Rust 1.95
+Clippy (workspace/all-targets/HEIF) passed, translation tests passed 45/45,
+selected-tool/export-dialog tests passed 21/21, parity and layering passed.
+Korean AI settings and Export As were rendered offscreen and visually checked
+with a mock AI backend and CPU canvas; this is not CUDA validation.
+CI 38624277794 passed stable early Clippy and wasm32 checks, but its web size
+was 25,208,562 bytes. The serialization profile experiment did not help and is
+reverted. Use Binaryen's stronger size optimization (`-Ozz`) in the existing
+Trunk pipeline, with the same convergence pass, formats and 24 MiB gate.

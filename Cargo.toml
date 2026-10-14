@@ -120,11 +120,6 @@ opt-level = "z"
 opt-level = "z"
 [profile.wasm-release.package.photocraft-affinity]
 opt-level = "z"
-# Serialization is off the per-pixel path; optimize its generic implementations for size too.
-[profile.wasm-release.package.serde]
-opt-level = "z"
-[profile.wasm-release.package.serde_core]
-opt-level = "z"
 [profile.wasm-release.package.serde_json]
 opt-level = "z"
 [profile.wasm-release.package.usvg]
