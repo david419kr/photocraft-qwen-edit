@@ -41,5 +41,18 @@
     "Portable verifier unit tests: 5 passed",
     "Exact merge parents/tree and bundle validation",
     "README, core Qwen files, installer pins and removed schedules unchanged from fork base"
+  ],
+  "prepare_branch": "prepare/0.9.0-source",
+  "prepare_status_commit": "b90367ea694c984eccf3809ec13c0abc445bc522",
+  "source_transport_workflow_sha": "7811f960df4a767802ac3c07934256ba211d2ec9",
+  "import_workflow_sha": "ffcada66835bcb74262ea8494623ed541aeda3c0",
+  "local_merge_state": "Committed merge; clean worktree; exact parents fork_base_sha then upstream_sha. Initial, unvalidated integration; do not treat as accepted candidate.",
+  "resume_steps": [
+    "Wait for the registered cloud GitHub authentication to be restored through normal setup. Do not change permissions, retry the rejected Actions push, or use alternate upload paths.",
+    "Recheck latest fork main, upstream release ID/tag/resolved SHA, update branches, open PRs and active Actions; preserve any newly existing review candidate.",
+    "Resume /workspace/photocraft-update-090 at local_initial_merge_sha; verify clean worktree, both parents and local_initial_tree. The local candidate.bundle and its digest are under /workspace/handoff/candidate-090.",
+    "Complete Cargo.lock dependency resolution, generated scorecard/parity checks and semantic review; check current stable workspace Clippy and Rust 1.95 early without exceptions.",
+    "Once normal authorized Git access works, push update/0.9.0, create one draft PR against fork main, run full original CI and nonzero fork regressions on the final SHA, and build/verify the canonical Windows x64 static CRT portable artifact.",
+    "Record exact SHA, runs, ZIP/EXE SHA256, 18-file/6-root allowlist and PE provenance; leave CUDA/VRAM/UI acceptance to local user verification. Stop before main merge/tag/public release."
   ]
 }
