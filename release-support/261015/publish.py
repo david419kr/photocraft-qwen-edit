@@ -102,7 +102,7 @@ def main():
     assert len(release['assets']) == 3
     assert {a['name']: a['digest'] for a in release['assets']} == expected
     assert_source()
-    release = api(f"releases/{release['id']}", {'draft': False, 'make_latest': 'true'})
+    release = api(f"releases/{release['id']}", {'tag_name': TAG, 'target_commitish': CONFIG['main_sha'], 'name': CONFIG['title'], 'body': notes, 'draft': False, 'prerelease': False, 'make_latest': 'true'})
     check_release(release, notes)
     assert not release['draft']
     public = out / 'public-download'; public.mkdir(exist_ok=True)
