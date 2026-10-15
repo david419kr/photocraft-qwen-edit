@@ -85,19 +85,11 @@ def main():
     old = api('releases/411816689')
     old_assets = {a['id']: (a['name'], a['digest']) for a in old['assets']}
     expected = {p.name: 'sha256:' + digest(p) for p in files}
-    releases = api('releases?per_page=100')
-    existing = [r for r in releases if r['tag_name'] == TAG]
-    assert len(existing) <= 1
-    if existing:
-        release = existing[0]
-        assert release['id'] == CONFIG['release_id']
-        check_release(release, notes)
-        assert release['draft'], 'Existing public release must never be changed'
-    else:
-        raise RuntimeError('Expected existing draft is missing; refuse duplicate release')
-        release = api('releases', {'tag_name': TAG, 'target_commitish': CONFIG['main_sha'],
-                      'name': CONFIG['title'], 'body': notes, 'draft': True, 'prerelease': False}, method='POST')
+    # Draft lookup is by the already approved release ID; list/tag APIs can omit drafts.
+    release = api(f"releases/{CONFIG['release_id']}")
+    assert release['id'] == CONFIG['release_id']
     check_release(release, notes)
+    assert release['draft'], 'Existing public release must never be changed'
     present = {a['name']: a for a in release['assets']}
     assert len(present) == len(release['assets']) and set(present) <= set(expected)
     for name, asset in present.items():
