@@ -1,0 +1,39 @@
+{
+  "tag": "261015-0.9.0",
+  "title": "PhotoCraft Local Qwen AI - 261015 (upstream 0.9.0)",
+  "base_sha": "8a97a1b43d963286cd4ce171319b46a706e39fbd",
+  "candidate_sha": "a7804c9338a47b02b718f30bb183caf9438618d5",
+  "tree_sha": "f0075ab58b1d95a4112ff255b9ce312b771b5496",
+  "main_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
+  "tag_object_sha": "3f67841c7e871b99d8a26e5d2d80e265fe03f4bb",
+  "zip_sha256": "f8a6bff46541f3a62e886e0a593aad2c5fdc68556b0aa043a2e5e3c42db99563",
+  "exe_sha256": "3cb3075ee9d5ee1a092425b436e449c0e79154296ba5cd704ef0f0e4bb189947",
+  "artifact_id": 11925816142,
+  "artifact_run": 38626469863,
+  "release_id": 413311718,
+  "pr": 6,
+  "pr_head_sha": "a7804c9338a47b02b718f30bb183caf9438618d5",
+  "pr_merge_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
+  "ci_runs": [
+    {
+      "id": 38626479833,
+      "sha": "a7804c9338a47b02b718f30bb183caf9438618d5"
+    },
+    {
+      "id": 38626469863,
+      "sha": "a7804c9338a47b02b718f30bb183caf9438618d5"
+    },
+    {
+      "id": 38626479642,
+      "sha": "a7804c9338a47b02b718f30bb183caf9438618d5"
+    },
+    {
+      "id": 38626480795,
+      "sha": "a7804c9338a47b02b718f30bb183caf9438618d5"
+    },
+    {
+      "id": 38626480914,
+      "sha": "a7804c9338a47b02b718f30bb183caf9438618d5"
+    }
+  ]
+}

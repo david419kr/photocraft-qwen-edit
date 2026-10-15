@@ -1,0 +1,364 @@
+{
+  "tag": "261015-0.9.0",
+  "pr": 6,
+  "candidate_sha": "a7804c9338a47b02b718f30bb183caf9438618d5",
+  "main_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
+  "pr_merge_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
+  "tree_sha": "f0075ab58b1d95a4112ff255b9ce312b771b5496",
+  "merge_tree_equals_candidate": true,
+  "artifact_id": 11925816142,
+  "artifact_run": 38626469863,
+  "zip_sha256": "f8a6bff46541f3a62e886e0a593aad2c5fdc68556b0aa043a2e5e3c42db99563",
+  "exe_sha256": "3cb3075ee9d5ee1a092425b436e449c0e79154296ba5cd704ef0f0e4bb189947",
+  "build": {
+    "source_sha": "a7804c9338a47b02b718f30bb183caf9438618d5",
+    "fork_base_sha": "8a97a1b43d963286cd4ce171319b46a706e39fbd",
+    "upstream_tag": "v0.9.0",
+    "upstream_release_id": 412944200,
+    "upstream_sha": "c699e3cda69f4852b43c0b191ab0091aaeff9d6a",
+    "toolchain": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "target": "x86_64-pc-windows-msvc",
+    "rustflags": "-C target-feature=+crt-static",
+    "features": "desktop manifest: avif,avif-decode; no optional heif or craft-fonts",
+    "executable_sha256": "3cb3075ee9d5ee1a092425b436e449c0e79154296ba5cd704ef0f0e4bb189947",
+    "zip_sha256": "f8a6bff46541f3a62e886e0a593aad2c5fdc68556b0aa043a2e5e3c42db99563",
+    "zip": "photocraft-qwen-edit-261015-0.9.0-windows-x64.zip",
+    "imported_dlls": [
+      "kernel32.dll",
+      "bcryptprimitives.dll",
+      "oleaut32.dll",
+      "user32.dll",
+      "uiautomationcore.dll",
+      "advapi32.dll",
+      "gdi32.dll",
+      "ntdll.dll",
+      "shell32.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "shlwapi.dll",
+      "prntvpt.dll",
+      "ole32.dll",
+      "windows.data.pdf.dll",
+      "api-ms-win-core-winrt-l1-1-0.dll",
+      "combase.dll",
+      "opengl32.dll",
+      "setupapi.dll",
+      "dxgi.dll",
+      "dwmapi.dll",
+      "d3d11.dll",
+      "d2d1.dll",
+      "ws2_32.dll",
+      "ADVAPI32.dll",
+      "KERNEL32.dll",
+      "USER32.dll",
+      "imm32.dll",
+      "bcrypt.dll",
+      "uxtheme.dll"
+    ],
+    "actual_gpu_ui_tested": false,
+    "ci_run_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/38626469863",
+    "built_at_utc": "2026-10-14T20:03:47.9882215+00:00"
+  },
+  "portable_verification": {
+    "source_sha": "a7804c9338a47b02b718f30bb183caf9438618d5",
+    "artifact_wrapper_sha256": "590238b17381479431c185d96979f4caeb1daba6bb50db265c4d3249f1550e68",
+    "portable_zip": "photocraft-qwen-edit-261015-0.9.0-windows-x64.zip",
+    "portable_zip_sha256": "f8a6bff46541f3a62e886e0a593aad2c5fdc68556b0aa043a2e5e3c42db99563",
+    "executable_sha256": "3cb3075ee9d5ee1a092425b436e449c0e79154296ba5cd704ef0f0e4bb189947",
+    "pe_machine": "0x8664",
+    "pe_optional_magic": "0x20b",
+    "files": 18,
+    "roots": [
+      "README.txt",
+      "install-qwen-image21.cmd",
+      "licenses",
+      "photocraft.exe",
+      "portable.txt",
+      "scripts"
+    ],
+    "imports": [
+      "kernel32.dll",
+      "bcryptprimitives.dll",
+      "oleaut32.dll",
+      "user32.dll",
+      "uiautomationcore.dll",
+      "advapi32.dll",
+      "gdi32.dll",
+      "ntdll.dll",
+      "shell32.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "shlwapi.dll",
+      "prntvpt.dll",
+      "ole32.dll",
+      "windows.data.pdf.dll",
+      "api-ms-win-core-winrt-l1-1-0.dll",
+      "combase.dll",
+      "winspool.drv",
+      "opengl32.dll",
+      "setupapi.dll",
+      "dxgi.dll",
+      "dwmapi.dll",
+      "d3d11.dll",
+      "d2d1.dll",
+      "ws2_32.dll",
+      "ADVAPI32.dll",
+      "KERNEL32.dll",
+      "USER32.dll",
+      "imm32.dll",
+      "bcrypt.dll",
+      "uxtheme.dll"
+    ],
+    "static_crt": true,
+    "embedded_full_source_sha": true,
+    "embedded_release_tag": "261015-0.9.0",
+    "cuda_gpu_tested": false,
+    "provenance": {
+      "source_sha": "a7804c9338a47b02b718f30bb183caf9438618d5",
+      "fork_base_sha": "8a97a1b43d963286cd4ce171319b46a706e39fbd",
+      "upstream_tag": "v0.9.0",
+      "upstream_release_id": 412944200,
+      "upstream_sha": "c699e3cda69f4852b43c0b191ab0091aaeff9d6a",
+      "toolchain": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "target": "x86_64-pc-windows-msvc",
+      "rustflags": "-C target-feature=+crt-static",
+      "features": "desktop manifest: avif,avif-decode; no optional heif or craft-fonts",
+      "executable_sha256": "3cb3075ee9d5ee1a092425b436e449c0e79154296ba5cd704ef0f0e4bb189947",
+      "zip_sha256": "f8a6bff46541f3a62e886e0a593aad2c5fdc68556b0aa043a2e5e3c42db99563",
+      "zip": "photocraft-qwen-edit-261015-0.9.0-windows-x64.zip",
+      "imported_dlls": [
+        "kernel32.dll",
+        "bcryptprimitives.dll",
+        "oleaut32.dll",
+        "user32.dll",
+        "uiautomationcore.dll",
+        "advapi32.dll",
+        "gdi32.dll",
+        "ntdll.dll",
+        "shell32.dll",
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "shlwapi.dll",
+        "prntvpt.dll",
+        "ole32.dll",
+        "windows.data.pdf.dll",
+        "api-ms-win-core-winrt-l1-1-0.dll",
+        "combase.dll",
+        "opengl32.dll",
+        "setupapi.dll",
+        "dxgi.dll",
+        "dwmapi.dll",
+        "d3d11.dll",
+        "d2d1.dll",
+        "ws2_32.dll",
+        "ADVAPI32.dll",
+        "KERNEL32.dll",
+        "USER32.dll",
+        "imm32.dll",
+        "bcrypt.dll",
+        "uxtheme.dll"
+      ],
+      "actual_gpu_ui_tested": false,
+      "ci_run_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/38626469863",
+      "built_at_utc": "2026-10-14T20:03:47.9882215+00:00"
+    }
+  },
+  "validation": {
+    "candidate_sha": "a7804c9338a47b02b718f30bb183caf9438618d5",
+    "fork_base_sha": "8a97a1b43d963286cd4ce171319b46a706e39fbd",
+    "upstream_sha": "c699e3cda69f4852b43c0b191ab0091aaeff9d6a",
+    "upstream_release_id": 412944200,
+    "pr": 6,
+    "full_ci_run": 38626479833,
+    "full_ci_status": "success",
+    "linux": [
+      {
+        "command": "cargo test --workspace --locked --features heif",
+        "suites": 278,
+        "passed": 8572,
+        "failed": 0,
+        "ignored": 69
+      },
+      {
+        "command": "cargo test -p photocraft-heif -p photocraft-codecs -p photocraft-io --locked",
+        "suites": 100,
+        "passed": 1322,
+        "failed": 0,
+        "ignored": 8
+      },
+      {
+        "command": "cargo test --workspace --locked --features heif",
+        "suites": 278,
+        "passed": 8572,
+        "failed": 0,
+        "ignored": 69
+      }
+    ],
+    "corpus": {
+      "passed": 3631,
+      "failed": 0,
+      "ignored": 27
+    },
+    "focused_fork": [
+      {
+        "name": "ui-selected-tool",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "app-updater",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "ui-updates",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "engine-ai",
+        "passed": 31,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "engine-comfyui",
+        "passed": 14,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "engine-prefs",
+        "passed": 37,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "ui-ai",
+        "passed": 17,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "ui-widgets",
+        "passed": 41,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "ui-history",
+        "passed": 32,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "ui-catalogs",
+        "passed": 44,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "ui-preference-labels",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "ui-documented-tools",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "avif",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "png-metadata",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "io-metadata",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "io-xmp",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "io-flat",
+        "passed": 61,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      },
+      {
+        "name": "panic-hunt",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "exit": 0
+      }
+    ],
+    "candidate_run": 38626469863,
+    "candidate_status": "success",
+    "windows_artifact": 11925816142,
+    "regression_artifact": 11927056073,
+    "portable_zip_sha256": "f8a6bff46541f3a62e886e0a593aad2c5fdc68556b0aa043a2e5e3c42db99563",
+    "wasm_bytes": 25082257,
+    "wasm_limit": 25165824,
+    "windows_arm64_run": 38626480914,
+    "windows_arm64_status": "success",
+    "gpu_cuda_tested": false,
+    "main_merged": false,
+    "public_release_created": false,
+    "windows": {
+      "suites": 278,
+      "passed": 8524,
+      "failed": 0,
+      "ignored": 68
+    },
+    "required_workflows": {
+      "CI": 38626479833,
+      "Qwen Windows candidate": 38626469863,
+      "Documentation": 38626479642,
+      "Packaging lint": 38626480795,
+      "Windows ARM64": 38626480914
+    },
+    "all_required_workflows_success": true,
+    "optional_manual_fuzz": "skipped by the existing workflow condition",
+    "portable_verified": true,
+    "installer_and_license_sources_verified": true,
+    "main_sha_after": "8a97a1b43d963286cd4ce171319b46a706e39fbd"
+  },
+  "publication_approval": {
+    "received_at": "2026-10-15T09:52:00+09:00",
+    "user_report": "User checked the candidate ZIP, reported no apparent problems, and approved release. Cloud GPU tests were not performed."
+  },
+  "reused_verified_artifact": true,
+  "rebuilt": false
+}
