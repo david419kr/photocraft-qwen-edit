@@ -98,3 +98,26 @@ installer, build scripts and package inputs are byte-identical to the validated
 source. Reuse the existing ZIP with its actual source SHA; do not claim that it
 was rebuilt from the policy-only follow-up. Validate workflow syntax and docs at
 the final SHA; preserve normal Ubuntu/general CI and Qwen regression workflows.
+
+## Approved public release — 2026-10-18
+
+After reporting that the local candidate works, the user explicitly approved release at
+09:51 UTC. PR #7 was merged as `7426eda37bd127b9a0d804a0176322a131313c54`;
+its tree exactly equals approved candidate `39b37f95bd54a3135516adec7ef31732da80613c`.
+Tag `261018-0.10.0` points to that merge. This approval supersedes the earlier
+candidate-only authorization boundary recorded above.
+
+[Public release](https://github.com/david419kr/photocraft-qwen-edit/releases/tag/261018-0.10.0)
+ID `416368474` was published at 09:56:13 UTC by successful
+[publication run 39117251075](https://github.com/david419kr/photocraft-qwen-edit/actions/runs/39117251075).
+It reuses artifact `12128753534`, built from `9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7`.
+No binary rebuild, heavy CI rerun or FreeBSD rerun occurred. ZIP SHA256:
+`2dd1984275c95679a8e11afe1bd04c3288698274d74a612987f69537b59479eb`.
+
+The publication job and an independent cloud download verified the public ZIP,
+EXE hash, 18-file package, sidecar and provenance. GitHub latest-release metadata
+has the expected stable tag, Windows asset name, size and SHA256 digest used by
+the updater. The previous public release remains unchanged. Publication evidence
+artifact: `12132691986`; helper/configuration: branch `publish/261018-0.10.0`.
+User-reported local acceptance does not imply specific CUDA/VRAM/UI scenarios
+were measured in the cloud; the earlier cloud validation limits still apply.

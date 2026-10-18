@@ -1,5 +1,5 @@
 {
-  "status": "candidate-application-validated",
+  "status": "published",
   "upstream_repository": "storytold/photocraft",
   "upstream_release_id": 416221086,
   "upstream_tag": "v0.10.0",
@@ -10,8 +10,8 @@
   "merge_base_sha": "c699e3cda69f4852b43c0b191ab0091aaeff9d6a",
   "candidate_branch": "update/0.10.0",
   "candidate_sha_record": "PR head and matching CI run head_sha",
-  "main_merge_authorized": false,
-  "public_release_authorized": false,
+  "main_merge_authorized": true,
+  "public_release_authorized": true,
   "previous_completed_release": {
     "tag": "261015-0.9.0",
     "release_id": 413311718,
@@ -102,5 +102,23 @@
     "executable_sha256": "0d9661902b2a9906ddf4d6d6d3a5633ff355c651c3ce8eda988498508cc189ff",
     "independently_verified": true,
     "relabel_as_later_source": false
+  },
+  "candidate_sha": "39b37f95bd54a3135516adec7ef31732da80613c",
+  "approval_at": "2026-10-18T09:51:00Z",
+  "user_reported_local_acceptance": true,
+  "completed_release": {
+    "tag": "261018-0.10.0",
+    "release_id": 416368474,
+    "release_url": "https://github.com/david419kr/photocraft-qwen-edit/releases/tag/261018-0.10.0",
+    "published_at": "2026-10-18T09:56:13Z",
+    "merge_sha": "7426eda37bd127b9a0d804a0176322a131313c54",
+    "actual_binary_source_sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7",
+    "artifact_id": 12128753534,
+    "zip_sha256": "2dd1984275c95679a8e11afe1bd04c3288698274d74a612987f69537b59479eb",
+    "publication_run": 39117251075,
+    "publication_evidence_artifact": 12132691986,
+    "public_downloads_verified": true,
+    "updater_latest_asset_size_digest_verified": true,
+    "rebuilt": false
   }
 }
