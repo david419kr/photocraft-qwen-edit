@@ -56,6 +56,16 @@
       "local_failed": [
         "export dialog tests: 15 passed, layered preview estimate test assumed missing metadata meant None; expanded to validate missing, None, EXIF and All independently"
       ]
+    },
+    {
+      "candidate_sha": "51e28e642c6534803495f1c553a8bce0d386057f",
+      "ci_run": 39104037649,
+      "candidate_run": 39104035041,
+      "local_passed": [
+        "export dialog tests: 16",
+        "Korean Qwen and Export As offscreen render with mock backend/CPU canvas"
+      ],
+      "review_finding": "Metadata None stripped ICC correctly, but upstream Embed Color Profile checkbox still appeared checked. Display effective disabled/unchecked state and retain the remembered EXIF/All choice; extended policy assertions pass."
     }
   ]
 }

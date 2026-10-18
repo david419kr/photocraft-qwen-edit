@@ -389,7 +389,7 @@ fn settings(f: &Map<String, Value>) -> ExportSettings {
         webp_quality: (fmt == "webp" && !lossless(f)).then_some(quality),
         xmp_all: metadata == "all",
         tga_bits: if fmt == "tga" { tga_bits(f) } else { None },
-        embed_icc: f.get("embedProfile").and_then(Value::as_bool).unwrap_or(true),
+        embed_icc: metadata != "none" && f.get("embedProfile").and_then(Value::as_bool).unwrap_or(true),
         // Metadata: None drops EXIF and resolution as well as XMP. A missing key keeps them,
         // which is what Export As wrote before the choice existed.
         embed_metadata: metadata != "none",
@@ -776,9 +776,16 @@ pub fn body(app: &mut PhotocraftApp, ui: &mut egui::Ui, f: &mut Map<String, Valu
                     f.insert("profile".into(), json!(profile));
                 }
             });
-            let mut embed = f.get("embedProfile").and_then(Value::as_bool).unwrap_or(true);
-            crate::widgets::checkbox(ui, &mut embed, tl!("Embed Color Profile"));
-            f.insert("embedProfile".into(), json!(embed));
+            let keep_metadata = s(f, "metadata") != "none";
+            let mut embed = settings(f).embed_icc;
+            ui.add_enabled_ui(keep_metadata, |ui| {
+                crate::widgets::checkbox(ui, &mut embed, tl!("Embed Color Profile"));
+            });
+            // None always strips ICC. Keep the user's choice for EXIF/All without displaying
+            // an enabled, checked control whose effect the exporter would silently discard.
+            if keep_metadata {
+                f.insert("embedProfile".into(), json!(embed));
+            }
             ui.add_space(8.0);
             ui.label(egui::RichText::new(tl!("Image Size")).font(crate::theme::semibold(12.0)).color(t.text));
             let (bw, bh) = (n(f, "__w", f64::from(doc.size.width)), n(f, "__h", f64::from(doc.size.height)));
@@ -1298,7 +1305,11 @@ mod tests {
         let none = settings(&f);
         assert!(!none.xmp_all && !none.embed_metadata && !none.embed_icc);
         assert_eq!(none.io_options().xmp, photocraft_io::XmpEmbed::None);
+        f.insert("embedProfile".into(), json!(true));
+        assert!(!settings(&f).embed_icc, "None strips ICC even when the remembered profile choice is enabled");
+        assert!(!settings(&f).io_options().encode.embed_icc);
         f.insert("metadata".into(), json!("exif"));
+        assert!(settings(&f).embed_icc, "EXIF restores the remembered profile choice");
         let exif = settings(&f);
         assert!(!exif.xmp_all && exif.embed_metadata);
         assert_eq!(exif.io_options().xmp, photocraft_io::XmpEmbed::ExifOnly);
