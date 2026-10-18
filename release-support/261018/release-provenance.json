@@ -1,0 +1,114 @@
+{
+  "source_sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7",
+  "fork_base_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
+  "upstream_tag": "v0.10.0",
+  "upstream_release_id": 416221086,
+  "upstream_sha": "8407d9ccb125af52944fca9d228383459f94aaef",
+  "toolchain": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "target": "x86_64-pc-windows-msvc",
+  "rustflags": "-C target-feature=+crt-static",
+  "features": "desktop manifest: avif,avif-decode; no optional heif or craft-fonts",
+  "executable_sha256": "0d9661902b2a9906ddf4d6d6d3a5633ff355c651c3ce8eda988498508cc189ff",
+  "zip_sha256": "2dd1984275c95679a8e11afe1bd04c3288698274d74a612987f69537b59479eb",
+  "zip": "photocraft-qwen-edit-261018-0.10.0-windows-x64.zip",
+  "imported_dlls": [
+    "kernel32.dll",
+    "bcryptprimitives.dll",
+    "oleaut32.dll",
+    "user32.dll",
+    "uiautomationcore.dll",
+    "advapi32.dll",
+    "gdi32.dll",
+    "ntdll.dll",
+    "shell32.dll",
+    "api-ms-win-core-synch-l1-2-0.dll",
+    "shlwapi.dll",
+    "prntvpt.dll",
+    "ole32.dll",
+    "windows.data.pdf.dll",
+    "api-ms-win-core-winrt-l1-1-0.dll",
+    "combase.dll",
+    "dxgi.dll",
+    "opengl32.dll",
+    "setupapi.dll",
+    "dwmapi.dll",
+    "d3d11.dll",
+    "d2d1.dll",
+    "ws2_32.dll",
+    "ADVAPI32.dll",
+    "KERNEL32.dll",
+    "USER32.dll",
+    "imm32.dll",
+    "bcrypt.dll",
+    "uxtheme.dll"
+  ],
+  "actual_gpu_ui_tested": false,
+  "ci_run_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/39107182671",
+  "built_at_utc": "2026-10-18T07:34:56.7428698+00:00",
+  "tag": "261018-0.10.0",
+  "title": "PhotoCraft Local Qwen AI - 261018 (upstream 0.10.0)",
+  "main_sha": "7426eda37bd127b9a0d804a0176322a131313c54",
+  "tree_sha": "f0d4b39d324407992985d36a86e4ee0c6dad4a35",
+  "candidate_sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7",
+  "pr_head_sha": "39b37f95bd54a3135516adec7ef31732da80613c",
+  "pr_merge_sha": "7426eda37bd127b9a0d804a0176322a131313c54",
+  "tag_object_sha": "21ebf37dfe09d5a4c34df4d01b21897dadb9156f",
+  "base_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
+  "exe_sha256": "0d9661902b2a9906ddf4d6d6d3a5633ff355c651c3ce8eda988498508cc189ff",
+  "ci_runs": [
+    {
+      "id": 39107185695,
+      "sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7"
+    },
+    {
+      "id": 39107182671,
+      "sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7"
+    },
+    {
+      "id": 39113070965,
+      "sha": "39b37f95bd54a3135516adec7ef31732da80613c"
+    },
+    {
+      "id": 39113073177,
+      "sha": "39b37f95bd54a3135516adec7ef31732da80613c"
+    }
+  ],
+  "artifact_id": 12128753534,
+  "pr": 7,
+  "source_equivalence": {
+    "final_candidate_sha": "39b37f95bd54a3135516adec7ef31732da80613c",
+    "validated_application_and_artifact_sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7",
+    "changed_paths": [
+      ".github/workflows/freebsd.yml",
+      "docs/upstream-0100-integration.md",
+      "docs/upstream-update-process.md",
+      "docs/upstream-update-state.json"
+    ],
+    "all_other_tracked_paths_and_modes_byte_identical": true,
+    "normalized_tree_sha256": "00d7861776019fccb0b36a014decf6a56f4dea1a8cff88a4747ff065e3e48721",
+    "artifact_id": 12128753534,
+    "artifact_rebuilt": false,
+    "source_sha_relabelled": false,
+    "scoped_validation": {
+      "actionlint": "passed",
+      "exact_diff_and_yaml_trigger_check": "passed",
+      "documentation_run": 39113070965,
+      "documentation": "success",
+      "packaging_lint_run": 39113073177,
+      "packaging_lint": "success"
+    },
+    "freebsd": {
+      "run": 39107185848,
+      "attempt": 2,
+      "conclusion": "cancelled per user",
+      "required": false,
+      "automatic": false
+    },
+    "ready_for_local_acceptance": true
+  },
+  "user_reported_local_acceptance": true,
+  "publication_authorized_at": "2026-10-18T09:51:00Z",
+  "cloud_cuda_vram_ui_validation": false,
+  "artifact_rebuilt": false,
+  "freebsd": "Optional; cancelled by user; future manual-only"
+}
