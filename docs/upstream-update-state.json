@@ -1,5 +1,5 @@
 {
-  "status": "candidate-validation",
+  "status": "candidate-application-validated",
   "upstream_repository": "storytold/photocraft",
   "upstream_release_id": 416221086,
   "upstream_tag": "v0.10.0",
@@ -18,7 +18,7 @@
     "main_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
     "upstream_release_id": 412944200
   },
-  "validation": "Exact candidate SHA, CI run IDs/results and Windows artifact hashes are maintained in draft PR #7. Source-state status does not assert passing CI; verify its exact-head record. No Clippy exception.",
+  "validation": "Full application CI and Qwen regressions passed at validated_application_sha. The final workflow/docs-only follow-up reuses byte-identical application/build inputs under explicit user authorization; exact final SHA, scoped checks and unchanged artifact provenance are recorded in PR #7. No Clippy exception. FreeBSD is optional/manual-only from this candidate onward.",
   "pull_request": 7,
   "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/7",
   "validation_history": [
@@ -66,6 +66,41 @@
         "Korean Qwen and Export As offscreen render with mock backend/CPU canvas"
       ],
       "review_finding": "Metadata None stripped ICC correctly, but upstream Embed Color Profile checkbox still appeared checked. Display effective disabled/unchecked state and retain the remembered EXIF/All choice; extended policy assertions pass."
+    },
+    {
+      "candidate_sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7",
+      "ci_run": 39107185695,
+      "candidate_run": 39107182671,
+      "status": "full application CI, Qwen regressions, ARM64, docs, packaging lint and Nix passed; FreeBSD x86_64 passed, aarch64 cancelled and excluded by explicit user decision",
+      "fork_regressions": {
+        "groups": 20,
+        "passed": 383,
+        "failed": 0,
+        "ignored": 0
+      },
+      "final_followup_scope": "FreeBSD trigger policy and update docs/state only; preserve all application/build/package inputs and original ZIP provenance"
     }
-  ]
+  ],
+  "validated_application_sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7",
+  "optional_checks": {
+    "freebsd": {
+      "automatic": false,
+      "required_for_candidate": false,
+      "workflow": "freebsd.yml",
+      "trigger": "workflow_dispatch",
+      "authorization_date": "2026-10-18",
+      "last_run": 39107185848,
+      "x86_64": "passed build/tests/package",
+      "aarch64": "cancelled per final user instruction; not passed; do not rerun"
+    }
+  },
+  "windows_candidate": {
+    "source_sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7",
+    "run_id": 39107182671,
+    "artifact_id": 12128753534,
+    "inner_zip_sha256": "2dd1984275c95679a8e11afe1bd04c3288698274d74a612987f69537b59479eb",
+    "executable_sha256": "0d9661902b2a9906ddf4d6d6d3a5633ff355c651c3ce8eda988498508cc189ff",
+    "independently_verified": true,
+    "relabel_as_later_source": false
+  }
 }

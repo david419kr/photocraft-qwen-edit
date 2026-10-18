@@ -5,17 +5,10 @@
 # uploaded and no secrets are used.
 name: FreeBSD
 
-# The VM build takes one to several hours, so it runs nightly on main rather than on every push
-# or dependency change: a drifted dependency still shows up within a day. PRs that change the
-# FreeBSD packaging itself still run it.
+# User policy (2026-10-18): optional, manual-only validation. FreeBSD is not a
+# required Qwen candidate gate. Keep both architectures and all checks for an
+# explicitly requested manual run; do not restore PR/push/schedule triggers.
 on:
-  pull_request:
-    paths:
-      - .github/workflows/freebsd.yml
-      - packaging/freebsd/**
-      - packaging/env.sh
-      - scripts/install-freebsd-rust.py
-      - scripts/tests/test_freebsd_rust.py
   workflow_dispatch:
 
 concurrency:

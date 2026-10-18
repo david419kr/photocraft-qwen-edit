@@ -1,6 +1,9 @@
 # Upstream 0.10.0 candidate integration
 
-Status: candidate validation in progress. Main merge, tags and public publication are not authorized.
+Status: application validation and Windows artifact verified at `9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7`.
+The final follow-up changes only FreeBSD workflow policy and update documentation/state;
+its exact SHA and scoped validation are recorded in PR #7. Main merge, tags and public
+publication are not authorized.
 
 ## Source identity
 
@@ -66,3 +69,32 @@ imports, EXE SHA256 `d0cc7b7b89ecb50be2365443e7943e6cb3ce5eb3777c30267624c81c2f8
 and inner ZIP SHA256 `5c21c71a4bdee8399c7a48592d7f577b3eb1714fa3f8bf0a9b36c5ff06d2f335`.
 This evidence applies only to `85ca762a`; the workflow repair requires fresh final-head
 checks and an artifact. Current results remain in PR #7.
+
+## Validated application and final workflow policy
+
+At `9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7`, full CI `39107185695`, Qwen
+candidate/regressions `39107182671`, ARM64 install/run, documentation, packaging
+lint and Nix passed. The fork runner executed 383 tests across 20 nonempty groups,
+with no failures or ignored tests. Both Rust 1.95 and stable 1.99.1 full-workspace
+Clippy passed. Exact suite counts and links are retained in PR #7.
+
+Windows artifact `12128753534` was downloaded and independently verified against
+the exact package contract, notices, x64 PE/static-CRT imports and provenance.
+Its source SHA remains `9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7`:
+
+- Inner ZIP SHA256: `2dd1984275c95679a8e11afe1bd04c3288698274d74a612987f69537b59479eb`.
+- EXE SHA256: `0d9661902b2a9906ddf4d6d6d3a5633ff355c651c3ce8eda988498508cc189ff`.
+
+The user's final 2026-10-18 instruction excludes FreeBSD from this candidate's
+required gates and makes it manual-only going forward. In run `39107185848`,
+x86_64 passed build, tests and packaging; aarch64 was cancelled, briefly rerun
+after an intervening instruction, then cancelled again under the final direction.
+It is **not** a passing aarch64 result, and it must not be rerun automatically.
+The aarch64 log did verify Rust installation and ongoing project compilation.
+
+The final policy follow-up changes only `.github/workflows/freebsd.yml` and three
+update documents/state files. Application code, manifests/lockfile, assets,
+installer, build scripts and package inputs are byte-identical to the validated
+source. Reuse the existing ZIP with its actual source SHA; do not claim that it
+was rebuilt from the policy-only follow-up. Validate workflow syntax and docs at
+the final SHA; preserve normal Ubuntu/general CI and Qwen regression workflows.
