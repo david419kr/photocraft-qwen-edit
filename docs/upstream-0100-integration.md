@@ -29,6 +29,6 @@ The merge brings the release tag, not upstream main. The full Library handoff wa
 
 ## Validation
 
-Pending exact-head CI, focused nonzero regressions and Windows artifact verification. This document must not be read as a green result until final evidence is attached.
+Exact-head CI, focused nonzero regressions and Windows artifact verification are recorded in [draft PR #7](https://github.com/david419kr/photocraft-qwen-edit/pull/7), including full candidate SHA, run IDs, counts and artifact hashes. The PR record is authoritative for validation status; this source document alone is not a green result.
 
 Actual NVIDIA CUDA inference, VRAM residency/free timing, interactive Korean UI, document cancellation/Undo and update-install acceptance remain local GPU checks; cloud tests do not replace them. Existing installations, models and settings are untouched.
