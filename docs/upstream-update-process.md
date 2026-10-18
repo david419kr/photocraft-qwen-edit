@@ -31,7 +31,7 @@ semantic merge complete without the full supplied handoff text.
    executable version, imports, exact 18-file/six-root-entry package, licenses,
    scripts, README and SHA256. Never package model/runtime installations or
    personal settings. Adapt the candidate workflow's guarded branch/version
-   for the new update; its current 0.9.0 guard is intentionally narrow.
+   for the new update; its current 0.10.0 guard is intentionally narrow.
 6. Push the candidate, provide a draft PR and downloadable ZIP, and leave the
    actual CUDA/VRAM/UI acceptance checklist explicit. Automatic update runs
    stop here. Future main merge and public release require fresh user approval.

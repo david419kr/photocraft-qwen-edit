@@ -1,75 +1,22 @@
 {
   "status": "candidate-validation",
   "upstream_repository": "storytold/photocraft",
-  "upstream_release_id": 412944200,
-  "upstream_tag": "v0.9.0",
-  "upstream_sha": "c699e3cda69f4852b43c0b191ab0091aaeff9d6a",
-  "upstream_published_at": "2026-10-14T16:36:26Z",
+  "upstream_release_id": 416221086,
+  "upstream_tag": "v0.10.0",
+  "upstream_sha": "8407d9ccb125af52944fca9d228383459f94aaef",
+  "upstream_published_at": "2026-10-18T04:01:42Z",
   "fork_repository": "david419kr/photocraft-qwen-edit",
-  "fork_base_sha": "8a97a1b43d963286cd4ce171319b46a706e39fbd",
-  "merge_base_sha": "d43db3e153c76aefce9b32cef9099e458eaf17a8",
-  "candidate_branch": "update/0.9.0",
+  "fork_base_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
+  "merge_base_sha": "c699e3cda69f4852b43c0b191ab0091aaeff9d6a",
+  "candidate_branch": "update/0.10.0",
   "candidate_sha_record": "PR head and matching CI run head_sha",
   "main_merge_authorized": false,
   "public_release_authorized": false,
   "previous_completed_release": {
-    "tag": "261014-0.8.2",
-    "release_id": 411816689,
-    "main_sha": "8a97a1b43d963286cd4ce171319b46a706e39fbd",
-    "upstream_release_id": 410949848
+    "tag": "261015-0.9.0",
+    "release_id": 413311718,
+    "main_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
+    "upstream_release_id": 412944200
   },
-  "transport": {
-    "method": "Initial connected GitHub app source bundle; resumed through existing authorized shell Git credential",
-    "source_run": 38611523568,
-    "artifact_id": 11918900855,
-    "current": "Existing shell GH_TOKEN and ordinary Git read/push verified; no account or permission changes. Earlier Actions GITHUB_TOKEN workflows rejection was separate."
-  },
-  "validation": "Pending exact-head full CI and final Windows ZIP verification. PR #6 records every candidate/run and final acceptance; no Clippy exception applies.",
-  "pull_request": 6,
-  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/6",
-  "validation_history": [
-    {
-      "candidate_sha": "3009a8f390aa7d4c1c15dd4c5c7a4e6233548fab",
-      "ci_run": 38613834074,
-      "candidate_run": 38613825458,
-      "passed": [
-        "stable early Clippy",
-        "wasm32",
-        "corpus",
-        "Windows x64 static CRT package (provisional artifact 11920147545)"
-      ],
-      "failed": [
-        "native UI Serbian translation coverage (3 tests on both platforms)",
-        "web size 25205976 > 25165824 bytes",
-        "Rust 1.95 CR3 collapsible_match; focused regressions not run"
-      ]
-    },
-    {
-      "candidate_sha": "096e29567ad9ad9a5db2a580546705b947326ce0",
-      "ci_run": 38624277794,
-      "candidate_run": 38624268472,
-      "local_passed": {
-        "full_rust_195_clippy": true,
-        "translation_tests": 45,
-        "selected_tool_tests": 6,
-        "export_dialog_tests": 13,
-        "menu_parity": "635/635",
-        "layering": true,
-        "mock_cpu_korean_ui_visual": true
-      },
-      "failed": [
-        "web size 25208562 > 25165824 bytes; ineffective serde profile experiment reverted"
-      ],
-      "superseded": "Stronger Binaryen -Ozz optimization; remaining previous-head CI superseded"
-    },
-    {
-      "candidate_sha": "c9c49b5a8ec9920067c67ff0060269f9504f2d66",
-      "ci_run": 38625511949,
-      "candidate_run": 38625503433,
-      "failed": [
-        "Trunk 0.21.14 rejects wasm-opt level zz before compilation; restored supported z"
-      ],
-      "repair": "Build-only Zopfli 0.8.4 for existing DEFLATE font/catalog streams; measured 121676 bytes saved with identical inflated contents"
-    }
-  ]
+  "validation": "Pending exact-head full CI and Windows package verification; no Clippy exception."
 }
