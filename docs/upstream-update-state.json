@@ -18,5 +18,15 @@
     "main_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
     "upstream_release_id": 412944200
   },
-  "validation": "Pending exact-head full CI and Windows package verification; no Clippy exception."
+  "validation": "Pending exact-head full CI and Windows package verification; no Clippy exception.",
+  "pull_request": 7,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/7",
+  "validation_history": [
+    {
+      "candidate_sha": "f08e076526087abe2c61437ed74df442a99aa098",
+      "candidate_run": 39102902395,
+      "ci_run": 39102919057,
+      "status": "superseded during source review: UI field array length reconciled to 46"
+    }
+  ]
 }
