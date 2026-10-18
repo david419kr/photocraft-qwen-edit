@@ -14,6 +14,8 @@ on:
       - .github/workflows/freebsd.yml
       - packaging/freebsd/**
       - packaging/env.sh
+      - scripts/install-freebsd-rust.py
+      - scripts/tests/test_freebsd_rust.py
   workflow_dispatch:
 
 concurrency:
@@ -23,12 +25,60 @@ concurrency:
 permissions:
   contents: read
 
+# Fork-local copy of craft-common-actions freebsd.yml at bb838fd85747446b07e64d87a636bab3924505a7.
+# The shared bootstrap assumes rustup-init exists for aarch64 FreeBSD; it returns 404.
+# Retain both architectures and every build/test/package gate, using Rust's verified
+# standalone stable distribution on aarch64 until the shared bootstrap supports it.
 jobs:
   freebsd:
-    # Intentionally tracked at @main (not SHA-pinned) so org-wide CI improvements, security fixes, and build optimizations propagate without PR churn across all craftapp repos.
-    uses: storytold/craft-common-actions/.github/workflows/freebsd.yml@main
-    with:
-      craft-fonts-ref: abb83316d96aa59c1cf64784289e378fe9fa5695
-      cargo-build-extra-args: "--features heif"
-      custom-test-command: "CARGO_PROFILE_DEV_DEBUG=0 cargo test --workspace --locked --features heif --exclude photocraft-ui-egui && CARGO_PROFILE_DEV_DEBUG=0 cargo test -p photocraft-ui-egui --locked --lib && CARGO_PROFILE_DEV_DEBUG=0 cargo test -p photocraft-ui-egui --locked --doc && CARGO_PROFILE_DEV_DEBUG=0 cargo test -p photocraft-ui-egui --locked --test '*' -- --test-threads=1"
-      run-package-check: true
+    name: FreeBSD 15 ${{ matrix.arch }} (build + test)
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86_64, aarch64]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Test Rust bootstrap verification
+        run: python3 scripts/tests/test_freebsd_rust.py -v
+      - name: Check out craft-fonts
+        uses: storytold/craft-common-actions/actions/checkout-craft-fonts@main
+        with:
+          ref: abb83316d96aa59c1cf64784289e378fe9fa5695
+      - name: Build and test in a FreeBSD VM
+        uses: vmactions/freebsd-vm@c46abacb49f09938ca4e1702d15d836285d694cc # v1.5.9
+        with:
+          release: '15.1'
+          arch: ${{ matrix.arch }}
+          usesh: true
+          cpu: 4
+          mem: 12288
+          copyback: false
+          prepare: |
+            set -eu
+            pkg install -y bash git curl pkgconf cmake python3 libxkbcommon wayland libX11 libXcursor libXrandr libXi libxcb mesa-libs vulkan-loader gtk3 fontconfig freetype2 alsa-lib dejavu
+            if [ "$(uname -m)" = arm64 ] || [ "$(uname -m)" = aarch64 ]; then
+              python3 scripts/install-freebsd-rust.py
+            else
+              curl -fsSL --retry 3 https://sh.rustup.rs -o /tmp/rustup-init.sh
+              sh /tmp/rustup-init.sh -y --profile minimal
+            fi
+          run: |
+            set -eu
+            if [ -f "$HOME/.cargo/env" ]; then . "$HOME/.cargo/env"; fi
+            git config --global --add safe.directory "*"
+            rustc --version --verbose
+            cargo --version
+            if [ -d craft-fonts ]; then export CRAFT_FONTS_DIR="$PWD/craft-fonts"; fi
+            CARGO_PROFILE_DEV_DEBUG=0 cargo build --workspace --all-targets --locked --features heif
+            CARGO_PROFILE_DEV_DEBUG=0 cargo test --workspace --locked --features heif --exclude photocraft-ui-egui
+            CARGO_PROFILE_DEV_DEBUG=0 cargo test -p photocraft-ui-egui --locked --lib
+            CARGO_PROFILE_DEV_DEBUG=0 cargo test -p photocraft-ui-egui --locked --doc
+            CARGO_PROFILE_DEV_DEBUG=0 cargo test -p photocraft-ui-egui --locked --test '*' -- --test-threads=1
+            rm -rf target/debug
+            CARGO_BUILD_JOBS=4 bash packaging/freebsd/package.sh
+            for archive in dist/release/*-freebsd-${{ matrix.arch }}.tar.gz; do
+              [ -f "$archive" ] || { echo "error: no FreeBSD package produced" >&2; exit 1; }
+              tar -tzf "$archive"
+            done
