@@ -51,6 +51,10 @@ targets, unexpected origins and malformed digests, and checksum mismatches fail
 before extraction. Two bootstrap regression tests pass locally and run before
 both VM jobs. No test is disabled, and no upstream repository is modified.
 
+The Rust 1.95 pre-regression Clippy command now covers the complete workspace,
+all targets and HEIF, matching the current-stable gate instead of limiting
+compatibility linting to four fork crates. Desktop workspace features retain AVIF.
+
 The preceding candidate's downloaded Windows artifact `12128417199` was independently
 verified: exactly 18 files / six roots, embedded licenses, x64 PE, no dynamic CRT
 imports, EXE SHA256 `d0cc7b7b89ecb50be2365443e7943e6cb3ce5eb3777c30267624c81c2f8dffb1`,
