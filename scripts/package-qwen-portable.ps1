@@ -40,6 +40,11 @@ foreach ($entry in $licenses.GetEnumerator()) {
 }
 $utf8 = New-Object Text.UTF8Encoding($false)
 $notice = (Get-Content -LiteralPath (Join-Path $stage 'licenses/NOTICE.txt') -Raw).Replace('docs/brand/LICENSE-brand.txt', 'licenses/artcraft-brand-terms.txt')
+# Embedded data/code licenses travel inside NOTICE, preserving the 18-file package contract.
+foreach ($licensePath in @('assets/dict/LICENSE-SCOWL.txt', 'crates/algo/data/LICENSE-libfacedetection.txt')) {
+    $notice = $notice.Replace("See $licensePath.", 'Full license reproduced below.')
+    $notice += "`r`n`r`n--- $licensePath ---`r`n" + (Get-Content -LiteralPath (Join-Path $repo $licensePath) -Raw)
+}
 [IO.File]::WriteAllText((Join-Path $stage 'licenses/NOTICE.txt'), $notice, $utf8)
 [IO.File]::WriteAllText((Join-Path $stage 'portable.txt'), "PhotoCraft portable fork $ReleaseId`r`n", $utf8)
 $readme = @'
@@ -75,7 +80,8 @@ AI QUICK GUIDE
 - AI controls appear only when the required service/models are detected.
 
 AVIF opening, saving and export are included; exports currently target SDR.
-Original upstream shortcuts, Brush startup and export defaults are retained.
+Original upstream shortcuts and export defaults are retained. The last selected
+tool is restored at startup.
 Models, ComfyUI, personal settings and private documents are not bundled here.
 
 SOURCE AND SCREENSHOT GUIDES

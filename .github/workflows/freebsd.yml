@@ -5,15 +5,10 @@
 # uploaded and no secrets are used.
 name: FreeBSD
 
-# The VM build takes one to several hours, so it runs nightly on main rather than on every push
-# or dependency change: a drifted dependency still shows up within a day. PRs that change the
-# FreeBSD packaging itself still run it.
+# User policy (2026-10-18): optional, manual-only validation. FreeBSD is not a
+# required Qwen candidate gate. Keep both architectures and all checks for an
+# explicitly requested manual run; do not restore PR/push/schedule triggers.
 on:
-  pull_request:
-    paths:
-      - .github/workflows/freebsd.yml
-      - packaging/freebsd/**
-      - packaging/env.sh
   workflow_dispatch:
 
 concurrency:
@@ -23,40 +18,60 @@ concurrency:
 permissions:
   contents: read
 
+# Fork-local copy of craft-common-actions freebsd.yml at bb838fd85747446b07e64d87a636bab3924505a7.
+# The shared bootstrap assumes rustup-init exists for aarch64 FreeBSD; it returns 404.
+# Retain both architectures and every build/test/package gate, using Rust's verified
+# standalone stable distribution on aarch64 until the shared bootstrap supports it.
 jobs:
   freebsd:
-    name: FreeBSD 14 (build + test + package)
+    name: FreeBSD 15 ${{ matrix.arch }} (build + test)
     runs-on: ubuntu-latest
     timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86_64, aarch64]
     steps:
-      - uses: actions/checkout@v4
-      - name: Build, test and package in a FreeBSD VM
-        uses: vmactions/freebsd-vm@c46abacb49f09938ca4e1702d15d836285d694cc # v1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Test Rust bootstrap verification
+        run: python3 scripts/tests/test_freebsd_rust.py -v
+      - name: Check out craft-fonts
+        uses: storytold/craft-common-actions/actions/checkout-craft-fonts@main
         with:
-          release: "14.3"
+          ref: abb83316d96aa59c1cf64784289e378fe9fa5695
+      - name: Build and test in a FreeBSD VM
+        uses: vmactions/freebsd-vm@c46abacb49f09938ca4e1702d15d836285d694cc # v1.5.9
+        with:
+          release: '15.1'
+          arch: ${{ matrix.arch }}
           usesh: true
           cpu: 4
           mem: 12288
-          # Nothing to bring back; copying the target dir out of the VM fails on large builds.
           copyback: false
           prepare: |
-            pkg install -y bash git curl pkgconf cmake python3 libxkbcommon wayland libX11 libXcursor libXrandr libXi libxcb mesa-libs vulkan-loader gtk3 fontconfig freetype2 alsa-lib
-            curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal
+            set -eu
+            pkg install -y bash git curl pkgconf cmake python3 libxkbcommon wayland libX11 libXcursor libXrandr libXi libxcb mesa-libs vulkan-loader gtk3 fontconfig freetype2 alsa-lib dejavu
+            if [ "$(uname -m)" = arm64 ] || [ "$(uname -m)" = aarch64 ]; then
+              python3 scripts/install-freebsd-rust.py
+            else
+              curl -fsSL --retry 3 https://sh.rustup.rs -o /tmp/rustup-init.sh
+              sh /tmp/rustup-init.sh -y --profile minimal
+            fi
           run: |
-            set -e
-            . "$HOME/.cargo/env"
-            # The checkout is synced in under another owner; let tests that call git read it.
+            set -eu
+            if [ -f "$HOME/.cargo/env" ]; then . "$HOME/.cargo/env"; fi
             git config --global --add safe.directory "*"
-            rustc --version
+            rustc --version --verbose
+            cargo --version
+            if [ -d craft-fonts ]; then export CRAFT_FONTS_DIR="$PWD/craft-fonts"; fi
             CARGO_PROFILE_DEV_DEBUG=0 cargo build --workspace --all-targets --locked --features heif
             CARGO_PROFILE_DEV_DEBUG=0 cargo test --workspace --locked --features heif --exclude photocraft-ui-egui
             CARGO_PROFILE_DEV_DEBUG=0 cargo test -p photocraft-ui-egui --locked --lib
             CARGO_PROFILE_DEV_DEBUG=0 cargo test -p photocraft-ui-egui --locked --doc
-            # The VM's software Vulkan driver crashes (SIGSEGV) when several tests set up a GPU
-            # device at once, so the GPU integration tests run one at a time here.
             CARGO_PROFILE_DEV_DEBUG=0 cargo test -p photocraft-ui-egui --locked --test '*' -- --test-threads=1
-            # The release package, as release.yml builds it. Free the debug build's disk first.
             rm -rf target/debug
             CARGO_BUILD_JOBS=4 bash packaging/freebsd/package.sh
-            tar -tzf dist/release/photocraft-*-freebsd-x86_64.tar.gz \
-              | grep -E '/bin/photocraft$|/bin/photocraft-cli$|/share/applications/ai\.storyteller\.photocraft\.desktop$|/share/doc/photocraft/LICENSE-MIT$'
+            for archive in dist/release/*-freebsd-${{ matrix.arch }}.tar.gz; do
+              [ -f "$archive" ] || { echo "error: no FreeBSD package produced" >&2; exit 1; }
+              tar -tzf "$archive"
+            done

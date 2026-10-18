@@ -57,3 +57,28 @@ fn background_exports_keep_metadata_none_and_indexed_all_contracts() {
     }
     assert_eq!(doc, original);
 }
+
+#[test]
+fn exif_only_keeps_camera_metadata_without_prompt_history_or_alpha_scrubbing() {
+    use photocraft_color::{Color, ColorMode, SampleType};
+    use photocraft_doc::{Document, Size};
+    let mut doc = Document::with_background("exif", Size::new(2, 1), ColorMode::Rgb, SampleType::U8, Color::rgba(0.2, 0.4, 0.6, 0.0));
+    doc.icc_profile = Some(photocraft_cms::Builtin::Srgb.profile().to_bytes());
+    doc.resolution_dpi = 300.0;
+    doc.metadata.exif = Some(vec![1, 2, 3].into());
+    doc.metadata.xmp = Some("<private>한국어 prompt history</private>".into());
+    doc.metadata.text.push(("parameters".into(), "private prompt".into()));
+    let original = doc.clone();
+    let opts = ExportOptions { xmp: XmpEmbed::ExifOnly, ..Default::default() };
+    let bytes = export(&doc, "png", &opts).unwrap().bytes;
+    let background = photocraft_io::export_with(&doc, "png", &opts, &photocraft_raster::Interrupt::NONE).unwrap();
+    assert_eq!(bytes, background.bytes);
+    let decoded = photocraft_codecs::decode(&bytes).unwrap();
+    assert_eq!(decoded.meta.exif.as_deref(), doc.metadata.exif.as_deref().map(Vec::as_slice));
+    assert!(decoded.meta.xmp.is_none());
+    assert!(decoded.meta.text.is_empty());
+    assert_eq!(decoded.icc.as_deref(), doc.icc_profile.as_deref().map(Vec::as_slice));
+    assert!((decoded.meta.dpi.unwrap().0 - 300.0).abs() < 0.01);
+    assert!(decoded.data().as_chunks::<4>().0.iter().all(|p| p[3] == 0));
+    assert_eq!(doc, original);
+}

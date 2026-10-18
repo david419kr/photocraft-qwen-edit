@@ -27,11 +27,21 @@ semantic merge complete without the full supplied handoff text.
    package tests, full native/HEIF/font variants, corpus, WASM/web size,
    format, lint, layers and scorecard checks. Preserve every existing floor.
    Record pass/fail/ignored/not-run separately for the exact candidate SHA.
+   Ubuntu/Linux, Windows and Qwen regressions remain required. FreeBSD is
+   optional and manual-only, excluded from candidate acceptance from this
+   0.10.0 candidate onward by the user's 2026-10-18 instruction.
 5. Build Windows x64 MSVC with static CRT through the fork packager. Check
    executable version, imports, exact 18-file/six-root-entry package, licenses,
    scripts, README and SHA256. Never package model/runtime installations or
    personal settings. Adapt the candidate workflow's guarded branch/version
-   for the new update; its current 0.9.0 guard is intentionally narrow.
+   for the new update; its current 0.10.0 guard is intentionally narrow.
+   For an explicitly authorized workflow/documentation-only follow-up, compare
+   the complete diff with the validated source before reusing evidence. Record
+   both SHAs and the exact changed files; never relabel an existing ZIP as built
+   from the newer SHA. Keep its embedded version, source SHA and hashes intact.
+   Validate the changed workflows/docs without automatically repeating all heavy
+   builds when application, dependency, asset and packaging inputs are unchanged.
+   This does not waive tests for application/build changes or alter normal CI.
 6. Push the candidate, provide a draft PR and downloadable ZIP, and leave the
    actual CUDA/VRAM/UI acceptance checklist explicit. Automatic update runs
    stop here. Future main merge and public release require fresh user approval.
@@ -79,5 +89,12 @@ Do not create an additional scheduler as part of a candidate update.
 On 2026-10-13 the user explicitly removed the `schedule` triggers from
 `.github/workflows/perf-nightly.yml`, `freebsd.yml` and `windows-arm64.yml`.
 Preserve this fork choice during upstream updates: do not restore their cron
-schedules without new approval. Keep their manual dispatch, existing PR
-triggers and all jobs/checks; ordinary CI and Qwen candidate validation remain.
+schedules without new approval. Keep manual dispatch and all jobs/checks.
+
+On 2026-10-18 the user further made FreeBSD **manual-only and non-required**,
+effective for the current 0.10.0 candidate and future updates. Its workflow has
+only `workflow_dispatch`; do not restore PR, push or schedule triggers. Run it
+only on explicit request, and do not rerun a cancelled FreeBSD job without new
+authorization. Ubuntu and the remaining general CI, Windows/ARM64, corpus,
+Clippy, wasm/web and Qwen regression checks remain enabled and required as
+applicable. The other workflows' existing PR triggers are preserved.

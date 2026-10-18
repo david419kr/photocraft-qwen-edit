@@ -280,10 +280,11 @@ pub fn pointer(app: &mut PhotocraftApp, ev: ToolEvent, mods: egui::Modifiers) ->
             }
             set_ruler(app, r);
         }
-        (Tool::Ruler, ToolEvent::Up { .. })
-            if app.ui.analysis.drag.take() == Some(Drag::RulerNew) && doc.measurement.ruler.is_some_and(|r| dist(r.start, r.end) < 0.5) =>
-        {
-            let _ = app.run("image.analysis.rulerTool", json!({"clear": true}));
+        (Tool::Ruler, ToolEvent::Up { .. }) => {
+            let drag = app.ui.analysis.drag.take();
+            if drag == Some(Drag::RulerNew) && doc.measurement.ruler.is_some_and(|r| dist(r.start, r.end) < 0.5) {
+                let _ = app.run("image.analysis.rulerTool", json!({"clear": true}));
+            }
         }
         (Tool::Count, ToolEvent::Down { x, y, .. }) => {
             let hit = nearest_marker(&doc, [x, y], tol);

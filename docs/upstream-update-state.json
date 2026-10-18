@@ -1,75 +1,106 @@
 {
-  "status": "candidate-validation",
+  "status": "candidate-application-validated",
   "upstream_repository": "storytold/photocraft",
-  "upstream_release_id": 412944200,
-  "upstream_tag": "v0.9.0",
-  "upstream_sha": "c699e3cda69f4852b43c0b191ab0091aaeff9d6a",
-  "upstream_published_at": "2026-10-14T16:36:26Z",
+  "upstream_release_id": 416221086,
+  "upstream_tag": "v0.10.0",
+  "upstream_sha": "8407d9ccb125af52944fca9d228383459f94aaef",
+  "upstream_published_at": "2026-10-18T04:01:42Z",
   "fork_repository": "david419kr/photocraft-qwen-edit",
-  "fork_base_sha": "8a97a1b43d963286cd4ce171319b46a706e39fbd",
-  "merge_base_sha": "d43db3e153c76aefce9b32cef9099e458eaf17a8",
-  "candidate_branch": "update/0.9.0",
+  "fork_base_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
+  "merge_base_sha": "c699e3cda69f4852b43c0b191ab0091aaeff9d6a",
+  "candidate_branch": "update/0.10.0",
   "candidate_sha_record": "PR head and matching CI run head_sha",
   "main_merge_authorized": false,
   "public_release_authorized": false,
   "previous_completed_release": {
-    "tag": "261014-0.8.2",
-    "release_id": 411816689,
-    "main_sha": "8a97a1b43d963286cd4ce171319b46a706e39fbd",
-    "upstream_release_id": 410949848
+    "tag": "261015-0.9.0",
+    "release_id": 413311718,
+    "main_sha": "d211a1280e3fd396a8de55a83ffea13ef09b2c8d",
+    "upstream_release_id": 412944200
   },
-  "transport": {
-    "method": "Initial connected GitHub app source bundle; resumed through existing authorized shell Git credential",
-    "source_run": 38611523568,
-    "artifact_id": 11918900855,
-    "current": "Existing shell GH_TOKEN and ordinary Git read/push verified; no account or permission changes. Earlier Actions GITHUB_TOKEN workflows rejection was separate."
-  },
-  "validation": "Pending exact-head full CI and final Windows ZIP verification. PR #6 records every candidate/run and final acceptance; no Clippy exception applies.",
-  "pull_request": 6,
-  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/6",
+  "validation": "Full application CI and Qwen regressions passed at validated_application_sha. The final workflow/docs-only follow-up reuses byte-identical application/build inputs under explicit user authorization; exact final SHA, scoped checks and unchanged artifact provenance are recorded in PR #7. No Clippy exception. FreeBSD is optional/manual-only from this candidate onward.",
+  "pull_request": 7,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/7",
   "validation_history": [
     {
-      "candidate_sha": "3009a8f390aa7d4c1c15dd4c5c7a4e6233548fab",
-      "ci_run": 38613834074,
-      "candidate_run": 38613825458,
+      "candidate_sha": "f08e076526087abe2c61437ed74df442a99aa098",
+      "candidate_run": 39102902395,
+      "ci_run": 39102919057,
+      "status": "superseded during source review: UI field array length reconciled to 46"
+    },
+    {
+      "candidate_sha": "2a2ed881a9eef69c899d31c7b002c7c92114651c",
+      "ci_run": 39102959808,
+      "candidate_run": 39102956333,
       "passed": [
-        "stable early Clippy",
-        "wasm32",
-        "corpus",
-        "Windows x64 static CRT package (provisional artifact 11920147545)"
+        "latest stable complete workspace/all-targets HEIF Clippy",
+        "documentation",
+        "packaging lint",
+        "Nix evaluation",
+        "Windows updater replacement/rollback"
       ],
+      "status": "semantic review identified upstream EXIF-only export conflated with fork Metadata None; corrective candidate pending",
       "failed": [
-        "native UI Serbian translation coverage (3 tests on both platforms)",
-        "web size 25205976 > 25165824 bytes",
-        "Rust 1.95 CR3 collapsible_match; focused regressions not run"
+        "Rust 1.95 Clippy nonminimal_bool at canvas.rs:4361; focused tests not executed"
       ]
     },
     {
-      "candidate_sha": "096e29567ad9ad9a5db2a580546705b947326ce0",
-      "ci_run": 38624277794,
-      "candidate_run": 38624268472,
-      "local_passed": {
-        "full_rust_195_clippy": true,
-        "translation_tests": 45,
-        "selected_tool_tests": 6,
-        "export_dialog_tests": 13,
-        "menu_parity": "635/635",
-        "layering": true,
-        "mock_cpu_korean_ui_visual": true
-      },
-      "failed": [
-        "web size 25208562 > 25165824 bytes; ineffective serde profile experiment reverted"
+      "candidate_sha": "4cc7df0f5323c240d87444dbdb0cddb4e200b942",
+      "ci_run": 39103745245,
+      "candidate_run": 39103742756,
+      "local_passed": [
+        "metadata policy round trips: 3",
+        "package verifier: 6 (3 Windows tests skipped locally)",
+        "menu parity: 635/635"
       ],
-      "superseded": "Stronger Binaryen -Ozz optimization; remaining previous-head CI superseded"
+      "local_failed": [
+        "export dialog tests: 15 passed, layered preview estimate test assumed missing metadata meant None; expanded to validate missing, None, EXIF and All independently"
+      ]
     },
     {
-      "candidate_sha": "c9c49b5a8ec9920067c67ff0060269f9504f2d66",
-      "ci_run": 38625511949,
-      "candidate_run": 38625503433,
-      "failed": [
-        "Trunk 0.21.14 rejects wasm-opt level zz before compilation; restored supported z"
+      "candidate_sha": "51e28e642c6534803495f1c553a8bce0d386057f",
+      "ci_run": 39104037649,
+      "candidate_run": 39104035041,
+      "local_passed": [
+        "export dialog tests: 16",
+        "Korean Qwen and Export As offscreen render with mock backend/CPU canvas"
       ],
-      "repair": "Build-only Zopfli 0.8.4 for existing DEFLATE font/catalog streams; measured 121676 bytes saved with identical inflated contents"
+      "review_finding": "Metadata None stripped ICC correctly, but upstream Embed Color Profile checkbox still appeared checked. Display effective disabled/unchecked state and retain the remembered EXIF/All choice; extended policy assertions pass."
+    },
+    {
+      "candidate_sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7",
+      "ci_run": 39107185695,
+      "candidate_run": 39107182671,
+      "status": "full application CI, Qwen regressions, ARM64, docs, packaging lint and Nix passed; FreeBSD x86_64 passed, aarch64 cancelled and excluded by explicit user decision",
+      "fork_regressions": {
+        "groups": 20,
+        "passed": 383,
+        "failed": 0,
+        "ignored": 0
+      },
+      "final_followup_scope": "FreeBSD trigger policy and update docs/state only; preserve all application/build/package inputs and original ZIP provenance"
     }
-  ]
+  ],
+  "validated_application_sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7",
+  "optional_checks": {
+    "freebsd": {
+      "automatic": false,
+      "required_for_candidate": false,
+      "workflow": "freebsd.yml",
+      "trigger": "workflow_dispatch",
+      "authorization_date": "2026-10-18",
+      "last_run": 39107185848,
+      "x86_64": "passed build/tests/package",
+      "aarch64": "cancelled per final user instruction; not passed; do not rerun"
+    }
+  },
+  "windows_candidate": {
+    "source_sha": "9ae61f2c6cb53a3683a72ec769d12039ffe0ddf7",
+    "run_id": 39107182671,
+    "artifact_id": 12128753534,
+    "inner_zip_sha256": "2dd1984275c95679a8e11afe1bd04c3288698274d74a612987f69537b59479eb",
+    "executable_sha256": "0d9661902b2a9906ddf4d6d6d3a5633ff355c651c3ce8eda988498508cc189ff",
+    "independently_verified": true,
+    "relabel_as_later_source": false
+  }
 }
