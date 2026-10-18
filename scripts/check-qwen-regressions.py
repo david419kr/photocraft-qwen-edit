@@ -13,6 +13,7 @@ def main():
     cases = [
         ("ui-selected-tool", ["-p", "photocraft-ui-egui", "--lib", "selected_tool_"]),
         ("app-updater", ["-p", "photocraft", "--bin", "photocraft", "updater::tests"]),
+        ("app-directories", ["-p", "photocraft", "--bin", "photocraft", "app_dirs::tests"]),
         ("ui-updates", ["-p", "photocraft-ui-egui", "--lib", "updates::tests"]),
         ("engine-ai", ["-p", "photocraft-engine", "--lib", "ai_"]),
         ("engine-comfyui", ["-p", "photocraft-engine", "--lib", "comfyui"]),

@@ -54,6 +54,11 @@ both VM jobs. No test is disabled, and no upstream repository is modified.
 The Rust 1.95 pre-regression Clippy command now covers the complete workspace,
 all targets and HEIF, matching the current-stable gate instead of limiting
 compatibility linting to four fork crates. Desktop workspace features retain AVIF.
+This found one additional Rust 1.95 `nonminimal_bool` diagnostic in upstream's
+`apps/photocraft/src/app_dirs.rs:376`, outside the former four-crate gate. Use the
+equivalent `is_none_or` predicate; non-UTF8 and non-staging names remain untouched.
+Existing migration/staging tests remain in the complete native suites. No lint
+allowance or floor change is used.
 
 The preceding candidate's downloaded Windows artifact `12128417199` was independently
 verified: exactly 18 files / six roots, embedded licenses, x64 PE, no dynamic CRT
