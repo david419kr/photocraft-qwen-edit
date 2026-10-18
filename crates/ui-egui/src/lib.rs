@@ -324,7 +324,13 @@ impl ExportSettings {
         opts.encode.embed_icc = self.embed_icc;
         opts.encode.embed_metadata = self.embed_metadata;
         opts.tiff_layers = self.tiff_layers;
-        opts.xmp = if self.xmp_all { photocraft_io::XmpEmbed::All } else { photocraft_io::XmpEmbed::None };
+        opts.xmp = if self.xmp_all {
+            photocraft_io::XmpEmbed::All
+        } else if self.embed_metadata {
+            photocraft_io::XmpEmbed::ExifOnly
+        } else {
+            photocraft_io::XmpEmbed::None
+        };
         opts.tga_bits = self.tga_bits;
         opts.image_previews = self.image_previews;
         opts.psd_maximize_compatibility = self.psd_maximize_compatibility;

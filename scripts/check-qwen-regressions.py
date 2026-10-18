@@ -19,6 +19,7 @@ def main():
         ("engine-prefs", ["-p", "photocraft-engine", "--lib", "prefs"]),
         ("ui-ai", ["-p", "photocraft-ui-egui", "--lib", "ai_"]),
         ("ui-widgets", ["-p", "photocraft-ui-egui", "--lib", "widgets"]),
+        ("ui-export", ["-p", "photocraft-ui-egui", "--lib", "export_dialog::tests"]),
         ("ui-history", ["-p", "photocraft-ui-egui", "--lib", "history"]),
         ("ui-catalogs", ["-p", "photocraft-ui-egui", "--lib", "i18n::tests::"]),
         ("ui-preference-labels", ["-p", "photocraft-ui-egui", "--lib", "preference_labels_are_translated"]),

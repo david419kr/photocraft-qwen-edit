@@ -1285,9 +1285,11 @@ mod tests {
         f.insert("embedProfile".into(), json!(false));
         let none = settings(&f);
         assert!(!none.xmp_all && !none.embed_metadata && !none.embed_icc);
+        assert_eq!(none.io_options().xmp, photocraft_io::XmpEmbed::None);
         f.insert("metadata".into(), json!("exif"));
         let exif = settings(&f);
         assert!(!exif.xmp_all && exif.embed_metadata);
+        assert_eq!(exif.io_options().xmp, photocraft_io::XmpEmbed::ExifOnly);
         f.insert("metadata".into(), json!("all"));
         f.insert("embedProfile".into(), json!(true));
         let all = settings(&f);

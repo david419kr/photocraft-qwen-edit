@@ -158,6 +158,8 @@ pub enum XmpEmbed {
     /// Embed the document's whole XMP packet and free-form text.
     #[default]
     All,
+    /// Keep EXIF, resolution and the selected ICC profile, but remove XMP and free-form text.
+    ExifOnly,
     /// Remove XMP (including AI history), EXIF and text; flat codecs also omit ICC/DPI.
     /// PNG additionally fixes alpha LSBs to one to remove the hidden payload carrier.
     None,
@@ -390,10 +392,12 @@ const PSD_MODEL_DONE: f32 = 0.9;
 
 fn export_stages(doc: &Document, name_or_ext: &str, opts: &ExportOptions, ctl: &photocraft_raster::Interrupt) -> Result<ExportResult, IoError> {
     let mut clean;
-    let doc = if opts.xmp == XmpEmbed::None {
+    let doc = if opts.xmp != XmpEmbed::All {
         clean = doc.clone();
         clean.metadata.xmp = None;
-        clean.metadata.exif = None;
+        if opts.xmp == XmpEmbed::None {
+            clean.metadata.exif = None;
+        }
         clean.metadata.text.clear();
         &clean
     } else {

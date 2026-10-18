@@ -11,6 +11,8 @@ LICENSES = {
     "avif-encoder.txt", "OFL-Inter.txt", "OFL-JetBrainsMono.txt", "LICENSE-lucide.txt",
     "LICENSE-translations.txt", "LICENSE-app-icon.txt", "artcraft-brand-terms.txt",
 }
+NOTICE_LICENSES = ("assets/dict/LICENSE-SCOWL.txt", "crates/algo/data/LICENSE-libfacedetection.txt")
+
 SCRIPTS = {"install-qwen-image21.ps1", "qwen-image21-setup.py", "install-comfyui-hymt2.ps1"}
 EXPECTED = {"photocraft.exe", "portable.txt", "README.txt", "install-qwen-image21.cmd"}
 EXPECTED |= {"licenses/" + name for name in LICENSES} | {"scripts/" + name for name in SCRIPTS}
@@ -41,6 +43,11 @@ def verify(archive, executable):
             bundle.read(name).decode("utf-8")
         if b"licenses/artcraft-brand-terms.txt" not in bundle.read("licenses/NOTICE.txt"):
             raise ValueError("Packaged NOTICE points to a missing brand terms path")
+        notice = bundle.read("licenses/NOTICE.txt").decode("utf-8").replace("\r\n", "\n")
+        for source in NOTICE_LICENSES:
+            license_text = (Path(__file__).resolve().parents[1] / source).read_text(encoding="utf-8").strip()
+            if license_text not in notice:
+                raise ValueError(f"Packaged NOTICE omits full embedded-material license: {source}")
     return len(EXPECTED)
 
 

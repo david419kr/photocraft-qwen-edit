@@ -18,9 +18,12 @@ class PortableTests(unittest.TestCase):
         self.exe.write_bytes(b"synthetic binary, not a Windows build")
         self.archive = self.root / "candidate.zip"
 
-    def package(self, extra=None, missing=None, binary=None):
+    def package(self, extra=None, missing=None, binary=None, omit_notice_license=False):
         files = {name: b"test" for name in portable.EXPECTED}
         files["licenses/NOTICE.txt"] = b"See licenses/artcraft-brand-terms.txt"
+        if not omit_notice_license:
+            for source in portable.NOTICE_LICENSES:
+                files["licenses/NOTICE.txt"] += b"\n" + (Path(__file__).resolve().parents[2] / source).read_bytes()
         files["photocraft.exe"] = binary or self.exe.read_bytes()
         if extra:
             files[extra] = b"must not ship"
@@ -45,6 +48,11 @@ class PortableTests(unittest.TestCase):
     def test_missing_license_is_rejected(self):
         self.package(missing="licenses/oxideav-MIT.txt")
         with self.assertRaisesRegex(ValueError, "file set"):
+            portable.verify(self.archive, self.exe)
+
+    def test_missing_embedded_material_license_is_rejected(self):
+        self.package(omit_notice_license=True)
+        with self.assertRaisesRegex(ValueError, "omits full embedded-material license"):
             portable.verify(self.archive, self.exe)
 
     def test_wrong_executable_is_rejected(self):

@@ -535,11 +535,13 @@ pub(crate) fn export_flat_with(doc: &Document, format: Format, opts: &ExportOpti
     let mut img = document_to_image_for(doc, &mut warnings, cmyk_target, lab_target)?;
     ctl.check().map_err(|_| IoError::Cancelled)?;
     ctl.progress(composite_share(format));
-    if opts.xmp == XmpEmbed::None {
+    if opts.xmp != XmpEmbed::All {
         // Export As's Metadata: None: the packet lists the text of every type layer and one id
         // per placed document (#647).
         img.meta.xmp = None;
-        img.meta.exif = None;
+        if opts.xmp == XmpEmbed::None {
+            img.meta.exif = None;
+        }
         img.meta.text.clear();
     }
     if img.layout().has_alpha() && !format.caps().alpha {
@@ -829,7 +831,7 @@ fn export_mode_specific(doc: &Document, format: Format, opts: &ExportOptions) ->
                 }));
                 Ok(())
             });
-            let xmp = if opts.xmp == XmpEmbed::None { None } else { doc.metadata.xmp.clone() };
+            let xmp = doc.metadata.xmp.clone().filter(|_| opts.xmp == XmpEmbed::All);
             let bytes = if opts.xmp == XmpEmbed::None {
                 codecs::encode_png_indexed_clean(doc.size.width, doc.size.height, &idx, &table.colors, table.transparent)?
             } else {

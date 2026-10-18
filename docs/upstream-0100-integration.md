@@ -18,11 +18,14 @@ The merge brings the release tag, not upstream main. The full Library handoff wa
 - Retain the fork CLI identity using upstream's broken-pipe-safe stdout writer. Keep ComfyUI session setup together with Linux print-portal setup and the new presentation cap.
 - Move all three fork update shell commands into the new engine-owned shell command table. Keep their UI implementations.
 - Keep both AVIF and Cineon open extensions and AVIF read/write capabilities. Retain XMP prompt history and Metadata None handling while integrating Lab TIFF and decode-once paths.
+- Resolve the automatically merged EXIF-only export option separately from Metadata None: keep camera EXIF/ICC/DPI without XMP/text, while None still strips private metadata and PNG alpha payload bits. Add foreground/background PNG round-trip coverage and UI-to-IO policy assertions.
 - Combine preference schema exceptions for alternate shortcuts and ComfyUI model settings. Retain fork tool-selection regression tests alongside expanded upstream temporary-tool tests.
 - Preserve all fork translation entries and incorporate upstream additions; remove duplicate catalog keys without dropping AI/update messages.
 - Preserve latest stable whole-workspace/all-targets HEIF Clippy before native suites, including the new upstream variant jobs. Keep Rust 1.95 portable and focused compatibility gates, without lint exemptions.
 - README.md and README.ko.md remain byte-identical to fork main. Tool inventory stays in docs/native-tools.md; removed scheduled workflows remain unscheduled.
 - Qwen routing/model sampling, HyMT workers/full-free protocol and installer pins are unchanged. No ComfyUI/model upgrades.
+
+- Package the newly embedded libfacedetection BSD-3-Clause license and existing SCOWL notices in full inside licenses/NOTICE.txt. The canonical packager and verifier retain exactly 18 files and six root entries.
 
 ## Validation
 

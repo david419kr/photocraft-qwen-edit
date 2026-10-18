@@ -27,6 +27,22 @@
       "candidate_run": 39102902395,
       "ci_run": 39102919057,
       "status": "superseded during source review: UI field array length reconciled to 46"
+    },
+    {
+      "candidate_sha": "2a2ed881a9eef69c899d31c7b002c7c92114651c",
+      "ci_run": 39102959808,
+      "candidate_run": 39102956333,
+      "passed": [
+        "latest stable complete workspace/all-targets HEIF Clippy",
+        "documentation",
+        "packaging lint",
+        "Nix evaluation",
+        "Windows updater replacement/rollback"
+      ],
+      "status": "semantic review identified upstream EXIF-only export conflated with fork Metadata None; corrective candidate pending",
+      "failed": [
+        "Rust 1.95 Clippy nonminimal_bool at canvas.rs:4361; focused tests not executed"
+      ]
     }
   ]
 }
