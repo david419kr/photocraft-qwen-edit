@@ -1,0 +1,111 @@
+name: Publish Qwen prompt update 261019
+
+on:
+  push:
+    branches: ['publish/261019-0.10.0']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qwen-candidate-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: never
+  CARGO_INCREMENTAL: 0
+  RUST_BACKTRACE: 1
+  PHOTOCRAFT_NO_PRINT: "1"
+  LPDEST: photocraft-no-such-printer
+  PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
+  QWEN_UPSTREAM_SHA: 8407d9ccb125af52944fca9d228383459f94aaef
+  QWEN_BASE_SHA: d211a1280e3fd396a8de55a83ffea13ef09b2c8d
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 120
+    env:
+      CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS: '-C target-feature=+crt-static'
+      PHOTOCRAFT_REQUIRE_WINRES: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: a3088336
+      - name: Set release identity
+        shell: pwsh
+        run: Set-Content -NoNewline release-tag.txt '261019-0.10.0'
+      - name: Check candidate ancestry
+        shell: pwsh
+        run: |
+          git merge-base --is-ancestor $env:QWEN_UPSTREAM_SHA HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Upstream release SHA is not an ancestor.' }
+          git merge-base --is-ancestor $env:QWEN_BASE_SHA HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Fork base SHA is not an ancestor.' }
+      - uses: dtolnay/rust-toolchain@1.95.0
+        with:
+          targets: x86_64-pc-windows-msvc
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: qwen-candidate-windows-static-crt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build Windows x64 with static CRT and AVIF
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist | Out-Null
+          $version = [regex]::Match((Get-Content Cargo.toml -Raw), '(?s)\[workspace\.package\].*?version\s*=\s*"([^"]+)"').Groups[1].Value
+          $env:PHOTOCRAFT_RELEASE_TAG = (Get-Content release-tag.txt -Raw).Trim()
+          if (!$env:PHOTOCRAFT_RELEASE_TAG.EndsWith("-$version")) { throw 'Release tag does not match workspace version.' }
+          cargo +1.95.0 build --locked -p photocraft --release --target x86_64-pc-windows-msvc 2>&1 | Tee-Object -FilePath dist/candidate-build.log
+          if ($LASTEXITCODE -ne 0) { throw 'Windows candidate build failed.' }
+      - name: Package and verify candidate
+        shell: pwsh
+        run: ./scripts/build-qwen-candidate.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qwen-windows-x64-${{ github.sha }}
+          path: |
+            dist/*.zip
+            dist/*.zip.sha256
+            dist/candidate-build.json
+            dist/candidate-dependents.txt
+            dist/candidate-headers.txt
+            dist/candidate-version.txt
+            dist/candidate-build.log
+          if-no-files-found: error
+          retention-days: 14
+      - name: Publish release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          @'
+          Date build **261019**, based on upstream **PhotoCraft 0.10.0**. The date tracks this fork; the version suffix tracks the upstream base.
+          
+          ## Download and start
+          Download the Windows x64 ZIP, extract it, and read the included **README.txt**. For a new setup, run **install-qwen-image21.cmd**, press Enter for the default folder, and answer the setup questions before downloads begin. Start the generated **0. Run-Qwen-Image21** shortcut, then **photocraft.exe**.
+          
+          Requires **Windows x64 + NVIDIA RTX** and a CUDA 13 compatible driver. ComfyUI and model files are downloaded separately. Existing ComfyUI installations, models and personal settings do not need to be replaced. Optional translation: **Hy-MT2 1.8B is recommended** for lower VRAM use; 7B uses more VRAM.
+          
+          ## Included
+          - Makes background removal prompts apply to all subject types, preserving original shapes and edges without inventing hair or fur details.
+          - Preserves remembered tool selection with temporary spring-loaded and pen-eraser switching.
+          - Retains local Qwen generation, editing, Generative Fill/removal, optional prompt translation, prompt history, AVIF, Korean UI, non-destructive layers, Undo and cancellation.
+          - Keeps automatic update checks, manual checking in **Help → About PhotoCraft**, and safe executable replacement with rollback. Save modified documents before installing.
+          
+          This update does not change ComfyUI, model or translation-node versions. Automatic installation replaces only **photocraft.exe**; it does not reinstall models or overwrite personal settings.
+          
+          ## Guides
+          [English guide and screenshots](https://github.com/david419kr/photocraft-qwen-edit/blob/main/README.md)  
+          [한국어 가이드 및 스크린샷](https://github.com/david419kr/photocraft-qwen-edit/blob/main/README.ko.md)
+          
+          ZIP layout: **licenses/**, **scripts/**, **install-qwen-image21.cmd**, **photocraft.exe**, **portable.txt**, **README.txt**. Personal settings, documents and model weights are excluded. The Windows executable includes its CRT. A SHA256 sidecar and build provenance are provided.
+          
+          '@ | Set-Content -Encoding utf8 dist/release-notes.md
+          Copy-Item dist/candidate-build.json dist/release-provenance.json
+          gh release create 261019-0.10.0 dist/photocraft-qwen-edit-261019-0.10.0-windows-x64.zip dist/photocraft-qwen-edit-261019-0.10.0-windows-x64.zip.sha256 dist/release-provenance.json --target a3088336 --title "PhotoCraft Local Qwen AI - 261019 (upstream 0.10.0)" --notes-file dist/release-notes.md --latest
+          if ($LASTEXITCODE -ne 0) { throw 'Release publication failed.' }
