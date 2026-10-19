@@ -18,7 +18,7 @@ env:
   RUST_BACKTRACE: 1
   PHOTOCRAFT_NO_PRINT: "1"
   LPDEST: photocraft-no-such-printer
-  PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
+  PHOTOCRAFT_BUILD_SHA: a3088336c4e9817885135bd21e0308a7553fe8cd
   QWEN_UPSTREAM_SHA: 8407d9ccb125af52944fca9d228383459f94aaef
   QWEN_BASE_SHA: d211a1280e3fd396a8de55a83ffea13ef09b2c8d
 
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: a3088336
+          ref: a3088336c4e9817885135bd21e0308a7553fe8cd
       - name: Set release identity
         shell: pwsh
         run: Set-Content -NoNewline release-tag.txt '261019-0.10.0'
@@ -107,5 +107,5 @@ jobs:
           
           '@ | Set-Content -Encoding utf8 dist/release-notes.md
           Copy-Item dist/candidate-build.json dist/release-provenance.json
-          gh release create 261019-0.10.0 dist/photocraft-qwen-edit-261019-0.10.0-windows-x64.zip dist/photocraft-qwen-edit-261019-0.10.0-windows-x64.zip.sha256 dist/release-provenance.json --target a3088336 --title "PhotoCraft Local Qwen AI - 261019 (upstream 0.10.0)" --notes-file dist/release-notes.md --latest
+          gh release create 261019-0.10.0 dist/photocraft-qwen-edit-261019-0.10.0-windows-x64.zip dist/photocraft-qwen-edit-261019-0.10.0-windows-x64.zip.sha256 dist/release-provenance.json --target a3088336c4e9817885135bd21e0308a7553fe8cd --title "PhotoCraft Local Qwen AI - 261019 (upstream 0.10.0)" --notes-file dist/release-notes.md --latest
           if ($LASTEXITCODE -ne 0) { throw 'Release publication failed.' }
