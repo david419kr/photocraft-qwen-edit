@@ -36,7 +36,9 @@ jobs:
           ref: a3088336c4e9817885135bd21e0308a7553fe8cd
       - name: Set release identity
         shell: pwsh
-        run: Set-Content -NoNewline release-tag.txt '261019-0.10.0'
+        run: |
+          Set-Content -Path release-tag.txt -Value '261019-0.10.0' -NoNewline
+          if ((Get-Content release-tag.txt -Raw).Trim() -ne '261019-0.10.0') { throw 'Release identity was not set.' }
       - name: Check candidate ancestry
         shell: pwsh
         run: |
