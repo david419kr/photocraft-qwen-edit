@@ -24,7 +24,7 @@ pub const REGENERATE_COMMAND: &str = "edit.aiRegenerate";
 pub const UNLOAD_MODELS_COMMAND: &str = "ai.unloadModels";
 const MAX_GENERATION_SIDE: u32 = 16_384;
 /// 05_BackgroundRemoval_AutoINT8Cache, generalised beyond its example woman.
-pub const REMOVE_BACKGROUND_PROMPT: &str = "This is an RGBA image with transparency. Extract only the foreground subject or subjects, including hair, fur, clothing and held objects. Everything else must be fully transparent. Preserve clean edges and fine hair or fur strands.";
+pub const REMOVE_BACKGROUND_PROMPT: &str = "This is an RGBA image with transparency. Extract only the foreground subject or subjects. Everything else must be fully transparent. Preserve the original shape, edges and existing details exactly as they appear in the input. Do not add or invent details. Preserve fine or semi-transparent details only where they already exist.";
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
