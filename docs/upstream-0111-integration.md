@@ -66,3 +66,10 @@ had 8 passes and 3 Windows-only skips (run on Windows separately). Layers passed
 for 31 crates; scorecard was regenerated (25 unread preferences of 178). Nix,
 documentation and packaging lint passed on the initial merge. These initial
 results are not the final-head acceptance record; consult PR #8.
+
+The first full native CI exposed AVIF missing from upstream's new named Open
+filters although the fork retained it in All Formats. Add the AVIF named filter
+and include the existing exact-coverage regression in the focused candidate
+gate. This is a fork integration correction; the assertion remains unchanged.
+The superseded candidate's Ubuntu and Windows unit failures are not accepted
+results; all required checks and artifacts must be regenerated on the correction.

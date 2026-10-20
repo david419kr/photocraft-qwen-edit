@@ -50,6 +50,7 @@ const OPEN_FILTERS: &[(&str, &[&str])] = &[
     ("SVG", SVG_EXTS),
     ("PNG", &["png"]),
     ("JPEG", &["jpg", "jpeg"]),
+    ("AVIF", &["avif"]),
     ("HEIF", &["heic", "heif", "hif"]),
     ("TIFF", &["tif", "tiff"]),
     ("WebP", &["webp"]),

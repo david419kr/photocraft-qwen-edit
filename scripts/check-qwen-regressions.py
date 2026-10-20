@@ -14,6 +14,7 @@ def main():
         ("ui-selected-tool", ["-p", "photocraft-ui-egui", "--lib", "selected_tool_"]),
         ("app-updater", ["-p", "photocraft", "--bin", "photocraft", "updater::tests"]),
         ("app-directories", ["-p", "photocraft", "--bin", "photocraft", "app_dirs::tests"]),
+        ("app-format-filters", ["-p", "photocraft", "--bin", "photocraft", "services::tests::every_open_format_has_its_own_filter"]),
         ("ui-updates", ["-p", "photocraft-ui-egui", "--lib", "updates::tests"]),
         ("engine-ai", ["-p", "photocraft-engine", "--lib", "ai_"]),
         ("engine-comfyui", ["-p", "photocraft-engine", "--lib", "comfyui"]),
