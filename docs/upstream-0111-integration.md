@@ -1,7 +1,7 @@
 # Upstream 0.11.1 candidate integration
 
-Status: candidate preparation; checks and Windows artifact are pending. The draft
-PR will record the exact final candidate SHA, run IDs and artifact hashes.
+Status: candidate validation in [draft PR #8](https://github.com/david419kr/photocraft-qwen-edit/pull/8).
+The PR records the exact final candidate SHA, run IDs and artifact hashes.
 No prior release's test results establish this candidate's validation.
 
 ## Source identity
@@ -53,3 +53,16 @@ local acceptance checks. Use a separate candidate folder and existing model
 installations. Cloud mock tests are not live GPU/UI evidence.
 
 Main merge, tags and public releases require separate user approval.
+
+## Early toolchain comparison
+
+The first Rust 1.95.0 full-workspace/all-targets HEIF Clippy found one
+`nonminimal_bool` warning in upstream `blend_preview.rs`. Replace the negated
+`is_some_and` predicate with equivalent `is_none_or`; no lint exception or test
+change is used. Fresh checks must cover the corrective head, including Windows.
+
+Initial cloud checks: 14 installer tests passed; Python package/workflow tests
+had 8 passes and 3 Windows-only skips (run on Windows separately). Layers passed
+for 31 crates; scorecard was regenerated (25 unread preferences of 178). Nix,
+documentation and packaging lint passed on the initial merge. These initial
+results are not the final-head acceptance record; consult PR #8.
