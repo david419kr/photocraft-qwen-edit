@@ -17,6 +17,7 @@ def main():
         ("ui-updates", ["-p", "photocraft-ui-egui", "--lib", "updates::tests"]),
         ("engine-ai", ["-p", "photocraft-engine", "--lib", "ai_"]),
         ("engine-comfyui", ["-p", "photocraft-engine", "--lib", "comfyui"]),
+        ("engine-web-metadata", ["-p", "photocraft-engine", "--lib", "web_cmds::tests"]),
         ("engine-prefs", ["-p", "photocraft-engine", "--lib", "prefs"]),
         ("ui-ai", ["-p", "photocraft-ui-egui", "--lib", "ai_"]),
         ("ui-widgets", ["-p", "photocraft-ui-egui", "--lib", "widgets"]),

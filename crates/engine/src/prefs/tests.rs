@@ -1,6 +1,26 @@
 use super::*;
 
 #[test]
+fn invalid_sibling_preferences_preserve_qwen_settings() {
+    let mut s = Session::new();
+    let invalid = s
+        .load_prefs_json(
+            r#"{"general":{"beepWhenDone":"invalid","automaticUpdateCheck":false},"interface":{"language":"ko"},"integrations":{"comfyuiCustomModels":"mine.safetensors","comfyuiTranslatePrompt":true,"comfyuiUrl":"http://127.0.0.1:8189"}}"#,
+        )
+        .unwrap();
+    assert_eq!(invalid.len(), 1);
+    assert_eq!(invalid[0].path(), "general.beepWhenDone");
+    assert!(!s.prefs().general.automatic_update_check);
+    assert_eq!(s.prefs().interface.language, "ko");
+    assert_eq!(s.prefs().integrations.comfyui_custom_models, "mine.safetensors");
+    assert!(s.prefs().integrations.comfyui_translate_prompt);
+    assert_eq!(s.prefs().integrations.comfyui_url, "http://127.0.0.1:8189");
+    let mut loaded = Session::new();
+    assert!(loaded.load_prefs_json(&s.prefs_to_json()).unwrap().is_empty());
+    assert_eq!(loaded.prefs().integrations, s.prefs().integrations);
+}
+
+#[test]
 fn automatic_update_check_defaults_and_round_trips() {
     let mut s = Session::new();
     s.load_prefs_json(r#"{"general":{"beepWhenDone":true}}"#).unwrap();
@@ -957,4 +977,51 @@ fn a_stranded_backup_is_named_in_the_error() {
     assert_eq!(std::fs::read_to_string(&backup[0]).unwrap(), "old A");
     assert_eq!(std::fs::read_to_string(&b).unwrap(), "old B");
     let _ = std::fs::remove_dir_all(&dir);
+}
+
+#[test]
+fn a_wrongly_typed_value_resets_only_that_field() {
+    // #6611: one bad value used to reset every preference.
+    let mut s = Session::new();
+    let invalid = s
+        .load_prefs_json(
+            r#"{"general": {"beepWhenDone": true}, "fileHandling": {"recentFileCount": "ten", "autosaveMinutes": 5},
+                "performance": {"historyStates": 20}, "shortcuts": {"edit.fill": "Cmd+Shift+F", "file.open": 7}}"#,
+        )
+        .unwrap();
+    assert!(s.prefs().general.beep_when_done);
+    assert_eq!(s.prefs().file_handling.autosave_minutes, 5, "a sibling in the same section survives");
+    assert_eq!(s.prefs().file_handling.recent_file_count, 20, "the bad value takes the default");
+    assert_eq!(s.prefs().performance.history_states, 20);
+    assert_eq!(s.prefs().shortcuts.get("edit.fill").map(String::as_str), Some("Cmd+Shift+F"));
+    assert!(!s.prefs().shortcuts.contains_key("file.open"));
+    let paths: Vec<String> = invalid.iter().map(InvalidPref::path).collect();
+    assert_eq!(paths, ["fileHandling.recentFileCount", "shortcuts.file.open"]);
+    assert_eq!(invalid[0].value, json!("ten"));
+    assert_eq!(invalid[1].keys, ["shortcuts", "file.open"]);
+}
+
+#[test]
+fn a_wrongly_typed_section_or_colour_setting_resets_only_that_part() {
+    let mut s = Session::new();
+    let invalid = s
+        .load_prefs_json(
+            r#"{"general": "loud", "performance": {"historyStates": 20},
+                "colorSettings": {"workingRgb": "display-p3", "askOnMismatch": "yes"}}"#,
+        )
+        .unwrap();
+    assert_eq!(s.prefs().general, General::default());
+    assert_eq!(s.prefs().performance.history_states, 20);
+    assert_eq!(s.color.settings.working_rgb, "display-p3", "the rest of the colour settings load");
+    let paths: Vec<String> = invalid.iter().map(InvalidPref::path).collect();
+    assert_eq!(paths, ["general", "colorSettings.askOnMismatch"]);
+    // A valid file reports nothing; one that isn't an object still fails as a whole.
+    assert!(s.load_prefs_json(&s.prefs_to_json()).unwrap().is_empty());
+    for bad in ["[1, 2]", "42", "\"prefs\"", "null", "{", ""] {
+        assert!(s.load_prefs_json(bad).is_err(), "{bad}");
+    }
+    // Deep nesting and odd values don't panic.
+    let deep = format!("{{\"general\": {}1{}}}", "{\"a\":".repeat(100), "}".repeat(100));
+    assert!(s.load_prefs_json(&deep).is_ok());
+    assert!(s.load_prefs_json(r#"{"interface": {"theme": 3, "uiScale": [1]}, "workspaces": {"x": 1}, "menus": 1}"#).is_ok());
 }

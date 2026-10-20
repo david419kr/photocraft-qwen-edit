@@ -2,7 +2,7 @@ name: Qwen Windows candidate
 
 on:
   push:
-    branches: ['update/0.10.0', 'feature/auto-upate']
+    branches: ['update/0.11.1', 'feature/auto-upate']
   workflow_dispatch:
 
 permissions:
@@ -19,8 +19,8 @@ env:
   PHOTOCRAFT_NO_PRINT: "1"
   LPDEST: photocraft-no-such-printer
   PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
-  QWEN_UPSTREAM_SHA: 8407d9ccb125af52944fca9d228383459f94aaef
-  QWEN_BASE_SHA: d211a1280e3fd396a8de55a83ffea13ef09b2c8d
+  QWEN_UPSTREAM_SHA: 46e538b3a2bacb533e89c7a30a99bbf2d91c3381
+  QWEN_BASE_SHA: a3088336c4e9817885135bd21e0308a7553fe8cd
 
 jobs:
   lint:
@@ -47,7 +47,7 @@ jobs:
 
   regressions:
     needs: lint
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.10.0' || github.ref == 'refs/heads/feature/auto-upate')
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.11.1' || github.ref == 'refs/heads/feature/auto-upate')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -93,7 +93,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.10.0' || github.ref == 'refs/heads/feature/auto-upate')
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.11.1' || github.ref == 'refs/heads/feature/auto-upate')
     runs-on: windows-2022
     timeout-minutes: 120
     env:

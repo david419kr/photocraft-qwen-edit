@@ -852,7 +852,7 @@ dependencies = [
  "maybe-owned",
  "rustix 1.1.5",
  "rustix-linux-procfs",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
  "winx",
 ]
 
@@ -1910,7 +1910,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
 dependencies = [
  "libc",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1946,6 +1946,18 @@ checksum = "8be9f3dfaaffdae2972880079a491a1a8bb7cbed0b8dd7a347f668b4150a3b93"
 dependencies = [
  "event-listener",
  "pin-project-lite",
+]
+
+[[package]]
+name = "exacl"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8de9e551ced9d700a31dacb8b168129640240fcd7a279a3fa4d59608b84ebcae"
+dependencies = [
+ "bitflags 2.13.2",
+ "log",
+ "scopeguard",
+ "uuid",
 ]
 
 [[package]]
@@ -3048,7 +3060,7 @@ checksum = "3640c1c38b8e4e43584d8df18be5fc6b0aa314ce6ebf51b53313d4306cca8e46"
 dependencies = [
  "hermit-abi",
  "libc",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -3720,7 +3732,7 @@ dependencies = [
  "objc2-foundation 0.3.2",
  "png 0.18.1",
  "thiserror 2.0.21",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -4466,7 +4478,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7d8fae84b431384b68627d0f9b3b1245fcf9f46f6c0e3dc902e9dce64edd1967"
 dependencies = [
  "libc",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -4680,7 +4692,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "arboard",
  "async-io",
@@ -4729,7 +4741,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-affinity"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "crc32fast",
  "flate2",
@@ -4739,7 +4751,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-algo"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "photocraft-color",
  "photocraft-geom",
@@ -4752,7 +4764,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-automation"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "base64 0.22.1",
  "cap-std",
@@ -4765,6 +4777,7 @@ dependencies = [
  "photocraft-geom",
  "photocraft-io",
  "rmcp",
+ "rustix 1.1.5",
  "schemars",
  "serde",
  "serde_json",
@@ -4774,7 +4787,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-cli"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "photocraft-automation",
  "photocraft-codecs",
@@ -4788,7 +4801,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-cms"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "moxcms",
  "rayon",
@@ -4796,7 +4809,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-codecs"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "exr",
  "flate2",
@@ -4819,7 +4832,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-color"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "photocraft-cms",
  "serde",
@@ -4827,7 +4840,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-compose"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "criterion",
  "photocraft-color",
@@ -4842,7 +4855,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-doc"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "photocraft-color",
  "photocraft-geom",
@@ -4853,7 +4866,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-engine"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "blake3",
  "craft-print",
@@ -4881,6 +4894,7 @@ dependencies = [
  "rayon",
  "reqwest 0.12.28",
  "roxmltree",
+ "same-file",
  "serde",
  "serde_json",
  "tempfile",
@@ -4891,10 +4905,11 @@ dependencies = [
 
 [[package]]
 name = "photocraft-format"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "blake3",
  "crc32fast",
+ "exacl",
  "flate2",
  "libc",
  "photocraft-codecs",
@@ -4908,18 +4923,19 @@ dependencies = [
  "serde",
  "serde_json",
  "thiserror 2.0.21",
+ "winsafe",
 ]
 
 [[package]]
 name = "photocraft-geom"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "serde",
 ]
 
 [[package]]
 name = "photocraft-gpu"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "half",
  "log",
@@ -4936,14 +4952,14 @@ dependencies = [
 
 [[package]]
 name = "photocraft-heif"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "heic-rs",
 ]
 
 [[package]]
 name = "photocraft-io"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "blake3",
  "craft-docpath",
@@ -4973,18 +4989,18 @@ dependencies = [
 
 [[package]]
 name = "photocraft-ipp"
-version = "0.10.0"
+version = "0.11.1"
 
 [[package]]
 name = "photocraft-ops"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "photocraft-doc",
 ]
 
 [[package]]
 name = "photocraft-paint"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "photocraft-color",
  "photocraft-geom",
@@ -4995,7 +5011,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-plugins"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "photocraft-color",
  "photocraft-geom",
@@ -5010,7 +5026,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-psd"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "flate2",
  "photocraft-psd",
@@ -5021,17 +5037,18 @@ dependencies = [
 
 [[package]]
 name = "photocraft-raster"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "photocraft-color",
  "photocraft-geom",
  "proptest",
+ "rayon",
  "serde",
 ]
 
 [[package]]
 name = "photocraft-raw"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "flate2",
  "image",
@@ -5046,7 +5063,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-tablet"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "block2 0.6.2",
  "objc2 0.6.4",
@@ -5058,7 +5075,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-testkit"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "memory-stats",
  "photocraft-color",
@@ -5069,7 +5086,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-text"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "flate2",
  "parley",
@@ -5078,13 +5095,14 @@ dependencies = [
  "photocraft-geom",
  "photocraft-psd",
  "photocraft-raster",
+ "rayon",
  "skrifa",
  "zopfli",
 ]
 
 [[package]]
 name = "photocraft-ui-egui"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "base64 0.22.1",
  "craft-print",
@@ -5127,7 +5145,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-vector"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "photocraft-color",
  "photocraft-doc",
@@ -5138,7 +5156,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-web"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "eframe",
  "egui",
@@ -5160,7 +5178,7 @@ dependencies = [
 
 [[package]]
 name = "photocraft-web-boot"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "flate2",
  "js-sys",
@@ -5553,7 +5571,7 @@ dependencies = [
  "once_cell",
  "socket2",
  "tracing",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -6113,7 +6131,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys 0.12.1",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -6181,7 +6199,7 @@ dependencies = [
  "security-framework",
  "security-framework-sys",
  "webpki-root-certs",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -6819,7 +6837,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3d1e2c7f27f8d4cb10542a02c49005dbd6e93095799d6f3be745fae9f8fedd4"
 dependencies = [
  "libc",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -7046,10 +7064,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd"
 dependencies = [
  "fastrand",
- "getrandom 0.3.4",
+ "getrandom 0.4.3",
  "once_cell",
  "rustix 1.1.5",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -7449,7 +7467,7 @@ checksum = "f2f6fb2847f6742cd76af783a2a2c49e9375d0a111c7bef6f71cd9e738c72d6e"
 dependencies = [
  "memoffset",
  "tempfile",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -8224,7 +8242,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -8804,7 +8822,7 @@ checksum = "ec7a2a501ed189703dba8b08142f057e887dfc4b2cc4db2d343ac6376ba3e0b9"
 
 [[package]]
 name = "xtask"
-version = "0.10.0"
+version = "0.11.1"
 dependencies = [
  "serde",
  "serde_json",
