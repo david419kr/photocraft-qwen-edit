@@ -39,14 +39,17 @@ fn background_exports_keep_metadata_none_and_indexed_all_contracts() {
     doc.mode = ColorMode::Indexed;
     doc.color_table = Some(ColorTable { colors: vec![[255, 0, 0]], transparent: None });
     doc.resolution_dpi = 300.0;
+    doc.file_encoding.png_stereo = Some(photocraft_codecs::PngStereo::Horizontal.mode());
     doc.metadata.xmp = Some("<private>한국어 prompt history</private>".into());
     let original = doc.clone();
     for policy in [XmpEmbed::All, XmpEmbed::None] {
-        let opts = ExportOptions { xmp: policy, ..Default::default() };
+        let mut opts = ExportOptions { xmp: policy, ..Default::default() };
+        photocraft_io::apply_file_encoding(&doc, &mut opts.encode);
         let foreground = export(&doc, "png", &opts).unwrap();
         let background = photocraft_io::export_with(&doc, "png", &opts, &photocraft_raster::Interrupt::NONE).unwrap();
         assert_eq!(foreground.bytes, background.bytes);
         let decoded = photocraft_codecs::decode(&background.bytes).unwrap();
+        assert_eq!(photocraft_codecs::png_stereo(&background.bytes), Some(photocraft_codecs::PngStereo::Horizontal));
         if policy == XmpEmbed::All {
             assert_eq!(decoded.meta.xmp, doc.metadata.xmp);
             assert!((decoded.meta.dpi.unwrap().0 - 300.0).abs() < 0.01);

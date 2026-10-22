@@ -74,7 +74,7 @@ fn ordinary_encoding_keeps_alpha_bits_and_metadata() {
 #[test]
 fn palette_transparency_cannot_keep_an_alpha_lsb_payload() {
     let palette = [[10, 20, 30], [90, 100, 110]];
-    let bytes = encode_png_indexed_clean(4, 1, &[0, 1, 0, 1], &palette, Some(0)).unwrap();
+    let bytes = encode_png_indexed_clean(4, 1, &[0, 1, 0, 1], &palette, Some(0), None).unwrap();
     assert!(chunks(&bytes).iter().all(|kind| matches!(kind, b"IHDR" | b"PLTE" | b"tRNS" | b"IDAT" | b"IEND")));
     let restored = decode(&bytes).unwrap();
     assert_eq!(restored.data(), &[10, 20, 30, 1, 90, 100, 110, 255, 10, 20, 30, 1, 90, 100, 110, 255]);
