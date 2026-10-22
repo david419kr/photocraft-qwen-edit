@@ -592,6 +592,47 @@ fn tool_presets_save_filter_select() {
     assert!(s.execute("tool.presets.new", json!({"name": "x"})).is_err());
 }
 
+#[test]
+fn tool_presets_reject_overflowing_colors_before_applying_the_brush() {
+    for channel in 0..4 {
+        for overflow in [1e100, -1e100] {
+            let mut s = Session::new();
+            s.execute("tools.setColors", json!({"foreground": [0.2, 0.4, 0.6, 0.8]})).unwrap();
+            let color = s.tools.foreground;
+            let brush = s.tools.brush.clone();
+            let brush_rev = s.tools.brush_rev;
+            let mut values = [0.2, 0.4, 0.6, 0.8];
+            values[channel] = overflow;
+            s.execute(
+                "tool.presets.new",
+                json!({
+                    "name": "Overflow", "tool": "brush", "options": {"brush": {"size": 77}, "foreground": values}
+                }),
+            )
+            .unwrap();
+            let err = s.execute("tool.presets.select", json!({"preset": "Overflow"})).unwrap_err();
+            assert!(err.to_string().contains("finite 32-bit"), "{err}");
+            assert_eq!(s.tools.foreground, color);
+            assert_eq!(s.tools.brush, brush);
+            assert_eq!(s.tools.brush_rev, brush_rev);
+        }
+    }
+}
+
+#[test]
+fn tool_presets_keep_finite_hdr_colors_and_leave_absent_colors_unchanged() {
+    let mut s = Session::new();
+    for (options, expected) in [
+        (json!({"foreground": [1.5, -0.1, 0.6, 0.8]}), [1.5, -0.1, 0.6, 0.8]),
+        (json!({"foreground": [0.2, 0.4, 0.6]}), [0.2, 0.4, 0.6, 1.0]),
+        (json!({}), [0.2, 0.4, 0.6, 1.0]),
+    ] {
+        let preset = s.execute("tool.presets.new", json!({"tool": "move", "options": options})).unwrap();
+        s.execute("tool.presets.select", json!({"preset": preset["name"]})).unwrap();
+        assert_eq!(s.tools.foreground, expected);
+    }
+}
+
 /// Crop presets are `crop` tool presets: saved, listed, persisted and deleted like the others.
 #[test]
 fn crop_presets_are_tool_presets_that_persist() {

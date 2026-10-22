@@ -3519,6 +3519,26 @@ mod tests {
     }
 
     #[test]
+    fn tool_colors_survive_restart_after_rejecting_an_overflowing_preset() {
+        let (mut app, store) = app_with_store();
+        let color = [0.2, 0.4, 0.6, 0.8];
+        app.run("tools.setColors", json!({"foreground": color})).unwrap();
+        crate::tool_memory::save_on_exit(&mut app).unwrap();
+        app.run(
+            "tool.presets.new",
+            json!({
+                "name": "Overflow", "tool": "move", "options": {"foreground": [1e100, 0.4, 0.6, 1.0]}
+            }),
+        )
+        .unwrap();
+        assert!(app.run("tool.presets.select", json!({"preset": "Overflow"})).is_err());
+        crate::tool_memory::save_on_exit(&mut app).unwrap();
+        assert_eq!(stored(&store)["toolColors"]["foreground"], json!(color));
+        let (restored, _) = app_with_saved(store.lock().unwrap().clone());
+        assert_eq!(restored.session.tools.foreground, color);
+    }
+
+    #[test]
     fn tool_colors_preserve_finite_hdr_components() {
         let (mut app, store) = app_with_store();
         let fg = [1.5, -0.1, 0.6, 1.0];
