@@ -1,6 +1,6 @@
 # Upstream 0.12.0 candidate integration
 
-Status: candidate preparation, not approved for main merge, tag or public release.
+Status: candidate validation in [draft PR #9](https://github.com/david419kr/photocraft-qwen-edit/pull/9), not approved for main merge, tag or public release.
 The draft PR and exact-head Actions records will record final validation and artifact hashes.
 
 ## Identity and admission
