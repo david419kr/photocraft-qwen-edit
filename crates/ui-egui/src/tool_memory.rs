@@ -21,6 +21,9 @@ use crate::state::{Tool, ToolOptions};
 /// The tool whose brush the session brush is, and the other painting tools' brushes.
 pub(crate) type ToolBrushes = (Tool, Vec<(Tool, BrushSettings)>);
 
+/// The sRGB stand-ins and exact inks of recently picked CMYK colours, oldest first.
+pub(crate) type CmykPicks = Vec<([f32; 3], [f32; 4])>;
+
 /// Explicit choices override temporary pen and held-key tools, even when selecting the same tool.
 pub(crate) fn select(app: &mut PhotocraftApp, tool: Tool) {
     app.stylus.tool_before_eraser = None;
@@ -89,15 +92,18 @@ fn colors(app: &PhotocraftApp) -> [[[f32; 4]; 2]; 2] {
 
 fn persist_colors(app: &mut PhotocraftApp, ctx: &egui::Context) {
     let now = colors(app);
-    if app.prefs_rt.tool_colors == Some(now) {
+    if app.prefs_rt.tool_colors == Some(now) && app.prefs_rt.tool_cmyk_picks == app.session.tools.cmyk_picks {
         return;
     }
     app.prefs_rt.tool_colors = Some(now);
+    app.prefs_rt.tool_cmyk_picks = app.session.tools.cmyk_picks.clone();
+    let cmyk_picks = &app.prefs_rt.tool_cmyk_picks;
     let [[foreground, background], [mask_foreground, mask_background]] = now;
     app.session.prefs.edit(|p| {
         p.tool_colors = json!({
             "foreground": foreground, "background": background,
             "maskForeground": mask_foreground, "maskBackground": mask_background,
+            "cmykPicks": cmyk_picks,
         });
     });
     // Panels and shortcuts can change colours after prefs_ui::tick already ran this frame.
@@ -116,10 +122,33 @@ fn restore_colors(app: &mut PhotocraftApp) {
             }
         }
     }
+    // Parse only a bounded number of valid entries, newest first, before mutating the session.
+    // `remember_cmyk` deduplicates entries and enforces the same bound as during a live session.
+    let picks: Option<CmykPicks> = saved.get("cmykPicks").and_then(Value::as_array).map(|entries| {
+        entries
+            .iter()
+            .rev()
+            .filter_map(|v| match serde_json::from_value::<([f32; 3], [f32; 4])>(v.clone()) {
+                Ok((rgb, inks)) if rgb.iter().all(|x| x.is_finite()) && inks.iter().all(|x| x.is_finite() && (0.0..=1.0).contains(x)) => Some((rgb, inks)),
+                _ => {
+                    log::warn!("Preferences: ignoring a malformed remembered CMYK colour");
+                    None
+                }
+            })
+            .take(photocraft_engine::ToolState::CMYK_PICKS)
+            .collect()
+    });
     let [pixels, mask] = pairs;
     let (current, other) = if app.session.tools.mask_targeted { (mask, pixels) } else { (pixels, mask) };
     [app.session.tools.foreground, app.session.tools.background] = current;
     app.session.tools.other_colors = other;
+    if let Some(picks) = picks {
+        app.session.tools.cmyk_picks.clear();
+        for (rgb, inks) in picks.into_iter().rev() {
+            app.session.tools.remember_cmyk(rgb, inks);
+        }
+    }
+    app.prefs_rt.tool_cmyk_picks = app.session.tools.cmyk_picks.clone();
     app.prefs_rt.tool_colors = Some(pairs);
 }
 

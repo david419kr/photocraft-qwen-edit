@@ -1008,7 +1008,7 @@ pub struct Preferences {
     /// Last selected tool, restored at launch. A tool-name string owned and validated by the
     /// shell; null in older files. Kept separate from tool options so neither overwrites the other.
     pub selected_tool: Value,
-    /// Foreground/background swatches for pixels and masks, restored by the shell at launch.
+    /// Foreground/background swatches for pixels and masks and exact CMYK picks, restored by the shell at launch.
     /// Null in older files, which retain the default black/white pixel colours.
     pub tool_colors: Value,
     /// View › Extras, the View › Show items (Pixel Grid, Grid, Guides, …) and the View › Snap To

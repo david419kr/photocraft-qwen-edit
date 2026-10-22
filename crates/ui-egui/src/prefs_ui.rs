@@ -54,6 +54,7 @@ pub struct Runtime {
     pub(crate) tool_options: Option<crate::state::ToolOptions>,
     pub(crate) selected_tool: Option<crate::state::Tool>,
     pub(crate) tool_colors: Option<[[[f32; 4]; 2]; 2]>,
+    pub(crate) tool_cmyk_picks: crate::tool_memory::CmykPicks,
     /// The tool owning the session brush and the other tools' brushes, as last remembered.
     pub(crate) tool_brushes: Option<crate::tool_memory::ToolBrushes>,
 }
@@ -3525,6 +3526,76 @@ mod tests {
         crate::tool_memory::save_on_exit(&mut app).unwrap();
         let (restored, _) = app_with_saved(store.lock().unwrap().clone());
         assert_eq!(restored.session.tools.foreground, fg);
+    }
+
+    #[test]
+    fn tool_colors_restore_cmyk_inks_for_picker_and_fill_after_swapping_and_exiting_on_a_mask() {
+        let (mut app, store) = app_with_store();
+        let cyan = [1.0, 0.0, 0.0, 0.0];
+        let magenta = [0.0, 1.0, 0.0, 0.0];
+        let fg = photocraft_color::convert::cmyk_to_rgb(cyan).map(|c| c.clamp(0.0, 1.0));
+        let bg = photocraft_color::convert::cmyk_to_rgb(magenta).map(|c| c.clamp(0.0, 1.0));
+        app.run(
+            "tools.setColors",
+            json!({
+                "foreground": fg, "foregroundCmyk": cyan, "background": bg, "backgroundCmyk": magenta
+            }),
+        )
+        .unwrap();
+        app.run("tools.swapColors", json!({})).unwrap();
+        app.session.tools.target_mask(true);
+        crate::tool_memory::save_on_exit(&mut app).unwrap();
+        let (mut restored, _) = app_with_saved(store.lock().unwrap().clone());
+        assert_eq!(restored.session.tools.picked_cmyk(fg), Some(cyan));
+        assert_eq!(restored.session.tools.picked_cmyk(bg), Some(magenta));
+        for (target, expected) in [("foreground", magenta), ("background", cyan)] {
+            crate::color_picker_ui::open(&mut restored, target);
+            assert_eq!(restored.ui.dialogs.last().unwrap().fields["__cmyk"], json!(expected));
+        }
+        restored.run("file.new", json!({"width": 4, "height": 4})).unwrap();
+        restored.run("image.mode.cmyk", json!({})).unwrap();
+        for (command, expected) in [("edit.fillForeground", magenta), ("edit.fillBackground", cyan)] {
+            restored.run(command, json!({})).unwrap();
+            let st = restored.session.active().unwrap();
+            let surface = st.doc.layer(st.active_layer.unwrap()).unwrap().surface().unwrap();
+            let pixel = surface.read_region(photocraft_geom::Rect::new(0, 0, 1, 1));
+            assert!(pixel.iter().take(4).zip(expected).all(|(a, b)| (a - b).abs() < 0.01), "{command}: {pixel:?}");
+        }
+    }
+
+    #[test]
+    fn tool_colors_save_changed_cmyk_inks_even_when_rgba_is_unchanged() {
+        let (mut app, store) = app_with_store();
+        let ctx = egui::Context::default();
+        let rgb = [0.2, 0.4, 0.6];
+        app.run("tools.setColors", json!({"foreground": rgb, "foregroundCmyk": [1, 0, 0, 0]})).unwrap();
+        crate::tool_memory::persist(&mut app, &ctx);
+        tick(&mut app, &ctx);
+        let rev = app.session.prefs.rev();
+        let inks = [0.1, 0.2, 0.3, 0.4];
+        app.run("tools.setColors", json!({"foreground": rgb, "foregroundCmyk": inks})).unwrap();
+        crate::tool_memory::persist(&mut app, &ctx);
+        assert!(app.session.prefs.rev() > rev);
+        tick(&mut app, &ctx);
+        let (restored, _) = app_with_saved(store.lock().unwrap().clone());
+        assert_eq!(restored.session.tools.picked_cmyk(rgb), Some(inks));
+    }
+
+    #[test]
+    fn tool_colors_restore_only_bounded_valid_cmyk_picks() {
+        let limit = photocraft_engine::ToolState::CMYK_PICKS;
+        let mut picks: Vec<Value> = (0..limit + 3).map(|i| json!([[i as f32 / 16.0, 0.2, 0.3], [0.1, 0.2, 0.3, 0.4]])).collect();
+        picks.extend([json!("bad"), json!([[0, 0, 0], [1, 0, 0]]), json!([[0, 0, 0], [2, 0, 0, 0]]), json!([[1e100, 0, 0], [1, 0, 0, 0]])]);
+        let (app, _) = app_with_saved(Some(
+            json!({
+                "toolColors": {"foreground": [0.2, 0.4, 0.6, 1.0], "cmykPicks": picks}
+            })
+            .to_string(),
+        ));
+        assert_eq!(app.session.tools.foreground, [0.2, 0.4, 0.6, 1.0]);
+        assert_eq!(app.session.tools.cmyk_picks.len(), limit);
+        assert_eq!(app.session.tools.picked_cmyk([0.0, 0.2, 0.3]), None);
+        assert_eq!(app.session.tools.picked_cmyk([(limit + 2) as f32 / 16.0, 0.2, 0.3]), Some([0.1, 0.2, 0.3, 0.4]));
     }
 
     #[test]
