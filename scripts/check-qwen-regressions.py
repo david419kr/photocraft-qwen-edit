@@ -12,6 +12,8 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
     cases = [
         ("app-gpu-startup", ["-p", "photocraft", "--bin", "photocraft", "gpu_startup::tests"]),
+        ("ui-tool-colors", ["-p", "photocraft-ui-egui", "--lib", "tool_colors_"]),
+        ("engine-tool-presets", ["-p", "photocraft-engine", "--lib", "tool_presets_"]),
         ("ui-selected-tool", ["-p", "photocraft-ui-egui", "--lib", "selected_tool_"]),
         ("app-updater", ["-p", "photocraft", "--bin", "photocraft", "updater::tests"]),
         ("app-directories", ["-p", "photocraft", "--bin", "photocraft", "app_dirs::tests"]),
