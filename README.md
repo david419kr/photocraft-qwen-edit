@@ -71,9 +71,9 @@ With enough VRAM, the image and translation models stay resident between jobs. C
 
 ## Fork scope and versions
 
-Added features: local AI generation/edit/fill/removal, background removal, reroll, optional English translation, prompt metadata/history, model settings, Korean UI additions and AVIF read/write/export. Numeric-field wheel input and AI Ctrl+Enter remain available. Original upstream shortcuts, Brush startup and export defaults are retained. AVIF export currently targets SDR; HDR preservation is outside the current scope.
+Added features: local AI generation/edit/fill/removal, background removal, reroll, optional English translation, prompt metadata/history, model settings, Korean UI additions and AVIF read/write/export. Numeric-field wheel input and AI Ctrl+Enter remain available. Original upstream shortcuts and export defaults are retained. The last selected tool and foreground/background colors are restored across launches. AVIF export currently targets SDR; HDR preservation is outside the current scope.
 
-Tags use **`YYMMDD-upstreamVersion`**, for example `261012-0.6.0`: the date identifies this fork's build and the suffix identifies the upstream base. Candidate base: **PhotoCraft 0.12.0** (not released). Setup pins official ComfyUI **v0.39.0** and the [resident Hy-MT2 fork](https://github.com/david419kr/ComfyUI-Hy-MT2).
+Tags use **`YYMMDD-upstreamVersion`** or **`YYMMDD-N-upstreamVersion`** for a same-day revision (N starts at 2). The date identifies this fork's build and the suffix identifies the upstream base. This candidate is **`261022-2-0.12.0`**, based on **PhotoCraft 0.12.0**, and adds persistent foreground/background colors. Setup pins official ComfyUI **v0.39.0** and the [resident Hy-MT2 fork](https://github.com/david419kr/ComfyUI-Hy-MT2).
 
 [AI notes](docs/comfyui.md) · [Architecture](docs/architecture.md) · [Development](docs/development.md)
 
