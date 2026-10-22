@@ -158,10 +158,15 @@ fn select(s: &mut Session, p: &Value) -> Result<Value> {
         .cloned()
         .ok_or_else(|| bad(CMD, format!("no tool preset \"{name}\" (see tool.presets.list)")))?;
     // Validate before applying the brush too: an invalid colour must leave the preset unapplied.
-    let foreground = if t.options.get("foreground").and_then(Value::as_array).is_some_and(|a| a.len() >= 3) {
-        crate::commands::color_param(CMD, &t.options, "foreground", s.tools.foreground)?
-    } else {
-        s.tools.foreground
+    let foreground = match t.options.get("foreground") {
+        None => s.tools.foreground,
+        Some(value) => {
+            let valid = value.as_array().is_some_and(|channels| matches!(channels.len(), 3 | 4) && channels.iter().all(Value::is_number));
+            if !valid {
+                return Err(bad(CMD, "`foreground` must be [r, g, b] or [r, g, b, a] numbers"));
+            }
+            crate::commands::color_param(CMD, &t.options, "foreground", s.tools.foreground)?
+        }
     };
     if let Some(b) = t.options.get("brush").filter(|b| b.is_object()) {
         super::call(s, "tools.setBrush", json!({"brush": b}))?;

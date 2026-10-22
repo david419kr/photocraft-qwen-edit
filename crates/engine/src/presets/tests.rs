@@ -593,29 +593,43 @@ fn tool_presets_save_filter_select() {
 }
 
 #[test]
-fn tool_presets_reject_overflowing_colors_before_applying_the_brush() {
+fn tool_presets_reject_invalid_colors_before_applying_the_brush() {
+    let mut invalid = vec![
+        json!(null),
+        json!(true),
+        json!(7),
+        json!("red"),
+        json!({}),
+        json!([]),
+        json!([1]),
+        json!([1, 0]),
+        json!([1, 0, 0, 1, 0]),
+        json!([null, 0.4, 0.6]),
+    ];
     for channel in 0..4 {
-        for overflow in [1e100, -1e100] {
-            let mut s = Session::new();
-            s.execute("tools.setColors", json!({"foreground": [0.2, 0.4, 0.6, 0.8]})).unwrap();
-            let color = s.tools.foreground;
-            let brush = s.tools.brush.clone();
-            let brush_rev = s.tools.brush_rev;
-            let mut values = [0.2, 0.4, 0.6, 0.8];
-            values[channel] = overflow;
-            s.execute(
-                "tool.presets.new",
-                json!({
-                    "name": "Overflow", "tool": "brush", "options": {"brush": {"size": 77}, "foreground": values}
-                }),
-            )
-            .unwrap();
-            let err = s.execute("tool.presets.select", json!({"preset": "Overflow"})).unwrap_err();
-            assert!(err.to_string().contains("finite 32-bit"), "{err}");
-            assert_eq!(s.tools.foreground, color);
-            assert_eq!(s.tools.brush, brush);
-            assert_eq!(s.tools.brush_rev, brush_rev);
+        for bad_channel in [json!(1e100), json!(-1e100), json!(null), json!("red"), json!(true), json!({}), json!([])] {
+            let mut values = json!([0.2, 0.4, 0.6, 0.8]);
+            values[channel] = bad_channel;
+            invalid.push(values);
         }
+    }
+    for values in invalid {
+        let mut s = Session::new();
+        s.execute("tools.setColors", json!({"foreground": [0.2, 0.4, 0.6, 0.8]})).unwrap();
+        let color = s.tools.foreground;
+        let brush = s.tools.brush.clone();
+        let brush_rev = s.tools.brush_rev;
+        s.execute(
+            "tool.presets.new",
+            json!({
+                "name": "Invalid", "tool": "brush", "options": {"brush": {"size": 77}, "foreground": values}
+            }),
+        )
+        .unwrap();
+        assert!(s.execute("tool.presets.select", json!({"preset": "Invalid"})).is_err(), "{values}");
+        assert_eq!(s.tools.foreground, color, "{values}");
+        assert_eq!(s.tools.brush, brush, "{values}");
+        assert_eq!(s.tools.brush_rev, brush_rev, "{values}");
     }
 }
 
