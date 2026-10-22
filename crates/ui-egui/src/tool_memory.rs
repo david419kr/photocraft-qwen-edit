@@ -1,4 +1,4 @@
-//! Selected tool and tool options remembered between launches, as in Photoshop (#2814).
+//! Selected tool, colours and tool options remembered between launches, as in Photoshop (#2814).
 //!
 //! `Preferences::tool_options` holds the [`ToolOptions`] fields that differ from their defaults,
 //! so a default changed in a later release still reaches users who never touched that option.
@@ -68,6 +68,7 @@ pub fn persist(app: &mut PhotocraftApp, ctx: &egui::Context) {
             ctx.request_repaint();
         }
     }
+    persist_colors(app, ctx);
     persist_brushes(app);
     if app.prefs_rt.tool_options.as_ref() == Some(&app.ui.tool_options) {
         return;
@@ -77,6 +78,49 @@ pub fn persist(app: &mut PhotocraftApp, ctx: &egui::Context) {
     if app.session.prefs().tool_options != now {
         app.session.prefs.edit(|p| p.tool_options = now);
     }
+}
+
+/// Keep pixel and mask swatches separately, even when the app exits with a mask targeted.
+fn colors(app: &PhotocraftApp) -> [[[f32; 4]; 2]; 2] {
+    let t = &app.session.tools;
+    let current = [t.foreground, t.background];
+    if t.mask_targeted { [t.other_colors, current] } else { [current, t.other_colors] }
+}
+
+fn persist_colors(app: &mut PhotocraftApp, ctx: &egui::Context) {
+    let now = colors(app);
+    if app.prefs_rt.tool_colors == Some(now) {
+        return;
+    }
+    app.prefs_rt.tool_colors = Some(now);
+    let [[foreground, background], [mask_foreground, mask_background]] = now;
+    app.session.prefs.edit(|p| {
+        p.tool_colors = json!({
+            "foreground": foreground, "background": background,
+            "maskForeground": mask_foreground, "maskBackground": mask_background,
+        });
+    });
+    // Panels and shortcuts can change colours after prefs_ui::tick already ran this frame.
+    ctx.request_repaint();
+}
+
+fn restore_colors(app: &mut PhotocraftApp) {
+    let saved = &app.session.prefs().tool_colors;
+    let mut pairs = colors(app);
+    let [[foreground, background], [mask_foreground, mask_background]] = &mut pairs;
+    for (key, color) in [("foreground", foreground), ("background", background), ("maskForeground", mask_foreground), ("maskBackground", mask_background)] {
+        if let Some(v) = saved.get(key) {
+            match serde_json::from_value::<[f32; 4]>(v.clone()) {
+                Ok(c) if c.iter().all(|x| x.is_finite()) => *color = c,
+                _ => log::warn!("Preferences: ignoring the remembered `{key}` colour"),
+            }
+        }
+    }
+    let [pixels, mask] = pairs;
+    let (current, other) = if app.session.tools.mask_targeted { (mask, pixels) } else { (pixels, mask) };
+    [app.session.tools.foreground, app.session.tools.background] = current;
+    app.session.tools.other_colors = other;
+    app.prefs_rt.tool_colors = Some(pairs);
 }
 
 /// Remember the painting tools' own brushes when they change (a compare per frame otherwise:
@@ -153,7 +197,7 @@ fn restore_brushes(app: &mut PhotocraftApp) {
     app.prefs_rt.tool_brushes = Some((owner, app.ui.tool_brushes.clone()));
 }
 
-/// Flush the final choice on normal exit, even if no further frame ran after the tool changed.
+/// Flush the final tool state on normal exit, even if no further frame ran after a change.
 /// The brush first, as in a frame, so the saved brush owner matches the saved brush.
 pub(crate) fn save_on_exit(app: &mut PhotocraftApp) -> Result<(), String> {
     let ctx = egui::Context::default();
@@ -195,6 +239,7 @@ pub fn restore(app: &mut PhotocraftApp) {
         log::warn!("Preferences: the remembered tool options are not an object; using the defaults");
     }
     app.prefs_rt.tool_options = Some(app.ui.tool_options.clone());
+    restore_colors(app);
     restore_brushes(app);
 }
 
