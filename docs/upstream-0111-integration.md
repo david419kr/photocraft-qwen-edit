@@ -1,6 +1,6 @@
 # Upstream 0.11.1 candidate integration
 
-Status: candidate validation in [draft PR #8](https://github.com/david419kr/photocraft-qwen-edit/pull/8).
+Status: merged and published as `261022-0.11.1` (release ID `420260128`); historical candidate evidence in [PR #8](https://github.com/david419kr/photocraft-qwen-edit/pull/8).
 The PR records the exact final candidate SHA, run IDs and artifact hashes.
 No prior release's test results establish this candidate's validation.
 
