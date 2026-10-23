@@ -1,6 +1,6 @@
 # Upstream 0.14.0 candidate integration
 
-Status: candidate validation only. Main merge, tags and public release are not authorized.
+Status: candidate validation in [draft PR #12](https://github.com/david419kr/photocraft-qwen-edit/pull/12). Main merge, tags and public release are not authorized.
 The draft PR records the final source SHA, exact-head checks and Windows artifact hash.
 
 ## Identity and supersession

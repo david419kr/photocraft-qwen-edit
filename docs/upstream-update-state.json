@@ -30,9 +30,9 @@
     }
   },
   "windows_candidate": null,
-  "pull_request": null,
-  "pull_request_url": null,
-  "initial_merge_sha": null,
+  "pull_request": 12,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/12",
+  "initial_merge_sha": "56fa9833dbf975b3cd956f091e3b962b79854562",
   "upstream_published_at": "2026-10-23T00:43:42Z",
   "supersedes": {
     "pull_request": 11,
