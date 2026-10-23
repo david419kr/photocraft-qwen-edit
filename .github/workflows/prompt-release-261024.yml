@@ -1,0 +1,103 @@
+name: Publish Qwen prompt update 261024
+
+on:
+  push:
+    branches: ['publish/261024-0.14.0']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qwen-candidate-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: never
+  CARGO_INCREMENTAL: 0
+  RUST_BACKTRACE: 1
+  PHOTOCRAFT_NO_PRINT: "1"
+  LPDEST: photocraft-no-such-printer
+  PHOTOCRAFT_BUILD_SHA: 79c22ad465fb63d33da0326dd07806e456376b66
+  QWEN_UPSTREAM_SHA: ff4738810134d7f7e68b49f2e4f231b686282ff3
+  QWEN_BASE_SHA: 65d3270f61905b7a480ddeafceec4f1697499ad0
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 120
+    env:
+      CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS: '-C target-feature=+crt-static'
+      PHOTOCRAFT_REQUIRE_WINRES: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: 79c22ad465fb63d33da0326dd07806e456376b66
+      - name: Verify committed release identity
+        shell: pwsh
+        run: |
+          if ((Get-Content release-tag.txt -Raw).Trim() -ne '261024-0.14.0') { throw 'Release identity was not set.' }
+      - name: Check candidate ancestry
+        shell: pwsh
+        run: |
+          git merge-base --is-ancestor $env:QWEN_UPSTREAM_SHA HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Upstream release SHA is not an ancestor.' }
+          git merge-base --is-ancestor $env:QWEN_BASE_SHA HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Fork base SHA is not an ancestor.' }
+      - uses: dtolnay/rust-toolchain@1.95.0
+        with:
+          targets: x86_64-pc-windows-msvc
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: qwen-candidate-windows-static-crt
+      - name: Check out publication helper
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: publisher
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build Windows x64 with static CRT and AVIF
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist | Out-Null
+          $version = [regex]::Match((Get-Content Cargo.toml -Raw), '(?s)\[workspace\.package\].*?version\s*=\s*"([^"]+)"').Groups[1].Value
+          $env:PHOTOCRAFT_RELEASE_TAG = (Get-Content release-tag.txt -Raw).Trim()
+          if (!$env:PHOTOCRAFT_RELEASE_TAG.EndsWith("-$version")) { throw 'Release tag does not match workspace version.' }
+          cargo +1.95.0 build --locked -p photocraft --release --target x86_64-pc-windows-msvc 2>&1 | Tee-Object -FilePath dist/candidate-build.log
+          if ($LASTEXITCODE -ne 0) { throw 'Windows candidate build failed.' }
+      - name: Package and verify candidate
+        shell: pwsh
+        run: ./scripts/build-qwen-candidate.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qwen-windows-x64-79c22ad465fb63d33da0326dd07806e456376b66
+          path: |
+            dist/*.zip
+            dist/*.zip.sha256
+            dist/candidate-build.json
+            dist/candidate-dependents.txt
+            dist/candidate-headers.txt
+            dist/candidate-version.txt
+            dist/candidate-build.log
+          if-no-files-found: error
+          retention-days: 14
+      - name: Publish approved hotfix and verify public downloads
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python publisher/release-support/261024-0140/publish.py
+          if ($LASTEXITCODE -ne 0) { throw 'Publication or public-download verification failed' }
+      - name: Preserve publication verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-261024-publication-evidence-${{ github.run_id }}
+          path: |
+            dist/publication-verification.json
+            dist/release-provenance.json
+          if-no-files-found: warn
