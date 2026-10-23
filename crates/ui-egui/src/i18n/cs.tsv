@@ -4041,15 +4041,12 @@ navigator	Zoom	Zvětšení
 # Camera Raw / layer labels) that other catalogs already covered. Translated the same way as
 # above, from the plain meaning of the English label.
 	Export As: {name}	Exportovat jako: {name}
-	Tool	Nástroj
 	Arc Lower	Oblouk dole
 	Arc Upper	Oblouk nahoře
 	Arrows	Šipky
 	Basic Latin	Základní latinka
 	Bloat	Nafouknout
-	Burn	Ztmavení
 	Checkerboard	Šachovnice
-	Clone Stamp	Klonovací razítko
 	Color Sampler Tool	Nástroj vzorkovač barev
 	Currency	Měnové symboly
 	Cyrillic	Cyrilice
@@ -4057,7 +4054,6 @@ navigator	Zoom	Zvětšení
 	Decrease Type Size by 10	Zmenšit velikost písma o 10
 	Delete Snapshot	Odstranit snímek
 	Detect Faces	Rozpoznat obličeje
-	Dodge	Zesvětlení
 	Erase with Brush or Pencil (hold)	Mazat štětcem nebo tužkou (při podržení klávesy)
 	Fill with Background Color	Vyplnit barvou pozadí
 	Fill with Background Color, Preserve Transparency	Vyplnit barvou pozadí, zachovat průhlednost
@@ -4068,7 +4064,6 @@ navigator	Zoom	Zvětšení
 	Freeze Mask	Zmrazit oblast
 	Greek	Řecké písmo
 	Hand Tool (hold)	Nástroj ruka (při podržení klávesy)
-	History Brush	Štětec historie
 	Increase Type Size	Zvětšit velikost písma
 	Increase Type Size by 10	Zvětšit velikost písma o 10
 	Kerning: Metrics, Optical or a value in 1/1000 em (Alt+←/→ at the caret)	Kerning: zvolte „Metrické“, „Optické“ nebo hodnotu v 1/1000 em (Alt+←/→ v místě textového kurzoru)
@@ -4088,7 +4083,6 @@ navigator	Zoom	Zvětšení
 	Push Left	Tlačit doleva
 	Reconstruct All	Rekonstruovat vše
 	Save Path	Uložit cestu
-	Sponge	Houba
 	Target Channel 3	Zacílit na kanál 3
 	Target Channel 4	Zacílit na kanál 4
 	Target Channel 5	Zacílit na kanál 5

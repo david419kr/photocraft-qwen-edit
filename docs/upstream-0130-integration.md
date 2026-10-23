@@ -80,3 +80,8 @@ folder and the existing ComfyUI/models. This cloud task does not run those tests
   all foreground/background metadata and source-document assertions.
 - Initial CI's aggregate Windows gate failed because early Clippy prevented
   its native dependencies from running; it was not an executed Windows test.
+- The craft-fonts suite exposed duplicate translation keys introduced by clean
+  textual merges. Deduplicate 32 entries across Czech, French, Korean,
+  Portuguese and Russian by `(context, source)`, retaining the fork's existing
+  wording where both sides translated the same key. All unique keys and tests
+  remain. The same consistency test is rerun on the repaired catalogs.

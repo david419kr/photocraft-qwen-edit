@@ -3486,7 +3486,6 @@ curves	Smooth	Lisser
 	Adwaita (Dark)	Adwaita (sombre)
 	Adwaita (Light)	Adwaita (clair)
 	After	Après
-	All shortcuts reset to Photoshop defaults.	Tous les raccourcis ont été réinitialisés aux valeurs par défaut de Photoshop.
 	Ambience	Ambiance
 	Ambient	Ambiante
 	Amplitude Max	Amplitude max.
@@ -3673,7 +3672,6 @@ curves	Smooth	Lisser
 	Deep Yellow	Jaune profond
 	Default Foreground and Background Colors	Couleurs par défaut du premier plan et de l'arrière-plan
 	Default Leaves	Feuilles par défaut
-	Default Photoshop Size	Taille Photoshop par défaut
 	Defaults	Valeurs par défaut
 	Define Brush Preset	Définir un préréglage de pinceau
 	Define Custom Shape	Définir une forme personnalisée
@@ -3702,13 +3700,11 @@ curves	Smooth	Lisser
 	Display-p3	Display P3
 	Distortion	Distorsion
 	Distribution	Distribution
-	Do you want to save you made to “{name}” before quitting?	Voulez-vous enregistrer les modifications apportées à « {name} » avant de quitter ?
 	Documentation	Documentation
 	Documents	Documents
 	Dot	Point
 	Double Line	Double ligne
 	Draft	Brouillon
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Tracez un cadre de recadrage · faites glisser à l'intérieur pour le déplacer · les bords le redimensionnent ({ratio} proportions, {centre} centre) · Espace le déplace pendant le tracé · {commit} valide · Échap annule
 	Drag: draw freehand · Release on the start point: close	Glisser : tracer à main levée · Relâcher sur le point de départ : fermer
 	Driver: {driver}	Pilote : {driver}
 	Dry Brush	Pinceau sec
@@ -3837,7 +3833,6 @@ curves	Smooth	Lisser
 	Gray Value (Minimum)	Valeur de gris (minimum)
 	Gray-gamma-2.2	Gris gamma 2,2
 	Greek	Grec
-	Grid view	Affichage en grille
 	Group from Layers	Groupe d'après des calques
 	Groups	Groupes
 	Grout Width	Largeur du joint
@@ -3870,7 +3865,6 @@ curves	Smooth	Lisser
 	Import Brushes	Importer des pinceaux
 	Import Image	Importer une image
 	Import Options	Options d'importation
-	Import Photoshop brushes (.abr)	Importer des pinceaux Photoshop (.abr)
 	Import Settings	Paramètres d'importation
 	Importing {what} from {file}…	Importation de {what} depuis {file}…
 	Importing…	Importation…
@@ -3942,7 +3936,6 @@ curves	Smooth	Lisser
 	Link	Lier
 	Liquify	Liquéfier
 	List	Liste
-	List view	Affichage en liste
 	Live Preview	Aperçu en direct
 	Load 3D LUT	Charger une LUT 3D
 	Load Files into Stack	Charger des fichiers dans une pile
@@ -4001,7 +3994,6 @@ curves	Smooth	Lisser
 	Multiple Flames One Direction	Plusieurs flammes dans une direction
 	Multiple Flames Path Directions	Plusieurs flammes selon les directions du tracé
 	Multiple Flames Various Length	Plusieurs flammes de longueurs variées
-	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Le glisser-déposer natif de fichiers n'est pas encore pris en charge sous Wayland. Utilisez Fichier › Ouvrir, ou lancez PhotoCraft sous XWayland avec `WAYLAND_DISPLAY= photocraft`.
 	Neon Glow	Lueur néon
 	Neutralize	Neutraliser
 	New Brush Preset	Nouveau préréglage de pinceau
@@ -4012,7 +4004,6 @@ curves	Smooth	Lisser
 	New Video Layer from File	Nouveau calque vidéo à partir d'un fichier
 	New Window	Nouvelle fenêtre
 	New document	Nouveau document
-	Next	Suivant
 	No Document	Aucun document
 	No Image	Aucune image
 	No Layers	Aucun calque
@@ -4110,7 +4101,6 @@ curves	Smooth	Lisser
 	Preset Manager	Gestionnaire de préréglages
 	Press keys	Appuyez sur les touches
 	Preview Image	Aperçu de l'image
-	Previous	Précédent
 	Prime105	Focale fixe 105 mm
 	Prime35	Focale fixe 35 mm
 	Printed to {path}	Imprimé vers {path}
@@ -4302,7 +4292,6 @@ curves	Smooth	Lisser
 	Thaw Mask	Masque de libération
 	The canvas is shown as sRGB. Choose a monitor profile in Edit › Color Settings.	Le canevas est affiché en sRVB. Choisissez un profil de moniteur dans Édition › Paramètres de couleur.
 	The canvas on {display} is shown as sRGB. Choose a monitor profile in Edit › Color Settings.	Le canevas sur {display} est affiché en sRVB. Choisissez un profil de moniteur dans Édition › Paramètres de couleur.
-	The current gradient (pick one in Window › Gradients)	Le dégradé actuel (à choisir dans Fenêtre › Dégradés)
 	The document does not have an embedded colour profile. Working space: {working}.	Le document ne contient aucun profil colorimétrique incorporé. Espace de travail : {working}.
 	The document has an embedded colour profile that does not match the working space.\nEmbedded: {embedded}\nWorking: {working}	Le document contient un profil colorimétrique incorporé qui ne correspond pas à l'espace de travail.\nIncorporé : {embedded}\nEspace de travail : {working}
 	The file could not be opened.	Impossible d'ouvrir le fichier.
@@ -4356,7 +4345,6 @@ curves	Smooth	Lisser
 	Updates	Mises à jour
 	Upper	Supérieur
 	Use Custom Color	Utiliser une couleur personnalisée
-	Use File › Open to open an image.	Utilisez Fichier › Ouvrir pour ouvrir une image.
 	Use Selection In Source	Utiliser la sélection dans la source
 	Use Selection In Target	Utiliser la sélection dans la cible
 	Vanishing Point	Point de fuite

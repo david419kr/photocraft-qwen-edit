@@ -3416,7 +3416,6 @@ curves	Smooth	Сгладить
 	Adwaita (Light)	Adwaita (светлая)
 	After	После
 	Airbrush: keeps painting while the pointer rests.	Аэрограф: продолжает рисовать, пока указатель неподвижен.
-	All shortcuts reset to Photoshop defaults.	Все сочетания клавиш сброшены к значениям Photoshop по умолчанию.
 	Altitude	Высота
 	Ambience	Атмосфера
 	Ambient	Окружающий свет
@@ -3650,7 +3649,6 @@ curves	Smooth	Сгладить
 	Deep Yellow	Глубокий жёлтый
 	Default Foreground and Background Colors	Цвета переднего плана и фона по умолчанию
 	Default Leaves	Листья по умолчанию
-	Default Photoshop Size	Размер Photoshop по умолчанию
 	Defaults	По умолчанию
 	Define Brush Preset	Определить кисть
 	Define Custom Shape	Определить свою фигуру
@@ -3685,7 +3683,6 @@ curves	Smooth	Сгладить
 	Distance	Расстояние
 	Distortion	Дисторсия
 	Distribution	Распределение
-	Do you want to save you made to “{name}” before quitting?	Сохранить изменения в «{name}» перед выходом?
 	Document Sizes	Размеры документа
 	Documentation	Документация
 	Documents	Документы
@@ -3694,7 +3691,6 @@ curves	Smooth	Сгладить
 	Double Line	Двойная линия
 	Down	Вниз
 	Draft	Черновик
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Перетащите рамку кадрирования · перетаскивание внутри перемещает · края изменяют размер (соотношение {ratio}, центр {centre}) · пробел перемещает при рисовании · {commit} применяет · Esc отменяет
 	Drag: draw freehand · Release on the start point: close	Перетаскивание: рисование от руки · Отпустите на начальной точке: замкнуть
 	Driver: {driver}	Драйвер: {driver}
 	Dry Brush	Сухая кисть
@@ -3881,7 +3877,6 @@ curves	Smooth	Сгладить
 	Import Brushes… (.abr)	Импортировать кисти… (.abr)
 	Import Image	Импортировать изображение
 	Import Options	Параметры импорта
-	Import Photoshop brushes (.abr)	Импортировать кисти Photoshop (.abr)
 	Import Settings	Импортировать настройки
 	Importing {what} from {file}…	Импорт {what} из {file}…
 	Importing…	Импорт…
@@ -4090,7 +4085,6 @@ curves	Smooth	Сгладить
 	Multiple Flames Path Directions	Несколько языков пламени по направлениям контура
 	Multiple Flames Various Length	Несколько языков пламени разной длины
 	My Brushes	Мои кисти
-	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Перетаскивание файлов ещё не поддерживается в Wayland. Используйте «Файл › Открыть» или запустите PhotoCraft под XWayland с `WAYLAND_DISPLAY= photocraft`.
 	Nearest	Ближайший
 	Neon Glow	Неоновое свечение
 	Neutralize	Нейтрализовать
@@ -4106,7 +4100,6 @@ curves	Smooth	Сгладить
 	New document	Новый документ
 	New document…	Новый документ…
 	New document…     ⌘N	Новый документ…     ⌘N
-	Next	Далее
 	No Document	Нет документа
 	No Image	Нет изображения
 	No Layers	Нет слоёв
@@ -4219,7 +4212,6 @@ curves	Smooth	Сгладить
 	Preset Manager	Управление наборами
 	Press keys	Нажмите клавиши
 	Preview Image	Просмотр изображения
-	Previous	Назад
 	Prime105	Prime 105
 	Prime35	Prime 35
 	Printed to {path}	Напечатано в {path}
@@ -4461,7 +4453,6 @@ curves	Smooth	Сгладить
 	Thaw Mask	Разморозить маску
 	The canvas is shown as sRGB. Choose a monitor profile in Edit › Color Settings.	Холст отображается как sRGB. Выберите профиль монитора в разделе «Редактирование › Настройки цвета».
 	The canvas on {display} is shown as sRGB. Choose a monitor profile in Edit › Color Settings.	Холст на {display} отображается как sRGB. Выберите профиль монитора в разделе «Редактирование › Настройки цвета».
-	The current gradient (pick one in Window › Gradients)	Текущий градиент (выберите в меню «Окно › Градиенты»)
 	The document does not have an embedded colour profile. Working space: {working}.	Документ не содержит встроенного цветового профиля. Рабочее пространство: {working}.
 	The document has an embedded colour profile that does not match the working space.\nEmbedded: {embedded}\nWorking: {working}	Документ содержит встроенный цветовой профиль, не совпадающий с рабочим пространством.\nВстроенный: {embedded}\nРабочее пространство: {working}
 	The file could not be opened.	Не удалось открыть файл.
@@ -4520,7 +4511,6 @@ curves	Smooth	Сгладить
 	Updates	Обновления
 	Upper	Верхний
 	Use Custom Color	Использовать свой цвет
-	Use File › Open to open an image.	Используйте «Файл › Открыть», чтобы открыть изображение.
 	Use Selection In Source	Использовать выделение в источнике
 	Use Selection In Target	Использовать выделение в цели
 	Uses the foreground and background colors.	Использует цвета переднего плана и фона.

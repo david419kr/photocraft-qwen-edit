@@ -3515,7 +3515,6 @@ prompt-region	Bottom right	우하단
 	New Color Fill Layer	새 단색 채우기 레이어
 	New Count Group	새 개수 그룹
 	New Gradient Fill Layer	새 그레이디언트 채우기 레이어
-	New Group	새 그룹
 	New Layer Comp	새 레이어 구성 요소
 	New Note	새 메모
 	New Pattern Fill Layer	새 패턴 채우기 레이어
@@ -3620,7 +3619,6 @@ prompt-region	Bottom right	우하단
 # View › Guides › right-click a guide
 	Edit Selected Guides	선택한 안내선 편집
 	Clear Selected Guides	선택한 안내선 지우기
-	Make Selection	선택 영역 만들기
 	Bicubic Automatic	쌍입방 자동
 	Bicubic Smoother	쌍입방 더 부드럽게
 	Bicubic Sharper	쌍입방 더 선명하게
