@@ -10,6 +10,7 @@
 //!
 //! `--safe-gpu` draws the canvas on the CPU path, like the app's `--safe-gpu` launch.
 //! `--mock-update` shows the fork update offer without HTTP or an installer.
+//! `--hardware-filtering` respects texture samplers; the default predictable renderer forces bilinear filtering.
 //! `--wayland-notice` previews the native file drag-and-drop guidance shown in Wayland sessions.
 //! `--custom-titlebar` draws the Windows/Linux title bar (caption buttons in the top bar).
 //!
@@ -76,14 +77,15 @@ fn main() {
         arg(&args, "--script").map(|s| serde_json::from_str::<Vec<(String, Value)>>(&s).expect("--script must be [[method, params], …]")).unwrap_or_default();
 
     let services = Services {
-        import: Some(Box::new(|name: &str, bytes: &[u8], depth: usize| {
-            photocraft_io::import_with_svg_group_depth(name, bytes, depth).map(|r| (r.document, r.warnings)).map_err(|e| e.to_string())
+        import: Some(Box::new(|name: &str, bytes: &[u8], opts: &photocraft_io::ImportOptions| {
+            photocraft_io::import_with_options(name, bytes, opts).map(|r| (r.document, r.warnings)).map_err(|e| e.to_string())
         })),
         export: Some(Box::new(|doc: &photocraft_doc::Document, path: &str, settings: &photocraft_ui_egui::ExportSettings| {
             let mut opts = photocraft_io::ExportOptions::default();
             if let Some(q) = settings.jpeg_quality {
                 opts.encode.jpeg_quality = q;
             }
+            opts.encode.jpeg_format = settings.jpeg_format;
             opts.encode.webp_lossless = settings.webp_lossless;
             if let Some(q) = settings.webp_quality {
                 opts.encode.webp_quality = q;
@@ -118,48 +120,53 @@ fn main() {
         }
         setup
     };
-    let mut harness =
-        egui_kittest::Harness::builder().with_size(egui::vec2(w, h)).with_pixels_per_point(scale).with_max_steps(64).wgpu_setup(gpu_setup).build_eframe(
-            move |cc| {
-                PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
-                let mut services = services;
-                services.is_wayland = wayland_notice;
-                services.xwayland_command = wayland_notice.then(|| "WAYLAND_DISPLAY= photocraft".into());
-                let mut session = photocraft_engine::Session::new();
-                if mock_ai {
-                    session.ai_backend = Some(std::sync::Arc::new(MockAi(mock_models)));
-                } else if comfy_ai {
-                    session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi::default()));
+    let mut render_options = eframe::egui_wgpu::RendererOptions::PREDICTABLE;
+    render_options.predictable_texture_filtering = !args.iter().any(|a| a == "--hardware-filtering");
+    let mut harness = egui_kittest::Harness::builder()
+        .with_size(egui::vec2(w, h))
+        .with_pixels_per_point(scale)
+        .with_max_steps(64)
+        .with_render_options(render_options)
+        .wgpu_setup(gpu_setup)
+        .build_eframe(move |cc| {
+            PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
+            let mut services = services;
+            services.is_wayland = wayland_notice;
+            services.xwayland_command = wayland_notice.then(|| "WAYLAND_DISPLAY= photocraft".into());
+            let mut session = photocraft_engine::Session::new();
+            if mock_ai {
+                session.ai_backend = Some(std::sync::Arc::new(MockAi(mock_models)));
+            } else if comfy_ai {
+                session.ai_backend = Some(std::sync::Arc::new(photocraft_engine::comfyui::ComfyUi::default()));
+            }
+            let mut app = PhotocraftApp::new(session, services);
+            if mock_update {
+                app.updates.available = Some(photocraft_ui_egui::updates::Release {
+                    tag: "261014-0.8.3".into(),
+                    asset_name: String::new(),
+                    url: String::new(),
+                    size: 1,
+                    sha256: String::new(),
+                });
+            }
+            app.background_jobs = background_jobs;
+            app.custom_titlebar = custom_titlebar;
+            // `--safe-gpu`: the CPU canvas, as the desktop app's `--safe-gpu` launch.
+            if safe_gpu {
+                app.perf.gpu_info.selected = "cpu".into();
+                app.perf.gpu_info.canvas = "cpu".into();
+                app.perf.gpu_info.fallback = Some("--safe-gpu: CPU renderer for this launch".into());
+                if let Some(rs) = cc.wgpu_render_state.as_ref() {
+                    app.perf.gpu_info.set_adapter(&rs.adapter.get_info());
                 }
-                let mut app = PhotocraftApp::new(session, services);
-                if mock_update {
-                    app.updates.available = Some(photocraft_ui_egui::updates::Release {
-                        tag: "261014-0.8.3".into(),
-                        asset_name: String::new(),
-                        url: String::new(),
-                        size: 1,
-                        sha256: String::new(),
-                    });
-                }
-                app.background_jobs = background_jobs;
-                app.custom_titlebar = custom_titlebar;
-                // `--safe-gpu`: the CPU canvas, as the desktop app's `--safe-gpu` launch.
-                if safe_gpu {
-                    app.perf.gpu_info.selected = "cpu".into();
-                    app.perf.gpu_info.canvas = "cpu".into();
-                    app.perf.gpu_info.fallback = Some("--safe-gpu: CPU renderer for this launch".into());
-                    if let Some(rs) = cc.wgpu_render_state.as_ref() {
-                        app.perf.gpu_info.set_adapter(&rs.adapter.get_info());
-                    }
-                } else if let Some(rs) = cc.wgpu_render_state.as_ref() {
-                    app.set_wgpu(rs.clone());
-                }
-                if let Some(path) = &open {
-                    app.open_path(path).expect("open --open file");
-                }
-                app
-            },
-        );
+            } else if let Some(rs) = cc.wgpu_render_state.as_ref() {
+                app.set_wgpu(rs.clone());
+            }
+            if let Some(path) = &open {
+                app.open_path(path).expect("open --open file");
+            }
+            app
+        });
     if let Some((mw, mh)) = arg(&args, "--monitor").and_then(|s| s.split_once('x').and_then(|(a, b)| Some((a.parse::<f32>().ok()?, b.parse::<f32>().ok()?)))) {
         let top: f32 = arg(&args, "--window-top").and_then(|s| s.parse().ok()).unwrap_or(0.0);
         let v = harness.input_mut().viewports.entry(egui::ViewportId::ROOT).or_default();

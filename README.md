@@ -2,6 +2,8 @@
 
 [한국어](README.ko.md) · [Download the portable release](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 
+> This branch prepares the **unreleased 0.13.0 candidate**. The release link above remains the approved 0.12.0 build. Hardware results below describe earlier releases; this candidate still needs local acceptance. See [integration and validation](docs/upstream-0130-integration.md).
+
 A native Rust PhotoCraft fork focused on **Photoshop-style local generative editing** through ComfyUI and Qwen Image 2.1, with optional prompt translation, new result layers and saved prompt history. AVIF opening, saving and export are also included.
 
 ## Demo video
