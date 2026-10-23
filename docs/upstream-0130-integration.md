@@ -1,6 +1,6 @@
 # Upstream 0.13.0 candidate integration
 
-Status: preparation and validation only. Main merge, Git tags and public release
+Status: validation in [draft PR #11](https://github.com/david419kr/photocraft-qwen-edit/pull/11). Main merge, Git tags and public release
 are not authorized. The draft PR and matching Actions runs record exact final
 source SHA, check results and Windows artifact hashes.
 
@@ -33,7 +33,9 @@ source SHA, check results and Windows artifact hashes.
 - Combine translation additions by key, preserving Korean and fork AI/updater
   labels. Retain both AI and upstream panel modules and control tests.
 - Combine upstream numeric field wheel/precision behavior with explicit
-  integer sampling-step controls. Retain mock AI/update snapshots and Windows
+  integer sampling-step controls. Remove the superseded AccessKit wheel forwarding
+  to prevent double increments alongside upstream field-wheel handling; retain
+  and extend hover/no-focus tests, including a small integer range. Retain mock AI/update snapshots and Windows
   primary-backend protection alongside upstream texture-filtering options.
 - Retain color-persistence PR #10: pixel/mask pairs, exact CMYK selections,
   finite HDR/alpha, exit flush, swaps/resets and malformed-preset rejection.
@@ -68,3 +70,13 @@ layer preservation, Undo/cancel/document routing, model/TE/CFG, translation
 residency and full-free, Korean UI, color persistence (including CMYK/masks),
 AVIF/history save/reopen, Metadata All/None and updater behavior. Use a separate
 folder and the existing ComfyUI/models. This cloud task does not run those tests.
+
+## Validation fixes
+
+- Rust 1.95 Clippy identified the upstream fillet angle's manual range check.
+  Use the inclusive range API and verify nonfinite vertex angles are rejected.
+- Full stable Clippy caught the fork metadata test's old PNG stereo enum name.
+  Use upstream's corrected `CrossFuse` name for the same mode byte 0; retain
+  all foreground/background metadata and source-document assertions.
+- Initial CI's aggregate Windows gate failed because early Clippy prevented
+  its native dependencies from running; it was not an executed Windows test.

@@ -24,6 +24,7 @@ def main():
         ("engine-web-metadata", ["-p", "photocraft-engine", "--lib", "web_cmds::tests"]),
         ("engine-prefs", ["-p", "photocraft-engine", "--lib", "prefs"]),
         ("ui-ai", ["-p", "photocraft-ui-egui", "--lib", "ai_"]),
+        ("ui-field-wheel", ["-p", "photocraft-ui-egui", "--lib", "field_wheel::tests"]),
         ("ui-widgets", ["-p", "photocraft-ui-egui", "--lib", "widgets"]),
         ("ui-export", ["-p", "photocraft-ui-egui", "--lib", "export_dialog::tests"]),
         ("ui-history", ["-p", "photocraft-ui-egui", "--lib", "history"]),

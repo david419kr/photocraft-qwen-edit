@@ -142,7 +142,7 @@ pub fn fillet(prev: [f64; 2], v: [f64; 2], next: [f64; 2], r: f64) -> Option<Fil
     let (u2, l2) = unit(v, next)?;
     let cos = (u1[0] * u2[0] + u1[1] * u2[1]).clamp(-1.0, 1.0);
     let half = cos.acos() / 2.0;
-    if half < 1e-6 || half > std::f64::consts::FRAC_PI_2 - 1e-6 {
+    if !(1e-6..=std::f64::consts::FRAC_PI_2 - 1e-6).contains(&half) {
         return None;
     }
     let r = r.min(l1.min(l2) / 2.0 * half.tan());
@@ -237,6 +237,12 @@ mod tests {
         let w = [u * u * u, 3.0 * u * u * t, 3.0 * u * t * t, t * t * t];
         let p = [a.anchor, a.out_ctrl, b.in_ctrl, b.anchor];
         [p.iter().zip(w).map(|(p, w)| p.x * w).sum(), p.iter().zip(w).map(|(p, w)| p.y * w).sum()]
+    }
+
+    #[test]
+    fn fillet_rejects_nonfinite_vertex_angles() {
+        assert!(fillet([f64::INFINITY, 0.0], [0.0, 0.0], [0.0, 1.0], 1.0).is_none());
+        assert!(fillet([f64::NAN, 0.0], [0.0, 0.0], [0.0, 1.0], 1.0).is_none());
     }
 
     #[test]

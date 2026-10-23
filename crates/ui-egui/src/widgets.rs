@@ -910,34 +910,6 @@ fn number_edit(
 ) -> Response {
     let (speed, wrap_drag) = drag;
     let (id, ctx) = (ui.next_auto_id(), ui.ctx().clone());
-    if ui.is_enabled() && ui.rect_contains_pointer(ui.max_rect()) {
-        // Target DragValue's increment/decrement actions without taking keyboard focus.
-        ui.input_mut(|input| {
-            let mut actions = Vec::new();
-            input.events.retain(|event| {
-                if let egui::Event::MouseWheel { delta, modifiers, .. } = event
-                    && modifiers.is_none()
-                    && delta.y.is_finite()
-                    && delta.y != 0.0
-                {
-                    actions.push(if delta.y > 0.0 { egui::accesskit::Action::Increment } else { egui::accesskit::Action::Decrement });
-                    false
-                } else {
-                    true
-                }
-            });
-            // Consume the vertical tail, but preserve horizontal scrolling of tool options.
-            input.smooth_scroll_delta.y = 0.0;
-            input.events.extend(actions.into_iter().map(|action| {
-                egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
-                    action,
-                    target_node: id.accesskit_id(),
-                    target_tree: egui::accesskit::TreeId::ROOT,
-                    data: None,
-                })
-            }));
-        });
-    }
     // Focused before the DragValue is drawn, so it gains focus this frame and selects its text.
     if ui.data_mut(|d| d.remove_temp::<bool>(first_field_id())).unwrap_or(false) {
         ui.memory_mut(|m| m.request_focus(id));
@@ -2532,6 +2504,7 @@ mod tests {
     fn hover_wheel_changes_integer_field_without_taking_focus() {
         let mut h = Harness::new_ui_state(
             |ui, value: &mut u32| {
+                crate::field_wheel::begin_frame(ui.ctx());
                 super::integer_value_field(ui, value, 1..=1000, 80.0);
             },
             25,
@@ -2561,6 +2534,7 @@ mod tests {
     fn integer_field_small_range_keeps_whole_sampling_steps() {
         let mut h = Harness::new_ui_state(
             |ui, value: &mut u32| {
+                crate::field_wheel::begin_frame(ui.ctx());
                 super::integer_value_field(ui, value, 1..=8, 80.0);
             },
             4,
