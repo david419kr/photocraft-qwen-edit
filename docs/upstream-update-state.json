@@ -1,23 +1,22 @@
 {
   "status": "candidate_validation",
   "upstream_repository": "storytold/photocraft",
-  "upstream_release_id": 419907723,
-  "upstream_tag": "v0.12.0",
-  "upstream_sha": "6a2d027ee2e7ca12afd248544ed2262b0fa078dd",
-  "upstream_published_at": "2026-10-21T18:28:57Z",
+  "upstream_release_id": 421334654,
+  "upstream_tag": "v0.14.0",
+  "upstream_sha": "ff4738810134d7f7e68b49f2e4f231b686282ff3",
   "fork_repository": "david419kr/photocraft-qwen-edit",
-  "fork_base_sha": "312561fff855408f9ae28a6d9d8b51ef13a5550b",
-  "candidate_branch": "update/0.12.0",
+  "fork_base_sha": "65d3270f61905b7a480ddeafceec4f1697499ad0",
+  "candidate_branch": "update/0.14.0",
   "candidate_sha_record": "Draft PR head and exact matching CI/artifact source SHA",
   "main_merge_authorized": false,
   "public_release_authorized": false,
   "previous_completed_release": {
-    "tag": "261022-0.11.1",
-    "release_id": 420260128,
-    "merge_sha": "312561fff855408f9ae28a6d9d8b51ef13a5550b",
-    "candidate_sha": "03d79a744aa22b5dc9517956d398ae62f63ec159"
+    "tag": "261022-2-0.12.0",
+    "release_id": 420636944,
+    "merge_sha": "65d3270f61905b7a480ddeafceec4f1697499ad0",
+    "candidate_sha": "529d43dd0dfccf50dfdcc83cf63ac2ef9520114b"
   },
-  "validation": "Pending fresh exact-head 0.12.0 checks; no prior-version evidence reused.",
+  "validation": "Pending fresh exact-head 0.14.0 checks; no prior-version test or artifact evidence reused.",
   "optional_checks": {
     "freebsd": {
       "automatic": false,
@@ -31,7 +30,14 @@
     }
   },
   "windows_candidate": null,
-  "pull_request": 9,
-  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/9",
-  "initial_merge_sha": "113d5f9f2f52c78b2631bd9c25ccdb28383e6592"
+  "pull_request": null,
+  "pull_request_url": null,
+  "initial_merge_sha": null,
+  "upstream_published_at": "2026-10-23T00:43:42Z",
+  "supersedes": {
+    "pull_request": 11,
+    "branch": "update/0.13.0",
+    "sha": "bfb3ede5a4ab894d7a098c11ada62f2e44db6f27",
+    "validation": "Seven workflows passed; 542 focused tests. Historical evidence only; no release approval. Preserve branch and artifacts."
+  }
 }
