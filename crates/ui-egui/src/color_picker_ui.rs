@@ -63,7 +63,8 @@ pub fn hex(c: [f32; 3]) -> String {
 
 pub fn parse_hex(s: &str) -> Option<[f32; 3]> {
     let h = s.trim().trim_start_matches('#');
-    if h.len() != 6 {
+    // `from_str_radix` accepts a leading '+', so require plain hex digits first.
+    if h.len() != 6 || !h.bytes().all(|b| b.is_ascii_hexdigit()) {
         return None;
     }
     // `get`, not `[..]`: typed text may be multi-byte, and a byte range can split a character.
@@ -480,7 +481,10 @@ fn color_field(ui: &mut egui::Ui, f: &mut Map<String, Value>) {
     ui.painter().rect_stroke(field, 0.0, Stroke::new(1.0, t.field_border), StrokeKind::Outside);
     let marker = pos2(field.left() + fx * field.width(), field.top() + fy * field.height());
     ui.painter().circle_stroke(marker, 5.0, Stroke::new(1.5, if hsv[2] > 0.6 && hsv[1] < 0.4 { Color32::BLACK } else { Color32::WHITE }));
-    if let Some(p) = resp.interact_pointer_pos().filter(|_| resp.dragged() || resp.clicked()) {
+    // Photoshop updates the colour on the press itself, not only when the button is released
+    // (#6937): `is_pointer_button_down_on` is true from the press frame onwards (it covers
+    // dragging too), while `clicked` fires on release and `dragged` only after a move.
+    if let Some(p) = widgets::pick_pos(&resp) {
         let (x, y) = (((p.x - field.left()) / field.width()).clamp(0.0, 1.0), ((p.y - field.top()) / field.height()).clamp(0.0, 1.0));
         let c = field_color(&mode, fz, x, y);
         let keep = match mode.as_str() {
@@ -499,7 +503,7 @@ fn color_field(ui: &mut egui::Ui, f: &mut Map<String, Value>) {
         let tri = vec![pos2(x, sy), pos2(x - 6.0 * dir, sy - 4.0), pos2(x - 6.0 * dir, sy + 4.0)];
         ui.painter().add(egui::Shape::convex_polygon(tri, t.text, Stroke::NONE));
     }
-    if let Some(p) = sresp.interact_pointer_pos().filter(|_| sresp.dragged() || sresp.clicked()) {
+    if let Some(p) = widgets::pick_pos(&sresp) {
         let z = 1.0 - ((p.y - strip.top()) / strip.height()).clamp(0.0, 1.0);
         let h = match mode.as_str() {
             "h" => Some([z * 360.0, hsv[1], hsv[2]]),
@@ -563,7 +567,7 @@ fn swatches(ui: &mut egui::Ui, f: &mut Map<String, Value>) {
 }
 
 /// ⚠: a filled triangle with an exclamation mark cut out of it.
-fn warning_triangle(p: &egui::Painter, r: Rect, ink: Color32, cut: Color32) {
+pub(crate) fn warning_triangle(p: &egui::Painter, r: Rect, ink: Color32, cut: Color32) {
     let tri = vec![pos2(r.center().x, r.top()), pos2(r.right(), r.bottom()), pos2(r.left(), r.bottom())];
     p.add(egui::Shape::convex_polygon(tri, ink, Stroke::NONE));
     let x = r.center().x;
@@ -572,7 +576,7 @@ fn warning_triangle(p: &egui::Painter, r: Rect, ink: Color32, cut: Color32) {
 }
 
 /// A cube seen corner-on: a hexagon with three edges meeting in the middle.
-fn web_cube(p: &egui::Painter, r: Rect, ink: Color32) {
+pub(crate) fn web_cube(p: &egui::Painter, r: Rect, ink: Color32) {
     let (c, rad) = (r.center(), r.width() / 2.0);
     let corner = |k: f32| {
         let a = std::f32::consts::FRAC_PI_3 * k - std::f32::consts::FRAC_PI_2;
@@ -799,7 +803,7 @@ pub fn confirm(app: &mut PhotocraftApp, f: &Map<String, Value>) -> Result<Value,
     }
     let r = app.run("tools.setColors", params)?;
     if target == "foreground" {
-        crate::type_tool::foreground_changed(app);
+        crate::apply_color::foreground_changed(app, None);
     }
     Ok(r)
 }
@@ -859,11 +863,126 @@ mod tests {
         h.state().get("color").and_then(Value::as_str).unwrap().to_string()
     }
 
+    /// Press at `at` and hold, with no release and no time passing, then run one frame.
+    fn press<S>(h: &mut Harness<'static, S>, at: egui::Pos2) {
+        press_button(h, at, egui::PointerButton::Primary, true);
+    }
+
+    fn press_button<S>(h: &mut Harness<'static, S>, at: egui::Pos2, button: egui::PointerButton, pressed: bool) {
+        h.event(egui::Event::PointerMoved(at));
+        h.event(egui::Event::PointerButton { pos: at, button, pressed, modifiers: egui::Modifiers::NONE });
+        h.run_steps(1);
+    }
+
+    /// #7793: the field and the slider pick on the frame the button goes down, not after the
+    /// pointer has travelled past egui's click threshold or been held for a while, and follow
+    /// moves of a few points.
+    #[test]
+    fn field_and_slider_pick_on_press_and_follow_small_moves() {
+        let mut f = Map::new();
+        f.insert("color".into(), json!("#336699"));
+        let mut h = Harness::builder().with_size(vec2(400.0, 300.0)).build_ui_state(
+            |ui, f: &mut Map<String, Value>| {
+                ui.horizontal(|ui| {
+                    let o = ui.cursor().min;
+                    let gap = ui.spacing().item_spacing.x;
+                    ui.data_mut(|d| d.insert_temp(egui::Id::new("test-origin"), (o, gap)));
+                    color_field(ui, f);
+                });
+            },
+            f,
+        );
+        h.run_steps(2);
+        let (o, gap) = h.ctx.data(|d| d.get_temp::<(egui::Pos2, f32)>(egui::Id::new("test-origin"))).unwrap();
+        // Field: saturation across, brightness down (hue mode).
+        let at = o + vec2(FIELD * 0.5, FIELD * 0.5);
+        press(&mut h, at);
+        let picked = color(&h);
+        assert_ne!(picked, "#336699", "the press itself picks");
+        let hsv = rgb_to_hsb(parse_hex(&picked).unwrap());
+        assert!((hsv[1] - 0.5).abs() < 0.02 && (hsv[2] - 0.5).abs() < 0.02, "{picked} {hsv:?}");
+        // A 3-point nudge (under the 6-point click threshold) moves the pick.
+        h.event(egui::Event::PointerMoved(at + vec2(3.0, 0.0)));
+        h.run_steps(1);
+        assert_ne!(color(&h), picked, "a small drag adjusts the pick");
+        h.event(egui::Event::PointerButton {
+            pos: at + vec2(3.0, 0.0),
+            button: egui::PointerButton::Primary,
+            pressed: false,
+            modifiers: egui::Modifiers::NONE,
+        });
+        h.run_steps(2);
+        // Hue slider: a press near the bottom picks a hue near 0 at once.
+        let before = color(&h);
+        press(&mut h, o + vec2(FIELD + gap + 9.0, FIELD * 0.95));
+        assert_ne!(color(&h), before, "the slider picks on press");
+        let hue = rgb_to_hsb(parse_hex(&color(&h)).unwrap())[0];
+        assert!(hue < 30.0 || hue > 330.0, "hue {hue}");
+    }
+
+    /// Only the primary button picks: a right or middle press (and its release) on the field or
+    /// the slider leaves the colour alone.
+    #[test]
+    fn field_and_slider_ignore_secondary_and_middle_presses() {
+        let mut f = Map::new();
+        f.insert("color".into(), json!("#336699"));
+        let mut h = Harness::builder().with_size(vec2(400.0, 300.0)).build_ui_state(
+            |ui, f: &mut Map<String, Value>| {
+                ui.horizontal(|ui| {
+                    let o = ui.cursor().min;
+                    let gap = ui.spacing().item_spacing.x;
+                    ui.data_mut(|d| d.insert_temp(egui::Id::new("test-origin"), (o, gap)));
+                    color_field(ui, f);
+                });
+            },
+            f,
+        );
+        h.run_steps(2);
+        let (o, gap) = h.ctx.data(|d| d.get_temp::<(egui::Pos2, f32)>(egui::Id::new("test-origin"))).unwrap();
+        for at in [o + vec2(FIELD * 0.5, FIELD * 0.5), o + vec2(FIELD + gap + 9.0, FIELD * 0.95)] {
+            for button in [egui::PointerButton::Secondary, egui::PointerButton::Middle] {
+                press_button(&mut h, at, button, true);
+                assert_eq!(color(&h), "#336699", "{button:?} press at {at:?}");
+                h.event(egui::Event::PointerMoved(at + vec2(3.0, 0.0)));
+                h.run_steps(1);
+                press_button(&mut h, at + vec2(3.0, 0.0), button, false);
+                h.run_steps(1);
+                assert_eq!(color(&h), "#336699", "{button:?} drag and release at {at:?}");
+            }
+        }
+    }
+
     #[test]
     fn hex_field_shows_uppercase_without_rewriting_the_selected_color() {
         let h = picker("#12abef");
         assert_eq!(h.get_by_role(Role::TextInput).value().as_deref(), Some("12ABEF"));
         assert_eq!(color(&h), "#12abef", "casing is presentation only");
+    }
+
+    /// #6937: pressing the hue strip must update the colour on the press frame, not only when
+    /// the button is released (Photoshop updates immediately on click-and-hold).
+    #[test]
+    fn hue_strip_updates_the_color_on_press_not_on_release() {
+        let mut h = picker("#0000ff"); // pure blue: hue 240°
+        let web = h.get_by_label("Only Web Colors").rect();
+        let pick = h.get_by_label("Pick screen color").rect();
+        // The strip is 18 pt wide, 6 pt right of the 200 pt field whose left edge is the column's
+        // (the screen-colour button shares it); its bottom edge is just above the checkbox.
+        // Press near the bottom: hue ~5°, a red the blue starting colour cannot produce via the field.
+        let press = pos2(pick.left() + FIELD + 15.0, web.top() - 20.0);
+        h.event(egui::Event::PointerMoved(press));
+        h.run_steps(1);
+        h.event(egui::Event::PointerButton { pos: press, button: egui::PointerButton::Primary, pressed: true, modifiers: egui::Modifiers::NONE });
+        h.run_steps(1);
+        let held = color(&h);
+        assert_ne!(held, "#0000ff", "holding the button on the strip must already change the colour");
+        // The colour is the red-ish hue near the strip's bottom, not the old blue: had the press
+        // landed on the field instead of the strip, the hue (and the blue channel) would survive.
+        let [r, _, b] = parse_hex(&held).unwrap();
+        assert!(r > 0.5 && b < 0.2, "expected a red-ish hue from the strip, got {held}");
+        h.event(egui::Event::PointerButton { pos: press, button: egui::PointerButton::Primary, pressed: false, modifiers: egui::Modifiers::NONE });
+        h.run_steps(1);
+        assert_eq!(color(&h), held, "releasing must not move the colour again");
     }
 
     #[test]
@@ -1170,6 +1289,13 @@ mod tests {
     }
 
     /// HSB and hex round-trip sRGB colours.
+    #[test]
+    fn parse_hex_rejects_signs() {
+        assert_eq!(parse_hex("#+f+f+f"), None);
+        assert_eq!(parse_hex("+1+2+3"), None);
+        assert!(parse_hex("#0f0f0f").is_some());
+    }
+
     #[test]
     fn hsv_round_trips() {
         for c in [[1.0, 0.0, 0.0], [0.2, 0.6, 0.4], [0.5, 0.5, 0.5], [0.0, 0.0, 1.0], [0.9, 0.8, 0.1]] {

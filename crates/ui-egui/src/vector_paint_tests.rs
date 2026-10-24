@@ -1,5 +1,7 @@
 //! Pointer, keyboard, colour precision and history regressions for shape appearance controls.
 use super::*;
+use crate::shape_options::set_tool_paint;
+use crate::shape_paint_ui::color_of;
 use egui::{Event, Key, Modifiers, PointerButton};
 use egui_kittest::{Harness, kittest::Queryable};
 use photocraft_doc::ShapeLayer;
@@ -186,6 +188,84 @@ fn fill_and_stroke_swatches_open_with_pointer_and_keyboard_without_changing_pain
         assert_eq!(h.state().session.active().unwrap().doc, document);
         assert_eq!(h.state().session.tools.foreground, foreground);
         assert_eq!(h.state().session.tools.background, background);
+    }
+}
+
+#[test]
+fn shape_paint_hex_input_keeps_partial_text_and_preserves_alpha() {
+    for label in ["Fill color", "Stroke color"] {
+        let mut app = app("rgb", 32);
+        let original = [0.123456, 0.345678, 0.567891, 0.372819];
+        app.run("tools.setColors", json!({"foreground": original, "background": original})).unwrap();
+        let mut h = harness(app, false);
+        h.get_by_label(label).click();
+        h.run_steps(3);
+        h.get_by_label("#").click();
+        h.run_steps(1);
+        h.key_press_modifiers(Modifiers::COMMAND, Key::A);
+        h.run_steps(1);
+        for ch in "12AB".chars() {
+            h.event(Event::Text(ch.to_string()));
+            h.run_steps(1);
+        }
+        assert_eq!(h.get_by_label("#").value().as_deref(), Some("12AB"));
+        assert_eq!(h.state().session.tools.foreground, original);
+        assert_eq!(h.state().session.tools.background, original);
+        for ch in "EF".chars() {
+            h.event(Event::Text(ch.to_string()));
+            h.run_steps(1);
+        }
+        let want = [18.0 / 255.0, 171.0 / 255.0, 239.0 / 255.0, original[3]];
+        let tools = &h.state().session.tools;
+        assert_eq!(if label == "Fill color" { tools.foreground } else { tools.background }, want);
+        assert_eq!(if label == "Fill color" { tools.background } else { tools.foreground }, original);
+        // An invalid/multi-byte value leaves the selected paint untouched.
+        h.key_press_modifiers(Modifiers::COMMAND, Key::A);
+        h.run_steps(1);
+        h.event(Event::Text("颜色".into()));
+        h.run_steps(2);
+        let tools = &h.state().session.tools;
+        assert_eq!(if label == "Fill color" { tools.foreground } else { tools.background }, want);
+        h.key_press(Key::Escape);
+        h.run_steps(2);
+        finish_shape(h.state_mut(), Tool::Rectangle, [20.0, 20.0], [100.0, 80.0], Modifiers::NONE);
+        let drawn = shape(h.state());
+        let paint = if label == "Fill color" { drawn.fill.as_ref().and_then(color_of) } else { drawn.stroke.as_ref().and_then(|s| color_of(&s.paint)) };
+        assert_eq!(paint, Some(want), "the next shape takes the typed colour");
+    }
+}
+
+#[test]
+fn a_pasted_hex_colour_updates_the_selected_shape_and_undoes_once() {
+    for label in ["Fill color", "Stroke color"] {
+        let mut app = app("rgb", 32);
+        app.run("tools.setColors", json!({"foreground": [0.2, 0.3, 0.4, 0.6], "background": [0.5, 0.6, 0.7, 0.8]})).unwrap();
+        app.ui.tool_options.stroke_width = 3.0;
+        finish_shape(&mut app, Tool::Rectangle, [20.0, 20.0], [100.0, 80.0], Modifiers::NONE);
+        let original = shape(&app).clone();
+        let history = app.session.active().unwrap().history.past_len();
+        let mut h = harness(app, false);
+        h.get_by_label(label).click();
+        h.run_steps(3);
+        h.get_by_label("#").click();
+        h.run_steps(1);
+        h.key_press_modifiers(Modifiers::COMMAND, Key::A);
+        h.run_steps(1);
+        h.event(Event::Paste("#12ABEF".into()));
+        h.run_steps(2);
+        let edited = shape(h.state());
+        let (paint, untouched) = if label == "Fill color" {
+            (edited.fill.as_ref().and_then(color_of), edited.stroke == original.stroke)
+        } else {
+            (edited.stroke.as_ref().and_then(|s| color_of(&s.paint)), edited.fill == original.fill)
+        };
+        let alpha = if label == "Fill color" { 0.6 } else { 0.8 };
+        let want = [18.0 / 255.0, 171.0 / 255.0, 239.0 / 255.0, alpha];
+        assert_eq!(paint, Some(want));
+        assert!(untouched, "the other paint stays unchanged");
+        assert_eq!(h.state().session.active().unwrap().history.past_len(), history + 1);
+        h.state_mut().run("edit.undo", json!({})).unwrap();
+        assert_eq!(shape(h.state()), &original);
     }
 }
 
@@ -410,4 +490,26 @@ fn options_bar_fill_swatch_recolours_the_shape_just_drawn() {
     assert_eq!(h.state().session.active().unwrap().history.past_len(), history + 1);
     h.state_mut().run("edit.undo", json!({})).unwrap();
     assert_eq!(shape(h.state()).fill, original.fill);
+}
+
+/// An arrow-key step at 0 px on a strokeless shape must not add an invisible stroke.
+#[test]
+fn arrow_down_at_zero_width_keeps_a_strokeless_shape_strokeless() {
+    for properties in [true, false] {
+        let mut app = app("rgb", 8);
+        app.run("shape.create", json!({"rect": [20, 20, 80, 60], "fill": "#336699", "stroke": null})).unwrap();
+        assert!(shape(&app).stroke.is_none());
+        let history = app.session.active().unwrap().history.past_len();
+        let mut h = harness(app, properties);
+        h.get_all_by_role(egui::accesskit::Role::SpinButton).next().expect("the stroke width").click();
+        h.run();
+        h.key_press(Key::ArrowDown);
+        h.run_steps(3);
+        assert!(shape(h.state()).stroke.is_none(), "Properties={properties}: Down at 0 px added a stroke");
+        assert_eq!(h.state().session.active().unwrap().history.past_len(), history, "Properties={properties}: no history step");
+        // The field has the keys: Up still enables a 1 px stroke.
+        h.key_press(Key::ArrowUp);
+        h.run_steps(3);
+        assert_eq!(shape(h.state()).stroke.as_ref().map(|s| s.width), Some(1.0), "Properties={properties}");
+    }
 }

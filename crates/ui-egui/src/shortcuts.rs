@@ -196,18 +196,23 @@ fn new_layer_without_dialog(app: &mut PhotocraftApp, ctx: &egui::Context) -> boo
 }
 
 fn nav_keys(app: &mut PhotocraftApp, ctx: &egui::Context) -> bool {
-    for id in NAV_COMMANDS {
-        let main = crate::menus::UI_COMMANDS.iter().find(|c| c.0 == id).and_then(|c| app.session.prefs().shortcut(id, c.3));
+    let Some(id) = nav_shortcut(app, ctx) else { return false };
+    if crate::menus::is_enabled(app, id) {
+        let _ = crate::menus::invoke(app, ctx, id, json!({}));
+    }
+    true
+}
+
+/// The [`NAV_COMMANDS`] entry whose shortcut (or an Edit › Keyboard Shortcuts override) was
+/// pressed this frame, with the key press consumed. A view with its own zoom, like Liquify's
+/// preview, steps it with the same keys (#7210).
+pub(crate) fn nav_shortcut(app: &PhotocraftApp, ctx: &egui::Context) -> Option<&'static str> {
+    NAV_COMMANDS.into_iter().find(|id| {
+        let main = crate::menus::UI_COMMANDS.iter().find(|c| c.0 == *id).and_then(|c| app.session.prefs().shortcut(id, c.3));
         let keys: Vec<KeyboardShortcut> =
             main.into_iter().map(str::to_string).chain(app.session.prefs().alternates(id, main)).filter_map(|k| parse(&k)).collect();
-        if keys.iter().any(|sc| consume(ctx, sc)) {
-            if crate::menus::is_enabled(app, id) {
-                let _ = crate::menus::invoke(app, ctx, id, json!({}));
-            }
-            return true;
-        }
-    }
-    false
+        keys.iter().any(|sc| consume(ctx, sc))
+    })
 }
 
 /// The key press a clipboard event stands for outside text fields, with `mods` held: Copy, Cut
@@ -454,6 +459,7 @@ pub fn handle(app: &mut PhotocraftApp, ctx: &egui::Context) {
     // Liquify is a full-window custom dialog with focusable sliders. egui can therefore claim
     // keyboard input before the distortion-mode handler below runs. Give Liquify's local
     // shortcuts first refusal (Undo, brush size, tool keys), but never steal keys from text edits.
+    crate::distort_ui::cancel_stale(app);
     if app.distort.liquify.is_some() {
         // Undo and redo still apply while a numeric field (Size, Pressure, …) has focus.
         // Other Liquify keys must not steal characters from that field (#4027).
@@ -600,6 +606,14 @@ pub fn handle(app: &mut PhotocraftApp, ctx: &egui::Context) {
     }
     // A selected guide: ⌫/Delete removes it (`guide_select`), never Edit › Clear's pixels.
     if crate::guide_select::keys(app, ctx) {
+        return;
+    }
+    // A slice selected with Slice Select: ⌫/Delete deletes the slice, not the layer (#7862).
+    if crate::slice_ui::keys(app, ctx) {
+        return;
+    }
+    // A selected smart filter row: ⌫/Delete removes the filter, not its smart object (#4751).
+    if crate::smart_ui::keys(app, ctx) {
         return;
     }
     // Space+F (⇧Space+F backwards) cycles the pasteboard colour, as in Photoshop: F while the
@@ -750,6 +764,10 @@ pub fn handle(app: &mut PhotocraftApp, ctx: &egui::Context) {
             }
             return;
         }
+    }
+    // Page Up / Page Down (⌘ sideways, ⇧ a small step), Home and End scroll the canvas (#8057).
+    if crate::page_keys::handle(app, ctx) {
+        return;
     }
     // 1–0 set opacity, ⇧1–0 flow or fill (`opacity_keys`).
     crate::opacity_keys::handle(app, ctx);

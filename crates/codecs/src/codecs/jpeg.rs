@@ -19,7 +19,7 @@ use crate::Format;
 use crate::error::CodecError;
 use crate::fidelity::Plan;
 use crate::image::{ChannelLayout, DecodeWarning, Image, Metadata, SampleType};
-use crate::options::{EncodeOptions, Limits};
+use crate::options::{EncodeOptions, JpegFormat, Limits};
 use crate::resolution::{exif_resolution, export_exif, export_xmp, photoshop_resolution, xmp_resolution};
 
 const F: Format = Format::Jpeg;
@@ -137,32 +137,39 @@ enum DataEnd {
 /// Walks the marker segments (skipped by their length) and the entropy-coded scan data
 /// (skipped up to the next marker that isn't a stuffed `FF 00`, a restart or a fill byte),
 /// so an embedded thumbnail's end marker or data after the end of the image don't count.
-fn data_end(b: &[u8]) -> DataEnd {
+/// Also returns how many scan-data bytes the walk crossed: the truncated-input budget is
+/// measured on these, not on the file length, which APP padding can inflate without
+/// adding image data.
+fn data_end(b: &[u8]) -> (DataEnd, u64) {
     // Where the bytes run out: inside the image data once a scan has held some.
-    let cut = |scan_data: bool| if scan_data { DataEnd::Truncated } else { DataEnd::Empty };
+    let cut = |scan_data: bool, scanned: u64| (if scan_data { DataEnd::Truncated } else { DataEnd::Empty }, scanned);
     let mut i = 2; // past SOI
     let mut scan_data = false;
+    let mut scanned = 0u64;
     loop {
-        let Some(&byte) = b.get(i) else { return cut(scan_data) };
+        let Some(&byte) = b.get(i) else { return cut(scan_data, scanned) };
         if byte != 0xFF {
             // Not where a marker should be: too odd to judge.
-            return DataEnd::Complete;
+            return (DataEnd::Complete, scanned);
         }
-        let Some(&code) = b.get(i + 1) else { return cut(scan_data) };
+        let Some(&code) = b.get(i + 1) else { return cut(scan_data, scanned) };
         match code {
-            0xD9 => return DataEnd::Complete,
+            0xD9 => return (DataEnd::Complete, scanned),
             0xFF => i += 1,
             0x01 | 0xD0..=0xD8 => i += 2,
             _ => {
                 let Some(len) = b.get(i + 2..i + 4).and_then(|s| <[u8; 2]>::try_from(s).ok()).map(u16::from_be_bytes) else {
-                    return cut(scan_data);
+                    return cut(scan_data, scanned);
                 };
                 i = i.saturating_add(2 + usize::from(len));
                 if code == 0xDA {
                     let start = i;
                     loop {
                         let Some(p) = b.get(i..).and_then(|r| r.iter().position(|&v| v == 0xFF)) else {
-                            return cut(scan_data || b.len() > start);
+                            // EOF inside this scan: everything from the scan start to the end
+                            // of the file is scan data (inside a declared segment it may not
+                            // be, so only count what remains).
+                            return cut(scan_data || b.len() > start, scanned + u64::try_from(b.len().saturating_sub(start)).unwrap_or(0));
                         };
                         i += p;
                         match b.get(i + 1) {
@@ -172,6 +179,7 @@ fn data_end(b: &[u8]) -> DataEnd {
                         }
                     }
                     scan_data |= i > start;
+                    scanned += u64::try_from(i - start).unwrap_or(0);
                 }
             }
         }
@@ -182,8 +190,12 @@ fn err(e: impl std::fmt::Display) -> CodecError {
     CodecError::malformed(F, e)
 }
 
+/// Most pixels one byte of truncated scan data may account for. Even a flat image costs a few
+/// bits per 8×8 block, and truncated photographs are far above this.
+const MAX_TRUNCATED_PIXELS_PER_BYTE: u64 = 2048;
+
 pub(crate) fn decode(bytes: &[u8], limits: &Limits) -> Result<Image, CodecError> {
-    let end = data_end(bytes);
+    let (end, scan_bytes) = data_end(bytes);
     if end == DataEnd::Empty {
         return Err(err("the file ends before any image data"));
     }
@@ -204,6 +216,13 @@ pub(crate) fn decode(bytes: &[u8], limits: &Limits) -> Result<Image, CodecError>
         _ => (ColorSpace::RGB, ChannelLayout::Rgb),
     };
     limits.check(w, h, layout, SampleType::U8)?;
+    // The backend fills whatever the scan no longer describes, so a short scan under a large
+    // frame is a gigabyte of synthesized output from a few kilobytes of file. The budget is
+    // measured on the scan data itself: APP padding can inflate `bytes.len()` arbitrarily
+    // without describing one more pixel.
+    if end == DataEnd::Truncated && u64::from(w) * u64::from(h) / MAX_TRUNCATED_PIXELS_PER_BYTE > scan_bytes {
+        return Err(err("the truncated scan is too short for the frame it declares"));
+    }
     dec.set_options(dec.options().jpeg_set_out_colorspace(out_cs));
     let mut px = dec.decode().map_err(err)?;
     let expected = w as usize * h as usize * layout.channels();
@@ -256,12 +275,17 @@ pub(crate) fn encode(src: &Image, plan: Plan, opts: &EncodeOptions) -> Result<Ve
     let mut enc = jpeg_encoder::Encoder::new(&mut out, opts.jpeg_quality.clamp(1, 100));
     // CMYK is always written 4:4:4: subsampled 4-component JPEGs are not
     // decoded consistently across implementations.
-    let sampling = if opts.jpeg_chroma_subsampling && img.layout() == ChannelLayout::Rgb {
-        jpeg_encoder::SamplingFactor::R_4_2_0
-    } else {
-        jpeg_encoder::SamplingFactor::R_4_4_4
-    };
+    let subsampled = opts.jpeg_chroma_subsampling && img.layout() == ChannelLayout::Rgb;
+    let sampling = if subsampled { jpeg_encoder::SamplingFactor::R_4_2_0 } else { jpeg_encoder::SamplingFactor::R_4_4_4 };
     enc.set_sampling_factor(sampling);
+    // JPEG Options › Format Options. Fitted Huffman tables make a baseline scan non-interleaved
+    // (one scan per component), which zune-jpeg 0.5.15 decodes wrongly with 4:2:0 chroma
+    // (etemesi254/zune-image#419; see `web::encode_jpeg_rgb8`), so a subsampled Baseline
+    // Optimized keeps the standard tables until that decoder is updated. Progressive is fine.
+    let progressive = opts.jpeg_format == JpegFormat::Progressive;
+    enc.set_progressive(progressive);
+    let optimized = opts.jpeg_format == JpegFormat::Optimized && !subsampled;
+    enc.set_optimized_huffman_tables(progressive || optimized);
     let e = |e: jpeg_encoder::EncodingError| CodecError::encode(F, e);
     if opts.embed_metadata {
         if img.layout() != ChannelLayout::Cmyk
@@ -428,6 +452,52 @@ mod tests {
     /// Return whether the JPEG begins with a JFIF APP0 segment.
     fn has_jfif_app0(bytes: &[u8]) -> bool {
         bytes.get(2..11) == Some(b"\xff\xe0\0\x10JFIF\0")
+    }
+
+    /// A tiny truncated scan under a frame patched to 20000×20000 is refused before the backend
+    /// fills 400 million pixels from it; the same file with its real size still recovers.
+    #[test]
+    fn a_short_truncated_scan_cannot_declare_a_huge_frame() {
+        let img = Image::from_raw(16, 16, ChannelLayout::Rgb, SampleType::U8, vec![128; 16 * 16 * 3]).unwrap();
+        let full = crate::encode(&img, Format::Jpeg, &EncodeOptions::default()).unwrap();
+        let cut = &full[..full.len() - 4];
+        assert_eq!(data_end(cut).0, DataEnd::Truncated);
+        assert!(crate::decode_as(Format::Jpeg, cut).is_ok());
+        let sof = cut.windows(2).position(|w| w == [0xFF, 0xC0] || w == [0xFF, 0xC2]).unwrap();
+        let mut huge = cut.to_vec();
+        huge[sof + 5..sof + 9].copy_from_slice(&[0x4E, 0x20, 0x4E, 0x20]);
+        let e = crate::decode_as(Format::Jpeg, &huge).unwrap_err();
+        assert!(e.to_string().contains("too short"), "{e}");
+    }
+
+    /// The truncated-scan budget counts scan data, not the file length: APP padding before the
+    /// window cannot admit an oversized output. The same padded file with its real size still
+    /// decodes (with the truncation warning).
+    #[test]
+    fn app_padding_cannot_admit_an_oversized_truncated_frame() {
+        let img = Image::from_raw(16, 16, ChannelLayout::Rgb, SampleType::U8, vec![128; 16 * 16 * 3]).unwrap();
+        let full = crate::encode(&img, Format::Jpeg, &EncodeOptions::default()).unwrap();
+        let cut = &full[..full.len() - 4];
+        // Four full-length COMMENT segments (~256 KiB) stand where APP padding would; they are
+        // complete, so the file otherwise parses normally.
+        let fill = [b'p'; 65533];
+        let mut padded = cut[..2].to_vec();
+        for _ in 0..4 {
+            padded.extend_from_slice(&[0xFF, 0xFE]);
+            padded.extend_from_slice(&0xFFFFu16.to_be_bytes());
+            padded.extend_from_slice(&fill);
+        }
+        padded.extend_from_slice(&cut[2..]);
+        assert_eq!(data_end(&padded).0, DataEnd::Truncated);
+        // Well above the frame's pixels / budget, yet far above the scan data: the old
+        // file-length bound admitted this frame.
+        assert!(padded.len() > (u64::from(20_000u32) * u64::from(20_000u32) / MAX_TRUNCATED_PIXELS_PER_BYTE) as usize, "padding too small");
+        assert!(crate::decode_as(Format::Jpeg, &padded).is_ok());
+        let sof = padded.windows(2).position(|w| w == [0xFF, 0xC0] || w == [0xFF, 0xC2]).unwrap();
+        let mut huge = padded.clone();
+        huge[sof + 5..sof + 9].copy_from_slice(&[0x4E, 0x20, 0x4E, 0x20]);
+        let e = crate::decode_as(Format::Jpeg, &huge).unwrap_err();
+        assert!(e.to_string().contains("too short"), "{e}");
     }
 
     /// CMYK JPEG output must omit JFIF while retaining Adobe's CMYK marker.

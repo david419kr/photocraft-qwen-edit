@@ -86,7 +86,7 @@ choice!(UiFontSize { Tiny = "tiny", Small = "small", Medium = "medium", Large = 
 choice!(LogDestination { Metadata = "metadata", TextFile = "textFile", Both = "both" } default Metadata);
 choice!(LogDetail { SessionsOnly = "sessionsOnly", Concise = "concise", Detailed = "detailed" } default Concise);
 choice!(Ask { Always = "always", Never = "never", Ask = "ask" } default Always);
-choice!(QuickExportFormat { Png = "png", Jpg = "jpg", Gif = "gif", Webp = "webp" } default Png);
+choice!(QuickExportFormat { Png = "png", Jpg = "jpg", Gif = "gif", Webp = "webp", Exr = "exr" } default Png);
 choice!(ExportLocation { Ask = "ask", SameFolder = "sameFolder" } default Ask);
 choice!(ExportMetadata { None = "none", Copyright = "copyright", All = "all" } default Copyright);
 choice!(
@@ -108,6 +108,12 @@ choice!(FontPreview { Off = "off", Small = "small", Medium = "medium", Large = "
 choice!(RawColorSpace { Srgb = "srgb", AdobeRgb = "adobeRgb", ProPhoto = "proPhoto", DisplayP3 = "displayP3" } default AdobeRgb);
 choice!(RawDepth { Eight = "8", Sixteen = "16" } default Sixteen);
 choice!(RawSharpen { None = "none", Screen = "screen", Glossy = "glossy", Matte = "matte" } default None);
+choice!(
+    /// How a raw file's colour filter array is filled in when it is developed: AHD
+    /// (Hirakawa–Parks) keeps edges cleanest, Malvar–He–Cutler is sharp and fast, bilinear is the
+    /// fastest and softest. Photoshop's Camera Raw has no such choice.
+    RawDemosaic { Ahd = "ahd", Mhc = "mhc", Bilinear = "bilinear" } default Ahd
+);
 
 impl Unit {
     /// Document pixels → this unit. `dpi` is the document resolution, `extent` the 100% length
@@ -221,6 +227,8 @@ pub struct General {
     pub zoom_resizes_windows: bool,
     pub use_legacy_free_transform: bool,
     pub auto_show_home_screen: bool,
+    /// Desktop: check published stable releases once in the background at launch.
+    pub automatically_check_updates: bool,
 }
 
 impl Default for General {
@@ -237,6 +245,7 @@ impl Default for General {
             zoom_resizes_windows: false,
             use_legacy_free_transform: false,
             auto_show_home_screen: true,
+            automatically_check_updates: true,
         }
     }
 }
@@ -444,6 +453,8 @@ impl Default for HistoryLog {
 pub struct FileHandling {
     pub image_previews: Ask,
     pub lowercase_extension: bool,
+    /// File › Save a Copy suggests the document's own name rather than "<name> copy" (#8080).
+    pub do_not_append_copy: bool,
     /// Saves run in the background while you keep working (on), or in the foreground under a
     /// modal progress dialog that blocks the app until the file is written (off).
     pub save_in_background: bool,
@@ -465,6 +476,17 @@ pub struct FileHandling {
     pub recent_file_count: u32,
     /// Most recently opened files, newest first (File › Open Recent).
     pub recent_files: Vec<String>,
+    /// A folder whose `.cube`, `.3dl` and `.look` files Color Lookup lists under its built-in
+    /// looks (native only, #6558). Empty lists none.
+    pub lut_folder: String,
+}
+
+impl FileHandling {
+    /// What File › Save a Copy appends to the document's name: " copy", or nothing with Do not
+    /// append "copy" to filename when saving a copy (#8080).
+    pub fn copy_suffix(&self) -> &'static str {
+        if self.do_not_append_copy { "" } else { " copy" }
+    }
 }
 
 impl Default for FileHandling {
@@ -472,6 +494,7 @@ impl Default for FileHandling {
         Self {
             image_previews: Ask::Always,
             lowercase_extension: true,
+            do_not_append_copy: false,
             save_in_background: true,
             autosave: true,
             autosave_minutes: 10,
@@ -483,6 +506,7 @@ impl Default for FileHandling {
             rasterize_svg_groups_deeper_than: photocraft_doc::MAX_GROUP_DEPTH as u32,
             recent_file_count: 20,
             recent_files: Vec::new(),
+            lut_folder: String::new(),
         }
     }
 }
@@ -875,6 +899,19 @@ pub struct RawDefaults {
     /// Photoshop does; off develops it with the defaults straight away. Automation opens never
     /// show the dialog.
     pub open_in_camera_raw: bool,
+    /// The demosaic method raws are developed with; the open-time Camera Raw dialog starts from it.
+    pub demosaic: RawDemosaic,
+}
+
+impl RawDemosaic {
+    /// The developer's method.
+    pub fn method(self) -> photocraft_io::raw::Demosaic {
+        match self {
+            RawDemosaic::Ahd => photocraft_io::raw::Demosaic::Ahd,
+            RawDemosaic::Mhc => photocraft_io::raw::Demosaic::Mhc,
+            RawDemosaic::Bilinear => photocraft_io::raw::Demosaic::Bilinear,
+        }
+    }
 }
 
 impl Default for RawDefaults {
@@ -887,6 +924,7 @@ impl Default for RawDefaults {
             open_as_smart_object: false,
             apply_auto_tone: false,
             open_in_camera_raw: true,
+            demosaic: RawDemosaic::Ahd,
         }
     }
 }
@@ -935,6 +973,37 @@ impl MenuCustomization {
 pub struct ToolbarCustomization {
     pub hidden: Vec<String>,
     pub order: Vec<String>,
+}
+
+/// Layer Mask Display Options (double-click the layer mask's row in the Channels panel, or Mask
+/// Options… on its Layers thumbnail): the colour and opacity of the layer mask rubylith (`\`,
+/// ⇧⌥-click the thumbnail). As in Photoshop, one setting for every mask, kept across restarts.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct LayerMaskOverlay {
+    /// `#rrggbb`.
+    pub color: String,
+    /// Percent, 0..=100.
+    pub opacity: f32,
+}
+
+impl Default for LayerMaskOverlay {
+    /// Photoshop's: red at 50 %.
+    fn default() -> Self {
+        Self { color: "#ff0000".into(), opacity: 50.0 }
+    }
+}
+
+impl LayerMaskOverlay {
+    /// The colour as 0..1 RGB; red if the stored value isn't a colour.
+    pub fn rgb(&self) -> [f32; 3] {
+        parse_hex(&self.color).unwrap_or([255, 0, 0]).map(|v| f32::from(v) / 255.0)
+    }
+
+    /// The opacity as a fraction (0..1); 50 % if the stored value isn't a number.
+    pub fn alpha(&self) -> f32 {
+        if self.opacity.is_finite() { self.opacity.clamp(0.0, 100.0) / 100.0 } else { 0.5 }
+    }
 }
 
 /// All preferences. JSON keys are the `edit.preferences.<section>` ids.
@@ -1017,6 +1086,8 @@ pub struct Preferences {
     pub view_extras: Value,
     /// File › Scripts › Script Events Manager: event → script bindings.
     pub script_events: crate::automate_cmds::ScriptEvents,
+    /// Layer Mask Display Options: the layer mask rubylith's colour and opacity.
+    pub layer_mask_overlay: LayerMaskOverlay,
 }
 
 /// Preferences dialog sections in Photoshop's order: (id, title).
@@ -1049,7 +1120,6 @@ pub const SECTIONS: [(&str, &str); 18] = [
 /// preference is read anywhere outside `prefs.rs`, and while an unlisted one is read nowhere.
 pub const HIDDEN_UNTIL_IMPLEMENTED: &[&str] = &[
     "general.colorPicker",
-    "general.zoomResizesWindows",
     "workspace.autoShowHiddenPanels",
     "workspace.enableFloatingDocumentWindowDocking",
     "performance.cacheLevels",
@@ -1060,13 +1130,10 @@ pub const HIDDEN_UNTIL_IMPLEMENTED: &[&str] = &[
     "unitsAndRulers.gutter",
     "plugIns.showExtensionPanels",
     "plugIns.allowScriptsToConnect",
-    "plugIns.generatorEnabled",
     "type.textEngine",
-    "type.recentFonts",
     "enhancedControls.scrubbySliderAcceleration",
     "rawDefaults.colorSpace",
     "rawDefaults.bitDepth",
-    "rawDefaults.resolution",
     "rawDefaults.sharpenFor",
     "rawDefaults.openAsSmartObject",
     "rawDefaults.applyAutoTone",
@@ -1127,6 +1194,7 @@ pub fn choices(path: &str) -> Option<&'static [&'static str]> {
         "rawDefaults.colorSpace" => RawColorSpace::NAMES,
         "rawDefaults.bitDepth" => RawDepth::NAMES,
         "rawDefaults.sharpenFor" => RawSharpen::NAMES,
+        "rawDefaults.demosaic" => RawDemosaic::NAMES,
         "performance.gpuBackend" => GpuBackend::NAMES,
         "performance.linuxDisplayServer" => LinuxDisplayServer::NAMES,
         "performance.renderingMode" => RenderingMode::NAMES,
@@ -1154,6 +1222,7 @@ pub fn range(path: &str) -> Option<(f64, f64)> {
         "unitsAndRulers.printResolution" | "unitsAndRulers.screenResolution" | "rawDefaults.resolution" => (1.0, 10_000.0),
         "guidesGridAndSlices.gridlineEvery" => (0.001, 10_000.0),
         "guidesGridAndSlices.subdivisions" => (1.0, 100.0),
+        "layerMaskOverlay.opacity" => (0.0, 100.0),
         "type.recentFonts" => (0.0, 50.0),
         "integrations.controlPort" => (0.0, 65535.0),
         _ => return None,
@@ -1164,6 +1233,9 @@ pub fn range(path: &str) -> Option<(f64, f64)> {
 pub fn is_color(path: &str) -> bool {
     if choices(path).is_some() || path.starts_with("shortcuts.") || path.starts_with("alternateShortcuts.") || path.starts_with("menus.") {
         return false;
+    }
+    if path == "layerMaskOverlay.color" {
+        return true;
     }
     let leaf = path.rsplit('.').next().unwrap_or(path);
     matches!(
@@ -1648,6 +1720,10 @@ impl PrefsStore {
     }
 }
 
+/// The preferences file format written by [`Session::prefs_value`]. 2: Use Shift Key for Tool
+/// Switch stored as chosen (before, a stored `false` was the old default; see `load_prefs_json`).
+pub const PREFS_VERSION: u64 = 2;
+
 /// A saved preference [`Session::load_prefs_json`] couldn't read (a wrong type, an unknown
 /// choice) and left at its default.
 #[derive(Clone, Debug, PartialEq)]
@@ -1783,7 +1859,7 @@ impl Session {
         let mut v = self.prefs().to_json();
         if let Value::Object(m) = &mut v {
             m.insert("colorSettings".into(), serde_json::to_value(&self.color.settings).unwrap_or(Value::Null));
-            m.insert("version".into(), json!(1));
+            m.insert("version".into(), json!(PREFS_VERSION));
             m.insert("presets".into(), self.presets.to_json(self));
         }
         v
@@ -1798,6 +1874,16 @@ impl Session {
         let mut v: Value = serde_json::from_str(s).map_err(|e| format!("preferences: {e}"))?;
         if !v.is_object() {
             return Err("preferences: expected a JSON object".into());
+        }
+        // Files before version 2 hold Use Shift Key for Tool Switch off because that was the
+        // default when they were written: every key is saved, chosen or not. Like Photoshop it is
+        // on by default now (#3528), so those files take the new default (#5647: a tool letter
+        // pressed again kept cycling its group). A choice made since is saved as version 2.
+        if v.get("version").and_then(Value::as_u64).unwrap_or(0) < 2
+            && let Some(tools) = v.get_mut("tools").and_then(Value::as_object_mut)
+            && tools.get("useShiftKeyForToolSwitch") == Some(&json!(false))
+        {
+            tools.remove("useShiftKeyForToolSwitch");
         }
         // Saved preferences before appearance modes had one concrete theme. Preserve its
         // appearance instead of silently switching established users to Auto.
@@ -1846,7 +1932,11 @@ impl Session {
     /// Batches defer colour validation until their complete candidate is staged. Returns
     /// whether colour settings were touched, including whole-section/root-object updates.
     fn set_pref(&mut self, path: &str, value: Value, validate_color: bool) -> std::result::Result<bool, String> {
-        if let Some(rest) = path.strip_prefix("colorSettings") {
+        // The section itself or a path inside it: `colorSettingsworkingRgb`, `colorSettings.` and
+        // `colorSettings..workingRgb` are none, and the authorization policy doesn't treat them as one.
+        if let Some(rest) =
+            path.strip_prefix("colorSettings").filter(|r| r.is_empty() || r.strip_prefix('.').is_some_and(|c| c.split('.').all(|part| !part.is_empty())))
+        {
             let mut cur = serde_json::to_value(&self.color.settings).map_err(|e| e.to_string())?;
             let rest = rest.trim_start_matches('.');
             if rest.is_empty() {
@@ -2652,3 +2742,19 @@ pub fn specs() -> Vec<CommandSpec> {
 #[cfg(test)]
 #[path = "prefs/tests.rs"]
 mod tests;
+
+#[cfg(test)]
+mod color_settings_path_tests {
+    use crate::Session;
+    use serde_json::json;
+
+    #[test]
+    fn a_path_that_only_starts_with_color_settings_is_not_in_that_section() {
+        let mut s = Session::new();
+        let before = s.color.settings.clone();
+        for path in ["colorSettingsworkingRgb", "colorSettings.", "colorSettings..workingRgb"] {
+            assert!(s.execute("prefs.set", json!({"path": path, "value": "/dev/zero"})).is_err(), "{path}");
+        }
+        assert_eq!(s.color.settings, before);
+    }
+}
