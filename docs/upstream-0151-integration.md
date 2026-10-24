@@ -1,6 +1,6 @@
 # Upstream 0.15.1 candidate integration
 
-Status: candidate validation. The draft PR records the final SHA, workflow results,
+Status: candidate validation in [draft PR #13](https://github.com/david419kr/photocraft-qwen-edit/pull/13). The draft PR records the final SHA, workflow results,
 Windows download and ZIP SHA256. Main merge, tags and public release need separate
 version-specific approval.
 
@@ -11,7 +11,7 @@ version-specific approval.
 - Resolved tag commit: `60c87b9884fdae0e464614d482a3bc435cbbc578`.
 - Fork main base: `79c22ad465fb63d33da0326dd07806e456376b66`.
 - `update/0.15.1` starts from that base and merges that exact release commit
-  with two parents. No upstream main integration. Upstream remains read-only.
+  with two parents (merge `9219ece5de52f83c8961f341c3ba90a59a9cc1f7`). No upstream main integration. Upstream remains read-only.
 - Admission recheck: no open PR, no existing 0.15.1 branch, no running Actions;
   latest fork release `261024-0.14.0` ID `422167100`. No retag observed.
   Prior upstream v0.14.0 remains `ff4738810134d7f7e68b49f2e4f231b686282ff3`.
