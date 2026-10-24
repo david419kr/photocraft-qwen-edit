@@ -2,7 +2,7 @@
 
 [한국어](README.ko.md) · [Download the portable release](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 
-> This branch prepares the **unreleased 0.14.0 candidate**. The release link above remains the approved 0.12.0 build. Hardware results below describe earlier releases; this candidate still needs local acceptance. See [integration and validation](docs/upstream-0140-integration.md).
+> This branch prepares the **unreleased 0.15.1 candidate**. The release link above remains the approved 261024-0.14.0 build. Hardware results below describe earlier releases; this candidate still needs local acceptance. See [integration and validation](docs/upstream-0151-integration.md).
 
 A native Rust PhotoCraft fork focused on **Photoshop-style local generative editing** through ComfyUI and Qwen Image 2.1, with optional prompt translation, new result layers and saved prompt history. AVIF opening, saving and export are also included.
 
@@ -75,7 +75,7 @@ With enough VRAM, the image and translation models stay resident between jobs. C
 
 Added features: local AI generation/edit/fill/removal, background removal, reroll, optional English translation, prompt metadata/history, model settings, Korean UI additions and AVIF read/write/export. Numeric-field wheel input and AI Ctrl+Enter remain available. Original upstream shortcuts and export defaults are retained. The last selected tool and foreground/background colors are restored across launches. AVIF export currently targets SDR; HDR preservation is outside the current scope.
 
-Tags use **`YYMMDD-upstreamVersion`** or **`YYMMDD-N-upstreamVersion`** for a same-day revision (N starts at 2). The date identifies this fork's build and the suffix identifies the upstream base. This candidate is **`261023-0.14.0`**, based on **PhotoCraft 0.14.0**, and retains persistent foreground/background colors. Setup pins official ComfyUI **v0.39.0** and the [resident Hy-MT2 fork](https://github.com/david419kr/ComfyUI-Hy-MT2).
+Tags use **`YYMMDD-upstreamVersion`** or **`YYMMDD-N-upstreamVersion`** for a same-day revision (N starts at 2). The date identifies this fork's build and the suffix identifies the upstream base. This candidate is **`261024-0.15.1`**, based on **PhotoCraft 0.15.1**, and retains persistent foreground/background colors. Setup pins official ComfyUI **v0.39.0** and the [resident Hy-MT2 fork](https://github.com/david419kr/ComfyUI-Hy-MT2).
 
 [AI notes](docs/comfyui.md) · [Architecture](docs/architecture.md) · [Development](docs/development.md)
 
