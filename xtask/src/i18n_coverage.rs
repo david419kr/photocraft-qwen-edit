@@ -601,6 +601,34 @@ mod tests {
     }
 
     #[test]
+    fn source_key_set_is_covered_by_complete_catalogs() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).parent().unwrap_or(Path::new("."));
+        let keys = source_keys(root).unwrap_or_default();
+        for (code, path) in [
+            ("ja", "ja.tsv"),
+            ("zh-hant", "zh-hant.tsv"),
+            ("es", "es.tsv"),
+            ("ru", "ru.tsv"),
+            ("cs", "cs.tsv"),
+            ("de", "de.tsv"),
+            ("pt-br", "pt-br.tsv"),
+            ("it", "it.tsv"),
+            ("el", "el.tsv"),
+            ("uk", "uk.tsv"),
+            ("nl", "nl.tsv"),
+            ("hu", "hu.tsv"),
+            ("tr", "tr.tsv"),
+            ("vi", "vi.tsv"),
+            ("sr", "sr.tsv"),
+        ] {
+            let catalog_path = root.join("crates/ui-egui/src/i18n").join(path);
+            let text = fs::read_to_string(&catalog_path).unwrap_or_default();
+            let translations = parse_catalog(&catalog_path, &text).unwrap_or_default();
+            let missing: Vec<_> = keys.difference(&translations).collect();
+            assert!(missing.is_empty(), "{code}: missing source keys: {missing:#?}");
+        }
+    }
+    #[test]
     fn plural_forms_follow_count_expressions_and_dynamic_forms_are_not_literal_keys() {
         let sources = vec![(
             PathBuf::from("ui.rs"),
