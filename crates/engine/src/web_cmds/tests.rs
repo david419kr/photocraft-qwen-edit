@@ -708,6 +708,8 @@ fn image_assets_keep_full_artboards() {
     })
     .unwrap();
 
+    let source = photocraft_compose::flatten(&s.active().unwrap().doc);
+    assert_eq!(source.px[6 * 64 + 4][3], 0.0, "the source board corner is fully transparent");
     s.execute("prefs.set", json!({"path": "plugIns.generatorEnabled", "value": true})).unwrap();
     let r = s.execute("file.generate.imageAssets", json!({"on": true, "dir": dir})).unwrap();
     assert!(r["errors"].as_array().unwrap().is_empty(), "{r}");
@@ -715,11 +717,15 @@ fn image_assets_keep_full_artboards() {
     assert_eq!(board.dimensions(), (40, 30), "the whole board, not its trimmed pixels");
     let px = board.to_rgba8();
     let at = |x: usize, y: usize| &px[(y * 40 + x) * 4..(y * 40 + x) * 4 + 4];
-    assert_eq!(at(0, 0)[3], 0, "the board's empty corner stays transparent");
-    assert_eq!(at(39, 29)[3], 0);
+    // Image Assets uses Metadata None. The fork erases PNG alpha-LSB payloads
+    // by setting that bit: transparent padding is exactly 1, opaque pixels 255.
+    // Keep exact bounds/placement assertions and prove that the source stays 0.
+    assert_eq!(at(0, 0)[3], 1, "the empty corner receives only Metadata None alpha-LSB scrubbing");
+    assert_eq!(at(39, 29)[3], 1);
     // The logo keeps its place on the board: document (12, 10) is board (8, 4).
     assert!(at(8, 4)[0] > 250 && at(8, 4)[3] == 255, "{:?}", at(8, 4));
-    assert_eq!(at(7, 4)[3], 0);
+    assert_eq!(at(7, 4)[3], 1);
+    assert_eq!(photocraft_compose::flatten(&s.active().unwrap().doc).px, source.px, "asset export does not alter source pixels");
     assert_eq!(decode(&format!("{dir}/logo.png")).dimensions(), (8, 6), "a layer on the board is still trimmed");
 }
 

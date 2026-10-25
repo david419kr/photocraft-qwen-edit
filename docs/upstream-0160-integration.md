@@ -56,6 +56,21 @@ Windows x64 MSVC candidate uses Rust 1.95.0 and `+crt-static`, AVIF, exact
 Artifact provenance records upstream release/tag/SHA, fork base and exact source
 SHA. Candidate identity is `261026-0.16.0`; no tag/public release is created.
 
+## Validation compatibility repair
+
+Initial CI run `40206159856` on `27ecc50c5120c0f86bdc785e46d9a251025667bb`
+found `image_assets_keep_full_artboards` expecting alpha 0 from a Metadata None
+PNG. The fork's established privacy path sets alpha LSBs, so transparent padding
+exports as exactly 1. Retain that policy and exact artboard dimensions, placement
+and opaque-pixel assertions; assert sanitized padding equals 1 and independently
+assert source alpha remains 0 and the full source composite is unchanged. This is
+an assertion of the existing export contract, not a relaxed tolerance or removed
+check. Rust 1.95 also reported `collapsible_match` for three mutable operations
+and `manual_range_contains` in a hue assertion. Evaluate mutable operations into
+named booleans before the condition (match guards cannot mutably borrow pattern
+bindings), and use a finite hue plus explicit range check. Keep `-D warnings` on
+both toolchains with no lint allowances. The failed runs remain evidence; repeat required gates at the repaired SHA.
+
 ## Hardware acceptance — not run
 
 Cloud CPU/mock tests and Windows build do not establish actual CUDA, VRAM or UI
