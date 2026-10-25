@@ -210,7 +210,7 @@ mod tests {
         };
         session
             .edit("Prompt fixture", |doc, _| {
-                doc.metadata.xmp = Some(photocraft_engine::ai_prompts::append(None, &record).unwrap());
+                doc.metadata.xmp = Some(photocraft_engine::ai_prompts::append(None, &record).unwrap().into());
                 Ok(())
             })
             .unwrap();

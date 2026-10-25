@@ -111,5 +111,6 @@
       "aarch64": "cancelled per final user instruction; not passed; do not rerun"
     }
   },
-  "windows_candidate": null
+  "windows_candidate": null,
+  "initial_merge_sha": "2774cb6a2ba4c7d4f101fe00b554a00349243f28"
 }

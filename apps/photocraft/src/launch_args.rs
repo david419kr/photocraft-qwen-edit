@@ -23,7 +23,7 @@ use crate::presentation;
 
 /// Opens PhotoCraft with the given files
 #[derive(Parser)]
-#[command(name = "photocraft", version = photocraft_engine::build_info::fork_version_static(), after_help = ENVIRONMENT)]
+#[command(name = "photocraft", display_name = "PhotoCraft", version = photocraft_engine::build_info::fork_version_static(), after_help = ENVIRONMENT)]
 pub(crate) struct LaunchArgs {
     /// Files to open. On Windows and Linux they open as new tabs in the PhotoCraft already running.
     /// Put `--` before a name that starts with `-`
@@ -305,7 +305,7 @@ mod tests {
     fn version_stops_parsing() {
         let e = parse_args(&["--version", "--control"]).err().unwrap();
         assert_eq!((e.kind(), e.exit_code()), (ErrorKind::DisplayVersion, 0));
-        assert_eq!(e.to_string(), format!("photocraft {}\n", photocraft_engine::build_info::fork_version_static()));
+        assert_eq!(e.to_string(), format!("PhotoCraft {}\n", photocraft_engine::build_info::fork_version_static()));
     }
 
     #[test]

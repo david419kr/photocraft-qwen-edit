@@ -9,7 +9,8 @@ Windows artifact and ZIP SHA256. Main merge, tags and publication are not author
   `2026-10-25T14:17:53Z`; resolved directly to commit
   `b1794c6e0608ccfc887213dcf58398977c5cb75e`.
 - Fork base `bf883b3d0f50049faa7b9ca6b5ba540d591350e1`, branch `update/0.16.0`.
-  Merge the exact release commit with two parents; upstream main is not used.
+  Merge `2774cb6a2ba4c7d4f101fe00b554a00349243f28` has the base and exact
+  release SHA as its two parents; upstream main is not used.
 - Admission recheck found no open PR or 0.16.0 branch; latest published fork
   release is `261024-0.15.1` (ID `422569915`). No tag movement/republication observed.
 - Prior candidate PR #13 and its SHA/checks remain historical records; no results
