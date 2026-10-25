@@ -573,7 +573,7 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
         }
         *active = Some(id);
         if let Some(xmp) = prompt_xmp {
-            doc.metadata.xmp = Some(xmp);
+            doc.metadata.xmp = Some(xmp.into());
         }
         Ok(())
     })?;

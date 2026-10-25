@@ -52,7 +52,7 @@ fn bounded(mut reader: impl Read, limit: u64) -> Result<Vec<u8>, String> {
     Ok(bytes)
 }
 
-fn release_key(tag: &str) -> Option<(u32, u32, u32, u32, u32)> {
+pub(crate) fn release_key(tag: &str) -> Option<(u32, u32, u32, u32, u32)> {
     let (day, rest) = tag.split_once('-')?;
     if day.len() != 6 || !day.bytes().all(|c| c.is_ascii_digit()) {
         return None;

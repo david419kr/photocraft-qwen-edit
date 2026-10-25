@@ -56,7 +56,7 @@ pub struct AiUi {
     #[serde(skip)]
     pub(crate) prompt_records_key: Option<(u64, u64)>,
     #[serde(skip)]
-    pub(crate) prompt_records_xmp: Option<String>,
+    pub(crate) prompt_records_xmp: Option<std::sync::Arc<str>>,
     #[serde(skip)]
     pub(crate) prompt_records: Vec<photocraft_engine::ai_prompts::Entry>,
     #[serde(skip)]

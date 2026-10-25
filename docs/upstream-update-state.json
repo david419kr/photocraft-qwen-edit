@@ -1,40 +1,84 @@
 {
   "status": "candidate_validation",
   "upstream_repository": "storytold/photocraft",
-  "upstream_release_id": 422333392,
-  "upstream_tag": "v0.15.1",
-  "upstream_sha": "60c87b9884fdae0e464614d482a3bc435cbbc578",
-  "upstream_published_at": "2026-10-23T22:44:33Z",
+  "upstream_release_id": 423446623,
+  "upstream_tag": "v0.16.0",
+  "upstream_sha": "b1794c6e0608ccfc887213dcf58398977c5cb75e",
+  "upstream_published_at": "2026-10-25T14:17:53Z",
+  "upstream_updated_at": "2026-10-25T14:17:53Z",
   "fork_repository": "david419kr/photocraft-qwen-edit",
-  "fork_base_sha": "79c22ad465fb63d33da0326dd07806e456376b66",
-  "candidate_branch": "update/0.15.1",
-  "candidate_sha_record": "Draft PR head and exact matching workflow/artifact source SHA",
+  "fork_base_sha": "bf883b3d0f50049faa7b9ca6b5ba540d591350e1",
+  "candidate_branch": "update/0.16.0",
+  "candidate_sha_record": "Draft PR head and exact matching checks/artifact source SHA",
   "main_merge_authorized": false,
   "public_release_authorized": false,
   "previous_completed_release": {
-    "tag": "261024-0.14.0",
-    "release_id": 422167100,
-    "main_sha": "79c22ad465fb63d33da0326dd07806e456376b66"
+    "tag": "261024-0.15.1",
+    "release_id": 422569915,
+    "main_sha": "bf883b3d0f50049faa7b9ca6b5ba540d591350e1"
   },
   "previous_candidate": {
-    "status": "historical_merged_candidate",
+    "status": "historical_merged_and_published",
     "upstream_repository": "storytold/photocraft",
-    "upstream_release_id": 421334654,
-    "upstream_tag": "v0.14.0",
-    "upstream_sha": "ff4738810134d7f7e68b49f2e4f231b686282ff3",
+    "upstream_release_id": 422333392,
+    "upstream_tag": "v0.15.1",
+    "upstream_sha": "60c87b9884fdae0e464614d482a3bc435cbbc578",
+    "upstream_published_at": "2026-10-23T22:44:33Z",
     "fork_repository": "david419kr/photocraft-qwen-edit",
-    "fork_base_sha": "65d3270f61905b7a480ddeafceec4f1697499ad0",
-    "candidate_branch": "update/0.14.0",
-    "candidate_sha_record": "Draft PR head and exact matching CI/artifact source SHA",
+    "fork_base_sha": "79c22ad465fb63d33da0326dd07806e456376b66",
+    "candidate_branch": "update/0.15.1",
+    "candidate_sha_record": "Draft PR head and exact matching workflow/artifact source SHA",
     "main_merge_authorized": false,
     "public_release_authorized": false,
     "previous_completed_release": {
-      "tag": "261022-2-0.12.0",
-      "release_id": 420636944,
-      "merge_sha": "65d3270f61905b7a480ddeafceec4f1697499ad0",
-      "candidate_sha": "529d43dd0dfccf50dfdcc83cf63ac2ef9520114b"
+      "tag": "261024-0.14.0",
+      "release_id": 422167100,
+      "main_sha": "79c22ad465fb63d33da0326dd07806e456376b66"
     },
-    "validation": "Pending fresh exact-head 0.14.0 checks; no prior-version test or artifact evidence reused.",
+    "previous_candidate": {
+      "status": "historical_merged_candidate",
+      "upstream_repository": "storytold/photocraft",
+      "upstream_release_id": 421334654,
+      "upstream_tag": "v0.14.0",
+      "upstream_sha": "ff4738810134d7f7e68b49f2e4f231b686282ff3",
+      "fork_repository": "david419kr/photocraft-qwen-edit",
+      "fork_base_sha": "65d3270f61905b7a480ddeafceec4f1697499ad0",
+      "candidate_branch": "update/0.14.0",
+      "candidate_sha_record": "Draft PR head and exact matching CI/artifact source SHA",
+      "main_merge_authorized": false,
+      "public_release_authorized": false,
+      "previous_completed_release": {
+        "tag": "261022-2-0.12.0",
+        "release_id": 420636944,
+        "merge_sha": "65d3270f61905b7a480ddeafceec4f1697499ad0",
+        "candidate_sha": "529d43dd0dfccf50dfdcc83cf63ac2ef9520114b"
+      },
+      "validation": "Pending fresh exact-head 0.14.0 checks; no prior-version test or artifact evidence reused.",
+      "optional_checks": {
+        "freebsd": {
+          "automatic": false,
+          "required_for_candidate": false,
+          "workflow": "freebsd.yml",
+          "trigger": "workflow_dispatch",
+          "authorization_date": "2026-10-18",
+          "last_run": 39107185848,
+          "x86_64": "passed build/tests/package",
+          "aarch64": "cancelled per final user instruction; not passed; do not rerun"
+        }
+      },
+      "windows_candidate": null,
+      "pull_request": 12,
+      "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/12",
+      "initial_merge_sha": "56fa9833dbf975b3cd956f091e3b962b79854562",
+      "upstream_published_at": "2026-10-23T00:43:42Z",
+      "supersedes": {
+        "pull_request": 11,
+        "branch": "update/0.13.0",
+        "sha": "bfb3ede5a4ab894d7a098c11ada62f2e44db6f27",
+        "validation": "Seven workflows passed; 542 focused tests. Historical evidence only; no release approval. Preserve branch and artifacts."
+      }
+    },
+    "validation": "Pending fresh 0.15.1 checks; previous-version results are historical only.",
     "optional_checks": {
       "freebsd": {
         "automatic": false,
@@ -48,18 +92,13 @@
       }
     },
     "windows_candidate": null,
-    "pull_request": 12,
-    "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/12",
-    "initial_merge_sha": "56fa9833dbf975b3cd956f091e3b962b79854562",
-    "upstream_published_at": "2026-10-23T00:43:42Z",
-    "supersedes": {
-      "pull_request": 11,
-      "branch": "update/0.13.0",
-      "sha": "bfb3ede5a4ab894d7a098c11ada62f2e44db6f27",
-      "validation": "Seven workflows passed; 542 focused tests. Historical evidence only; no release approval. Preserve branch and artifacts."
-    }
+    "pull_request": 13,
+    "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/13",
+    "initial_merge_sha": "9219ece5de52f83c8961f341c3ba90a59a9cc1f7",
+    "final_candidate_sha": "c7eefcb15accd4487afb8f6e8c2fcaa7fd2c9a42",
+    "validation_record": "https://github.com/david419kr/photocraft-qwen-edit/pull/13"
   },
-  "validation": "Pending fresh 0.15.1 checks; previous-version results are historical only.",
+  "validation": "Pending fresh 0.16.0 checks; no prior-version evidence reused.",
   "optional_checks": {
     "freebsd": {
       "automatic": false,
@@ -73,7 +112,7 @@
     }
   },
   "windows_candidate": null,
-  "pull_request": 13,
-  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/13",
-  "initial_merge_sha": "9219ece5de52f83c8961f341c3ba90a59a9cc1f7"
+  "initial_merge_sha": "2774cb6a2ba4c7d4f101fe00b554a00349243f28",
+  "pull_request": 14,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/14"
 }
