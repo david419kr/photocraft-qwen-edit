@@ -1,6 +1,6 @@
 # Upstream 0.16.0 candidate integration
 
-Status: validation in progress. The draft PR records final candidate SHA, checks,
+Status: validation in [draft PR #14](https://github.com/david419kr/photocraft-qwen-edit/pull/14). The PR records final candidate SHA, checks,
 Windows artifact and ZIP SHA256. Main merge, tags and publication are not authorized.
 
 ## Identity
