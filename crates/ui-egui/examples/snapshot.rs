@@ -12,6 +12,7 @@
 //! `--mock-update` shows the fork update offer without HTTP or an installer.
 //! `--hardware-filtering` respects texture samplers; the default predictable renderer forces bilinear filtering.
 //! `--wayland-notice` previews the native file drag-and-drop guidance shown in Wayland sessions.
+//! `--update-notice` previews a newer release without contacting the network.
 //! `--custom-titlebar` draws the Windows/Linux title bar (caption buttons in the top bar).
 //!
 //! `--monitor 1366x768 --window-top 31` simulates the display the window is on (in points) and
@@ -73,6 +74,7 @@ fn main() {
     let mock_ai = args.iter().any(|a| a == "--mock-ai");
     let mock_update = args.iter().any(|a| a == "--mock-update");
     let comfy_ai = args.iter().any(|a| a == "--comfy-ai");
+    let update_notice = args.iter().any(|a| a == "--update-notice");
     let script: Vec<(String, Value)> =
         arg(&args, "--script").map(|s| serde_json::from_str::<Vec<(String, Value)>>(&s).expect("--script must be [[method, params], …]")).unwrap_or_default();
 
@@ -148,6 +150,14 @@ fn main() {
                     size: 1,
                     sha256: String::new(),
                 });
+            }
+            if update_notice {
+                app.session.updates.status = photocraft_engine::updates_cmds::Status::Available {
+                    release: photocraft_engine::updates_cmds::Release {
+                        version: "99.0.0".into(),
+                        url: "https://github.com/storytold/photocraft/releases/tag/v99.0.0".into(),
+                    },
+                };
             }
             app.background_jobs = background_jobs;
             app.custom_titlebar = custom_titlebar;

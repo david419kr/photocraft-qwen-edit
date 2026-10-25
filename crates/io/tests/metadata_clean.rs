@@ -51,7 +51,7 @@ fn background_exports_keep_metadata_none_and_indexed_all_contracts() {
         let decoded = photocraft_codecs::decode(&background.bytes).unwrap();
         assert_eq!(photocraft_codecs::png_stereo(&background.bytes), Some(photocraft_codecs::PngStereo::CrossFuse));
         if policy == XmpEmbed::All {
-            assert_eq!(decoded.meta.xmp, doc.metadata.xmp);
+            assert_eq!(decoded.meta.xmp.as_deref(), doc.metadata.xmp.as_deref());
             assert!((decoded.meta.dpi.unwrap().0 - 300.0).abs() < 0.01);
         } else {
             assert_eq!(decoded.meta, Metadata::default());

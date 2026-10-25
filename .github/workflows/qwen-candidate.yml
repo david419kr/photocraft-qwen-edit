@@ -2,7 +2,7 @@ name: Qwen Windows candidate
 
 on:
   push:
-    branches: ['update/0.15.1']
+    branches: ['update/0.16.0']
   workflow_dispatch:
 
 permissions:
@@ -19,8 +19,8 @@ env:
   PHOTOCRAFT_NO_PRINT: "1"
   LPDEST: photocraft-no-such-printer
   PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
-  QWEN_UPSTREAM_SHA: 60c87b9884fdae0e464614d482a3bc435cbbc578
-  QWEN_BASE_SHA: 79c22ad465fb63d33da0326dd07806e456376b66
+  QWEN_UPSTREAM_SHA: b1794c6e0608ccfc887213dcf58398977c5cb75e
+  QWEN_BASE_SHA: bf883b3d0f50049faa7b9ca6b5ba540d591350e1
 
 jobs:
   lint:
@@ -47,7 +47,7 @@ jobs:
 
   regressions:
     needs: lint
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.15.1')
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.16.0')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -93,7 +93,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.15.1')
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.16.0')
     runs-on: windows-2022
     timeout-minutes: 120
     env:
