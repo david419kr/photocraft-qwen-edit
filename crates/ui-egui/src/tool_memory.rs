@@ -97,17 +97,25 @@ fn persist_colors(app: &mut PhotocraftApp, ctx: &egui::Context) {
     }
     app.prefs_rt.tool_colors = Some(now);
     app.prefs_rt.tool_cmyk_picks = app.session.tools.cmyk_picks.clone();
-    let cmyk_picks = &app.prefs_rt.tool_cmyk_picks;
-    let [[foreground, background], [mask_foreground, mask_background]] = now;
-    app.session.prefs.edit(|p| {
-        p.tool_colors = json!({
-            "foreground": foreground, "background": background,
-            "maskForeground": mask_foreground, "maskBackground": mask_background,
-            "cmykPicks": cmyk_picks,
-        });
-    });
+    let saved = color_value(now, &app.prefs_rt.tool_cmyk_picks);
+    app.session.prefs.edit(|p| p.tool_colors = saved);
     // Panels and shortcuts can change colours after prefs_ui::tick already ran this frame.
     ctx.request_repaint();
+}
+
+fn color_value(pairs: [[[f32; 4]; 2]; 2], cmyk_picks: &CmykPicks) -> Value {
+    let [[foreground, background], [mask_foreground, mask_background]] = pairs;
+    json!({
+        "foreground": foreground, "background": background,
+        "maskForeground": mask_foreground, "maskBackground": mask_background,
+        "cmykPicks": cmyk_picks,
+    })
+}
+
+/// A missing legacy value represents these defaults, not an indivisible null leaf.
+pub(crate) fn default_colors() -> Value {
+    let tools = photocraft_engine::ToolState::default();
+    color_value([[tools.foreground, tools.background], tools.other_colors], &tools.cmyk_picks)
 }
 
 fn restore_colors(app: &mut PhotocraftApp) {

@@ -622,8 +622,16 @@ fn write_prefs(app: &mut PhotocraftApp, ours: &Value) -> Result<(), String> {
     let stored = app.services.load_prefs.as_mut().and_then(|load| load()).and_then(|t| serde_json::from_str::<Value>(&t).ok());
     let text = match (stored, &app.prefs_rt.saved_value) {
         (Some(mut theirs @ Value::Object(_)), Some(base)) => {
-            let base = &without_stale_migration(base, &theirs);
-            merge_changes(base, ours, &mut theirs);
+            let mut base = without_stale_migration(base, &theirs);
+            // Older files have no toolColors object. Diff the first saved swatches against
+            // their actual defaults so an unchanged field cannot overwrite another window's edit.
+            if matches!(base.get("toolColors"), None | Some(Value::Null))
+                && ours.get("toolColors").is_some_and(Value::is_object)
+                && let Some(fields) = base.as_object_mut()
+            {
+                fields.insert("toolColors".into(), crate::tool_memory::default_colors());
+            }
+            merge_changes(&base, ours, &mut theirs);
             serde_json::to_string_pretty(&theirs)
         }
         _ => serde_json::to_string_pretty(ours),
@@ -3732,6 +3740,35 @@ mod tests {
         tick(&mut app3, &ctx);
         assert_eq!(app3.ui.brush_picker_list.scale, *crate::brush_picker::SCALE_RANGE.end());
         assert!(app3.ui.brush_picker_list.show_name && app3.ui.brush_picker_list.show_stroke && app3.ui.brush_picker_list.show_tip);
+    }
+
+    #[test]
+    fn tool_colors_first_saves_keep_other_instances_separate_edits() {
+        for initial in [
+            None,
+            Some("{}".into()),
+            Some(json!({"toolColors": null}).to_string()),
+            Some(json!({"toolColors": crate::tool_memory::default_colors()}).to_string()),
+        ] {
+            for background_first in [false, true] {
+                let store = Arc::new(Mutex::new(initial.clone()));
+                let (mut foreground, mut background) = (app_on(&store, Arc::default()), app_on(&store, Arc::default()));
+                let fg = [0.25, 0.5, 0.75, 1.0];
+                let bg = [0.75, 0.5, 0.25, 1.0];
+                foreground.run("tools.setColors", json!({"foreground": fg})).unwrap();
+                background.run("tools.setColors", json!({"background": bg})).unwrap();
+                let (first, second) = if background_first { (&mut background, &mut foreground) } else { (&mut foreground, &mut background) };
+                crate::tool_memory::save_on_exit(first).unwrap();
+                crate::tool_memory::save_on_exit(second).unwrap();
+                // Further saves must still keep the other window's independent field.
+                save_preferences(first).unwrap();
+                save_preferences(second).unwrap();
+                let restored = app_on(&store, Arc::default());
+                assert_eq!(restored.session.tools.foreground, fg);
+                assert_eq!(restored.session.tools.background, bg);
+                assert_eq!(restored.session.tools.other_colors, photocraft_engine::ToolState::MASK_COLORS);
+            }
+        }
     }
 
     #[test]
