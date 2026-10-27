@@ -4117,3 +4117,7 @@ curves	Smooth	Wygładź
 	Grayscale Ramp	Pasek skali szarości
 	Current Colors	Bieżące kolory
 	Make Ramp Web Safe	Ogranicz pasek do kolorów internetowych
+	Match Surrounding Colors	Dopasuj do kolorów otoczenia
+	Adjust colors with Poisson blending	Dostosuj kolory przez mieszanie Poissona
+	Compare with Original Generation	Porównaj z pierwotnie wygenerowanym wynikiem
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Dopasowuje kolory do otoczenia zapisanego podczas generowania. Siła 0 przywraca pierwotnie wygenerowany wynik.

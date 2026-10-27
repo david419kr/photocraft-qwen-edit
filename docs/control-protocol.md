@@ -637,6 +637,28 @@ AI command params also accept `cfg` and `negativePrompt`; negatives are used onl
 selected model's default (25 for base checkpoints, 8 for Turbo). AI engine commands also accept
 an optional integer `steps` parameter; one-click regeneration retains its captured step count.
 `ui.menu.invoke` for `edit.promptGenerate`, `edit.promptEdit` or `edit.generativeFill` without params opens it.
+AI result objects include `workingSize` (padded model pixels), `contentSize` (unpadded model pixels), and `workingRect` (`[x0,y0,x1,y1]`, half-open document coordinates). Generative Fill uses a selection-local context crop; completion and reroll restore that same crop origin. Its result mask preserves the original selection coverage, holes and feather. Pixels with zero coverage stay unchanged. Empty and nonempty fill prompts both use the unmarked original ROI plus a separate selection guide.
+
+Generative Fill also uses the original Qwen VAE latent with a sampler noise mask. Any selected model pixel activates its 16x16 latent cell; final document coverage still uses the exact original selection. This adds no request fields, model weights or dependencies. Whole-image Prompt Edit/Generate retain their existing latent initialization.
+
+`layer.aiMatchSurroundings {"strength":0..100}` applies optional local Poisson correction to the
+active fill layer generated in this session. It returns `{layer,strength}` and records one Undo
+step. It needs no AI server. Every strength is calculated from the initial generated result;
+0 restores it exactly. The original mask, placement and other layer properties remain unchanged.
+Raster/mask edits, transforms, document size/profile changes and pixel locks block the action.
+The bottom bar replaces Remove with Match Surrounding Colors only immediately after fill.
+Any further engine/shell action or input expires that suggestion; layer/selection reentry does
+not restore it. Older generated fill layers remain eligible through their context menu until
+the document closes; correction sources are
+not saved. `ui.menu.invoke` with this id and no params opens the shared preview dialog. Its
+private `__compareOriginal` checkbox changes the preview to strength 0 without changing what
+OK applies. Preview/Cancel add no history or AI calls.
+
+The Windows FXC compositor shader now has an explicit fallback return after `blend_channel`'s
+switch, avoiding its X3507 return-path failure. Adapter selection remains automatic/configurable;
+no GPU model is fixed by this change. Native release shader tests cover integrated and discrete
+adapters through test-only environment selection.
+
 With params, `engine.execute` dispatches the same command as the Generate button.
 `edit.promptGenerate` requires an entirely transparent or pure-white canvas and no partial
 selection; `ai.mode` reports `promptGenerate` in that context. `edit.aiRegenerate` with `{}`

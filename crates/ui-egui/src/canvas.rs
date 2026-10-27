@@ -2264,7 +2264,7 @@ pub(crate) fn ensure_filter_preview(app: &mut PhotocraftApp, idx: usize, ctx: &e
     let (cmd, mut params) = if d.fields.contains_key("__smartFilter") {
         crate::smart_filter_dialog::edit_command(app, &d.fields).ok()?
     } else {
-        (cmd.clone(), app.with_mask_target(&cmd, crate::filter_dialog::params_of(&d.fields)))
+        (cmd.clone(), app.with_mask_target(&cmd, crate::filter_dialog::preview_params_of(&d.fields)))
     };
     // Select and Mask previews in its view mode; holding X shows the image without one.
     if crate::select_mask_view::owns(&d.fields) {
@@ -2322,6 +2322,7 @@ pub(crate) fn ensure_filter_preview(app: &mut PhotocraftApp, idx: usize, ctx: &e
             let doc = app.session.documents().get(idx)?.doc.clone();
             let documents: Vec<_> = app.session.documents().iter().map(|d| d.doc.clone()).collect();
             let color = app.session.color.settings.clone();
+            let ai_source = photocraft_engine::ai_cmds::harmonize::preview_source(&app.session, request.active);
             let task = request.clone();
             if let Err(error) = app.filter_preview_worker.start(request.clone(), ctx.clone(), move |cancel| {
                 let t0 = crate::gpu_canvas::now_ms();
@@ -2335,6 +2336,7 @@ pub(crate) fn ensure_filter_preview(app: &mut PhotocraftApp, idx: usize, ctx: &e
                     task.target,
                     &documents,
                     &color,
+                    ai_source.as_deref(),
                 )
                 .map(|doc| {
                     let buffer = photocraft_compose::flatten(&doc);
@@ -2375,6 +2377,7 @@ pub(crate) fn ensure_filter_preview(app: &mut PhotocraftApp, idx: usize, ctx: &e
             request.target,
             &documents,
             &app.session.color.settings,
+            photocraft_engine::ai_cmds::harmonize::preview_source(&app.session, request.active).as_deref(),
         )
         .map(|doc| {
             let buffer = photocraft_compose::flatten(&doc);
@@ -7264,6 +7267,7 @@ mod tests {
                     key.target,
                     &documents,
                     &Default::default(),
+                    None,
                 )
                 .map(|d| {
                     let buffer = photocraft_compose::flatten(&d);

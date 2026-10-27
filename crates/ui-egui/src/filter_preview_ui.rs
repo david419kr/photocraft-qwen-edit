@@ -56,7 +56,7 @@ pub(crate) fn window(app: &PhotocraftApp, dialog: u64, ui: &mut egui::Ui, f: &mu
     // and upload on the UI thread at 100 %) the moment the first result arrived, shifting this
     // window's 100 % mapping and pan clamp for a frame.
     let base_k = filtered.as_ref().map(|(k, _)| k.k).unwrap_or_else(|| {
-        let params = app.with_mask_target(&cmd, crate::filter_dialog::params_of(f));
+        let params = app.with_mask_target(&cmd, crate::filter_dialog::preview_params_of(f));
         crate::canvas::filter_preview_factor(app, &st.doc, &cmd, &params)
     });
 
@@ -334,6 +334,7 @@ mod tests {
                     ChannelTarget::Alpha(0),
                     &[],
                     &Default::default(),
+                    None,
                 )
                 .unwrap();
                 let ctx = egui::Context::default();

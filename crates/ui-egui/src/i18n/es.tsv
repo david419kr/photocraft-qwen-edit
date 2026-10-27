@@ -4459,3 +4459,7 @@ navigator	Zoom	Zoom
 	Grayscale Ramp	Rampa de escala de grises
 	Current Colors	Colores actuales
 	Make Ramp Web Safe	Hacer rampa segura para web
+	Match Surrounding Colors	Adaptar a los colores del entorno
+	Adjust colors with Poisson blending	Ajustar colores con mezcla de Poisson
+	Compare with Original Generation	Comparar con la generación original
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Adapta los colores al entorno capturado durante la generación. La intensidad 0 restaura el resultado generado original.

@@ -4427,3 +4427,7 @@ layerLabel	No Color	Sem cor
 	Grayscale Ramp	Rampa de tons de cinza
 	Current Colors	Cores atuais
 	Make Ramp Web Safe	Tornar rampa segura para a Web
+	Match Surrounding Colors	Ajustar às cores ao redor
+	Adjust colors with Poisson blending	Ajustar cores com mesclagem de Poisson
+	Compare with Original Generation	Comparar com a geração original
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Ajusta as cores ao entorno capturado durante a geração. A intensidade 0 restaura o resultado gerado original.

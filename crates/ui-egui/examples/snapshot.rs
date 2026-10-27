@@ -110,7 +110,21 @@ fn main() {
         Some(name) => photocraft_engine::prefs::ComfyUiModel::ALL.into_iter().filter(|model| model.name() == name).collect(),
         None => photocraft_engine::prefs::ComfyUiModel::ALL.to_vec(),
     };
-    let gpu_setup = egui_kittest::wgpu::default_wgpu_setup();
+    let require_gpu = args.iter().any(|arg| arg == "--require-gpu");
+    // Normal snapshots prefer a software rasterizer; hardware acceptance uses the app's setup.
+    let mut gpu_setup = if require_gpu { photocraft_ui_egui::gpu_canvas::wgpu_setup() } else { egui_kittest::wgpu::default_wgpu_setup() };
+    if require_gpu
+        && let Ok(name) = std::env::var("WGPU_ADAPTER_NAME")
+        && let eframe::egui_wgpu::WgpuSetup::CreateNew(create) = &mut gpu_setup
+    {
+        create.native_adapter_selector = Some(std::sync::Arc::new(move |adapters, _surface| {
+            adapters
+                .iter()
+                .find(|adapter| adapter.get_info().name.eq_ignore_ascii_case(&name))
+                .cloned()
+                .ok_or_else(|| format!("Requested adapter is unavailable: {name}"))
+        }));
+    }
     #[cfg(target_os = "windows")]
     let gpu_setup = {
         let mut setup = gpu_setup;
@@ -257,5 +271,10 @@ fn main() {
     );
     let img = harness.render().expect("render");
     img.save(&out).expect("save png");
+    println!("gpu: {}", serde_json::json!({"active":harness.state().perf.gpu,"info":harness.state().perf.gpu_info}));
+    if require_gpu {
+        assert!(harness.state().perf.gpu, "GPU canvas required: {:?}", harness.state().perf.gpu_info);
+        assert_ne!(harness.state().perf.gpu_info.device_type, "cpu", "Hardware GPU required");
+    }
     println!("wrote {out} ({}×{})", img.width(), img.height());
 }

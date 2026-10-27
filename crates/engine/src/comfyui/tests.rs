@@ -189,16 +189,62 @@ fn exact_qwen_graph_and_mask_wiring() {
     assert_eq!(masked["64"]["inputs"]["images.image_2"], json!(["80", 0]));
     assert_eq!(masked["82"]["inputs"]["dtype"], "int8");
     assert!(masked.get("81").is_none());
+    assert!(masked.get("62").is_none());
+    assert_eq!(masked["83"]["class_type"], "VAEEncode");
+    assert_eq!(masked["83"]["inputs"]["pixels"], json!(["77", 0]));
+    assert_eq!(masked["83"]["inputs"]["vae"], json!(["39", 0]));
+    assert_eq!(masked["87"]["class_type"], "SetLatentNoiseMask");
+    assert_eq!(masked["87"]["inputs"]["samples"], json!(["83", 0]));
+    assert_eq!(masked["87"]["inputs"]["mask"], json!(["86", 0]));
+    assert_eq!(masked["3"]["inputs"]["latent_image"], json!(["87", 0]));
     let mut removal = request(EditMode::GenerativeFill);
     removal.removal = true;
-    let annotated = workflow(&removal, "source.png", "test");
-    assert_eq!(annotated["79"]["class_type"], "EmptyImage");
-    assert_eq!(annotated["79"]["inputs"]["color"], 65280);
-    assert_eq!(annotated["80"]["class_type"], "ImageCompositeMasked");
-    assert_eq!(annotated["80"]["inputs"]["destination"], json!(["77", 0]));
-    assert_eq!(annotated["80"]["inputs"]["mask"], json!(["78", 1]));
-    assert_eq!(annotated["64"]["inputs"]["images.image_1"], json!(["80", 0]));
-    assert!(annotated["64"]["inputs"].get("images.image_2").is_none());
+    let removed = workflow(&removal, "source.png", "test");
+    assert_eq!(removed["79"]["class_type"], "MaskToImage");
+    assert_eq!(removed["79"]["inputs"]["mask"], json!(["78", 1]));
+    assert_eq!(removed["64"]["inputs"]["images.image_1"], json!(["77", 0]));
+    assert_eq!(removed["64"]["inputs"]["images.image_2"], json!(["80", 0]));
+    assert!(removed.as_object().unwrap().values().all(|node| node["class_type"] != "ImageCompositeMasked" && node["class_type"] != "EmptyImage"));
+}
+
+#[test]
+fn masked_sampling_uses_qwen_latent_grid_for_standard_and_turbo_without_growing_selection() {
+    for model in [ComfyUiModel::QwenImage21, ComfyUiModel::TurboInt8] {
+        for (w, h) in [(32, 64), (896, 896), (1536, 1024)] {
+            let mut input = request(EditMode::GenerativeFill);
+            input.model = model;
+            input.image.width = w;
+            input.image.height = h;
+            let graph = workflow(&input, "source.png", "masked");
+            assert_eq!(graph["3"]["inputs"]["latent_image"], json!(["87", 0]));
+            assert_eq!(graph["84"]["inputs"]["width"], w / 16);
+            assert_eq!(graph["84"]["inputs"]["height"], h / 16);
+            assert_eq!(graph["84"]["inputs"]["image"], json!(["79", 0]));
+            assert_eq!(graph["84"]["inputs"]["upscale_method"], "area");
+            assert_eq!(graph["84"]["inputs"]["crop"], "disabled");
+            assert_eq!(graph["85"]["inputs"]["image"], json!(["84", 0]));
+            assert_eq!(graph["86"]["inputs"]["value"], 0.0);
+            assert!(
+                graph.as_object().unwrap().values().all(|node| node["class_type"] != "VAEEncodeForInpaint" && node["inputs"].get("grow_mask_by").is_none())
+            );
+        }
+    }
+    for mode in [EditMode::PromptEdit, EditMode::PromptGenerate] {
+        let graph = workflow(&request(mode), "source.png", "whole");
+        assert_eq!(graph["3"]["inputs"]["latent_image"], json!(["62", 0]));
+        assert!(graph.get("87").is_none());
+    }
+}
+
+#[test]
+fn masked_sampling_rejects_invalid_grid_before_contacting_the_server() {
+    for (width, height) in [(0, 32), (31, 32), (32, 33), (1568, 32), (u32::MAX, u32::MAX)] {
+        let mut input = request(EditMode::GenerativeFill);
+        input.image.width = width;
+        input.image.height = height;
+        input.endpoint = "http://127.0.0.1:1".into();
+        assert!(ComfyUi::default().generate(&input, &JobCtx::new()).unwrap_err().to_string().contains("32-padded"));
+    }
 }
 
 #[test]

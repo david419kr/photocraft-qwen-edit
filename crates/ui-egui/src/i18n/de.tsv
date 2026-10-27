@@ -3514,3 +3514,7 @@ curves	Smooth	Glätten
 	Grayscale Ramp	Graustufenbalken
 	Current Colors	Aktuelle Farben
 	Make Ramp Web Safe	Farbbalken auf Webfarben beschränken
+	Match Surrounding Colors	An Umgebungsfarben anpassen
+	Adjust colors with Poisson blending	Farben mit Poisson-Blending anpassen
+	Compare with Original Generation	Mit ursprünglicher Generierung vergleichen
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Passt die Farben an die bei der Generierung erfasste Umgebung an. Stärke 0 stellt das ursprüngliche Ergebnis wieder her.

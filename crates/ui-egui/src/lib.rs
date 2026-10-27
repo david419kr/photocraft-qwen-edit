@@ -1281,6 +1281,7 @@ impl PhotocraftApp {
 
     /// Run an engine command, reporting errors in the status bar.
     pub fn run(&mut self, id: &str, params: Value) -> Result<Value, String> {
+        self.session.note_action();
         if let Some(result) = delete_layer_prompt::intercept(self, id, &params) {
             return result;
         }

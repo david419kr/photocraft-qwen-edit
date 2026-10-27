@@ -4535,3 +4535,7 @@ shape	Appearance	Apparence
 	Grayscale Ramp	Barre de niveaux de gris
 	Current Colors	Couleurs actuelles
 	Make Ramp Web Safe	Limiter la barre aux couleurs Web
+	Match Surrounding Colors	Adapter aux couleurs environnantes
+	Adjust colors with Poisson blending	Ajuster les couleurs par fusion de Poisson
+	Compare with Original Generation	Comparer avec la génération d’origine
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Adapte les couleurs à l’environnement capturé lors de la génération. Une intensité de 0 restaure le résultat généré d’origine.

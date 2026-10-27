@@ -178,18 +178,19 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
     });
     if let Some(object) = graph.as_object_mut() {
         object.insert(cache.into(), json!({"class_type":"QwenImage21Cache","inputs":{"model":["37",0],"device":"auto","dtype":"int8"}}));
-        if masked && request.removal {
-            // Put the annotation in the primary reference; a secondary binary silhouette
-            // can target the wrong object, and a secondary colour guide can be copied.
-            object.insert("79".into(), json!({"class_type":"EmptyImage","inputs":{"width":["76",0],"height":["76",1],"batch_size":1,"color":65280}}));
-            object.insert("80".into(), json!({"class_type":"ImageCompositeMasked","inputs":{"destination":["77",0],"source":["79",0],"x":0,"y":0,"resize_source":false,"mask":["78",1]}}));
-            if let Some(inputs) = object.get_mut("64").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {
-                inputs.insert("images.image_1".into(), json!(["80", 0]));
-                inputs.remove("images.image_2");
-            }
-        } else if masked {
+        if masked {
             object.insert("79".into(), json!({"class_type":"MaskToImage","inputs":{"mask":["78",1]}}));
             object.insert("80".into(), json!({"class_type":"ResizeImageMaskNode","inputs":{"input":["79",0],"resize_type":"match size","resize_type.match":["77",0],"resize_type.crop":"center","scale_method":"bicubic"}}));
+            object.insert("83".into(), json!({"class_type":"VAEEncode","inputs":{"pixels":["77",0],"vae":["39",0]}}));
+            // Pool coverage before thresholding: bilinear mask sampling can miss a thin stroke.
+            object.insert("84".into(), json!({"class_type":"ImageScale","inputs":{"image":["79",0],"upscale_method":"area","width":(request.image.width/16).max(1),"height":(request.image.height/16).max(1),"crop":"disabled"}}));
+            object.insert("85".into(), json!({"class_type":"ImageToMask","inputs":{"image":["84",0],"channel":"red"}}));
+            object.insert("86".into(), json!({"class_type":"ThresholdMask","inputs":{"mask":["85",0],"value":0.0}}));
+            object.insert("87".into(), json!({"class_type":"SetLatentNoiseMask","inputs":{"samples":["83",0],"mask":["86",0]}}));
+            object.remove("62");
+            if let Some(inputs) = object.get_mut("3").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {
+                inputs.insert("latent_image".into(), json!(["87", 0]));
+            }
             if let Some(inputs) = object.get_mut("64").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {
                 inputs.insert("images.image_2".into(), json!(["80", 0]));
             }
@@ -320,6 +321,16 @@ impl AiBackend for ComfyUi {
     }
 
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
+        if request.mode == EditMode::GenerativeFill
+            && (request.image.width == 0
+                || request.image.height == 0
+                || request.image.width > crate::ai_cmds::MAX_WORKING_SIDE
+                || request.image.height > crate::ai_cmds::MAX_WORKING_SIDE
+                || !request.image.width.is_multiple_of(32)
+                || !request.image.height.is_multiple_of(32))
+        {
+            return Err(failure("selection fill requires a nonempty 32-padded image with sides at most 1536 pixels"));
+        }
         let base = endpoint_url(&request.endpoint)?;
         let route = |path: &str| base.join(path).map_err(failure);
         let client = client(Duration::from_secs(3), Duration::from_secs(5))?;

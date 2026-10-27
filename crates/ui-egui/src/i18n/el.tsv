@@ -4198,3 +4198,7 @@ curves	Smooth	Εξομάλυνση
 	Grayscale Ramp	Διαβάθμιση του γκρι
 	Current Colors	Τρέχοντα χρώματα
 	Make Ramp Web Safe	Μόνο χρώματα ιστού στη διαβάθμιση
+	Match Surrounding Colors	Προσαρμογή στα χρώματα του περιβάλλοντος
+	Adjust colors with Poisson blending	Προσαρμογή χρωμάτων με ανάμειξη Poisson
+	Compare with Original Generation	Σύγκριση με το αρχικό αποτέλεσμα δημιουργίας
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Προσαρμόζει τα χρώματα στο περιβάλλον που καταγράφηκε κατά τη δημιουργία. Η ένταση 0 επαναφέρει το αρχικό αποτέλεσμα.

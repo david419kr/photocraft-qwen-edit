@@ -3988,3 +3988,7 @@ prompt-region	Bottom right	Dưới phải
 	Grayscale Ramp	Dải thang xám
 	Current Colors	Màu hiện tại
 	Make Ramp Web Safe	Giới hạn dải màu ở màu web
+	Match Surrounding Colors	Khớp với màu xung quanh
+	Adjust colors with Poisson blending	Điều chỉnh màu bằng hòa trộn Poisson
+	Compare with Original Generation	So sánh với kết quả tạo ban đầu
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Khớp màu với vùng xung quanh được ghi lại khi tạo ảnh. Cường độ 0 khôi phục kết quả tạo ban đầu.

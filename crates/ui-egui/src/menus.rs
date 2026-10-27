@@ -69,6 +69,7 @@ fn workspace_name(id: &str) -> Option<&'static str> {
 
 /// Run a command id from any source (menu, shortcut, palette, automation).
 pub fn invoke(app: &mut PhotocraftApp, ctx: &egui::Context, id: &str, params: Value) -> Result<Value, String> {
+    app.session.note_action();
     if app.automation_input
         && let Some(authorize) = app.services.automation_command.as_ref()
     {

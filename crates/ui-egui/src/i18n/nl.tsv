@@ -4258,3 +4258,7 @@ curves	Smooth	Vloeiend maken
 	Grayscale Ramp	Grijswaardenbalk
 	Current Colors	Huidige kleuren
 	Make Ramp Web Safe	Balk beperken tot webkleuren
+	Match Surrounding Colors	Aan omgevingskleuren aanpassen
+	Adjust colors with Poisson blending	Kleuren aanpassen met Poisson-menging
+	Compare with Original Generation	Vergelijken met oorspronkelijk gegenereerd resultaat
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Past de kleuren aan de omgeving aan die bij het genereren is vastgelegd. Sterkte 0 herstelt het oorspronkelijke gegenereerde resultaat.

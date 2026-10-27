@@ -4221,3 +4221,7 @@ prompt-region	Bottom right	Sağ alt
 	Grayscale Ramp	Gri Tonlama Şeridi
 	Current Colors	Geçerli Renkler
 	Make Ramp Web Safe	Şeridi Web Renkleriyle Sınırla
+	Match Surrounding Colors	Çevredeki Renklere Uyarla
+	Adjust colors with Poisson blending	Renkleri Poisson harmanlamasıyla ayarla
+	Compare with Original Generation	İlk Üretim Sonucuyla Karşılaştır
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Renkleri üretim sırasında kaydedilen çevreye uyarlar. Güç 0, ilk üretilen sonucu geri yükler.

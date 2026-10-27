@@ -39,5 +39,12 @@ fn main() -> Result<()> {
     let started = Instant::now();
     let result = session.execute(command, json!({"prompt":"benchmark","seed":1}))?;
     println!("{}", json!({"documentMP":24,"command":command,"cpuBridgeMs":started.elapsed().as_millis(),"result":result,"realGeneration":false}));
+    if fill && std::env::args().any(|arg| arg == "--poisson") {
+        for strength in [100, 35, 0, 35] {
+            let started = Instant::now();
+            session.execute(photocraft_engine::ai_cmds::harmonize::COMMAND, json!({"strength":strength}))?;
+            println!("{}", json!({"documentMP":24,"postprocess":"poisson","strength":strength,"cpuMs":started.elapsed().as_millis(),"realGeneration":false}));
+        }
+    }
     Ok(())
 }

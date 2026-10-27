@@ -775,6 +775,7 @@ impl Session {
             gate(id, &params)?;
         }
         let _authorization = AuthorizationScope::enter(self.authorize);
+        self.note_action();
         let _document = crate::doc_path::scope(self.active().and_then(|d| d.path.as_deref()).map(std::path::Path::new));
         // Last Filter runs as the filter it repeats: journaled, recorded in an action, faded and
         // run as a job like that filter, so a recorded step replays the same filter anywhere
