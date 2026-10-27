@@ -23,5 +23,7 @@ fn native_first_launch_follows_os_ui_preferences() {
     h.run_steps(4);
     assert_eq!(h.state().session.prefs().interface.language, "auto");
     assert_eq!(i18n::current(), expected, "native language preferences: {tags:?}");
-    assert!(h.query_by_label(i18n::tr(expected, "File")).is_some(), "the first-launch menu must use the OS UI language");
+    let preferred = photocraft_ui_egui::menu_keys::TOP_PREFERRED.iter().find(|(label, _)| *label == "File").map(|(_, key)| *key);
+    let (labels, _) = photocraft_ui_egui::menu_keys::localized(&[i18n::tr(expected, "File").to_owned()], &["File"], &[preferred]);
+    assert!(h.query_by_label(&labels[0]).is_some(), "the first-launch menu must use the OS UI language and its localized mnemonic");
 }

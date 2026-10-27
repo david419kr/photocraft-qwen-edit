@@ -4180,3 +4180,7 @@ curves	Smooth	スムーズ
 	Grayscale Ramp	グレースケールランプ
 	Current Colors	現在のカラー
 	Make Ramp Web Safe	ランプを Web セーフにする
+	Match Surrounding Colors	周囲の色に合わせる
+	Adjust colors with Poisson blending	ポアソンブレンディングで色を調整します
+	Compare with Original Generation	最初の生成結果と比較
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	生成時に記録した周囲の色に合わせます。強度0で最初の生成結果に戻します。

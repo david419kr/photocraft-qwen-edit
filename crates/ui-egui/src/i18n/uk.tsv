@@ -4212,3 +4212,7 @@ curves	Smooth	Згладити
 	Grayscale Ramp	Шкала градацій сірого
 	Current Colors	Поточні кольори
 	Make Ramp Web Safe	Зробити шкалу безпечною для вебу
+	Match Surrounding Colors	Узгодити з кольорами оточення
+	Adjust colors with Poisson blending	Налаштувати кольори змішуванням Пуассона
+	Compare with Original Generation	Порівняти з початковим результатом генерації
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Узгоджує кольори з оточенням, збереженим під час генерації. Інтенсивність 0 відновлює початковий результат генерації.

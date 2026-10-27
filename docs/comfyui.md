@@ -528,6 +528,31 @@ source groups; their child visibility flags are preserved. Undo restores the exa
 visibility and active layer in the same step. Failure/cancellation keeps the source visible.
 To compare a whole-image result manually, hide it and re-enable the source layers.
 
+### Optional Poisson postprocessing
+
+Immediately after Generative Fill, **Match Surrounding Colors** replaces **Remove** in the
+same bottom-bar slot while the generated selection is still current. Any subsequent action
+expires that suggestion permanently for that generation; reselecting the layer or selection
+does not revive it. Later access is through the generated layer's right-click menu. Both
+entry points open the same preview dialog. Strength
+ranges from 0 (exact original generated pixels) to 100 (full Poisson correction). **Compare with
+Original Generation** previews the initial generated result; OK still applies the chosen strength.
+Preview and Cancel do not edit the document. OK changes only the generated raster in one Undo
+step, preserving its mask, placement, opacity, visibility and layer properties.
+
+Every application starts from the frozen original generation, so reopening or repeatedly applying
+the same strength does not accumulate correction. Initial full-strength correction is cached;
+sliders blend from that fixed result. Computation uses the existing CPU Poisson solver and does
+not call ComfyUI. Automatic correction remains off. Strong corrections can still wash out colours
+or clip channels; the preview and strength control expose that choice explicitly.
+
+The source/reference data is session-local, like AI regeneration. It is kept per generated fill
+layer, including older fills after subsequent generations, and released when its document closes.
+Saved files retain the applied pixels, but reopening does not restore this correction control.
+Whole-image edits have no selected-region boundary and do not offer this action. Editing or
+transforming the generated raster/mask, changing its document size/profile or locking its pixels
+disables correction to protect subsequent work. Undoing those edits restores eligibility.
+
 ## Input and output
 
 Supported document modes are RGB, Gray, CMYK and Lab at 8/16/32-bit depth, with a maximum

@@ -535,3 +535,7 @@ cameraRaw	Yellow	पीला
 	Missing delete command	हटाने का कमांड नहीं मिला
 	Invalid delete command	हटाने का कमांड अमान्य है
 	Layer deleted, but confirmation preference could not be saved: {error}	लेयर हटा दी गई, लेकिन पुष्टि की प्राथमिकता सहेजी नहीं जा सकी: {error}
+	Match Surrounding Colors	आसपास के रंगों से मिलाएँ
+	Adjust colors with Poisson blending	पॉइसन ब्लेंडिंग से रंग समायोजित करें
+	Compare with Original Generation	मूल जनरेट किए गए परिणाम से तुलना करें
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	रंगों को जनरेशन के समय कैप्चर किए गए परिवेश से मिलाता है। तीव्रता 0 मूल जनरेट किए गए परिणाम को पुनर्स्थापित करती है।

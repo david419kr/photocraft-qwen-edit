@@ -93,7 +93,7 @@ fn gpu() -> Option<Gpu> {
     let lock = GPU_LOCK.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
     let required = std::env::var_os("WGPU_BACKEND").is_some();
     let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle_from_env());
-    let adapter = match pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default())) {
+    let adapter = match pollster::block_on(wgpu::util::initialize_adapter_from_env_or_default(&instance, None)) {
         Ok(a) => a,
         Err(e) => {
             assert!(!required, "WGPU_BACKEND is set but has no adapter: {e}");
@@ -102,6 +102,9 @@ fn gpu() -> Option<Gpu> {
         }
     };
     let info = adapter.get_info();
+    if let Ok(expected) = std::env::var("WGPU_ADAPTER_NAME") {
+        assert!(info.name.to_lowercase().contains(&expected.to_lowercase()), "requested adapter {expected:?}, got {:?}", info.name);
+    }
     let (device, queue) = match pollster::block_on(adapter.request_device(&wgpu::DeviceDescriptor::default())) {
         Ok(d) => d,
         Err(e) => {
@@ -277,6 +280,16 @@ fn first_frame_renders() {
     // (RADV), which used to make the very first render come back all zeroes.
     let Some(mut g) = gpu() else { return };
     check(&mut g, &base_doc(64, 48), "first frame");
+}
+
+#[test]
+fn masked_generated_layer_compiles_pipelines_and_matches_cpu() {
+    let Some(mut g) = gpu() else { return };
+    let mut doc = base_doc(64, 48);
+    let mut generated = noise_layer("Generated fill", PixelFormat::RGBA8, doc.bounds(), 73, 1.0);
+    generated.mask = Some(mask(Rect::new(19, 7, 42, 39), 29, 0.0));
+    doc.layers.push(generated);
+    check(&mut g, &doc, "masked generated layer (including FXC effect-init pipeline compilation)");
 }
 
 #[test]

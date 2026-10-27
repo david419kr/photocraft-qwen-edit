@@ -4407,3 +4407,7 @@ prompt-region	Bottom right	Jobb alsó
 	Grayscale Ramp	Szürkeárnyalatos sáv
 	Current Colors	Aktuális színek
 	Make Ramp Web Safe	Sáv korlátozása webes színekre
+	Match Surrounding Colors	Igazítás a környezet színeihez
+	Adjust colors with Poisson blending	Színek igazítása Poisson-keveréssel
+	Compare with Original Generation	Összehasonlítás az eredeti generált képpel
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	A színeket a generáláskor rögzített környezethez igazítja. A 0 erősség visszaállítja az eredeti generált eredményt.

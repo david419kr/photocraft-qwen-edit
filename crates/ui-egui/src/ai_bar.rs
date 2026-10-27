@@ -744,6 +744,10 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let Some(st) = app.session.documents().get(index) else { return };
     let doc = st.doc.clone();
     let revision = st.revision;
+    let fresh_fill = photocraft_engine::ai_cmds::harmonize::immediate(&app.session);
+    if fresh_fill && !app.ui.dialogs.is_empty() {
+        app.session.note_action();
+    }
     let has_history = crate::ai_prompt_info::has_history(app, &doc, revision);
     if !app.ui.ai.available || supported_document(&doc).is_err() {
         app.ui.ai.rect = None;
@@ -774,6 +778,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     }
     sync(&mut app.ui.ai, &doc, classified);
     let mode = app.ui.ai.mode.unwrap_or(EditMode::PromptEdit);
+    let harmonize = fresh_fill && mode == EditMode::GenerativeFill && !app.ui.ai.open;
     let anchor = if mode == EditMode::GenerativeFill { selection.unwrap_or(image) } else { image };
     // Scrollbar tracks must remain reachable beneath this foreground Area.
     let canvas = canvas.shrink2(vec2(20.0, 20.0));
@@ -792,8 +797,9 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     // Measure one line: wrapped estimates inflated even single-line English buttons.
     let button_text =
         ui.painter().layout_no_wrap(label(mode).to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text);
+    let quick_caption = if harmonize { tl!("Match Surrounding Colors") } else { quick_label(mode) };
     let quick_text =
-        ui.painter().layout_no_wrap(quick_label(mode).to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text);
+        ui.painter().layout_no_wrap(quick_caption.to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text);
     let controls_width = 128.0 + model_width + 80.0 + if repeat.is_some() { 32.0 } else { 0.0 } + ui.spacing().item_spacing.x * (buttons + 3.0);
     let label_width = if mode == EditMode::PromptGenerate { button_text.size().x } else { button_text.size().x.max(quick_text.size().x) };
     let width = if app.ui.ai.open {
@@ -817,6 +823,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let mut quick = false;
     let mut close = false;
     let mut reroll = false;
+    let mut match_colors = false;
     let area = egui::Area::new(egui::Id::new(("photocraft-ai-bar", doc.id.0))).order(egui::Order::Foreground).fixed_pos(pos2(x, y)).show(ui.ctx(), |ui| {
         egui::Frame::new()
             .fill(tokens.card)
@@ -837,13 +844,15 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                                 app.ui.ai.focus = true;
                             }
                             if mode != EditMode::PromptGenerate {
-                                quick = ui
-                                    .add_enabled_ui(ready, |ui| {
-                                        ui.add_sized(vec2(button_width, button_height), egui::Button::new(quick_label(mode)).truncate())
-                                            .on_hover_text(quick_label(mode))
+                                let clicked = ui
+                                    .add_enabled_ui(ready || harmonize, |ui| {
+                                        ui.add_sized(vec2(button_width, button_height), egui::Button::new(quick_caption).truncate())
+                                            .on_hover_text(if harmonize { tl!("Adjust colors with Poisson blending") } else { quick_caption })
                                     })
                                     .inner
                                     .clicked();
+                                match_colors = clicked && harmonize;
+                                quick = clicked && !harmonize;
                             }
                             if let Some((_, model)) = repeat {
                                 ui.add_enabled_ui(model_ready(app, model), |ui| {
@@ -852,7 +861,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                                 });
                             }
                             crate::ai_prompt_info::button(app, ui);
-                        })
+                        });
                     });
                     return;
                 }
@@ -919,6 +928,10 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     if close {
         app.ui.ai.open = false;
     }
+    if match_colors && !close {
+        let _ = crate::menus::invoke(app, ui.ctx(), photocraft_engine::ai_cmds::harmonize::COMMAND, json!({}));
+        return;
+    }
     if quick {
         let _ = quick_action(app, mode);
     }
@@ -932,6 +945,17 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
         let params = json!({"prompt":app.ui.ai.prompt,"name":label(mode),"cfg":current_cfg(app),"negativePrompt":app.ui.ai.negative_prompt,"steps":app.ui.ai.steps.unwrap_or(app.session.prefs().integrations.selected_settings().steps)});
         if app.run(mode.command(), params).is_ok() {
             app.ui.ai.open = false;
+        }
+    }
+    if fresh_fill && !generate && !quick && !reroll {
+        let acted = ui.input(|i| {
+            i.pointer.any_click()
+                || i.events.iter().any(|event| {
+                    matches!(event, egui::Event::Key { pressed: true, .. } | egui::Event::MouseWheel { .. } | egui::Event::Zoom(_) | egui::Event::Text(_))
+                })
+        });
+        if acted {
+            app.session.note_action();
         }
     }
 }

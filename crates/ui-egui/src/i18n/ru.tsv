@@ -4695,3 +4695,7 @@ shape	Appearance	Оформление
 	Grayscale Ramp	Шкала градаций серого
 	Current Colors	Текущие цвета
 	Make Ramp Web Safe	Сделать шкалу безопасной для web
+	Match Surrounding Colors	Подогнать под цвета окружения
+	Adjust colors with Poisson blending	Настроить цвета с помощью смешивания Пуассона
+	Compare with Original Generation	Сравнить с исходным результатом генерации
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Подгоняет цвета под окружение, сохранённое при генерации. Интенсивность 0 восстанавливает исходный результат генерации.

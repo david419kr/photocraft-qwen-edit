@@ -3128,3 +3128,7 @@ curves	Smooth	平滑
 	Grayscale Ramp	灰階色帶
 	Current Colors	目前色彩
 	Make Ramp Web Safe	讓色帶成為網頁安全色
+	Match Surrounding Colors	符合周圍顏色
+	Adjust colors with Poisson blending	使用卜瓦松融合調整顏色
+	Compare with Original Generation	與最初產生的結果比較
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	將顏色調整為產生時記錄的周圍顏色。強度為0時還原最初產生的結果。

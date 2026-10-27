@@ -3172,3 +3172,7 @@ curves	Smooth	平滑
 	Exported {path}	已导出 {path}
 	Exported {n} files	已导出 {n} 个文件
 	Driver: {driver}	驱动程序：{driver}
+	Match Surrounding Colors	匹配周围颜色
+	Adjust colors with Poisson blending	使用泊松融合调整颜色
+	Compare with Original Generation	与最初生成结果比较
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	将颜色匹配到生成时记录的周围区域。强度为0时恢复最初的生成结果。

@@ -479,6 +479,8 @@ pub struct Session {
     /// Native AI service. Unconfigured headless/test sessions never contact an AI server.
     pub ai_backend: Option<Arc<dyn ai_cmds::AiBackend>>,
     pub(crate) ai_runs: std::collections::HashMap<photocraft_doc::DocId, ai_cmds::LastRun>,
+    pub(crate) ai_fill_sources: ai_cmds::harmonize::Records,
+    pub(crate) action_epoch: u64,
     pub(crate) ai_modes: std::cell::RefCell<ai_cmds::ModeCache>,
     /// Log of executed commands (for action recording and debugging).
     pub journal: Vec<(String, Value)>,
@@ -592,6 +594,9 @@ impl Session {
     }
     pub fn set_active(&mut self, index: usize) -> bool {
         if index < self.docs.len() {
+            if self.active != Some(index) {
+                self.note_action();
+            }
             self.active = Some(index);
             self.sync_tools_mask_target();
             true
@@ -675,6 +680,7 @@ impl Session {
         if let Some(id) = self.docs.get(index).map(|d| d.doc.id) {
             self.cancel_jobs_on(id);
             self.ai_runs.remove(&id);
+            self.ai_fill_sources.retain(|(doc, _), _| *doc != id);
             if let Ok(mut cache) = self.ai_modes.try_borrow_mut() {
                 cache.remove(&id);
             }
@@ -708,6 +714,11 @@ impl Session {
             // Not reached: inline dispatch never starts a job. Waiting is still correct.
             jobs::Started::Job(j) => self.wait_job(j),
         }
+    }
+
+    /// Invalidate transient action suggestions, including shell-only user actions.
+    pub fn note_action(&mut self) {
+        self.action_epoch = self.action_epoch.wrapping_add(1);
     }
 
     /// Offer a finished live stroke to the next command: a `paint.stroke` / `paint.pencil` whose

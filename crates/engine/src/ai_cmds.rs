@@ -16,6 +16,7 @@ use crate::jobs::JobCtx;
 use crate::{EngineError, Result, Session};
 
 mod fill;
+pub mod harmonize;
 
 pub const MAX_DOCUMENT_PIXELS: u64 = 36_000_000;
 pub const MAX_PROMPT_BYTES: usize = 8192;
@@ -84,6 +85,7 @@ pub(crate) struct LastRun {
     result_layer: photocraft_doc::LayerId,
     result_revision: u64,
     prompt_entry: crate::ai_prompts::Entry,
+    harmonize: Option<Arc<harmonize::Source>>,
 }
 
 pub fn regeneration(s: &Session) -> Option<(EditMode, crate::prefs::ComfyUiModel)> {
@@ -345,6 +347,7 @@ pub fn specs() -> Vec<CommandSpec> {
         run: remove_background,
         journal: true,
     });
+    commands.extend(harmonize::specs());
     commands
 }
 
@@ -516,7 +519,9 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
             let layer = result_layer(&source, &generated, &input.region, &name, mode, ctx)?;
             let prompt_entry =
                 crate::ai_prompts::Entry { mode, regions: input.region.prompt_regions.clone(), original, translated, negative_original, negative_translated };
-            let last = LastRun { source, request, region: input.region, name, result_layer: layer.id, result_revision: 0, prompt_entry };
+            let harmonize = (mode == EditMode::GenerativeFill)
+                .then(|| Arc::new(harmonize::Source::new(source.clone(), request.image.clone(), generated, input.region.clone(), layer.clone())));
+            let last = LastRun { source, request, region: input.region, name, result_layer: layer.id, result_revision: 0, prompt_entry, harmonize };
             Ok((layer, last))
         },
         move |s, (layer, last)| apply_result(s, layer, last, None, label),
@@ -544,6 +549,8 @@ fn regenerate(s: &mut Session, p: &Value) -> Result<Value> {
         move |ctx| {
             let generated = backend.generate(&last.request, ctx)?;
             let layer = result_layer(&last.source, &generated, &last.region, &last.name, last.request.mode, ctx)?;
+            last.harmonize = (last.request.mode == EditMode::GenerativeFill)
+                .then(|| Arc::new(harmonize::Source::new(last.source.clone(), last.request.image.clone(), generated, last.region.clone(), layer.clone())));
             Ok((layer, last))
         },
         move |s, (layer, last)| apply_result(s, layer, last, Some(replace), "Regenerate AI Result"),
@@ -584,6 +591,9 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
     let result = json!({"layer":id.0,"mode":mode,"seed":last.request.seed,"steps":last.request.steps,"workingSize":[last.request.image.width,last.request.image.height],
         "workingRect":[bounds.x0,bounds.y0,bounds.x1,bounds.y1],"contentSize":last.region.content_size});
     let doc_id = st.doc.id;
+    if let Some(source) = &last.harmonize {
+        harmonize::remember(s, id, source.clone());
+    }
     s.ai_runs.insert(doc_id, last);
     Ok(result)
 }

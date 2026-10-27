@@ -148,6 +148,15 @@ pub fn show(app: &crate::PhotocraftApp, ui: &mut egui::Ui, l: &Layer, on_set: bo
         ui.set_min_width(220.0);
         let mut rename = false;
         let has_selection = app.session.active().is_some_and(|s| s.doc.selection.is_some());
+        if !on_set && photocraft_engine::ai_cmds::harmonize::tracked(&app.session, l.id) {
+            let enabled = photocraft_engine::ai_cmds::harmonize::available(&app.session, l.id);
+            if ui.add_enabled(enabled, egui::Button::new(tl!("Match Surrounding Colors"))).clicked() {
+                actions.push(("layer.select".into(), json!({"layer":l.id.0})));
+                actions.push((photocraft_engine::ai_cmds::harmonize::COMMAND.into(), Value::Null));
+                ui.close();
+            }
+            ui.separator();
+        }
         items(app, ui, l, on_set, entries(l, on_set, has_selection), actions);
         ui.separator();
         if ui.button(tl!("Rename Layer…")).clicked() {

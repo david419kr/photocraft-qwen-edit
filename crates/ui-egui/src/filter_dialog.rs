@@ -287,8 +287,13 @@ pub fn preview_factor(command: &str, params: &Value, k: u32) -> u32 {
     }
 }
 
+#[cfg(test)]
+#[path = "ai_harmonize_ui_tests.rs"]
+mod ai_harmonize_tests;
+
 /// Commands outside `filter.*` that get the schema dialog *with* live preview.
 pub const PREVIEWED: &[&str] = &[
+    photocraft_engine::ai_cmds::harmonize::COMMAND,
     "image.adjustments.selectiveColor",
     "image.adjustments.colorLookup",
     "image.adjustments.shadowsHighlights",
@@ -491,6 +496,13 @@ pub fn open(app: &mut PhotocraftApp, command: &str) -> Option<u64> {
     }
     restore_remembered(app, command, spec.params, &mut fields);
     apply_command_defaults(app, command, &mut fields);
+    if command == photocraft_engine::ai_cmds::harmonize::COMMAND {
+        let layer = app.session.active()?.active_layer?;
+        fields.insert("strength".into(), json!(photocraft_engine::ai_cmds::harmonize::current_strength(&app.session, layer)?));
+        fields.insert("__compareOriginal".into(), json!(false));
+        fields
+            .insert("__note".into(), json!(tl!("Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.")));
+    }
     if crate::blur_pins::handles(command) {
         crate::blur_pins::init(app, &mut fields);
     }
@@ -1010,6 +1022,13 @@ pub fn body(ui: &mut egui::Ui, f: &mut Map<String, Value>) {
         ui.add_space(4.0);
         ui.add(egui::Label::new(egui::RichText::new(note).color(t.text_dim)).wrap());
     }
+    if cmd == photocraft_engine::ai_cmds::harmonize::COMMAND {
+        let mut original = f.get("__compareOriginal").and_then(Value::as_bool).unwrap_or(false);
+        if crate::widgets::checkbox(ui, &mut original, tl!("Compare with Original Generation")).changed() {
+            f.insert("__preview".into(), json!(true));
+        }
+        f.insert("__compareOriginal".into(), json!(original));
+    }
     if let Some(mut preview) = f.get("__preview").and_then(Value::as_bool) {
         ui.add_space(4.0);
         crate::widgets::checkbox(ui, &mut preview, tl!("Preview"));
@@ -1031,6 +1050,18 @@ pub fn params_of(f: &Map<String, Value>) -> Value {
     // A document picker left at "None" (-1) means "not given".
     let unset = |k: &str, v: &Value| k == "mapDocument" && v.as_i64() == Some(-1);
     Value::Object(f.iter().filter(|(k, v)| !k.starts_with("__") && !unset(k, v)).map(|(k, v)| (k.clone(), v.clone())).collect())
+}
+
+/// Original comparison affects the preview only; OK still applies the chosen strength.
+pub(crate) fn preview_params_of(f: &Map<String, Value>) -> Value {
+    let mut params = params_of(f);
+    if f.get("__command").and_then(Value::as_str) == Some(photocraft_engine::ai_cmds::harmonize::COMMAND)
+        && f.get("__compareOriginal").and_then(Value::as_bool) == Some(true)
+        && let Some(params) = params.as_object_mut()
+    {
+        params.insert("strength".into(), json!(0));
+    }
+    params
 }
 
 /// Filter › Distort › Displace confirmed with no map: no open document picked and no path typed
@@ -1097,6 +1128,7 @@ pub fn preview_document_with(
         photocraft_engine::channel_cmds::ChannelTarget::Composite,
         &[],
         &ColorSettings::default(),
+        None,
     )
 }
 
@@ -1115,7 +1147,13 @@ pub(crate) fn preview_document_for_target(
     target: photocraft_engine::channel_cmds::ChannelTarget,
     documents: &[Arc<Document>],
     color: &ColorSettings,
+    ai_source: Option<&photocraft_engine::ai_cmds::harmonize::Source>,
 ) -> Option<Document> {
+    if command == photocraft_engine::ai_cmds::harmonize::COMMAND {
+        let fallback = photocraft_engine::jobs::JobCtx::new();
+        let result = photocraft_engine::ai_cmds::harmonize::preview(doc, active, params, ai_source?, cancel.unwrap_or(&fallback)).ok()?;
+        return Some(crate::proxy::proxy_document(&result, k));
+    }
     if command == crate::select_mask_view::COMMAND {
         return crate::select_mask_view::preview_document(doc, active, params, k, cancel);
     }
@@ -2013,6 +2051,7 @@ mod tests {
                 photocraft_engine::channel_cmds::ChannelTarget::Composite,
                 &documents,
                 &ColorSettings::default(),
+                None,
             )
             .unwrap_or_else(|| panic!("map {map}: no preview"));
             assert!(photocraft_compose::render(&preview, doc.bounds()).px == want, "map {map}: the preview differs from what OK applies");
@@ -2055,6 +2094,7 @@ mod tests {
                 photocraft_engine::channel_cmds::ChannelTarget::Composite,
                 &documents,
                 &ColorSettings::default(),
+                None,
             )
             .unwrap_or_else(|| panic!("{label}: no preview"));
             let got = preview.layers[0].surface().unwrap().pixel(24, 16);
@@ -2071,6 +2111,7 @@ mod tests {
             photocraft_engine::channel_cmds::ChannelTarget::Composite,
             &documents,
             &ColorSettings::default(),
+            None,
         )
         .unwrap();
         let px = preview.layers[0].surface().unwrap().pixel(12, 8);
