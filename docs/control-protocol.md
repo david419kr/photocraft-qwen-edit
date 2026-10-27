@@ -670,8 +670,9 @@ layer names. Selection is captured before opening the dialog; an unselected laye
 ## Shared panel docking
 
 Panel arrangements support tab grouping and reordering, horizontal and vertical splits,
-and movable, resizable floating groups inside the application window. Drag a panel tab or a
-group's drag bar, or use its context menu. Floating groups remain within the application viewport.
+and movable, resizable floating groups. Drag a panel tab or a group's drag bar, or use its
+context menu. On the desktop a floating group opens in its own OS window; on Wayland, in the
+web build and for the Studio Properties card it stays inside the application window.
 
 The shared layout begins with the existing workspace on the first docking operation.
 Workspace saves keep its groups, active tabs, split sizes, floating geometry, and the
