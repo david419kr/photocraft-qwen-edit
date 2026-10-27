@@ -102,6 +102,9 @@ fn gpu() -> Option<Gpu> {
         }
     };
     let info = adapter.get_info();
+    // Software D3D12 is the regression target: shader/device failures must not silently
+    // turn the mixed-batch regression (or the rest of this suite) into successful skips.
+    let required = required || (info.backend == wgpu::Backend::Dx12 && info.device_type == wgpu::DeviceType::Cpu);
     if let Ok(expected) = std::env::var("WGPU_ADAPTER_NAME") {
         assert!(info.name.to_lowercase().contains(&expected.to_lowercase()), "requested adapter {expected:?}, got {:?}", info.name);
     }
