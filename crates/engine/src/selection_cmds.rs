@@ -1,6 +1,6 @@
 //! Select menu and selection tools: Magic Wand, Color Range, Modify
 //! (expand/contract/border/smooth/feather), Grow, Similar, Lasso.
-//! Selections are grayscale coverage surfaces clipped to the canvas.
+//! Selections are grayscale coverage surfaces; Fixed Size marquees may extend past the canvas.
 
 use photocraft_algo::selection::{self as sel, SelectionMode};
 use photocraft_doc::Document;
@@ -633,7 +633,7 @@ fn polygon_rows(pts: &[(f32, f32)], area: Rect) -> Rect {
 /// [`sel::combine`] of a mask covering only `band` (zero elsewhere), giving exactly what the
 /// whole-canvas combine gives: Replace and Intersect are empty outside the band, and Add and
 /// Subtract keep the old selection there.
-fn combine_band(old: Option<&Surface>, mask: &[f32], band: Rect, m: SelectionMode) -> Option<Surface> {
+pub(crate) fn combine_band(old: Option<&Surface>, mask: &[f32], band: Rect, m: SelectionMode) -> Option<Surface> {
     let inside = sel::combine(old, mask, band, m);
     let Some(old) = old.filter(|_| matches!(m, SelectionMode::Add | SelectionMode::Subtract)) else { return inside };
     if band.is_empty() {
@@ -644,6 +644,33 @@ fn combine_band(old: Option<&Surface>, mask: &[f32], band: Rect, m: SelectionMod
     s.write_region(band, &values);
     s.prune();
     (s.tile_count() > 0).then_some(s)
+}
+
+/// Fixed Size has no canvas clipping to bound its allocation. Include the feather halo and
+/// charge both tiles and dense blur buffers against Memory Usage before building anything.
+pub(crate) fn unclipped_marquee_area(bounds: Rect, feather: f32) -> Result<Rect> {
+    if bounds.is_empty() {
+        return Ok(Rect::EMPTY);
+    }
+    // This fork's Gaussian feather kernel reaches ceil(3 * radius) pixels.
+    // select.rect bounds radius to 0..1000 before it reaches this helper.
+    let reach = (3.0 * feather).ceil() as i32;
+    let area = bounds.inflate(reach.saturating_add(1));
+    let tile = i64::from(photocraft_geom::TILE_SIZE);
+    let bytes = (u64::from(area.width()) + 2 * tile as u64).saturating_mul(u64::from(area.height()) + 2 * tile as u64).saturating_mul(if feather > 0.0 {
+        32
+    } else {
+        1
+    });
+    // Tile rectangles and feather halos must remain representable at either coordinate end.
+    let safe = |v: i32| i64::from(v) > i64::from(i32::MIN) + tile && i64::from(v) < i64::from(i32::MAX) - tile;
+    if ![area.x0, area.y0, area.x1, area.y1].into_iter().all(safe) || bytes > crate::transform_cmds::budget() {
+        return Err(EngineError::BadParams {
+            cmd: "select.rect".into(),
+            msg: "the full marquee is too large or outside the pixel coordinate range; reduce its size or increase Memory Usage in Preferences".into(),
+        });
+    }
+    Ok(area)
 }
 
 macro_rules! spec {
@@ -1436,6 +1463,87 @@ mod tests {
             let got = s.active().unwrap().doc.selection.clone();
             let read = |x: &Option<Surface>| x.as_ref().map(|s| s.read_region(area));
             assert_eq!(read(&got), read(&want), "case {case}: {m}, anti-alias {aa}, {pts:?}");
+        }
+    }
+    /// Fixed Size preserves the entire shape, including pixels initially beyond any canvas edge.
+    #[test]
+    fn unclipped_marquee_keeps_its_size_through_moves_and_history() {
+        for (x, y, w, h) in [(50, 25, 100, 50), (-20, 25, 100, 50), (20, -20, 50, 100), (20, 80, 50, 100), (120, 120, 150, 120)] {
+            let mut s = Session::new();
+            s.execute("file.new", json!({"width": 100, "height": 100})).unwrap();
+            s.execute("select.rect", json!({"x": x, "y": y, "width": w, "height": h, "clipToCanvas": false})).unwrap();
+            let original = Rect::from_xywh(x, y, w, h);
+            let bounds = |s: &Session| s.active().unwrap().doc.selection.as_ref().unwrap().content_bounds();
+            assert_eq!(bounds(&s), original);
+            s.execute("select.transformSelection", json!({"dx": -x, "dy": -y})).unwrap();
+            assert_eq!(bounds(&s), Rect::from_xywh(0, 0, w, h));
+            // Moving completely off-canvas and back must not destroy the recovered pixels either.
+            s.execute("select.transformSelection", json!({"dx": 200, "dy": -200})).unwrap();
+            s.execute("select.transformSelection", json!({"dx": -200, "dy": 200})).unwrap();
+            assert_eq!(bounds(&s), Rect::from_xywh(0, 0, w, h));
+            assert!(s.active().unwrap().doc.selection.as_ref().unwrap().read_region(Rect::from_xywh(0, 0, w, h)).iter().all(|v| *v == 1.0));
+            s.execute("edit.undo", json!({})).unwrap();
+            assert_eq!(bounds(&s), Rect::from_xywh(200, -200, w, h));
+            s.execute("edit.redo", json!({})).unwrap();
+            assert_eq!(bounds(&s), Rect::from_xywh(0, 0, w, h));
+        }
+    }
+
+    #[test]
+    fn unclipped_marquee_combines_the_full_selection() {
+        for clip in [true, false] {
+            for (mode, expected) in [("add", Rect::new(0, 25, 150, 75)), ("subtract", Rect::new(80, 25, 150, 75)), ("intersect", Rect::new(50, 25, 80, 75))] {
+                let mut s = Session::new();
+                s.execute("file.new", json!({"width": 100, "height": 100})).unwrap();
+                s.execute("select.rect", json!({"x": 50, "y": 25, "width": 100, "height": 50, "clipToCanvas": false})).unwrap();
+                s.execute("select.rect", json!({"x": 0, "y": 25, "width": 80, "height": 50, "clipToCanvas": clip, "mode": mode})).unwrap();
+                assert_eq!(s.active().unwrap().doc.selection.as_ref().unwrap().content_bounds(), expected, "{mode}, clip={clip}");
+            }
+        }
+    }
+
+    #[test]
+    fn unclipped_marquee_feather_and_ellipse_match_a_larger_canvas() {
+        for ellipse in [false, true] {
+            for feather in [0.0, 2.0] {
+                let make = |size| {
+                    let mut s = Session::new();
+                    s.execute("file.new", json!({"width": size, "height": size})).unwrap();
+                    s.execute(
+                        "select.rect",
+                        json!({"x": 50, "y": 25, "width": 100, "height": 50, "ellipse": ellipse, "feather": feather, "clipToCanvas": false}),
+                    )
+                    .unwrap();
+                    s.active().unwrap().doc.selection.clone().unwrap()
+                };
+                assert_eq!(make(100), make(200), "ellipse={ellipse}, feather={feather}");
+            }
+        }
+    }
+
+    #[test]
+    fn unclipped_marquee_rejects_unbounded_sizes_without_changing_selection() {
+        let mut s = session();
+        s.execute("select.rect", json!({"x": 1, "y": 2, "width": 10, "height": 10})).unwrap();
+        let before = s.active().unwrap().doc.selection.clone();
+        for (x, y, w, h) in [(0, 0, i32::MAX, i32::MAX), (i32::MAX - 5, 0, 100, 50), (i32::MIN, 0, 100, 50), (0, i32::MAX - 5, 100, 50)] {
+            assert!(s.execute("select.rect", json!({"x": x, "y": y, "width": w, "height": h, "clipToCanvas": false, "feather": 2})).is_err());
+            assert_eq!(s.active().unwrap().doc.selection, before);
+        }
+    }
+
+    /// The fork's local Fixed Size feather window must not discard a separate older selection.
+    #[test]
+    fn unclipped_marquee_feather_combines_without_losing_distant_pixels() {
+        for clip in [true, false] {
+            for mode in ["add", "subtract"] {
+                let mut s = Session::new();
+                s.execute("file.new", json!({"width": 100, "height": 100})).unwrap();
+                s.execute("select.rect", json!({"x": 120, "y": 25, "width": 20, "height": 20, "clipToCanvas": false})).unwrap();
+                s.execute("select.rect", json!({"x": 10, "y": 10, "width": 20, "height": 20, "clipToCanvas": clip, "feather": 2, "mode": mode})).unwrap();
+                assert_eq!(coverage(&s, 130, 35), 1.0, "{mode}, clip={clip}: old off-canvas pixels survive");
+                assert_eq!(coverage(&s, 20, 20) > 0.9, mode == "add");
+            }
         }
     }
 }
