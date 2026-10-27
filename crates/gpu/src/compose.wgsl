@@ -951,6 +951,29 @@ fn fs_layerbatch(in: VOut) -> @location(0) vec4<f32> {
     return b;
 }
 
+// Software D3D12: avoid repeatedly inlining the full blend switch in the WARP shader.
+// Other devices keep fs_layerbatch's faster unrolled path.
+@fragment
+fn fs_layerbatch_compact(in: VOut) -> @location(0) vec4<f32> {
+    let p = local(in.pos);
+    let d = doc_px(p);
+    var s = layer_texel(d);
+    s.a = s.a * mask_value(d);
+    var b = blend_px(p, textureLoad(tex_a, p, 0), s);
+    for (var t = 0; t < min(op.kind, 3); t = t + 1) {
+        var geo = op.p0;
+        var color = op.p1;
+        var prm = op.p2;
+        if (t == 1) {
+            geo = op.p3; color = op.q0; prm = op.q1;
+        } else if (t == 2) {
+            geo = op.q2; color = op.q3; prm = op.q4;
+        }
+        b = batch_layer(t, d, b, geo, color, prm);
+    }
+    return b;
+}
+
 // fs_layerbatch for a run of Normal layers without text gamma, outside Lab documents.
 @fragment
 fn fs_layerbatch_normal(in: VOut) -> @location(0) vec4<f32> {

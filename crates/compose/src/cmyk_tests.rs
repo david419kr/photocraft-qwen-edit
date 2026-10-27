@@ -105,8 +105,9 @@ fn over_text(b: Cmyka, s: Cmyka, opacity: f32) -> Cmyka {
     let dec = |v: f32| 1.0 - photocraft_color::convert::linear_to_srgb(v.max(0.0).powf(gamma));
     let mut o = [0.0; 5];
     for i in 0..4 {
-        // Mixing an ink with itself (or with nothing) leaves it exactly as it is.
-        o[i] = if b[4] <= 0.0 || b[i] == s[i] { s[i] } else { dec((1.0 - sa) * b[4] / a * enc(b[i]) + sa / a * enc(s[i])) };
+        // Full source coverage has no backdrop contribution and must keep exact inks too.
+        // A gamma round trip can move white off its endpoint, changing Vivid Light entirely.
+        o[i] = if sa >= 1.0 || b[4] <= 0.0 || b[i] == s[i] { s[i] } else { dec((1.0 - sa) * b[4] / a * enc(b[i]) + sa / a * enc(s[i])) };
     }
     o[4] = a;
     o
@@ -328,6 +329,29 @@ fn assert_matches_reference(d: &Document) {
 }
 
 // ---- directed tests ---------------------------------------------------------------------------
+
+#[test]
+fn opaque_clipped_type_stays_exact_white_before_vivid_light() {
+    let mut d = doc(5, 6);
+    let yellow = layer(&[(Rect::new(0, 0, 3, 2), [0.0, 0.0, 1.0, 0.0, 1.0])]);
+    let mut vivid = Layer::new(
+        "yellow fill",
+        LayerContent::Fill(photocraft_doc::Fill::Solid(photocraft_color::Color { mode: ColorMode::Cmyk, c: [0.0, 0.0, 1.0, 0.0], alpha: 1.0 })),
+    );
+    vivid.blend = BlendMode::VividLight;
+    let white = layer(&[(Rect::new(0, 0, 1, 1), [0.0, 0.0, 0.0, 0.0, 1.0])]);
+    let mut text = Layer::new("white type", LayerContent::Text(photocraft_doc::TextLayer { cache: white.surface().cloned(), ..Default::default() }));
+    text.clipped = true;
+    let mut inner = Layer::group("inner", vec![yellow, vivid, text]);
+    inner.blend = BlendMode::Normal;
+    let mut outer = Layer::group("outer", vec![inner]);
+    outer.blend = BlendMode::Normal;
+    d.layers = vec![outer];
+    // Opaque white type completely replaces the fill; Vivid Light at white yields white.
+    assert_eq!(render_cmyk(&d, d.bounds()).unwrap().px[0], [0.0, 0.0, 0.0, 0.0, 1.0]);
+    assert_eq!(ref_stack(&d.layers, 0, 0, [0.0; 5]), [0.0, 0.0, 0.0, 0.0, 1.0]);
+    assert_matches_reference(&d);
+}
 
 #[test]
 fn opaque_pixels_keep_their_exact_inks() {

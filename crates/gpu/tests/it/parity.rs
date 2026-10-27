@@ -102,6 +102,9 @@ fn gpu() -> Option<Gpu> {
         }
     };
     let info = adapter.get_info();
+    // Software D3D12 is the regression target: shader/device failures must not silently
+    // turn the mixed-batch regression (or the rest of this suite) into successful skips.
+    let required = required || (info.backend == wgpu::Backend::Dx12 && info.device_type == wgpu::DeviceType::Cpu);
     if let Ok(expected) = std::env::var("WGPU_ADAPTER_NAME") {
         assert!(info.name.to_lowercase().contains(&expected.to_lowercase()), "requested adapter {expected:?}, got {:?}", info.name);
     }
@@ -1152,17 +1155,36 @@ fn incremental_updates_follow_the_document() {
 /// upload. Tiles written afterwards, to the copy or to the source in the same refresh, must not be
 /// lost to the copy or leak through it (queued writes land before the encoder's copy).
 #[test]
+fn general_layer_batches_keep_blend_order() {
+    let Some(mut g) = gpu() else { return };
+    for count in [3, 4] {
+        let mut doc = base_doc(3, 2);
+        for i in 1..count {
+            let mut layer = noise_layer("mixed batch", PixelFormat::RGBA8, doc.bounds(), 70 + i, 0.2);
+            layer.blend = if i == 1 { BlendMode::Multiply } else { BlendMode::Difference };
+            layer.opacity = 0.7;
+            doc.layers.push(layer);
+        }
+        let stats = diff_rect(&mut g, &doc, doc.bounds(), "mixed-mode batch").unwrap();
+        assert!(stats.layers_batched >= 2, "fixture must execute the general batch shader: {stats:?}");
+        assert_eq!(stats.normal_batches, 0, "fixture must not use the Normal-only shader");
+    }
+}
+
+#[test]
 fn duplicates_copy_their_source_texture() {
     let Some(mut g) = gpu() else { return };
     let mut d = base_doc(600, 300);
     let mut src = noise_layer("src", PixelFormat::RGBA8, Rect::new(0, 0, 600, 300), 71, 0.0);
     src.opacity = 0.7;
     d.layers.push(src);
+    eprintln!("duplicate parity: source render");
     check(&mut g, &d, "source");
     // A duplicate with no other change: nothing uploads.
     let mut dup = d.layers[1].duplicate();
     dup.blend = BlendMode::Difference;
     d.layers.push(dup);
+    eprintln!("duplicate parity: shared-texture Difference batch");
     let stats = diff_rect(&mut g, &d, d.bounds(), "duplicate").unwrap_or_else(|e| panic!("{e}"));
     assert_eq!(stats.tiles_uploaded, 0, "{stats:?}");
     assert!(stats.tiles_shared > 0, "{stats:?}");
@@ -1172,6 +1194,7 @@ fn duplicates_copy_their_source_texture() {
     dup2.surface_mut().unwrap().fill_rect(Rect::new(10, 10, 20, 20), &[1.0, 0.0, 0.0, 1.0]);
     d.layers.push(dup2);
     d.layers[1].surface_mut().unwrap().fill_rect(Rect::new(300, 100, 310, 110), &[0.0, 0.0, 1.0, 1.0]);
+    eprintln!("duplicate parity: painted source and duplicate");
     check(&mut g, &d, "duplicate and source painted");
     // And a tile removed from a duplicate: it reads as transparent again.
     let mut dup3 = d.layers[1].duplicate();
@@ -1181,6 +1204,7 @@ fn duplicates_copy_their_source_texture() {
         s
     };
     d.layers.push(dup3);
+    eprintln!("duplicate parity: missing tile");
     check(&mut g, &d, "duplicate missing a tile");
 }
 

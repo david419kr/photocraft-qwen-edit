@@ -21,6 +21,32 @@ fn context_preserves_origin_and_shifts_at_edges_without_clipping_selection() {
 }
 
 #[test]
+fn fixed_size_off_canvas_selection_keeps_its_outline_but_limits_fill_to_canvas() {
+    let mut session = Session::new();
+    session.execute("file.new", json!({"width":100,"height":100,"background":"white"})).unwrap();
+    for selected in [Rect::new(50, 25, 150, 75), Rect::new(-50, -25, 50, 25), Rect::new(-25, -25, 125, 125), Rect::new(150, 25, 250, 75)] {
+        session
+            .execute("select.rect", json!({"x":selected.x0,"y":selected.y0,"width":selected.width(),"height":selected.height(),"clipToCanvas":false}))
+            .unwrap();
+        let doc = &session.active().unwrap().doc;
+        let visible = selected.intersect(&doc.bounds());
+        let input = prepare(doc, &JobCtx::new());
+        if visible.is_empty() {
+            assert!(input.is_err());
+        } else {
+            assert_eq!(selection_info(doc, &JobCtx::new()).unwrap().0, visible);
+            let input = input.unwrap();
+            assert!(doc.bounds().contains_rect(&input.region.bounds));
+            let mask = input.region.mask.as_ref().unwrap();
+            assert_eq!(mask.content_bounds(), visible);
+            assert_eq!(mask.sample_channel(selected.x0, selected.y0, 0), if doc.bounds().contains(selected.x0, selected.y0) { 1.0 } else { 0.0 });
+        }
+        // Preparing a bounded AI request must not clip the movable selection in the document.
+        assert_eq!(doc.selection.as_ref().unwrap().content_bounds(), selected);
+    }
+}
+
+#[test]
 fn implicit_selected_background_uses_canvas_bounds_and_invalid_coverage_is_rejected() {
     let mut doc = document(2200, 1800, Rect::new(0, 0, 1, 1));
     let mut mask = Surface::with_default(gray_float(), &[1.0]);

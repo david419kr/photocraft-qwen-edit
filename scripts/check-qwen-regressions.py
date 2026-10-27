@@ -13,6 +13,8 @@ def main():
     cases = [
         ("app-gpu-startup", ["-p", "photocraft", "--bin", "photocraft", "gpu_startup::tests"]),
         ("ui-tool-colors", ["-p", "photocraft-ui-egui", "--lib", "tool_colors_"]),
+        ("engine-fixed-size-marquee", ["-p", "photocraft-engine", "--lib", "unclipped_marquee"]),
+        ("ui-fixed-size-marquee", ["-p", "photocraft-ui-egui", "--lib", "fixed_size_keeps_the_off_canvas_part_when_its_outline_moves"]),
         ("engine-tool-presets", ["-p", "photocraft-engine", "--lib", "tool_presets_"]),
         ("ui-selected-tool", ["-p", "photocraft-ui-egui", "--lib", "selected_tool_"]),
         ("app-update-notice", ["-p", "photocraft", "--bin", "photocraft", "updates::tests"]),
