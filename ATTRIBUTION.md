@@ -134,5 +134,4 @@ Files copied into `corpus/` by hand (tiff, exr, raw) must be MIT, BSD or CC0.
 | Path | Title | Author | Source | License |
 |---|---|---|---|---|
 | `docs/pr-evidence/fixed-size-marquee/before-clipped.png`, `docs/pr-evidence/fixed-size-marquee/after-preserved.png` | Native PhotoCraft selection geometry before and after retaining the full marquee | @david419kr, captured with OpenAI Codex | PhotoCraft offscreen snapshot example; exact command scripts beside the captures | MIT OR Apache-2.0; displayed app assets retain the notices listed above |
-
 | `docs/pr-evidence/qwen-fixed-size-marquee/before-clipped.png`, `docs/pr-evidence/qwen-fixed-size-marquee/after-preserved.png` | Native Qwen fork selection geometry for the initial Fixed Size port | @david419kr, captured with OpenAI Codex | Fork snapshot example at f4c245af7; exact command scripts beside the captures | MIT OR Apache-2.0; displayed app assets retain the notices listed above |

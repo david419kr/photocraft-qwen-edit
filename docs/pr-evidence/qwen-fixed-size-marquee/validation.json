@@ -1,0 +1,46 @@
+{
+  "scope": "Initial port; repeat validation after the ongoing large Qwen Edit work lands",
+  "pr": "https://github.com/david419kr/photocraft-qwen-edit/pull/15",
+  "source_sha": "f4c245af77147cb7b8fd31e3d97234d7977f15ea",
+  "base_main_sha": "d2fc4f0b944c27e966753e3df7357074d1360ae5",
+  "native_tests": {
+    "engine_unique": 43,
+    "ui_unique": 35,
+    "functional_unique_total": 78,
+    "existing_ignored_benchmark": 1,
+    "panic_hunt_passed": 1
+  },
+  "checks": {
+    "fmt": "passed",
+    "diff_check": "passed",
+    "layers": {
+      "passed": true,
+      "crates": 31
+    },
+    "scorecard": {
+      "passed": true,
+      "unread": 20,
+      "total": 186
+    },
+    "wasm": {
+      "passed": true,
+      "crates": 24,
+      "codec_variants": [
+        "heif",
+        "avif-decode",
+        "avif"
+      ]
+    },
+    "offscreen_captures": "visually inspected"
+  },
+  "ci_observed": {
+    "run_id": 40553433586,
+    "full_workspace_all_targets_heif_clippy": "success",
+    "web_build_and_size_gate": "success",
+    "without_heif": "success",
+    "remaining_matrix": "in_progress"
+  },
+  "live_qwen_cuda_acceptance": false,
+  "merged": false,
+  "release_created": false
+}
