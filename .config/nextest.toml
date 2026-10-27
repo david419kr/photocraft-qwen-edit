@@ -10,16 +10,6 @@
 # this group caps them at 4.
 [test-groups]
 gpu = { max-threads = 4 }
-gpu-windows = { max-threads = 1 }
-
-# The FXC-compatible compositor now exercises the Windows software adapter too.
-# Concurrent D3D12/WARP devices can stall until nextest's 10-minute timeout;
-# serialize GPU tests on Windows without skipping coverage or selecting an adapter.
-# Platform-specific overrides must precede the general GPU override (first match wins).
-[[profile.default.overrides]]
-platform = 'cfg(windows)'
-filter = 'package(photocraft-gpu) | (package(photocraft-ui-egui) & (kind(test) | test(/canvas|gpu|mip|type_tool|background_redraw::|floating_group_titles|swap_arrow::tests::rendered_glyph/)))'
-test-group = 'gpu-windows'
 
 [[profile.default.overrides]]
 filter = 'package(photocraft-gpu) | (package(photocraft-ui-egui) & (kind(test) | test(/canvas|gpu|mip|type_tool|background_redraw::|floating_group_titles|swap_arrow::tests::rendered_glyph/)))'

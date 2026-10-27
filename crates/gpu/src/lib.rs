@@ -720,9 +720,14 @@ impl Compositor {
             bind_group_layouts: &[Some(&bgl0), Some(&bgl1)],
             immediate_size: 0,
         });
+        // WARP stalls when executing the large general batch shader. Use the compact
+        // equivalent only for software D3D12; keep the measured faster unrolled kernel
+        // elsewhere. This doesn't change adapter selection or bypass GPU composition.
+        let info = device.adapter_info();
+        let compact_batches = info.backend == wgpu::Backend::Dx12 && info.device_type == wgpu::DeviceType::Cpu;
         // `None` only for kernels without a fragment entry point, which are never drawn.
         let pipeline = |k: Kernel, format: wgpu::TextureFormat| {
-            let entry = k.entry()?;
+            let entry = if compact_batches && k == Kernel::LayerBatch { "fs_layerbatch_compact" } else { k.entry()? };
             Some(device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
                 label: Some(entry),
                 layout: Some(&layout),
