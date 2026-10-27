@@ -1,6 +1,8 @@
 # PhotoCraft vs Adobe Photoshop: target-app parity
 
-> **Last reviewed:** 2026-10-12 · **Last updated:** 2026-10-22 · **Change:** minor (Help › Check for Updates and an opt-out check once per launch, DIST-220-1 partial, #5485; area type, TYPE-218-10 partial, Type scorecard 5 / 5 / 0; compound layer properties export as separate Photoshop Set events, #8304; JPEG Options dialog landed, FILE-215-19 partial; Print › Functions › Bleed through `file.print`; Content-Aware Move live preview for every selection size, TOOL-213-4 done, #6680; retouching evidence: Pattern Stamp and Background Eraser draw live, only the Mixer Brush is left of TOOL-213-7; fill and adjustment layers copy and paste whole, UI-217-23 partial, #2344; shape layers take Density and Feather, TOOL-214-12 done, #5846; on-canvas corner radius widgets, TOOL-214-12; `.atn` import maps 112 events; Free Transform H/V skew fields; stale rows corrected against `main` and the scorecard, estimates unchanged; Photoshop Actions `.atn` load and save; 2026-10-10: Tilt-Shift measurements added; earlier the same day: major, full re-measure against Photoshop 2026 27.11.0; merged `parity-estimate.md` and the roadmap's honest assessment; stale missing-tool rows corrected: Color Replacement and Red Eye are live toolbar tools, Frame landed; percentages unchanged) · **Target:** Adobe Photoshop 2026
+> **Last reviewed:** 2026-10-12 · **Last updated:** 2026-10-28 · **Change:** minor (Help › Check for Updates and an opt-out check once per launch, DIST-220-1 partial, #5485; area type, TYPE-218-10 partial, Type scorecard 5 / 5 / 0; compound layer properties export as separate Photoshop Set events, #8304; JPEG Options dialog landed, FILE-215-19 partial; Print › Functions › Bleed through `file.print`; Content-Aware Move live preview for every selection size, TOOL-213-4 done, #6680; retouching evidence: Pattern Stamp and Background Eraser draw live, only the Mixer Brush is left of TOOL-213-7; fill and adjustment layers copy and paste whole, UI-217-23 partial, #2344; shape layers take Density and Feather, TOOL-214-12 done, #5846; on-canvas corner radius widgets, TOOL-214-12; `.atn` import maps 112 events; Free Transform H/V skew fields; stale rows corrected against `main` and the scorecard, estimates unchanged; Photoshop Actions `.atn` load and save; 2026-10-10: Tilt-Shift measurements added; earlier the same day: major, full re-measure against Photoshop 2026 27.11.0; merged `parity-estimate.md` and the roadmap's honest assessment; stale missing-tool rows corrected: Color Replacement and Red Eye are live toolbar tools, Frame landed; percentages unchanged) · **Target:** Adobe Photoshop 2026 · Local fork: Qwen selection coverage/reference correction; measured parity percentages unchanged.
+
+> **Local follow-up (2026-10-28):** Qwen source-latent sampler masking added; controlled live checks retain surrounding tint better, while selected-region colour/line defects remain. No measured parity increase.
 
 The authoritative answer to "how close is PhotoCraft to Photoshop, and how much work is left". The
 one-page summary is [`ROADMAP.md`](../ROADMAP.md); the ranked work list is [`gaps.md`](gaps.md);
@@ -272,6 +274,9 @@ vs Adobe's ML, Content-Aware Fill basic). The weighted figure accounts for depth
 just presence.
 
 ### Where we stand, by area
+
+**Local Qwen fork update (2026-10-28):** ComfyUI-backed Generative Fill prepares a selection-local context crop and preserves its origin through inverse mapping/reroll. The dialogue-removal follow-up removes the extra 11px guide expansion, keeps the unmarked original as the primary reference with a separate mask, preserves exact user selection coverage and disables unconditional Poisson recolouring. Source VAE latent plus an actual sampler noise mask now constrains generation using existing nodes/weights; any-hit coverage on the 16x latent grid retains thin selections. Three controlled live trials completed on standard/Turbo; surrounding translucent appearance improved in this case, but glyph-shaped colour mismatch and softened lines remain. See [ComfyUI contracts](comfyui.md#input-and-output). Firefly equivalence and general quality/success rates remain unproven. Upstream gap estimates and parity percentages are unchanged.
+
 
 | Area | Parity | Notes |
 |---|---:|---|
@@ -565,6 +570,9 @@ See [method, raw measurements and reproduction](five-algorithm-performance.md).
 
 | Date | Change | Summary |
 |---|---|---|
+| 2026-10-28 | minor | Local Qwen fill correction: original reference plus separate mask, no hidden guide dilation or outward composite coverage, no automatic Poisson RGB offsets; visual model quality remains unmeasured; percentages unchanged |
+| 2026-10-28 | minor | Qwen-only source-latent masked sampling, stock nodes and conservative 16x latent coverage; three controlled live trials, colour/line defects remain; percentages unchanged |
+| 2026-10-27 | minor | Local Qwen Generative Fill: selection-local context, consistent crop/model inverse, conservative thin-mask coverage, finite overlap and frozen interpolation on reroll; no model-quality comparison or percentage increase |
 | 2026-10-22 | minor | Platforms: Help › Check for Updates and an opt-out check once per launch (#5485), DIST-220-1 partial; percentages unchanged |
 | 2026-10-21 | minor | #8304: compound layer properties export as separate Set events, rename last; independent Photoshop replay pending; percentages and estimates unchanged |
 | 2026-10-19 | minor | JPEG Options dialog landed (FILE-215-19 partial: no Matte, progressive Scans or size preview); percentages unchanged |

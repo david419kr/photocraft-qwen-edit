@@ -637,6 +637,10 @@ AI command params also accept `cfg` and `negativePrompt`; negatives are used onl
 selected model's default (25 for base checkpoints, 8 for Turbo). AI engine commands also accept
 an optional integer `steps` parameter; one-click regeneration retains its captured step count.
 `ui.menu.invoke` for `edit.promptGenerate`, `edit.promptEdit` or `edit.generativeFill` without params opens it.
+AI result objects include `workingSize` (padded model pixels), `contentSize` (unpadded model pixels), and `workingRect` (`[x0,y0,x1,y1]`, half-open document coordinates). Generative Fill uses a selection-local context crop; completion and reroll restore that same crop origin. Its result mask preserves the original selection coverage, holes and feather. Pixels with zero coverage stay unchanged. Empty and nonempty fill prompts both use the unmarked original ROI plus a separate selection guide.
+
+Generative Fill also uses the original Qwen VAE latent with a sampler noise mask. Any selected model pixel activates its 16x16 latent cell; final document coverage still uses the exact original selection. This adds no request fields, model weights or dependencies. Whole-image Prompt Edit/Generate retain their existing latent initialization.
+
 With params, `engine.execute` dispatches the same command as the Generate button.
 `edit.promptGenerate` requires an entirely transparent or pure-white canvas and no partial
 selection; `ai.mode` reports `promptGenerate` in that context. `edit.aiRegenerate` with `{}`

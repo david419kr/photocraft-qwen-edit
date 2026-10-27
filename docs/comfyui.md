@@ -510,16 +510,17 @@ With the prompt field focused, **Ctrl+Enter** starts generation through the same
 validation as the Generate button. Plain Enter still inserts a newline. Empty whole-image
 prompts and busy jobs do not submit; empty Generative Fill prompts retain removal behaviour.
 
-The original selection becomes the result layer's mask. Outside-selection pixels stay
-unchanged even if the model changes the corresponding pixels. Feather is applied once.
-Generative Fill also applies source-gradient Poisson blending at model resolution before
-resampling and conversion to the document profile. It interpolates the original/generated
-colour difference from outside the selection into the filled region, preserving generated
-texture while matching surrounding colour and brightness. Original content inside the
-selection and synthetic padding are excluded from the boundary reference. If no unselected
-context survives at model resolution, blending is skipped. This applies to both blank and
-nonblank fill prompts; new objects can also inherit the surrounding colour cast. Prompt Edit
-does not apply this correction. The solve supports job cancellation and uses no AI inference.
+Generative Fill's result mask preserves the user's original selection coverage, including
+holes and feather, in document coordinates. No extra dilation or outward feather is added.
+Every pixel with zero selection coverage remains the original composite even if Qwen changes
+its reference context. The original selection object is also preserved.
+
+AI fill no longer applies automatic Poisson/membrane colour correction. A dialogue-removal
+case showed that compensating a regenerated translucent overlay with a large RGB offset
+clipped channels and damaged line contrast. Generated RGB now passes through padding removal,
+the captured resampling policy and CMS conversion only. Model colour or structure mismatch
+inside the selection can remain visible; a correct reference is preferable to hiding it with
+unconditional brightness correction. This policy applies to both empty and nonempty fill prompts.
 Existing pixels and the selection are preserved. Fill leaves source visibility unchanged;
 hide or undo its result to return to the previous image. Prompt Edit and AI Remove Background
 hide all existing root layers only after the generated layer is ready. This includes visible
@@ -535,29 +536,51 @@ and converts its result back to the document profile and depth. The document its
 not converted. Model exchange is 8-bit PNG, so generated content has 8-bit source precision.
 Transparent input is composited over white for the model.
 
-For Prompt Edit and Generative Fill, working resolution has a maximum side of 1536 pixels. Both image and mask use the same
-coordinates. Right/bottom padding makes their dimensions multiples of 32 without the
-workflow's central crop. The output is cropped to remove that padding and resampled to
-the original document dimensions. Small details and narrow selections in large images
-are limited by this working resolution.
+Prompt Edit uses the whole canvas at a maximum side of 1536 pixels. Generative Fill instead
+uses the nonzero selection's bounding box with surrounding context: an area-16 centered
+expansion, fitted to a square and shifted/clipped to the canvas. The crop is at least 64 pixels per available axis.
+Its longest model side is between 512 and 1536, except on documents smaller than 512 pixels.
+This is PhotoCraft's bounded Qwen policy, not a claim that every Photoshop state uses this ROI.
 
-Empty-prompt removal supplies a primary reference with the selected area painted bright
-green, not a latent noise mask. The prompt identifies the paint as an edit annotation and
-removes the marked shapes to reconstruct their background. This replaces the
-previous binary silhouette secondary reference, which could cause Qwen to edit the wrong
-object despite a correctly positioned mask. A secondary colour guide could also be copied
-as object colour; placing the annotation directly in the primary reference avoids that case.
-The uploaded PNG stores `alpha = 1 - selection`, preserving RGB under transparent mask
-pixels, so LoadImage produces the correct selection. Stock `EmptyImage` and
-`ImageCompositeMasked` nodes build the guide without a second upload or an extra model.
-Inputs are already padded to multiples of 32, so the annotation shares exact image coordinates.
-Original pixels underneath the paint are not reference content for the model; unmarked image
-context supplies the style and background. Fill with a nonblank prompt retains the original
-two-reference MaskEdit graph (unmarked original + separate binary selection) and its prompt
-formatting, preserving existing content-edit behaviour. Prompt Edit also keeps its original
-unmarked reference. The engine passes an explicit removal flag to the native backend.
-The selection still independently masks the result layer; the green guide does not change
-selection coverage or Poisson blending. The guide paint is excluded from the requested output.
+Fill composites only this crop, converts it through CMS, and uses the existing premultiplied
+bicubic resampler (`a=-0.75`) rather than whole-canvas integer-bin reduction. Guide coverage
+conservatively includes every intersected model cell of each selected source pixel, so a
+one-pixel stroke cannot disappear between sample centers. RGB and guide share the same
+crop edges and scale; their filters serve different purposes.
+
+The model guide marks only model cells intersected by the user's selection. It has no
+additional 11-pixel expansion. The final layer mask retains original fractional coverage;
+the binary model guide and document coverage serve different purposes. Context around the
+selection is supplied as reference content. The sampler mask additionally quantizes this
+guide to latent cells as described below; final visible coverage is never enlarged.
+
+Right/bottom padding makes input dimensions multiples of 32. Padding is excluded from the
+guide and removed before inverse scaling. The original document crop origin and unpadded
+model size are preserved through completion and reroll. Only the resulting patch and mask
+are written back at that document origin. Fill restoration follows General > Image
+Interpolation, captured with the job and preserved on reroll. Prompt Edit's restoration
+is unchanged. A symmetric half-pixel center convention is used in both directions; no
+arbitrary global offset or content-based registration is added.
+
+Both empty-prompt removal and prompted fill send `image_1 = unmarked original ROI` and
+`image_2 = black/white selection guide`. Removal's built-in instruction asks to reconstruct
+the background only in the white region while preserving the surrounding lines, texture,
+colours and translucent overlays. The original pixels under the mask remain visible in the
+primary reference. No reference is painted green.
+
+The uploaded PNG stores `alpha = 1 - model guide` while retaining source RGB underneath.
+LoadImage returns original RGB and the guide separately; MaskToImage builds the secondary
+reference without another upload or model. Both references are already padded to multiples
+of 32 and share exact image coordinates. Generative Fill also encodes the original ROI with
+the existing Qwen VAE and passes it through `SetLatentNoiseMask` to the existing standard or
+Turbo sampler. The mask is area-pooled onto Qwen's 16x spatial latent grid, then thresholded
+at strictly greater than zero so that even a one-pixel selected stroke activates its cell.
+No morphological growth is added. An active cell can include unselected model pixels;
+this is a latent-cell constraint, not pixel-exact generation. Outside active cells the
+sampler restores the source/noise state at its input and the source latent at prediction.
+This uses installed stock nodes and current weights, with one extra source VAE encode;
+it does not establish equivalence to trained Firefly inpainting.
+The final document-space selection mask enforces coverage independently of model behaviour.
 The result is read specifically from SaveImage node 56, never the mask preview.
 
 ## Commands and automation
@@ -607,12 +630,24 @@ or queue clearing. Only this request is stopped.
 Unit tests use synthetic images and a loopback mock HTTP server. They cover prompt/mask
 wiring, full versus partial selection, mask direction/padding, native bit depths, new-layer
 Undo/Redo, document switching, cancellation, malformed parameters and image limits.
-Build and automated visual QA use mock results and do not execute real Qwen inference.
-Fill harmonisation regression tests cover a simulated colour shift over removed content,
-texture preservation, selections at canvas edges, unchanged exterior pixels, 8/16/32-bit
-documents, Undo, padding exclusion, missing exterior context, cancellation and malformed
-buffers. These synthetic shift tests validate the harmonisation calculation; individual live
-fill checks do not establish colour matching for all artwork.
+Automated tests use mock results and do not execute real Qwen inference. Fill regressions
+cover translucent overlays and curved line art, exact selection coverage, unchanged exterior
+pixels, 8/16/32-bit documents, Undo, padding exclusion, cancellation and malformed buffers.
+Graph tests verify source VAE/noise-mask wiring, latent-cell coverage preparation, unchanged
+whole-image modes and rejection of invalid fill grids before network access.
+
+### Qwen masked-sampling experiment — 2026-10-28
+
+Three controlled requests on the installed RTX 4090 completed: original source latent with
+Turbo and standard checkpoints, plus a Turbo diagnostic with selected-only gray neutralization
+and zero mask growth. Each reused its corresponding saved baseline's input, prompt, seed and
+sampler settings. Known speech-bubble context RGB error fell from about 77 to 19 byte levels
+for Turbo and from about 75 to 16 for standard. This measures surrounding appearance, not
+reconstructed pixels hidden by text. Approximate final composites still show glyph-shaped
+colour differences and some softened lines. Gray neutralization had no clear advantage and
+is excluded from the product graph. A fixed seed per checkpoint does not establish deletion
+success rates or a general quality improvement. Final document coverage remains necessary
+because VAE decoding can change RGB even where latent cells are fixed.
 
 ### T2I and regeneration verification — 2026-10-09
 

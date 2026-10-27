@@ -15,6 +15,8 @@ use crate::commands::CommandSpec;
 use crate::jobs::JobCtx;
 use crate::{EngineError, Result, Session};
 
+mod fill;
+
 pub const MAX_DOCUMENT_PIXELS: u64 = 36_000_000;
 pub const MAX_PROMPT_BYTES: usize = 8192;
 pub const MAX_STEPS: u32 = 1000;
@@ -77,7 +79,7 @@ pub struct AiRequest {
 pub(crate) struct LastRun {
     source: Arc<Document>,
     request: AiRequest,
-    content_size: [u32; 2],
+    region: EditRegion,
     name: String,
     result_layer: photocraft_doc::LayerId,
     result_revision: u64,
@@ -230,7 +232,7 @@ pub fn shaped_prompt(mode: EditMode, prompt: &str) -> String {
         return prompt.into();
     }
     if prompt.trim().is_empty() {
-        "The bright-green paint in <image1> marks the region to erase; it is an edit annotation, not part of the artwork. Completely remove the marked shapes and reconstruct only the surrounding background in their place. Leave no object, outline or silhouette in the marked region. Keep all unmarked artwork and its positions unchanged. The result must contain no annotation paint.".into()
+        "Using <image1> as the original image, remove the existing content only in the white region indicated by <image2> and reconstruct the surrounding background there. Keep everything outside the indicated region and its positions unchanged. Maintain continuity of the surrounding line art, textures, colors and translucent overlays at the boundary. Do not include the mask in the result.".into()
     } else {
         format!(
             "Using <image1> as the original image, apply the following edit only in the white region indicated by <image2>:\n{prompt}\nBlend the edited region naturally with the surrounding image. Keep everything outside the indicated region unchanged. Do not include the mask in the result."
@@ -276,7 +278,7 @@ pub fn specs() -> Vec<CommandSpec> {
             },
             menu: &["Edit"],
             shortcut: None,
-            params: "{\"prompt\":str (blank removes content for Generative Fill),\"cfg\":number? (1..100; stock Turbo fixed 1),\"negativePrompt\":str? (used above CFG 1),\"steps\":u32? (1..1000; model settings default),\"seed\":u64?,\"name\":str?} → {layer,mode,seed,steps,workingSize}",
+            params: "{\"prompt\":str (blank removes content for Generative Fill),\"cfg\":number? (1..100; stock Turbo fixed 1),\"negativePrompt\":str? (used above CFG 1),\"steps\":u32? (1..1000; model settings default),\"seed\":u64?,\"name\":str?} → {layer,mode,seed,steps,workingSize,workingRect,contentSize}",
             enabled: match mode {
                 EditMode::PromptGenerate => can_generate,
                 EditMode::PromptEdit => can_edit,
@@ -312,7 +314,7 @@ pub fn specs() -> Vec<CommandSpec> {
         label: "Regenerate AI Result",
         menu: &["Edit"],
         shortcut: None,
-        params: "{} → {layer,mode,seed,workingSize}; same source/settings, new seed, replaces last result in one undo step",
+        params: "{} → {layer,mode,seed,workingSize,workingRect,contentSize}; same source/settings, new seed, replaces last result in one undo step",
         enabled: can_regenerate,
         run: regenerate,
         journal: true,
@@ -338,7 +340,7 @@ pub fn specs() -> Vec<CommandSpec> {
         label: "Remove Background",
         menu: &[],
         shortcut: None,
-        params: "{\"steps\":u32?,\"seed\":u64?,\"name\":str?} → {layer,mode,seed,steps,workingSize} (AI cutout as a new layer; hides source layers)",
+        params: "{\"steps\":u32?,\"seed\":u64?,\"name\":str?} → {layer,mode,seed,steps,workingSize,workingRect,contentSize} (AI cutout as a new layer; hides source layers)",
         enabled: can_edit,
         run: remove_background,
         journal: true,
@@ -415,6 +417,7 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
     let endpoint = s.prefs().integrations.comfyui_url.clone();
     let model = s.prefs().integrations.comfyui_model;
     let settings = s.prefs().integrations.selected_settings();
+    let fill_filter = fill::output_filter(s.prefs().general.image_interpolation);
     let cfg = p
         .get("cfg")
         .map_or(Some(settings.cfg), Value::as_f64)
@@ -458,7 +461,10 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
         label,
         true,
         move |ctx| {
-            let input = prepare(&source, mode, ctx)?;
+            let mut input = prepare(&source, mode, ctx)?;
+            if mode == EditMode::GenerativeFill {
+                input.region.filter = fill_filter;
+            }
             let original = prompt.clone();
             let mut prompt = prompt;
             let mut translated = None;
@@ -507,16 +513,10 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
             request.prompt = shaped_prompt(mode, &prompt);
             request.negative_prompt = negative;
             let generated = backend.generate(&request, ctx)?;
-            let layer = result_layer(&source, &generated, &request.image, input.content_size, &name, mode, ctx)?;
-            let prompt_entry = crate::ai_prompts::Entry {
-                mode,
-                regions: if mode == EditMode::GenerativeFill { crate::ai_prompts::regions(&request.image, input.content_size) } else { Vec::new() },
-                original,
-                translated,
-                negative_original,
-                negative_translated,
-            };
-            let last = LastRun { source, request, content_size: input.content_size, name, result_layer: layer.id, result_revision: 0, prompt_entry };
+            let layer = result_layer(&source, &generated, &input.region, &name, mode, ctx)?;
+            let prompt_entry =
+                crate::ai_prompts::Entry { mode, regions: input.region.prompt_regions.clone(), original, translated, negative_original, negative_translated };
+            let last = LastRun { source, request, region: input.region, name, result_layer: layer.id, result_revision: 0, prompt_entry };
             Ok((layer, last))
         },
         move |s, (layer, last)| apply_result(s, layer, last, None, label),
@@ -543,7 +543,7 @@ fn regenerate(s: &mut Session, p: &Value) -> Result<Value> {
         true,
         move |ctx| {
             let generated = backend.generate(&last.request, ctx)?;
-            let layer = result_layer(&last.source, &generated, &last.request.image, last.content_size, &last.name, last.request.mode, ctx)?;
+            let layer = result_layer(&last.source, &generated, &last.region, &last.name, last.request.mode, ctx)?;
             Ok((layer, last))
         },
         move |s, (layer, last)| apply_result(s, layer, last, Some(replace), "Regenerate AI Result"),
@@ -580,7 +580,9 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
     let st = s.active().ok_or(EngineError::NoDocument)?;
     last.result_layer = id;
     last.result_revision = st.revision;
-    let result = json!({"layer":id.0,"mode":mode,"seed":last.request.seed,"steps":last.request.steps,"workingSize":[last.request.image.width,last.request.image.height]});
+    let bounds = last.region.bounds;
+    let result = json!({"layer":id.0,"mode":mode,"seed":last.request.seed,"steps":last.request.steps,"workingSize":[last.request.image.width,last.request.image.height],
+        "workingRect":[bounds.x0,bounds.y0,bounds.x1,bounds.y1],"contentSize":last.region.content_size});
     let doc_id = st.doc.id;
     s.ai_runs.insert(doc_id, last);
     Ok(result)
@@ -588,7 +590,22 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
 
 struct Prepared {
     image: Rgba8Image,
+    region: EditRegion,
+}
+
+#[derive(Clone)]
+struct EditRegion {
+    bounds: Rect,
     content_size: [u32; 2],
+    mask: Option<Surface>,
+    prompt_regions: Vec<crate::ai_prompts::Region>,
+    filter: photocraft_algo::resample::Resample,
+}
+
+impl EditRegion {
+    fn canvas(doc: &Document, content_size: [u32; 2]) -> Self {
+        Self { bounds: doc.bounds(), content_size, mask: None, prompt_regions: Vec::new(), filter: photocraft_algo::resample::Resample::Bilinear }
+    }
 }
 
 fn byte(v: f32) -> u8 {
@@ -597,7 +614,11 @@ fn byte(v: f32) -> u8 {
 
 fn prepare(doc: &Document, mode: EditMode, ctx: &JobCtx) -> Result<Prepared> {
     ctx.check()?;
+    supported_document(doc).map_err(EngineError::Other)?;
     ctx.progress(0.02, "Preparing image and selection");
+    if mode == EditMode::GenerativeFill {
+        return fill::prepare(doc, ctx);
+    }
     if mode == EditMode::PromptGenerate {
         let (w, h) = (doc.size.width, doc.size.height);
         if w == 0 || h == 0 || w > MAX_GENERATION_SIDE || h > MAX_GENERATION_SIDE {
@@ -607,7 +628,7 @@ fn prepare(doc: &Document, mode: EditMode, ctx: &JobCtx) -> Result<Prepared> {
         if u64::from(pw) * u64::from(ph) > MAX_DOCUMENT_PIXELS + 1_048_576 {
             return Err(EngineError::Other("padded generation canvas is too large".into()));
         }
-        return Ok(Prepared { image: Rgba8Image::new(pw, ph), content_size: [w, h] });
+        return Ok(Prepared { image: Rgba8Image::new(pw, ph), region: EditRegion::canvas(doc, [w, h]) });
     }
     let scale = (MAX_WORKING_SIDE as f64 / doc.size.width.max(doc.size.height) as f64).min(1.0);
     let w = (doc.size.width as f64 * scale).round().max(1.0) as u32;
@@ -630,89 +651,33 @@ fn prepare(doc: &Document, mode: EditMode, ctx: &JobCtx) -> Result<Prepared> {
             for (out, value) in pixel.iter_mut().take(3).zip(converted.iter()) {
                 *out = byte(*value * alpha + 1.0 - alpha);
             }
-            let coverage = if mode == EditMode::GenerativeFill && x < w as usize && y < h as usize {
-                doc.selection.as_ref().map_or(0.0, |m| {
-                    let mx = ((x as f64 + 0.5) * doc.size.width as f64 / w as f64 - 0.5).round() as i32;
-                    let my = ((y as f64 + 0.5) * doc.size.height as f64 / h as f64 - 0.5).round() as i32;
-                    m.sample_channel(mx, my, 0).clamp(0.0, 1.0)
-                })
-            } else {
-                0.0
-            };
-            if !coverage.is_finite() {
-                return Err(EngineError::Other("invalid selection coverage".into()));
-            }
             if let Some(a) = pixel.get_mut(3) {
-                *a = byte(1.0 - coverage);
+                *a = 255;
             }
         }
     }
-    Ok(Prepared { image, content_size: [w, h] })
+    Ok(Prepared { image, region: EditRegion::canvas(doc, [w, h]) })
 }
 
-/// Source-gradient Poisson blending: interpolate only the outside colour mismatch.
-/// The original RGB beneath the removal mask must never become a boundary condition.
-fn harmonize_fill(image: &Rgba8Image, reference: &Rgba8Image, size: [u32; 2], ctx: &JobCtx) -> Result<Vec<f32>> {
+fn result_layer(doc: &Document, image: &Rgba8Image, region: &EditRegion, name: &str, mode: EditMode, ctx: &JobCtx) -> Result<Layer> {
     ctx.check()?;
-    let [w, h] = size;
-    let valid = w > 0
-        && h > 0
-        && w <= MAX_WORKING_SIDE
-        && h <= MAX_WORKING_SIDE
-        && image.width == w.div_ceil(32) * 32
-        && image.height == h.div_ceil(32) * 32
-        && reference.width == image.width
-        && reference.height == image.height;
-    if !valid {
-        return Err(EngineError::Other("invalid image buffers for fill blending".into()));
+    let [w, h] = region.content_size;
+    let bounds = region.bounds;
+    if w == 0
+        || h == 0
+        || w > MAX_GENERATION_SIDE
+        || h > MAX_GENERATION_SIDE
+        || bounds.is_empty()
+        || !doc.bounds().contains_rect(&bounds)
+        || (mode == EditMode::GenerativeFill && (region.mask.is_none() || w > MAX_WORKING_SIDE || h > MAX_WORKING_SIDE))
+    {
+        return Err(EngineError::Other("invalid AI result geometry".into()));
     }
-    let expected = u64::from(image.width) * u64::from(image.height) * 4;
-    if image.pixels.len() as u64 != expected || reference.pixels.len() as u64 != expected {
-        return Err(EngineError::Other("invalid image buffers for fill blending".into()));
-    }
-    let (w, h) = (w as usize, h as usize);
-    let stride = image.width as usize * 4;
-    let mut rgb = Vec::with_capacity(w * h * 3);
-    let mut difference = Vec::with_capacity(w * h * 3);
-    let mut mask = Vec::with_capacity(w * h);
-    // Exclude the synthetic right/bottom padding: it is not unselected image context.
-    for (row, original) in image.pixels.chunks_exact(stride).zip(reference.pixels.chunks_exact(stride)).take(h) {
-        ctx.check()?;
-        let row = row.get(..w * 4).ok_or_else(|| EngineError::Other("short generated row".into()))?;
-        let original = original.get(..w * 4).ok_or_else(|| EngineError::Other("short reference row".into()))?;
-        for (pixel, original) in row.as_chunks::<4>().0.iter().zip(original.as_chunks::<4>().0.iter()) {
-            mask.push(original.get(3).copied().unwrap_or(255) < 255);
-            for (generated, source) in pixel.iter().take(3).zip(original.iter()) {
-                rgb.push(*generated as f32 / 255.0);
-                difference.push((*source as f32 - *generated as f32) / 255.0);
-            }
-        }
-    }
-    if !mask.iter().any(|v| *v) || mask.iter().all(|v| *v) {
-        return Ok(rgb); // No usable exterior at model resolution: preserve the generated result.
-    }
-    let correction = ctx
-        .stage(0.91, 0.94, "Adding generated layer", |ctl| photocraft_algo::poisson::membrane_fill_with(w, h, 3, &difference, &mask, ctl))
-        .map_err(|_| EngineError::Cancelled)?;
-    ctx.check()?;
-    for ((pixel, correction), selected) in rgb.as_chunks_mut::<3>().0.iter_mut().zip(correction.as_chunks::<3>().0.iter()).zip(mask) {
-        if selected {
-            for (value, delta) in pixel.iter_mut().zip(correction) {
-                *value = (*value + delta).clamp(0.0, 1.0);
-            }
-        }
-    }
-    Ok(rgb)
-}
-
-fn result_layer(doc: &Document, image: &Rgba8Image, reference: &Rgba8Image, size: [u32; 2], name: &str, mode: EditMode, ctx: &JobCtx) -> Result<Layer> {
-    let [w, h] = size;
     let expected_w = w.div_ceil(32) * 32;
     let expected_h = h.div_ceil(32) * 32;
     if image.width != expected_w || image.height != expected_h || image.pixels.len() != expected_w as usize * expected_h as usize * 4 {
         return Err(EngineError::Other("ComfyUI returned an unexpected image size".into()));
     }
-    let harmonized = if mode == EditMode::GenerativeFill { Some(harmonize_fill(image, reference, size, ctx)?) } else { None };
     ctx.progress(0.95, "Adding generated layer");
     let fmt = PixelFormat::new(doc.mode, doc.depth, true);
     let transform = Transform::new(Builtin::Srgb.profile(), &crate::color_cmds::document_profile(doc), Intent::RelativeColorimetric, true)
@@ -721,35 +686,36 @@ fn result_layer(doc: &Document, image: &Rgba8Image, reference: &Rgba8Image, size
     for (y, row) in image.pixels.chunks_exact(expected_w as usize * 4).take(h as usize).enumerate() {
         let mut values: Vec<f32> =
             row.get(..w as usize * 4).ok_or_else(|| EngineError::Other("short generated row".into()))?.iter().map(|v| *v as f32 / 255.0).collect();
-        if let Some(rgb) = &harmonized {
-            let stride = w as usize * 3;
-            let rgb = rgb.get(y * stride..(y + 1) * stride).ok_or_else(|| EngineError::Other("short blended row".into()))?;
-            for (pixel, rgb) in values.as_chunks_mut::<4>().0.iter_mut().zip(rgb.as_chunks::<3>().0.iter()) {
-                pixel.get_mut(..3).ok_or_else(|| EngineError::Other("short blended pixel".into()))?.copy_from_slice(rgb);
+        if mode == EditMode::GenerativeFill {
+            for pixel in values.as_chunks_mut::<4>().0.iter_mut() {
+                if let Some(alpha) = pixel.get_mut(3) {
+                    *alpha = 1.0;
+                }
             }
         }
         source.write_region(Rect::new(0, y as i32, w as i32, y as i32 + 1), &values);
     }
     let resized = photocraft_algo::resample::resize_surface_in_canvas(
         &source,
-        doc.size.width as f64 / w as f64,
-        doc.size.height as f64 / h as f64,
-        photocraft_algo::resample::Resample::Bilinear,
+        bounds.width() as f64 / w as f64,
+        bounds.height() as f64 / h as f64,
+        region.filter,
         Rect::new(0, 0, w as i32, h as i32),
     );
     let mut surface = Surface::new(fmt);
-    for y in 0..doc.size.height as i32 {
+    let output = region.mask.as_ref().map_or(bounds, |mask| mask.content_bounds().intersect(&bounds));
+    for y in output.y0..output.y1 {
         ctx.check()?;
-        let r = Rect::new(0, y, doc.size.width as i32, y + 1);
-        let src = resized.read_region(r);
-        let mut converted = vec![0.0; doc.size.width as usize * fmt.channels()];
+        let r = Rect::new(output.x0, y, output.x1, y + 1);
+        let src = resized.read_region(r.translate(-bounds.x0, -bounds.y0));
+        let mut converted = vec![0.0; output.width() as usize * fmt.channels()];
         transform.convert_f32(&src, 4, &mut converted, fmt.channels(), true);
         surface.write_region(r, &converted);
     }
     let mut layer = Layer::raster(name, fmt);
     *crate::pixels_mut(&mut layer)? = surface;
     if mode == EditMode::GenerativeFill {
-        layer.mask = doc.selection.clone().map(|surface| LayerMask { surface, ..LayerMask::reveal_all() });
+        layer.mask = region.mask.clone().map(|surface| LayerMask { surface, ..LayerMask::reveal_all() });
     }
     Ok(layer)
 }
