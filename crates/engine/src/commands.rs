@@ -698,7 +698,7 @@ fn build() -> Vec<CommandSpec> {
                 s.edit(step, |doc, _| {
                     // Fixed Size keeps the entire shape so moving its outline can recover the
                     // part initially outside the canvas. Normal marquees retain their clipping.
-                    let area = if clip { doc.bounds() } else { selection_cmds::unclipped_marquee_area(r, feather)? };
+                    let area = if clip { doc.bounds() } else { crate::selection_cmds::unclipped_marquee_area(r, feather)? };
                     use photocraft_algo::selection as sel;
                     let shape = if ellipse {
                         sel::ellipse_surface(r, area, aa)
@@ -711,7 +711,7 @@ fn build() -> Vec<CommandSpec> {
                         let m = sel::feather(&sel::mask_from_surface(Some(&shape), area), area.width() as usize, area.height() as usize, feather);
                         // Keep the prior selection outside the feather window when adding or
                         // subtracting, including an older mask's off-canvas pixels.
-                        doc.selection = selection_cmds::combine_band(doc.selection.as_ref(), &m, area, sel::SelectionMode::parse(&mode));
+                        doc.selection = crate::selection_cmds::combine_band(doc.selection.as_ref(), &m, area, sel::SelectionMode::parse(&mode));
                         return Ok(());
                     }
                     let old = doc.selection.take();
