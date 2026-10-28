@@ -296,9 +296,12 @@ mod tests {
         state.store(&h.ctx, id);
         let center = h.get_by_value(ORIGINAL).rect().center();
         h.hover_at(center);
+        h.step();
         for pressed in [true, false] {
             h.event(Event::PointerButton { pos: center, button: PointerButton::Secondary, pressed, modifiers: Modifiers::NONE });
+            h.step();
         }
+        // egui 0.37 measures a new popup in an invisible pass before placing it.
         h.step();
         h.get_by_label("Copy").click();
         h.step();
