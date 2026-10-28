@@ -4617,3 +4617,24 @@ shape	Appearance	Izgled
 	Reference Image	Референтна слика
 	Resize for AI editing	Промени величину за AI уређивање
 	The image exceeds the AI editing size. Resize the document to continue?	Слика премашује величину за AI уређивање. Променити величину документа и наставити?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Rasporedi panele
+	Close Other Panels in Group	Zatvori ostale panele u grupi
+	Collapse to Icons	Skupi na ikone
+	Minimize Panel	Umanji panel
+	Open Panel in Own Window	Otvori panel u zasebnom prozoru
+	CPU Rendering	CPU iscrtavanje
+	Calculating…	Izračunavanje…
+	Click to refresh histogram with uncached data	Kliknite da osvežite histogram podacima van keša
+	Count:	Broj:
+	Drawn on the CPU: {reason}. Click for System Info.	Iscrtano na CPU-u: {reason}. Kliknite za informacije o sistemu.
+	Level:	Nivo:
+	Percentile:	Percentil:
+	Remember Settings	Zapamti podešavanja
+	Show Channels in Color	Prikaži kanale u boji
+	Show Statistics	Prikaži statistiku
+	Source:	Izvor:
+	Uncached Refresh	Osveži bez keša
+	…	…
+	External cutout	Spoljno uklanjanje pozadine

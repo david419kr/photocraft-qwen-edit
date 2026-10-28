@@ -4769,3 +4769,24 @@ shape	Appearance	Оформление
 	Reference Image	Референс
 	Resize for AI editing	Изменить размер для ИИ
 	The image exceeds the AI editing size. Resize the document to continue?	Изображение превышает размер для ИИ-редактирования. Изменить размер документа и продолжить?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Упорядочить панели
+	Close Other Panels in Group	Закрыть другие панели в группе
+	Collapse to Icons	Свернуть в значки
+	Minimize Panel	Свернуть панель
+	Open Panel in Own Window	Открыть панель в отдельном окне
+	CPU Rendering	Рендеринг на ЦП
+	Calculating…	Вычисление…
+	Click to refresh histogram with uncached data	Нажмите, чтобы обновить гистограмму без использования кэша
+	Count:	Количество:
+	Drawn on the CPU: {reason}. Click for System Info.	Отрисовка на ЦП: {reason}. Нажмите для просмотра сведений о системе.
+	Level:	Уровень:
+	Percentile:	Процентиль:
+	Remember Settings	Запомнить настройки
+	Show Channels in Color	Показывать каналы в цвете
+	Show Statistics	Показать статистику
+	Source:	Источник:
+	Uncached Refresh	Обновить без кэша
+	…	…
+	External cutout	Внешнее удаление фона

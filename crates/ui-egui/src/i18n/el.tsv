@@ -4275,3 +4275,28 @@ curves	Smooth	Εξομάλυνση
 	Reference Image	Εικόνα αναφοράς
 	Resize for AI editing	Αλλαγή μεγέθους για επεξεργασία AI
 	The image exceeds the AI editing size. Resize the document to continue?	Η εικόνα υπερβαίνει το μέγεθος επεξεργασίας AI. Αλλαγή μεγέθους εγγράφου και συνέχεια;
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Τακτοποίηση πλαισίων
+	Close Other Panels in Group	Κλείσιμο άλλων πλαισίων στην ομάδα
+	Collapse to Icons	Σύμπτυξη σε εικονίδια
+	Minimize Panel	Ελαχιστοποίηση πλαισίου
+	Open Panel in Own Window	Άνοιγμα πλαισίου σε ξεχωριστό παράθυρο
+	CPU Rendering	Απόδοση με CPU
+	Calculating…	Υπολογισμός…
+	Click to refresh histogram with uncached data	Κάντε κλικ για ανανέωση του ιστογράμματος με δεδομένα εκτός προσωρινής μνήμης
+	Count:	Πλήθος:
+	Drawn on the CPU: {reason}. Click for System Info.	Σχεδίαση με CPU: {reason}. Κάντε κλικ για πληροφορίες συστήματος.
+	Level:	Επίπεδο:
+	Percentile:	Εκατοστημόριο:
+	Remember Settings	Απομνημόνευση ρυθμίσεων
+	Show Channels in Color	Εμφάνιση καναλιών με χρώμα
+	Show Statistics	Εμφάνιση στατιστικών
+	Source:	Πηγή:
+	Uncached Refresh	Ανανέωση χωρίς προσωρινή μνήμη
+	…	…
+	External cutout	Εξωτερική αφαίρεση φόντου
+
+# Coordinate axis symbols.
+	X	X
+	Y	Y

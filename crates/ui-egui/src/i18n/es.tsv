@@ -4533,3 +4533,24 @@ navigator	Zoom	Zoom
 	Reference Image	Imagen de referencia
 	Resize for AI editing	Redimensionar para editar con IA
 	The image exceeds the AI editing size. Resize the document to continue?	La imagen supera el tamaño de edición con IA. ¿Redimensionar el documento para continuar?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Organizar paneles
+	Close Other Panels in Group	Cerrar los demás paneles del grupo
+	Collapse to Icons	Contraer a iconos
+	Minimize Panel	Minimizar panel
+	Open Panel in Own Window	Abrir panel en una ventana independiente
+	CPU Rendering	Renderizado por CPU
+	Calculating…	Calculando…
+	Click to refresh histogram with uncached data	Haz clic para actualizar el histograma con datos sin caché
+	Count:	Recuento:
+	Drawn on the CPU: {reason}. Click for System Info.	Dibujado por CPU: {reason}. Haz clic para ver la información del sistema.
+	Level:	Nivel:
+	Percentile:	Percentil:
+	Remember Settings	Recordar ajustes
+	Show Channels in Color	Mostrar canales en color
+	Show Statistics	Mostrar estadísticas
+	Source:	Origen:
+	Uncached Refresh	Actualizar sin caché
+	…	…
+	External cutout	Recorte externo

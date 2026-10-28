@@ -3861,3 +3861,29 @@ prompt-region	Bottom right	우하단
 	Reference Image	참조 이미지
 	Resize for AI editing	AI 편집을 위한 이미지 크기 변경
 	The image exceeds the AI editing size. Resize the document to continue?	AI 편집 가능한 크기를 초과합니다. 문서 크기를 변경하고 계속하시겠습니까?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	패널 정렬
+	Close Other Panels in Group	그룹의 다른 패널 닫기
+	Collapse to Icons	아이콘으로 축소
+	Minimize Panel	패널 최소화
+	Open Panel in Own Window	패널을 별도 창에서 열기
+	Artboards	아트보드
+	CPU Rendering	CPU 렌더링
+	Calculating…	계산 중…
+	Click to refresh histogram with uncached data	캐시되지 않은 데이터로 히스토그램을 새로 고치려면 클릭
+	Count:	개수:
+	Drawn on the CPU: {reason}. Click for System Info.	CPU로 그리는 중: {reason}. 시스템 정보를 보려면 클릭하세요.
+	Level:	레벨:
+	Percentile:	백분위:
+	Remember Settings	설정 기억
+	Show Channels in Color	채널을 색상으로 표시
+	Show Statistics	통계 표시
+	Source:	소스:
+	Uncached Refresh	캐시 없이 새로 고침
+	…	…
+	External cutout	외부 배경 제거
+
+# Coordinate axis symbols.
+	X	X
+	Y	Y

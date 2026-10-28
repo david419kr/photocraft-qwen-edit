@@ -470,7 +470,8 @@ fn layered_preview_runs_outside_the_ui_frame() {
 
     let tiff_fields = Map::from_iter([("format".into(), json!("tif")), ("scale".into(), json!(100))]);
     let proxy = preview_proxy(&doc, &tiff_fields).unwrap();
-    let options = photocraft_io::ExportOptions { tiff_layers: true, xmp: photocraft_io::XmpEmbed::None, ..Default::default() };
+    // A missing metadata field preserves EXIF in the fork, matching the actual export settings.
+    let options = photocraft_io::ExportOptions { tiff_layers: true, xmp: photocraft_io::XmpEmbed::ExifOnly, ..Default::default() };
     let actual_bytes = photocraft_io::export(&proxy, "estimate.tif", &options).unwrap().bytes.len();
     assert_eq!(estimate_native(&doc, &proxy, &tiff_fields), Some(scaled_estimate(actual_bytes, &doc, &proxy, &tiff_fields)));
 }

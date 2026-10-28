@@ -464,7 +464,7 @@ fn model_settings_window(app: &mut PhotocraftApp, ctx: &egui::Context) {
         #[cfg(not(target_arch = "wasm32"))]
         ui.horizontal(|ui| {
             ui.label(tl!("ComfyUI port"));
-            crate::widgets::integer_value_field(ui, &mut app.ui.ai.model_settings_port, 1..=65535, 70.0);
+            crate::widgets::integer_value_field(ui, &mut app.ui.ai.model_settings_port, 1..=65535, 70.0).accessible_name(tl!("ComfyUI port"));
         });
         ui.horizontal(|ui| {
             ui.selectable_value(&mut app.ui.ai.model_settings_te_tab, false, tl!("Models"));
@@ -522,7 +522,7 @@ fn model_settings_window(app: &mut PhotocraftApp, ctx: &egui::Context) {
                             crate::widgets::value_field_prec(ui, &mut cfg, 1.0..=100.0, "", 48.0, 2);
                         });
                         config.cfg = f64::from(cfg);
-                        crate::widgets::integer_value_field(ui, &mut config.steps, 1..=1000, 48.0);
+                        crate::widgets::integer_value_field(ui, &mut config.steps, 1..=1000, 48.0).accessible_name(tl!("Sampling steps"));
                         if let Some(model) = pinned {
                             config.turbo = model.is_turbo();
                             ui.label(if config.turbo { "Turbo" } else { tl!("Normal") });
@@ -661,7 +661,11 @@ fn model_selector(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u64) {
 fn step_controls(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
     let default = app.session.prefs().integrations.selected_settings().steps;
     let mut steps = app.ui.ai.steps.unwrap_or(default);
-    if crate::widgets::integer_value_field(ui, &mut steps, 1..=photocraft_engine::ai_cmds::MAX_STEPS, 38.0).on_hover_text(tl!("Sampling steps")).changed() {
+    if crate::widgets::integer_value_field(ui, &mut steps, 1..=photocraft_engine::ai_cmds::MAX_STEPS, 38.0)
+        .accessible_name(tl!("Sampling steps"))
+        .on_hover_text(tl!("Sampling steps"))
+        .changed()
+    {
         app.ui.ai.steps = Some(steps);
     }
     if crate::icons::button(ui, "rotate-cw", 16.0, false, &format!("{} ({default})", tl!("Reset steps to model default"))).clicked() {

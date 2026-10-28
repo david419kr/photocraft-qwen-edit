@@ -4254,3 +4254,25 @@ curves	Smooth	スムーズ
 	Reference Image	参照画像
 	Resize for AI editing	AI編集用にサイズ変更
 	The image exceeds the AI editing size. Resize the document to continue?	AI編集のサイズ上限を超えています。ドキュメントをサイズ変更して続行しますか？
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	パネルを配置
+	Close Other Panels in Group	グループ内の他のパネルを閉じる
+	Collapse to Icons	アイコンに折りたたむ
+	Minimize Panel	パネルを最小化
+	Open Panel in Own Window	パネルを独立したウィンドウで開く
+	Artboards	アートボード
+	CPU Rendering	CPU レンダリング
+	Calculating…	計算中…
+	Click to refresh histogram with uncached data	クリックしてキャッシュを使わずにヒストグラムを更新
+	Count:	カウント:
+	Drawn on the CPU: {reason}. Click for System Info.	CPU で描画: {reason}。クリックしてシステム情報を表示。
+	Level:	レベル:
+	Percentile:	パーセンタイル:
+	Remember Settings	設定を記憶
+	Show Channels in Color	チャンネルをカラーで表示
+	Show Statistics	統計情報を表示
+	Source:	ソース:
+	Uncached Refresh	キャッシュを使わずに更新
+	…	…
+	External cutout	外部背景除去

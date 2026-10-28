@@ -464,7 +464,7 @@ fn field_rows(ui: &mut egui::Ui, section: &str, obj: &mut Map<String, Value>, ke
                     ui.horizontal(|ui| {
                         ui.label(tl!("ComfyUI port"));
                         let mut port = crate::ai_bar::endpoint_port(&endpoint);
-                        if crate::widgets::integer_value_field(ui, &mut port, 1..=65535, 70.0).changed()
+                        if crate::widgets::integer_value_field(ui, &mut port, 1..=65535, 70.0).accessible_name(tl!("ComfyUI port")).changed()
                             && let Ok(updated) = crate::ai_bar::with_endpoint_port(&endpoint, port)
                         {
                             endpoint = updated;

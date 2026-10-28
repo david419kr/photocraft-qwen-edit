@@ -4194,3 +4194,25 @@ curves	Smooth	Wygładź
 	Reference Image	Obraz referencyjny
 	Resize for AI editing	Zmień rozmiar do edycji AI
 	The image exceeds the AI editing size. Resize the document to continue?	Obraz przekracza rozmiar edycji AI. Zmienić rozmiar dokumentu i kontynuować?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Rozmieść panele
+	Close Other Panels in Group	Zamknij pozostałe panele w grupie
+	Collapse to Icons	Zwiń do ikon
+	Minimize Panel	Minimalizuj panel
+	Open Panel in Own Window	Otwórz panel w osobnym oknie
+	Artboards	Obszary kompozycji
+	CPU Rendering	Renderowanie na CPU
+	Calculating…	Obliczanie…
+	Click to refresh histogram with uncached data	Kliknij, aby odświeżyć histogram danymi spoza pamięci podręcznej
+	Count:	Liczba:
+	Drawn on the CPU: {reason}. Click for System Info.	Rysowanie na CPU: {reason}. Kliknij, aby wyświetlić informacje o systemie.
+	Level:	Poziom:
+	Percentile:	Percentyl:
+	Remember Settings	Zapamiętaj ustawienia
+	Show Channels in Color	Pokaż kanały w kolorze
+	Show Statistics	Pokaż statystyki
+	Source:	Źródło:
+	Uncached Refresh	Odśwież bez pamięci podręcznej
+	…	…
+	External cutout	Zewnętrzne usuwanie tła

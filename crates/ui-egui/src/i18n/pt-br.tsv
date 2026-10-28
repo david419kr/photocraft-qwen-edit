@@ -4501,3 +4501,24 @@ layerLabel	No Color	Sem cor
 	Reference Image	Imagem de referência
 	Resize for AI editing	Redimensionar para edição com IA
 	The image exceeds the AI editing size. Resize the document to continue?	A imagem excede o tamanho de edição com IA. Redimensionar o documento para continuar?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Organizar painéis
+	Close Other Panels in Group	Fechar outros painéis do grupo
+	Collapse to Icons	Recolher em ícones
+	Minimize Panel	Minimizar painel
+	Open Panel in Own Window	Abrir painel em janela própria
+	CPU Rendering	Renderização por CPU
+	Calculating…	Calculando…
+	Click to refresh histogram with uncached data	Clique para atualizar o histograma com dados sem cache
+	Count:	Contagem:
+	Drawn on the CPU: {reason}. Click for System Info.	Desenhado pela CPU: {reason}. Clique para ver as informações do sistema.
+	Level:	Nível:
+	Percentile:	Percentil:
+	Remember Settings	Lembrar configurações
+	Show Channels in Color	Mostrar canais em cores
+	Show Statistics	Mostrar estatísticas
+	Source:	Origem:
+	Uncached Refresh	Atualizar sem cache
+	…	…
+	External cutout	Recorte externo

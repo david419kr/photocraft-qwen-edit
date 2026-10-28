@@ -4294,3 +4294,24 @@ prompt-region	Bottom right	Sağ alt
 	Reference Image	Referans görseli
 	Resize for AI editing	Yapay zekâ düzenlemesi için boyutlandır
 	The image exceeds the AI editing size. Resize the document to continue?	Görsel yapay zekâ düzenleme boyutunu aşıyor. Devam etmek için belge boyutlandırılsın mı?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Panelleri Düzenle
+	Close Other Panels in Group	Gruptaki Diğer Panelleri Kapat
+	Collapse to Icons	Simge Durumuna Daralt
+	Minimize Panel	Paneli Küçült
+	Open Panel in Own Window	Paneli Ayrı Pencerede Aç
+	CPU Rendering	CPU ile İşleme
+	Calculating…	Hesaplanıyor…
+	Click to refresh histogram with uncached data	Histogramı önbelleksiz verilerle yenilemek için tıklayın
+	Count:	Sayı:
+	Drawn on the CPU: {reason}. Click for System Info.	CPU ile çizildi: {reason}. Sistem Bilgileri için tıklayın.
+	Level:	Düzey:
+	Percentile:	Yüzdelik:
+	Remember Settings	Ayarları Hatırla
+	Show Channels in Color	Kanalları Renkli Göster
+	Show Statistics	İstatistikleri Göster
+	Source:	Kaynak:
+	Uncached Refresh	Önbelleksiz Yenile
+	…	…
+	External cutout	Harici Arka Plan Kaldırma

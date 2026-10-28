@@ -4324,3 +4324,24 @@ cameraRaw	Dehaze	Odstranění oparu
 	Reference Image	Referenční obrázek
 	Resize for AI editing	Změnit velikost pro úpravy AI
 	The image exceeds the AI editing size. Resize the document to continue?	Obrázek překračuje velikost pro úpravy AI. Změnit velikost dokumentu a pokračovat?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Uspořádat panely
+	Close Other Panels in Group	Zavřít ostatní panely ve skupině
+	Collapse to Icons	Sbalit na ikony
+	Minimize Panel	Minimalizovat panel
+	Open Panel in Own Window	Otevřít panel v samostatném okně
+	CPU Rendering	Vykreslování pomocí CPU
+	Calculating…	Výpočet…
+	Click to refresh histogram with uncached data	Kliknutím obnovíte histogram pomocí dat mimo mezipaměť
+	Count:	Počet:
+	Drawn on the CPU: {reason}. Click for System Info.	Vykresleno pomocí CPU: {reason}. Kliknutím zobrazíte informace o systému.
+	Level:	Úroveň:
+	Percentile:	Percentil:
+	Remember Settings	Zapamatovat nastavení
+	Show Channels in Color	Zobrazit kanály barevně
+	Show Statistics	Zobrazit statistiky
+	Source:	Zdroj:
+	Uncached Refresh	Obnovit bez mezipaměti
+	…	…
+	External cutout	Externí odstranění pozadí

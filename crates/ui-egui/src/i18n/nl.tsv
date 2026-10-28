@@ -4332,3 +4332,24 @@ curves	Smooth	Vloeiend maken
 	Reference Image	Referentieafbeelding
 	Resize for AI editing	Formaat wijzigen voor AI-bewerking
 	The image exceeds the AI editing size. Resize the document to continue?	De afbeelding overschrijdt het formaat voor AI-bewerking. Documentformaat wijzigen en doorgaan?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Panelen rangschikken
+	Close Other Panels in Group	Andere panelen in groep sluiten
+	Collapse to Icons	Samenvouwen tot pictogrammen
+	Minimize Panel	Paneel minimaliseren
+	Open Panel in Own Window	Paneel in eigen venster openen
+	CPU Rendering	CPU-rendering
+	Calculating…	Berekenen…
+	Click to refresh histogram with uncached data	Klik om het histogram te vernieuwen met gegevens buiten de cache
+	Count:	Aantal:
+	Drawn on the CPU: {reason}. Click for System Info.	Getekend op de CPU: {reason}. Klik voor systeeminformatie.
+	Level:	Niveau:
+	Percentile:	Percentiel:
+	Remember Settings	Instellingen onthouden
+	Show Channels in Color	Kanalen in kleur weergeven
+	Show Statistics	Statistieken weergeven
+	Source:	Bron:
+	Uncached Refresh	Vernieuwen zonder cache
+	…	…
+	External cutout	Externe achtergrondverwijdering

@@ -4289,3 +4289,25 @@ curves	Smooth	Згладити
 	Reference Image	Референс
 	Resize for AI editing	Змінити розмір для ШІ
 	The image exceeds the AI editing size. Resize the document to continue?	Зображення перевищує розмір для ШІ-редагування. Змінити розмір документа й продовжити?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Упорядкувати панелі
+	Close Other Panels in Group	Закрити інші панелі в групі
+	Collapse to Icons	Згорнути до піктограм
+	Minimize Panel	Згорнути панель
+	Open Panel in Own Window	Відкрити панель в окремому вікні
+	Artboards	Монтажні області
+	CPU Rendering	Рендеринг на ЦП
+	Calculating…	Обчислення…
+	Click to refresh histogram with uncached data	Натисніть, щоб оновити гістограму без використання кешу
+	Count:	Кількість:
+	Drawn on the CPU: {reason}. Click for System Info.	Малювання на ЦП: {reason}. Натисніть для перегляду відомостей про систему.
+	Level:	Рівень:
+	Percentile:	Процентиль:
+	Remember Settings	Запам’ятати налаштування
+	Show Channels in Color	Показувати канали в кольорі
+	Show Statistics	Показати статистику
+	Source:	Джерело:
+	Uncached Refresh	Оновити без кешу
+	…	…
+	External cutout	Зовнішнє видалення тла

@@ -4684,3 +4684,24 @@ shape	Appearance	Aspetto
 	Reference Image	Immagine di riferimento
 	Resize for AI editing	Ridimensiona per la modifica IA
 	The image exceeds the AI editing size. Resize the document to continue?	L’immagine supera la dimensione per la modifica IA. Ridimensionare il documento per continuare?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Disponi pannelli
+	Close Other Panels in Group	Chiudi gli altri pannelli del gruppo
+	Collapse to Icons	Comprimi in icone
+	Minimize Panel	Riduci a icona il pannello
+	Open Panel in Own Window	Apri pannello in una finestra separata
+	CPU Rendering	Rendering CPU
+	Calculating…	Calcolo…
+	Click to refresh histogram with uncached data	Fai clic per aggiornare l’istogramma con dati non memorizzati nella cache
+	Count:	Conteggio:
+	Drawn on the CPU: {reason}. Click for System Info.	Disegnato dalla CPU: {reason}. Fai clic per le informazioni di sistema.
+	Level:	Livello:
+	Percentile:	Percentile:
+	Remember Settings	Ricorda impostazioni
+	Show Channels in Color	Mostra canali a colori
+	Show Statistics	Mostra statistiche
+	Source:	Origine:
+	Uncached Refresh	Aggiorna senza cache
+	…	…
+	External cutout	Rimozione sfondo esterna

@@ -3601,3 +3601,25 @@ curves	Smooth	Haluskan
 	Reference Image	Gambar referensi
 	Resize for AI editing	Ubah ukuran untuk penyuntingan AI
 	The image exceeds the AI editing size. Resize the document to continue?	Gambar melebihi ukuran penyuntingan AI. Ubah ukuran dokumen untuk melanjutkan?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Susun Panel
+	Close Other Panels in Group	Tutup Panel Lain dalam Grup
+	Collapse to Icons	Ciutkan ke Ikon
+	Minimize Panel	Minimalkan Panel
+	Open Panel in Own Window	Buka Panel di Jendela Terpisah
+	Artboards	Artboard
+	CPU Rendering	Rendering CPU
+	Calculating…	Menghitung…
+	Click to refresh histogram with uncached data	Klik untuk menyegarkan histogram dengan data tanpa cache
+	Count:	Jumlah:
+	Drawn on the CPU: {reason}. Click for System Info.	Digambar oleh CPU: {reason}. Klik untuk Info Sistem.
+	Level:	Tingkat:
+	Percentile:	Persentil:
+	Remember Settings	Ingat Pengaturan
+	Show Channels in Color	Tampilkan Kanal Berwarna
+	Show Statistics	Tampilkan Statistik
+	Source:	Sumber:
+	Uncached Refresh	Segarkan Tanpa Cache
+	…	…
+	External cutout	Penghapusan Latar Eksternal

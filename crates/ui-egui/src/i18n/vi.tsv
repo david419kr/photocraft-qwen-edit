@@ -4067,3 +4067,25 @@ prompt-region	Bottom right	Dưới phải
 	Reference Image	Ảnh tham chiếu
 	Resize for AI editing	Đổi kích thước để chỉnh sửa AI
 	The image exceeds the AI editing size. Resize the document to continue?	Ảnh vượt quá kích thước chỉnh sửa AI. Đổi kích thước tài liệu để tiếp tục?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Sắp xếp bảng
+	Close Other Panels in Group	Đóng các bảng khác trong nhóm
+	Collapse to Icons	Thu gọn thành biểu tượng
+	Minimize Panel	Thu nhỏ bảng
+	Open Panel in Own Window	Mở bảng trong cửa sổ riêng
+	Artboards	Bảng vẽ
+	CPU Rendering	Kết xuất bằng CPU
+	Calculating…	Đang tính…
+	Click to refresh histogram with uncached data	Nhấp để làm mới biểu đồ bằng dữ liệu không lưu đệm
+	Count:	Số lượng:
+	Drawn on the CPU: {reason}. Click for System Info.	Vẽ bằng CPU: {reason}. Nhấp để xem thông tin hệ thống.
+	Level:	Mức:
+	Percentile:	Phân vị:
+	Remember Settings	Ghi nhớ thiết lập
+	Show Channels in Color	Hiển thị kênh bằng màu
+	Show Statistics	Hiển thị thống kê
+	Source:	Nguồn:
+	Uncached Refresh	Làm mới không dùng bộ nhớ đệm
+	…	…
+	External cutout	Xóa nền bên ngoài

@@ -3599,3 +3599,29 @@ curves	Smooth	Glätten
 	Reference Image	Referenzbild
 	Resize for AI editing	Größe für KI-Bearbeitung ändern
 	The image exceeds the AI editing size. Resize the document to continue?	Das Bild überschreitet die Größe für KI-Bearbeitung. Dokumentgröße ändern und fortfahren?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Bedienfelder anordnen
+	Close Other Panels in Group	Andere Bedienfelder in der Gruppe schließen
+	Collapse to Icons	Auf Symbole reduzieren
+	Minimize Panel	Bedienfeld minimieren
+	Open Panel in Own Window	Bedienfeld in eigenem Fenster öffnen
+	Artboards	Zeichenflächen
+	CPU Rendering	CPU-Rendering
+	Calculating…	Wird berechnet…
+	Click to refresh histogram with uncached data	Klicken, um das Histogramm mit nicht zwischengespeicherten Daten zu aktualisieren
+	Count:	Anzahl:
+	Drawn on the CPU: {reason}. Click for System Info.	Auf der CPU gezeichnet: {reason}. Für Systeminformationen klicken.
+	Level:	Tonwert:
+	Percentile:	Perzentil:
+	Remember Settings	Einstellungen merken
+	Show Channels in Color	Kanäle in Farbe anzeigen
+	Show Statistics	Statistik anzeigen
+	Source:	Quelle:
+	Uncached Refresh	Ohne Cache aktualisieren
+	…	…
+	External cutout	Externes Freistellen
+
+# Coordinate axis symbols.
+	X	X
+	Y	Y

@@ -572,3 +572,11 @@ cameraRaw	Yellow	पीला
 	Reference Image	संदर्भ छवि
 	Resize for AI editing	AI संपादन के लिए आकार बदलें
 	The image exceeds the AI editing size. Resize the document to continue?	छवि AI संपादन आकार से बड़ी है। जारी रखने के लिए दस्तावेज़ का आकार बदलें?
+
+# Camera Raw sidecar and calibration controls.
+cameraRaw	Calibration	कैलिब्रेशन
+cameraRaw	Could not write {name}: {error}	{name} लिखा नहीं जा सका: {error}
+cameraRaw	Kept {name}: written by another application	{name} रखा गया: किसी दूसरे अनुप्रयोग ने लिखा है
+cameraRaw	Set the tone sliders from the image	छवि के अनुसार टोन स्लाइडर सेट करें
+cameraRaw	Settings from {name}	{name} की सेटिंग
+cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की सेटिंग; {count} समर्थित नहीं: {names}

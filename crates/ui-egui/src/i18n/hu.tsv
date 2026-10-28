@@ -4480,3 +4480,24 @@ prompt-region	Bottom right	Jobb alsó
 	Reference Image	Referenciakép
 	Resize for AI editing	Átméretezés AI-szerkesztéshez
 	The image exceeds the AI editing size. Resize the document to continue?	A kép meghaladja az AI-szerkesztési méretet. Átméretezi a dokumentumot a folytatáshoz?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Panelek elrendezése
+	Close Other Panels in Group	A csoport többi paneljének bezárása
+	Collapse to Icons	Összecsukás ikonokká
+	Minimize Panel	Panel kis méretre állítása
+	Open Panel in Own Window	Panel megnyitása külön ablakban
+	CPU Rendering	CPU-renderelés
+	Calculating…	Számítás…
+	Click to refresh histogram with uncached data	Kattintson a hisztogram frissítéséhez gyorsítótárazás nélküli adatokkal
+	Count:	Darabszám:
+	Drawn on the CPU: {reason}. Click for System Info.	CPU-val rajzolva: {reason}. Kattintson a rendszerinformációkért.
+	Level:	Szint:
+	Percentile:	Percentilis:
+	Remember Settings	Beállítások megjegyzése
+	Show Channels in Color	Csatornák megjelenítése színesen
+	Show Statistics	Statisztika megjelenítése
+	Source:	Forrás:
+	Uncached Refresh	Frissítés gyorsítótár nélkül
+	…	…
+	External cutout	Külső háttéreltávolítás

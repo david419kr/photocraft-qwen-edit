@@ -3260,3 +3260,29 @@ curves	Smooth	平滑
 	Reference Image	参考图像
 	Resize for AI editing	调整大小以进行AI编辑
 	The image exceeds the AI editing size. Resize the document to continue?	图像超出AI编辑尺寸。调整文档大小后继续吗？
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	排列面板
+	Close Other Panels in Group	关闭组内其他面板
+	Collapse to Icons	折叠为图标
+	Minimize Panel	最小化面板
+	Open Panel in Own Window	在独立窗口中打开面板
+	Artboards	画板
+	CPU Rendering	CPU 渲染
+	Calculating…	正在计算…
+	Click to refresh histogram with uncached data	单击以使用未缓存的数据刷新直方图
+	Count:	计数:
+	Drawn on the CPU: {reason}. Click for System Info.	由 CPU 绘制：{reason}。单击查看系统信息。
+	Level:	色阶:
+	Percentile:	百分位:
+	Remember Settings	记住设置
+	Show Channels in Color	以彩色显示通道
+	Show Statistics	显示统计信息
+	Source:	来源:
+	Uncached Refresh	无缓存刷新
+	…	…
+	External cutout	外部抠图
+
+# Coordinate axis symbols.
+	X	X
+	Y	Y

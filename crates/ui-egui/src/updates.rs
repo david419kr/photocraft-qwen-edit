@@ -306,7 +306,9 @@ mod tests {
         use egui_kittest::{Harness, kittest::Queryable};
         let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
         app.updates.available = Some(Release { tag: "261014-0.8.2".into(), asset_name: String::new(), url: String::new(), size: 1, sha256: String::new() });
-        let mut h = Harness::builder().build_ui_state(|ui, app| show(app, ui.ctx()), app);
+        let mut h = Harness::builder()
+            .with_context_setup(|ctx| PhotocraftApp::setup_context(ctx, crate::theme::ThemeKind::ALL[0]))
+            .build_ui_state(|ui, app| show(app, ui.ctx()), app);
         h.run_steps(2);
         h.get_by_label("Don't show again").click();
         h.run_steps(2);
@@ -314,7 +316,9 @@ mod tests {
         assert!(h.query_by_label("You can check for updates again in Help → About PhotoCraft.").is_some());
         h.state_mut().updates.available = None;
         let app = std::mem::replace(h.state_mut(), PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default()));
-        let mut h = Harness::builder().build_ui_state(|ui, app| about(app, ui), app);
+        let mut h = Harness::builder()
+            .with_context_setup(|ctx| PhotocraftApp::setup_context(ctx, crate::theme::ThemeKind::ALL[0]))
+            .build_ui_state(|ui, app| about(app, ui), app);
         h.run_steps(2);
         h.get_by_label("Automatically check for updates").click();
         h.run_steps(2);

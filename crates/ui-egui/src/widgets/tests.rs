@@ -648,7 +648,7 @@ fn hover_wheel_changes_integer_field_without_taking_focus() {
     let mut h = Harness::new_ui_state(
         |ui, value: &mut u32| {
             crate::field_wheel::begin_frame(ui.ctx());
-            super::integer_value_field(ui, value, 1..=1000, 80.0);
+            super::integer_value_field(ui, value, 1..=1000, 80.0).accessible_name("Sampling steps");
         },
         25,
     );
@@ -680,7 +680,7 @@ fn integer_field_small_range_keeps_whole_sampling_steps() {
     let mut h = Harness::new_ui_state(
         |ui, value: &mut u32| {
             crate::field_wheel::begin_frame(ui.ctx());
-            super::integer_value_field(ui, value, 1..=8, 80.0);
+            super::integer_value_field(ui, value, 1..=8, 80.0).accessible_name("Sampling steps");
         },
         4,
     );

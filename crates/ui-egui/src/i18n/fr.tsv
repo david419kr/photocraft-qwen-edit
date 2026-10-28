@@ -4609,3 +4609,24 @@ shape	Appearance	Apparence
 	Reference Image	Image de référence
 	Resize for AI editing	Redimensionner pour la retouche IA
 	The image exceeds the AI editing size. Resize the document to continue?	L’image dépasse la taille de retouche IA. Redimensionner le document pour continuer ?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Organiser les panneaux
+	Close Other Panels in Group	Fermer les autres panneaux du groupe
+	Collapse to Icons	Réduire en icônes
+	Minimize Panel	Réduire le panneau
+	Open Panel in Own Window	Ouvrir le panneau dans une fenêtre indépendante
+	CPU Rendering	Rendu par le processeur
+	Calculating…	Calcul en cours…
+	Click to refresh histogram with uncached data	Cliquez pour actualiser l’histogramme avec des données non mises en cache
+	Count:	Nombre :
+	Drawn on the CPU: {reason}. Click for System Info.	Dessin effectué par le processeur : {reason}. Cliquez pour afficher les informations système.
+	Level:	Niveau :
+	Percentile:	Centile :
+	Remember Settings	Mémoriser les paramètres
+	Show Channels in Color	Afficher les couches en couleur
+	Show Statistics	Afficher les statistiques
+	Source:	Source :
+	Uncached Refresh	Actualiser sans cache
+	…	…
+	External cutout	Détourage externe

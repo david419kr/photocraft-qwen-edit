@@ -63,6 +63,11 @@ an unnecessary closure drop; repair expressions without warnings suppression.
 AI prompt history is rendered only in the UI phase, never hidden logic ticks.
 Headless Korean AI UI tests use a pinned real NanumGothic fixture with its OFL
 notice; missing-glyph panic checks remain enabled, including without craft-fonts.
+The strict fork catalog scans also cover the new shared-panel and histogram
+labels; all complete-language catalogs and Hindi Camera Raw labels are filled.
+Numeric AI controls retain accessible names. The native tool inventory includes
+Art History Brush, and the TIFF estimate assertion uses the fork’s preserved
+EXIF default when the metadata field is absent. No gate or threshold is relaxed.
 The UI inspection JSON is assembled in smaller parts rather than raising the
 macro recursion limit.
 
