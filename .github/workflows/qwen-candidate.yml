@@ -4,6 +4,19 @@ on:
   push:
     branches: ['update/0.16.0']
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Explicit fork release identity (for example 261028-0.16.0)'
+        type: string
+        required: true
+      source_sha:
+        description: 'Exact product source SHA (empty uses the workflow commit)'
+        type: string
+        default: ''
+      windows_only:
+        description: 'Build and verify only the Windows package; reuse existing source CI'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -25,6 +38,7 @@ env:
 jobs:
   lint:
     name: early Clippy
+    if: inputs.windows_only != true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -47,7 +61,7 @@ jobs:
 
   regressions:
     needs: lint
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.16.0')
+    if: inputs.windows_only != true && github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.16.0')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -99,10 +113,37 @@ jobs:
     env:
       CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS: '-C target-feature=+crt-static'
       PHOTOCRAFT_REQUIRE_WINRES: '1'
+      PHOTOCRAFT_BUILD_SHA: ${{ inputs.source_sha || github.sha }}
+      REQUESTED_RELEASE_TAG: ${{ inputs.release_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ inputs.source_sha || github.sha }}
+      - name: Set explicit package identity without product code changes
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $source = (git rev-parse HEAD).Trim()
+          if ($source -ne $env:PHOTOCRAFT_BUILD_SHA) { throw 'Product source SHA mismatch.' }
+          $original = (Get-Content release-tag.txt -Raw).Trim()
+          $releaseId = $env:REQUESTED_RELEASE_TAG
+          if (!$releaseId) { $releaseId = $original }
+          if ($releaseId -notmatch '^\d{6}-(?:(?:[2-9]|[1-9]\d+)-)?\d+\.\d+\.\d+$') { throw 'Invalid explicit release identity.' }
+          [IO.File]::WriteAllText((Join-Path $PWD 'release-tag.txt'), "$releaseId`n", [Text.UTF8Encoding]::new($false))
+          "PHOTOCRAFT_RELEASE_TAG=$releaseId" | Add-Content $env:GITHUB_ENV
+          "PHOTOCRAFT_BUILD_DATE=$([DateTimeOffset]::UtcNow.ToString('yyyy-MM-dd'))" | Add-Content $env:GITHUB_ENV
+          New-Item -ItemType Directory -Force dist | Out-Null
+          [ordered]@{
+            product_source_sha = $source
+            original_release_tag = $original
+            requested_release_tag = $releaseId
+            metadata_override_file = 'release-tag.txt'
+            functional_source_unchanged = $true
+            controller_sha = '${{ github.sha }}'
+          } | ConvertTo-Json | Set-Content -Encoding utf8 dist/identity-override.json
+          $changed = @(git diff --name-only)
+          if (@($changed | Where-Object { $_ -ne 'release-tag.txt' }).Count) { throw 'Unexpected product source changes.' }
       - name: Check candidate ancestry
         shell: pwsh
         run: |
@@ -138,7 +179,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force dist | Out-Null
           $version = [regex]::Match((Get-Content Cargo.toml -Raw), '(?s)\[workspace\.package\].*?version\s*=\s*"([^"]+)"').Groups[1].Value
-          $env:PHOTOCRAFT_RELEASE_TAG = (Get-Content release-tag.txt -Raw).Trim()
+          if ($env:PHOTOCRAFT_RELEASE_TAG -ne (Get-Content release-tag.txt -Raw).Trim()) { throw 'Build and package release identities differ.' }
           if (!$env:PHOTOCRAFT_RELEASE_TAG.EndsWith("-$version")) { throw 'Release tag does not match workspace version.' }
           cargo +1.95.0 build --locked -p photocraft --release --target x86_64-pc-windows-msvc 2>&1 | Tee-Object -FilePath dist/candidate-build.log
           if ($LASTEXITCODE -ne 0) { throw 'Windows candidate build failed.' }
@@ -147,7 +188,7 @@ jobs:
         run: ./scripts/build-qwen-candidate.ps1
       - uses: actions/upload-artifact@v4
         with:
-          name: qwen-windows-x64-${{ github.sha }}
+          name: qwen-windows-x64-${{ inputs.source_sha || github.sha }}-${{ inputs.release_tag || 'source-identity' }}
           path: |
             dist/*.zip
             dist/*.zip.sha256
@@ -156,5 +197,6 @@ jobs:
             dist/candidate-headers.txt
             dist/candidate-version.txt
             dist/candidate-build.log
+            dist/identity-override.json
           if-no-files-found: error
           retention-days: 14
