@@ -54,6 +54,10 @@ fn run(s: &mut Session, p: &Value) -> Result<Value> {
     check(doc, layer).map_err(EngineError::Other)?;
     let sample_all = p.get("sampleAllLayers").and_then(Value::as_bool).unwrap_or(false);
     let refine = p.get("refine").and_then(Value::as_bool).unwrap_or(true);
+    #[cfg(not(target_arch = "wasm32"))]
+    if s.prefs().integrations.external_cutout && !sample_all && refine && crate::ai_cmds::cutout_external::label().is_some() {
+        return crate::ai_cmds::cutout_external::run(s, id);
+    }
     let area = subject_area(layer, doc.bounds(), sample_all);
     crate::jobs::edit_job(
         s,

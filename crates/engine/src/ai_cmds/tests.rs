@@ -1,4 +1,15 @@
 use super::*;
+
+#[test]
+fn external_cutout_preference_round_trips() {
+    let mut s = Session::new();
+    assert!(!s.prefs().integrations.external_cutout);
+    s.execute("prefs.set", json!({"path":"integrations.externalCutout","value":true})).unwrap();
+    let saved = s.prefs_to_json();
+    let mut reopened = Session::new();
+    reopened.load_prefs_json(&saved).unwrap();
+    assert!(reopened.prefs().integrations.external_cutout);
+}
 use photocraft_color::SampleType;
 use std::sync::Arc;
 

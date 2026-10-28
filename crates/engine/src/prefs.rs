@@ -1018,6 +1018,7 @@ pub struct Integrations {
     pub comfyui_custom_encoders: String,
     pub comfyui_model_settings: BTreeMap<String, crate::ai_models::ModelSettings>,
     pub comfyui_translate_prompt: bool,
+    pub external_cutout: bool,
     pub comfyui_translation_model: ComfyUiTranslationModel,
 }
 
@@ -1033,6 +1034,7 @@ impl Default for Integrations {
             comfyui_custom_encoders: String::new(),
             comfyui_model_settings: BTreeMap::new(),
             comfyui_translate_prompt: false,
+            external_cutout: false,
             comfyui_translation_model: ComfyUiTranslationModel::default(),
         }
     }

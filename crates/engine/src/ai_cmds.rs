@@ -16,6 +16,8 @@ use crate::jobs::JobCtx;
 use crate::{EngineError, Result, Session};
 
 mod cutout;
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) mod cutout_external;
 mod fill;
 mod fill_batch;
 pub mod harmonize;
@@ -26,6 +28,17 @@ pub const MAX_DOCUMENT_PIXELS: u64 = 36_000_000;
 pub const MAX_PROMPT_BYTES: usize = 8192;
 pub const MAX_STEPS: u32 = 1000;
 pub const REMOVE_BACKGROUND_COMMAND: &str = "edit.aiRemoveBackground";
+/// Display label of the first available external cutout backend, if installed.
+pub fn external_cutout_label() -> Option<String> {
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        cutout_external::label()
+    }
+    #[cfg(target_arch = "wasm32")]
+    {
+        None
+    }
+}
 pub const REGENERATE_COMMAND: &str = "edit.aiRegenerate";
 pub const UNLOAD_MODELS_COMMAND: &str = "ai.unloadModels";
 const MAX_GENERATION_SIDE: u32 = 16_384;
@@ -406,7 +419,7 @@ pub fn specs() -> Vec<CommandSpec> {
         label: "Remove Background",
         menu: &[],
         shortcut: None,
-        params: "{\"steps\":u32?,\"seed\":u64?,\"experimentalRefine\":bool=false} → {layer,mode,seed,steps,workingSize,workingRect,contentSize}; alpha-only layer mask. experimentalRefine opts into unvalidated multi-pass research; not used by the UI",
+        params: "{\"steps\":u32?,\"seed\":u64?,\"experimentalRefine\":bool=false} → {layer,mode,seed,steps,workingSize,workingRect,contentSize} or {layer,backend} for an external backend; alpha-only layer mask. experimentalRefine opts into unvalidated multi-pass research; not used by the UI",
         enabled: cutout::enabled,
         run: remove_background,
         journal: true,
@@ -445,6 +458,11 @@ pub fn edit_preflight(s: &Session) -> Result<Value> {
 fn remove_background(s: &mut Session, p: &Value) -> Result<Value> {
     cutout::enabled(s).map_err(EngineError::Other)?;
     let mut params = p.as_object().cloned().ok_or_else(|| bad(REMOVE_BACKGROUND_COMMAND, "params must be an object"))?;
+    #[cfg(not(target_arch = "wasm32"))]
+    if s.prefs().integrations.external_cutout && cutout_external::label().is_some() {
+        let id = crate::active_layer_of(s).map_err(EngineError::Other)?.id;
+        return cutout_external::run(s, id);
+    }
     params.insert("prompt".into(), json!(REMOVE_BACKGROUND_PROMPT));
     params.entry("name").or_insert_with(|| json!("Remove Background"));
     let id = crate::active_layer_of(s).map_err(EngineError::Other)?.id;
