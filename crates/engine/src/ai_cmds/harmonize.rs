@@ -28,11 +28,15 @@ pub(crate) struct Record {
 
 pub struct Source {
     doc: Arc<Document>,
-    original: Rgba8Image,
-    generated: Rgba8Image,
-    region: EditRegion,
+    passes: Vec<Pass>,
     baseline: Layer,
     corrected: OnceLock<Surface>,
+}
+
+pub(super) struct Pass {
+    pub original: Rgba8Image,
+    pub generated: Rgba8Image,
+    pub region: EditRegion,
 }
 
 fn error(message: impl Into<String>) -> EngineError {
@@ -76,8 +80,13 @@ fn same_pixels(a: &Surface, b: &Surface) -> bool {
 }
 
 impl Source {
+    #[cfg(test)]
     pub(super) fn new(doc: Arc<Document>, original: Rgba8Image, generated: Rgba8Image, region: EditRegion, baseline: Layer) -> Self {
-        Self { doc, original, generated, region, baseline, corrected: OnceLock::new() }
+        Self::new_many(doc, vec![Pass { original, generated, region }], baseline)
+    }
+
+    pub(super) fn new_many(doc: Arc<Document>, passes: Vec<Pass>, baseline: Layer) -> Self {
+        Self { doc, passes, baseline, corrected: OnceLock::new() }
     }
 
     fn check_document(&self, doc: &Document) -> Result<()> {
@@ -97,6 +106,51 @@ impl Source {
         if let Some(pixels) = self.corrected.get() {
             return Ok(pixels.clone());
         }
+        let mut layers = Vec::new();
+        for pass in &self.passes {
+            layers.push(pass.correct(&self.doc, ctx)?);
+        }
+        let layer = super::fill::merge(&self.doc, layers, "", ctx)?;
+        let LayerContent::Raster(pixels) = layer.content else { return Err(error("Invalid fill layer")) };
+        ctx.check()?;
+        let _ = self.corrected.set(pixels.clone());
+        Ok(pixels)
+    }
+
+    fn output(&self, strength: f64, ctx: &JobCtx) -> Result<Surface> {
+        ctx.check()?;
+        let LayerContent::Raster(baseline) = &self.baseline.content else { return Err(error("Invalid fill layer")) };
+        if strength == 0.0 {
+            return Ok(baseline.clone());
+        }
+        let corrected = self.full_strength(ctx)?;
+        if strength == 100.0 {
+            return Ok(corrected);
+        }
+        let amount = strength as f32 / 100.0;
+        let mut result = baseline.clone();
+        let bounds = baseline.content_bounds().intersect(&self.doc.bounds());
+        let channels = baseline.format().channels();
+        for y in bounds.y0..bounds.y1 {
+            ctx.check()?;
+            let area = Rect::new(bounds.x0, y, bounds.x1, y + 1);
+            let mut row = baseline.read_region(area);
+            let full = corrected.read_region(area);
+            for (a, b) in row.chunks_exact_mut(channels).zip(full.chunks_exact(channels)) {
+                // Alpha and the layer mask remain the original generated layer's.
+                for (a, b) in a.iter_mut().zip(b).take(channels.saturating_sub(1)) {
+                    *a += (*b - *a) * amount;
+                }
+            }
+            result.write_region(area, &row);
+        }
+        Ok(result)
+    }
+}
+
+impl Pass {
+    fn correct(&self, doc: &Document, ctx: &JobCtx) -> Result<Layer> {
+        ctx.check()?;
         let [width, height] = self.region.content_size;
         let (w, h) = (width as usize, height as usize);
         if !super::resolution::Budget::EDIT.accepts_content([width, height]) {
@@ -144,41 +198,7 @@ impl Source {
                 }
             }
         }
-        let layer = super::result_layer(&self.doc, &image, &self.region, "", EditMode::GenerativeFill, ctx)?;
-        let LayerContent::Raster(pixels) = layer.content else { return Err(error("Invalid fill layer")) };
-        ctx.check()?;
-        let _ = self.corrected.set(pixels.clone());
-        Ok(pixels)
-    }
-
-    fn output(&self, strength: f64, ctx: &JobCtx) -> Result<Surface> {
-        ctx.check()?;
-        let LayerContent::Raster(baseline) = &self.baseline.content else { return Err(error("Invalid fill layer")) };
-        if strength == 0.0 {
-            return Ok(baseline.clone());
-        }
-        let corrected = self.full_strength(ctx)?;
-        if strength == 100.0 {
-            return Ok(corrected);
-        }
-        let amount = strength as f32 / 100.0;
-        let mut result = baseline.clone();
-        let bounds = baseline.content_bounds().intersect(&self.doc.bounds());
-        let channels = baseline.format().channels();
-        for y in bounds.y0..bounds.y1 {
-            ctx.check()?;
-            let area = Rect::new(bounds.x0, y, bounds.x1, y + 1);
-            let mut row = baseline.read_region(area);
-            let full = corrected.read_region(area);
-            for (a, b) in row.chunks_exact_mut(channels).zip(full.chunks_exact(channels)) {
-                // Alpha and the layer mask remain the original generated layer's.
-                for (a, b) in a.iter_mut().zip(b).take(channels.saturating_sub(1)) {
-                    *a += (*b - *a) * amount;
-                }
-            }
-            result.write_region(area, &row);
-        }
-        Ok(result)
+        super::result_layer(doc, &image, &self.region, "", EditMode::GenerativeFill, ctx)
     }
 }
 

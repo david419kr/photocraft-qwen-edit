@@ -17,6 +17,7 @@ use crate::{EngineError, Result, Session};
 
 mod cutout;
 mod fill;
+mod fill_batch;
 pub mod harmonize;
 pub mod reference;
 pub mod resolution;
@@ -134,6 +135,8 @@ pub(crate) struct LastRun {
     prompt_entry: crate::ai_prompts::Entry,
     harmonize: Option<Arc<harmonize::Source>>,
     operation: Operation,
+    /// Extra, disjoint removal groups; the first pass remains request/region.
+    fill_passes: Vec<fill_batch::Pass>,
 }
 
 pub fn regeneration(s: &Session) -> Option<(EditMode, crate::prefs::ComfyUiModel)> {
@@ -575,7 +578,13 @@ fn run(s: &mut Session, p: &Value, operation: Operation) -> Result<Value> {
             } else {
                 source
             };
-            let mut input = if let Some(id) = cutout { cutout::prepare(&source, id, ctx)? } else { prepare(&source, mode, ctx)? };
+            let mut groups = if mode == EditMode::GenerativeFill && prompt.trim().is_empty() {
+                fill::prepare_groups(&source, ctx)?
+            } else {
+                vec![if let Some(id) = cutout { cutout::prepare(&source, id, ctx)? } else { prepare(&source, mode, ctx)? }]
+            }
+            .into_iter();
+            let mut input = groups.next().ok_or_else(|| EngineError::Other("empty AI pass plan".into()))?;
             if mode == EditMode::GenerativeFill {
                 input.region.filter = fill_filter;
             }
@@ -633,17 +642,44 @@ fn run(s: &mut Session, p: &Value, operation: Operation) -> Result<Value> {
                 );
             }
             request.negative_prompt = negative;
-            let generated = backend.generate(&request, ctx)?;
-            let layer = if let Some(id) = cutout {
-                cutout::result(&source, id, &generated, &input.region, ctx)?
+            let fill_passes: Vec<_> = groups
+                .enumerate()
+                .map(|(index, mut group)| {
+                    group.region.filter = fill_filter;
+                    let mut next = request.clone();
+                    next.image = group.image;
+                    next.seed = fill_batch::seed(seed, index + 1);
+                    fill_batch::Pass { request: next, region: group.region }
+                })
+                .collect();
+            let (layer, harmonize) = if mode == EditMode::GenerativeFill {
+                let (layer, record) = fill_batch::generate(source.clone(), backend.as_ref(), &request, &input.region, &fill_passes, &name, ctx)?;
+                (layer, Some(record))
             } else {
-                result_layer(&source, &generated, &input.region, &name, mode, ctx)?
+                let generated = backend.generate(&request, ctx)?;
+                (
+                    if let Some(id) = cutout {
+                        cutout::result(&source, id, &generated, &input.region, ctx)?
+                    } else {
+                        result_layer(&source, &generated, &input.region, &name, mode, ctx)?
+                    },
+                    None,
+                )
             };
             let prompt_entry =
                 crate::ai_prompts::Entry { mode, regions: input.region.prompt_regions.clone(), original, translated, negative_original, negative_translated };
-            let harmonize = (mode == EditMode::GenerativeFill)
-                .then(|| Arc::new(harmonize::Source::new(source.clone(), request.image.clone(), generated, input.region.clone(), layer.clone())));
-            let last = LastRun { source, request, region: input.region, name, result_layer: layer.id, result_revision: 0, prompt_entry, harmonize, operation };
+            let last = LastRun {
+                source,
+                request,
+                region: input.region,
+                name,
+                result_layer: layer.id,
+                result_revision: 0,
+                prompt_entry,
+                harmonize,
+                operation,
+                fill_passes,
+            };
             Ok((layer, last))
         },
         move |s, (layer, last)| apply_result(s, layer, last, None, label),
@@ -662,6 +698,9 @@ fn regenerate(s: &mut Session, p: &Value) -> Result<Value> {
     if last.request.seed == old_seed {
         last.request.seed = old_seed.wrapping_add(1);
     }
+    for (index, pass) in last.fill_passes.iter_mut().enumerate() {
+        pass.request.seed = fill_batch::seed(last.request.seed, index + 1);
+    }
     let replace = last.result_layer;
     let backend = s.ai_backend.clone().ok_or_else(|| EngineError::Other("ComfyUI is not configured in this frontend".into()))?;
     crate::jobs::run(
@@ -669,14 +708,19 @@ fn regenerate(s: &mut Session, p: &Value) -> Result<Value> {
         "Regenerate AI Result",
         true,
         move |ctx| {
-            let generated = backend.generate(&last.request, ctx)?;
-            let layer = if let Some(id) = last.operation.cutout() {
-                cutout::result(&last.source, id, &generated, &last.region, ctx)?
+            let layer = if last.request.mode == EditMode::GenerativeFill {
+                let (layer, record) =
+                    fill_batch::generate(last.source.clone(), backend.as_ref(), &last.request, &last.region, &last.fill_passes, &last.name, ctx)?;
+                last.harmonize = Some(record);
+                layer
             } else {
-                result_layer(&last.source, &generated, &last.region, &last.name, last.request.mode, ctx)?
+                let generated = backend.generate(&last.request, ctx)?;
+                if let Some(id) = last.operation.cutout() {
+                    cutout::result(&last.source, id, &generated, &last.region, ctx)?
+                } else {
+                    result_layer(&last.source, &generated, &last.region, &last.name, last.request.mode, ctx)?
+                }
             };
-            last.harmonize = (last.request.mode == EditMode::GenerativeFill)
-                .then(|| Arc::new(harmonize::Source::new(last.source.clone(), last.request.image.clone(), generated, last.region.clone(), layer.clone())));
             Ok((layer, last))
         },
         move |s, (layer, last)| apply_result(s, layer, last, Some(replace), "Regenerate AI Result"),
@@ -734,7 +778,8 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
     last.result_revision = st.revision;
     let bounds = last.region.bounds;
     let result = json!({"layer":id.0,"mode":mode,"operation":last.operation.name(),"seed":last.request.seed,"steps":last.request.steps,"workingSize":[last.request.image.width,last.request.image.height],
-        "workingRect":[bounds.x0,bounds.y0,bounds.x1,bounds.y1],"contentSize":last.region.content_size});
+        "workingRect":[bounds.x0,bounds.y0,bounds.x1,bounds.y1],"contentSize":last.region.content_size,
+        "passes":std::iter::once((&last.request,&last.region)).chain(last.fill_passes.iter().map(|p|(&p.request,&p.region))).map(|(r,g)|json!({"seed":r.seed,"workingSize":[r.image.width,r.image.height],"contentSize":g.content_size,"workingRect":[g.bounds.x0,g.bounds.y0,g.bounds.x1,g.bounds.y1]})).collect::<Vec<_>>()});
     let doc_id = st.doc.id;
     if let Some(source) = &last.harmonize {
         harmonize::remember(s, id, source.clone());
@@ -886,5 +931,7 @@ fn result_layer(doc: &Document, image: &Rgba8Image, region: &EditRegion, name: &
 
 #[cfg(test)]
 mod edit_tests;
+#[cfg(test)]
+mod fill_batch_tests;
 #[cfg(test)]
 mod tests;

@@ -199,11 +199,12 @@ fn malformed_internal_buffers_and_missing_known_context_return_errors() {
     let s = fixture(8);
     let st = s.active().unwrap();
     let source = preview_source(&s, st.active_layer).unwrap();
-    let mut invalid = Source::new(source.doc.clone(), source.original.clone(), source.generated.clone(), source.region.clone(), source.baseline.clone());
-    invalid.generated.pixels.pop();
+    let pass = &source.passes[0];
+    let mut invalid = Source::new(source.doc.clone(), pass.original.clone(), pass.generated.clone(), pass.region.clone(), source.baseline.clone());
+    invalid.passes[0].generated.pixels.pop();
     assert!(invalid.full_strength(&JobCtx::new()).is_err());
-    invalid.generated = source.generated.clone();
-    for pixel in invalid.original.pixels.as_chunks_mut::<4>().0 {
+    invalid.passes[0].generated = pass.generated.clone();
+    for pixel in invalid.passes[0].original.pixels.as_chunks_mut::<4>().0 {
         pixel[3] = 0;
     }
     assert!(invalid.full_strength(&JobCtx::new()).unwrap_err().to_string().contains("No surrounding"));

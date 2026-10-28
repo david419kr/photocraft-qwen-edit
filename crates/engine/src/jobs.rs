@@ -77,9 +77,17 @@ pub struct JobId(pub u64);
 
 /// What a job's work closure sees: report progress, check for cancellation. Cheap to clone; all
 /// clones share the same state.
-#[derive(Clone, Default)]
+#[derive(Clone)]
 pub struct JobCtx {
     shared: Arc<Shared>,
+    range: [f32; 2],
+    prefix: String,
+}
+
+impl Default for JobCtx {
+    fn default() -> Self {
+        Self { shared: Arc::default(), range: [0.0, 1.0], prefix: String::new() }
+    }
 }
 
 #[derive(Default)]
@@ -106,14 +114,27 @@ impl JobCtx {
     /// Progress never goes backwards: a lower value than already reported is ignored.
     pub fn progress(&self, fraction: f32, message: &str) {
         if fraction.is_finite() {
-            self.shared.progress.fetch_max(fraction.clamp(0.0, 1.0).to_bits(), Ordering::Relaxed);
+            let [lo, hi] = self.range;
+            let fraction = lo + (hi - lo) * fraction.clamp(0.0, 1.0);
+            self.shared.progress.fetch_max(fraction.to_bits(), Ordering::Relaxed);
         }
         if !message.is_empty() {
+            let message = if self.prefix.is_empty() { message.to_owned() } else { format!("{} · {message}", self.prefix) };
             let mut m = self.shared.message.lock().unwrap_or_else(PoisonError::into_inner);
             if *m != message {
-                message.clone_into(&mut m);
+                *m = message;
             }
         }
+    }
+
+    /// A model request keeps its own progress range while sharing cancellation and status.
+    pub(crate) fn subtask(&self, lo: f32, hi: f32, label: &str) -> Self {
+        if !lo.is_finite() || !hi.is_finite() || !(0.0..=1.0).contains(&lo) || !(lo..=1.0).contains(&hi) {
+            return self.clone();
+        }
+        let [start, end] = self.range;
+        let prefix = if self.prefix.is_empty() { label.to_owned() } else { format!("{} · {label}", self.prefix) };
+        Self { shared: self.shared.clone(), range: [start + (end - start) * lo, start + (end - start) * hi], prefix }
     }
 
     /// Has the job been cancelled? Long loops check this and stop early.

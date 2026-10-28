@@ -6,6 +6,12 @@ use photocraft_color::SampleType;
 
 const MIN_CROP: u32 = 64;
 const MIN_WORKING_SIDE: u32 = 512;
+mod groups;
+
+pub(super) fn prepare_groups(doc: &Document, ctx: &JobCtx) -> Result<Vec<Prepared>> {
+    let (selected, prompt_regions) = selection_info(doc, ctx)?;
+    groups::plan(doc, selected, ctx)?.into_iter().map(|area| prepare_area(doc, area, prompt_regions.clone(), ctx)).collect()
+}
 
 pub(super) fn output_filter(interpolation: crate::prefs::Interpolation) -> Resample {
     use crate::prefs::Interpolation;
@@ -94,6 +100,10 @@ fn crop(selection: Rect, canvas: Rect) -> Rect {
 
 pub(super) fn prepare(doc: &Document, ctx: &JobCtx) -> Result<Prepared> {
     let (selected, prompt_regions) = selection_info(doc, ctx)?;
+    prepare_area(doc, selected, prompt_regions, ctx)
+}
+
+fn prepare_area(doc: &Document, selected: Rect, prompt_regions: Vec<crate::ai_prompts::Region>, ctx: &JobCtx) -> Result<Prepared> {
     let bounds = crop(selected, doc.bounds());
     let frame = resolution::Budget::EDIT
         .plan([bounds.width(), bounds.height()], MIN_WORKING_SIDE.min(doc.size.width.max(doc.size.height)))
@@ -171,5 +181,35 @@ pub(super) fn prepare(doc: &Document, ctx: &JobCtx) -> Result<Prepared> {
     Ok(Prepared { image, region: EditRegion { bounds, content_size: [w, h], mask: Some(mask), prompt_regions, filter: Resample::Bicubic } })
 }
 
+/// Copy disjoint native patches without reapplying selection coverage or resampling.
+pub(super) fn merge(doc: &Document, layers: Vec<Layer>, name: &str, ctx: &JobCtx) -> Result<Layer> {
+    if layers.is_empty() || layers.len() > groups::MAX_GROUPS {
+        return Err(EngineError::Other("invalid fill group count".into()));
+    }
+    let mut result = Layer::raster(name, PixelFormat::new(doc.mode, doc.depth, true));
+    let mut mask = Surface::new(gray_float());
+    let mut occupied = Vec::new();
+    for layer in layers {
+        ctx.check()?;
+        let pixels = layer.surface().ok_or_else(|| EngineError::Other("invalid fill pixels".into()))?;
+        let coverage = &layer.mask.as_ref().ok_or_else(|| EngineError::Other("missing fill coverage".into()))?.surface;
+        let bounds = coverage.content_bounds().intersect(&doc.bounds());
+        if occupied.iter().any(|old: &Rect| !old.intersect(&bounds).is_empty()) {
+            return Err(EngineError::Other("overlapping fill group support".into()));
+        }
+        occupied.push(bounds);
+        for y in bounds.y0..bounds.y1 {
+            ctx.check()?;
+            let row = Rect::new(bounds.x0, y, bounds.x1, y + 1);
+            crate::pixels_mut(&mut result)?.write_region(row, &pixels.read_region(row));
+            mask.write_region(row, &coverage.read_region(row));
+        }
+    }
+    result.mask = Some(LayerMask { surface: mask, ..LayerMask::reveal_all() });
+    Ok(result)
+}
+
+#[cfg(test)]
+mod groups_tests;
 #[cfg(test)]
 mod tests;

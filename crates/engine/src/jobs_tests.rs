@@ -4,6 +4,27 @@ use std::time::{Duration, Instant};
 use serde_json::json;
 
 use super::*;
+
+#[test]
+fn model_subtasks_share_cancel_and_map_nested_progress_without_jumping_to_completion() {
+    let root = JobCtx::new();
+    let first = root.subtask(0.1, 0.5, "Region 1/2");
+    first.progress(1.0, "Decoded");
+    assert_eq!(root.fraction(), 0.5);
+    assert_eq!(root.message(), "Region 1/2 · Decoded");
+    let second = root.subtask(0.5, 0.9, "Region 2/2");
+    let nested = second.subtask(0.0, 0.5, "Model");
+    nested.progress(1.0, "Decoded");
+    assert!((root.fraction() - 0.7).abs() < 1e-6);
+    assert_eq!(root.message(), "Region 2/2 · Model · Decoded");
+    first.progress(1.0, "");
+    assert!((root.fraction() - 0.7).abs() < 1e-6);
+    second.cancel();
+    assert!(root.check().is_err());
+    assert!(first.check().is_err());
+    root.subtask(f32::NAN, 0.0, "").progress(1.0, "");
+    assert_eq!(root.fraction(), 1.0);
+}
 use crate::Session;
 
 /// A document `w`×`h` with a textured pixel layer (so blurs change every pixel).

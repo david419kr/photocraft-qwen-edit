@@ -4,7 +4,7 @@
 >
 > 상태: **구현 전 통합 설계**. 이미 구현된 배경 제거의 alpha-only 적용과 범용 프롬프트를 기준으로, 후속 Prompt Edit·Generative Fill·고해상도 배경 제거 요구사항을 통합한다. 이 문서의 작성은 새 기능 구현 완료를 뜻하지 않는다.
 
-> 구현 진행: 최신 원격 `origin/main` b048e5c4e를 반영한278c920b5 위에 공통 frame budget, 실제 RGBA 입력, 독립 cutout operation, 상대 alpha mask, 단일 Fill의 rectangular context, 참조1장 UI/snapshot 및 승인 resize의 atomic commit을 구현했다. 해당 단계의 fake 테스트·Clippy·wasm·panic hunt와 한국어 offscreen UI를 확인했다. 분할 Fill·배경 제거 정제 타일과 실제 모델 화질 검증은 아직 완료하지 않았다. 전체 범위와 아래 완료 조건을 유지한다.
+> 구현 진행: 공통 frame budget, 실제 RGBA 입력, 독립 cutout operation, 상대 alpha mask, 단일 Fill의 rectangular context, 참조1장 UI/snapshot 및 승인 resize의 atomic commit을 구현했다. 후속으로 빈 prompt의 독립 영역 분할·단일 레이어 합성·고정 입력 재생성·crop별 Poisson을 연결했다. 참조+RGBA 및 전체 문맥/guide를 사용하는 정제 역할은8060S Turbo4step·256² 합성 시료 각1회로 최소 확인했다. 배경 제거 고해상도 타일 구현과 전체 실기·성능 검증은 아직 완료하지 않았다. 전체 범위와 아래 완료 조건을 유지한다.
 
 ## 1. 목표와 개발 원칙
 

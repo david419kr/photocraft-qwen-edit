@@ -592,6 +592,17 @@ use its temporary storage and annotated temp paths, rather than permanent input 
 Server temp-directory lifetime applies; this is not an immediate remote-delete guarantee.
 
 The original document is never resized by Fill or background removal.
+Empty-prompt removal may split into at most four independent selection groups. Native
+8-connected nonzero support includes even weak feather; nearby strokes and overlapping
+context crops merge. Dense or ambiguous masks and marginal context savings stay one
+request. Other fill prompts always keep one request. Every group reads the same original
+document, runs sequentially, and keeps its exact selection coverage. All passes must
+succeed before one layer/one Undo is applied. Cancellation or any failure discards the
+whole batch. The command result's `passes` array describes each crop, frame and seed.
+Regeneration freezes these inputs and derives stable group seeds from the new root seed.
+Optional surrounding-colour correction solves each original crop separately and merges
+the same native patches; strength0 restores the original combined result exactly.
+
 Generative Fill uses the nonzero selection's bounding box with surrounding context: an
 area-16 centered expansion, kept square for compact selections. Elongated selections keep
 rectangular context with extra short-axis support (at most4:1 before canvas clipping).
