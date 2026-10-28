@@ -189,3 +189,16 @@ fn a_finished_pass_does_not_replay_the_batch() {
     app.inject_synthetic(&ctx, &mut second_pass);
     assert!(second_pass.events.is_empty());
 }
+
+#[test]
+fn ai_prompt_history_does_not_render_during_hidden_logic() {
+    let ctx = Context::default();
+    let mut app = app_with_doc();
+    app.ui.ai.prompt_info_open = true;
+    let mut frame = eframe::Frame::_new_kittest();
+    for _ in 0..3 {
+        let _ = ctx.run_logic(&host_input(egui::ViewportId::ROOT), |ctx| app.logic(ctx, &mut frame));
+        assert!(app.ui.ai.prompt_info_open, "hidden ticks preserve the requested window");
+        assert!(app.ui.ai.prompt_records_key.is_none(), "history is prepared only by a real UI pass");
+    }
+}
