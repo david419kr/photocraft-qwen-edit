@@ -121,6 +121,7 @@ fn bottom_bar_and_layer_menu_open_the_same_dialog_in_english_and_korean() {
                 app,
             );
             PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
+            crate::test_fonts::korean(&h.ctx);
             h.run_steps(4);
             let label = crate::i18n::with_language(lang, || tl!("Match Surrounding Colors").to_owned());
             let button = h.get_by_label(&label);
@@ -156,6 +157,7 @@ fn subsequent_actions_hide_the_bottom_action_without_losing_context_menu_access(
         app,
     );
     PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
+    crate::test_fonts::korean(&h.ctx);
     h.run_steps(4);
     assert!(h.query_by_label(harmonize::LABEL).is_some());
     let layer = h.state().session.active().unwrap().active_layer.unwrap();

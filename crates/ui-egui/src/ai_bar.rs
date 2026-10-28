@@ -1364,6 +1364,7 @@ mod tests {
             app,
         );
         PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
+        crate::test_fonts::korean(&h.ctx);
         h.run_steps(4);
         h.key_press(egui::Key::Enter);
         h.run_steps(4);
@@ -1527,6 +1528,7 @@ mod tests {
                         app,
                     );
                     PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
+                    crate::test_fonts::korean(&h.ctx);
                     h.run_steps(4);
                     let rect = h.state().ui.ai.rect.unwrap();
                     assert!(rect[3] - rect[1] <= 44.0, "{lang:?} {mode:?} width {width}: {rect:?}");

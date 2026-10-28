@@ -849,3 +849,6 @@ mod select_and_mask_button_tests;
 
 #[cfg(test)]
 mod ai_edit_ui_tests;
+
+#[cfg(test)]
+mod test_fonts;

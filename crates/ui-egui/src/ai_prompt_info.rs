@@ -218,6 +218,7 @@ mod tests {
             .unwrap();
         let mut h = Harness::builder().with_size(vec2(1200.0, 900.0)).with_max_steps(64).build_eframe(move |cc| {
             PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
+            crate::test_fonts::korean(&cc.egui_ctx);
             let mut app = PhotocraftApp::new(session, crate::Services::default());
             app.ui.ai.prompt_info_open = true;
             app

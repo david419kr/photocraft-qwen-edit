@@ -60,6 +60,9 @@ Both Rust 1.95.0 and current stable whole-workspace/all-target HEIF Clippy run
 early with `-D warnings`. Upstream's new explicit-import rules require porting
 fork imports. Rust 1.95 additionally detects redundant boolean expressions and
 an unnecessary closure drop; repair expressions without warnings suppression.
+AI prompt history is rendered only in the UI phase, never hidden logic ticks.
+Headless Korean AI UI tests use a pinned real NanumGothic fixture with its OFL
+notice; missing-glyph panic checks remain enabled, including without craft-fonts.
 The UI inspection JSON is assembled in smaller parts rather than raising the
 macro recursion limit.
 
