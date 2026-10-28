@@ -21,8 +21,6 @@ pub mod adjust_preview;
 pub mod adjust_ui;
 pub mod ai_bar;
 pub mod ai_edit_ui;
-#[cfg(test)]
-mod ai_edit_ui_tests;
 mod ai_prompt_info;
 mod align_bar;
 mod alt_grab;
@@ -3884,3 +3882,6 @@ mod browse_field_tests;
 mod options_hit_area_tests;
 #[cfg(test)]
 mod select_and_mask_button_tests;
+
+#[cfg(test)]
+mod ai_edit_ui_tests;
