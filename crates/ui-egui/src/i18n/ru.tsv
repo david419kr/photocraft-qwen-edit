@@ -4699,3 +4699,9 @@ shape	Appearance	Оформление
 	Adjust colors with Poisson blending	Настроить цвета с помощью смешивания Пуассона
 	Compare with Original Generation	Сравнить с исходным результатом генерации
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Подгоняет цвета под окружение, сохранённое при генерации. Интенсивность 0 восстанавливает исходный результат генерации.
+
+	Attach Reference Image	Прикрепить референс
+	Remove Reference Image	Удалить референс
+	Reference Image	Референс
+	Resize for AI editing	Изменить размер для ИИ
+	The image exceeds the AI editing size. Resize the document to continue?	Изображение превышает размер для ИИ-редактирования. Изменить размер документа и продолжить?

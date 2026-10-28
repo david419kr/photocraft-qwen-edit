@@ -479,6 +479,7 @@ pub struct Session {
     /// Native AI service. Unconfigured headless/test sessions never contact an AI server.
     pub ai_backend: Option<Arc<dyn ai_cmds::AiBackend>>,
     pub(crate) ai_runs: std::collections::HashMap<photocraft_doc::DocId, ai_cmds::LastRun>,
+    pub(crate) ai_references: std::collections::HashMap<photocraft_doc::DocId, std::sync::Arc<ai_cmds::reference::Reference>>,
     pub(crate) ai_fill_sources: ai_cmds::harmonize::Records,
     pub(crate) action_epoch: u64,
     pub(crate) ai_modes: std::cell::RefCell<ai_cmds::ModeCache>,
@@ -680,6 +681,7 @@ impl Session {
         if let Some(id) = self.docs.get(index).map(|d| d.doc.id) {
             self.cancel_jobs_on(id);
             self.ai_runs.remove(&id);
+            self.ai_references.remove(&id);
             self.ai_fill_sources.retain(|(doc, _), _| *doc != id);
             if let Ok(mut cache) = self.ai_modes.try_borrow_mut() {
                 cache.remove(&id);

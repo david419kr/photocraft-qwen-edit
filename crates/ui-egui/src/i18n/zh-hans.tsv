@@ -3176,3 +3176,9 @@ curves	Smooth	平滑
 	Adjust colors with Poisson blending	使用泊松融合调整颜色
 	Compare with Original Generation	与最初生成结果比较
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	将颜色匹配到生成时记录的周围区域。强度为0时恢复最初的生成结果。
+
+	Attach Reference Image	添加参考图像
+	Remove Reference Image	移除参考图像
+	Reference Image	参考图像
+	Resize for AI editing	调整大小以进行AI编辑
+	The image exceeds the AI editing size. Resize the document to continue?	图像超出AI编辑尺寸。调整文档大小后继续吗？

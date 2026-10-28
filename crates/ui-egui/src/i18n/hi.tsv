@@ -539,3 +539,9 @@ cameraRaw	Yellow	पीला
 	Adjust colors with Poisson blending	पॉइसन ब्लेंडिंग से रंग समायोजित करें
 	Compare with Original Generation	मूल जनरेट किए गए परिणाम से तुलना करें
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	रंगों को जनरेशन के समय कैप्चर किए गए परिवेश से मिलाता है। तीव्रता 0 मूल जनरेट किए गए परिणाम को पुनर्स्थापित करती है।
+
+	Attach Reference Image	संदर्भ छवि जोड़ें
+	Remove Reference Image	संदर्भ छवि हटाएँ
+	Reference Image	संदर्भ छवि
+	Resize for AI editing	AI संपादन के लिए आकार बदलें
+	The image exceeds the AI editing size. Resize the document to continue?	छवि AI संपादन आकार से बड़ी है। जारी रखने के लिए दस्तावेज़ का आकार बदलें?

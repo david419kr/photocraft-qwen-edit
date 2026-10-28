@@ -12,6 +12,14 @@ use std::sync::{Arc, Mutex, PoisonError, Weak};
 
 use crate::PhotocraftApp;
 
+#[derive(Clone)]
+pub(crate) struct ReferencePreview(pub Arc<photocraft_engine::ai_cmds::reference::Reference>, pub egui::TextureHandle);
+impl std::fmt::Debug for ReferencePreview {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_tuple("ReferencePreview").field(&self.0.id).finish()
+    }
+}
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(default)]
 pub struct AiUi {
@@ -51,6 +59,9 @@ pub struct AiUi {
     pub prompt_info_open: bool,
     #[serde(rename = "hasPromptHistory")]
     pub has_prompt_history: bool,
+    pub reference: Option<serde_json::Value>,
+    #[serde(skip)]
+    pub(crate) reference_preview: Option<ReferencePreview>,
     #[serde(skip)]
     pub(crate) prompt_presence_key: Option<(u64, u64)>,
     #[serde(skip)]
@@ -79,6 +90,7 @@ pub struct AiUi {
 impl PartialEq for AiUi {
     fn eq(&self, other: &Self) -> bool {
         self.open == other.open
+            && self.reference == other.reference
             && self.prompt == other.prompt
             && self.negative_prompt == other.negative_prompt
             && self.cfg == other.cfg
@@ -870,18 +882,25 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                     EditMode::PromptEdit => tl!("Describe changes to the whole image"),
                     EditMode::GenerativeFill => tl!("Describe changes, or leave blank to remove"),
                 };
-                let response = egui::ScrollArea::vertical()
-                    .max_height(60.0)
-                    .show(ui, |ui| {
-                        ui.add_enabled(
-                            !busy,
-                            egui::TextEdit::multiline(&mut app.ui.ai.prompt)
-                                .id(prompt_id(doc.id.0))
-                                .hint_text(hint)
-                                .desired_rows(2)
-                                .desired_width(f32::INFINITY)
-                                .char_limit(MAX_PROMPT_BYTES),
-                        )
+                let response = ui
+                    .horizontal(|ui| {
+                        if mode == EditMode::PromptEdit {
+                            ui.add_enabled_ui(!busy, |ui| crate::ai_edit_ui::reference_controls(app, ui));
+                        }
+                        egui::ScrollArea::vertical()
+                            .max_height(60.0)
+                            .show(ui, |ui| {
+                                ui.add_enabled(
+                                    !busy,
+                                    egui::TextEdit::multiline(&mut app.ui.ai.prompt)
+                                        .id(prompt_id(doc.id.0))
+                                        .hint_text(hint)
+                                        .desired_rows(2)
+                                        .desired_width(ui.available_width())
+                                        .char_limit(MAX_PROMPT_BYTES),
+                                )
+                            })
+                            .inner
                     })
                     .inner;
                 if app.ui.ai.focus {

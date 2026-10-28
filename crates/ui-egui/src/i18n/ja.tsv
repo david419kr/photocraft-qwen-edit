@@ -4184,3 +4184,9 @@ curves	Smooth	スムーズ
 	Adjust colors with Poisson blending	ポアソンブレンディングで色を調整します
 	Compare with Original Generation	最初の生成結果と比較
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	生成時に記録した周囲の色に合わせます。強度0で最初の生成結果に戻します。
+
+	Attach Reference Image	参照画像を添付
+	Remove Reference Image	参照画像を削除
+	Reference Image	参照画像
+	Resize for AI editing	AI編集用にサイズ変更
+	The image exceeds the AI editing size. Resize the document to continue?	AI編集のサイズ上限を超えています。ドキュメントをサイズ変更して続行しますか？

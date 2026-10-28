@@ -3783,3 +3783,9 @@ prompt-region	Bottom right	우하단
 	Adjust colors with Poisson blending	푸아송 블렌딩으로 주변 색상에 맞춥니다
 	Compare with Original Generation	최초 생성 결과와 비교
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	생성 당시의 주변 색에 맞춥니다. 강도 0은 최초 생성 결과로 되돌립니다.
+
+	Attach Reference Image	참조 이미지 첨부
+	Remove Reference Image	참조 이미지 제거
+	Reference Image	참조 이미지
+	Resize for AI editing	AI 편집을 위한 이미지 크기 변경
+	The image exceeds the AI editing size. Resize the document to continue?	AI 편집 가능한 크기를 초과합니다. 문서 크기를 변경하고 계속하시겠습니까?

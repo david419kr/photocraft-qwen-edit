@@ -4539,3 +4539,9 @@ shape	Appearance	Apparence
 	Adjust colors with Poisson blending	Ajuster les couleurs par fusion de Poisson
 	Compare with Original Generation	Comparer avec la génération d’origine
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Adapte les couleurs à l’environnement capturé lors de la génération. Une intensité de 0 restaure le résultat généré d’origine.
+
+	Attach Reference Image	Joindre une image de référence
+	Remove Reference Image	Retirer l’image de référence
+	Reference Image	Image de référence
+	Resize for AI editing	Redimensionner pour la retouche IA
+	The image exceeds the AI editing size. Resize the document to continue?	L’image dépasse la taille de retouche IA. Redimensionner le document pour continuer ?

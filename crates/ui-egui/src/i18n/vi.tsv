@@ -3992,3 +3992,9 @@ prompt-region	Bottom right	Dưới phải
 	Adjust colors with Poisson blending	Điều chỉnh màu bằng hòa trộn Poisson
 	Compare with Original Generation	So sánh với kết quả tạo ban đầu
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Khớp màu với vùng xung quanh được ghi lại khi tạo ảnh. Cường độ 0 khôi phục kết quả tạo ban đầu.
+
+	Attach Reference Image	Đính kèm ảnh tham chiếu
+	Remove Reference Image	Xóa ảnh tham chiếu
+	Reference Image	Ảnh tham chiếu
+	Resize for AI editing	Đổi kích thước để chỉnh sửa AI
+	The image exceeds the AI editing size. Resize the document to continue?	Ảnh vượt quá kích thước chỉnh sửa AI. Đổi kích thước tài liệu để tiếp tục?

@@ -4121,3 +4121,9 @@ curves	Smooth	Wygładź
 	Adjust colors with Poisson blending	Dostosuj kolory przez mieszanie Poissona
 	Compare with Original Generation	Porównaj z pierwotnie wygenerowanym wynikiem
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Dopasowuje kolory do otoczenia zapisanego podczas generowania. Siła 0 przywraca pierwotnie wygenerowany wynik.
+
+	Attach Reference Image	Dołącz obraz referencyjny
+	Remove Reference Image	Usuń obraz referencyjny
+	Reference Image	Obraz referencyjny
+	Resize for AI editing	Zmień rozmiar do edycji AI
+	The image exceeds the AI editing size. Resize the document to continue?	Obraz przekracza rozmiar edycji AI. Zmienić rozmiar dokumentu i kontynuować?

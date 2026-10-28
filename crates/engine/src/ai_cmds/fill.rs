@@ -64,12 +64,27 @@ fn selection_info(doc: &Document, ctx: &JobCtx) -> Result<(Rect, Vec<crate::ai_p
 
 fn crop(selection: Rect, canvas: Rect) -> Rect {
     let (w, h) = (f64::from(selection.width()), f64::from(selection.height()));
-    // Solve (w+2m)(h+2m)=16wh, then fit a square model frame around that context.
+    // Retain the old square context for compact selections; long selections keep rectangular
+    // context without starving the short axis of nearby structure.
     let diameter = ((((w + h).powi(2) + 60.0 * w * h).sqrt() - w - h) / 2.0).round() as u32;
     let selected_side = selection.width().max(selection.height());
-    let side = selected_side.saturating_add(2 * (diameter / 2)).max(MIN_CROP);
-    let width = side.min(canvas.width());
-    let height = side.min(canvas.height());
+    let padding = (diameter / 2).saturating_mul(2);
+    let (width, height) = if selected_side <= selection.width().min(selection.height()).saturating_mul(2) {
+        let side = selected_side.saturating_add(padding).max(MIN_CROP);
+        (side, side)
+    } else {
+        let mut width = selection.width().saturating_add(padding).max(MIN_CROP);
+        let mut height = selection.height().saturating_add(padding).max(MIN_CROP);
+        if width > height.saturating_mul(4) {
+            height = width.div_ceil(4);
+        }
+        if height > width.saturating_mul(4) {
+            width = height.div_ceil(4);
+        }
+        (width, height)
+    };
+    let width = width.min(canvas.width());
+    let height = height.min(canvas.height());
     let x = ((i64::from(selection.x0) + i64::from(selection.x1) - i64::from(width)) / 2).clamp(i64::from(canvas.x0), i64::from(canvas.x1) - i64::from(width))
         as i32;
     let y = ((i64::from(selection.y0) + i64::from(selection.y1) - i64::from(height)) / 2).clamp(i64::from(canvas.y0), i64::from(canvas.y1) - i64::from(height))
@@ -80,11 +95,10 @@ fn crop(selection: Rect, canvas: Rect) -> Rect {
 pub(super) fn prepare(doc: &Document, ctx: &JobCtx) -> Result<Prepared> {
     let (selected, prompt_regions) = selection_info(doc, ctx)?;
     let bounds = crop(selected, doc.bounds());
-    let long = bounds.width().max(bounds.height());
-    let target = long.clamp(MIN_WORKING_SIDE.min(doc.size.width.max(doc.size.height)), MAX_WORKING_SIDE);
-    let scale = f64::from(target) / f64::from(long);
-    let w = (f64::from(bounds.width()) * scale).round().max(1.0) as u32;
-    let h = (f64::from(bounds.height()) * scale).round().max(1.0) as u32;
+    let frame = resolution::Budget::EDIT
+        .plan([bounds.width(), bounds.height()], MIN_WORKING_SIDE.min(doc.size.width.max(doc.size.height)))
+        .ok_or_else(|| EngineError::Other("invalid fill frame".into()))?;
+    let [w, h] = frame.content;
     let local = Rect::from_xywh(0, 0, bounds.width(), bounds.height());
     let (sx, sy) = (f64::from(w) / f64::from(bounds.width()), f64::from(h) / f64::from(bounds.height()));
     let transform = Transform::new(&crate::color_cmds::composite_profile(doc), Builtin::Srgb.profile(), Intent::RelativeColorimetric, true)

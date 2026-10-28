@@ -3524,3 +3524,9 @@ curves	Smooth	Haluskan
 	Adjust colors with Poisson blending	Sesuaikan warna dengan pencampuran Poisson
 	Compare with Original Generation	Bandingkan dengan Hasil Generasi Awal
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Menyesuaikan warna dengan lingkungan yang direkam saat generasi. Kekuatan 0 mengembalikan hasil generasi awal.
+
+	Attach Reference Image	Lampirkan gambar referensi
+	Remove Reference Image	Hapus gambar referensi
+	Reference Image	Gambar referensi
+	Resize for AI editing	Ubah ukuran untuk penyuntingan AI
+	The image exceeds the AI editing size. Resize the document to continue?	Gambar melebihi ukuran penyuntingan AI. Ubah ukuran dokumen untuk melanjutkan?

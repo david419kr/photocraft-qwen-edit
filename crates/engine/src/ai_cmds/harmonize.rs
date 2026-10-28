@@ -99,7 +99,10 @@ impl Source {
         }
         let [width, height] = self.region.content_size;
         let (w, h) = (width as usize, height as usize);
-        let count = w.checked_mul(h).filter(|n| *n > 0 && *n <= (super::MAX_WORKING_SIDE as usize).pow(2)).ok_or_else(|| error("Invalid fill size"))?;
+        if !super::resolution::Budget::EDIT.accepts_content([width, height]) {
+            return Err(error("Invalid fill size"));
+        }
+        let count = w.checked_mul(h).filter(|n| *n > 0 && *n <= super::resolution::MAX_PADDED_PIXELS as usize).ok_or_else(|| error("Invalid fill size"))?;
         let pw = self.original.width as usize;
         let expected = pw.checked_mul(self.original.height as usize).and_then(|n| n.checked_mul(4)).ok_or_else(|| error("Invalid fill buffer"))?;
         if width > self.original.width

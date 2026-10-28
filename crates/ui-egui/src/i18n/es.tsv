@@ -4463,3 +4463,9 @@ navigator	Zoom	Zoom
 	Adjust colors with Poisson blending	Ajustar colores con mezcla de Poisson
 	Compare with Original Generation	Comparar con la generación original
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Adapta los colores al entorno capturado durante la generación. La intensidad 0 restaura el resultado generado original.
+
+	Attach Reference Image	Adjuntar imagen de referencia
+	Remove Reference Image	Quitar imagen de referencia
+	Reference Image	Imagen de referencia
+	Resize for AI editing	Redimensionar para editar con IA
+	The image exceeds the AI editing size. Resize the document to continue?	La imagen supera el tamaño de edición con IA. ¿Redimensionar el documento para continuar?

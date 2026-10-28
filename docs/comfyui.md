@@ -1,5 +1,10 @@
 # ComfyUI Qwen Image 2.1 generation and editing
 
+Planned reference images, RGBA input, aspect-aware resolution, atomic document resizing,
+multi-region fill and independent high-resolution background removal are specified in the
+[generative editing improvement plan](qwen-generative-editing-plan.md). That document describes
+future work; the implemented behaviour is documented below.
+
 ## Model and text-encoder settings
 
 ComfyUI port can be changed at the top of this window (default 8188, range 1–65535).
@@ -559,12 +564,40 @@ Supported document modes are RGB, Gray, CMYK and Lab at 8/16/32-bit depth, with 
 document size of 36 megapixels. CMS converts the visible composite to sRGB for the model
 and converts its result back to the document profile and depth. The document itself is
 not converted. Model exchange is 8-bit PNG, so generated content has 8-bit source precision.
-Transparent input is composited over white for the model.
+Prompt Edit and background removal preserve real input alpha. For transparent input,
+LoadImage's RGB and inverted-alpha MASK are reconstructed with JoinImageWithAlpha before
+TextEncodeQwenImage21; its vision tower sees a white composite while its VAE retains RGBA.
+Opaque inputs keep the existing graph. Fill's upload alpha instead carries its selection
+guide and is deliberately not reconstructed as source transparency.
 
-Prompt Edit uses the whole canvas at a maximum side of 1536 pixels. Generative Fill instead
-uses the nonzero selection's bounding box with surrounding context: an area-16 centered
-expansion, fitted to a square and shifted/clipped to the canvas. The crop is at least 64 pixels per available axis.
-Its longest model side is between 512 and 1536, except on documents smaller than 512 pixels.
+Prompt Edit, Fill and background removal use purpose-specific model-frame budgets:
+target2048², at most4,300,800 padded pixels and4096 pixels per side.
+Prompt Edit preserves native content dimensions within this budget. Larger documents
+require explicit approval showing the current and target sizes. Existing Image Size
+resampling runs on a frozen document copy; resizing and adding the result commit as one
+Undo operation. Failure or cancellation leaves the live document and history untouched.
+Generated content is not enlarged back to the previous document size.
+Automation uses `edit.aiPreflight` and submits its exact `approval` object as
+`resizeApproval` to `edit.promptEdit`; changes to the document, reference or settings
+invalidate approval.
+
+Prompt Edit accepts one optional reference through the attachment button beside the
+prompt. Its thumbnail/X add no extra row. `edit.aiReference.set` accepts `{name,data}`
+(base64 file bytes, at most64MiB); `.clear` and `.info` manage the session attachment.
+The source is image1 and the independent, aspect-preserving reference is image2 (up
+to1024² padded pixels). Output dimensions follow image1. Reference content, alpha and
+resolved settings are frozen for regeneration. Fill and background removal do not use
+this attachment. Closing a document releases its session cache; Comfy reference uploads
+use its temporary storage and annotated temp paths, rather than permanent input files.
+Server temp-directory lifetime applies; this is not an immediate remote-delete guarantee.
+
+The original document is never resized by Fill or background removal.
+Generative Fill uses the nonzero selection's bounding box with surrounding context: an
+area-16 centered expansion, kept square for compact selections. Elongated selections keep
+rectangular context with extra short-axis support (at most4:1 before canvas clipping).
+The crop is shifted/clipped to the canvas and at least64 pixels per available axis.
+Its longest model side is at least512, except on documents smaller than512 pixels; small
+crops are not otherwise expanded to the maximum budget.
 This is PhotoCraft's bounded Qwen policy, not a claim that every Photoshop state uses this ROI.
 
 Fill composites only this crop, converts it through CMS, and uses the existing premultiplied
@@ -640,8 +673,11 @@ and other layers' visibility are preserved; the Background becomes a normal laye
 Existing masks are replaced in one undo step, and selection is cleared on success. Empty
 alpha or malformed outputs leave the document intact. Regeneration repeats the captured
 input/settings and replaces only the mask. No automatic dilation, alpha threshold, matting
-or colour decontamination is applied. The model input still uses the existing white-flattened
-sRGB transport (maximum side1536); this does not affect the native source pixels.
+or colour decontamination is applied. The model input uses bounded sRGB RGBA transport;
+native source pixels are not replaced. For an already translucent raster, generated final
+opacity is converted to relative layer-mask coverage so existing raster alpha is not
+multiplied twice. Operation metadata distinguishes background removal from its shared
+Prompt Edit model transport mode.
 This AI quick action is separate from the classical local `layer.removeBackground` command.
 The cutout instruction is category-independent: opaque foreground surfaces must stay opaque
 regardless of brightness, colour or reflection; background and holes must be transparent,

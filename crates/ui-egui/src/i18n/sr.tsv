@@ -4549,3 +4549,9 @@ shape	Appearance	Izgled
 	Adjust colors with Poisson blending	Подеси боје Поасоновим стапањем
 	Compare with Original Generation	Упореди са првобитно генерисаним резултатом
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Усклађује боје са окружењем снимљеним при генерисању. Јачина 0 враћа првобитно генерисани резултат.
+
+	Attach Reference Image	Приложи референтну слику
+	Remove Reference Image	Уклони референтну слику
+	Reference Image	Референтна слика
+	Resize for AI editing	Промени величину за AI уређивање
+	The image exceeds the AI editing size. Resize the document to continue?	Слика премашује величину за AI уређивање. Променити величину документа и наставити?

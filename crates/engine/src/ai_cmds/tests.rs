@@ -2,7 +2,7 @@ use super::*;
 use photocraft_color::SampleType;
 use std::sync::Arc;
 
-struct Solid;
+pub(super) struct Solid;
 
 #[test]
 fn negative_translation_history_and_regeneration_capture_the_resolved_model_settings() {
@@ -557,7 +557,7 @@ fn gray_cmyk_and_lab_keep_their_depth_and_document_profile() {
     }
 }
 
-struct Fail;
+pub(super) struct Fail;
 impl AiBackend for Fail {
     fn generate(&self, _: &AiRequest, _: &JobCtx) -> Result<Rgba8Image> {
         Err(EngineError::Other("mock failure".into()))
@@ -741,6 +741,7 @@ fn fill_result_rejects_invalid_geometry_buffers_and_cancel() {
         .generate(
             &AiRequest {
                 image: input.image.clone(),
+                reference: None,
                 prompt: "".into(),
                 mode: EditMode::GenerativeFill,
                 removal: true,

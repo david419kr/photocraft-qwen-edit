@@ -4250,3 +4250,9 @@ cameraRaw	Dehaze	Odstranění oparu
 	Adjust colors with Poisson blending	Upravit barvy pomocí Poissonova prolnutí
 	Compare with Original Generation	Porovnat s původně vygenerovaným výsledkem
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Přizpůsobí barvy okolí zachycenému při generování. Síla 0 obnoví původně vygenerovaný výsledek.
+
+	Attach Reference Image	Připojit referenční obrázek
+	Remove Reference Image	Odebrat referenční obrázek
+	Reference Image	Referenční obrázek
+	Resize for AI editing	Změnit velikost pro úpravy AI
+	The image exceeds the AI editing size. Resize the document to continue?	Obrázek překračuje velikost pro úpravy AI. Změnit velikost dokumentu a pokračovat?

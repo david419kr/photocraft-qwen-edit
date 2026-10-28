@@ -20,6 +20,9 @@ pub mod adjust_editors;
 pub mod adjust_preview;
 pub mod adjust_ui;
 pub mod ai_bar;
+pub mod ai_edit_ui;
+#[cfg(test)]
+mod ai_edit_ui_tests;
 mod ai_prompt_info;
 mod align_bar;
 mod alt_grab;
@@ -1294,6 +1297,9 @@ impl PhotocraftApp {
             self.session.authorize = gate;
         }
         let result = self.run_command(id, params);
+        if result.is_ok() {
+            ai_edit_ui::sync_reference(self);
+        }
         if gate.is_some() {
             self.session.authorize = None;
         }
@@ -1339,6 +1345,9 @@ impl PhotocraftApp {
             }
         }
         actions::suspended_guard(self, id)?;
+        if let Some(result) = ai_edit_ui::intercept(self, id, &params) {
+            return result;
+        }
         if let Some(result) = panel_docking::command(self, id, &params) {
             return result;
         }
@@ -2284,6 +2293,7 @@ impl eframe::App for PhotocraftApp {
     }
 
     fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        ai_edit_ui::sync_reference(self);
         self.cap_frame_rate();
         i18n::set_current(i18n::Lang::from_pref(&self.session.prefs().interface.language));
         // Caps Lock state read from the OS once per frame (see `Services::caps_lock`): the canvas

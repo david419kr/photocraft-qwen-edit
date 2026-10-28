@@ -18,11 +18,12 @@ use crate::{EngineError, Result, Session};
 mod cutout;
 mod fill;
 pub mod harmonize;
+pub mod reference;
+pub mod resolution;
 
 pub const MAX_DOCUMENT_PIXELS: u64 = 36_000_000;
 pub const MAX_PROMPT_BYTES: usize = 8192;
 pub const MAX_STEPS: u32 = 1000;
-pub const MAX_WORKING_SIDE: u32 = 1536;
 pub const REMOVE_BACKGROUND_COMMAND: &str = "edit.aiRemoveBackground";
 pub const REGENERATE_COMMAND: &str = "edit.aiRegenerate";
 pub const UNLOAD_MODELS_COMMAND: &str = "ai.unloadModels";
@@ -65,10 +66,47 @@ impl EditMode {
     }
 }
 
+/// Native operation contract, independent of the Qwen workflow's transport mode.
+#[derive(Clone, Copy)]
+enum Operation {
+    Generate,
+    Edit,
+    Fill,
+    Cutout(photocraft_doc::LayerId),
+}
+
+impl Operation {
+    fn mode(self) -> EditMode {
+        match self {
+            Self::Generate => EditMode::PromptGenerate,
+            Self::Fill => EditMode::GenerativeFill,
+            Self::Edit | Self::Cutout(_) => EditMode::PromptEdit,
+        }
+    }
+    fn cutout(self) -> Option<photocraft_doc::LayerId> {
+        if let Self::Cutout(id) = self { Some(id) } else { None }
+    }
+    fn command(self) -> &'static str {
+        if self.cutout().is_some() { REMOVE_BACKGROUND_COMMAND } else { self.mode().command() }
+    }
+    fn label(self) -> &'static str {
+        if self.cutout().is_some() { "Remove Background" } else { self.mode().label() }
+    }
+    fn name(self) -> &'static str {
+        match self {
+            Self::Generate => "promptGenerate",
+            Self::Edit => "promptEdit",
+            Self::Fill => "generativeFill",
+            Self::Cutout(_) => "backgroundRemoval",
+        }
+    }
+}
+
 /// The explicit sRGB8 transport used by the model, independent of the document format.
 #[derive(Clone)]
 pub struct AiRequest {
     pub image: Rgba8Image,
+    pub reference: Option<Arc<Rgba8Image>>,
     pub prompt: String,
     pub mode: EditMode,
     /// Empty-prompt fill reconstructs background rather than editing existing content.
@@ -95,7 +133,7 @@ pub(crate) struct LastRun {
     result_revision: u64,
     prompt_entry: crate::ai_prompts::Entry,
     harmonize: Option<Arc<harmonize::Source>>,
-    cutout: Option<photocraft_doc::LayerId>,
+    operation: Operation,
 }
 
 pub fn regeneration(s: &Session) -> Option<(EditMode, crate::prefs::ComfyUiModel)> {
@@ -358,7 +396,34 @@ pub fn specs() -> Vec<CommandSpec> {
         journal: true,
     });
     commands.extend(harmonize::specs());
+    commands.extend(reference::specs());
+    commands.push(CommandSpec {
+        id: "edit.aiPreflight",
+        label: "Plan AI Edit",
+        menu: &[],
+        shortcut: None,
+        params: "{} → {document,revision,nativeSize,targetSize,modelSize,needsResizeApproval,approval}",
+        enabled: can_edit,
+        run: |s, p| {
+            if !p.is_object() {
+                return Err(bad("edit.aiPreflight", "use an object"));
+            }
+            edit_preflight(s)
+        },
+        journal: false,
+    });
     commands
+}
+
+pub fn edit_preflight(s: &Session) -> Result<Value> {
+    let state = s.active().ok_or(EngineError::NoDocument)?;
+    supported_document(&state.doc).map_err(EngineError::Other)?;
+    let native = [state.doc.size.width, state.doc.size.height];
+    let frame = resolution::Budget::EDIT.plan(native, 0).ok_or_else(|| bad("edit.aiPreflight", "invalid dimensions"))?;
+    let approval = json!({"document":state.doc.id.0,"revision":state.revision,"size":frame.content,"reference":reference::current(s).map(|r|r.id),"model":s.prefs().integrations.selected_filename(),"settings":s.prefs().integrations.selected_settings()});
+    Ok(
+        json!({"document":state.doc.id.0,"revision":state.revision,"nativeSize":native,"targetSize":frame.content,"modelSize":frame.padded,"needsResizeApproval":frame.requires_resampling(),"approval":approval}),
+    )
 }
 
 fn remove_background(s: &mut Session, p: &Value) -> Result<Value> {
@@ -367,18 +432,18 @@ fn remove_background(s: &mut Session, p: &Value) -> Result<Value> {
     params.insert("prompt".into(), json!(REMOVE_BACKGROUND_PROMPT));
     params.entry("name").or_insert_with(|| json!("Remove Background"));
     let id = crate::active_layer_of(s).map_err(EngineError::Other)?.id;
-    run(s, &Value::Object(params), EditMode::PromptEdit, false, Some(id))
+    run(s, &Value::Object(params), Operation::Cutout(id))
 }
 
 fn prompt_edit(s: &mut Session, p: &Value) -> Result<Value> {
-    run(s, p, EditMode::PromptEdit, true, None)
+    run(s, p, Operation::Edit)
 }
 fn prompt_generate(s: &mut Session, p: &Value) -> Result<Value> {
     can_generate(s).map_err(EngineError::Other)?;
-    run(s, p, EditMode::PromptGenerate, true, None)
+    run(s, p, Operation::Generate)
 }
 fn generative_fill(s: &mut Session, p: &Value) -> Result<Value> {
-    run(s, p, EditMode::GenerativeFill, true, None)
+    run(s, p, Operation::Fill)
 }
 
 fn default_seed() -> u64 {
@@ -397,8 +462,11 @@ fn needs_translation(prompt: &str) -> bool {
     prompt.chars().any(|ch| ch.is_alphabetic() && !ch.is_ascii_alphabetic())
 }
 
-fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool, cutout: Option<photocraft_doc::LayerId>) -> Result<Value> {
-    let command = mode.command();
+fn run(s: &mut Session, p: &Value, operation: Operation) -> Result<Value> {
+    let mode = operation.mode();
+    let cutout = operation.cutout();
+    let translate_user_prompt = cutout.is_none();
+    let command = operation.command();
     if !p.is_object() {
         return Err(bad(command, "params must be an object"));
     }
@@ -420,6 +488,25 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool, 
     };
     let doc = &s.active().ok_or(EngineError::NoDocument)?.doc;
     supported_document(doc).map_err(EngineError::Other)?;
+    let resize = if matches!(operation, Operation::Edit) {
+        let plan = edit_preflight(s)?;
+        if p.get("resizeApproval").is_some() && p.get("resizeApproval") != plan.get("approval") {
+            return Err(bad(command, "The document, reference or AI settings changed; request a new resize approval"));
+        }
+        if plan["needsResizeApproval"] == true {
+            if p.get("resizeApproval") != plan.get("approval") {
+                return Err(bad(command, "Document resize approval is required; use edit.aiPreflight and confirm its approval token"));
+            }
+            let size = serde_json::from_value::<[u32; 2]>(plan["targetSize"].clone()).map_err(|e| bad(command, e.to_string()))?;
+            crate::image_cmds::check_resample_budget(command, doc, size[0], size[1], "")?;
+            Some(size)
+        } else {
+            None
+        }
+    } else {
+        None
+    };
+    let reference = if matches!(operation, Operation::Edit) { reference::current(s) } else { None };
     if cutout.is_none()
         && ((mode == EditMode::PromptGenerate && contextual_mode(s, s.active().ok_or(EngineError::NoDocument)?) != mode)
             || (mode != EditMode::PromptGenerate && edit_mode(doc) != mode))
@@ -434,6 +521,7 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool, 
     let model = s.prefs().integrations.comfyui_model;
     let settings = s.prefs().integrations.selected_settings();
     let fill_filter = fill::output_filter(s.prefs().general.image_interpolation);
+    let resize_filter = fill_filter;
     let cfg = p
         .get("cfg")
         .map_or(Some(settings.cfg), Value::as_f64)
@@ -471,12 +559,22 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool, 
     };
     let prompt = prompt.to_owned();
     let source = s.active().ok_or(EngineError::NoDocument)?.doc.clone();
-    let label = if cutout.is_some() { "Remove Background" } else { mode.label() };
+    let label = operation.label();
     crate::jobs::run(
         s,
         label,
         true,
         move |ctx| {
+            let source = if let Some([w, h]) = resize {
+                ctx.check()?;
+                ctx.progress(0.01, "Resizing document for AI editing");
+                let mut resized = (*source).clone();
+                crate::image_cmds::resample_doc(&mut resized, w, h, resize_filter);
+                ctx.check()?;
+                Arc::new(resized)
+            } else {
+                source
+            };
             let mut input = if let Some(id) = cutout { cutout::prepare(&source, id, ctx)? } else { prepare(&source, mode, ctx)? };
             if mode == EditMode::GenerativeFill {
                 input.region.filter = fill_filter;
@@ -490,6 +588,7 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool, 
             let text_encoder = backend.resolve_text_encoder(&endpoint, settings.text_encoder.as_deref(), &registered_encoders)?;
             let mut request = AiRequest {
                 image: input.image,
+                reference: reference.map(|r| r.image.clone()),
                 prompt: String::new(),
                 mode,
                 removal: mode == EditMode::GenerativeFill && prompt.trim().is_empty(),
@@ -527,6 +626,12 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool, 
             }
             ctx.check()?;
             request.prompt = shaped_prompt(mode, &prompt);
+            if request.reference.is_some() {
+                request.prompt = format!(
+                    "Edit <image1> according to the instruction below. <image2> is the reference image, to be used as specified by the instruction. Use the canvas size of <image1>.\n{}",
+                    request.prompt
+                );
+            }
             request.negative_prompt = negative;
             let generated = backend.generate(&request, ctx)?;
             let layer = if let Some(id) = cutout {
@@ -538,7 +643,7 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool, 
                 crate::ai_prompts::Entry { mode, regions: input.region.prompt_regions.clone(), original, translated, negative_original, negative_translated };
             let harmonize = (mode == EditMode::GenerativeFill)
                 .then(|| Arc::new(harmonize::Source::new(source.clone(), request.image.clone(), generated, input.region.clone(), layer.clone())));
-            let last = LastRun { source, request, region: input.region, name, result_layer: layer.id, result_revision: 0, prompt_entry, harmonize, cutout };
+            let last = LastRun { source, request, region: input.region, name, result_layer: layer.id, result_revision: 0, prompt_entry, harmonize, operation };
             Ok((layer, last))
         },
         move |s, (layer, last)| apply_result(s, layer, last, None, label),
@@ -565,7 +670,7 @@ fn regenerate(s: &mut Session, p: &Value) -> Result<Value> {
         true,
         move |ctx| {
             let generated = backend.generate(&last.request, ctx)?;
-            let layer = if let Some(id) = last.cutout {
+            let layer = if let Some(id) = last.operation.cutout() {
                 cutout::result(&last.source, id, &generated, &last.region, ctx)?
             } else {
                 result_layer(&last.source, &generated, &last.region, &last.name, last.request.mode, ctx)?
@@ -585,8 +690,21 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
     }
     let id = layer.id;
     let prompt_entry = last.prompt_entry.clone();
-    let cutout = last.cutout;
+    let cutout = last.operation.cutout();
+    let resized = if replace.is_none() && matches!(last.operation, Operation::Edit) && s.active().is_some_and(|st| st.doc.size != last.source.size) {
+        Some(last.source.clone())
+    } else {
+        None
+    };
+    if let (Some(source), Some(state)) = (&resized, s.active()) {
+        let sx = f64::from(source.size.width) / f64::from(state.doc.size.width.max(1));
+        let sy = f64::from(source.size.height) / f64::from(state.doc.size.height.max(1));
+        s.set_sampler_map(photocraft_geom::Affine { m: [sx, 0.0, 0.0, sy, 0.0, 0.0] });
+    }
     s.edit(label, move |doc, active| {
+        if let Some(resized) = resized {
+            *doc = (*resized).clone();
+        }
         let prompt_xmp =
             if replace.is_none() { Some(crate::ai_prompts::append(doc.metadata.xmp.as_deref(), &prompt_entry).map_err(EngineError::Other)?) } else { None };
         if let Some(target) = cutout {
@@ -615,7 +733,7 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
     last.result_layer = id;
     last.result_revision = st.revision;
     let bounds = last.region.bounds;
-    let result = json!({"layer":id.0,"mode":mode,"seed":last.request.seed,"steps":last.request.steps,"workingSize":[last.request.image.width,last.request.image.height],
+    let result = json!({"layer":id.0,"mode":mode,"operation":last.operation.name(),"seed":last.request.seed,"steps":last.request.steps,"workingSize":[last.request.image.width,last.request.image.height],
         "workingRect":[bounds.x0,bounds.y0,bounds.x1,bounds.y1],"contentSize":last.region.content_size});
     let doc_id = st.doc.id;
     if let Some(source) = &last.harmonize {
@@ -667,11 +785,17 @@ fn prepare(doc: &Document, mode: EditMode, ctx: &JobCtx) -> Result<Prepared> {
         }
         return Ok(Prepared { image: Rgba8Image::new(pw, ph), region: EditRegion::canvas(doc, [w, h]) });
     }
-    let scale = (MAX_WORKING_SIDE as f64 / doc.size.width.max(doc.size.height) as f64).min(1.0);
-    let w = (doc.size.width as f64 * scale).round().max(1.0) as u32;
-    let h = (doc.size.height as f64 * scale).round().max(1.0) as u32;
-    let pw = w.div_ceil(32) * 32;
-    let ph = h.div_ceil(32) * 32;
+    let frame = resolution::Budget::EDIT.plan([doc.size.width, doc.size.height], 0).ok_or_else(|| bad(mode.command(), "invalid edit dimensions"))?;
+    prepare_image(doc, frame.content, ctx)
+}
+
+fn prepare_image(doc: &Document, [w, h]: [u32; 2], ctx: &JobCtx) -> Result<Prepared> {
+    ctx.check()?;
+    supported_document(doc).map_err(EngineError::Other)?;
+    if !resolution::Budget::EDIT.accepts_content([w, h]) {
+        return Err(EngineError::Other("invalid AI input frame".into()));
+    }
+    let [pw, ph] = resolution::padded([w, h]).ok_or_else(|| EngineError::Other("invalid AI input dimensions".into()))?;
     let buf = photocraft_compose::render_reduced(doc, w, h);
     let transform = Transform::new(&crate::color_cmds::composite_profile(doc), Builtin::Srgb.profile(), Intent::RelativeColorimetric, true)
         .map_err(|e| EngineError::Other(e.to_string()))?;
@@ -685,11 +809,14 @@ fn prepare(doc: &Document, mode: EditMode, ctx: &JobCtx) -> Result<Prepared> {
             let mut converted = [0.0; 4];
             transform.convert_f32(rgba, 4, &mut converted, 4, true);
             let alpha = rgba.get(3).copied().unwrap_or(1.0).clamp(0.0, 1.0);
+            if !alpha.is_finite() {
+                return Err(EngineError::Other("invalid source alpha".into()));
+            }
             for (out, value) in pixel.iter_mut().take(3).zip(converted.iter()) {
-                *out = byte(*value * alpha + 1.0 - alpha);
+                *out = byte(*value);
             }
             if let Some(a) = pixel.get_mut(3) {
-                *a = 255;
+                *a = byte(alpha);
             }
         }
     }
@@ -706,7 +833,7 @@ fn result_layer(doc: &Document, image: &Rgba8Image, region: &EditRegion, name: &
         || h > MAX_GENERATION_SIDE
         || bounds.is_empty()
         || !doc.bounds().contains_rect(&bounds)
-        || (mode == EditMode::GenerativeFill && (region.mask.is_none() || w > MAX_WORKING_SIDE || h > MAX_WORKING_SIDE))
+        || (mode == EditMode::GenerativeFill && (region.mask.is_none() || !resolution::Budget::EDIT.accepts_content([w, h])))
     {
         return Err(EngineError::Other("invalid AI result geometry".into()));
     }
@@ -757,5 +884,7 @@ fn result_layer(doc: &Document, image: &Rgba8Image, region: &EditRegion, name: &
     Ok(layer)
 }
 
+#[cfg(test)]
+mod edit_tests;
 #[cfg(test)]
 mod tests;

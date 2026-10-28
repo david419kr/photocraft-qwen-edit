@@ -138,7 +138,12 @@ fn detected_encoders(info: &Value, registered: &[String]) -> Vec<String> {
 }
 
 /// Built from the user's 03 Edit / 04 MaskEdit graphs, with UI-only widgets removed.
+/// For a reference request, use `workflow_with_reference` with its uploaded filename.
 pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
+    workflow_with_reference(request, filename, None, job)
+}
+
+pub fn workflow_with_reference(request: &AiRequest, filename: &str, reference_filename: Option<&str>, job: &str) -> Value {
     let loader =
         json!({"class_type":"UNETLoader","inputs":{"unet_name":request.custom_model.as_deref().unwrap_or(request.model.filename()),"weight_dtype":"default"}});
     if request.mode == EditMode::PromptGenerate {
@@ -194,6 +199,23 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
             if let Some(inputs) = object.get_mut("64").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {
                 inputs.insert("images.image_2".into(), json!(["80", 0]));
             }
+        } else if request.image.pixels.as_chunks::<4>().0.iter().any(|p| p[3] < 255) {
+            // LoadImage's MASK is 1-alpha, and JoinImageWithAlpha inverts it internally.
+            object.insert("92".into(), json!({"class_type":"JoinImageWithAlpha","inputs":{"image":["78",0],"alpha":["78",1]}}));
+            if let Some(inputs) = object.get_mut("77").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {
+                inputs.insert("input".into(), json!(["92", 0]));
+            }
+        }
+        if !masked && let (Some(reference), Some(filename)) = (&request.reference, reference_filename) {
+            object.insert("93".into(), json!({"class_type":"LoadImage","inputs":{"image":filename}}));
+            let transparent = reference.pixels.as_chunks::<4>().0.iter().any(|p| p[3] < 255);
+            if transparent {
+                object.insert("94".into(), json!({"class_type":"JoinImageWithAlpha","inputs":{"image":["93",0],"alpha":["93",1]}}));
+            }
+            object.insert("95".into(),json!({"class_type":"ResizeImageMaskNode","inputs":{"input":[if transparent{"94"}else{"93"},0],"resize_type":"scale to multiple","resize_type.multiple":32,"scale_method":"bicubic"}}));
+            if let Some(inputs) = object.get_mut("64").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {
+                inputs.insert("images.image_2".into(), json!(["95", 0]));
+            }
         }
     }
     turbo_sampler(&mut graph, request);
@@ -214,6 +236,20 @@ fn turbo_sigmas(steps: u32) -> String {
         })
         .collect::<Vec<_>>()
         .join(",")
+}
+
+fn upload_image(client: &Client, base: &Url, image: &Rgba8Image, job: &str, name: &str, kind: &str) -> Result<String> {
+    let data = Image::from_raw(image.width, image.height, ChannelLayout::Rgba, SampleType::U8, image.pixels.clone()).map_err(failure)?;
+    let png = photocraft_codecs::encode(&data, Format::Png, &EncodeOptions::default()).map_err(failure)?;
+    let part = multipart::Part::bytes(png).file_name(name.to_owned()).mime_str("image/png").map_err(failure)?;
+    let form =
+        multipart::Form::new().part("image", part).text("type", kind.to_owned()).text("subfolder", format!("PhotoCraft/{job}")).text("overwrite", "false");
+    let url = base.join("upload/image").map_err(failure)?;
+    let upload = read_json(client.post(url).timeout(Duration::from_secs(30)).multipart(form).send().map_err(failure)?)?;
+    let name = upload.get("name").and_then(Value::as_str).filter(|s| !s.is_empty()).ok_or_else(|| failure("upload response has no image name"))?;
+    let folder = upload.get("subfolder").and_then(Value::as_str).unwrap_or_default();
+    let path = if folder.is_empty() { name.to_owned() } else { format!("{folder}/{name}") };
+    Ok(if kind == "temp" { format!("{path} [temp]") } else { path })
 }
 
 fn turbo_sampler(graph: &mut Value, request: &AiRequest) {
@@ -321,15 +357,21 @@ impl AiBackend for ComfyUi {
     }
 
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
+        if let Some(reference) = &request.reference
+            && (request.mode != EditMode::PromptEdit
+                || !crate::ai_cmds::resolution::Budget::REFERENCE.accepts_frame([reference.width, reference.height])
+                || reference.pixels.len() != reference.width as usize * reference.height as usize * 4)
+        {
+            return Err(failure("invalid reference image frame"));
+        }
         if request.mode == EditMode::GenerativeFill
             && (request.image.width == 0
                 || request.image.height == 0
-                || request.image.width > crate::ai_cmds::MAX_WORKING_SIDE
-                || request.image.height > crate::ai_cmds::MAX_WORKING_SIDE
+                || !crate::ai_cmds::resolution::Budget::EDIT.accepts_frame([request.image.width, request.image.height])
                 || !request.image.width.is_multiple_of(32)
                 || !request.image.height.is_multiple_of(32))
         {
-            return Err(failure("selection fill requires a nonempty 32-padded image with sides at most 1536 pixels"));
+            return Err(failure("selection fill requires a nonempty 32-padded image within the Qwen pixel budget"));
         }
         let base = endpoint_url(&request.endpoint)?;
         let route = |path: &str| base.join(path).map_err(failure);
@@ -342,22 +384,19 @@ impl AiBackend for ComfyUi {
         let filename = if request.mode == EditMode::PromptGenerate {
             String::new()
         } else {
-            let image = Image::from_raw(request.image.width, request.image.height, ChannelLayout::Rgba, SampleType::U8, request.image.pixels.clone())
-                .map_err(failure)?;
-            let png = photocraft_codecs::encode(&image, Format::Png, &EncodeOptions::default()).map_err(failure)?;
-            let part = multipart::Part::bytes(png).file_name("source.png").mime_str("image/png").map_err(failure)?;
-            let form =
-                multipart::Form::new().part("image", part).text("type", "input").text("subfolder", format!("PhotoCraft/{job}")).text("overwrite", "false");
             ctx.progress(0.1, "Uploading image to ComfyUI");
-            let upload =
-                read_json(client.post(route("upload/image")?).timeout(Duration::from_secs(30)).multipart(form).send().map_err(|e| failure(format!("{e:?}")))?)?;
-            let name = upload.get("name").and_then(Value::as_str).filter(|s| !s.is_empty()).ok_or_else(|| failure("upload response has no image name"))?;
-            let folder = upload.get("subfolder").and_then(Value::as_str).unwrap_or_default();
-            if folder.is_empty() { name.to_owned() } else { format!("{folder}/{name}") }
+            upload_image(&client, &base, &request.image, &job, "source.png", "input")?
+        };
+        let reference_filename = if let Some(reference) = &request.reference {
+            ctx.check()?;
+            ctx.progress(0.13, "Uploading reference image");
+            Some(upload_image(&client, &base, reference, &job, "reference.png", "temp")?)
+        } else {
+            None
         };
         ctx.check()?;
         ctx.progress(0.2, "Waiting for ComfyUI generation");
-        let mut prompt = workflow(request, &filename, &job);
+        let mut prompt = workflow_with_reference(request, &filename, reference_filename.as_deref(), &job);
         for (id, input, name) in models {
             let value = prompt.pointer_mut(&format!("/{id}/inputs/{input}")).ok_or_else(|| failure("workflow model input missing"))?;
             *value = Value::String(name);

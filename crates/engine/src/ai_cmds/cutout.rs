@@ -29,14 +29,15 @@ pub(super) fn prepare(doc: &Document, id: LayerId, ctx: &JobCtx) -> Result<Prepa
     let mut isolated = doc.clone();
     isolated.layers = vec![layer];
     isolated.selection = None;
-    super::prepare(&isolated, EditMode::PromptEdit, ctx)
+    let frame = resolution::Budget::EDIT.plan([doc.size.width, doc.size.height], 0).ok_or_else(|| EngineError::Other("invalid cutout frame".into()))?;
+    super::prepare_image(&isolated, frame.content, ctx)
 }
 
 pub(super) fn result(doc: &Document, id: LayerId, image: &Rgba8Image, region: &EditRegion, ctx: &JobCtx) -> Result<Layer> {
     ctx.check()?;
     let [w, h] = region.content_size;
     let bounds = region.bounds;
-    if w == 0 || h == 0 || w > MAX_WORKING_SIDE || h > MAX_WORKING_SIDE || bounds != doc.bounds() {
+    if !resolution::Budget::EDIT.accepts_content([w, h]) || bounds != doc.bounds() {
         return Err(EngineError::Other("Invalid cutout geometry".into()));
     }
     let (pw, ph) = (w.div_ceil(32) * 32, h.div_ceil(32) * 32);
@@ -63,13 +64,33 @@ pub(super) fn result(doc: &Document, id: LayerId, image: &Rgba8Image, region: &E
     if !any {
         return Err(EngineError::Other("Qwen returned an empty foreground mask; the original layer was preserved".into()));
     }
-    let surface = resize_surface_in_canvas(
+    let mut surface = resize_surface_in_canvas(
         &alpha,
         bounds.width() as f64 / f64::from(w),
         bounds.height() as f64 / f64::from(h),
         Resample::Bilinear,
         Rect::new(0, 0, w as i32, h as i32),
     );
+    // Model alpha is final opacity; a layer mask is relative to the native raster alpha.
+    // Dividing once avoids turning a preserved 50% transparent subject into 25% opacity.
+    let original = doc.layer(id).and_then(Layer::surface).ok_or(EngineError::NoLayer(id))?;
+    if original.format().alpha {
+        for y in bounds.y0..bounds.y1 {
+            ctx.check()?;
+            let row = Rect::new(bounds.x0, y, bounds.x1, y + 1);
+            let pixels = original.read_region(row);
+            let mut values = surface.read_region(row);
+            for (value, pixel) in values.iter_mut().zip(pixels.chunks_exact(original.channels())) {
+                let alpha = pixel.last().copied().unwrap_or(1.0);
+                if !alpha.is_finite() {
+                    return Err(EngineError::Other("invalid source alpha".into()));
+                }
+                let alpha = alpha.clamp(0.0, 1.0);
+                *value = if alpha > 0.0 { (*value / alpha).clamp(0.0, 1.0) } else { 0.0 };
+            }
+            surface.write_region(row, &values);
+        }
+    }
     let mask = crate::commands::mask_at_depth(LayerMask { surface, ..LayerMask::reveal_all() }, doc.depth)?;
     let mut layer = doc.layer(id).ok_or(EngineError::NoLayer(id))?.clone();
     layer.mask = Some(mask);
@@ -203,5 +224,39 @@ mod tests {
         assert!(s.execute(REMOVE_BACKGROUND_COMMAND, json!({})).is_err());
         assert_eq!(s.active().unwrap().revision, revision);
         assert!(s.active().unwrap().doc.layers[0].mask.is_none());
+    }
+
+    #[test]
+    fn rgba_input_and_relative_mask_preserve_existing_transparency() {
+        struct Alpha;
+        impl AiBackend for Alpha {
+            fn generate(&self, request: &AiRequest, _: &JobCtx) -> Result<Rgba8Image> {
+                assert_eq!(request.image.pixels[3], 128);
+                // Skin/white pixels must not have been flattened onto white before encoding.
+                assert!(request.image.pixels[0] < 150);
+                let mut output = request.image.clone();
+                for p in output.pixels.as_chunks_mut::<4>().0 {
+                    p.copy_from_slice(&[255, 0, 255, 128]);
+                }
+                Ok(output)
+            }
+        }
+        for depth in [8, 16, 32] {
+            let mut s = super::super::tests::session(depth);
+            s.edit("Translucent source", |doc, _| {
+                let surface = doc.layers[0].surface_mut().unwrap();
+                surface.write_region(Rect::new(0, 0, 17, 13), &[0.2, 0.3, 0.4, 0.5].repeat(17 * 13));
+                Ok(())
+            })
+            .unwrap();
+            let before = s.active().unwrap().doc.layers[0].surface().unwrap().pixel(4, 4);
+            s.ai_backend = Some(Arc::new(Alpha));
+            s.execute(REMOVE_BACKGROUND_COMMAND, json!({})).unwrap();
+            let l = &s.active().unwrap().doc.layers[0];
+            assert_eq!(l.surface().unwrap().pixel(4, 4), before);
+            assert_eq!(l.mask.as_ref().unwrap().value(4, 4), 1.0);
+            let result = photocraft_compose::render(&s.active().unwrap().doc, Rect::new(4, 4, 5, 5));
+            assert!((result.px[0][3] - before[3]).abs() < 1e-4);
+        }
     }
 }

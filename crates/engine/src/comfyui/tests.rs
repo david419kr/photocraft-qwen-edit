@@ -1,6 +1,50 @@
 use super::*;
 
 #[test]
+fn optional_reference_keeps_primary_geometry_and_reconstructs_reference_alpha() {
+    let mut input = request(EditMode::PromptEdit);
+    let no_ref = workflow(&input, "source.png", "plain");
+    assert!(no_ref.get("93").is_none());
+    input.reference = Some(std::sync::Arc::new(Rgba8Image::new(64, 32)));
+    let graph = workflow_with_reference(&input, "source.png", Some("PhotoCraft/test/reference.png [temp]"), "ref");
+    assert_eq!(graph["64"]["inputs"]["images.image_1"], json!(["77", 0]));
+    assert_eq!(graph["64"]["inputs"]["images.image_2"], json!(["95", 0]));
+    assert_eq!(graph["76"]["inputs"]["image"], json!(["77", 0]));
+    assert_eq!(graph["94"]["inputs"]["alpha"], json!(["93", 1]));
+    assert_eq!(graph["93"]["inputs"]["image"], "PhotoCraft/test/reference.png [temp]");
+    input.mode = EditMode::GenerativeFill;
+    let fill = workflow_with_reference(&input, "source.png", Some("ref.png"), "fill");
+    assert!(fill.get("93").is_none());
+    assert_eq!(fill["64"]["inputs"]["images.image_2"], json!(["80", 0]));
+}
+
+#[test]
+fn rgba_reconstruction_is_only_for_real_image_alpha_not_fill_guide() {
+    for model in [ComfyUiModel::QwenImage21, ComfyUiModel::TurboInt8] {
+        let mut input = request(EditMode::PromptEdit);
+        input.model = model;
+        input.image = Rgba8Image::new(32, 32);
+        for p in input.image.pixels.as_chunks_mut::<4>().0 {
+            p.copy_from_slice(&[90, 130, 180, 255]);
+        }
+        let opaque = workflow(&input, "opaque.png", "opaque");
+        assert!(opaque.get("92").is_none());
+        assert_eq!(opaque["77"]["inputs"]["input"], json!(["78", 0]));
+        input.image.pixels[3] = 128;
+        let rgba = workflow(&input, "rgba.png", "rgba");
+        assert_eq!(rgba["92"]["class_type"], "JoinImageWithAlpha");
+        assert_eq!(rgba["92"]["inputs"]["image"], json!(["78", 0]));
+        assert_eq!(rgba["92"]["inputs"]["alpha"], json!(["78", 1]));
+        assert_eq!(rgba["77"]["inputs"]["input"], json!(["92", 0]));
+        input.mode = EditMode::GenerativeFill;
+        let fill = workflow(&input, "guide.png", "fill");
+        assert!(fill.get("92").is_none());
+        assert_eq!(fill["77"]["inputs"]["input"], json!(["78", 0]));
+        assert_eq!(fill["79"]["inputs"]["mask"], json!(["78", 1]));
+    }
+}
+
+#[test]
 fn model_switches_release_both_backends_and_use_an_ordered_queue_marker() {
     use std::io::{BufRead, BufReader, Write};
     use std::net::TcpListener;
@@ -143,6 +187,7 @@ fn custom_checkpoint_reuses_all_qwen_workflows_without_prompt_changes() {
 
 fn request(mode: EditMode) -> AiRequest {
     AiRequest {
+        reference: None,
         model: ComfyUiModel::default(),
         custom_model: None,
         text_encoder: crate::ai_models::DEFAULT_ENCODER.into(),
@@ -210,7 +255,7 @@ fn exact_qwen_graph_and_mask_wiring() {
 #[test]
 fn masked_sampling_uses_qwen_latent_grid_for_standard_and_turbo_without_growing_selection() {
     for model in [ComfyUiModel::QwenImage21, ComfyUiModel::TurboInt8] {
-        for (w, h) in [(32, 64), (896, 896), (1536, 1024)] {
+        for (w, h) in [(32, 64), (896, 896), (1536, 1024), (2752, 1536), (2400, 1792)] {
             let mut input = request(EditMode::GenerativeFill);
             input.model = model;
             input.image.width = w;
@@ -238,7 +283,7 @@ fn masked_sampling_uses_qwen_latent_grid_for_standard_and_turbo_without_growing_
 
 #[test]
 fn masked_sampling_rejects_invalid_grid_before_contacting_the_server() {
-    for (width, height) in [(0, 32), (31, 32), (32, 33), (1568, 32), (u32::MAX, u32::MAX)] {
+    for (width, height) in [(0, 32), (31, 32), (32, 33), (4128, 32), (2080, 2080), (u32::MAX, u32::MAX)] {
         let mut input = request(EditMode::GenerativeFill);
         input.image.width = width;
         input.image.height = height;
@@ -366,8 +411,14 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
                 let filename = if probe == Some(false) { "missing.safetensors" } else { filename };
                 ("application/json", serde_json::to_vec(&json!({node:{"input":{"required":{input:[[format!("Qwen/{filename}")],{}]}}}})).unwrap())
             } else if path == "/upload/image" {
-                assert!(String::from_utf8_lossy(&body).contains("source.png"));
-                ("application/json", serde_json::to_vec(&json!({"name":"source.png","subfolder":"mock","type":"input"})).unwrap())
+                let text = String::from_utf8_lossy(&body);
+                if text.contains("reference.png") {
+                    assert!(text.contains("temp"));
+                    ("application/json", serde_json::to_vec(&json!({"name":"reference.png","subfolder":"mock","type":"temp"})).unwrap())
+                } else {
+                    assert!(text.contains("source.png"));
+                    ("application/json", serde_json::to_vec(&json!({"name":"source.png","subfolder":"mock","type":"input"})).unwrap())
+                }
             } else if path == "/prompt" {
                 let submitted: Value = serde_json::from_slice(&body).unwrap();
                 job = submitted["prompt_id"].as_str().unwrap().into();
@@ -376,6 +427,10 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
                     assert!(submitted["prompt"].get("78").is_none());
                 } else {
                     assert_eq!(submitted["prompt"]["64"]["inputs"]["prompt"], "plain prompt");
+                    if submitted["prompt"].get("93").is_some() {
+                        assert_eq!(submitted["prompt"]["93"]["inputs"]["image"], "mock/reference.png [temp]");
+                        assert_eq!(submitted["prompt"]["64"]["inputs"]["images.image_2"], json!(["95", 0]));
+                    }
                 }
                 assert_eq!(submitted["prompt"]["37"]["inputs"]["unet_name"], format!("Qwen/{}", selected.filename()));
                 assert_eq!(submitted["prompt"]["38"]["inputs"]["clip_name"], format!("Qwen/{}", selected.clip_filename()));
@@ -432,6 +487,19 @@ fn round_trip_through_a_mock_server_never_uses_a_real_model() {
     assert!(paths.len() >= 7);
     assert!(paths.iter().take(3).all(|path| path.starts_with("/object_info/")));
     assert!(paths.last().unwrap().starts_with("/view?"));
+}
+
+#[test]
+fn reference_round_trip_uploads_a_temporary_copy_without_changing_primary_output_size() {
+    let (endpoint, server) = mock_server(None, None);
+    let mut input = request(EditMode::PromptEdit);
+    input.endpoint = endpoint;
+    input.reference = Some(std::sync::Arc::new(Rgba8Image::new(64, 32)));
+    let output = ComfyUi::default().generate(&input, &JobCtx::new()).unwrap();
+    let paths = server.join().unwrap();
+    assert_eq!(paths.iter().filter(|p| p.as_str() == "/upload/image").count(), 2);
+    assert_eq!(output.width, 32);
+    assert_eq!(output.height, 32);
 }
 
 #[test]

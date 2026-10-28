@@ -47,6 +47,20 @@ fn fixed_size_off_canvas_selection_keeps_its_outline_but_limits_fill_to_canvas()
 }
 
 #[test]
+fn elongated_selections_keep_rectangular_context_and_cross_axis_margin() {
+    let canvas = Rect::new(0, 0, 4000, 4000);
+    for selected in [Rect::new(500, 1900, 2500, 2000), Rect::new(1900, 500, 2000, 2500)] {
+        let context = crop(selected, canvas);
+        assert!(canvas.contains_rect(&context));
+        assert!(context.contains_rect(&selected));
+        assert_ne!(context.width(), context.height());
+        assert!(context.width() > selected.width());
+        assert!(context.height() > selected.height());
+        assert!(context.width().max(context.height()) <= 4 * context.width().min(context.height()));
+    }
+}
+
+#[test]
 fn implicit_selected_background_uses_canvas_bounds_and_invalid_coverage_is_rejected() {
     let mut doc = document(2200, 1800, Rect::new(0, 0, 1, 1));
     let mut mask = Surface::with_default(gray_float(), &[1.0]);
@@ -200,12 +214,13 @@ fn tiny_and_disconnected_selections_survive_noninteger_reduction() {
     doc.selection = Some(mask);
     let input = prepare(&doc, &JobCtx::new()).unwrap();
     assert_eq!(input.region.bounds, doc.bounds());
-    assert_eq!(input.region.content_size, [1536, 1024]);
-    assert_eq!(input.image.height, 1024);
+    let [w, h] = input.region.content_size;
+    assert!(w > 2048 && h > 1024);
+    assert!(resolution::Budget::EDIT.accepts_frame([input.image.width, input.image.height]));
     for (x, y) in [(1, 1), (3001, 2001)] {
-        let mx = (x as f64 * 1536.0 / 3073.0).floor() as usize;
-        let my = (y as f64 * 1024.0 / 2049.0).floor() as usize;
-        assert_eq!(input.image.pixels[(my * 1536 + mx) * 4 + 3], 0);
+        let mx = (x as f64 * f64::from(w) / 3073.0).floor() as usize;
+        let my = (y as f64 * f64::from(h) / 2049.0).floor() as usize;
+        assert_eq!(input.image.pixels[(my * input.image.width as usize + mx) * 4 + 3], 0);
         assert_eq!(input.region.mask.as_ref().unwrap().sample_channel(x, y, 0), doc.selection.as_ref().unwrap().sample_channel(x, y, 0));
     }
     assert_eq!(input.region.prompt_regions, vec![crate::ai_prompts::Region::TopLeft]);
