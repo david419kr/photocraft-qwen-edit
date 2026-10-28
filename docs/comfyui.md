@@ -587,14 +587,18 @@ invalidate approval.
 Prompt Edit accepts one optional reference through the attachment button beside the
 prompt. Its thumbnail/X add no extra row. `edit.aiReference.set` accepts `{name,data}`
 (base64 file bytes, at most64MiB); `.clear` and `.info` manage the session attachment.
-The source is image1 and the independent, aspect-preserving reference is image2 (up
-to1024² padded pixels). Output dimensions follow image1. Reference content, alpha and
+The source is image1 and the independent, aspect-preserving reference is image2. The
+reference follows the same approximately 2K, aspect-aware padded-pixel budget as image1;
+smaller references are not enlarged. AVIF is supported alongside the other image formats.
+Output dimensions follow image1. Reference content, alpha and
 resolved settings are frozen for regeneration. Fill and background removal do not use
 this attachment. Closing a document releases its session cache; Comfy reference uploads
 use its temporary storage and annotated temp paths, rather than permanent input files.
 Server temp-directory lifetime applies; this is not an immediate remote-delete guarantee.
 
-The original document is never resized by Fill or background removal.
+The original document is never resized by Fill or background removal. Fill keeps square
+context through a 4:3 selection aspect ratio and uses rectangular context above it, subject
+to the canvas boundaries and minimum crop size.
 Empty-prompt removal may split into at most four independent selection groups. Native
 8-connected nonzero support includes even weak feather; nearby strokes and overlapping
 context crops merge. Dense or ambiguous masks and marginal context savings stay one

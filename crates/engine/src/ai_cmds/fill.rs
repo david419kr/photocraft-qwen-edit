@@ -75,7 +75,7 @@ fn crop(selection: Rect, canvas: Rect) -> Rect {
     let diameter = ((((w + h).powi(2) + 60.0 * w * h).sqrt() - w - h) / 2.0).round() as u32;
     let selected_side = selection.width().max(selection.height());
     let padding = (diameter / 2).saturating_mul(2);
-    let (width, height) = if selected_side <= selection.width().min(selection.height()).saturating_mul(2) {
+    let (width, height) = if u64::from(selected_side) * 3 <= u64::from(selection.width().min(selection.height())) * 4 {
         let side = selected_side.saturating_add(padding).max(MIN_CROP);
         (side, side)
     } else {
@@ -86,6 +86,14 @@ fn crop(selection: Rect, canvas: Rect) -> Rect {
         }
         if height > width.saturating_mul(4) {
             width = height.div_ceil(4);
+        }
+        // Minimum-size clamping can otherwise make an elongated tiny selection square.
+        if width == height {
+            if selection.width() > selection.height() {
+                width = width.saturating_add(1);
+            } else {
+                height = height.saturating_add(1);
+            }
         }
         (width, height)
     };

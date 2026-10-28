@@ -14,6 +14,9 @@ pub struct Budget {
 
 impl Budget {
     pub const EDIT: Self = Self { target_pixels: TARGET_PIXELS, max_pixels: MAX_PADDED_PIXELS, max_side: MAX_PADDED_SIDE };
+    /// User-attached reference images follow the same frame budget as the edited document.
+    pub const ATTACHED_REFERENCE: Self = Self::EDIT;
+    /// Smaller internal guidance frames remain independent of user-attached references.
     pub const REFERENCE: Self = Self { target_pixels: 1024 * 1024, max_pixels: 1024 * 1024, max_side: MAX_PADDED_SIDE };
 
     pub fn accepts_frame(self, [w, h]: [u32; 2]) -> bool {
@@ -131,5 +134,19 @@ mod tests {
         assert_eq!(Budget::REFERENCE.plan([64, 128], 0).unwrap().content, [64, 128]);
         let p = Budget::REFERENCE.plan([6000, 4000], 0).unwrap();
         assert!(Budget::REFERENCE.accepts_frame(p.padded));
+    }
+
+    #[test]
+    fn attached_reference_uses_edit_budget_without_changing_internal_guides() {
+        for size in [[2048, 2048], [2400, 1792], [2752, 1536], [1536, 2752], [17, 13]] {
+            let frame = Budget::ATTACHED_REFERENCE.plan(size, 0).unwrap();
+            assert_eq!(frame.content, size);
+            assert!(Budget::ATTACHED_REFERENCE.accepts_frame(frame.padded));
+        }
+        let large = Budget::ATTACHED_REFERENCE.plan([6000, 4000], 0).unwrap();
+        assert!(Budget::ATTACHED_REFERENCE.accepts_frame(large.padded));
+        assert!(u64::from(large.content[0]) * u64::from(large.content[1]) > 4_000_000);
+        assert!(!Budget::REFERENCE.accepts_frame([2048, 2048]));
+        assert!(Budget::REFERENCE.accepts_frame([1024, 1024]));
     }
 }

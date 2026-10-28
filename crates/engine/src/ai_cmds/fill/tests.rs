@@ -61,6 +61,30 @@ fn elongated_selections_keep_rectangular_context_and_cross_axis_margin() {
 }
 
 #[test]
+fn square_crop_includes_exact_four_by_three_but_not_one_pixel_beyond() {
+    let canvas = Rect::new(0, 0, 4000, 4000);
+    for (w, h, square) in [
+        (399, 300, true),
+        (400, 300, true),
+        (401, 300, false),
+        (300, 399, true),
+        (300, 400, true),
+        (300, 401, false),
+        (4, 3, true),
+        (5, 3, false),
+        (3, 4, true),
+        (3, 5, false),
+    ] {
+        let selected = Rect::from_xywh(1000, 1000, w, h);
+        let context = crop(selected, canvas);
+        assert_eq!(context.width() == context.height(), square, "selection {w}x{h}: {context:?}");
+        assert!(canvas.contains_rect(&context));
+        assert!(context.contains_rect(&selected));
+        assert!(context.width() > w && context.height() > h);
+    }
+}
+
+#[test]
 fn implicit_selected_background_uses_canvas_bounds_and_invalid_coverage_is_rejected() {
     let mut doc = document(2200, 1800, Rect::new(0, 0, 1, 1));
     let mut mask = Surface::with_default(gray_float(), &[1.0]);

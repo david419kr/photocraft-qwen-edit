@@ -85,6 +85,7 @@ fn optional_reference_keeps_primary_geometry_and_reconstructs_reference_alpha() 
     let graph = workflow_with_reference(&input, "source.png", Some("PhotoCraft/test/reference.png [temp]"), "ref");
     assert_eq!(graph["64"]["inputs"]["images.image_1"], json!(["77", 0]));
     assert_eq!(graph["64"]["inputs"]["images.image_2"], json!(["95", 0]));
+    assert_eq!(graph["64"]["inputs"]["resolution"], 0);
     assert_eq!(graph["76"]["inputs"]["image"], json!(["77", 0]));
     assert_eq!(graph["94"]["inputs"]["alpha"], json!(["93", 1]));
     assert_eq!(graph["93"]["inputs"]["image"], "PhotoCraft/test/reference.png [temp]");
@@ -621,12 +622,20 @@ fn reference_round_trip_uploads_a_temporary_copy_without_changing_primary_output
     let (endpoint, server) = mock_server(None, None);
     let mut input = request(EditMode::PromptEdit);
     input.endpoint = endpoint;
-    input.reference = Some(std::sync::Arc::new(Rgba8Image::new(64, 32)));
+    input.reference = Some(std::sync::Arc::new(Rgba8Image::new(2048, 2048)));
     let output = ComfyUi::default().generate(&input, &JobCtx::new()).unwrap();
     let paths = server.join().unwrap();
     assert_eq!(paths.iter().filter(|p| p.as_str() == "/upload/image").count(), 2);
     assert_eq!(output.width, 32);
     assert_eq!(output.height, 32);
+}
+
+#[test]
+fn internal_guide_keeps_its_smaller_frame_limit() {
+    let mut input = request(EditMode::PromptEdit);
+    input.reference = Some(std::sync::Arc::new(Rgba8Image::new(32, 32)));
+    input.guide = Some(std::sync::Arc::new(Rgba8Image::new(2048, 2048)));
+    assert!(ComfyUi::default().generate(&input, &JobCtx::new()).unwrap_err().to_string().contains("invalid reference image frame"));
 }
 
 #[test]

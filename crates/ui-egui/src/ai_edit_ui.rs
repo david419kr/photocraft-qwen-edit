@@ -15,7 +15,7 @@ pub fn intercept(app: &mut PhotocraftApp, command: &str, params: &Value) -> Opti
     }
     if command == reference::SET && params.get("data").is_none() {
         let doc = app.session.active()?.doc.id;
-        return Some(app.pick_file_bytes_filtered(&["png", "jpg", "jpeg", "webp", "tif", "tiff", "bmp", "psd"], move |app, name, bytes| {
+        return Some(app.pick_file_bytes_filtered(&["png", "jpg", "jpeg", "webp", "avif", "tif", "tiff", "bmp", "psd"], move |app, name, bytes| {
             if bytes.len() > reference::MAX_FILE_BYTES {
                 return Err("The reference image file is too large".into());
             }

@@ -49,6 +49,19 @@ fn references_are_frozen_for_reroll_and_do_not_edit_document_history() {
 }
 
 #[test]
+fn attached_reference_keeps_native_size_above_one_megapixel() {
+    let mut s = source(64, 64);
+    let pixels = [40, 80, 120, 255].repeat(1536 * 1024);
+    let image = photocraft_codecs::Image::from_u8(1536, 1024, photocraft_codecs::ChannelLayout::Rgba, pixels).unwrap();
+    let bytes = photocraft_codecs::encode(&image, photocraft_codecs::Format::Png, &Default::default()).unwrap();
+    let reply = s.execute(reference::SET, json!({"name":"reference.png","data":photocraft_paint::tile::b64_encode(&bytes)})).unwrap();
+    assert_eq!(reply["contentSize"], json!([1536, 1024]));
+    assert_eq!(reply["workingSize"], json!([1536, 1024]));
+    let reference = reference::current(&s).unwrap();
+    assert_eq!(reference.image.pixels[3], 255);
+}
+
+#[test]
 fn prompt_edit_resize_requires_exact_current_approval_and_commits_once() {
     let mut s = source(3000, 1800);
     let original = s.active().unwrap().doc.clone();

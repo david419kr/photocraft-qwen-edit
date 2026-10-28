@@ -44,7 +44,8 @@ fn set(s: &mut Session, p: &Value) -> Result<Value> {
                 .map_err(|e| EngineError::Other(e.to_string()))?
                 .document;
             supported_document(&doc).map_err(EngineError::Other)?;
-            let frame = resolution::Budget::REFERENCE.plan([doc.size.width, doc.size.height], 0).ok_or_else(|| bad(SET, "invalid reference dimensions"))?;
+            let frame =
+                resolution::Budget::ATTACHED_REFERENCE.plan([doc.size.width, doc.size.height], 0).ok_or_else(|| bad(SET, "invalid reference dimensions"))?;
             let input = prepare_image(&doc, frame.content, ctx)?;
             Ok(Arc::new(Reference { id: NEXT_ID.fetch_add(1, Ordering::Relaxed), name, image: Arc::new(input.image), content: frame.content }))
         },

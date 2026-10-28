@@ -404,9 +404,14 @@ impl AiBackend for ComfyUi {
     }
 
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
-        for reference in request.reference.iter().chain(request.guide.iter()) {
+        for (reference, budget) in request
+            .reference
+            .iter()
+            .map(|image| (image, crate::ai_cmds::resolution::Budget::ATTACHED_REFERENCE))
+            .chain(request.guide.iter().map(|image| (image, crate::ai_cmds::resolution::Budget::REFERENCE)))
+        {
             if request.mode != EditMode::PromptEdit
-                || !crate::ai_cmds::resolution::Budget::REFERENCE.accepts_frame([reference.width, reference.height])
+                || !budget.accepts_frame([reference.width, reference.height])
                 || reference.pixels.len() != reference.width as usize * reference.height as usize * 4
             {
                 return Err(failure("invalid reference image frame"));
