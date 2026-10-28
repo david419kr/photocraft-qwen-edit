@@ -2256,11 +2256,11 @@ fn unimplemented_preferences_are_hidden_from_the_dialog_fork_contract() {
     assert!(!prefs::is_hidden("enhancedControls.zoomWithTrackpadPinch"));
     assert!(!prefs::is_hidden("enhancedControls.touchGestures"));
     assert!(prefs::is_hidden("enhancedControls.scrubbySliderAcceleration"));
-    // Camera Raw Defaults shows "Open in Camera Raw" and the demosaic method so far.
+    // Upstream Camera Raw now applies these defaults when opening the document.
     assert!(has_visible_fields(&values, "rawDefaults"));
     assert!(!prefs::is_hidden("rawDefaults.openInCameraRaw"));
     assert!(!prefs::is_hidden("rawDefaults.demosaic"));
-    assert!(prefs::is_hidden("rawDefaults.applyAutoTone"));
+    assert!(!prefs::is_hidden("rawDefaults.applyAutoTone"));
     assert!(!prefs::is_hidden("general.autoShowHomeScreen"));
     assert!(!prefs::is_hidden("general.animatedZoom"));
     assert!(!prefs::is_hidden("general.zoomResizesWindows"));

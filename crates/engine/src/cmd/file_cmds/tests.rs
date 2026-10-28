@@ -1855,8 +1855,8 @@ fn folder_listing_takes_every_format_photocraft_opens() {
     for name in ["a.cr3", "IMG_0001.CR3", "a.orf", "a.raf", "a.rw2", "a.srf", "a.sr2"] {
         assert!(!super::openable_name(name), "{name}");
     }
-    // PhotoCraft does not read AVIF.
-    assert!(!super::openable_name("a.avif"));
+    // The fork enables AVIF decoding in native builds; minimal builds may omit it.
+    assert_eq!(super::openable_name("a.avif"), photocraft_codecs::Format::Avif.caps().read);
 }
 
 /// A batch over a folder processes PAM, PFM and DDS files instead of skipping them.

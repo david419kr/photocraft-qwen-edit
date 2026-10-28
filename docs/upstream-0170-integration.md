@@ -68,6 +68,10 @@ labels; all complete-language catalogs and Hindi Camera Raw labels are filled.
 Numeric AI controls retain accessible names. The native tool inventory includes
 Art History Brush, and the TIFF estimate assertion uses the fork’s preserved
 EXIF default when the metadata field is absent. No gate or threshold is relaxed.
+The folder-format regression checks AVIF against the codec's compiled read
+capability, covering both minimal builds and the fork's AVIF-enabled corpus path.
+The retained fork preferences regression also recognizes upstream's now-live
+Camera Raw auto-tone setting while still checking the Qwen integration controls.
 The UI inspection JSON is assembled in smaller parts rather than raising the
 macro recursion limit.
 
