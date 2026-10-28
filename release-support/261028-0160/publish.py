@@ -15,7 +15,7 @@ TREE = 'd54958575a54fe3afa4da26ee4f1bdf583ab0ccc'
 UPSTREAM = 'b1794c6e0608ccfc887213dcf58398977c5cb75e'
 TAG = '261028-0.16.0'
 TITLE = 'PhotoCraft Local Qwen AI - 261028 (upstream 0.16.0)'
-RUNS = [40601496265,40601496240,40601495910]
+RUNS = [40601496265,40601496240,40601495910,40601584345]
 EMBEDDED_TAG = '261026-0.16.0'
 
 
@@ -105,17 +105,14 @@ def main():
     if not exact:
         api('git/refs',{'ref':'refs/tags/'+TAG,'sha':SOURCE},'POST')
     assert api('git/ref/tags/'+TAG)['object'] == {'sha':SOURCE,'type':'commit','url':f'https://api.github.com/repos/{REPO}/git/commits/{SOURCE}'}
-    releases = api('releases?per_page=100')
-    matches = [r for r in releases if r['tag_name']==TAG]
-    assert len(matches)<=1
-    if matches:
-        release=matches[0]
-        assert release['draft'], 'Never overwrite an existing public release'
-    else:
-        release=api('releases',{'tag_name':TAG,'target_commitish':SOURCE,'name':TITLE,'body':notes,'draft':True,'prerelease':False},'POST')
+    release=api('releases/426118135')
+    assert release['draft'], 'Never overwrite an existing public release'
+    assert release['name']==TITLE and release['target_commitish']==SOURCE
+    assert not release['assets'], 'Inspect any unexpected partial upload before retrying'
+    assert release['tag_name']==TAG or release['tag_name'].startswith('untagged-')
     rid=release['id']
-    assert release['name']==TITLE
-    release = api(f'releases/{rid}', {'body':notes})
+    release = api(f'releases/{rid}', {'tag_name':TAG,'target_commitish':SOURCE,'name':TITLE,'body':notes,'draft':True,'prerelease':False})
+    assert release['tag_name']==TAG
     assert release['body'].replace('\r\n','\n').strip()==notes.strip()
     assert release['target_commitish']==SOURCE and not release['prerelease']
     present={a['name']:a for a in release['assets']}
@@ -127,7 +124,7 @@ def main():
     release=api(f'releases/{rid}')
     assert len(release['assets'])==3 and {a['name']:a['digest'] for a in release['assets']}==expected
     assert api('git/ref/heads/main')['object']['sha']==SOURCE
-    release=api(f'releases/{rid}',{'draft':False,'make_latest':'true'})
+    release=api(f'releases/{rid}',{'tag_name':TAG,'target_commitish':SOURCE,'name':TITLE,'body':notes,'draft':False,'prerelease':False,'make_latest':'true'})
     assert not release['draft'] and not release['prerelease']
     latest=api('releases/latest'); assert latest['id']==rid
     public=root/'public-download';public.mkdir(exist_ok=True)

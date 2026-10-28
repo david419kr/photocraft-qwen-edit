@@ -19,7 +19,7 @@ The in-app updater can discover this release via the fork's latest-release endpo
 - Portable ZIP SHA256: `a4046ece066202eca4a5ed0cde45a5718e1648bab122a69000ff3f84de8abcde` (downloaded candidate verified directly).
 - [PR-head CI](https://github.com/david419kr/photocraft-qwen-edit/actions/runs/40598594851) passed; the merged source has the identical tree.
 - [Merged-source CI](https://github.com/david419kr/photocraft-qwen-edit/actions/runs/40601496265): Ubuntu, Windows unit/doctests (9,245 passed), Clippy, corpus, no-HEIF and web/wasm size passed. Windows integration also passed (2,394 cases); the merged-source CI is fully successful. Fuzz was skipped by workflow policy.
-- [Candidate workflow](https://github.com/david419kr/photocraft-qwen-edit/actions/runs/40601584345): Windows build/package and early Clippy passed; Linux focused Qwen regressions are still running at publication preparation.
+- [Candidate workflow](https://github.com/david419kr/photocraft-qwen-edit/actions/runs/40601584345): Windows build/package and early Clippy passed; Linux focused Qwen regressions, formatting/architecture/WASM/scorecard and installer/package checks all passed.
 - Documentation and SonarCloud passed. FreeBSD was not run. Actual CUDA/VRAM/interactive hardware testing was not performed by this cloud task; the owner separately confirmed the ZIP works.
 
 The complete provenance and SHA256 sidecar are attached. Existing releases/assets are unchanged. Normal/Fixed Ratio selection clipping and existing outline movement behavior are preserved; no scorecard count or parity floor was raised.
