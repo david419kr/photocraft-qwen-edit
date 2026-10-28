@@ -2,7 +2,7 @@
 
 [한국어](README.ko.md) · [Download the portable release](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 
-> This branch prepares the **unreleased 0.16.0 candidate**. The release link above remains the approved 261024-0.15.1 build. Hardware results below describe earlier releases; this candidate still needs local acceptance. See [integration and validation](docs/upstream-0160-integration.md).
+> The current portable release is **[261028-0.16.0](https://github.com/david419kr/photocraft-qwen-edit/releases/tag/261028-0.16.0)**, based on PhotoCraft 0.16.0. Hardware results below describe earlier releases. See [integration and release validation](docs/upstream-0160-integration.md).
 
 A native Rust PhotoCraft fork focused on **Photoshop-style local generative editing** through ComfyUI and Qwen Image 2.1, with optional prompt translation, new result layers and saved prompt history. AVIF opening, saving and export are also included.
 
@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/4e88073f-a747-476b-ac18-3a0c43262e91
 
 This release targets **Windows x64 + NVIDIA RTX**, with a CUDA 13 compatible NVIDIA driver. Initial downloads need internet access; generation and translation then run locally.
 
-Tested on RTX 3090 (24 GB), RTX 4090 (24 GB), and RTX 4090 Laptop (16 GB).
+Earlier releases were tested on RTX 3090 (24 GB), RTX 4090 (24 GB), and RTX 4090 Laptop (16 GB).
 
 1. Extract the release ZIP into a writable folder. The short offline guide is `README.txt`.
 2. Run `install-qwen-image21.cmd`. **Press Enter to keep the displayed install folder.** All setup questions are collected at the start; installation then runs unattended.
@@ -75,7 +75,7 @@ With enough VRAM, the image and translation models stay resident between jobs. C
 
 Added features: local AI generation/edit/fill/removal, background removal, reroll, optional English translation, prompt metadata/history, model settings, Korean UI additions and AVIF read/write/export. Numeric-field wheel input and AI Ctrl+Enter remain available. Original upstream shortcuts and export defaults are retained. The last selected tool and foreground/background colors are restored across launches. AVIF export currently targets SDR; HDR preservation is outside the current scope.
 
-Tags use **`YYMMDD-upstreamVersion`** or **`YYMMDD-N-upstreamVersion`** for a same-day revision (N starts at 2). The date identifies this fork's build and the suffix identifies the upstream base. This candidate is **`261026-0.16.0`**, based on **PhotoCraft 0.16.0**, and retains persistent foreground/background colors. Setup pins official ComfyUI **v0.39.0** and the [resident Hy-MT2 fork](https://github.com/david419kr/ComfyUI-Hy-MT2).
+Tags use **`YYMMDD-upstreamVersion`** or **`YYMMDD-N-upstreamVersion`** for a same-day revision (N starts at 2). The date identifies this fork's build and the suffix identifies the upstream base. The current release is **`261028-0.16.0`**, based on **PhotoCraft 0.16.0**, and retains persistent foreground/background colors. Setup pins official ComfyUI **v0.39.0** and the [resident Hy-MT2 fork](https://github.com/david419kr/ComfyUI-Hy-MT2).
 
 [AI notes](docs/comfyui.md) · [Architecture](docs/architecture.md) · [Development](docs/development.md)
 

@@ -1,7 +1,12 @@
-# Upstream 0.16.0 candidate integration
+# Upstream 0.16.0 integration and release
 
-Status: validation in [draft PR #14](https://github.com/david419kr/photocraft-qwen-edit/pull/14). The PR records final candidate SHA, checks,
-Windows artifact and ZIP SHA256. Main merge, tags and publication are not authorized.
+Status: **[261028-0.16.0 is published](https://github.com/david419kr/photocraft-qwen-edit/releases/tag/261028-0.16.0)**
+(release ID `426118135`), with its corrected version metadata republished at
+`2026-10-28T00:41:08Z`. The owner approved publication and the metadata correction.
+The original integration and candidate evidence remain in
+[merged PR #14](https://github.com/david419kr/photocraft-qwen-edit/pull/14);
+[merged PR #15](https://github.com/david419kr/photocraft-qwen-edit/pull/15)
+records the current functional source, checks and release correction.
 
 ## Identity
 
@@ -11,8 +16,9 @@ Windows artifact and ZIP SHA256. Main merge, tags and publication are not author
 - Fork base `bf883b3d0f50049faa7b9ca6b5ba540d591350e1`, branch `update/0.16.0`.
   Merge `2774cb6a2ba4c7d4f101fe00b554a00349243f28` has the base and exact
   release SHA as its two parents; upstream main is not used.
-- Admission recheck found no open PR or 0.16.0 branch; latest published fork
-  release is `261024-0.15.1` (ID `422569915`). No tag movement/republication observed.
+- At the original admission recheck, no open PR or 0.16.0 branch was found and the
+  latest published fork release was `261024-0.15.1` (ID `422569915`). No tag movement
+  or republication was observed at that check.
 - Prior candidate PR #13 and its SHA/checks remain historical records; no results
   or artifacts are relabeled for this version. Saved cloud environment only.
 
@@ -54,7 +60,33 @@ FreeBSD remains manual-only and not required; no FreeBSD job is requested.
 Windows x64 MSVC candidate uses Rust 1.95.0 and `+crt-static`, AVIF, exact
 18-file/six-root-entry ZIP, licenses, PE imports/version and SHA256 validation.
 Artifact provenance records upstream release/tag/SHA, fork base and exact source
-SHA. Candidate identity is `261026-0.16.0`; no tag/public release is created.
+SHA. The original 0.16.0 candidate identity was `261026-0.16.0`, later published
+after approval. The current release is `261028-0.16.0` as recorded below.
+
+## Current published build and version correction
+
+- Functional source and release tag resolve to
+  `69e1a3330fc9db52191b341a705c60fd3c60dc00`. The tag was not moved for the correction.
+- [Merged-source CI](https://github.com/david419kr/photocraft-qwen-edit/actions/runs/40601496265)
+  and the [full Qwen gate](https://github.com/david419kr/photocraft-qwen-edit/actions/runs/40601584345)
+  passed. These results cover the unchanged functional source.
+- The initial 261028 upload incorrectly embedded the 261026 identity. It was
+  unpublished and replaced by a
+  [Windows-only metadata rebuild](https://github.com/david419kr/photocraft-qwen-edit/actions/runs/40608550862)
+  with explicit identity `261028-0.16.0`. Only the build workspace's
+  `release-tag.txt` and compile-time release/build-date metadata changed; the
+  override is recorded in provenance. App, README and portable package identities
+  now agree. Existing functional CI was reused rather than rerun.
+- [Publication verification](https://github.com/david419kr/photocraft-qwen-edit/actions/runs/40610198695)
+  passed: executable version, AMD64/static CRT, package/license contents, installer
+  replacement/rollback, updater comparison/asset selection and public downloads.
+  Equal installed/latest identities offer no update in the production comparison
+  check. The three incorrect assets remain preserved under
+  `superseded-embedded261026-` names with warning labels; do not install them.
+- [Corrected Windows portable ZIP](https://github.com/david419kr/photocraft-qwen-edit/releases/download/261028-0.16.0/photocraft-qwen-edit-261028-0.16.0-windows-x64.zip)
+  SHA256: `acc6ea321dabc107b3f6c1843c152cb3240a0cb0aae9201e40e5877cf13172af`.
+  The [release provenance](https://github.com/david419kr/photocraft-qwen-edit/releases/download/261028-0.16.0/release-provenance.json)
+  records old/new hashes, source/controller SHAs and the correction history.
 
 ## Validation compatibility repair
 
@@ -69,14 +101,19 @@ check. Rust 1.95 also reported `collapsible_match` for three mutable operations
 and `manual_range_contains` in a hue assertion. Evaluate mutable operations into
 named booleans before the condition (match guards cannot mutably borrow pattern
 bindings), and use a finite hue plus explicit range check. Keep `-D warnings` on
-both toolchains with no lint allowances. The failed runs remain evidence; repeat required gates at the repaired SHA.
+both toolchains with no lint allowances. The failed runs remain historical
+evidence; repaired-source validation is recorded in PR #14.
 
-## Hardware acceptance — not run
+## Hardware acceptance scope
 
-Cloud CPU/mock tests and Windows build do not establish actual CUDA, VRAM or UI
-acceptance. On separately authorized hardware with the exact ZIP/hash: sequential
+The owner reported the functional build working and approved publication, then
+explicitly approved the metadata-only rebuild. This does not establish new
+per-GPU measurements or confirmation of every scenario below. Cloud CPU/mock
+tests and the Windows build do not establish actual CUDA, VRAM or interactive UI
+acceptance; those checks were not run by the cloud task. The hardware scenario
+checklist remains: sequential
 Generate/Edit/Fill/Remove/background removal/reroll; source layers and Undo/Redo;
 cancellation and cross-document routing; model/TE/CFG/Turbo controls; translation
 and repeat-run residency/model-switch two-marker full-free; Korean UI and color
 persistence; PNG/AVIF/native history roundtrip, AVIF alpha and Metadata All/None;
-updater replacement/rollback. No user PC is used for this candidate task.
+updater replacement/rollback. No user PC was accessed by the cloud task.

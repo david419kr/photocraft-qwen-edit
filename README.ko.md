@@ -2,7 +2,7 @@
 
 [English](README.md) · [포터블 릴리스 다운로드](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 
-> 이 브랜치는 **미출시 0.16.0 후보**를 준비합니다. 위 릴리스 링크는 승인된 261024-0.15.1 배포판이며, 아래 하드웨어 테스트 기록은 이전 버전 기준입니다. 이 후보의 실제 로컬 검증은 아직 필요합니다. [통합·검증 기록](docs/upstream-0160-integration.md)을 참고하세요.
+> 현재 포터블 배포판은 PhotoCraft 0.16.0 기반 **[261028-0.16.0](https://github.com/david419kr/photocraft-qwen-edit/releases/tag/261028-0.16.0)**입니다. 아래 하드웨어 테스트 기록은 이전 배포판 기준입니다. [통합·배포 검증 기록](docs/upstream-0160-integration.md)을 참고하세요.
 
 PhotoCraft에 **포토샵 스타일의 로컬 생성형 AI 편집**을 추가한 fork입니다. ComfyUI의 Qwen Image 2.1을 사용하고 결과를 새 레이어로 추가하며, 프롬프트 기록도 저장합니다. AVIF 열기·저장·내보내기도 지원합니다. 아래는 이 fork의 추가 기능 안내입니다.
 
@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/b1adb633-e5b2-4351-b3a0-af4eb670736e
 
 전제 환경은 **Windows x64 + NVIDIA RTX GPU**, CUDA 13을 지원하는 NVIDIA 드라이버입니다. 최초 다운로드에는 인터넷이 필요하며, 이후 생성·번역은 로컬에서 실행됩니다.
 
-RTX 3090(24GB), RTX 4090(24GB), RTX 4090 Laptop(16GB)에서 테스트되었습니다.
+이전 배포판은 RTX 3090(24GB), RTX 4090(24GB), RTX 4090 Laptop(16GB)에서 테스트되었습니다.
 
 1. 릴리스 ZIP을 쓰기 가능한 폴더에 압축 해제합니다. 간단한 오프라인 안내는 `README.txt`에 있습니다.
 2. `install-qwen-image21.cmd`를 실행합니다. **기본 설치 경로를 쓰려면 Enter만 누르세요.** 경로·모델·번역 선택 질문은 처음에 모두 받으며, 이후에는 완료될 때까지 기다리면 됩니다.
@@ -76,7 +76,7 @@ VRAM 여유가 있으면 번역·이미지 모델을 유지해 반복 작업의 
 - AVIF 열기·저장·내보내기를 지원합니다. 현재 AVIF 내보내기는 SDR 중심이며 HDR 보존은 후순위입니다.
 - 숫자 입력칸 위의 휠 증감과 AI 입력칸의 Ctrl+Enter를 지원합니다.
 - 일반 단축키·내보내기 기본값은 원본 동작을 유지하며, 마지막 선택 도구와 전경색·배경색은 앱을 다시 실행해도 유지합니다.
-- 태그는 **`YYMMDD-원본버전`** 또는 같은 날 추가 빌드의 **`YYMMDD-N-원본버전`** 형식이며 N은 2부터 시작합니다. 날짜는 fork 빌드이고 마지막 버전은 대응 원본 버전입니다. 이번 후보는 **PhotoCraft 0.16.0** 기반 **`261026-0.16.0`**이며, 전경색·배경색의 재시작 복원을 유지합니다. ComfyUI 설치본은 **v0.39.0**으로 고정합니다.
+- 태그는 **`YYMMDD-원본버전`** 또는 같은 날 추가 빌드의 **`YYMMDD-N-원본버전`** 형식이며 N은 2부터 시작합니다. 날짜는 fork 빌드이고 마지막 버전은 대응 원본 버전입니다. 현재 배포판은 **PhotoCraft 0.16.0** 기반 **`261028-0.16.0`**이며, 전경색·배경색의 재시작 복원을 유지합니다. ComfyUI 설치본은 **v0.39.0**으로 고정합니다.
 
 [AI 구현 문서](docs/comfyui.md) · [원본 PhotoCraft](https://github.com/storytold/photocraft)
 
