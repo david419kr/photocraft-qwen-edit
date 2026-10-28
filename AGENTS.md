@@ -2,6 +2,13 @@
 
 PhotoCraft is an open-source, native, Photoshop-comparable image editor written in **Rust only** (no JavaScript or TypeScript). **No Tauri, Electron or webview shells:** the desktop app is native egui/eframe on wgpu, and the web build is the same Rust compiled to WebAssembly (trunk + wasm-bindgen). Never add Tauri (or any webview/JS UI framework) as a dependency, build step or packaging target. The product name is always written **PhotoCraft** (`{Function}Craft` in PascalCase, like its siblings ArtCraft, ArtCraftX, DesignCraft, VectorCraft, EffectCraft, FilmCraft, LightCraft, PdfCraft) in user-facing text: UI, window titles, About, installers, release names, docs prose. Machine names stay lowercase: crates (`photocraft-*`), binaries, file names, ids (`ai.storyteller.photocraft`). Standards and learnings shared across the crafting apps live in `../craftrules` (read its `README.md`; the repository is not public — outside contributors should ask a maintainer for the standards relevant to their change). Contribute reusable learnings there; shared Rust components live in [storytold/craft-libs](https://github.com/storytold/craft-libs) and are pinned by immutable git revision. UI libraries stay at L6. The goal is 1:1 Photoshop parity (same menus, shortcuts, behaviour and file fidelity) with better performance, and every feature drivable by agents. Read this file first, then `docs/`.
 
+## Mandatory build version/date check
+
+- **Before every PhotoCraft executable build, verify the effective version number and its date prefix.** This includes local development/test builds and executable refreshes. Compare the date with the user's current local date (use the active client timezone; currently Asia/Tokyo), using the existing `YYMMDD` format. If it is stale, update the actual version source before building; do not carry an older build date into a new executable.
+- Check version files, build-script inputs and environment overrides together so the displayed version uses the updated date. Keep the upstream semantic version accurate; checking only a file timestamp is insufficient.
+- After building, run the produced executable with `--version` and verify that its date matches the intended current build date. If an old date remains, fix the effective version input and rebuild before installing or reporting the executable as updated.
+- The user explicitly required this after a newly rebuilt executable still displayed the old `261026` date. This check is mandatory for subsequent builds.
+
 ## 1. Orientation (5 minutes)
 
 | Read | Why |
