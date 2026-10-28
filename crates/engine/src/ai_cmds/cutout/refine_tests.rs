@@ -14,7 +14,8 @@ fn real_turbo4_cutout_probe() {
     s.add_document(imported.document, None);
     s.execute("prefs.set", json!({"path":"integrations.comfyuiModel","value":"turboInt8"})).unwrap();
     let begin = std::time::Instant::now();
-    let result = s.execute(REMOVE_BACKGROUND_COMMAND, json!({"steps":4,"seed":2026102819u64,"experimentalRefine":true}));
+    let refine = std::env::var("PHOTOCRAFT_QWEN_PROBE_REFINE").map(|v| v.parse::<bool>().expect("true or false required")).unwrap_or(true);
+    let result = s.execute(REMOVE_BACKGROUND_COMMAND, json!({"steps":4,"seed":2026102819u64,"experimentalRefine":refine}));
     std::fs::create_dir_all(&output).unwrap();
     let report = json!({"seconds":begin.elapsed().as_secs_f64(),"steps":4,"result":result.as_ref().map_err(ToString::to_string)});
     std::fs::write(std::path::Path::new(&output).join("result.json"), serde_json::to_vec_pretty(&report).unwrap()).unwrap();

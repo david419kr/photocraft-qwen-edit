@@ -110,6 +110,8 @@ pub struct AiRequest {
     pub reference: Option<Arc<Rgba8Image>>,
     /// Internal crop-alpha guide; never populated from the user's Prompt Edit attachment.
     pub guide: Option<Arc<Rgba8Image>>,
+    /// Internal alpha refinement; conditioning RGB stays separate from the sampler state.
+    pub alpha_sampling: Option<Arc<AlphaSampling>>,
     pub prompt: String,
     pub mode: EditMode,
     /// Empty-prompt fill reconstructs background rather than editing existing content.
@@ -123,6 +125,14 @@ pub struct AiRequest {
     pub negative_prompt: String,
     pub turbo: bool,
     pub steps: u32,
+}
+
+#[derive(Clone)]
+pub struct AlphaSampling {
+    pub initial: Rgba8Image,
+    pub noise: Rgba8Image,
+    /// Fraction of the existing scheduler's tail, preserving the requested step count.
+    pub denoise: f64,
 }
 
 /// In-memory reroll snapshot; never serialised into document or preferences files.
@@ -607,6 +617,7 @@ fn run(s: &mut Session, p: &Value, operation: Operation) -> Result<Value> {
                 image: input.image,
                 reference: reference.map(|r| r.image.clone()),
                 guide: None,
+                alpha_sampling: None,
                 prompt: String::new(),
                 mode,
                 removal: mode == EditMode::GenerativeFill && prompt.trim().is_empty(),

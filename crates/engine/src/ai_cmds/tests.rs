@@ -743,6 +743,7 @@ fn fill_result_rejects_invalid_geometry_buffers_and_cancel() {
                 image: input.image.clone(),
                 reference: None,
                 guide: None,
+                alpha_sampling: None,
                 prompt: "".into(),
                 mode: EditMode::GenerativeFill,
                 removal: true,

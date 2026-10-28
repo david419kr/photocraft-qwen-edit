@@ -3,6 +3,9 @@ use super::*;
 use photocraft_algo::resample::{Resample, resize_surface_in_canvas};
 use photocraft_doc::{LayerContent, LayerId};
 mod refine;
+mod sampling;
+#[cfg(test)]
+mod sampling_tests;
 mod tiles;
 pub(super) fn generate(
     doc: &Document,

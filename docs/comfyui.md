@@ -692,13 +692,21 @@ Prompt Edit model transport mode.
 This AI quick action is separate from the classical local `layer.removeBackground` command.
 Normal removal keeps its single-pass path with a native2K budget; larger source layers
 retain their native pixels and receive a restored native-size mask. Multi-pass refinement
-is an explicit research option (`experimentalRefine:true` on `edit.aiRemoveBackground`),
+is an explicit opt-in API (`experimentalRefine:true` on `edit.aiRemoveBackground`),
 not a UI/default path. It uses a global input bounded to1024² pixels, followed by regions:1536px
 cores,256px context halos and128px core overlap. Every native core is included so a
 saturated coarse prediction cannot silently exclude a small part lost in downsampling.
 The same Qwen model receives each crop as image1, the complete source context as image2,
 and a crop-local grayscale coarse-alpha guide as image3. Each additional conditioning
 image is independently bounded to1024² padded pixels. Requests run sequentially.
+The sampler starts from original RGB plus the coarse alpha. Boundary bands, partial
+opacity and native RGB details select where noise is allowed; the original crop remains
+the conditioning input. Standard VAEEncode/JoinImageWithAlpha/SetLatentNoiseMask nodes
+are used. The existing scheduler's last25% is resampled to the requested step count.
+Pixels outside this work mask retain the original native coarse float alpha, avoiding
+both VAE spill and another PNG quantization. Cores with no work use the coarse alpha
+without another model request. Rectangular guides map the entire padded primary canvas;
+they are not independently repadded from a different content rectangle.
 Generated RGB is discarded. Only native alpha cores are merged with normalized overlap
 weights; original raster alpha is then accounted for once. Opposite0/1 classifications
 in an overlap cause a clear failure instead of a fabricated50% seam. Missing coverage,
@@ -712,7 +720,13 @@ overlap decisions occurred. Coarse full-image alpha MAE was0.676/255; the first 
 was3.781/255 versus0.831/255 for the same region restored from coarse alpha. After1,362
 opposite decisions were established from saved results, only the current owned request
 was cancelled; the final tile was never submitted and no document result was applied.
-This failed quality gate is why refinement remains opt-in for controlled research.
+After alpha anchoring and lower-noise refinement, the2400×1800 native-detail engine
+trial completed with consistent overlap. A12MP Turbo4 comparison still showed mixed
+benefits: the single pass took21.03s and alpha MAE0.719/255, while refinement took76.86s
+and MAE0.771/255; silhouette IoU improved0.9885→0.9903 and small-hole error fell.
+On2026-10-28 the user accepted the opt-in implementation as complete and closed further
+tile research. It remains outside the default UI path; no new model, dependency or
+automatic quality claim is introduced.
 
 The cutout instruction is category-independent: opaque foreground surfaces must stay opaque
 regardless of brightness, colour or reflection; background and holes must be transparent,

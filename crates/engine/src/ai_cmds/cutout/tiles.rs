@@ -63,7 +63,7 @@ impl Blend {
         Ok(Self { bounds, sum: vec![0.0; count], weight: vec![0.0; count], extremes: vec![0; count] })
     }
 
-    pub fn add(&mut self, tile: Tile, image: &Rgba8Image, ctx: &JobCtx) -> Result<()> {
+    pub fn add(&mut self, tile: Tile, image: &Rgba8Image, restore: Option<(&AlphaSampling, &Surface)>, ctx: &JobCtx) -> Result<()> {
         let Some([pw, ph]) = resolution::padded([tile.context.width(), tile.context.height()]) else {
             return Err(EngineError::Other("Invalid mask tile".into()));
         };
@@ -77,13 +77,28 @@ impl Blend {
         {
             return Err(EngineError::Other("Unexpected background-removal tile dimensions".into()));
         }
+        if restore.is_some_and(|(s, c)| s.noise.width != pw || s.noise.height != ph || s.noise.pixels.len() != image.pixels.len() || c.channels() != 1) {
+            return Err(EngineError::Other("Invalid alpha restoration geometry".into()));
+        }
         for y in tile.core.y0..tile.core.y1 {
             ctx.check()?;
+            let original = restore.map(|(_, coarse)| coarse.read_region(Rect::new(tile.core.x0, y, tile.core.x1, y + 1)));
             let wy = weight(y, tile.core.y0, tile.core.y1, self.bounds.y0, self.bounds.y1);
             for x in tile.core.x0..tile.core.x1 {
                 let index = (y - self.bounds.y0) as usize * self.bounds.width() as usize + (x - self.bounds.x0) as usize;
                 let input = ((y - tile.context.y0) as usize * pw as usize + (x - tile.context.x0) as usize) * 4 + 3;
-                let a = f32::from(*image.pixels.get(input).ok_or_else(|| EngineError::Other("Short mask tile".into()))?) / 255.0;
+                let a = if restore.is_some_and(|(sampling, _)| sampling.noise.pixels.get(input - 3) == Some(&0)) {
+                    original
+                        .as_ref()
+                        .and_then(|r| r.get((x - tile.core.x0) as usize))
+                        .copied()
+                        .ok_or_else(|| EngineError::Other("Missing original coarse alpha".into()))?
+                } else {
+                    f32::from(*image.pixels.get(input).ok_or_else(|| EngineError::Other("Short mask tile".into()))?) / 255.0
+                };
+                if !a.is_finite() {
+                    return Err(EngineError::Other("Invalid restored alpha".into()));
+                }
                 let w = wy * weight(x, tile.core.x0, tile.core.x1, self.bounds.x0, self.bounds.x1);
                 *self.sum.get_mut(index).ok_or_else(|| EngineError::Other("Invalid mask coverage".into()))? += w * a;
                 *self.weight.get_mut(index).ok_or_else(|| EngineError::Other("Invalid mask coverage".into()))? += w;

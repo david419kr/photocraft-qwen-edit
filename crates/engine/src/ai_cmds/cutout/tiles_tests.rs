@@ -42,7 +42,7 @@ fn normalized_overlap_has_no_holes_or_alpha_over_accumulation() {
     let mut blend = Blend::new(bounds).unwrap();
     let expected = |x: i32, _: i32| 60 + (x % 100) as u8;
     for tile in plan {
-        blend.add(tile, &image(tile, expected), &JobCtx::new()).unwrap();
+        blend.add(tile, &image(tile, expected), None, &JobCtx::new()).unwrap();
     }
     let mask = blend.finish(&JobCtx::new()).unwrap();
     for y in 0..33 {
@@ -58,18 +58,18 @@ fn opposite_classifications_missing_coverage_bad_buffers_and_cancel_never_produc
     let tiles = plan(bounds).unwrap();
     let mut blend = Blend::new(bounds).unwrap();
     for (i, tile) in tiles.iter().enumerate() {
-        blend.add(*tile, &image(*tile, |_, _| if i == 0 { 0 } else { 255 }), &JobCtx::new()).unwrap();
+        blend.add(*tile, &image(*tile, |_, _| if i == 0 { 0 } else { 255 }), None, &JobCtx::new()).unwrap();
     }
     assert!(blend.finish(&JobCtx::new()).unwrap_err().to_string().contains("disagree"));
     let mut blend = Blend::new(bounds).unwrap();
-    blend.add(tiles[0], &image(tiles[0], |_, _| 128), &JobCtx::new()).unwrap();
+    blend.add(tiles[0], &image(tiles[0], |_, _| 128), None, &JobCtx::new()).unwrap();
     assert!(blend.finish(&JobCtx::new()).unwrap_err().to_string().contains("cover"));
     let mut blend = Blend::new(bounds).unwrap();
     let mut bad = image(tiles[0], |_, _| 128);
     bad.pixels.pop();
-    assert!(blend.add(tiles[0], &bad, &JobCtx::new()).is_err());
+    assert!(blend.add(tiles[0], &bad, None, &JobCtx::new()).is_err());
     let ctx = JobCtx::new();
     ctx.cancel();
-    assert!(blend.add(tiles[0], &image(tiles[0], |_, _| 128), &ctx).is_err());
+    assert!(blend.add(tiles[0], &image(tiles[0], |_, _| 128), None, &ctx).is_err());
     assert!(blend.finish(&ctx).is_err());
 }

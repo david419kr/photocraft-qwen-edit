@@ -2,9 +2,9 @@
 
 > 작성일: 2026-10-28 · 설계 v1 · 기준 코드: `665fa4eb0029e07ccd02620540f47952edc44f40`
 >
-> 상태: **구현 전 통합 설계**. 이미 구현된 배경 제거의 alpha-only 적용과 범용 프롬프트를 기준으로, 후속 Prompt Edit·Generative Fill·고해상도 배경 제거 요구사항을 통합한다. 이 문서의 작성은 새 기능 구현 완료를 뜻하지 않는다.
+> 상태: **통합 구현 및 검증 기록**. Prompt Edit·Generative Fill 개선을 적용했다. 2026-10-28 사용자 결정으로 Qwen 타일링 배경 제거는 현재 옵셔널 API 구현을 완료 범위로 확정하며, 추가 탐구와 자동 활성화를 진행하지 않는다.
 
-> 구현 진행: 공통 frame budget, 실제 RGBA 입력, 독립 cutout operation, 상대 alpha mask, 단일 Fill의 rectangular context, 참조1장 UI/snapshot 및 승인 resize의 atomic commit을 구현했다. 빈 prompt의 독립 영역 분할·단일 레이어 합성·고정 입력 재생성·crop별 Poisson도 연결했다. 고해상도 타일 조립·취소·상한의 fake 검사는 통과했지만2065² 실기에서 경계 이동/겹침 판정 충돌이 확인돼 **기본 경로에 활성화하지 않는다**. 제어된 연구용 `experimentalRefine:true` 호출로만 남긴다. 전체 실기·성능/완료 검증은 아직 진행 중이며 이 문서 전체의 완료를 뜻하지 않는다.
+> 구현: 공통 frame budget·RGBA·참조1장·승인 resize의 atomic commit, variable crop·독립 Remove 그룹·고정 입력 재생성·crop별 Poisson을 연결했다. 타일링은 `experimentalRefine:true`로만 호출하며 기본 UI는 단일 경로다. 초기 alpha를 sampler에 고정하고 낮은 노이즈로 경계·세부 구조만 정제하며, 작업 범위 밖 native coarse alpha와 원본 raster를 보존한다. 품질 이득과 비용이 사례별로 달라 자동 적용하지 않는다. 아래 검증 매트릭스는 설계·회귀 기준이며 모든 실제 이미지의 화질을 보증하지 않는다.
 
 ## 1. 목표와 개발 원칙
 
@@ -399,6 +399,8 @@ fake backend는 요청 입력/기하/guide/참조와 의도적으로 다른 gene
 
 ## 14. 구현 전 확정/검증할 결정 목록
 
+아래는 설계 당시의 검토 목록이다. 최종 적용 범위와 타일링 탐구 종료 결정은16절을 따른다. 미검증 재질·환경은 품질 보증의 한계로 기록하며, 추가 탐구 작업으로 계속 진행하지 않는다.
+
 1. 극단 비율의 지원 경계와 추가 model padding/안내 정책.
 2. reference1MP·side4096·Fill4그룹·cutout16타일·halo/core/stride 초기값의 실제 적합성.
 3. coarse 결과의 경계 외 미세구조를 놓치지 않는 정제 영역 계획과 상한 초과 처리.
@@ -421,3 +423,14 @@ fake backend는 요청 입력/기하/guide/참조와 의도적으로 다른 gene
 현재 제품 경로는 [ComfyUI 연동 문서](comfyui.md)를 참조한다. 로컬 비교/역분석/원시 출력/빌드 기록은 gitignored `plan/2026-10-28-background-removal/`와 검토안 `plan/2026-10-28-qwen-edit-expansion-review/`에 별도 보관한다.
 
 각 구현 단계 완료 보고에는 변경 파일·설계 결정·호출 수/크기·fake 테스트·실기 조건/결과·미검증 사항·회귀 여부를 포함한다. 단순 세션 생성과 실제 연산, 자동화 합격과 화질 합격, 원본 픽셀 보존과 완벽한 mask 추정을 각각 구분한다.
+
+## 16. 확정된 구현 범위와 검증 결과
+
+- **기본 기능:** 공통 native2K 면적/32padding 정책, 실제 RGBA 운반, 참조1장과 snapshot 수명, 사용자 승인 document resize·단일 Undo·실패 복구, 선택 영역 밖 보존, 독립 Remove 그룹의 원자적 단일 레이어, frozen reroll 및 영역별 수동 Poisson.
+- **옵셔널 타일링 완료:** `edit.aiRemoveBackground`의 `experimentalRefine:true` 호출만 사용한다. 추가 UI 설정·가중치·custom node는 없다. alpha 초기 latent와 경계/부분 opacity/RGB detail work mask를 사용하고 scheduler의 마지막25% 구간에서 지정한 step 수로 정제한다. 타일의 작업 범위 밖은 native coarse float alpha를 복원하며, RGB는 항상 원본이다. guide는 padding을 포함한 전체 frame 좌표를 유지한다. 겹침의 반대 판정·coverage 누락·부분 오류는 전체 결과 적용을 막는다.
+- **4090 실기:** 네이티브2400×1800 시료에서 엔진→Comfy→단일 mask 적용이52.86초에 성공했다. 같은 coarse 결과 대비 MAE1.332→1.177/255, IoU0.9850→0.9895, 가는 선 회수율93.74→95.77%, 작은 구멍 주변 MAE5.50→2.24였다. 단순512px 확대본 대신 원래 해상도에서 그린 구조로 검사했다.
+- **12MP 비교:** 같은 원본/seed/Turbo4에서 기본 단일 경로21.03초·MAE0.719/255·IoU0.9885, 옵셔널 경로76.86초·MAE0.771/255·IoU0.9903이었다. 가는 선 회수율95.64→96.20%, 작은 구멍 주변 MAE4.75→2.69로 개선됐지만 평균 오차와 시간은 단일 경로가 유리했다. 이 결과를 일반적 품질 우열로 확대하지 않는다.
+- **검증:** 최종 변경분 engine2588 tests, AI82/Comfy22 포함; engine/UI all-target Clippy, fmt, layers, wasm 및 adversarial panic hunt 통과. 앞선 UI4016 tests와 한국어 native/offscreen 참조·resize 승인/취소 시각 검증도 기록했다.
+- **범위 종료:** 사용자 요청에 따라 타일 품질의 추가 탐구·새 생성 비교·자동 기본 경로 전환을 종료한다. 실제 머리카락·유리·연기·모든 모델/장치에서의 개선 보증은 하지 않는다. 단일 경로와 옵셔널 경로의 선택은 그대로 유지한다. Adobe 로컬 모델 연구/제품 연결은 별도 작업이다.
+
+원시 근거는 local `plan/qwen-implementation/`의 gates JSON, `nvidia-native-detail`, `nvidia-pipeline`, `nvidia-12mp` 및 native UI 캡처에 있다. 테스트 이미지·원시 출력은 저장소에 배포하지 않는다.

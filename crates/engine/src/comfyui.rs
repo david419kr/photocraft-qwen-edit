@@ -148,6 +148,18 @@ pub fn workflow_with_reference(request: &AiRequest, filename: &str, reference_fi
 }
 
 pub fn workflow_with_references(request: &AiRequest, filename: &str, reference_filename: Option<&str>, guide_filename: Option<&str>, job: &str) -> Value {
+    workflow_with_sampling(request, filename, reference_filename, guide_filename, None, job)
+}
+
+/// Uploaded conditioning paths plus the initial-RGBA/noise pair for alpha refinement.
+pub fn workflow_with_sampling(
+    request: &AiRequest,
+    filename: &str,
+    reference_filename: Option<&str>,
+    guide_filename: Option<&str>,
+    sampling_files: Option<(&str, &str)>,
+    job: &str,
+) -> Value {
     let loader =
         json!({"class_type":"UNETLoader","inputs":{"unet_name":request.custom_model.as_deref().unwrap_or(request.model.filename()),"weight_dtype":"default"}});
     if request.mode == EditMode::PromptGenerate {
@@ -230,6 +242,21 @@ pub fn workflow_with_references(request: &AiRequest, filename: &str, reference_f
                 inputs.insert("images.image_3".into(), json!(["96", 0]));
             }
         }
+        if !masked && let (Some(sampling), Some((initial, noise))) = (&request.alpha_sampling, sampling_files) {
+            object.insert("97".into(), json!({"class_type":"LoadImage","inputs":{"image":initial}}));
+            object.insert("98".into(), json!({"class_type":"JoinImageWithAlpha","inputs":{"image":["97",0],"alpha":["97",1]}}));
+            object.insert("83".into(), json!({"class_type":"VAEEncode","inputs":{"pixels":["98",0],"vae":["39",0]}}));
+            object.insert("99".into(), json!({"class_type":"LoadImage","inputs":{"image":noise}}));
+            object.insert("100".into(),json!({"class_type":"ImageScale","inputs":{"image":["99",0],"upscale_method":"area","width":(request.image.width/16).max(1),"height":(request.image.height/16).max(1),"crop":"disabled"}}));
+            object.insert("101".into(), json!({"class_type":"ImageToMask","inputs":{"image":["100",0],"channel":"red"}}));
+            object.insert("102".into(), json!({"class_type":"ThresholdMask","inputs":{"mask":["101",0],"value":0.0}}));
+            object.insert("87".into(), json!({"class_type":"SetLatentNoiseMask","inputs":{"samples":["83",0],"mask":["102",0]}}));
+            object.remove("62");
+            if let Some(inputs) = object.get_mut("3").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {
+                inputs.insert("latent_image".into(), json!(["87", 0]));
+                inputs.insert("denoise".into(), json!(sampling.denoise));
+            }
+        }
     }
     turbo_sampler(&mut graph, request);
     graph
@@ -237,11 +264,16 @@ pub fn workflow_with_references(request: &AiRequest, filename: &str, reference_f
 
 /// Resample the checkpoint's published eight-step curve for explicit user overrides.
 fn turbo_sigmas(steps: u32) -> String {
+    turbo_sigmas_tail(steps, 1.0)
+}
+
+fn turbo_sigmas_tail(steps: u32, denoise: f64) -> String {
     const SIGMAS: [f64; 9] = [1.0, 0.978453, 0.95418, 0.926626, 0.89508, 0.845148, 0.704534, 0.414568, 0.0];
     let steps = steps.clamp(1, crate::ai_cmds::MAX_STEPS);
     (0..=steps)
         .map(|i| {
-            let position = f64::from(i) * 8.0 / f64::from(steps);
+            let start_position = 8.0 * (1.0 - denoise.clamp(0.0, 1.0));
+            let position = start_position + f64::from(i) * (8.0 - start_position) / f64::from(steps);
             let index = position.floor() as usize;
             let start = SIGMAS.get(index).copied().unwrap_or(0.0);
             let end = SIGMAS.get(index.saturating_add(1)).copied().unwrap_or(start);
@@ -272,7 +304,8 @@ fn turbo_sampler(graph: &mut Value, request: &AiRequest) {
     let Some(inputs) = graph.get("3").and_then(|node| node.get("inputs")).and_then(Value::as_object).cloned() else { return };
     let Some(nodes) = graph.as_object_mut() else { return };
     nodes.insert("90".into(), json!({"class_type":"KSamplerSelect","inputs":{"sampler_name":"euler"}}));
-    nodes.insert("91".into(), json!({"class_type":"ManualSigmas","inputs":{"sigmas":turbo_sigmas(request.steps)}}));
+    let sigmas = request.alpha_sampling.as_ref().map_or_else(|| turbo_sigmas(request.steps), |s| turbo_sigmas_tail(request.steps, s.denoise));
+    nodes.insert("91".into(), json!({"class_type":"ManualSigmas","inputs":{"sigmas":sigmas}}));
     nodes.insert(
         "3".into(),
         json!({"class_type":"SamplerCustom","inputs":{
@@ -381,6 +414,29 @@ impl AiBackend for ComfyUi {
         if request.guide.is_some() && request.reference.is_none() {
             return Err(failure("a refinement guide requires global context"));
         }
+        if let Some(sampling) = &request.alpha_sampling {
+            if request.mode != EditMode::PromptEdit
+                || request.reference.is_none()
+                || request.guide.is_none()
+                || !sampling.denoise.is_finite()
+                || sampling.denoise <= 0.0
+                || sampling.denoise > 1.0
+                || !crate::ai_cmds::resolution::Budget::EDIT.accepts_frame([request.image.width, request.image.height])
+            {
+                return Err(failure("invalid alpha sampler configuration"));
+            }
+            for image in [&sampling.initial, &sampling.noise] {
+                if image.width != request.image.width
+                    || image.height != request.image.height
+                    || image.pixels.len() != image.width as usize * image.height as usize * 4
+                {
+                    return Err(failure("alpha sampler images must match the primary frame"));
+                }
+            }
+            if sampling.noise.pixels.as_chunks::<4>().0.iter().any(|p| p[0] != p[1] || p[1] != p[2] || p[3] != 255) {
+                return Err(failure("alpha sampling coverage must be opaque grayscale"));
+            }
+        }
         if request.mode == EditMode::GenerativeFill
             && (request.image.width == 0
                 || request.image.height == 0
@@ -417,9 +473,25 @@ impl AiBackend for ComfyUi {
         } else {
             None
         };
+        let sampling_files = if let Some(sampling) = &request.alpha_sampling {
+            ctx.check()?;
+            let initial = upload_image(&client, &base, &sampling.initial, &job, "initial.png", "temp")?;
+            ctx.check()?;
+            let noise = upload_image(&client, &base, &sampling.noise, &job, "noise.png", "temp")?;
+            Some((initial, noise))
+        } else {
+            None
+        };
         ctx.check()?;
         ctx.progress(0.2, "Waiting for ComfyUI generation");
-        let mut prompt = workflow_with_references(request, &filename, reference_filename.as_deref(), guide_filename.as_deref(), &job);
+        let mut prompt = workflow_with_sampling(
+            request,
+            &filename,
+            reference_filename.as_deref(),
+            guide_filename.as_deref(),
+            sampling_files.as_ref().map(|(a, b)| (a.as_str(), b.as_str())),
+            &job,
+        );
         for (id, input, name) in models {
             let value = prompt.pointer_mut(&format!("/{id}/inputs/{input}")).ok_or_else(|| failure("workflow model input missing"))?;
             *value = Value::String(name);

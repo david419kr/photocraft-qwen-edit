@@ -1,5 +1,81 @@
 use super::*;
 
+fn alpha_request() -> AiRequest {
+    let mut r = request(EditMode::PromptEdit);
+    r.reference = Some(std::sync::Arc::new(Rgba8Image::new(64, 32)));
+    r.guide = Some(std::sync::Arc::new(Rgba8Image { width: 32, height: 32, pixels: vec![255; 32 * 32 * 4] }));
+    let mut initial = r.image.clone();
+    for p in initial.pixels.as_chunks_mut::<4>().0 {
+        p.copy_from_slice(&[80, 90, 100, 128]);
+    }
+    let mut noise = initial.clone();
+    for p in noise.pixels.as_chunks_mut::<4>().0 {
+        p.copy_from_slice(&[0, 0, 0, 255]);
+    }
+    noise.pixels[0..4].copy_from_slice(&[255; 4]);
+    r.alpha_sampling = Some(std::sync::Arc::new(crate::ai_cmds::AlphaSampling { initial, noise, denoise: 0.25 }));
+    r
+}
+
+#[test]
+fn alpha_sampling_anchors_rgba_without_changing_rgb_conditioning_or_requested_step_count() {
+    for model in [ComfyUiModel::QwenImage21, ComfyUiModel::TurboInt8] {
+        let mut r = alpha_request();
+        r.model = model;
+        r.steps = 4;
+        let g = workflow_with_sampling(
+            &r,
+            "source.png",
+            Some("context.png [temp]"),
+            Some("guide.png [temp]"),
+            Some(("initial.png [temp]", "noise.png [temp]")),
+            "alpha",
+        );
+        assert_eq!(g["64"]["inputs"]["images.image_1"], json!(["77", 0]));
+        assert_eq!(g["3"]["inputs"]["latent_image"], json!(["87", 0]));
+        assert_eq!(g["98"]["inputs"]["alpha"], json!(["97", 1]));
+        assert_eq!(g["83"]["inputs"]["pixels"], json!(["98", 0]));
+        assert_eq!(g["100"]["inputs"]["upscale_method"], "area");
+        assert_eq!(g["100"]["inputs"]["width"], 2);
+        assert_eq!(g["102"]["inputs"]["value"], 0.0);
+        if model.is_turbo() {
+            assert_eq!(g["91"]["inputs"]["sigmas"], "0.704534,0.559551,0.414568,0.207284,0.000000");
+        } else {
+            assert_eq!(g["3"]["inputs"]["steps"], 4);
+            assert_eq!(g["3"]["inputs"]["denoise"], 0.25);
+        }
+        r.alpha_sampling = None;
+        let plain = workflow_with_references(&r, "source.png", Some("context.png"), Some("guide.png"), "plain");
+        assert!(plain.get("97").is_none());
+    }
+}
+
+#[test]
+fn alpha_sampling_uploads_only_owned_temp_inputs_and_rejects_bad_state_before_network() {
+    let (endpoint, server) = mock_server(None, None);
+    let mut r = alpha_request();
+    r.endpoint = endpoint;
+    let output = ComfyUi::default().generate(&r, &JobCtx::new()).unwrap();
+    let paths = server.join().unwrap();
+    assert_eq!(paths.iter().filter(|p| p.as_str() == "/upload/image").count(), 5);
+    assert_eq!([output.width, output.height], [32, 32]);
+    r.endpoint = "http://127.0.0.1:1".into();
+    for value in [f64::NAN, f64::INFINITY, 0.0, -0.1, 1.1] {
+        let mut bad = r.clone();
+        std::sync::Arc::make_mut(bad.alpha_sampling.as_mut().unwrap()).denoise = value;
+        assert!(ComfyUi::default().generate(&bad, &JobCtx::new()).unwrap_err().to_string().contains("alpha sampler"));
+    }
+    let mut bad = r.clone();
+    std::sync::Arc::make_mut(bad.alpha_sampling.as_mut().unwrap()).noise.pixels.pop();
+    assert!(ComfyUi::default().generate(&bad, &JobCtx::new()).is_err());
+    let mut bad = r.clone();
+    bad.guide = None;
+    assert!(ComfyUi::default().generate(&bad, &JobCtx::new()).is_err());
+    let mut bad = r;
+    std::sync::Arc::make_mut(bad.alpha_sampling.as_mut().unwrap()).noise.pixels[3] = 0;
+    assert!(ComfyUi::default().generate(&bad, &JobCtx::new()).unwrap_err().to_string().contains("grayscale"));
+}
+
 #[test]
 fn optional_reference_keeps_primary_geometry_and_reconstructs_reference_alpha() {
     let mut input = request(EditMode::PromptEdit);
@@ -189,6 +265,7 @@ fn request(mode: EditMode) -> AiRequest {
     AiRequest {
         reference: None,
         guide: None,
+        alpha_sampling: None,
         model: ComfyUiModel::default(),
         custom_model: None,
         text_encoder: crate::ai_models::DEFAULT_ENCODER.into(),
@@ -413,7 +490,11 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
                 ("application/json", serde_json::to_vec(&json!({node:{"input":{"required":{input:[[format!("Qwen/{filename}")],{}]}}}})).unwrap())
             } else if path == "/upload/image" {
                 let text = String::from_utf8_lossy(&body);
-                if text.contains("guide.png") {
+                if text.contains("initial.png") || text.contains("noise.png") {
+                    assert!(text.contains("temp"));
+                    let name = if text.contains("initial.png") { "initial.png" } else { "noise.png" };
+                    ("application/json", serde_json::to_vec(&json!({"name":name,"subfolder":"mock","type":"temp"})).unwrap())
+                } else if text.contains("guide.png") {
                     assert!(text.contains("temp"));
                     ("application/json", serde_json::to_vec(&json!({"name":"guide.png","subfolder":"mock","type":"temp"})).unwrap())
                 } else if text.contains("reference.png") {
