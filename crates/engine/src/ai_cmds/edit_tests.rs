@@ -81,6 +81,7 @@ fn failed_or_cancelled_resize_never_changes_native_document_or_redo() {
         })
         .unwrap();
         s.execute("edit.undo", json!({})).unwrap();
+        s.active_mut().unwrap().color_samplers = vec![[1200.0, 800.0]];
         let before = s.active().unwrap().doc.clone();
         let revision = s.active().unwrap().revision;
         let plan = edit_preflight(&s).unwrap();
@@ -97,6 +98,46 @@ fn failed_or_cancelled_resize_never_changes_native_document_or_redo() {
         assert_eq!(s.active().unwrap().revision, revision);
         assert!(s.active().unwrap().history.can_redo());
         assert_eq!(s.active().unwrap().doc.layers.len(), 1);
+        assert_eq!(s.active().unwrap().color_samplers, vec![[1200.0, 800.0]]);
+    }
+}
+
+#[test]
+fn approved_resize_preserves_native_formats_profile_and_maps_samplers_only_once() {
+    for mode in ["rgb", "gray", "cmyk", "lab"] {
+        for depth in [8, 16, 32] {
+            let mut s = Session::new();
+            s.ai_backend = Some(Arc::new(super::tests::Solid));
+            s.execute("file.new", json!({"width":4101,"height":65,"mode":mode,"depth":depth,"background":"#b4a08c"})).unwrap();
+            if mode == "rgb" {
+                s.edit("P3 fixture", |doc, _| {
+                    doc.icc_profile = Some(Builtin::DisplayP3.profile().to_bytes());
+                    Ok(())
+                })
+                .unwrap();
+            }
+            s.active_mut().unwrap().color_samplers = vec![[3100.0, 40.0]];
+            let before = s.active().unwrap().doc.clone();
+            let plan = edit_preflight(&s).unwrap();
+            assert_eq!(plan["needsResizeApproval"], true);
+            s.execute("edit.promptEdit", json!({"prompt":"change","resizeApproval":plan["approval"]})).unwrap();
+            let after = &s.active().unwrap().doc;
+            assert_eq!(after.mode, before.mode);
+            assert_eq!(after.depth, before.depth);
+            assert_eq!(after.icc_profile, before.icc_profile);
+            assert_eq!(after.layers[0].surface().unwrap().format(), before.layers[0].surface().unwrap().format());
+            let expected = [3100.0 * (f64::from(after.size.width) / 4101.0), 40.0 * (f64::from(after.size.height) / 65.0)];
+            let mapped = s.active().unwrap().color_samplers.clone();
+            for (actual, want) in mapped[0].into_iter().zip(expected) {
+                assert!((actual - want).abs() < 1e-9);
+            }
+            s.execute(REGENERATE_COMMAND, json!({})).unwrap();
+            assert_eq!(s.active().unwrap().color_samplers, mapped);
+            s.execute("edit.undo", json!({})).unwrap();
+            s.execute("edit.undo", json!({})).unwrap();
+            assert_eq!(s.active().unwrap().doc.size, before.size);
+            assert_eq!(s.active().unwrap().doc.icc_profile, before.icc_profile);
+        }
     }
 }
 
