@@ -98,7 +98,10 @@ and exchanges UTF-8 JSON over stdin/stdout. The worker imports its own
 `llama-cpp-python`. It opens no HTTP port and requires no standalone LLM server.
 Switching models, explicit node unload and ComfyUI termination release the
 worker. With the residency update, `unload_after_run=false` retains one shared
-translation worker even when ComfyUI discards the translation node instance.
+translation worker even when ComfyUI discards the translation node instance. PhotoCraft's
+current request policy instead sets `unload_after_run=true`, releasing this worker after
+each actual translation (including its internal text chunks). An image request is not
+submitted until translation returns; Qwen weights are not globally unloaded by this action.
 Translation-only jobs preserve the preceding standalone UNET/CLIP/VAE loader
 cache keys without executing those loaders, so image weights can stay resident.
 Previously the default RAM-pressure cache targeted up to all available system
@@ -121,7 +124,7 @@ not induced. Evidence is in `log/hymt-residency/` (local, not committed).
 
 PhotoCraft submits `HyMT_Translation_GGUF -> PreviewAny` through the existing
 ComfyUI API with `translate_to=English`, `translate_style=Default`
-and `unload_after_run=false`. Only the user-entered prompt is translated. The
+and `unload_after_run=true`. Only the user-entered prompt is translated. The
 existing mask-edit prompt shaping is applied afterward. A quick character check
 skips translation when there are no non-ASCII alphabetic characters: English
 letters, numbers, whitespace, punctuation (including typographic punctuation)
@@ -741,6 +744,33 @@ The normal engine command executes only when a prompt string is supplied.
 
 Unconfigured engine/test sessions do not contact ComfyUI. Web and unconfigured headless
 MCP sessions return an explicit unsupported-frontend error; the desktop MCP bridge works.
+
+## Live progress and request-only memory policy —261028-1
+
+PhotoCraft subscribes to the existing ComfyUI WebSocket before submitting its unique job
+UUID. Only matching `prompt_id` sampling/decoding events update the progress bar; another
+client's job cannot advance it. Real sampling `value/max` maps into the generation stage,
+with preparation, decoding, download and application remaining separate stages. Batch
+region progress retains its existing ranges. History remains authoritative for completion
+and errors. A missing/disconnected WebSocket falls back to history with an explicit status
+message, without cancelling or resubmitting the generation. Binary previews are ignored,
+message sizes and draining are bounded, and cancellation stays job-scoped.
+
+The same standard node inputs are sent on AMD and NVIDIA environments. The translation
+worker is released after use through its existing unload flag. Qwen's reference-prefix KV
+cache uses `device=cpu,dtype=int8`: it is kept in RAM and prefetched for GPU computation.
+This changes cache placement, not model precision or the image model's compute device.
+Image weights continue to use ComfyUI's existing dynamic model manager. There is no
+standard request API for changing that server's process-wide VRAM cap; PhotoCraft does not
+claim one or alter ComfyUI launch arguments, settings, packages, or node files. It does not
+automatically issue global `/free` after generation. Existing explicit unload/model-switch
+behaviour remains available. Reloading a released translator may add latency next time.
+
+The261028-1 integration check used the running RTX4090 service without restarting it:
+one Korean translation followed by2048×2048 Turbo4 Prompt Edit completed, multiple real
+sampling updates were captured, and the translator worker count returned to zero. These
+checks verify requests/lifecycle/progress, not a universal VRAM ceiling or a quality change.
+Evidence is local under `plan/2026-10-28-progress-vram/`.
 
 ## Failure and cancellation
 

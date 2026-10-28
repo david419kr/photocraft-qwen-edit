@@ -26,6 +26,7 @@ pub struct ComfyUi {
     models: std::sync::Mutex<std::collections::HashMap<String, residency::Models>>,
 }
 
+mod progress;
 mod residency;
 mod translation;
 
@@ -198,7 +199,7 @@ pub fn workflow_with_sampling(
         "56":{"class_type":"SaveImage","inputs":{"images":["8",0],"filename_prefix":format!("PhotoCraft/{job}/result")}}
     });
     if let Some(object) = graph.as_object_mut() {
-        object.insert(cache.into(), json!({"class_type":"QwenImage21Cache","inputs":{"model":["37",0],"device":"auto","dtype":"int8"}}));
+        object.insert(cache.into(), json!({"class_type":"QwenImage21Cache","inputs":{"model":["37",0],"device":"cpu","dtype":"int8"}}));
         if masked {
             object.insert("79".into(), json!({"class_type":"MaskToImage","inputs":{"mask":["78",1]}}));
             object.insert("80".into(), json!({"class_type":"ResizeImageMaskNode","inputs":{"input":["79",0],"resize_type":"match size","resize_type.match":["77",0],"resize_type.crop":"center","scale_method":"bicubic"}}));
@@ -484,6 +485,8 @@ impl AiBackend for ComfyUi {
         };
         ctx.check()?;
         ctx.progress(0.2, "Waiting for ComfyUI generation");
+        // Subscribe before POST so even short/cached executions cannot outrun the client.
+        let mut live = progress::Live::connect(&base, &job);
         let mut prompt = workflow_with_sampling(
             request,
             &filename,
@@ -499,6 +502,7 @@ impl AiBackend for ComfyUi {
         // A client-selected UUID lets us cancel our job even when the POST reply is lost.
         // POST is never blindly retried: repeating the UUID does not guarantee deduplication.
         let outcome = (|| {
+            ctx.check()?;
             let response = read_json(
                 client
                     .post(route("prompt")?)
@@ -515,6 +519,7 @@ impl AiBackend for ComfyUi {
             let mut read_failures = 0;
             loop {
                 ctx.check()?;
+                live.poll(&job, ctx)?;
                 if started.elapsed() > GENERATION_TIMEOUT {
                     return Err(failure("generation timed out"));
                 }

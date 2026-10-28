@@ -306,11 +306,15 @@ fn exact_qwen_graph_and_mask_wiring() {
     assert_eq!(global["64"]["inputs"]["resolution"], 0);
     assert!(global["64"]["inputs"].get("images.image_2").is_none());
     assert_eq!(global["79"]["class_type"], "QwenImage21Cache");
+    assert_eq!(global["79"]["inputs"]["device"], "cpu");
+    assert_eq!(global["38"]["inputs"]["device"], "default");
+    assert!(global["37"]["inputs"].get("device").is_none());
     let masked = workflow(&request(EditMode::GenerativeFill), "source.png", "test");
     assert_eq!(masked["79"]["class_type"], "MaskToImage");
     assert_eq!(masked["64"]["inputs"]["images.image_1"], json!(["77", 0]));
     assert_eq!(masked["64"]["inputs"]["images.image_2"], json!(["80", 0]));
     assert_eq!(masked["82"]["inputs"]["dtype"], "int8");
+    assert_eq!(masked["82"]["inputs"]["device"], "cpu");
     assert!(masked.get("81").is_none());
     assert!(masked.get("62").is_none());
     assert_eq!(masked["83"]["class_type"], "VAEEncode");
@@ -442,6 +446,15 @@ fn mock_server(cancel: Option<JobCtx>, probe: Option<bool>) -> (String, std::thr
 }
 
 fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: ComfyUiModel) -> (String, std::thread::JoinHandle<Vec<String>>) {
+    mock_server_policy(cancel, probe, selected, false)
+}
+
+fn mock_server_policy(
+    cancel: Option<JobCtx>,
+    probe: Option<bool>,
+    selected: ComfyUiModel,
+    cancel_before_post: bool,
+) -> (String, std::thread::JoinHandle<Vec<String>>) {
     use std::io::{BufRead, BufReader, Write};
     use std::net::TcpListener;
     let listener = TcpListener::bind("127.0.0.1:0").unwrap();
@@ -478,6 +491,19 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
             assert!(length < 1 << 20);
             let mut body = vec![0; length];
             reader.read_exact(&mut body).unwrap();
+            if path.starts_with("/ws?") {
+                // The existing HTTP fixture deliberately lacks WebSocket support.
+                if cancel_before_post {
+                    cancel.as_ref().unwrap().cancel();
+                }
+                let mut stream = reader.into_inner();
+                stream.write_all(b"HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n").unwrap();
+                if cancel_before_post {
+                    paths.push(path);
+                    break;
+                }
+                continue;
+            }
             let (mime, response) = if let Some(node) = path.strip_prefix("/object_info/") {
                 let (input, filename) = match node {
                     "UNETLoader" | "UnetLoaderGGUF" => ("unet_name", if selected.loader() == node { selected.filename() } else { "missing-model" }),
@@ -576,6 +602,18 @@ fn round_trip_through_a_mock_server_never_uses_a_real_model() {
     assert!(paths.len() >= 7);
     assert!(paths.iter().take(3).all(|path| path.starts_with("/object_info/")));
     assert!(paths.last().unwrap().starts_with("/view?"));
+}
+
+#[test]
+fn cancellation_while_connecting_progress_does_not_submit_generation() {
+    let ctx = JobCtx::new();
+    let (endpoint, server) = mock_server_policy(Some(ctx.clone()), None, ComfyUiModel::QwenImage21, true);
+    let mut input = request(EditMode::PromptEdit);
+    input.endpoint = endpoint;
+    assert!(matches!(ComfyUi::default().generate(&input, &ctx), Err(EngineError::Cancelled)));
+    let paths = server.join().unwrap();
+    assert!(paths.iter().any(|p| p.starts_with("/ws?")));
+    assert!(!paths.iter().any(|p| p == "/prompt"));
 }
 
 #[test]
