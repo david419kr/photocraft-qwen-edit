@@ -1,0 +1,124 @@
+name: Publish approved Qwen 261028-2
+on:
+  push:
+    branches: ['publish/261028-2-0160']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  verify:
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/publish/261028-2-0160'
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: c65be04e50df6dae32195f7b0a962aac4db42b65
+          fetch-depth: 0
+      - name: Check out publication helper
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: publisher
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: dtolnay/rust-toolchain@1.95.0
+      - name: Download the existing final candidate artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: qwen-windows-x64-c65be04e50df6dae32195f7b0a962aac4db42b65
+          run-id: 40721829712
+          github-token: ${{ github.token }}
+          repository: david419kr/photocraft-qwen-edit
+          path: dist
+      - name: Verify dist bytes, source, package, AMD64, CRT and identity
+        shell: pwsh
+        env:
+          VERIFIER_WORKFLOW_SHA: ${{ github.sha }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $meta = Get-Content dist/candidate-build.json -Raw | ConvertFrom-Json
+          $source = 'c65be04e50df6dae32195f7b0a962aac4db42b65'
+          if ((git rev-parse HEAD).Trim() -ne $source -or $meta.source_sha -ne $source) { throw 'Source mismatch' }
+          if ($meta.fork_base_sha -ne 'bf883b3d0f50049faa7b9ca6b5ba540d591350e1') { throw 'Fork base mismatch' }
+          if ($meta.upstream_sha -ne 'b1794c6e0608ccfc887213dcf58398977c5cb75e' -or $meta.upstream_tag -ne 'v0.16.0' -or $meta.upstream_release_id -ne 423446623) { throw 'Upstream mismatch' }
+          if ($meta.target -ne 'x86_64-pc-windows-msvc' -or $meta.rustflags -ne '-C target-feature=+crt-static') { throw 'Build target mismatch' }
+          if ($meta.zip -ne 'photocraft-qwen-edit-261028-2-0.16.0-windows-x64.zip') { throw 'Unexpected ZIP name' }
+          $zip = Join-Path dist $meta.zip
+          $zipHash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($zipHash -ne '186a045371bdc9fe16b8ee34573217e0ad5686068cddcaf080d7d0fa6adb484a' -or $zipHash -ne $meta.zip_sha256) { throw 'ZIP provenance digest mismatch' }
+          Expand-Archive $zip verified-exe
+          $exe = (Resolve-Path verified-exe/photocraft.exe).Path
+          $exeHash = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($exeHash -ne $meta.executable_sha256) { throw 'Executable digest mismatch' }
+          python scripts/verify-qwen-portable.py --zip $zip --executable $exe
+          if ($LASTEXITCODE -ne 0) { throw 'Package verification failed' }
+          $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'
+          $vs = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          $dumpbin = Get-ChildItem "$vs/VC/Tools/MSVC/*/bin/Hostx64/x64/dumpbin.exe" | Sort-Object FullName -Descending | Select-Object -First 1
+          if (!$dumpbin) { throw 'dumpbin missing' }
+          $headers = & $dumpbin.FullName /headers $exe
+          if ($LASTEXITCODE -ne 0 -or ($headers -join "`n") -notmatch '8664 machine \(x64\)') { throw 'Not AMD64 PE' }
+          $deps = & $dumpbin.FullName /dependents $exe
+          if ($LASTEXITCODE -ne 0) { throw 'Cannot read imports' }
+          $dlls = @($deps | Where-Object { $_ -match '^\s+\S+\.dll\s*$' } | ForEach-Object { $_.Trim() })
+          if (!$dlls.Count -or ($dlls -match '(?i)^(vcruntime|msvcp|msvcr|ucrtbase|api-ms-win-crt)')) { throw 'Dynamic CRT or no imports' }
+          $proc = Start-Process -FilePath $exe -ArgumentList '--version' -Wait -PassThru -NoNewWindow -RedirectStandardOutput verified-version.txt
+          if ($proc.ExitCode -ne 0) { throw 'Executable version failed' }
+          $version = (Get-Content verified-version.txt -Raw).Trim()
+          if ($version -notmatch 'PhotoCraft Local Qwen AI 261028-2-0\.16\.0.*upstream 0\.16\.0') { throw 'Updater/version identity mismatch' }
+          $evidence = [ordered]@{
+            candidate_sha = $source
+            verifier_workflow_sha = $env:VERIFIER_WORKFLOW_SHA
+            original_run_id = 40721829712
+            original_artifact_id = 12832900372
+            upstream_release_id = 423446623
+            upstream_tag = 'v0.16.0'
+            upstream_sha = $meta.upstream_sha
+            fork_base_sha = $meta.fork_base_sha
+            zip = $meta.zip
+            zip_sha256 = $zipHash
+            executable_sha256 = $exeHash
+            version = $version
+            toolchain = $meta.toolchain
+            target = $meta.target
+            imported_dlls = $dlls
+            dist_original_artifact = $true
+            package_files = 18
+            root_entries = 6
+            license_verifier_passed = $true
+            amd64 = $true
+            static_crt = $true
+            actual_gpu_ui_tested = $false
+          }
+          $evidence | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 verified-artifact.json
+          $notice = $evidence | ConvertTo-Json -Depth 4 -Compress
+          Write-Output "::notice title=Verified existing candidate artifact::$notice"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qwen-261028-2-artifact-verification
+          path: |
+            verified-artifact.json
+            verified-version.txt
+          if-no-files-found: error
+
+      - name: Publish approved existing candidate and verify public downloads
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python publisher/release-support/261028-2/publish.py
+          if ($LASTEXITCODE -ne 0) { throw 'Publication or public verification failed' }
+      - name: Preserve publication verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-261028-2-publication-evidence-${{ github.run_id }}
+          path: |
+            dist/publication-verification.json
+            dist/release-provenance.json
+            dist/updater-identity-verification.json
+          if-no-files-found: warn
