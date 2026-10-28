@@ -2,8 +2,6 @@
 
 [English](README.md) · [포터블 릴리스 다운로드](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 
-> 현재 포터블 배포판은 PhotoCraft 0.16.0 기반 **[261028-0.16.0](https://github.com/david419kr/photocraft-qwen-edit/releases/tag/261028-0.16.0)**입니다. 아래 하드웨어 테스트 기록은 이전 배포판 기준입니다. [통합·배포 검증 기록](docs/upstream-0160-integration.md)을 참고하세요.
-
 PhotoCraft에 **포토샵 스타일의 로컬 생성형 AI 편집**을 추가한 fork입니다. ComfyUI의 Qwen Image 2.1을 사용하고 결과를 새 레이어로 추가하며, 프롬프트 기록도 저장합니다. AVIF 열기·저장·내보내기도 지원합니다. 아래는 이 fork의 추가 기능 안내입니다.
 
 ## 데모 영상
