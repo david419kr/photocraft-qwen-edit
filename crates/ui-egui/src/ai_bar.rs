@@ -1249,7 +1249,8 @@ mod tests {
         app.ui.ai.prompt = "saved draft".into();
         quick_action(&mut app, EditMode::PromptEdit).unwrap();
         assert_eq!(app.session.journal.last().unwrap().0, photocraft_engine::ai_cmds::REMOVE_BACKGROUND_COMMAND);
-        assert!(!app.session.active().unwrap().doc.layers.first().unwrap().visible);
+        assert!(app.session.active().unwrap().doc.layers.first().unwrap().visible);
+        assert!(app.session.active().unwrap().doc.layers.first().unwrap().mask.is_some());
         assert_eq!(app.ui.ai.prompt, "saved draft");
         app.run("select.rect", json!({"x":2,"y":2,"width":5,"height":5})).unwrap();
         let old_visible: Vec<_> = app.session.active().unwrap().doc.layers.iter().map(|l| l.visible).collect();

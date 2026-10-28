@@ -632,9 +632,23 @@ system time in nanoseconds as a 64-bit seed; an explicitly supplied `seed` is ho
 reproducible automation and diagnostic comparisons.
 `edit.aiRegenerate` accepts `{}` and always chooses a different seed; an explicit `seed`
 is rejected. It requires an unchanged successful AI result in the active document.
-`edit.aiRemoveBackground` accepts optional `seed`/`name` and uses its fixed foreground-cutout
-prompt, then follows the whole-image result/visibility path. This AI quick action is separate
-from the existing local `layer.removeBackground` mask-based command.
+`edit.aiRemoveBackground` accepts optional `seed`/`steps` and uses its fixed foreground-cutout
+prompt on the active unlocked pixel layer, ignoring existing selections, masks, styles and
+other layers for subject detection. Only the returned alpha is restored to document size and
+replaces that layer's editable mask. Original raster colour, alpha, bit depth and profile,
+and other layers' visibility are preserved; the Background becomes a normal layer if needed.
+Existing masks are replaced in one undo step, and selection is cleared on success. Empty
+alpha or malformed outputs leave the document intact. Regeneration repeats the captured
+input/settings and replaces only the mask. No automatic dilation, alpha threshold, matting
+or colour decontamination is applied. The model input still uses the existing white-flattened
+sRGB transport (maximum side1536); this does not affect the native source pixels.
+This AI quick action is separate from the classical local `layer.removeBackground` command.
+The cutout instruction is category-independent: opaque foreground surfaces must stay opaque
+regardless of brightness, colour or reflection; background and holes must be transparent,
+while genuine translucent materials and antialiased boundaries may retain partial alpha.
+It does not assume people, portraits or illustration characters. The same prompt was tested
+with a character illustration and a synthetic metal tool; complex translucent materials
+remain unverified.
 
 `ui.inspect` includes `ai` (open, prompt, mode, rectangle). `ui.set` accepts `aiOpen` and
 `aiPrompt`. `ui.menu.invoke` with any prompt command and no parameters opens the input bar.

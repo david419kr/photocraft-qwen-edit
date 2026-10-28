@@ -35,7 +35,13 @@ fn main() -> Result<()> {
     if fill {
         session.execute("select.rect", json!({"x":1500,"y":1000,"width":3000,"height":2000}))?;
     }
-    let command = if fill { "edit.generativeFill" } else { "edit.promptEdit" };
+    let command = if std::env::args().any(|arg| arg == "--cutout") {
+        photocraft_engine::ai_cmds::REMOVE_BACKGROUND_COMMAND
+    } else if fill {
+        "edit.generativeFill"
+    } else {
+        "edit.promptEdit"
+    };
     let started = Instant::now();
     let result = session.execute(command, json!({"prompt":"benchmark","seed":1}))?;
     println!("{}", json!({"documentMP":24,"command":command,"cpuBridgeMs":started.elapsed().as_millis(),"result":result,"realGeneration":false}));

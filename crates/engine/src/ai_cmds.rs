@@ -15,6 +15,7 @@ use crate::commands::CommandSpec;
 use crate::jobs::JobCtx;
 use crate::{EngineError, Result, Session};
 
+mod cutout;
 mod fill;
 pub mod harmonize;
 
@@ -27,7 +28,15 @@ pub const REGENERATE_COMMAND: &str = "edit.aiRegenerate";
 pub const UNLOAD_MODELS_COMMAND: &str = "ai.unloadModels";
 const MAX_GENERATION_SIDE: u32 = 16_384;
 /// 05_BackgroundRemoval_AutoINT8Cache, generalised beyond its example woman.
-pub const REMOVE_BACKGROUND_PROMPT: &str = "This is an RGBA image with transparency. Extract only the foreground subject or subjects, including clothing and held objects. Everything else must be fully transparent. Preserve clean edges and fine details.";
+pub const REMOVE_BACKGROUND_PROMPT: &str = concat!(
+    "Remove only the background from <image1>. Return an RGBA cutout of the main foreground subject or subjects, whatever their category. ",
+    "Infer which foreground subjects to keep from the image. Preserve the original image dimensions, positions, shapes, colors, textures and fine details. ",
+    "Keep every part belonging to each foreground subject. Keep holes and gaps that reveal the background transparent. ",
+    "All opaque foreground surfaces MUST remain fully opaque, alpha 255, including bright, white, pale, dark, reflective and highlighted areas. ",
+    "The background MUST have alpha 0. Preserve genuinely translucent foreground materials where present; otherwise intermediate alpha is allowed only along the thin antialiased silhouette boundary. ",
+    "Do not turn brightness, color, shading or reflections into transparency. Do not fade opaque surfaces. ",
+    "Do not add a background, checkerboard, shadow, outline, text or new objects. Output only the finished RGBA cutout.",
+);
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -86,6 +95,7 @@ pub(crate) struct LastRun {
     result_revision: u64,
     prompt_entry: crate::ai_prompts::Entry,
     harmonize: Option<Arc<harmonize::Source>>,
+    cutout: Option<photocraft_doc::LayerId>,
 }
 
 pub fn regeneration(s: &Session) -> Option<(EditMode, crate::prefs::ComfyUiModel)> {
@@ -342,8 +352,8 @@ pub fn specs() -> Vec<CommandSpec> {
         label: "Remove Background",
         menu: &[],
         shortcut: None,
-        params: "{\"steps\":u32?,\"seed\":u64?,\"name\":str?} → {layer,mode,seed,steps,workingSize,workingRect,contentSize} (AI cutout as a new layer; hides source layers)",
-        enabled: can_edit,
+        params: "{\"steps\":u32?,\"seed\":u64?} → {layer,mode,seed,steps,workingSize,workingRect,contentSize} (Qwen alpha replaces the active pixel layer mask; preserves original pixels and other layers)",
+        enabled: cutout::enabled,
         run: remove_background,
         journal: true,
     });
@@ -352,21 +362,23 @@ pub fn specs() -> Vec<CommandSpec> {
 }
 
 fn remove_background(s: &mut Session, p: &Value) -> Result<Value> {
+    cutout::enabled(s).map_err(EngineError::Other)?;
     let mut params = p.as_object().cloned().ok_or_else(|| bad(REMOVE_BACKGROUND_COMMAND, "params must be an object"))?;
     params.insert("prompt".into(), json!(REMOVE_BACKGROUND_PROMPT));
     params.entry("name").or_insert_with(|| json!("Remove Background"));
-    run(s, &Value::Object(params), EditMode::PromptEdit, false)
+    let id = crate::active_layer_of(s).map_err(EngineError::Other)?.id;
+    run(s, &Value::Object(params), EditMode::PromptEdit, false, Some(id))
 }
 
 fn prompt_edit(s: &mut Session, p: &Value) -> Result<Value> {
-    run(s, p, EditMode::PromptEdit, true)
+    run(s, p, EditMode::PromptEdit, true, None)
 }
 fn prompt_generate(s: &mut Session, p: &Value) -> Result<Value> {
     can_generate(s).map_err(EngineError::Other)?;
-    run(s, p, EditMode::PromptGenerate, true)
+    run(s, p, EditMode::PromptGenerate, true, None)
 }
 fn generative_fill(s: &mut Session, p: &Value) -> Result<Value> {
-    run(s, p, EditMode::GenerativeFill, true)
+    run(s, p, EditMode::GenerativeFill, true, None)
 }
 
 fn default_seed() -> u64 {
@@ -385,7 +397,7 @@ fn needs_translation(prompt: &str) -> bool {
     prompt.chars().any(|ch| ch.is_alphabetic() && !ch.is_ascii_alphabetic())
 }
 
-fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) -> Result<Value> {
+fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool, cutout: Option<photocraft_doc::LayerId>) -> Result<Value> {
     let command = mode.command();
     if !p.is_object() {
         return Err(bad(command, "params must be an object"));
@@ -408,8 +420,9 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
     };
     let doc = &s.active().ok_or(EngineError::NoDocument)?.doc;
     supported_document(doc).map_err(EngineError::Other)?;
-    if (mode == EditMode::PromptGenerate && contextual_mode(s, s.active().ok_or(EngineError::NoDocument)?) != mode)
-        || (mode != EditMode::PromptGenerate && edit_mode(doc) != mode)
+    if cutout.is_none()
+        && ((mode == EditMode::PromptGenerate && contextual_mode(s, s.active().ok_or(EngineError::NoDocument)?) != mode)
+            || (mode != EditMode::PromptGenerate && edit_mode(doc) != mode))
     {
         return Err(bad(command, "the command does not match the current selection"));
     }
@@ -458,13 +471,13 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
     };
     let prompt = prompt.to_owned();
     let source = s.active().ok_or(EngineError::NoDocument)?.doc.clone();
-    let label = mode.label();
+    let label = if cutout.is_some() { "Remove Background" } else { mode.label() };
     crate::jobs::run(
         s,
         label,
         true,
         move |ctx| {
-            let mut input = prepare(&source, mode, ctx)?;
+            let mut input = if let Some(id) = cutout { cutout::prepare(&source, id, ctx)? } else { prepare(&source, mode, ctx)? };
             if mode == EditMode::GenerativeFill {
                 input.region.filter = fill_filter;
             }
@@ -516,12 +529,16 @@ fn run(s: &mut Session, p: &Value, mode: EditMode, translate_user_prompt: bool) 
             request.prompt = shaped_prompt(mode, &prompt);
             request.negative_prompt = negative;
             let generated = backend.generate(&request, ctx)?;
-            let layer = result_layer(&source, &generated, &input.region, &name, mode, ctx)?;
+            let layer = if let Some(id) = cutout {
+                cutout::result(&source, id, &generated, &input.region, ctx)?
+            } else {
+                result_layer(&source, &generated, &input.region, &name, mode, ctx)?
+            };
             let prompt_entry =
                 crate::ai_prompts::Entry { mode, regions: input.region.prompt_regions.clone(), original, translated, negative_original, negative_translated };
             let harmonize = (mode == EditMode::GenerativeFill)
                 .then(|| Arc::new(harmonize::Source::new(source.clone(), request.image.clone(), generated, input.region.clone(), layer.clone())));
-            let last = LastRun { source, request, region: input.region, name, result_layer: layer.id, result_revision: 0, prompt_entry, harmonize };
+            let last = LastRun { source, request, region: input.region, name, result_layer: layer.id, result_revision: 0, prompt_entry, harmonize, cutout };
             Ok((layer, last))
         },
         move |s, (layer, last)| apply_result(s, layer, last, None, label),
@@ -548,7 +565,11 @@ fn regenerate(s: &mut Session, p: &Value) -> Result<Value> {
         true,
         move |ctx| {
             let generated = backend.generate(&last.request, ctx)?;
-            let layer = result_layer(&last.source, &generated, &last.region, &last.name, last.request.mode, ctx)?;
+            let layer = if let Some(id) = last.cutout {
+                cutout::result(&last.source, id, &generated, &last.region, ctx)?
+            } else {
+                result_layer(&last.source, &generated, &last.region, &last.name, last.request.mode, ctx)?
+            };
             last.harmonize = (last.request.mode == EditMode::GenerativeFill)
                 .then(|| Arc::new(harmonize::Source::new(last.source.clone(), last.request.image.clone(), generated, last.region.clone(), layer.clone())));
             Ok((layer, last))
@@ -564,10 +585,16 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
     }
     let id = layer.id;
     let prompt_entry = last.prompt_entry.clone();
+    let cutout = last.cutout;
     s.edit(label, move |doc, active| {
         let prompt_xmp =
             if replace.is_none() { Some(crate::ai_prompts::append(doc.metadata.xmp.as_deref(), &prompt_entry).map_err(EngineError::Other)?) } else { None };
-        if let Some(old) = replace {
+        if let Some(target) = cutout {
+            cutout::check(doc, target).map_err(EngineError::Other)?;
+            crate::extra_cmds::background_to_layer_for_mask(doc, target);
+            doc.layer_mut(target).ok_or(EngineError::NoLayer(target))?.mask = layer.mask;
+            doc.selection = None;
+        } else if let Some(old) = replace {
             let target = doc.layers.iter_mut().find(|l| l.id == old).ok_or_else(|| EngineError::Other("previous AI layer was removed".into()))?;
             *target = layer;
         } else {

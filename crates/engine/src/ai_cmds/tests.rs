@@ -158,7 +158,7 @@ fn prompt_history_query_is_read_only_and_rejects_invalid_params_without_a_backen
     assert!(!s.active().unwrap().history.can_undo());
 }
 
-fn session(depth: u32) -> Session {
+pub(super) fn session(depth: u32) -> Session {
     let mut s = Session::new();
     s.execute("file.new", json!({"width":17,"height":13,"depth":depth,"background":"white"})).unwrap();
     s.ai_backend = Some(Arc::new(Solid));
@@ -580,7 +580,7 @@ impl AiBackend for Transparent {
 }
 
 #[test]
-fn background_removal_hides_all_source_roots_and_undo_restores_visibility() {
+fn empty_background_mask_preserves_all_source_roots() {
     for depth in [8, 16, 32] {
         let mut s = session(depth);
         s.execute("layer.new.layer", json!({"name":"Visible overlay"})).unwrap();
@@ -593,17 +593,12 @@ fn background_removal_hides_all_source_roots_and_undo_restores_visibility() {
         let before = s.active().unwrap().doc.clone();
         let visibility: Vec<_> = before.layers.iter().map(|l| l.visible).collect();
         s.ai_backend = Some(Arc::new(Transparent));
-        s.execute(REMOVE_BACKGROUND_COMMAND, json!({})).unwrap();
+        assert!(s.execute(REMOVE_BACKGROUND_COMMAND, json!({})).is_err());
         let doc = &s.active().unwrap().doc;
-        assert!(doc.layers.iter().take(before.layers.len()).all(|l| !l.visible));
-        assert!(doc.layers.last().unwrap().visible);
-        assert_eq!(doc.layers.last().unwrap().name, "Remove Background");
-        assert!(photocraft_compose::render(doc, doc.bounds()).px.iter().all(|p| p[3] == 0.0));
+        assert_eq!(doc.layers.len(), before.layers.len());
+        assert_eq!(doc.layers.iter().map(|l| l.visible).collect::<Vec<_>>(), visibility);
         assert_eq!(doc.layers.first().unwrap().surface().unwrap().pixel(0, 0), before.layers.first().unwrap().surface().unwrap().pixel(0, 0));
-        s.execute("edit.undo", json!({})).unwrap();
-        assert_eq!(s.active().unwrap().doc.layers.iter().map(|l| l.visible).collect::<Vec<_>>(), visibility);
-        s.execute("edit.redo", json!({})).unwrap();
-        assert!(s.active().unwrap().doc.layers.iter().take(before.layers.len()).all(|l| !l.visible));
+        assert!(doc.layers.last().unwrap().mask.is_none());
     }
 }
 
