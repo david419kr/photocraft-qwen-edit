@@ -188,6 +188,7 @@ fn custom_checkpoint_reuses_all_qwen_workflows_without_prompt_changes() {
 fn request(mode: EditMode) -> AiRequest {
     AiRequest {
         reference: None,
+        guide: None,
         model: ComfyUiModel::default(),
         custom_model: None,
         text_encoder: crate::ai_models::DEFAULT_ENCODER.into(),
@@ -412,7 +413,10 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
                 ("application/json", serde_json::to_vec(&json!({node:{"input":{"required":{input:[[format!("Qwen/{filename}")],{}]}}}})).unwrap())
             } else if path == "/upload/image" {
                 let text = String::from_utf8_lossy(&body);
-                if text.contains("reference.png") {
+                if text.contains("guide.png") {
+                    assert!(text.contains("temp"));
+                    ("application/json", serde_json::to_vec(&json!({"name":"guide.png","subfolder":"mock","type":"temp"})).unwrap())
+                } else if text.contains("reference.png") {
                     assert!(text.contains("temp"));
                     ("application/json", serde_json::to_vec(&json!({"name":"reference.png","subfolder":"mock","type":"temp"})).unwrap())
                 } else {
@@ -430,6 +434,10 @@ fn mock_server_model(cancel: Option<JobCtx>, probe: Option<bool>, selected: Comf
                     if submitted["prompt"].get("93").is_some() {
                         assert_eq!(submitted["prompt"]["93"]["inputs"]["image"], "mock/reference.png [temp]");
                         assert_eq!(submitted["prompt"]["64"]["inputs"]["images.image_2"], json!(["95", 0]));
+                    }
+                    if submitted["prompt"].get("96").is_some() {
+                        assert_eq!(submitted["prompt"]["96"]["inputs"]["image"], "mock/guide.png [temp]");
+                        assert_eq!(submitted["prompt"]["64"]["inputs"]["images.image_3"], json!(["96", 0]));
                     }
                 }
                 assert_eq!(submitted["prompt"]["37"]["inputs"]["unet_name"], format!("Qwen/{}", selected.filename()));
@@ -500,6 +508,22 @@ fn reference_round_trip_uploads_a_temporary_copy_without_changing_primary_output
     assert_eq!(paths.iter().filter(|p| p.as_str() == "/upload/image").count(), 2);
     assert_eq!(output.width, 32);
     assert_eq!(output.height, 32);
+}
+
+#[test]
+fn refinement_round_trip_uploads_two_internal_temp_inputs_with_primary_geometry_unchanged() {
+    let (endpoint, server) = mock_server(None, None);
+    let mut input = request(EditMode::PromptEdit);
+    input.endpoint = endpoint;
+    input.reference = Some(std::sync::Arc::new(Rgba8Image::new(64, 32)));
+    input.guide = Some(std::sync::Arc::new(Rgba8Image { width: 32, height: 32, pixels: vec![255; 32 * 32 * 4] }));
+    let output = ComfyUi::default().generate(&input, &JobCtx::new()).unwrap();
+    let paths = server.join().unwrap();
+    assert_eq!(paths.iter().filter(|p| p.as_str() == "/upload/image").count(), 3);
+    assert_eq!([output.width, output.height], [32, 32]);
+    input.endpoint = "http://127.0.0.1:1".into();
+    input.reference = None;
+    assert!(ComfyUi::default().generate(&input, &JobCtx::new()).unwrap_err().to_string().contains("global context"));
 }
 
 #[test]

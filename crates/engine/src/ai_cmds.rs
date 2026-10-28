@@ -108,6 +108,8 @@ impl Operation {
 pub struct AiRequest {
     pub image: Rgba8Image,
     pub reference: Option<Arc<Rgba8Image>>,
+    /// Internal crop-alpha guide; never populated from the user's Prompt Edit attachment.
+    pub guide: Option<Arc<Rgba8Image>>,
     pub prompt: String,
     pub mode: EditMode,
     /// Empty-prompt fill reconstructs background rather than editing existing content.
@@ -137,6 +139,7 @@ pub(crate) struct LastRun {
     operation: Operation,
     /// Extra, disjoint removal groups; the first pass remains request/region.
     fill_passes: Vec<fill_batch::Pass>,
+    experimental_refine: bool,
 }
 
 pub fn regeneration(s: &Session) -> Option<(EditMode, crate::prefs::ComfyUiModel)> {
@@ -393,7 +396,7 @@ pub fn specs() -> Vec<CommandSpec> {
         label: "Remove Background",
         menu: &[],
         shortcut: None,
-        params: "{\"steps\":u32?,\"seed\":u64?} → {layer,mode,seed,steps,workingSize,workingRect,contentSize} (Qwen alpha replaces the active pixel layer mask; preserves original pixels and other layers)",
+        params: "{\"steps\":u32?,\"seed\":u64?,\"experimentalRefine\":bool=false} → {layer,mode,seed,steps,workingSize,workingRect,contentSize}; alpha-only layer mask. experimentalRefine opts into unvalidated multi-pass research; not used by the UI",
         enabled: cutout::enabled,
         run: remove_background,
         journal: true,
@@ -473,6 +476,11 @@ fn run(s: &mut Session, p: &Value, operation: Operation) -> Result<Value> {
     if !p.is_object() {
         return Err(bad(command, "params must be an object"));
     }
+    let experimental_refine = match p.get("experimentalRefine") {
+        None => false,
+        Some(v) if cutout.is_some() => v.as_bool().ok_or_else(|| bad(command, "experimentalRefine must be a boolean"))?,
+        Some(_) => return Err(bad(command, "experimentalRefine is only for background-removal trials")),
+    };
     let prompt = p.get("prompt").and_then(Value::as_str).ok_or_else(|| bad(command, "prompt must be a string"))?;
     if prompt.len() > MAX_PROMPT_BYTES || (mode != EditMode::GenerativeFill && prompt.trim().is_empty()) {
         return Err(bad(command, "enter a prompt of at most 8192 bytes"));
@@ -581,7 +589,7 @@ fn run(s: &mut Session, p: &Value, operation: Operation) -> Result<Value> {
             let mut groups = if mode == EditMode::GenerativeFill && prompt.trim().is_empty() {
                 fill::prepare_groups(&source, ctx)?
             } else {
-                vec![if let Some(id) = cutout { cutout::prepare(&source, id, ctx)? } else { prepare(&source, mode, ctx)? }]
+                vec![if let Some(id) = cutout { cutout::prepare(&source, id, experimental_refine, ctx)? } else { prepare(&source, mode, ctx)? }]
             }
             .into_iter();
             let mut input = groups.next().ok_or_else(|| EngineError::Other("empty AI pass plan".into()))?;
@@ -598,6 +606,7 @@ fn run(s: &mut Session, p: &Value, operation: Operation) -> Result<Value> {
             let mut request = AiRequest {
                 image: input.image,
                 reference: reference.map(|r| r.image.clone()),
+                guide: None,
                 prompt: String::new(),
                 mode,
                 removal: mode == EditMode::GenerativeFill && prompt.trim().is_empty(),
@@ -656,11 +665,11 @@ fn run(s: &mut Session, p: &Value, operation: Operation) -> Result<Value> {
                 let (layer, record) = fill_batch::generate(source.clone(), backend.as_ref(), &request, &input.region, &fill_passes, &name, ctx)?;
                 (layer, Some(record))
             } else {
-                let generated = backend.generate(&request, ctx)?;
                 (
                     if let Some(id) = cutout {
-                        cutout::result(&source, id, &generated, &input.region, ctx)?
+                        cutout::generate(&source, id, backend.as_ref(), &request, &input.region, experimental_refine, ctx)?
                     } else {
+                        let generated = backend.generate(&request, ctx)?;
                         result_layer(&source, &generated, &input.region, &name, mode, ctx)?
                     },
                     None,
@@ -679,6 +688,7 @@ fn run(s: &mut Session, p: &Value, operation: Operation) -> Result<Value> {
                 harmonize,
                 operation,
                 fill_passes,
+                experimental_refine,
             };
             Ok((layer, last))
         },
@@ -714,10 +724,10 @@ fn regenerate(s: &mut Session, p: &Value) -> Result<Value> {
                 last.harmonize = Some(record);
                 layer
             } else {
-                let generated = backend.generate(&last.request, ctx)?;
                 if let Some(id) = last.operation.cutout() {
-                    cutout::result(&last.source, id, &generated, &last.region, ctx)?
+                    cutout::generate(&last.source, id, backend.as_ref(), &last.request, &last.region, last.experimental_refine, ctx)?
                 } else {
+                    let generated = backend.generate(&last.request, ctx)?;
                     result_layer(&last.source, &generated, &last.region, &last.name, last.request.mode, ctx)?
                 }
             };
@@ -735,6 +745,7 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
     let id = layer.id;
     let prompt_entry = last.prompt_entry.clone();
     let cutout = last.operation.cutout();
+    let refinement_regions = if last.experimental_refine { cutout::refinement_regions(&last.source)? } else { json!([]) };
     let resized = if replace.is_none() && matches!(last.operation, Operation::Edit) && s.active().is_some_and(|st| st.doc.size != last.source.size) {
         Some(last.source.clone())
     } else {
@@ -779,6 +790,7 @@ fn apply_result(s: &mut Session, mut layer: Layer, mut last: LastRun, replace: O
     let bounds = last.region.bounds;
     let result = json!({"layer":id.0,"mode":mode,"operation":last.operation.name(),"seed":last.request.seed,"steps":last.request.steps,"workingSize":[last.request.image.width,last.request.image.height],
         "workingRect":[bounds.x0,bounds.y0,bounds.x1,bounds.y1],"contentSize":last.region.content_size,
+        "refinementRegions":refinement_regions,"experimentalRefine":last.experimental_refine,
         "passes":std::iter::once((&last.request,&last.region)).chain(last.fill_passes.iter().map(|p|(&p.request,&p.region))).map(|(r,g)|json!({"seed":r.seed,"workingSize":[r.image.width,r.image.height],"contentSize":g.content_size,"workingRect":[g.bounds.x0,g.bounds.y0,g.bounds.x1,g.bounds.y1]})).collect::<Vec<_>>()});
     let doc_id = st.doc.id;
     if let Some(source) = &last.harmonize {

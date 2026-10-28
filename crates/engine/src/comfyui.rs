@@ -144,6 +144,10 @@ pub fn workflow(request: &AiRequest, filename: &str, job: &str) -> Value {
 }
 
 pub fn workflow_with_reference(request: &AiRequest, filename: &str, reference_filename: Option<&str>, job: &str) -> Value {
+    workflow_with_references(request, filename, reference_filename, None, job)
+}
+
+pub fn workflow_with_references(request: &AiRequest, filename: &str, reference_filename: Option<&str>, guide_filename: Option<&str>, job: &str) -> Value {
     let loader =
         json!({"class_type":"UNETLoader","inputs":{"unet_name":request.custom_model.as_deref().unwrap_or(request.model.filename()),"weight_dtype":"default"}});
     if request.mode == EditMode::PromptGenerate {
@@ -215,6 +219,15 @@ pub fn workflow_with_reference(request: &AiRequest, filename: &str, reference_fi
             object.insert("95".into(),json!({"class_type":"ResizeImageMaskNode","inputs":{"input":[if transparent{"94"}else{"93"},0],"resize_type":"scale to multiple","resize_type.multiple":32,"scale_method":"bicubic"}}));
             if let Some(inputs) = object.get_mut("64").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {
                 inputs.insert("images.image_2".into(), json!(["95", 0]));
+            }
+        }
+        if !masked
+            && request.guide.is_some()
+            && let Some(filename) = guide_filename
+        {
+            object.insert("96".into(), json!({"class_type":"LoadImage","inputs":{"image":filename}}));
+            if let Some(inputs) = object.get_mut("64").and_then(|n| n.get_mut("inputs")).and_then(Value::as_object_mut) {
+                inputs.insert("images.image_3".into(), json!(["96", 0]));
             }
         }
     }
@@ -357,12 +370,16 @@ impl AiBackend for ComfyUi {
     }
 
     fn generate(&self, request: &AiRequest, ctx: &JobCtx) -> Result<Rgba8Image> {
-        if let Some(reference) = &request.reference
-            && (request.mode != EditMode::PromptEdit
+        for reference in request.reference.iter().chain(request.guide.iter()) {
+            if request.mode != EditMode::PromptEdit
                 || !crate::ai_cmds::resolution::Budget::REFERENCE.accepts_frame([reference.width, reference.height])
-                || reference.pixels.len() != reference.width as usize * reference.height as usize * 4)
-        {
-            return Err(failure("invalid reference image frame"));
+                || reference.pixels.len() != reference.width as usize * reference.height as usize * 4
+            {
+                return Err(failure("invalid reference image frame"));
+            }
+        }
+        if request.guide.is_some() && request.reference.is_none() {
+            return Err(failure("a refinement guide requires global context"));
         }
         if request.mode == EditMode::GenerativeFill
             && (request.image.width == 0
@@ -394,9 +411,15 @@ impl AiBackend for ComfyUi {
         } else {
             None
         };
+        let guide_filename = if let Some(guide) = &request.guide {
+            ctx.check()?;
+            Some(upload_image(&client, &base, guide, &job, "guide.png", "temp")?)
+        } else {
+            None
+        };
         ctx.check()?;
         ctx.progress(0.2, "Waiting for ComfyUI generation");
-        let mut prompt = workflow_with_reference(request, &filename, reference_filename.as_deref(), &job);
+        let mut prompt = workflow_with_references(request, &filename, reference_filename.as_deref(), guide_filename.as_deref(), &job);
         for (id, input, name) in models {
             let value = prompt.pointer_mut(&format!("/{id}/inputs/{input}")).ok_or_else(|| failure("workflow model input missing"))?;
             *value = Value::String(name);

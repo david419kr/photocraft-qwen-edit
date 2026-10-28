@@ -2,6 +2,33 @@
 use super::*;
 use photocraft_algo::resample::{Resample, resize_surface_in_canvas};
 use photocraft_doc::{LayerContent, LayerId};
+mod refine;
+mod tiles;
+pub(super) fn generate(
+    doc: &Document,
+    id: LayerId,
+    backend: &dyn AiBackend,
+    request: &AiRequest,
+    region: &EditRegion,
+    experimental: bool,
+    ctx: &JobCtx,
+) -> Result<Layer> {
+    if experimental {
+        refine::generate(doc, id, backend, request, region, ctx)
+    } else {
+        let output = backend.generate(request, ctx)?;
+        result(doc, id, &output, region, ctx)
+    }
+}
+
+pub(super) fn refinement_regions(doc: &Document) -> Result<Value> {
+    Ok(json!(
+        tiles::plan(doc.bounds())?
+            .into_iter()
+            .map(|t| json!({"core":[t.core.x0,t.core.y0,t.core.x1,t.core.y1],"context":[t.context.x0,t.context.y0,t.context.x1,t.context.y1]}))
+            .collect::<Vec<_>>()
+    ))
+}
 
 pub(super) fn check(doc: &Document, id: LayerId) -> std::result::Result<(), String> {
     let layer = doc.layer(id).ok_or("No active layer")?;
@@ -20,20 +47,34 @@ pub(super) fn enabled(s: &Session) -> std::result::Result<(), String> {
     check(&s.active().ok_or("No document")?.doc, crate::active_layer_of(s)?.id)
 }
 
-pub(super) fn prepare(doc: &Document, id: LayerId, ctx: &JobCtx) -> Result<Prepared> {
+pub(super) fn prepare(doc: &Document, id: LayerId, experimental: bool, ctx: &JobCtx) -> Result<Prepared> {
+    let tiled = experimental && !tiles::plan(doc.bounds())?.is_empty();
+    let budget = if tiled { resolution::Budget::REFERENCE } else { resolution::Budget::EDIT };
+    let frame = budget.plan([doc.size.width, doc.size.height], 0).ok_or_else(|| EngineError::Other("invalid cutout frame".into()))?;
+    prepare_rect(doc, id, doc.bounds(), frame.content, ctx)
+}
+
+fn prepare_rect(doc: &Document, id: LayerId, bounds: Rect, content: [u32; 2], ctx: &JobCtx) -> Result<Prepared> {
     check(doc, id).map_err(EngineError::Other)?;
     // Ignore existing masks, visibility, styles and other layers when detecting the subject.
     let original = doc.layer(id).ok_or(EngineError::NoLayer(id))?;
     let mut layer = Layer::raster("Cutout input", original.surface().ok_or(EngineError::NoLayer(id))?.format());
-    *crate::pixels_mut(&mut layer)? = original.surface().ok_or(EngineError::NoLayer(id))?.clone();
+    *crate::pixels_mut(&mut layer)? = original.surface().ok_or(EngineError::NoLayer(id))?.translated(-bounds.x0, -bounds.y0, bounds);
     let mut isolated = doc.clone();
     isolated.layers = vec![layer];
     isolated.selection = None;
-    let frame = resolution::Budget::EDIT.plan([doc.size.width, doc.size.height], 0).ok_or_else(|| EngineError::Other("invalid cutout frame".into()))?;
-    super::prepare_image(&isolated, frame.content, ctx)
+    isolated.size = photocraft_geom::Size::new(bounds.width(), bounds.height());
+    let mut input = super::prepare_image(&isolated, content, ctx)?;
+    input.region.bounds = bounds;
+    Ok(input)
 }
 
 pub(super) fn result(doc: &Document, id: LayerId, image: &Rgba8Image, region: &EditRegion, ctx: &JobCtx) -> Result<Layer> {
+    let opacity = opacity(doc, image, region, ctx)?;
+    from_opacity(doc, id, opacity, ctx)
+}
+
+fn opacity(doc: &Document, image: &Rgba8Image, region: &EditRegion, ctx: &JobCtx) -> Result<Surface> {
     ctx.check()?;
     let [w, h] = region.content_size;
     let bounds = region.bounds;
@@ -64,22 +105,30 @@ pub(super) fn result(doc: &Document, id: LayerId, image: &Rgba8Image, region: &E
     if !any {
         return Err(EngineError::Other("Qwen returned an empty foreground mask; the original layer was preserved".into()));
     }
-    let mut surface = resize_surface_in_canvas(
+    Ok(resize_surface_in_canvas(
         &alpha,
         bounds.width() as f64 / f64::from(w),
         bounds.height() as f64 / f64::from(h),
         Resample::Bilinear,
         Rect::new(0, 0, w as i32, h as i32),
-    );
+    ))
+}
+
+fn from_opacity(doc: &Document, id: LayerId, mut surface: Surface, ctx: &JobCtx) -> Result<Layer> {
+    let bounds = doc.bounds();
     // Model alpha is final opacity; a layer mask is relative to the native raster alpha.
     // Dividing once avoids turning a preserved 50% transparent subject into 25% opacity.
     let original = doc.layer(id).and_then(Layer::surface).ok_or(EngineError::NoLayer(id))?;
-    if original.format().alpha {
-        for y in bounds.y0..bounds.y1 {
-            ctx.check()?;
-            let row = Rect::new(bounds.x0, y, bounds.x1, y + 1);
+    let mut any = false;
+    for y in bounds.y0..bounds.y1 {
+        ctx.check()?;
+        let row = Rect::new(bounds.x0, y, bounds.x1, y + 1);
+        let mut values = surface.read_region(row);
+        if values.iter().any(|v| !v.is_finite()) {
+            return Err(EngineError::Other("invalid result alpha".into()));
+        }
+        if original.format().alpha {
             let pixels = original.read_region(row);
-            let mut values = surface.read_region(row);
             for (value, pixel) in values.iter_mut().zip(pixels.chunks_exact(original.channels())) {
                 let alpha = pixel.last().copied().unwrap_or(1.0);
                 if !alpha.is_finite() {
@@ -88,8 +137,14 @@ pub(super) fn result(doc: &Document, id: LayerId, image: &Rgba8Image, region: &E
                 let alpha = alpha.clamp(0.0, 1.0);
                 *value = if alpha > 0.0 { (*value / alpha).clamp(0.0, 1.0) } else { 0.0 };
             }
+        }
+        any |= values.iter().any(|v| *v > 0.0);
+        if original.format().alpha {
             surface.write_region(row, &values);
         }
+    }
+    if !any {
+        return Err(EngineError::Other("Qwen returned an empty foreground mask; the original layer was preserved".into()));
     }
     let mask = crate::commands::mask_at_depth(LayerMask { surface, ..LayerMask::reveal_all() }, doc.depth)?;
     let mut layer = doc.layer(id).ok_or(EngineError::NoLayer(id))?.clone();
@@ -97,6 +152,10 @@ pub(super) fn result(doc: &Document, id: LayerId, image: &Rgba8Image, region: &E
     Ok(layer)
 }
 
+#[cfg(test)]
+mod refine_tests;
+#[cfg(test)]
+mod tiles_tests;
 #[cfg(test)]
 mod tests {
     use super::*;

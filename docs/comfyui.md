@@ -690,6 +690,30 @@ opacity is converted to relative layer-mask coverage so existing raster alpha is
 multiplied twice. Operation metadata distinguishes background removal from its shared
 Prompt Edit model transport mode.
 This AI quick action is separate from the classical local `layer.removeBackground` command.
+Normal removal keeps its single-pass path with a native2K budget; larger source layers
+retain their native pixels and receive a restored native-size mask. Multi-pass refinement
+is an explicit research option (`experimentalRefine:true` on `edit.aiRemoveBackground`),
+not a UI/default path. It uses a global input bounded to1024² pixels, followed by regions:1536px
+cores,256px context halos and128px core overlap. Every native core is included so a
+saturated coarse prediction cannot silently exclude a small part lost in downsampling.
+The same Qwen model receives each crop as image1, the complete source context as image2,
+and a crop-local grayscale coarse-alpha guide as image3. Each additional conditioning
+image is independently bounded to1024² padded pixels. Requests run sequentially.
+Generated RGB is discarded. Only native alpha cores are merged with normalized overlap
+weights; original raster alpha is then accounted for once. Opposite0/1 classifications
+in an overlap cause a clear failure instead of a fabricated50% seam. Missing coverage,
+bad buffers or any failed/cancelled pass also preserve the complete original document.
+Planning rejects more than16 refinement regions before inference; the36MP document
+guard is therefore not a promise that every36MP shape fits this bounded operation.
+The result includes `refinementRegions` with native core/context rectangles.
+These are PhotoCraft's Qwen policies, not a copy of Photoshop's different model pipeline.
+In the initial2065² procedural-tool trial, a completed tile moved boundaries and opposite
+overlap decisions occurred. Coarse full-image alpha MAE was0.676/255; the first tile core
+was3.781/255 versus0.831/255 for the same region restored from coarse alpha. After1,362
+opposite decisions were established from saved results, only the current owned request
+was cancelled; the final tile was never submitted and no document result was applied.
+This failed quality gate is why refinement remains opt-in for controlled research.
+
 The cutout instruction is category-independent: opaque foreground surfaces must stay opaque
 regardless of brightness, colour or reflection; background and holes must be transparent,
 while genuine translucent materials and antialiased boundaries may retain partial alpha.
