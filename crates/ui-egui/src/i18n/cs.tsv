@@ -312,6 +312,7 @@
 	Layer…	Vrstva…
 	Group…	Skupina…
 	Group from Layers…	Skupina z vrstev…
+	New Group from Layers…	Nová skupina z vrstev…
 	Artboard…	Kreslicí plocha…
 	Artboard from Group…	Kreslicí plocha ze skupiny…
 	Artboard from Layers…	Kreslicí plocha z vrstev…
@@ -661,6 +662,10 @@
 	Fit Layer(s) on Screen	Přizpůsobit vrstvy obrazovce
 	Fit Artboard on Screen	Přizpůsobit kreslicí plochu obrazovce
 	100%	100 %
+	105%	105 %
+	110%	110 %
+	115%	115 %
+	120%	120 %
 	200%	200 %
 	75%	75 %
 	80%	80 %
@@ -1033,6 +1038,9 @@
 	Create new pattern from the selection	Vytvořit nový vzorek z výběru
 	Create new shape from the current path	Vytvořit nový tvar z aktuální cesty
 	Create new snapshot	Vytvořit nový snímek
+	From:	Z:
+	Full Document	Celý dokument
+	Merged Layers	Sloučené vrstvy
 	Create new tool preset	Vytvořit nové přednastavení nástroje
 	Crop Factor	Crop faktor
 	Ctrl	Ctrl
@@ -1959,7 +1967,7 @@
 	Full size tip	Hrot v plné velikosti
 	Gamut warning color	Barva upozornění na gamut
 	Gamut warning opacity	Krytí upozornění na gamut
-	Generator enabled	Generátor zapnut
+	Enable Generator	Zapnout generátor
 	Gif	GIF
 	Glossy	Lesklý
 	Grid color	Barva mřížky
@@ -3581,6 +3589,8 @@ curves	Smooth	Vyhladit
 	Vanishing Point is not active	Úběžník není aktivní
 	Apply Vanishing Point ({key})	Použít úběžník ({key})
 	Fix the red plane first: its corners must form a convex quad	Nejprve opravte červenou rovinu: její rohy musí tvořit konvexní čtyřúhelník
+	Alt-click a plane to set the clone source	Klepnutím s Alt na rovinu nastavte zdroj klonování
+	Too many clone strokes: apply Vanishing Point first	Příliš mnoho tahů klonování: nejprve použijte Úběžník
 # Select and Mask view modes (#1754)
 	Onion Skin	Cibulová slupka
 	Marching Ants	Pochodující mravenci
@@ -3609,6 +3619,9 @@ curves	Smooth	Vyhladit
 	Clear History	Vymazat historii
 	New Snapshot…	Nový snímek…
 	History Options…	Volby historie…
+# History panel › History Options… (#2966)
+	Allow Non-Linear History	Povolit nelineární historii
+	Make Layer Visibility Changes Undoable	Umožnit vrácení změn viditelnosti vrstev
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	Táhněte (laso) nebo klikejte na body (mnohoúhelník) · {add} přidat · {sub} odečíst
 	The current gradient (pick one in Window › Gradients)	Aktuální přechod (vyberte v Okno › Přechody)
 # Canvas context menus, Channels panel menu, Layer Style blending page (labels rendered through a variable).
@@ -3851,99 +3864,51 @@ navigator	Zoom	Zvětšení
 	Sent to {printer}	Odesláno do {printer}
 	set in Print Settings…	nastavuje se v nastavení tisku…
 	ICO is limited to 256 × 256 pixels	ICO je omezen na 256 × 256 pixelů
-	Burn	Ztmavení
-	Clone Stamp	Klonovací razítko
-	Dodge	Zesvětlení
-	History Brush	Štětec historie
-	Sponge	Houba
-	Tool	Nástroj
-	The document does not have an embedded colour profile. Working space: {working}.	Dokument nemá vložený barevný profil. Pracovní prostor barev: {working}.
-	The document has an embedded colour profile that does not match the working space.\nEmbedded: {embedded}\nWorking: {working}	Dokument má vložený barevný profil, který neodpovídá pracovnímu prostoru barev.\nVložený: {embedded}\nPracovní: {working}
-	All shortcuts reset to Photoshop defaults.	Všechny zkratky byly obnoveny na výchozí hodnoty Photoshopu.
-	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Nativní přetahování souborů ve Waylandu zatím není podporováno. Použijte Soubor › Otevřít nebo spusťte PhotoCraft v XWayland s `WAYLAND_DISPLAY= photocraft`.
-	Use File › Open to open an image.	Obrázek otevřete přes Soubor › Otevřít.
-	Import Photoshop brushes (.abr)	Importovat štětce Photoshopu (.abr)
-	Load Photoshop brushes (.abr)	Načíst štětce Photoshopu (.abr)
-	Default Photoshop Size	Výchozí velikost
-	Prompt Edit	Upravit podle zadání
-	Generative Fill	Generativní výplň
-	Describe changes to the whole image	Popište změny celého obrázku
-	Describe changes, or leave blank to remove	Popište změny nebo nechte prázdné pro odstranění
-	ComfyUI is unavailable in this frontend	ComfyUI není v tomto prostředí dostupné
-	Comfyui url	URL serveru ComfyUI
-	Prompt Edit…	Upravit podle zadání…
-	Generative Fill…	Generativní výplň…
-	Preparing image and selection	Příprava obrázku a výběru
-	Uploading image to ComfyUI	Nahrávání do ComfyUI
-	Waiting for ComfyUI generation	Čekání na generování ComfyUI
-	Downloading generated image	Stahování výsledku
-	Adding generated layer	Přidávání nové vrstvy
-	Prompt Generate	Generovat podle zadání
-	Prompt Generate…	Generovat podle zadání…
-	Regenerate AI Result	Znovu generovat výsledek AI
-	Regenerate	Znovu generovat
-	Describe the image to generate	Popište obrázek, který chcete vygenerovat
-	Sampling steps	Kroky vzorkování
-	Reset steps to model default	Obnovit výchozí počet kroků modelu
-	Translate prompt to English	Přeložit zadání do angličtiny
-	Prompt translation model	Model pro překlad zadání
-	Prompt information	Informace o zadání
-	AI Prompt History	Historie zadání AI
-	Original prompt	Původní zadání
-	English translation	Anglický překlad
-	No prompt (remove)	Bez zadání (odstranit)
-	All nine regions	Všech devět oblastí
-	No AI prompts recorded	Žádná zaznamenaná zadání AI
-	Copy original prompt	Kopírovat původní zadání
-	Copy English translation	Kopírovat anglický překlad
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	Model ComfyUI
-	Comfyui translate prompt	Přeložit zadání do angličtiny
-	Comfyui translation model	Model pro překlad zadání
-	AI model settings	Nastavení modelu AI
-	ComfyUI port	Port ComfyUI
-	Copy negative prompt	Kopírovat negativní prompt
-	Custom model filenames (one per line)	Názvy souborů vlastních modelů (jeden na řádek)
-	Negative prompt	Negativní prompt
-	One .safetensors filename per line. Compatibility is not checked.	Jeden název souboru .safetensors na řádek. Kompatibilita se nekontroluje.
-	Text encoders	Textové enkodéry
-	Comfyui custom encoders	Vlastní enkodéry ComfyUI
-	Comfyui custom model	Vlastní model ComfyUI
-	Comfyui custom models	Vlastní modely ComfyUI
-	Comfyui model settings	Nastavení modelů ComfyUI
-	PhotoCraft update available	Je k dispozici aktualizace PhotoCraft
-	Update PhotoCraft and restart now?	Aktualizovat PhotoCraft a nyní restartovat?
-	Automatically check for updates	Automaticky kontrolovat aktualizace
-	Check for updates now	Zkontrolovat aktualizace nyní
-	You can check for updates again in Help → About PhotoCraft.	Aktualizace můžete znovu zkontrolovat v nabídce Nápověda → O PhotoCraft.
-	Downloading update…	Stahování aktualizace…
-	PhotoCraft is up to date.	PhotoCraft je aktuální.
-	Update PhotoCraft	Aktualizovat PhotoCraft
-	Dismiss update	Zavřít oznámení o aktualizaci
+	Show Favorite Fonts	Zobrazit oblíbená písma
+	No favorite fonts yet: click the star beside a font to add it.	Zatím žádná oblíbená písma: přidejte písmo kliknutím na hvězdičku vedle něj.
+	Favorite fonts	Oblíbená písma
+	Add to Favorites	Přidat do oblíbených
+	Remove from Favorites	Odebrat z oblíbených
+	Show All Fonts	Zobrazit všechna písma
+	All Classes	Všechny třídy
+	Blackletter	Lomená písma
+	Decorative	Dekorativní
+	Font preview:	Náhled písma:
+	Handwritten	Ručně psaná
+	Hide Font Classes	Skrýt třídy písem
+	Hide Styles	Skrýt řezy
+	Monospace	Neproporcionální
+	No fonts match these filters.	Filtrům neodpovídají žádná písma.
+	No similar fonts: the current font doesn't say what it looks like.	Žádná podobná písma: u aktuálního písma chybí popis vzhledu.
+	OpenType font	Písmo OpenType
+	Sans Serif	Bezpatková
+	Script	Skriptová
+	Serif	Patková
+	Show Font Classes	Zobrazit třídy písem
+	Show Similar Fonts	Zobrazit podobná písma
+	Show Styles	Zobrazit řezy
+	Show Variable Fonts	Zobrazit variabilní písma
+	Slab Serif	Slabová patková
+	TrueType font	Písmo TrueType
+	Variable font	Variabilní písmo
+	Calibration	Kalibrace
+	Red Primary	Červená základní
+	Green Primary	Zelená základní
+	Blue Primary	Modrá základní
+	Write xmp sidecars	Zapisovat přidružené soubory XMP
+	Set the tone sliders from the image	Nastavit posuvníky tónů podle obrazu
+	Settings from {name}	Nastavení z {name}
+	Settings from {name}; {count} not supported: {names}	Nastavení z {name}; {count} nepodporováno: {names}
+	Could not write {name}: {error}	Nelze zapsat {name}: {error}
+	Kept {name}: written by another application	Soubor {name} ponechán: zapsala ho jiná aplikace
+	Shadow Tint	Odstín stínů
 # PhotoCraft release checks.
 	Check for Updates…	Zkontrolovat aktualizace…
 	PhotoCraft Updates	Aktualizace PhotoCraft
 	Checking for updates…	Kontrola aktualizací…
 	Open the release page to choose an installer for your system.	Otevřete stránku vydání a vyberte instalační program pro svůj systém.
 	Open Download Page	Otevřít stránku ke stažení
+	PhotoCraft is up to date.	PhotoCraft je aktuální.
 	Could not check for updates.	Aktualizace se nepodařilo zkontrolovat.
 	Updates have not been checked yet.	Aktualizace ještě nebyly zkontrolovány.
 	Check Again	Zkontrolovat znovu
@@ -4058,12 +4023,15 @@ navigator	Zoom	Zvětšení
 # Camera Raw / layer labels) that other catalogs already covered. Translated the same way as
 # above, from the plain meaning of the English label.
 	Export As: {name}	Exportovat jako: {name}
+	Tool	Nástroj
 	Arc Lower	Oblouk dole
 	Arc Upper	Oblouk nahoře
 	Arrows	Šipky
 	Basic Latin	Základní latinka
 	Bloat	Nafouknout
+	Burn	Ztmavení
 	Checkerboard	Šachovnice
+	Clone Stamp	Klonovací razítko
 	Color Sampler Tool	Nástroj vzorkovač barev
 	Currency	Měnové symboly
 	Cyrillic	Cyrilice
@@ -4071,6 +4039,7 @@ navigator	Zoom	Zvětšení
 	Decrease Type Size by 10	Zmenšit velikost písma o 10
 	Delete Snapshot	Odstranit snímek
 	Detect Faces	Rozpoznat obličeje
+	Dodge	Zesvětlení
 	Erase with Brush or Pencil (hold)	Mazat štětcem nebo tužkou (při podržení klávesy)
 	Fill with Background Color	Vyplnit barvou pozadí
 	Fill with Background Color, Preserve Transparency	Vyplnit barvou pozadí, zachovat průhlednost
@@ -4081,6 +4050,7 @@ navigator	Zoom	Zvětšení
 	Freeze Mask	Zmrazit oblast
 	Greek	Řecké písmo
 	Hand Tool (hold)	Nástroj ruka (při podržení klávesy)
+	History Brush	Štětec historie
 	Increase Type Size	Zvětšit velikost písma
 	Increase Type Size by 10	Zvětšit velikost písma o 10
 	Kerning: Metrics, Optical or a value in 1/1000 em (Alt+←/→ at the caret)	Kerning: zvolte „Metrické“, „Optické“ nebo hodnotu v 1/1000 em (Alt+←/→ v místě textového kurzoru)
@@ -4100,6 +4070,7 @@ navigator	Zoom	Zvětšení
 	Push Left	Tlačit doleva
 	Reconstruct All	Rekonstruovat vše
 	Save Path	Uložit cestu
+	Sponge	Houba
 	Target Channel 3	Zacílit na kanál 3
 	Target Channel 4	Zacílit na kanál 4
 	Target Channel 5	Zacílit na kanál 5
@@ -4246,11 +4217,108 @@ cameraRaw	Dehaze	Odstranění oparu
 	Grayscale Ramp	Přechod stupňů šedi
 	Current Colors	Aktuální barvy
 	Make Ramp Web Safe	Omezit pruh na webové barvy
+# Art History Brush (#213).
+	Art History Brush	Štětec umělecké historie
+	Art History Brush Tool	Nástroj štětec umělecké historie
+	Tight Short	Těsný krátký
+	Tight Medium	Těsný střední
+	Tight Long	Těsný dlouhý
+	Loose Medium	Volný střední
+	Loose Long	Volný dlouhý
+	Dab	Šmouha
+	Tight Curl	Těsná smyčka
+	Loose Curl	Volná smyčka
+	Stylized dabs from a history state	Stylizované šmouhy ze stavu historie
+
+# Egui 0.37 migration controls (Aspect Ratio, Category, Color Table, Gamma, Interpolation, Profile, Target, Units, Demosaic)
+	Aspect Ratio	Poměr stran
+	Font size presets	Předvolby velikosti písma
+	Leading presets	Předvolby prokladu
+	Tracking presets	Předvolby prostrkání
+	The document does not have an embedded colour profile. Working space: {working}.	Dokument nemá vložený barevný profil. Pracovní prostor barev: {working}.
+	The document has an embedded colour profile that does not match the working space.\nEmbedded: {embedded}\nWorking: {working}	Dokument má vložený barevný profil, který neodpovídá pracovnímu prostoru barev.\nVložený: {embedded}\nPracovní: {working}
+	All shortcuts reset to Photoshop defaults.	Všechny zkratky byly obnoveny na výchozí hodnoty Photoshopu.
+	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Nativní přetahování souborů ve Waylandu zatím není podporováno. Použijte Soubor › Otevřít nebo spusťte PhotoCraft v XWayland s `WAYLAND_DISPLAY= photocraft`.
+	Use File › Open to open an image.	Obrázek otevřete přes Soubor › Otevřít.
+	Import Photoshop brushes (.abr)	Importovat štětce Photoshopu (.abr)
+	Load Photoshop brushes (.abr)	Načíst štětce Photoshopu (.abr)
+	Default Photoshop Size	Výchozí velikost
+	Prompt Edit	Upravit podle zadání
+	Generative Fill	Generativní výplň
+	Describe changes to the whole image	Popište změny celého obrázku
+	Describe changes, or leave blank to remove	Popište změny nebo nechte prázdné pro odstranění
+	ComfyUI is unavailable in this frontend	ComfyUI není v tomto prostředí dostupné
+	Comfyui url	URL serveru ComfyUI
+	Prompt Edit…	Upravit podle zadání…
+	Generative Fill…	Generativní výplň…
+	Preparing image and selection	Příprava obrázku a výběru
+	Uploading image to ComfyUI	Nahrávání do ComfyUI
+	Waiting for ComfyUI generation	Čekání na generování ComfyUI
+	Downloading generated image	Stahování výsledku
+	Adding generated layer	Přidávání nové vrstvy
+	Prompt Generate	Generovat podle zadání
+	Prompt Generate…	Generovat podle zadání…
+	Regenerate AI Result	Znovu generovat výsledek AI
+	Regenerate	Znovu generovat
+	Describe the image to generate	Popište obrázek, který chcete vygenerovat
+	Sampling steps	Kroky vzorkování
+	Reset steps to model default	Obnovit výchozí počet kroků modelu
+	Translate prompt to English	Přeložit zadání do angličtiny
+	Prompt translation model	Model pro překlad zadání
+	Prompt information	Informace o zadání
+	AI Prompt History	Historie zadání AI
+	Original prompt	Původní zadání
+	English translation	Anglický překlad
+	No prompt (remove)	Bez zadání (odstranit)
+	All nine regions	Všech devět oblastí
+	No AI prompts recorded	Žádná zaznamenaná zadání AI
+	Copy original prompt	Kopírovat původní zadání
+	Copy English translation	Kopírovat anglický překlad
+	Anime fusal	Anime FUSAL
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Turbo int8	Turbo INT8
+	Turbo q8	Turbo Q8_0
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Comfyui model	Model ComfyUI
+	Comfyui translate prompt	Přeložit zadání do angličtiny
+	Comfyui translation model	Model pro překlad zadání
+	AI model settings	Nastavení modelu AI
+	ComfyUI port	Port ComfyUI
+	Copy negative prompt	Kopírovat negativní prompt
+	Custom model filenames (one per line)	Názvy souborů vlastních modelů (jeden na řádek)
+	Negative prompt	Negativní prompt
+	One .safetensors filename per line. Compatibility is not checked.	Jeden název souboru .safetensors na řádek. Kompatibilita se nekontroluje.
+	Text encoders	Textové enkodéry
+	Comfyui custom encoders	Vlastní enkodéry ComfyUI
+	Comfyui custom model	Vlastní model ComfyUI
+	Comfyui custom models	Vlastní modely ComfyUI
+	Comfyui model settings	Nastavení modelů ComfyUI
+	PhotoCraft update available	Je k dispozici aktualizace PhotoCraft
+	Update PhotoCraft and restart now?	Aktualizovat PhotoCraft a nyní restartovat?
+	Automatically check for updates	Automaticky kontrolovat aktualizace
+	Check for updates now	Zkontrolovat aktualizace nyní
+	You can check for updates again in Help → About PhotoCraft.	Aktualizace můžete znovu zkontrolovat v nabídce Nápověda → O PhotoCraft.
+	Downloading update…	Stahování aktualizace…
+	Update PhotoCraft	Aktualizovat PhotoCraft
+	Dismiss update	Zavřít oznámení o aktualizaci
 	Match Surrounding Colors	Přizpůsobit barvy okolí
 	Adjust colors with Poisson blending	Upravit barvy pomocí Poissonova prolnutí
 	Compare with Original Generation	Porovnat s původně vygenerovaným výsledkem
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Přizpůsobí barvy okolí zachycenému při generování. Síla 0 obnoví původně vygenerovaný výsledek.
-
 	Attach Reference Image	Připojit referenční obrázek
 	Remove Reference Image	Odebrat referenční obrázek
 	Reference Image	Referenční obrázek

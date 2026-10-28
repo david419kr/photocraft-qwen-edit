@@ -1,5 +1,5 @@
 //! All passes use frozen native source data; no document commit until every pass succeeds.
-use super::*;
+use super::{AiBackend, AiRequest, Arc, Document, EditMode, EditRegion, EngineError, JobCtx, Layer, Result, fill, harmonize, result_layer};
 
 #[derive(Clone)]
 pub(super) struct Pass {

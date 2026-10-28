@@ -1,5 +1,5 @@
 //! Local, user-installed external cutout backends.
-use super::*;
+use super::{ColorMode, Deserialize, Document, EngineError, JobCtx, Layer, LayerMask, PixelFormat, Rect, Result, Session, Surface, Value, json};
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
 use std::path::{Component, Path, PathBuf};

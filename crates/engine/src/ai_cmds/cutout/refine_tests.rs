@@ -1,4 +1,5 @@
 use super::*;
+use crate::ai_cmds::{REGENERATE_COMMAND, REMOVE_BACKGROUND_COMMAND};
 use std::sync::Mutex;
 
 #[cfg(not(target_arch = "wasm32"))]

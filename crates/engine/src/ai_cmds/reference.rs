@@ -1,5 +1,5 @@
 //! Session-local, immutable reference images. Files never enter the engine as ambient paths.
-use super::*;
+use super::{Arc, CommandSpec, EngineError, Result, Rgba8Image, Session, Value, bad, can_edit, json, prepare_image, resolution, supported_document};
 use std::sync::atomic::{AtomicU64, Ordering};
 
 pub const SET: &str = "edit.aiReference.set";

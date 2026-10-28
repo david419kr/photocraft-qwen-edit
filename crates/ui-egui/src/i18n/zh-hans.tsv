@@ -311,6 +311,7 @@
 	Layer…	图层…
 	Group…	组…
 	Group from Layers…	从图层创建组…
+	New Group from Layers…	从图层新建组…
 	Artboard…	画板…
 	Artboard from Group…	从组创建画板…
 	Artboard from Layers…	从图层创建画板…
@@ -661,6 +662,10 @@
 	Fit Layer(s) on Screen	使图层适合屏幕
 	Fit Artboard on Screen	使画板适合屏幕
 	100%	100%
+	105%	105%
+	110%	110%
+	115%	115%
+	120%	120%
 	200%	200%
 	75%	75%
 	80%	80%
@@ -1045,6 +1050,10 @@
 	Create new pattern from the selection	从选区创建图案
 	Create new shape from the current path	从当前路径创建形状
 	Create new snapshot	创建快照
+	From:	自：
+	Full Document	完整文档
+	Merged Layers	合并的图层
+	New Snapshot	新建快照
 	Create new tool preset	创建工具预设
 	Crop Factor	裁切系数
 	Ctrl	Ctrl
@@ -1984,7 +1993,7 @@
 	Full size tip	全尺寸笔尖
 	Gamut warning color	色域警告颜色
 	Gamut warning opacity	色域警告不透明度
-	Generator enabled	启用生成器
+	Enable Generator	启用生成器
 	Gif	GIF
 	Glossy	光面
 	Grid color	网格颜色
@@ -2780,6 +2789,9 @@ curves	Smooth	平滑
 	Vanishing Point is not active	消失点未处于活动状态
 	Apply Vanishing Point ({key})	应用消失点（{key}）
 	Fix the red plane first: its corners must form a convex quad	请先修正红色平面：其四个角必须构成凸四边形
+	Alt-click a plane to set the clone source	按住 Alt 键单击平面以设置仿制源
+	Too many clone strokes: apply Vanishing Point first	仿制描边过多：请先应用消失点
+	Stamp	图章
 # Select and Mask view modes (#1754)
 	Onion Skin	洋葱皮
 	Marching Ants	蚂蚁线
@@ -2815,6 +2827,9 @@ curves	Smooth	平滑
 	Clear History	清除历史记录
 	New Snapshot…	新建快照…
 	History Options…	历史记录选项…
+# History panel › History Options… (#2966)
+	Allow Non-Linear History	允许非线性历史记录
+	Make Layer Visibility Changes Undoable	允许撤销图层可见性更改
 # Print dialog (#2697)
 	Emulsion Down	药膜朝下
 	Functions	功能
@@ -2888,96 +2903,51 @@ curves	Smooth	平滑
 	Sent to {printer}	已发送到 {printer}
 	set in Print Settings…	在打印设置中设置…
 	ICO is limited to 256 × 256 pixels	ICO 最大为 256 × 256 像素
-	All shortcuts reset to Photoshop defaults.	所有快捷键已重置为 Photoshop 默认值。
-	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Wayland 尚不支持原生文件拖放。请使用“文件 › 打开”，或通过 `WAYLAND_DISPLAY= photocraft` 在 XWayland 下运行 PhotoCraft。
-	Use File › Open to open an image.	使用“文件 › 打开”打开图像。
-	Import Photoshop brushes (.abr)	导入 Photoshop 画笔（.abr）
-	Load Photoshop brushes (.abr)	载入 Photoshop 画笔（.abr）
-	Default Photoshop Size	默认 Photoshop 大小
-	Grid view	网格视图
-	List view	列表视图
-	The current gradient (pick one in Window › Gradients)	当前渐变（在“窗口 › 渐变”中选择）
-	Prompt Edit	提示词编辑
-	Generative Fill	生成式填充
-	Describe changes to the whole image	描述对整张图像的修改
-	Describe changes, or leave blank to remove	描述修改内容，留空以移除选区内容
-	ComfyUI is unavailable in this frontend	此环境无法使用ComfyUI
-	Comfyui url	ComfyUI服务器地址
-	Prompt Edit…	提示词编辑…
-	Generative Fill…	生成式填充…
-	Preparing image and selection	正在准备图像和选区
-	Uploading image to ComfyUI	正在上传图像到ComfyUI
-	Waiting for ComfyUI generation	正在等待ComfyUI生成
-	Downloading generated image	正在下载生成图像
-	Adding generated layer	正在添加生成图层
-	Prompt Generate	通过提示词生成
-	Prompt Generate…	通过提示词生成…
-	Regenerate AI Result	重新生成 AI 结果
-	Regenerate	重新生成
-	Describe the image to generate	描述要生成的图像
-	Sampling steps	采样步数
-	Reset steps to model default	将步数重置为模型默认值
-	Translate prompt to English	将提示词翻译为英语
-	Prompt translation model	提示词翻译模型
-	Prompt information	提示词信息
-	AI Prompt History	AI 提示词历史
-	Original prompt	原始提示词
-	English translation	英语翻译
-	No prompt (remove)	无提示词（移除）
-	All nine regions	全部九个区域
-	No AI prompts recorded	尚无 AI 提示词记录
-	Previous	上一页
-	Next	下一页
-	Copy original prompt	复制原始提示词
-	Copy English translation	复制英语翻译
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	ComfyUI 模型
-	Comfyui translate prompt	将提示词翻译为英语
-	Comfyui translation model	提示词翻译模型
-	AI model settings	AI 模型设置
-	ComfyUI port	ComfyUI 端口
-	Copy negative prompt	复制负面提示词
-	Custom model filenames (one per line)	自定义模型文件名（每行一个）
-	Negative prompt	负面提示词
-	One .safetensors filename per line. Compatibility is not checked.	每行一个 .safetensors 文件名。不检查兼容性。
-	Text encoders	文本编码器
-	Comfyui custom encoders	ComfyUI 自定义编码器
-	Comfyui custom model	ComfyUI 自定义模型
-	Comfyui custom models	ComfyUI 自定义模型列表
-	Comfyui model settings	ComfyUI 模型设置
-	PhotoCraft update available	PhotoCraft 有可用更新
-	Update PhotoCraft and restart now?	现在更新 PhotoCraft 并重新启动吗？
-	Automatically check for updates	自动检查更新
-	Check for updates now	立即检查更新
-	You can check for updates again in Help → About PhotoCraft.	您可以在帮助 → 关于 PhotoCraft 中再次检查更新。
-	Downloading update…	正在下载更新…
-	PhotoCraft is up to date.	PhotoCraft 已是最新版本。
-	Update PhotoCraft	更新 PhotoCraft
-	Dismiss update	关闭更新通知
+	Show Favorite Fonts	显示收藏的字体
+	No favorite fonts yet: click the star beside a font to add it.	还没有收藏的字体：点击字体旁边的星标即可添加。
+	Favorite fonts	收藏的字体
+	Add to Favorites	添加到收藏
+	Remove from Favorites	从收藏中移除
+	Show All Fonts	显示所有字体
+	All Classes	所有类别
+	Blackletter	哥特体
+	Decorative	装饰体
+	Font preview:	字体预览：
+	Handwritten	手写体
+	Hide Font Classes	隐藏字体类别
+	Hide Styles	隐藏样式
+	Monospace	等宽
+	No fonts match these filters.	没有符合这些筛选条件的字体。
+	No similar fonts: the current font doesn't say what it looks like.	没有相似字体：当前字体没有描述其外观。
+	OpenType font	OpenType 字体
+	Sans Serif	无衬线
+	Script	手写花体
+	Serif	衬线
+	Show Font Classes	显示字体类别
+	Show Similar Fonts	显示相似字体
+	Show Styles	显示样式
+	Show Variable Fonts	显示可变字体
+	Slab Serif	粗衬线
+	TrueType font	TrueType 字体
+	Variable font	可变字体
+	Calibration	校准
+	Red Primary	红原色
+	Green Primary	绿原色
+	Blue Primary	蓝原色
+	Write xmp sidecars	写入 XMP 附属文件
+	Set the tone sliders from the image	根据图像设置色调滑块
+	Settings from {name}	来自 {name} 的设置
+	Settings from {name}; {count} not supported: {names}	来自 {name} 的设置；{count} 项不支持：{names}
+	Could not write {name}: {error}	无法写入 {name}：{error}
+	Kept {name}: written by another application	已保留 {name}：由其他应用程序写入
+	Shadow Tint	阴影色调
 # PhotoCraft release checks.
 	Check for Updates…	检查更新…
 	PhotoCraft Updates	PhotoCraft 更新
 	Checking for updates…	正在检查更新…
 	Open the release page to choose an installer for your system.	打开发布页，选择适合您系统的安装包。
 	Open Download Page	打开下载页面
+	PhotoCraft is up to date.	PhotoCraft 已是最新版本。
 	Could not check for updates.	无法检查更新。
 	Updates have not been checked yet.	尚未检查更新。
 	Check Again	重新检查
@@ -3172,11 +3142,119 @@ curves	Smooth	平滑
 	Exported {path}	已导出 {path}
 	Exported {n} files	已导出 {n} 个文件
 	Driver: {driver}	驱动程序：{driver}
+# Art History Brush (#213).
+	Art History Brush	艺术历史画笔
+	Art History Brush Tool	艺术历史画笔工具
+	Tight Short	紧密短
+	Tight Medium	紧密中
+	Tight Long	紧密长
+	Loose Medium	宽松中
+	Loose Long	宽松长
+	Dab	点涂
+	Tight Curl	紧密卷曲
+	Loose Curl	宽松卷曲
+	Area	区域
+	Stylized dabs from a history state	从历史状态绘制风格化点涂
+
+# Egui 0.37 migration controls (Aspect Ratio, Category, Color Table, Gamma, Interpolation, Profile, Target, Units, Demosaic)
+	Aspect Ratio	长宽比
+	Category	类别
+	Color Table	颜色表
+	Gamma	伽马
+	Interpolation	插值
+	Profile	配置文件
+	Target	目标
+	Units	单位
+	Font size presets	字号预设
+	Leading presets	行距预设
+	Tracking presets	字距调整预设
+	All shortcuts reset to Photoshop defaults.	所有快捷键已重置为 Photoshop 默认值。
+	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Wayland 尚不支持原生文件拖放。请使用“文件 › 打开”，或通过 `WAYLAND_DISPLAY= photocraft` 在 XWayland 下运行 PhotoCraft。
+	Use File › Open to open an image.	使用“文件 › 打开”打开图像。
+	Import Photoshop brushes (.abr)	导入 Photoshop 画笔（.abr）
+	Load Photoshop brushes (.abr)	载入 Photoshop 画笔（.abr）
+	Default Photoshop Size	默认 Photoshop 大小
+	Grid view	网格视图
+	List view	列表视图
+	The current gradient (pick one in Window › Gradients)	当前渐变（在“窗口 › 渐变”中选择）
+	Prompt Edit	提示词编辑
+	Generative Fill	生成式填充
+	Describe changes to the whole image	描述对整张图像的修改
+	Describe changes, or leave blank to remove	描述修改内容，留空以移除选区内容
+	ComfyUI is unavailable in this frontend	此环境无法使用ComfyUI
+	Comfyui url	ComfyUI服务器地址
+	Prompt Edit…	提示词编辑…
+	Generative Fill…	生成式填充…
+	Preparing image and selection	正在准备图像和选区
+	Uploading image to ComfyUI	正在上传图像到ComfyUI
+	Waiting for ComfyUI generation	正在等待ComfyUI生成
+	Downloading generated image	正在下载生成图像
+	Adding generated layer	正在添加生成图层
+	Prompt Generate	通过提示词生成
+	Prompt Generate…	通过提示词生成…
+	Regenerate AI Result	重新生成 AI 结果
+	Regenerate	重新生成
+	Describe the image to generate	描述要生成的图像
+	Sampling steps	采样步数
+	Reset steps to model default	将步数重置为模型默认值
+	Translate prompt to English	将提示词翻译为英语
+	Prompt translation model	提示词翻译模型
+	Prompt information	提示词信息
+	AI Prompt History	AI 提示词历史
+	Original prompt	原始提示词
+	English translation	英语翻译
+	No prompt (remove)	无提示词（移除）
+	All nine regions	全部九个区域
+	No AI prompts recorded	尚无 AI 提示词记录
+	Previous	上一页
+	Next	下一页
+	Copy original prompt	复制原始提示词
+	Copy English translation	复制英语翻译
+	Anime fusal	Anime FUSAL
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Turbo int8	Turbo INT8
+	Turbo q8	Turbo Q8_0
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Comfyui model	ComfyUI 模型
+	Comfyui translate prompt	将提示词翻译为英语
+	Comfyui translation model	提示词翻译模型
+	AI model settings	AI 模型设置
+	ComfyUI port	ComfyUI 端口
+	Copy negative prompt	复制负面提示词
+	Custom model filenames (one per line)	自定义模型文件名（每行一个）
+	Negative prompt	负面提示词
+	One .safetensors filename per line. Compatibility is not checked.	每行一个 .safetensors 文件名。不检查兼容性。
+	Text encoders	文本编码器
+	Comfyui custom encoders	ComfyUI 自定义编码器
+	Comfyui custom model	ComfyUI 自定义模型
+	Comfyui custom models	ComfyUI 自定义模型列表
+	Comfyui model settings	ComfyUI 模型设置
+	PhotoCraft update available	PhotoCraft 有可用更新
+	Update PhotoCraft and restart now?	现在更新 PhotoCraft 并重新启动吗？
+	Automatically check for updates	自动检查更新
+	Check for updates now	立即检查更新
+	You can check for updates again in Help → About PhotoCraft.	您可以在帮助 → 关于 PhotoCraft 中再次检查更新。
+	Downloading update…	正在下载更新…
+	Update PhotoCraft	更新 PhotoCraft
+	Dismiss update	关闭更新通知
 	Match Surrounding Colors	匹配周围颜色
 	Adjust colors with Poisson blending	使用泊松融合调整颜色
 	Compare with Original Generation	与最初生成结果比较
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	将颜色匹配到生成时记录的周围区域。强度为0时恢复最初的生成结果。
-
 	Attach Reference Image	添加参考图像
 	Remove Reference Image	移除参考图像
 	Reference Image	参考图像

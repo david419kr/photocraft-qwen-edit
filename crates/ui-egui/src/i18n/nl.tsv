@@ -298,6 +298,7 @@
 	Layer…	Laag…
 	Group…	Groep…
 	Group from Layers…	Groep uit lagen…
+	New Group from Layers…	Nieuwe groep uit lagen…
 	Artboard…	Tekengebied…
 	Artboard from Group…	Tekengebied uit groep…
 	Artboard from Layers…	Tekengebied uit lagen…
@@ -645,6 +646,10 @@
 	Fit Layer(s) on Screen	Laag/lagen passend in scherm
 	Fit Artboard on Screen	Tekengebied passend in scherm
 	100%	100%
+	105%	105%
+	110%	110%
+	115%	115%
+	120%	120%
 	200%	200%
 	Print Size	Afdrukgrootte
 	Pixel Aspect Ratio	Pixelverhouding
@@ -1000,6 +1005,9 @@
 	Create new pattern from the selection	Nieuw patroon maken van de selectie
 	Create new shape from the current path	Nieuwe vorm maken van het huidige pad
 	Create new snapshot	Nieuwe momentopname maken
+	From:	Van:
+	Full Document	Volledig document
+	Merged Layers	Samengevoegde lagen
 	Create new style (from the selected type)	Nieuwe stijl maken (van de geselecteerde tekst)
 	Create new style from the selected layer	Nieuwe stijl maken van de geselecteerde laag
 	Create new tool preset	Nieuwe gereedschapsvoorinstelling maken
@@ -1915,7 +1923,7 @@
 	Full size tip	Punt op volledige grootte
 	Gamut warning color	Kleur waarschuwing kleurbereik
 	Gamut warning opacity	Dekking waarschuwing kleurbereik
-	Generator enabled	Generator ingeschakeld
+	Enable Generator	Generator inschakelen
 	Gif	GIF
 	Glossy	Glanzend
 	Grid color	Rasterkleur
@@ -3882,6 +3890,8 @@ curves	Smooth	Vloeiend maken
 	Vanishing Point is not active	Verdwijnpunt is niet actief
 	Apply Vanishing Point ({key})	Verdwijnpunt toepassen ({key})
 	Fix the red plane first: its corners must form a convex quad	Herstel eerst het rode vlak: de hoeken moeten een convexe vierhoek vormen
+	Alt-click a plane to set the clone source	Alt-klik op een vlak om de kloonbron in te stellen
+	Too many clone strokes: apply Vanishing Point first	Te veel kloonstreken: pas eerst Verdwijnpunt toe
 # Select and Mask view modes (#1754)
 	Onion Skin	Uienschil
 	Marching Ants	Mierenmars
@@ -3913,6 +3923,9 @@ curves	Smooth	Vloeiend maken
 # History panel menu (#2966)
 	New Snapshot…	Nieuwe momentopname…
 	History Options…	Geschiedenisopties…
+# History panel › History Options… (#2966)
+	Allow Non-Linear History	Niet-lineaire geschiedenis toestaan
+	Make Layer Visibility Changes Undoable	Wijzigingen in laagzichtbaarheid ongedaan kunnen maken
 # Print dialog (#2697)
 	Emulsion Down	Emulsie omlaag
 	Functions	Functies
@@ -3999,91 +4012,51 @@ curves	Smooth	Vloeiend maken
 	Sent to {printer}	Verzonden naar {printer}
 	set in Print Settings…	instellen in de afdrukinstellingen…
 	ICO is limited to 256 × 256 pixels	ICO is beperkt tot 256 × 256 pixels
-	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
-	Import Photoshop brushes (.abr)	Import Photoshop brushes (.abr)
-	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
-	Default Photoshop Size	Default Photoshop Size
-	Grid view	Grid view
-	List view	List view
-	Prompt Edit	Prompt Edit
-	Generative Fill	Generative Fill
-	Describe changes to the whole image	Describe changes to the whole image
-	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
-	ComfyUI is unavailable in this frontend	ComfyUI is unavailable in this frontend
-	Comfyui url	Comfyui url
-	Prompt Edit…	Prompt Edit…
-	Generative Fill…	Generative Fill…
-	Preparing image and selection	Preparing image and selection
-	Uploading image to ComfyUI	Uploading image to ComfyUI
-	Waiting for ComfyUI generation	Waiting for ComfyUI generation
-	Downloading generated image	Downloading generated image
-	Adding generated layer	Adding generated layer
-	Prompt Generate	Genereren met prompt
-	Prompt Generate…	Genereren met prompt…
-	Regenerate AI Result	AI-resultaat opnieuw genereren
-	Regenerate	Opnieuw genereren
-	Describe the image to generate	Beschrijf de afbeelding die u wilt genereren
-	Sampling steps	Samplingstappen
-	Reset steps to model default	Stappen terugzetten naar de modelstandaard
-	Translate prompt to English	Prompt naar het Engels vertalen
-	Prompt translation model	Vertaalmodel voor prompts
-	Prompt information	Promptinformatie
-	AI Prompt History	AI-promptgeschiedenis
-	Original prompt	Oorspronkelijke prompt
-	English translation	Engelse vertaling
-	No prompt (remove)	Geen prompt (verwijderen)
-	All nine regions	Alle negen gebieden
-	No AI prompts recorded	Geen AI-prompts vastgelegd
-	Copy original prompt	Oorspronkelijke prompt kopiëren
-	Copy English translation	Engelse vertaling kopiëren
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	ComfyUI-model
-	Comfyui translate prompt	Prompt naar het Engels vertalen
-	Comfyui translation model	Vertaalmodel voor prompts
-	AI model settings	AI-modelinstellingen
-	ComfyUI port	ComfyUI-poort
-	Copy negative prompt	Negatieve prompt kopiëren
-	Custom model filenames (one per line)	Bestandsnamen van aangepaste modellen (één per regel)
-	Negative prompt	Negatieve prompt
-	One .safetensors filename per line. Compatibility is not checked.	Eén .safetensors-bestandsnaam per regel. Compatibiliteit wordt niet gecontroleerd.
-	Text encoders	Tekstencoders
-	Comfyui custom encoders	Aangepaste ComfyUI-encoders
-	Comfyui custom model	Aangepast ComfyUI-model
-	Comfyui custom models	Aangepaste ComfyUI-modellen
-	Comfyui model settings	ComfyUI-modelinstellingen
-	PhotoCraft update available	PhotoCraft-update beschikbaar
-	Update PhotoCraft and restart now?	PhotoCraft nu bijwerken en opnieuw starten?
-	Automatically check for updates	Automatisch op updates controleren
-	Check for updates now	Nu op updates controleren
-	You can check for updates again in Help → About PhotoCraft.	U kunt opnieuw op updates controleren via Help → Over PhotoCraft.
-	Downloading update…	Update downloaden…
-	PhotoCraft is up to date.	PhotoCraft is bijgewerkt.
-	Update PhotoCraft	PhotoCraft bijwerken
-	Dismiss update	Updatemelding sluiten
+	Show Favorite Fonts	Favoriete lettertypen tonen
+	No favorite fonts yet: click the star beside a font to add it.	Nog geen favoriete lettertypen: klik op de ster naast een lettertype om het toe te voegen.
+	Favorite fonts	Favoriete lettertypen
+	Add to Favorites	Toevoegen aan favorieten
+	Remove from Favorites	Verwijderen uit favorieten
+	Show All Fonts	Alle lettertypen tonen
+	All Classes	Alle klassen
+	Blackletter	Gebroken letter
+	Decorative	Decoratief
+	Font preview:	Lettertypevoorbeeld:
+	Handwritten	Handgeschreven
+	Hide Font Classes	Lettertypeklassen verbergen
+	Hide Styles	Stijlen verbergen
+	Monospace	Monospace
+	No fonts match these filters.	Geen lettertypen voldoen aan deze filters.
+	No similar fonts: the current font doesn't say what it looks like.	Geen vergelijkbare lettertypen: het huidige lettertype beschrijft zijn uiterlijk niet.
+	OpenType font	OpenType-lettertype
+	Sans Serif	Schreefloos
+	Script	Script
+	Serif	Schreef
+	Show Font Classes	Lettertypeklassen tonen
+	Show Similar Fonts	Vergelijkbare lettertypen tonen
+	Show Styles	Stijlen tonen
+	Show Variable Fonts	Variabele lettertypen tonen
+	Slab Serif	Slab-schreef
+	TrueType font	TrueType-lettertype
+	Variable font	Variabel lettertype
+	Calibration	Kalibratie
+	Red Primary	Primair rood
+	Green Primary	Primair groen
+	Blue Primary	Primair blauw
+	Write xmp sidecars	XMP-sidecarbestanden schrijven
+	Set the tone sliders from the image	Toonschuifregelaars instellen op basis van de afbeelding
+	Settings from {name}	Instellingen uit {name}
+	Settings from {name}; {count} not supported: {names}	Instellingen uit {name}; {count} niet ondersteund: {names}
+	Could not write {name}: {error}	Kan {name} niet schrijven: {error}
+	Kept {name}: written by another application	{name} behouden: geschreven door een andere toepassing
+	Shadow Tint	Schaduwtint
 # PhotoCraft release checks.
 	Check for Updates…	Controleren op updates…
 	PhotoCraft Updates	PhotoCraft-updates
 	Checking for updates…	Controleren op updates…
 	Open the release page to choose an installer for your system.	Open de releasepagina om een installatieprogramma voor uw systeem te kiezen.
 	Open Download Page	Downloadpagina openen
+	PhotoCraft is up to date.	PhotoCraft is bijgewerkt.
 	Could not check for updates.	Kan niet controleren op updates.
 	Updates have not been checked yet.	Er is nog niet op updates gecontroleerd.
 	Check Again	Opnieuw controleren
@@ -4258,11 +4231,102 @@ curves	Smooth	Vloeiend maken
 	Grayscale Ramp	Grijswaardenbalk
 	Current Colors	Huidige kleuren
 	Make Ramp Web Safe	Balk beperken tot webkleuren
+# Art History Brush (#213).
+	Art History Brush Tool	Artistiek historiepenseel
+	Tight Short	Strak kort
+	Tight Medium	Strak middel
+	Tight Long	Strak lang
+	Loose Medium	Los middel
+	Loose Long	Los lang
+	Dab	Tik
+	Tight Curl	Strakke krul
+	Loose Curl	Losse krul
+	Stylized dabs from a history state	Gestileerde tikken uit een historiestatus
+	Font size presets	Voorinstellingen lettergrootte
+	Leading presets	Voorinstellingen interlinie
+	Tracking presets	Voorinstellingen spatiëring
+	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
+	Import Photoshop brushes (.abr)	Import Photoshop brushes (.abr)
+	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
+	Default Photoshop Size	Default Photoshop Size
+	Grid view	Grid view
+	List view	List view
+	Prompt Edit	Prompt Edit
+	Generative Fill	Generative Fill
+	Describe changes to the whole image	Describe changes to the whole image
+	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
+	ComfyUI is unavailable in this frontend	ComfyUI is unavailable in this frontend
+	Comfyui url	Comfyui url
+	Prompt Edit…	Prompt Edit…
+	Generative Fill…	Generative Fill…
+	Preparing image and selection	Preparing image and selection
+	Uploading image to ComfyUI	Uploading image to ComfyUI
+	Waiting for ComfyUI generation	Waiting for ComfyUI generation
+	Downloading generated image	Downloading generated image
+	Adding generated layer	Adding generated layer
+	Prompt Generate	Genereren met prompt
+	Prompt Generate…	Genereren met prompt…
+	Regenerate AI Result	AI-resultaat opnieuw genereren
+	Regenerate	Opnieuw genereren
+	Describe the image to generate	Beschrijf de afbeelding die u wilt genereren
+	Sampling steps	Samplingstappen
+	Reset steps to model default	Stappen terugzetten naar de modelstandaard
+	Translate prompt to English	Prompt naar het Engels vertalen
+	Prompt translation model	Vertaalmodel voor prompts
+	Prompt information	Promptinformatie
+	AI Prompt History	AI-promptgeschiedenis
+	Original prompt	Oorspronkelijke prompt
+	English translation	Engelse vertaling
+	No prompt (remove)	Geen prompt (verwijderen)
+	All nine regions	Alle negen gebieden
+	No AI prompts recorded	Geen AI-prompts vastgelegd
+	Copy original prompt	Oorspronkelijke prompt kopiëren
+	Copy English translation	Engelse vertaling kopiëren
+	Anime fusal	Anime FUSAL
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Turbo int8	Turbo INT8
+	Turbo q8	Turbo Q8_0
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Comfyui model	ComfyUI-model
+	Comfyui translate prompt	Prompt naar het Engels vertalen
+	Comfyui translation model	Vertaalmodel voor prompts
+	AI model settings	AI-modelinstellingen
+	ComfyUI port	ComfyUI-poort
+	Copy negative prompt	Negatieve prompt kopiëren
+	Custom model filenames (one per line)	Bestandsnamen van aangepaste modellen (één per regel)
+	Negative prompt	Negatieve prompt
+	One .safetensors filename per line. Compatibility is not checked.	Eén .safetensors-bestandsnaam per regel. Compatibiliteit wordt niet gecontroleerd.
+	Text encoders	Tekstencoders
+	Comfyui custom encoders	Aangepaste ComfyUI-encoders
+	Comfyui custom model	Aangepast ComfyUI-model
+	Comfyui custom models	Aangepaste ComfyUI-modellen
+	Comfyui model settings	ComfyUI-modelinstellingen
+	PhotoCraft update available	PhotoCraft-update beschikbaar
+	Update PhotoCraft and restart now?	PhotoCraft nu bijwerken en opnieuw starten?
+	Automatically check for updates	Automatisch op updates controleren
+	Check for updates now	Nu op updates controleren
+	You can check for updates again in Help → About PhotoCraft.	U kunt opnieuw op updates controleren via Help → Over PhotoCraft.
+	Downloading update…	Update downloaden…
+	Update PhotoCraft	PhotoCraft bijwerken
+	Dismiss update	Updatemelding sluiten
 	Match Surrounding Colors	Aan omgevingskleuren aanpassen
 	Adjust colors with Poisson blending	Kleuren aanpassen met Poisson-menging
 	Compare with Original Generation	Vergelijken met oorspronkelijk gegenereerd resultaat
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Past de kleuren aan de omgeving aan die bij het genereren is vastgelegd. Sterkte 0 herstelt het oorspronkelijke gegenereerde resultaat.
-
 	Attach Reference Image	Referentieafbeelding toevoegen
 	Remove Reference Image	Referentieafbeelding verwijderen
 	Reference Image	Referentieafbeelding

@@ -190,9 +190,10 @@
 	Background from Layer	Фон из слоя
 	Background From Layer	Фон из слоя
 	Group Layers	Сгруппировать слои
-	Group…	Группировать…
+	Group…	Группа…
 	Ungroup Layers	Разгруппировать слои
 	Group from Layers…	Группа из слоёв…
+	New Group from Layers…	Новая группа из слоёв…
 	Hide Layers	Скрыть слои
 	Arrange	Упорядочить
 	Bring to Front	На передний план
@@ -449,6 +450,10 @@
 	Zoom Out	Уменьшить
 	Fit on Screen	По размеру экрана
 	100%	100%
+	105%	105%
+	110%	110%
+	115%	115%
+	120%	120%
 	200%	200%
 	75%	75%
 	80%	80%
@@ -2372,7 +2377,7 @@
 	Gamut warning color	Цвет предупреждения об охвате
 	Gamut warning opacity	Непрозрачность предупреждения об охвате
 	General	Основные
-	Generator enabled	Генератор включён
+	Enable Generator	Включить генератор
 	Gif	GIF
 	Glossy	Глянцевая
 	Grid color	Цвет сетки
@@ -2910,6 +2915,9 @@ fontWeight	Italic	Курсив
 	Create new document from current state	Создать новый документ из текущего состояния
 	Create new fill or adjustment layer	Создать новый слой-заливку или корректирующий слой
 	Create new snapshot	Создать новый снимок
+	From:	Из:
+	Full Document	Весь документ
+	Merged Layers	Объединённые слои
 	Delete Cropped Pixels	Удалить отсечённые пикселы
 	Delete current state	Удалить текущее состояние
 	Delete layer	Удалить слой
@@ -3074,6 +3082,8 @@ curves	Smooth	Сгладить
 	Vanishing Point is not active	Точка схода не активна
 	Apply Vanishing Point ({key})	Применить точку схода ({key})
 	Fix the red plane first: its corners must form a convex quad	Сначала исправьте красную плоскость: ее углы должны образовывать выпуклый четырехугольник
+	Alt-click a plane to set the clone source	Щёлкните плоскость с Alt, чтобы задать источник клонирования
+	Too many clone strokes: apply Vanishing Point first	Слишком много мазков клонирования: сначала примените «Точку схода»
 # Select and Mask view modes (#1754)
 	Onion Skin	Калька
 	Marching Ants	Бегущие муравьи
@@ -3106,6 +3116,9 @@ curves	Smooth	Сгладить
 # History panel menu (#2966)
 	New Snapshot…	Новый снимок…
 	History Options…	Параметры истории…
+# History panel › History Options… (#2966)
+	Allow Non-Linear History	Разрешить нелинейную историю
+	Make Layer Visibility Changes Undoable	Разрешить отмену изменений видимости слоёв
 # Print dialog (#2697)
 	Emulsion Down	Эмульсией вниз
 	Functions	Функции
@@ -3193,6 +3206,17 @@ curves	Smooth	Сгладить
 	Sent to {printer}	Отправлено на {printer}
 	set in Print Settings…	задаётся в параметрах печати…
 	ICO is limited to 256 × 256 pixels	ICO ограничен размером 256 × 256 пикселей
+	Calibration	Калибровка
+	Red Primary	Красный основной
+	Green Primary	Зелёный основной
+	Blue Primary	Синий основной
+	Write xmp sidecars	Записывать сопутствующие файлы XMP
+	Set the tone sliders from the image	Установить ползунки тона по изображению
+	Settings from {name}	Настройки из {name}
+	Settings from {name}; {count} not supported: {names}	Настройки из {name}; не поддерживается: {count}: {names}
+	Could not write {name}: {error}	Не удалось записать {name}: {error}
+	Kept {name}: written by another application	{name} сохранён без изменений: записан другим приложением
+	Shadow Tint	Оттенок теней
 # History panel › History Brush source (#2966)
 	Paints from the History panel's source state	Рисует из исходного состояния панели «История»
 	Sets the source for the history brush	Задаёт источник для кисти истории
@@ -3216,89 +3240,33 @@ curves	Smooth	Сгладить
 	Gray Value (Median)	Уровень серого (медиана)
 	Integrated Density	Интегральная плотность
 	Length	Длина
-	Import Photoshop brushes (.abr)	Импортировать кисти Photoshop (.abr)
-	Use File › Open to open an image.	Чтобы открыть изображение, выберите Файл › Открыть.
-	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Нативное перетаскивание файлов в Wayland пока не поддерживается. Откройте файл через Файл › Открыть или запустите PhotoCraft в XWayland с `WAYLAND_DISPLAY= photocraft`.
-	Default Photoshop Size	Размер Photoshop по умолчанию
-	Do you want to save you made to “{name}” before quitting?	Сохранить изменения в документе «{name}» перед выходом?
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Выделите рамку кадрирования · перетащите внутри для перемещения · края меняют размер ({ratio} пропорции, {centre} центр) · Space двигает при рисовании · {commit} применить · Esc отмена
-	All shortcuts reset to Photoshop defaults.	Все комбинации клавиш сброшены к стандартным Photoshop.
-	The current gradient (pick one in Window › Gradients)	Текущий градиент (выберите в Окно › Градиенты)
-	Prompt Edit	Редактировать по запросу
-	Generative Fill	Генеративная заливка
-	Describe changes to the whole image	Опишите изменения всего изображения
-	Describe changes, or leave blank to remove	Опишите изменения или оставьте пустым для удаления
-	ComfyUI is unavailable in this frontend	ComfyUI недоступен в этой среде
-	Comfyui url	URL сервера ComfyUI
-	Prompt Edit…	Редактировать по запросу…
-	Generative Fill…	Генеративная заливка…
-	Preparing image and selection	Подготовка изображения и выделения
-	Uploading image to ComfyUI	Загрузка изображения в ComfyUI
-	Waiting for ComfyUI generation	Ожидание генерации ComfyUI
-	Downloading generated image	Скачивание результата
-	Adding generated layer	Добавление нового слоя
-	Prompt Generate	Создать по промпту
-	Prompt Generate…	Создать по промпту…
-	Regenerate AI Result	Повторно создать результат ИИ
-	Regenerate	Создать заново
-	Describe the image to generate	Опишите изображение для создания
-	Sampling steps	Шаги сэмплирования
-	Reset steps to model default	Вернуть число шагов по умолчанию для модели
-	Translate prompt to English	Перевести промпт на английский
-	Prompt translation model	Модель перевода промптов
-	Prompt information	Информация о промпте
-	AI Prompt History	История промптов ИИ
-	Original prompt	Исходный промпт
-	English translation	Английский перевод
-	No prompt (remove)	Без промпта (удаление)
-	All nine regions	Все девять областей
-	No AI prompts recorded	Промпты ИИ не записаны
-	Previous	Назад
-	Next	Далее
-	Copy original prompt	Копировать исходный промпт
-	Copy English translation	Копировать английский перевод
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	Модель ComfyUI
-	Comfyui translate prompt	Перевести промпт на английский
-	Comfyui translation model	Модель перевода промптов
-	AI model settings	Настройки модели ИИ
-	ComfyUI port	Порт ComfyUI
-	Copy negative prompt	Копировать негативный промпт
-	Custom model filenames (one per line)	Имена файлов пользовательских моделей (по одному в строке)
-	Negative prompt	Негативный промпт
-	One .safetensors filename per line. Compatibility is not checked.	Одно имя файла .safetensors в строке. Совместимость не проверяется.
-	Text encoders	Текстовые энкодеры
-	Comfyui custom encoders	Пользовательские энкодеры ComfyUI
-	Comfyui custom model	Пользовательская модель ComfyUI
-	Comfyui custom models	Пользовательские модели ComfyUI
-	Comfyui model settings	Настройки моделей ComfyUI
-	PhotoCraft update available	Доступно обновление PhotoCraft
-	Update PhotoCraft and restart now?	Обновить PhotoCraft и перезапустить сейчас?
-	Automatically check for updates	Автоматически проверять обновления
-	Check for updates now	Проверить обновления сейчас
-	You can check for updates again in Help → About PhotoCraft.	Проверить обновления снова можно в меню Справка → О PhotoCraft.
-	Downloading update…	Загрузка обновления…
-	PhotoCraft is up to date.	Установлена последняя версия PhotoCraft.
-	Update PhotoCraft	Обновить PhotoCraft
-	Dismiss update	Закрыть уведомление об обновлении
+	Show Favorite Fonts	Показать избранные шрифты
+	No favorite fonts yet: click the star beside a font to add it.	Избранных шрифтов пока нет: нажмите на звёздочку рядом со шрифтом, чтобы добавить его.
+	Favorite fonts	Избранные шрифты
+	Add to Favorites	Добавить в избранное
+	Remove from Favorites	Удалить из избранного
+	Show All Fonts	Показать все шрифты
+	All Classes	Все классы
+	Blackletter	Готические
+	Decorative	Декоративные
+	Font preview:	Предпросмотр шрифта:
+	Handwritten	Рукописные
+	Hide Font Classes	Скрыть классы шрифтов
+	Hide Styles	Скрыть начертания
+	Monospace	Моноширинные
+	No fonts match these filters.	Нет шрифтов, подходящих под эти фильтры.
+	No similar fonts: the current font doesn't say what it looks like.	Нет похожих шрифтов: текущий шрифт не описывает свой вид.
+	OpenType font	Шрифт OpenType
+	Sans Serif	Без засечек
+	Script	Каллиграфические
+	Serif	С засечками
+	Show Font Classes	Показать классы шрифтов
+	Show Similar Fonts	Показать похожие шрифты
+	Show Styles	Показать начертания
+	Show Variable Fonts	Показать вариативные шрифты
+	Slab Serif	С брусковыми засечками
+	TrueType font	Шрифт TrueType
+	Variable font	Вариативный шрифт
 # Bevel & Emboss shading controls.
 	Highlight Mode	Режим светлых тонов
 	Highlight Color	Цвет светлых тонов
@@ -3312,6 +3280,7 @@ curves	Smooth	Сгладить
 	Checking for updates…	Проверка обновлений…
 	Open the release page to choose an installer for your system.	Откройте страницу выпуска и выберите установщик для своей системы.
 	Open Download Page	Открыть страницу загрузки
+	PhotoCraft is up to date.	Установлена последняя версия PhotoCraft.
 	Could not check for updates.	Не удалось проверить обновления.
 	Updates have not been checked yet.	Обновления ещё не проверялись.
 	Check Again	Проверить снова
@@ -3434,6 +3403,7 @@ curves	Smooth	Сгладить
 	Adwaita (Light)	Adwaita (светлая)
 	After	После
 	Airbrush: keeps painting while the pointer rests.	Аэрограф: продолжает рисовать, пока указатель неподвижен.
+	All shortcuts reset to Photoshop defaults.	Все комбинации клавиш сброшены к стандартным Photoshop.
 	Altitude	Высота
 	Ambience	Атмосфера
 	Ambient	Окружающий свет
@@ -3666,6 +3636,7 @@ curves	Smooth	Сгладить
 	Deep Yellow	Глубокий жёлтый
 	Default Foreground and Background Colors	Цвета переднего плана и фона по умолчанию
 	Default Leaves	Листья по умолчанию
+	Default Photoshop Size	Размер Photoshop по умолчанию
 	Defaults	По умолчанию
 	Define Brush Preset	Определить кисть
 	Define Custom Shape	Определить свою фигуру
@@ -3700,6 +3671,7 @@ curves	Smooth	Сгладить
 	Distance	Расстояние
 	Distortion	Дисторсия
 	Distribution	Распределение
+	Do you want to save you made to “{name}” before quitting?	Сохранить изменения в документе «{name}» перед выходом?
 	Document Sizes	Размеры документа
 	Documentation	Документация
 	Documents	Документы
@@ -3708,6 +3680,7 @@ curves	Smooth	Сгладить
 	Double Line	Двойная линия
 	Down	Вниз
 	Draft	Черновик
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Выделите рамку кадрирования · перетащите внутри для перемещения · края меняют размер ({ratio} пропорции, {centre} центр) · Space двигает при рисовании · {commit} применить · Esc отмена
 	Drag: draw freehand · Release on the start point: close	Перетаскивание: рисование от руки · Отпустите на начальной точке: замкнуть
 	Driver: {driver}	Драйвер: {driver}
 	Dry Brush	Сухая кисть
@@ -3894,6 +3867,7 @@ curves	Smooth	Сгладить
 	Import Brushes… (.abr)	Импортировать кисти… (.abr)
 	Import Image	Импортировать изображение
 	Import Options	Параметры импорта
+	Import Photoshop brushes (.abr)	Импортировать кисти Photoshop (.abr)
 	Import Settings	Импортировать настройки
 	Importing {what} from {file}…	Импорт {what} из {file}…
 	Importing…	Импорт…
@@ -4109,6 +4083,7 @@ curves	Smooth	Сгладить
 	Multiple Flames Path Directions	Несколько языков пламени по направлениям контура
 	Multiple Flames Various Length	Несколько языков пламени разной длины
 	My Brushes	Мои кисти
+	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Нативное перетаскивание файлов в Wayland пока не поддерживается. Откройте файл через Файл › Открыть или запустите PhotoCraft в XWayland с `WAYLAND_DISPLAY= photocraft`.
 	Nearest	Ближайший
 	Neon Glow	Неоновое свечение
 	Neutralize	Нейтрализовать
@@ -4124,6 +4099,7 @@ curves	Smooth	Сгладить
 	New document	Новый документ
 	New document…	Новый документ…
 	New document…     ⌘N	Новый документ…     ⌘N
+	Next	Далее
 	No Document	Нет документа
 	No Image	Нет изображения
 	No Layers	Нет слоёв
@@ -4236,6 +4212,7 @@ curves	Smooth	Сгладить
 	Preset Manager	Управление наборами
 	Press keys	Нажмите клавиши
 	Preview Image	Просмотр изображения
+	Previous	Назад
 	Prime105	Prime 105
 	Prime35	Prime 35
 	Printed to {path}	Напечатано в {path}
@@ -4477,6 +4454,7 @@ curves	Smooth	Сгладить
 	Thaw Mask	Разморозить маску
 	The canvas is shown as sRGB. Choose a monitor profile in Edit › Color Settings.	Холст отображается как sRGB. Выберите профиль монитора в разделе «Редактирование › Настройки цвета».
 	The canvas on {display} is shown as sRGB. Choose a monitor profile in Edit › Color Settings.	Холст на {display} отображается как sRGB. Выберите профиль монитора в разделе «Редактирование › Настройки цвета».
+	The current gradient (pick one in Window › Gradients)	Текущий градиент (выберите в Окно › Градиенты)
 	The document does not have an embedded colour profile. Working space: {working}.	Документ не содержит встроенного цветового профиля. Рабочее пространство: {working}.
 	The document has an embedded colour profile that does not match the working space.\nEmbedded: {embedded}\nWorking: {working}	Документ содержит встроенный цветовой профиль, не совпадающий с рабочим пространством.\nВстроенный: {embedded}\nРабочее пространство: {working}
 	The file could not be opened.	Не удалось открыть файл.
@@ -4535,6 +4513,7 @@ curves	Smooth	Сгладить
 	Updates	Обновления
 	Upper	Верхний
 	Use Custom Color	Использовать свой цвет
+	Use File › Open to open an image.	Чтобы открыть изображение, выберите Файл › Открыть.
 	Use Selection In Source	Использовать выделение в источнике
 	Use Selection In Target	Использовать выделение в цели
 	Uses the foreground and background colors.	Использует цвета переднего плана и фона.
@@ -4695,11 +4674,96 @@ shape	Appearance	Оформление
 	Grayscale Ramp	Шкала градаций серого
 	Current Colors	Текущие цвета
 	Make Ramp Web Safe	Сделать шкалу безопасной для web
+# Art History Brush (#213).
+	Art History Brush Tool	Инструмент «Кисть истории искусств»
+	Tight Short	Плотный короткий
+	Tight Medium	Плотный средний
+	Tight Long	Плотный длинный
+	Loose Medium	Свободный средний
+	Loose Long	Свободный длинный
+	Dab	Мазок
+	Tight Curl	Плотный завиток
+	Loose Curl	Свободный завиток
+	Stylized dabs from a history state	Стилизованные мазки из состояния истории
+	Font size presets	Наборы размеров шрифта
+	Leading presets	Наборы интерлиньяжа
+	Tracking presets	Наборы трекинга
+	Prompt Edit	Редактировать по запросу
+	Generative Fill	Генеративная заливка
+	Describe changes to the whole image	Опишите изменения всего изображения
+	Describe changes, or leave blank to remove	Опишите изменения или оставьте пустым для удаления
+	ComfyUI is unavailable in this frontend	ComfyUI недоступен в этой среде
+	Comfyui url	URL сервера ComfyUI
+	Prompt Edit…	Редактировать по запросу…
+	Generative Fill…	Генеративная заливка…
+	Preparing image and selection	Подготовка изображения и выделения
+	Uploading image to ComfyUI	Загрузка изображения в ComfyUI
+	Waiting for ComfyUI generation	Ожидание генерации ComfyUI
+	Downloading generated image	Скачивание результата
+	Adding generated layer	Добавление нового слоя
+	Prompt Generate	Создать по промпту
+	Prompt Generate…	Создать по промпту…
+	Regenerate AI Result	Повторно создать результат ИИ
+	Regenerate	Создать заново
+	Describe the image to generate	Опишите изображение для создания
+	Sampling steps	Шаги сэмплирования
+	Reset steps to model default	Вернуть число шагов по умолчанию для модели
+	Translate prompt to English	Перевести промпт на английский
+	Prompt translation model	Модель перевода промптов
+	Prompt information	Информация о промпте
+	AI Prompt History	История промптов ИИ
+	Original prompt	Исходный промпт
+	English translation	Английский перевод
+	No prompt (remove)	Без промпта (удаление)
+	All nine regions	Все девять областей
+	No AI prompts recorded	Промпты ИИ не записаны
+	Copy original prompt	Копировать исходный промпт
+	Copy English translation	Копировать английский перевод
+	Anime fusal	Anime FUSAL
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Turbo int8	Turbo INT8
+	Turbo q8	Turbo Q8_0
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Comfyui model	Модель ComfyUI
+	Comfyui translate prompt	Перевести промпт на английский
+	Comfyui translation model	Модель перевода промптов
+	AI model settings	Настройки модели ИИ
+	ComfyUI port	Порт ComfyUI
+	Copy negative prompt	Копировать негативный промпт
+	Custom model filenames (one per line)	Имена файлов пользовательских моделей (по одному в строке)
+	Negative prompt	Негативный промпт
+	One .safetensors filename per line. Compatibility is not checked.	Одно имя файла .safetensors в строке. Совместимость не проверяется.
+	Text encoders	Текстовые энкодеры
+	Comfyui custom encoders	Пользовательские энкодеры ComfyUI
+	Comfyui custom model	Пользовательская модель ComfyUI
+	Comfyui custom models	Пользовательские модели ComfyUI
+	Comfyui model settings	Настройки моделей ComfyUI
+	PhotoCraft update available	Доступно обновление PhotoCraft
+	Update PhotoCraft and restart now?	Обновить PhotoCraft и перезапустить сейчас?
+	Automatically check for updates	Автоматически проверять обновления
+	Check for updates now	Проверить обновления сейчас
+	You can check for updates again in Help → About PhotoCraft.	Проверить обновления снова можно в меню Справка → О PhotoCraft.
+	Downloading update…	Загрузка обновления…
+	Update PhotoCraft	Обновить PhotoCraft
+	Dismiss update	Закрыть уведомление об обновлении
 	Match Surrounding Colors	Подогнать под цвета окружения
 	Adjust colors with Poisson blending	Настроить цвета с помощью смешивания Пуассона
 	Compare with Original Generation	Сравнить с исходным результатом генерации
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Подгоняет цвета под окружение, сохранённое при генерации. Интенсивность 0 восстанавливает исходный результат генерации.
-
 	Attach Reference Image	Прикрепить референс
 	Remove Reference Image	Удалить референс
 	Reference Image	Референс

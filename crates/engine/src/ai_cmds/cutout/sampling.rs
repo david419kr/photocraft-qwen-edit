@@ -1,5 +1,5 @@
 //! Sampler state is a coarse RGBA matte; RGB conditioning remains the original crop.
-use super::*;
+use super::{AlphaSampling, EngineError, JobCtx, Rect, Result, Rgba8Image, Surface, byte, resolution};
 
 pub(super) fn prepare(source: &Rgba8Image, coarse: &Surface, bounds: Rect, ctx: &JobCtx) -> Result<AlphaSampling> {
     let [w, h] = [bounds.width(), bounds.height()];

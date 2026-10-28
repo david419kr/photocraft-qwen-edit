@@ -5,6 +5,7 @@ use serde_json::Value;
 
 use crate::PhotocraftApp;
 
+// The fork portable updater owns installation and rollback; engine checks remain informational.
 #[derive(Default)]
 pub(crate) struct Runtime {
     startup_checked: bool,
@@ -53,15 +54,16 @@ pub(crate) fn tick(app: &mut PhotocraftApp, ctx: &egui::Context) {
 }
 
 pub(crate) fn show(app: &mut PhotocraftApp, ctx: &egui::Context) {
+    let mut download: Option<String> = None;
+
     if !app.ui.updates_open {
         return;
     }
     let mut open = true;
     let status = app.session.updates.status.clone();
     let mut retry = false;
-    let mut download = None;
     egui::Window::new(tl!("PhotoCraft Updates"))
-        .id(egui::Id::new("photocraft_updates"))
+        .id(egui::Id::unique("photocraft_updates"))
         .open(&mut open)
         .collapsible(false)
         .resizable(false)
@@ -79,7 +81,6 @@ pub(crate) fn show(app: &mut PhotocraftApp, ctx: &egui::Context) {
                 }
                 Status::Available { release } => {
                     ui.label(crate::i18n::fmt(crate::i18n::t("PhotoCraft {version} is available."), &[("version", &release.version)]));
-                    ui.label(tl!("Open the release page to choose an installer for your system."));
                     if crate::widgets::primary_button(ui, tl!("Open Download Page"), 160.0).clicked() {
                         download = Some(release.url.clone());
                     }
@@ -233,6 +234,30 @@ mod tests {
         app.ui.updates_open = false;
         at(&mut app, &ctx, 2.0);
         assert!(!app.ui.updates_open);
+    }
+
+    #[test]
+    #[cfg(not(target_arch = "wasm32"))]
+    fn startup_update_prompt_appears_and_can_be_dismissed() {
+        let (mut app, _, sender) = app();
+        let ctx = egui::Context::default();
+        at(&mut app, &ctx, 0.0);
+        sender
+            .lock()
+            .unwrap()
+            .as_ref()
+            .unwrap()
+            .send(Ok(Some(Release { version: "99.0.0".into(), url: "https://github.com/storytold/photocraft/releases/tag/v99.0.0".into() })))
+            .unwrap();
+        at(&mut app, &ctx, 1.0);
+        assert_eq!(app.updates_rt.notified_version.as_deref(), Some("99.0.0"), "available release is recorded without an upstream installer");
+
+        // Rendering the informational window cannot start an upstream installer.
+        let mut output = ctx.run_ui(egui::RawInput::default(), |ui| {
+            show(&mut app, ui.ctx());
+        });
+        output.textures_delta.clear();
+        assert!(app.updates_rt.notified_version.is_some());
     }
 
     #[test]

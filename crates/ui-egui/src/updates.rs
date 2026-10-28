@@ -161,7 +161,7 @@ pub fn poll(app: &mut PhotocraftApp, ctx: &egui::Context) {
 pub fn show(app: &mut PhotocraftApp, ctx: &egui::Context) {
     let Some(release) = app.updates.available.as_ref() else { return };
     let tag = release.tag.clone();
-    egui::Modal::new(egui::Id::new("fork-update")).show(ctx, |ui| {
+    egui::Modal::new(egui::Id::unique("fork-update")).show(ctx, |ui| {
         ui.set_max_width(420.0);
         ui.heading(tl!("PhotoCraft update available"));
         ui.label(format!("{} → {tag}", photocraft_engine::build_info::release_tag()));

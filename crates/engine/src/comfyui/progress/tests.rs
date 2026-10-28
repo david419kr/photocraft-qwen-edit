@@ -1,4 +1,5 @@
 use super::*;
+use crate::comfyui::{ComfyUi, EngineError, Instant, endpoint_url, json};
 
 #[test]
 #[ignore = "manual existing-ComfyUI integration; set PHOTOCRAFT_PROGRESS_PROBE_OUTPUT"]
