@@ -516,41 +516,11 @@ fn mock_server_policy(
                 let filename = if probe == Some(false) { "missing.safetensors" } else { filename };
                 ("application/json", serde_json::to_vec(&json!({node:{"input":{"required":{input:[[format!("Qwen/{filename}")],{}]}}}})).unwrap())
             } else if path == "/upload/image" {
-                let text = String::from_utf8_lossy(&body);
-                if text.contains("initial.png") || text.contains("noise.png") {
-                    assert!(text.contains("temp"));
-                    let name = if text.contains("initial.png") { "initial.png" } else { "noise.png" };
-                    ("application/json", serde_json::to_vec(&json!({"name":name,"subfolder":"mock","type":"temp"})).unwrap())
-                } else if text.contains("guide.png") {
-                    assert!(text.contains("temp"));
-                    ("application/json", serde_json::to_vec(&json!({"name":"guide.png","subfolder":"mock","type":"temp"})).unwrap())
-                } else if text.contains("reference.png") {
-                    assert!(text.contains("temp"));
-                    ("application/json", serde_json::to_vec(&json!({"name":"reference.png","subfolder":"mock","type":"temp"})).unwrap())
-                } else {
-                    assert!(text.contains("source.png"));
-                    ("application/json", serde_json::to_vec(&json!({"name":"source.png","subfolder":"mock","type":"input"})).unwrap())
-                }
+                mock_uploaded_image(&body)
             } else if path == "/prompt" {
                 let submitted: Value = serde_json::from_slice(&body).unwrap();
                 job = submitted["prompt_id"].as_str().unwrap().into();
-                if submitted["prompt"].get("6").is_some() {
-                    assert_eq!(submitted["prompt"]["6"]["inputs"]["text"], "plain prompt");
-                    assert!(submitted["prompt"].get("78").is_none());
-                } else {
-                    assert_eq!(submitted["prompt"]["64"]["inputs"]["prompt"], "plain prompt");
-                    if submitted["prompt"].get("93").is_some() {
-                        assert_eq!(submitted["prompt"]["93"]["inputs"]["image"], "mock/reference.png [temp]");
-                        assert_eq!(submitted["prompt"]["64"]["inputs"]["images.image_2"], json!(["95", 0]));
-                    }
-                    if submitted["prompt"].get("96").is_some() {
-                        assert_eq!(submitted["prompt"]["96"]["inputs"]["image"], "mock/guide.png [temp]");
-                        assert_eq!(submitted["prompt"]["64"]["inputs"]["images.image_3"], json!(["96", 0]));
-                    }
-                }
-                assert_eq!(submitted["prompt"]["37"]["inputs"]["unet_name"], format!("Qwen/{}", selected.filename()));
-                assert_eq!(submitted["prompt"]["38"]["inputs"]["clip_name"], format!("Qwen/{}", selected.clip_filename()));
-                assert_eq!(submitted["prompt"]["39"]["inputs"]["vae_name"], format!("Qwen/{VAE_MODEL}"));
+                assert_mock_prompt(&submitted, selected);
                 ("application/json", serde_json::to_vec(&json!({"prompt_id":job,"number":1,"node_errors":{}})).unwrap())
             } else if path.starts_with("/api/jobs/") {
                 assert_eq!(path, format!("/api/jobs/{job}/cancel"));
@@ -697,4 +667,42 @@ fn availability_checks_models_and_nodes_without_upload_or_generation() {
         assert!(paths.iter().all(|path| path.starts_with("/object_info/")), "{paths:?}");
         assert_eq!(paths.len(), if present { 5 } else { 3 });
     }
+}
+
+fn mock_uploaded_image(body: &[u8]) -> (&'static str, Vec<u8>) {
+    let text = String::from_utf8_lossy(body);
+    if text.contains("initial.png") || text.contains("noise.png") {
+        assert!(text.contains("temp"));
+        let name = if text.contains("initial.png") { "initial.png" } else { "noise.png" };
+        ("application/json", serde_json::to_vec(&json!({"name":name,"subfolder":"mock","type":"temp"})).unwrap())
+    } else if text.contains("guide.png") {
+        assert!(text.contains("temp"));
+        ("application/json", serde_json::to_vec(&json!({"name":"guide.png","subfolder":"mock","type":"temp"})).unwrap())
+    } else if text.contains("reference.png") {
+        assert!(text.contains("temp"));
+        ("application/json", serde_json::to_vec(&json!({"name":"reference.png","subfolder":"mock","type":"temp"})).unwrap())
+    } else {
+        assert!(text.contains("source.png"));
+        ("application/json", serde_json::to_vec(&json!({"name":"source.png","subfolder":"mock","type":"input"})).unwrap())
+    }
+}
+
+fn assert_mock_prompt(submitted: &Value, selected: ComfyUiModel) {
+    if submitted["prompt"].get("6").is_some() {
+        assert_eq!(submitted["prompt"]["6"]["inputs"]["text"], "plain prompt");
+        assert!(submitted["prompt"].get("78").is_none());
+    } else {
+        assert_eq!(submitted["prompt"]["64"]["inputs"]["prompt"], "plain prompt");
+        if submitted["prompt"].get("93").is_some() {
+            assert_eq!(submitted["prompt"]["93"]["inputs"]["image"], "mock/reference.png [temp]");
+            assert_eq!(submitted["prompt"]["64"]["inputs"]["images.image_2"], json!(["95", 0]));
+        }
+        if submitted["prompt"].get("96").is_some() {
+            assert_eq!(submitted["prompt"]["96"]["inputs"]["image"], "mock/guide.png [temp]");
+            assert_eq!(submitted["prompt"]["64"]["inputs"]["images.image_3"], json!(["96", 0]));
+        }
+    }
+    assert_eq!(submitted["prompt"]["37"]["inputs"]["unet_name"], format!("Qwen/{}", selected.filename()));
+    assert_eq!(submitted["prompt"]["38"]["inputs"]["clip_name"], format!("Qwen/{}", selected.clip_filename()));
+    assert_eq!(submitted["prompt"]["39"]["inputs"]["vae_name"], format!("Qwen/{VAE_MODEL}"));
 }

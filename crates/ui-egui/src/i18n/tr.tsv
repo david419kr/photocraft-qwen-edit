@@ -629,6 +629,10 @@
 	Fit Layer(s) on Screen	Katmanları Ekrana Sığdır
 	Fit Artboard on Screen	Çalışma Yüzeyini Ekrana Sığdır
 	100%	100%
+	105%	105%
+	110%	110%
+	115%	115%
+	120%	120%
 	200%	200%
 	Print Size	Baskı Boyutu
 	Pixel Aspect Ratio	Piksel En Boy Oranı
@@ -745,6 +749,8 @@
 	Gradients	Degradeler
 	Histogram	Histogram
 	History	Geçmiş
+	Allow Non-Linear History	Doğrusal Olmayan Geçmişe İzin Ver
+	Make Layer Visibility Changes Undoable	Katman Görünürlüğü Değişikliklerini Geri Alınabilir Yap
 	Info	Bilgi
 	Measurement Log	Ölçüm Günlüğü
 	Modifier Keys	Değiştirici Tuşlar
@@ -1890,7 +1896,7 @@
 	Full size tip	Tam boyutlu uç
 	Gamut warning color	Gamut uyarı rengi
 	Gamut warning opacity	Gamut uyarı opaklığı
-	Generator enabled	Oluşturucu etkin
+	Enable Generator	Oluşturucuyu etkinleştir
 	Gif	GIF
 	Glossy	parlak
 	Grid color	Izgara rengi
@@ -2198,6 +2204,7 @@
 	Sets the source for the history brush	Geçmiş fırçasının kaynağını ayarlar
 	Color Replacement	Renk Değiştirme
 	New Group	Yeni Grup
+	New Group from Layers…	Katmanlardan Yeni Grup…
 	Layer Comp	Katman Kompozisyonu
 	Alpha	Alfa
 	Make	Üretici
@@ -2708,6 +2715,9 @@ cameraRaw	Color	Renk
 	Color indicates	Renk şunu gösterir:
 	Create Snapshot	Anlık Görüntü Oluştur
 	Delete Snapshot	Anlık Görüntüyü Sil
+	From:	Kaynak:
+	Full Document	Tam Belge
+	Merged Layers	Birleştirilmiş Katmanlar
 	New Snapshot	Yeni Anlık Görüntü
 	New Snapshot…	Yeni Anlık Görüntü…
 	History Options…	Geçmiş Seçenekleri…
@@ -3830,6 +3840,8 @@ cameraData	Lens	Lens
 	Draw to modify the curve	Eğriyi değiştirmek için çiz
 	Edit points to modify the curve	Eğriyi değiştirmek için noktaları düzenle
 	Fix the red plane first: its corners must form a convex quad	Önce kırmızı düzlemi düzeltin: köşeleri dışbükey bir dörtgen oluşturmalı
+	Alt-click a plane to set the clone source	Klon kaynağını ayarlamak için bir düzleme Alt+tıklayın
+	Too many clone strokes: apply Vanishing Point first	Çok fazla klon darbesi: önce Kaybolma Noktası'nı uygulayın
 	Grid Size:	Izgara Boyutu:
 	Light Blue	Açık Mavi
 	Light Gray	Açık Gri
@@ -3945,80 +3957,45 @@ cameraData	Lens	Lens
 	Color Indicates:	Rengin Gösterdiği:
 	Ink Characteristics	Mürekkep Özellikleri
 	Solidity:	Doluluk:
+	Calibration	Kalibrasyon
+	Red Primary	Kırmızı ana renk
+	Green Primary	Yeşil ana renk
+	Blue Primary	Mavi ana renk
+	Write xmp sidecars	XMP yan dosyalarını yaz
+	Set the tone sliders from the image	Ton kaydırıcılarını görüntüden ayarla
+	Settings from {name}	{name} ayarları
+	Settings from {name}; {count} not supported: {names}	{name} ayarları; {count} desteklenmiyor: {names}
+	Could not write {name}: {error}	{name} yazılamadı: {error}
+	Kept {name}: written by another application	{name} korundu: başka bir uygulama tarafından yazılmış
+	Shadow Tint	Gölge tonu
 	Redrawing	Yeniden çiziliyor
-	AI Prompt History	Yapay zekâ istem geçmişi
-	AI model settings	Yapay zekâ model ayarları
-	All nine regions	Dokuz bölgenin tümü
-	ComfyUI port	ComfyUI bağlantı noktası
-	Copy English translation	İngilizce çeviriyi kopyala
-	Copy negative prompt	Negatif istemi kopyala
-	Copy original prompt	Özgün istemi kopyala
-	Custom model filenames (one per line)	Özel model dosya adları (her satıra bir tane)
-	Describe changes to the whole image	Tüm görüntüdeki değişiklikleri açıklayın
-	Describe changes, or leave blank to remove	Değişiklikleri açıklayın veya kaldırmak için boş bırakın
-	Describe the image to generate	Üretilecek görüntüyü açıklayın
-	English translation	İngilizce çeviri
-	Generative Fill	Üretken dolgu
-	Negative prompt	Negatif istem
-	No AI prompts recorded	Kayıtlı yapay zekâ istemi yok
-	No prompt (remove)	İstem yok (kaldır)
-	One .safetensors filename per line. Compatibility is not checked.	Her satıra bir .safetensors dosya adı. Uyumluluk denetlenmez.
-	Original prompt	Özgün istem
-	Prompt Edit	İstemle düzenle
-	Prompt Generate	İstemle üret
-	Prompt information	İstem bilgisi
-	Prompt translation model	İstem çeviri modeli
-	Regenerate	Yeniden üret
-	Reset steps to model default	Adımları model varsayılanına sıfırla
-	Sampling steps	Örnekleme adımları
-	Text encoders	Metin kodlayıcıları
-	Text encoder	Metin kodlayıcısı
-	Translate prompt to English	İstemi İngilizceye çevir
-	Steps	Adımlar
-	Sampling profile	Örnekleme profili
-	Additional AI models	Ek yapay zekâ modelleri
-	Comfyui url	ComfyUI adresi
-	Comfyui model	ComfyUI modeli
-	Comfyui custom models	Özel ComfyUI modelleri
-	Comfyui custom encoders	Özel ComfyUI kodlayıcıları
-	Comfyui custom model	Özel ComfyUI modeli
-	Comfyui model settings	ComfyUI model ayarları
-	Comfyui translate prompt	ComfyUI istemini çevir
-	Comfyui translation model	ComfyUI çeviri modeli
-	Whole image	Görüntünün tamamı
-	Preparing image and selection	Görüntü ve seçim hazırlanıyor
-	Uploading image to ComfyUI	Görüntü ComfyUI'a yükleniyor
-	Waiting for ComfyUI generation	ComfyUI üretimi bekleniyor
-	Downloading generated image	Üretilen görüntü indiriliyor
-	Adding generated layer	Üretilen katman ekleniyor
-	Translating prompt to English	İstem İngilizceye çevriliyor
-	Regenerate AI Result	Yapay zekâ sonucunu yeniden üret
-	ComfyUI is unavailable in this frontend	Bu arayüzde ComfyUI kullanılamıyor
-	Prompt Generate…	İstemle üret…
-	Prompt Edit…	İstemle düzenle…
-	Generative Fill…	Üretken dolgu…
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-prompt-region	Top left	Sol üst
-prompt-region	Top center	Üst orta
-prompt-region	Top right	Sağ üst
-prompt-region	Middle left	Sol orta
-prompt-region	Center	Orta
-prompt-region	Middle right	Sağ orta
-prompt-region	Bottom left	Sol alt
-prompt-region	Bottom center	Alt orta
-prompt-region	Bottom right	Sağ alt
-	PhotoCraft update available	PhotoCraft güncellemesi mevcut
-	Update PhotoCraft and restart now?	PhotoCraft güncellensin ve şimdi yeniden başlatılsın mı?
-	Automatically check for updates	Güncellemeleri otomatik denetle
-	Check for updates now	Güncellemeleri şimdi denetle
-	You can check for updates again in Help → About PhotoCraft.	Yardım → PhotoCraft Hakkında menüsünden güncellemeleri yeniden denetleyebilirsiniz.
-	Downloading update…	Güncelleme indiriliyor…
-	PhotoCraft is up to date.	PhotoCraft güncel.
-	Update PhotoCraft	PhotoCraft uygulamasını güncelle
-	Dismiss update	Güncelleme bildirimini kapat
+	Show Favorite Fonts	Favori yazı tiplerini göster
+	No favorite fonts yet: click the star beside a font to add it.	Henüz favori yazı tipi yok: eklemek için bir yazı tipinin yanındaki yıldıza tıklayın.
+	Favorite fonts	Favori yazı tipleri
+	Add to Favorites	Favorilere ekle
+	Remove from Favorites	Favorilerden kaldır
+	Show All Fonts	Tüm yazı tiplerini göster
+	All Classes	Tüm sınıflar
+	Blackletter	Gotik
+	Decorative	Dekoratif
+	Font preview:	Yazı tipi önizlemesi:
+	Handwritten	El yazısı
+	Hide Font Classes	Yazı tipi sınıflarını gizle
+	Hide Styles	Stilleri gizle
+	Monospace	Eş aralıklı
+	No fonts match these filters.	Bu filtrelerle eşleşen yazı tipi yok.
+	No similar fonts: the current font doesn't say what it looks like.	Benzer yazı tipi yok: geçerli yazı tipi görünümünü tanımlamıyor.
+	OpenType font	OpenType yazı tipi
+	Sans Serif	Tırnaksız
+	Script	Kaligrafik
+	Serif	Tırnaklı
+	Show Font Classes	Yazı tipi sınıflarını göster
+	Show Similar Fonts	Benzer yazı tiplerini göster
+	Show Styles	Stilleri göster
+	Show Variable Fonts	Değişken yazı tiplerini göster
+	Slab Serif	Kalın tırnaklı
+	TrueType font	TrueType yazı tipi
+	Variable font	Değişken yazı tipi
 # Bevel & Emboss shading controls.
 	Highlight Mode	Vurgu Modu
 	Highlight Color	Vurgu Rengi
@@ -4031,6 +4008,7 @@ prompt-region	Bottom right	Sağ alt
 	Checking for updates…	Güncellemeler denetleniyor…
 	Open the release page to choose an installer for your system.	Sisteminize uygun yükleyiciyi seçmek için sürüm sayfasını açın.
 	Open Download Page	İndirme Sayfasını Aç
+	PhotoCraft is up to date.	PhotoCraft güncel.
 	Could not check for updates.	Güncellemeler denetlenemedi.
 	Updates have not been checked yet.	Güncellemeler henüz denetlenmedi.
 	Check Again	Yeniden Denetle
@@ -4221,13 +4199,119 @@ prompt-region	Bottom right	Sağ alt
 	Grayscale Ramp	Gri Tonlama Şeridi
 	Current Colors	Geçerli Renkler
 	Make Ramp Web Safe	Şeridi Web Renkleriyle Sınırla
+# Art History Brush (#213).
+	Art History Brush Tool	Sanat Tarihi Fırçası Aracı
+	Tight Short	Sıkı Kısa
+	Tight Medium	Sıkı Orta
+	Tight Long	Sıkı Uzun
+	Loose Medium	Gevşek Orta
+	Loose Long	Gevşek Uzun
+	Dab	Benek
+	Tight Curl	Sıkı Kıvrım
+	Loose Curl	Gevşek Kıvrım
+	Stylized dabs from a history state	Bir geçmiş durumundan stilize benekler
+	Font size presets	Yazı tipi boyutu hazır ayarları
+	Leading presets	Satır aralığı hazır ayarları
+	Tracking presets	İzleme hazır ayarları
+	AI Prompt History	Yapay zekâ istem geçmişi
+	AI model settings	Yapay zekâ model ayarları
+	All nine regions	Dokuz bölgenin tümü
+	ComfyUI port	ComfyUI bağlantı noktası
+	Copy English translation	İngilizce çeviriyi kopyala
+	Copy negative prompt	Negatif istemi kopyala
+	Copy original prompt	Özgün istemi kopyala
+	Custom model filenames (one per line)	Özel model dosya adları (her satıra bir tane)
+	Describe changes to the whole image	Tüm görüntüdeki değişiklikleri açıklayın
+	Describe changes, or leave blank to remove	Değişiklikleri açıklayın veya kaldırmak için boş bırakın
+	Describe the image to generate	Üretilecek görüntüyü açıklayın
+	English translation	İngilizce çeviri
+	Generative Fill	Üretken dolgu
+	Negative prompt	Negatif istem
+	No AI prompts recorded	Kayıtlı yapay zekâ istemi yok
+	No prompt (remove)	İstem yok (kaldır)
+	One .safetensors filename per line. Compatibility is not checked.	Her satıra bir .safetensors dosya adı. Uyumluluk denetlenmez.
+	Original prompt	Özgün istem
+	Prompt Edit	İstemle düzenle
+	Prompt Generate	İstemle üret
+	Prompt information	İstem bilgisi
+	Prompt translation model	İstem çeviri modeli
+	Regenerate	Yeniden üret
+	Reset steps to model default	Adımları model varsayılanına sıfırla
+	Sampling steps	Örnekleme adımları
+	Text encoders	Metin kodlayıcıları
+	Text encoder	Metin kodlayıcısı
+	Translate prompt to English	İstemi İngilizceye çevir
+	Steps	Adımlar
+	Sampling profile	Örnekleme profili
+	Additional AI models	Ek yapay zekâ modelleri
+	Comfyui url	ComfyUI adresi
+	Comfyui model	ComfyUI modeli
+	Comfyui custom models	Özel ComfyUI modelleri
+	Comfyui custom encoders	Özel ComfyUI kodlayıcıları
+	Comfyui custom model	Özel ComfyUI modeli
+	Comfyui model settings	ComfyUI model ayarları
+	Comfyui translate prompt	ComfyUI istemini çevir
+	Comfyui translation model	ComfyUI çeviri modeli
+	Whole image	Görüntünün tamamı
+	Preparing image and selection	Görüntü ve seçim hazırlanıyor
+	Uploading image to ComfyUI	Görüntü ComfyUI'a yükleniyor
+	Waiting for ComfyUI generation	ComfyUI üretimi bekleniyor
+	Downloading generated image	Üretilen görüntü indiriliyor
+	Adding generated layer	Üretilen katman ekleniyor
+	Translating prompt to English	İstem İngilizceye çevriliyor
+	Regenerate AI Result	Yapay zekâ sonucunu yeniden üret
+	ComfyUI is unavailable in this frontend	Bu arayüzde ComfyUI kullanılamıyor
+	Prompt Generate…	İstemle üret…
+	Prompt Edit…	İstemle düzenle…
+	Generative Fill…	Üretken dolgu…
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Turbo int8	Turbo INT8
+prompt-region	Top left	Sol üst
+prompt-region	Top center	Üst orta
+prompt-region	Top right	Sağ üst
+prompt-region	Middle left	Sol orta
+prompt-region	Center	Orta
+prompt-region	Middle right	Sağ orta
+prompt-region	Bottom left	Sol alt
+prompt-region	Bottom center	Alt orta
+prompt-region	Bottom right	Sağ alt
+	PhotoCraft update available	PhotoCraft güncellemesi mevcut
+	Update PhotoCraft and restart now?	PhotoCraft güncellensin ve şimdi yeniden başlatılsın mı?
+	Automatically check for updates	Güncellemeleri otomatik denetle
+	Check for updates now	Güncellemeleri şimdi denetle
+	You can check for updates again in Help → About PhotoCraft.	Yardım → PhotoCraft Hakkında menüsünden güncellemeleri yeniden denetleyebilirsiniz.
+	Downloading update…	Güncelleme indiriliyor…
+	Update PhotoCraft	PhotoCraft uygulamasını güncelle
+	Dismiss update	Güncelleme bildirimini kapat
 	Match Surrounding Colors	Çevredeki Renklere Uyarla
 	Adjust colors with Poisson blending	Renkleri Poisson harmanlamasıyla ayarla
 	Compare with Original Generation	İlk Üretim Sonucuyla Karşılaştır
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Renkleri üretim sırasında kaydedilen çevreye uyarlar. Güç 0, ilk üretilen sonucu geri yükler.
-
 	Attach Reference Image	Referans görseli ekle
 	Remove Reference Image	Referans görselini kaldır
 	Reference Image	Referans görseli
 	Resize for AI editing	Yapay zekâ düzenlemesi için boyutlandır
 	The image exceeds the AI editing size. Resize the document to continue?	Görsel yapay zekâ düzenleme boyutunu aşıyor. Devam etmek için belge boyutlandırılsın mı?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Panelleri Düzenle
+	Close Other Panels in Group	Gruptaki Diğer Panelleri Kapat
+	Collapse to Icons	Simge Durumuna Daralt
+	Minimize Panel	Paneli Küçült
+	Open Panel in Own Window	Paneli Ayrı Pencerede Aç
+	CPU Rendering	CPU ile İşleme
+	Calculating…	Hesaplanıyor…
+	Click to refresh histogram with uncached data	Histogramı önbelleksiz verilerle yenilemek için tıklayın
+	Count:	Sayı:
+	Drawn on the CPU: {reason}. Click for System Info.	CPU ile çizildi: {reason}. Sistem Bilgileri için tıklayın.
+	Level:	Düzey:
+	Percentile:	Yüzdelik:
+	Remember Settings	Ayarları Hatırla
+	Show Channels in Color	Kanalları Renkli Göster
+	Show Statistics	İstatistikleri Göster
+	Source:	Kaynak:
+	Uncached Refresh	Önbelleksiz Yenile
+	…	…
+	External cutout	Harici Arka Plan Kaldırma

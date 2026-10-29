@@ -1,4 +1,5 @@
 use super::*;
+use serde_json::json;
 
 fn fixture(rects: &[Rect]) -> Document {
     let mut s = super::super::tests::session(32);

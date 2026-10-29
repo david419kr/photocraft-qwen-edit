@@ -1,4 +1,4 @@
-//! Native HTTPS transport for release checks. Only public release metadata is requested.
+//! Fork dated-release checks. Only public release metadata is requested.
 
 use photocraft_engine::updates_cmds::{CheckFn, CheckResult, Release};
 use std::time::Duration;
@@ -6,13 +6,17 @@ use std::time::Duration;
 const LATEST: &str = "https://api.github.com/repos/david419kr/photocraft-qwen-edit/releases/latest";
 const MAX_RESPONSE: u64 = 1024 * 1024;
 
+fn check() -> CheckResult {
+    fetch(LATEST, Duration::from_secs(15))
+}
+
 pub fn service() -> CheckFn {
     Box::new(|| {
         let (tx, rx) = std::sync::mpsc::channel();
         std::thread::Builder::new()
             .name("update check".into())
             .spawn(move || {
-                let result = fetch(LATEST, Duration::from_secs(15));
+                let result = check();
                 if let Err(e) = &result {
                     log::warn!("Update check: {e}");
                 }

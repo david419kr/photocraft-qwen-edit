@@ -308,6 +308,7 @@
 	Layer…	Capa…
 	Group…	Grupo…
 	Group from Layers…	Grupo a partir de capas…
+	New Group from Layers…	Nuevo grupo a partir de capas…
 	Artboard…	Mesa de trabajo…
 	Artboard from Group…	Mesa de trabajo a partir de grupo…
 	Artboard from Layers…	Mesa de trabajo a partir de capas…
@@ -658,6 +659,10 @@
 	Fit Layer(s) on Screen	Encajar capas en pantalla
 	Fit Artboard on Screen	Encajar mesa de trabajo en pantalla
 	100%	100%
+	105%	105%
+	110%	110%
+	115%	115%
+	120%	120%
 	200%	200%
 	75%	75%
 	80%	80%
@@ -1023,6 +1028,9 @@
 	Create new pattern from the selection	Crear un motivo nuevo a partir de la selección
 	Create new shape from the current path	Crear una forma nueva a partir del trazado actual
 	Create new snapshot	Crear una instantánea nueva
+	From:	De:
+	Full Document	Documento completo
+	Merged Layers	Capas combinadas
 	Create new tool preset	Crear un ajuste preestablecido de herramienta nuevo
 	Crop Factor	Factor de recorte
 	Ctrl	Ctrl
@@ -1947,7 +1955,7 @@
 	Full size tip	Punta a tamaño real
 	Gamut warning color	Color de advertencia de gama
 	Gamut warning opacity	Opacidad de advertencia de gama
-	Generator enabled	Generador activado
+	Enable Generator	Activar generador
 	Gif	GIF
 	Glossy	Brillante
 	Grid color	Color de la cuadrícula
@@ -2813,6 +2821,8 @@ curves	Smooth	Suavizar
 	Vanishing Point is not active	Punto de fuga no está activo
 	Apply Vanishing Point ({key})	Aplicar punto de fuga ({key})
 	Fix the red plane first: its corners must form a convex quad	Corrija primero el plano rojo: sus esquinas deben formar un cuadrilátero convexo
+	Alt-click a plane to set the clone source	Haga Alt-clic en un plano para definir el origen de clonación
+	Too many clone strokes: apply Vanishing Point first	Demasiados trazos de clonación: aplique primero Punto de fuga
 # Select and Mask view modes (#1754)
 	Onion Skin	Papel cebolla
 	Marching Ants	Hormigas en marcha
@@ -2839,6 +2849,9 @@ curves	Smooth	Suavizar
 # History panel menu (#2966)
 	New Snapshot…	Nueva instantánea…
 	History Options…	Opciones de historial…
+# History panel › History Options… (#2966)
+	Allow Non-Linear History	Permitir historia no lineal
+	Make Layer Visibility Changes Undoable	Permitir deshacer los cambios de visibilidad de capas
 # Print dialog (#2697)
 	Emulsion Down	Emulsión hacia abajo
 	Functions	Funciones
@@ -4200,90 +4213,51 @@ navigator	Zoom	Zoom
 	Sent to {printer}	Enviado a {printer}
 	set in Print Settings…	se establece en Ajustes de impresión…
 	ICO is limited to 256 × 256 pixels	ICO está limitado a 256 × 256 píxeles
-	All shortcuts reset to Photoshop defaults.	Se restablecieron todos los atajos a los valores predeterminados de Photoshop.
-	Import Photoshop brushes (.abr)	Importar pinceles de Photoshop (.abr)
-	Load Photoshop brushes (.abr)	Cargar pinceles de Photoshop (.abr)
-	Default Photoshop Size	Tamaño predeterminado de Photoshop
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Arrastre un marco de recorte · arrastre dentro para mover · los bordes cambian el tamaño ({ratio} proporción, {centre} centro) · Espacio mueve mientras dibuja · {commit} aplica · Esc cancela
-	Prompt Edit	Editar con indicaciones
-	Generative Fill	Relleno generativo
-	Describe changes to the whole image	Describe los cambios en toda la imagen
-	Describe changes, or leave blank to remove	Describe los cambios o deja vacío para eliminar
-	ComfyUI is unavailable in this frontend	ComfyUI no está disponible en este entorno
-	Comfyui url	URL del servidor ComfyUI
-	Prompt Edit…	Editar con indicaciones…
-	Generative Fill…	Relleno generativo…
-	Preparing image and selection	Preparando imagen y selección
-	Uploading image to ComfyUI	Subiendo imagen a ComfyUI
-	Waiting for ComfyUI generation	Esperando la generación de ComfyUI
-	Downloading generated image	Descargando imagen generada
-	Adding generated layer	Añadiendo capa generada
-	Prompt Generate	Generar con un prompt
-	Prompt Generate…	Generar con un prompt…
-	Regenerate AI Result	Regenerar el resultado de IA
-	Regenerate	Regenerar
-	Describe the image to generate	Describe la imagen que deseas generar
-	Sampling steps	Pasos de muestreo
-	Reset steps to model default	Restablecer los pasos predeterminados del modelo
-	Translate prompt to English	Traducir el prompt al inglés
-	Prompt translation model	Modelo de traducción de prompts
-	Prompt information	Información del prompt
-	AI Prompt History	Historial de prompts de IA
-	Original prompt	Prompt original
-	English translation	Traducción al inglés
-	No prompt (remove)	Sin prompt (eliminar)
-	All nine regions	Las nueve regiones
-	No AI prompts recorded	No hay prompts de IA registrados
-	Copy original prompt	Copiar el prompt original
-	Copy English translation	Copiar la traducción al inglés
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	Modelo de ComfyUI
-	Comfyui translate prompt	Traducir el prompt al inglés
-	Comfyui translation model	Modelo de traducción de prompts
-	AI model settings	Ajustes del modelo de IA
-	ComfyUI port	Puerto de ComfyUI
-	Copy negative prompt	Copiar indicación negativa
-	Custom model filenames (one per line)	Nombres de archivo de modelos personalizados (uno por línea)
-	Negative prompt	Indicación negativa
-	One .safetensors filename per line. Compatibility is not checked.	Un nombre de archivo .safetensors por línea. No se comprueba la compatibilidad.
-	Text encoders	Codificadores de texto
-	Comfyui custom encoders	Codificadores personalizados de ComfyUI
-	Comfyui custom model	Modelo personalizado de ComfyUI
-	Comfyui custom models	Modelos personalizados de ComfyUI
-	Comfyui model settings	Ajustes de modelos de ComfyUI
-	PhotoCraft update available	Hay una actualización de PhotoCraft
-	Update PhotoCraft and restart now?	¿Actualizar PhotoCraft y reiniciar ahora?
-	Automatically check for updates	Buscar actualizaciones automáticamente
-	Check for updates now	Buscar actualizaciones ahora
-	You can check for updates again in Help → About PhotoCraft.	Puede volver a buscar actualizaciones en Ayuda → Acerca de PhotoCraft.
-	Downloading update…	Descargando actualización…
-	PhotoCraft is up to date.	PhotoCraft está actualizado.
-	Update PhotoCraft	Actualizar PhotoCraft
-	Dismiss update	Descartar actualización
+	Show Favorite Fonts	Mostrar fuentes favoritas
+	No favorite fonts yet: click the star beside a font to add it.	Aún no hay fuentes favoritas: haz clic en la estrella junto a una fuente para añadirla.
+	Favorite fonts	Fuentes favoritas
+	Add to Favorites	Añadir a favoritos
+	Remove from Favorites	Quitar de favoritos
+	Show All Fonts	Mostrar todas las fuentes
+	All Classes	Todas las clases
+	Blackletter	Gótica
+	Decorative	Decorativa
+	Font preview:	Vista previa de fuente:
+	Handwritten	Manuscrita
+	Hide Font Classes	Ocultar clases de fuente
+	Hide Styles	Ocultar estilos
+	Monospace	Monoespaciada
+	No fonts match these filters.	Ninguna fuente coincide con estos filtros.
+	No similar fonts: the current font doesn't say what it looks like.	No hay fuentes similares: la fuente actual no describe su aspecto.
+	OpenType font	Fuente OpenType
+	Sans Serif	Sans serif
+	Script	Caligráfica
+	Serif	Serif
+	Show Font Classes	Mostrar clases de fuente
+	Show Similar Fonts	Mostrar fuentes similares
+	Show Styles	Mostrar estilos
+	Show Variable Fonts	Mostrar fuentes variables
+	Slab Serif	Serif egipcia
+	TrueType font	Fuente TrueType
+	Variable font	Fuente variable
+	Calibration	Calibración
+	Red Primary	Primario rojo
+	Green Primary	Primario verde
+	Blue Primary	Primario azul
+	Write xmp sidecars	Escribir archivos XMP auxiliares
+	Set the tone sliders from the image	Ajustar los controles de tono a partir de la imagen
+	Settings from {name}	Ajustes de {name}
+	Settings from {name}; {count} not supported: {names}	Ajustes de {name}; {count} no compatibles: {names}
+	Could not write {name}: {error}	No se pudo escribir {name}: {error}
+	Kept {name}: written by another application	Se conservó {name}: lo escribió otra aplicación
+	Shadow Tint	Tinte de sombras
 # PhotoCraft release checks.
 	Check for Updates…	Buscar actualizaciones…
 	PhotoCraft Updates	Actualizaciones de PhotoCraft
 	Checking for updates…	Buscando actualizaciones…
 	Open the release page to choose an installer for your system.	Abra la página de la versión para elegir un instalador para su sistema.
 	Open Download Page	Abrir página de descarga
+	PhotoCraft is up to date.	PhotoCraft está actualizado.
 	Could not check for updates.	No se pudieron buscar actualizaciones.
 	Updates have not been checked yet.	Aún no se han buscado actualizaciones.
 	Check Again	Comprobar de nuevo
@@ -4459,13 +4433,124 @@ navigator	Zoom	Zoom
 	Grayscale Ramp	Rampa de escala de grises
 	Current Colors	Colores actuales
 	Make Ramp Web Safe	Hacer rampa segura para web
+# Art History Brush (#213).
+	Art History Brush Tool	Herramienta Pincel histórico artístico
+	Tight Short	Corto apretado
+	Tight Medium	Medio apretado
+	Tight Long	Largo apretado
+	Loose Medium	Medio suelto
+	Loose Long	Largo suelto
+	Dab	Toque
+	Tight Curl	Rizo apretado
+	Loose Curl	Rizo suelto
+	Stylized dabs from a history state	Toques estilizados desde un estado del historial
+	Font size presets	Valores predefinidos de tamaño de fuente
+	Leading presets	Valores predefinidos de interlineado
+	Tracking presets	Valores predefinidos de tracking
+	All shortcuts reset to Photoshop defaults.	Se restablecieron todos los atajos a los valores predeterminados de Photoshop.
+	Import Photoshop brushes (.abr)	Importar pinceles de Photoshop (.abr)
+	Load Photoshop brushes (.abr)	Cargar pinceles de Photoshop (.abr)
+	Default Photoshop Size	Tamaño predeterminado de Photoshop
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Arrastre un marco de recorte · arrastre dentro para mover · los bordes cambian el tamaño ({ratio} proporción, {centre} centro) · Espacio mueve mientras dibuja · {commit} aplica · Esc cancela
+	Prompt Edit	Editar con indicaciones
+	Generative Fill	Relleno generativo
+	Describe changes to the whole image	Describe los cambios en toda la imagen
+	Describe changes, or leave blank to remove	Describe los cambios o deja vacío para eliminar
+	ComfyUI is unavailable in this frontend	ComfyUI no está disponible en este entorno
+	Comfyui url	URL del servidor ComfyUI
+	Prompt Edit…	Editar con indicaciones…
+	Generative Fill…	Relleno generativo…
+	Preparing image and selection	Preparando imagen y selección
+	Uploading image to ComfyUI	Subiendo imagen a ComfyUI
+	Waiting for ComfyUI generation	Esperando la generación de ComfyUI
+	Downloading generated image	Descargando imagen generada
+	Adding generated layer	Añadiendo capa generada
+	Prompt Generate	Generar con un prompt
+	Prompt Generate…	Generar con un prompt…
+	Regenerate AI Result	Regenerar el resultado de IA
+	Regenerate	Regenerar
+	Describe the image to generate	Describe la imagen que deseas generar
+	Sampling steps	Pasos de muestreo
+	Reset steps to model default	Restablecer los pasos predeterminados del modelo
+	Translate prompt to English	Traducir el prompt al inglés
+	Prompt translation model	Modelo de traducción de prompts
+	Prompt information	Información del prompt
+	AI Prompt History	Historial de prompts de IA
+	Original prompt	Prompt original
+	English translation	Traducción al inglés
+	No prompt (remove)	Sin prompt (eliminar)
+	All nine regions	Las nueve regiones
+	No AI prompts recorded	No hay prompts de IA registrados
+	Copy original prompt	Copiar el prompt original
+	Copy English translation	Copiar la traducción al inglés
+	Anime fusal	Anime FUSAL
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Turbo int8	Turbo INT8
+	Turbo q8	Turbo Q8_0
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Comfyui model	Modelo de ComfyUI
+	Comfyui translate prompt	Traducir el prompt al inglés
+	Comfyui translation model	Modelo de traducción de prompts
+	AI model settings	Ajustes del modelo de IA
+	ComfyUI port	Puerto de ComfyUI
+	Copy negative prompt	Copiar indicación negativa
+	Custom model filenames (one per line)	Nombres de archivo de modelos personalizados (uno por línea)
+	Negative prompt	Indicación negativa
+	One .safetensors filename per line. Compatibility is not checked.	Un nombre de archivo .safetensors por línea. No se comprueba la compatibilidad.
+	Text encoders	Codificadores de texto
+	Comfyui custom encoders	Codificadores personalizados de ComfyUI
+	Comfyui custom model	Modelo personalizado de ComfyUI
+	Comfyui custom models	Modelos personalizados de ComfyUI
+	Comfyui model settings	Ajustes de modelos de ComfyUI
+	PhotoCraft update available	Hay una actualización de PhotoCraft
+	Update PhotoCraft and restart now?	¿Actualizar PhotoCraft y reiniciar ahora?
+	Automatically check for updates	Buscar actualizaciones automáticamente
+	Check for updates now	Buscar actualizaciones ahora
+	You can check for updates again in Help → About PhotoCraft.	Puede volver a buscar actualizaciones en Ayuda → Acerca de PhotoCraft.
+	Downloading update…	Descargando actualización…
+	Update PhotoCraft	Actualizar PhotoCraft
+	Dismiss update	Descartar actualización
 	Match Surrounding Colors	Adaptar a los colores del entorno
 	Adjust colors with Poisson blending	Ajustar colores con mezcla de Poisson
 	Compare with Original Generation	Comparar con la generación original
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Adapta los colores al entorno capturado durante la generación. La intensidad 0 restaura el resultado generado original.
-
 	Attach Reference Image	Adjuntar imagen de referencia
 	Remove Reference Image	Quitar imagen de referencia
 	Reference Image	Imagen de referencia
 	Resize for AI editing	Redimensionar para editar con IA
 	The image exceeds the AI editing size. Resize the document to continue?	La imagen supera el tamaño de edición con IA. ¿Redimensionar el documento para continuar?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Organizar paneles
+	Close Other Panels in Group	Cerrar los demás paneles del grupo
+	Collapse to Icons	Contraer a iconos
+	Minimize Panel	Minimizar panel
+	Open Panel in Own Window	Abrir panel en una ventana independiente
+	CPU Rendering	Renderizado por CPU
+	Calculating…	Calculando…
+	Click to refresh histogram with uncached data	Haz clic para actualizar el histograma con datos sin caché
+	Count:	Recuento:
+	Drawn on the CPU: {reason}. Click for System Info.	Dibujado por CPU: {reason}. Haz clic para ver la información del sistema.
+	Level:	Nivel:
+	Percentile:	Percentil:
+	Remember Settings	Recordar ajustes
+	Show Channels in Color	Mostrar canales en color
+	Show Statistics	Mostrar estadísticas
+	Source:	Origen:
+	Uncached Refresh	Actualizar sin caché
+	…	…
+	External cutout	Recorte externo

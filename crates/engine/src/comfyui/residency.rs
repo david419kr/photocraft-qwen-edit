@@ -1,5 +1,5 @@
 //! Model changes release both backends; unchanged workflows keep their caches.
-use super::*;
+use super::{ComfyUi, Duration, Instant, JobCtx, Response, Result, Url, Value, client, endpoint_url, failure, json, read_json};
 use std::sync::PoisonError;
 
 #[derive(Default)]

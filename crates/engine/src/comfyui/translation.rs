@@ -1,4 +1,4 @@
-use super::*;
+use super::{Duration, GENERATION_TIMEOUT, Instant, JobCtx, Response, Result, Value, client, endpoint_url, failure, json, model_name, read_json};
 use crate::prefs::ComfyUiTranslationModel;
 
 const NODE: &str = "HyMT_Translation_GGUF";

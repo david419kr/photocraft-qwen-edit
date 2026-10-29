@@ -423,6 +423,10 @@
 # Menus: Type, Filter, View, Window; UI and engine commands
 	(coming soon)	(hamarosan)
 	100%	100%
+	105%	105%
+	110%	110%
+	115%	115%
+	120%	120%
 	2-up Horizontal	2 nézet vízszintesen
 	2-up Vertical	2 nézet függőlegesen
 	200%	200%
@@ -607,6 +611,8 @@
 	High Pass…	Felüláteresztő…
 	Histogram	Hisztogram
 	History	Előzmények
+	Allow Non-Linear History	Nem lineáris előzmények engedélyezése
+	Make Layer Visibility Changes Undoable	A rétegláthatósági változások visszavonhatók
 	Horizontal	Vízszintes
 	HSB/HSL	HSB/HSL
 	Huge	Óriási
@@ -3274,7 +3280,7 @@ cameraRaw	Yellow	Sárga
 	Full size tip	Teljes méretű hegy
 	Fullscreen	Teljes képernyő
 	General…	Általános…
-	Generator enabled	Generátor bekapcsolva
+	Enable Generator	Generátor bekapcsolása
 	Generators	Generátorok
 	Generic	Általános
 	GitHub	GitHub
@@ -3413,6 +3419,7 @@ cameraRaw	Yellow	Sárga
 	New Document With Mask	Új dokumentum maszkkal
 	New document…	Új dokumentum…
 	New Group	Új csoport
+	New Group from Layers…	Új csoport rétegekből…
 	New Guide	Új segédvonal
 	New Layer	Új réteg
 	New Layer Comp	Új rétegkompozíció
@@ -3897,6 +3904,9 @@ cameraRaw	Yellow	Sárga
 	New document…     ⌘N	Új dokumentum…     ⌘N
 	New Layer from Brush	Új réteg ecsetből
 	New Path	Új útvonal
+	From:	Forrás:
+	Full Document	Teljes dokumentum
+	Merged Layers	Egyesített rétegek
 	New Snapshot	Új pillanatkép
 	New Snapshot…	Új pillanatkép…
 	History Options…	Előzménybeállítások…
@@ -4029,6 +4039,8 @@ cameraRaw	Yellow	Sárga
 	Amount:	Mérték:
 	Apply Vanishing Point ({key})	Enyészpont alkalmazása ({key})
 	Apply the removal ({key})	Eltávolítás alkalmazása ({key})
+	Alt-click a plane to set the clone source	Alt-kattintás egy síkra a klónforrás beállításához
+	Too many clone strokes: apply Vanishing Point first	Túl sok klónvonás: először alkalmazza az Enyészpontot
 	Drag to draw the curve · {key}-click draws a straight line	Húzással rajzold meg a görbét · {key}+kattintás: egyenes vonal
 	Draw to modify the curve	Rajzolj a görbe módosításához
 	Edit points to modify the curve	Szerkeszd a pontokat a görbe módosításához
@@ -4133,80 +4145,45 @@ cameraRaw	Yellow	Sárga
 	Color Indicates:	A szín jelzése:
 	Ink Characteristics	Festék jellemzői
 	Solidity:	Fedőképesség:
+	Calibration	Kalibrálás
+	Red Primary	Vörös alapszín
+	Green Primary	Zöld alapszín
+	Blue Primary	Kék alapszín
+	Write xmp sidecars	XMP kísérőfájlok írása
+	Set the tone sliders from the image	Tónuscsúszkák beállítása a kép alapján
+	Settings from {name}	Beállítások innen: {name}
+	Settings from {name}; {count} not supported: {names}	Beállítások innen: {name}; {count} nem támogatott: {names}
+	Could not write {name}: {error}	Nem sikerült írni: {name}: {error}
+	Kept {name}: written by another application	{name} megtartva: egy másik alkalmazás írta
+	Shadow Tint	Árnyék színezet
 	Redrawing	Újrarajzolás
-	AI Prompt History	MI-utasításelőzmények
-	AI model settings	MI-modell beállításai
-	All nine regions	Mind a kilenc terület
-	ComfyUI port	ComfyUI-port
-	Copy English translation	Angol fordítás másolása
-	Copy negative prompt	Negatív utasítás másolása
-	Copy original prompt	Eredeti utasítás másolása
-	Custom model filenames (one per line)	Egyéni modellfájlnevek (soronként egy)
-	Describe changes to the whole image	Írja le a teljes kép módosításait
-	Describe changes, or leave blank to remove	Írja le a módosításokat, vagy hagyja üresen az eltávolításhoz
-	Describe the image to generate	Írja le a létrehozandó képet
-	English translation	Angol fordítás
-	Generative Fill	Generatív kitöltés
-	Negative prompt	Negatív utasítás
-	No AI prompts recorded	Nincsenek rögzített MI-utasítások
-	No prompt (remove)	Nincs utasítás (eltávolítás)
-	One .safetensors filename per line. Compatibility is not checked.	Soronként egy .safetensors fájlnév. A kompatibilitás nincs ellenőrizve.
-	Original prompt	Eredeti utasítás
-	Prompt Edit	Szerkesztés utasítással
-	Prompt Generate	Létrehozás utasítással
-	Prompt information	Utasításinformáció
-	Prompt translation model	Utasításfordító modell
-	Regenerate	Újragenerálás
-	Reset steps to model default	Lépésszám visszaállítása a modell alapértékére
-	Sampling steps	Mintavételi lépések
-	Text encoders	Szövegkódolók
-	Text encoder	Szövegkódoló
-	Translate prompt to English	Utasítás fordítása angolra
-	Steps	Lépések
-	Sampling profile	Mintavételi profil
-	Additional AI models	További MI-modellek
-	Comfyui url	ComfyUI URL-címe
-	Comfyui model	ComfyUI-modell
-	Comfyui custom models	Egyéni ComfyUI-modellek
-	Comfyui custom encoders	Egyéni ComfyUI-kódolók
-	Comfyui custom model	Egyéni ComfyUI-modell
-	Comfyui model settings	ComfyUI-modell beállításai
-	Comfyui translate prompt	ComfyUI-utasítás fordítása
-	Comfyui translation model	ComfyUI-fordítómodell
-	Whole image	Teljes kép
-	Preparing image and selection	Kép és kijelölés előkészítése
-	Uploading image to ComfyUI	Kép feltöltése a ComfyUI-ba
-	Waiting for ComfyUI generation	Várakozás a ComfyUI-generálásra
-	Downloading generated image	Létrehozott kép letöltése
-	Adding generated layer	Létrehozott réteg hozzáadása
-	Translating prompt to English	Utasítás fordítása angolra
-	Regenerate AI Result	MI-eredmény újragenerálása
-	ComfyUI is unavailable in this frontend	A ComfyUI ezen a felületen nem érhető el
-	Prompt Generate…	Létrehozás utasítással…
-	Prompt Edit…	Szerkesztés utasítással…
-	Generative Fill…	Generatív kitöltés…
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-prompt-region	Top left	Bal felső
-prompt-region	Top center	Fent középen
-prompt-region	Top right	Jobb felső
-prompt-region	Middle left	Bal középső
-prompt-region	Center	Közép
-prompt-region	Middle right	Jobb középső
-prompt-region	Bottom left	Bal alsó
-prompt-region	Bottom center	Lent középen
-prompt-region	Bottom right	Jobb alsó
-	PhotoCraft update available	PhotoCraft-frissítés érhető el
-	Update PhotoCraft and restart now?	Frissíti a PhotoCraftot és újraindítja most?
-	Automatically check for updates	Frissítések automatikus keresése
-	Check for updates now	Frissítések keresése most
-	You can check for updates again in Help → About PhotoCraft.	Újra kereshet frissítéseket a Súgó → A PhotoCraft névjegye menüben.
-	Downloading update…	Frissítés letöltése…
-	PhotoCraft is up to date.	A PhotoCraft naprakész.
-	Update PhotoCraft	PhotoCraft frissítése
-	Dismiss update	Frissítési értesítés bezárása
+	Show Favorite Fonts	Kedvenc betűtípusok megjelenítése
+	No favorite fonts yet: click the star beside a font to add it.	Még nincsenek kedvenc betűtípusok: kattintson a betűtípus melletti csillagra a hozzáadáshoz.
+	Favorite fonts	Kedvenc betűtípusok
+	Add to Favorites	Hozzáadás a kedvencekhez
+	Remove from Favorites	Eltávolítás a kedvencek közül
+	Show All Fonts	Összes betűtípus megjelenítése
+	All Classes	Összes osztály
+	Blackletter	Gót betűs
+	Decorative	Díszítő
+	Font preview:	Betűtípus előnézete:
+	Handwritten	Kézírásos
+	Hide Font Classes	Betűtípus-osztályok elrejtése
+	Hide Styles	Stílusok elrejtése
+	Monospace	Fix szélességű
+	No fonts match these filters.	Egy betűtípus sem felel meg ezeknek a szűrőknek.
+	No similar fonts: the current font doesn't say what it looks like.	Nincsenek hasonló betűtípusok: a jelenlegi betűtípus nem írja le a megjelenését.
+	OpenType font	OpenType betűtípus
+	Sans Serif	Talpatlan
+	Script	Írott
+	Serif	Talpas
+	Show Font Classes	Betűtípus-osztályok megjelenítése
+	Show Similar Fonts	Hasonló betűtípusok megjelenítése
+	Show Styles	Stílusok megjelenítése
+	Show Variable Fonts	Változó betűtípusok megjelenítése
+	Slab Serif	Talpas (szögletes)
+	TrueType font	TrueType betűtípus
+	Variable font	Változó betűtípus
 # Bevel & Emboss shading controls.
 	Highlight Mode	Csúcsfény módja
 	Highlight Color	Csúcsfény színe
@@ -4219,6 +4196,7 @@ prompt-region	Bottom right	Jobb alsó
 	Checking for updates…	Frissítések keresése…
 	Open the release page to choose an installer for your system.	Nyissa meg a kiadás oldalát, és válassza ki a rendszerének megfelelő telepítőt.
 	Open Download Page	Letöltési oldal megnyitása
+	PhotoCraft is up to date.	A PhotoCraft naprakész.
 	Could not check for updates.	Nem sikerült ellenőrizni a frissítéseket.
 	Updates have not been checked yet.	A frissítések még nem lettek ellenőrizve.
 	Check Again	Újraellenőrzés
@@ -4407,13 +4385,119 @@ prompt-region	Bottom right	Jobb alsó
 	Grayscale Ramp	Szürkeárnyalatos sáv
 	Current Colors	Aktuális színek
 	Make Ramp Web Safe	Sáv korlátozása webes színekre
+# Art History Brush (#213).
+	Art History Brush Tool	Művészi előzményecset eszköz
+	Tight Short	Szoros, rövid
+	Tight Medium	Szoros, közepes
+	Tight Long	Szoros, hosszú
+	Loose Medium	Laza, közepes
+	Loose Long	Laza, hosszú
+	Dab	Pötty
+	Tight Curl	Szoros göndör
+	Loose Curl	Laza göndör
+	Stylized dabs from a history state	Stilizált pöttyök egy előzményállapotból
+	Font size presets	Betűméret-előbeállítások
+	Leading presets	Sorköz-előbeállítások
+	Tracking presets	Betűköz-előbeállítások
+	AI Prompt History	MI-utasításelőzmények
+	AI model settings	MI-modell beállításai
+	All nine regions	Mind a kilenc terület
+	ComfyUI port	ComfyUI-port
+	Copy English translation	Angol fordítás másolása
+	Copy negative prompt	Negatív utasítás másolása
+	Copy original prompt	Eredeti utasítás másolása
+	Custom model filenames (one per line)	Egyéni modellfájlnevek (soronként egy)
+	Describe changes to the whole image	Írja le a teljes kép módosításait
+	Describe changes, or leave blank to remove	Írja le a módosításokat, vagy hagyja üresen az eltávolításhoz
+	Describe the image to generate	Írja le a létrehozandó képet
+	English translation	Angol fordítás
+	Generative Fill	Generatív kitöltés
+	Negative prompt	Negatív utasítás
+	No AI prompts recorded	Nincsenek rögzített MI-utasítások
+	No prompt (remove)	Nincs utasítás (eltávolítás)
+	One .safetensors filename per line. Compatibility is not checked.	Soronként egy .safetensors fájlnév. A kompatibilitás nincs ellenőrizve.
+	Original prompt	Eredeti utasítás
+	Prompt Edit	Szerkesztés utasítással
+	Prompt Generate	Létrehozás utasítással
+	Prompt information	Utasításinformáció
+	Prompt translation model	Utasításfordító modell
+	Regenerate	Újragenerálás
+	Reset steps to model default	Lépésszám visszaállítása a modell alapértékére
+	Sampling steps	Mintavételi lépések
+	Text encoders	Szövegkódolók
+	Text encoder	Szövegkódoló
+	Translate prompt to English	Utasítás fordítása angolra
+	Steps	Lépések
+	Sampling profile	Mintavételi profil
+	Additional AI models	További MI-modellek
+	Comfyui url	ComfyUI URL-címe
+	Comfyui model	ComfyUI-modell
+	Comfyui custom models	Egyéni ComfyUI-modellek
+	Comfyui custom encoders	Egyéni ComfyUI-kódolók
+	Comfyui custom model	Egyéni ComfyUI-modell
+	Comfyui model settings	ComfyUI-modell beállításai
+	Comfyui translate prompt	ComfyUI-utasítás fordítása
+	Comfyui translation model	ComfyUI-fordítómodell
+	Whole image	Teljes kép
+	Preparing image and selection	Kép és kijelölés előkészítése
+	Uploading image to ComfyUI	Kép feltöltése a ComfyUI-ba
+	Waiting for ComfyUI generation	Várakozás a ComfyUI-generálásra
+	Downloading generated image	Létrehozott kép letöltése
+	Adding generated layer	Létrehozott réteg hozzáadása
+	Translating prompt to English	Utasítás fordítása angolra
+	Regenerate AI Result	MI-eredmény újragenerálása
+	ComfyUI is unavailable in this frontend	A ComfyUI ezen a felületen nem érhető el
+	Prompt Generate…	Létrehozás utasítással…
+	Prompt Edit…	Szerkesztés utasítással…
+	Generative Fill…	Generatív kitöltés…
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Turbo int8	Turbo INT8
+prompt-region	Top left	Bal felső
+prompt-region	Top center	Fent középen
+prompt-region	Top right	Jobb felső
+prompt-region	Middle left	Bal középső
+prompt-region	Center	Közép
+prompt-region	Middle right	Jobb középső
+prompt-region	Bottom left	Bal alsó
+prompt-region	Bottom center	Lent középen
+prompt-region	Bottom right	Jobb alsó
+	PhotoCraft update available	PhotoCraft-frissítés érhető el
+	Update PhotoCraft and restart now?	Frissíti a PhotoCraftot és újraindítja most?
+	Automatically check for updates	Frissítések automatikus keresése
+	Check for updates now	Frissítések keresése most
+	You can check for updates again in Help → About PhotoCraft.	Újra kereshet frissítéseket a Súgó → A PhotoCraft névjegye menüben.
+	Downloading update…	Frissítés letöltése…
+	Update PhotoCraft	PhotoCraft frissítése
+	Dismiss update	Frissítési értesítés bezárása
 	Match Surrounding Colors	Igazítás a környezet színeihez
 	Adjust colors with Poisson blending	Színek igazítása Poisson-keveréssel
 	Compare with Original Generation	Összehasonlítás az eredeti generált képpel
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	A színeket a generáláskor rögzített környezethez igazítja. A 0 erősség visszaállítja az eredeti generált eredményt.
-
 	Attach Reference Image	Referenciakép csatolása
 	Remove Reference Image	Referenciakép eltávolítása
 	Reference Image	Referenciakép
 	Resize for AI editing	Átméretezés AI-szerkesztéshez
 	The image exceeds the AI editing size. Resize the document to continue?	A kép meghaladja az AI-szerkesztési méretet. Átméretezi a dokumentumot a folytatáshoz?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Panelek elrendezése
+	Close Other Panels in Group	A csoport többi paneljének bezárása
+	Collapse to Icons	Összecsukás ikonokká
+	Minimize Panel	Panel kis méretre állítása
+	Open Panel in Own Window	Panel megnyitása külön ablakban
+	CPU Rendering	CPU-renderelés
+	Calculating…	Számítás…
+	Click to refresh histogram with uncached data	Kattintson a hisztogram frissítéséhez gyorsítótárazás nélküli adatokkal
+	Count:	Darabszám:
+	Drawn on the CPU: {reason}. Click for System Info.	CPU-val rajzolva: {reason}. Kattintson a rendszerinformációkért.
+	Level:	Szint:
+	Percentile:	Percentilis:
+	Remember Settings	Beállítások megjegyzése
+	Show Channels in Color	Csatornák megjelenítése színesen
+	Show Statistics	Statisztika megjelenítése
+	Source:	Forrás:
+	Uncached Refresh	Frissítés gyorsítótár nélkül
+	…	…
+	External cutout	Külső háttéreltávolítás

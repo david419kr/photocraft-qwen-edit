@@ -1,5 +1,5 @@
 //! Native cores share context halos; only alpha is assembled, never generated colour.
-use super::*;
+use super::{AlphaSampling, ColorMode, EngineError, JobCtx, MAX_DOCUMENT_PIXELS, PixelFormat, Rect, Result, Rgba8Image, Surface, resolution};
 
 const CORE: u32 = 1536;
 const OVERLAP: u32 = 128;

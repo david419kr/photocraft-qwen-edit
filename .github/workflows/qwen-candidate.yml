@@ -2,8 +2,13 @@ name: Qwen Windows candidate
 
 on:
   push:
-    branches: ['update/0.16.0']
+    branches: ['update/0.17.0']
   workflow_dispatch:
+    inputs:
+      build_only:
+        description: 'Package only; reuse successful gates only for this exact source SHA'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -19,11 +24,12 @@ env:
   PHOTOCRAFT_NO_PRINT: "1"
   LPDEST: photocraft-no-such-printer
   PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
-  QWEN_UPSTREAM_SHA: b1794c6e0608ccfc887213dcf58398977c5cb75e
-  QWEN_BASE_SHA: bf883b3d0f50049faa7b9ca6b5ba540d591350e1
+  QWEN_UPSTREAM_SHA: b8c3f3aa8e2918032cadc0e042664414a03be333
+  QWEN_BASE_SHA: de3663c8a60adcb95d5e0f2b11c97c446b58c42c
 
 jobs:
   lint:
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.17.0' && !inputs.build_only
     name: early Clippy
     runs-on: ubuntu-latest
     steps:
@@ -47,7 +53,7 @@ jobs:
 
   regressions:
     needs: lint
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.16.0')
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.17.0'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -93,7 +99,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/update/0.16.0')
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.17.0'
     runs-on: windows-2022
     timeout-minutes: 120
     env:
@@ -139,6 +145,8 @@ jobs:
           New-Item -ItemType Directory -Force dist | Out-Null
           $version = [regex]::Match((Get-Content Cargo.toml -Raw), '(?s)\[workspace\.package\].*?version\s*=\s*"([^"]+)"').Groups[1].Value
           $env:PHOTOCRAFT_RELEASE_TAG = (Get-Content release-tag.txt -Raw).Trim()
+          $today = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTimeOffset]::UtcNow, 'Tokyo Standard Time').ToString('yyMMdd')
+          if (!$env:PHOTOCRAFT_RELEASE_TAG.StartsWith("$today-")) { throw 'Update the candidate date before building.' }
           if (!$env:PHOTOCRAFT_RELEASE_TAG.EndsWith("-$version")) { throw 'Release tag does not match workspace version.' }
           cargo +1.95.0 build --locked -p photocraft --release --target x86_64-pc-windows-msvc 2>&1 | Tee-Object -FilePath dist/candidate-build.log
           if ($LASTEXITCODE -ne 0) { throw 'Windows candidate build failed.' }

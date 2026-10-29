@@ -1,4 +1,5 @@
 use super::*;
+use crate::ai_cmds::{AiBackend, AiRequest, Arc, EditMode, REGENERATE_COMMAND, Session, json, result_layer, selection_signature};
 
 fn document(width: u32, height: u32, selected: Rect) -> Document {
     let mut session = Session::new();

@@ -1,5 +1,5 @@
 //! Native nonzero support, including weak feather. Ambiguous/dense masks stay one request.
-use super::*;
+use super::{Document, EngineError, JobCtx, Rect, Result, crop};
 
 pub(super) const MAX_GROUPS: usize = 4;
 const MAX_RUNS: usize = 65_536;

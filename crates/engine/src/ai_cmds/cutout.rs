@@ -1,5 +1,8 @@
 //! Qwen predicts coverage; the native source raster is never replaced by generated RGB.
-use super::*;
+use super::{
+    AiBackend, AiRequest, AlphaSampling, Arc, ColorMode, Document, EditRegion, EngineError, JobCtx, Layer, LayerMask, MAX_DOCUMENT_PIXELS, PixelFormat,
+    Prepared, Rect, Result, Rgba8Image, Session, Surface, Value, byte, can_edit, json, resolution,
+};
 use photocraft_algo::resample::{Resample, resize_surface_in_canvas};
 use photocraft_doc::{LayerContent, LayerId};
 mod refine;
@@ -162,6 +165,7 @@ mod tiles_tests;
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ai_cmds::{REGENERATE_COMMAND, REMOVE_BACKGROUND_COMMAND};
     use std::sync::atomic::{AtomicUsize, Ordering};
     struct Coverage(AtomicUsize);
     impl AiBackend for Coverage {

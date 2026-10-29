@@ -14,7 +14,7 @@ pub(crate) fn has_history(app: &mut PhotocraftApp, doc: &photocraft_doc::Documen
 
 pub(crate) fn button(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
     let response = crate::icons::button(ui, "info", 24.0, app.ui.ai.prompt_info_open, tl!("Prompt information"));
-    response.widget_info(|| egui::WidgetInfo::selected(egui::WidgetType::Button, ui.is_enabled(), app.ui.ai.prompt_info_open, tl!("Prompt information")));
+    response.widget_info(|| egui::WidgetInfo::selected(egui::Role::Button, ui.is_enabled(), app.ui.ai.prompt_info_open, tl!("Prompt information")));
     if response.clicked() {
         app.ui.ai.prompt_info_open = true;
         app.ui.ai.prompt_info_page = 0;
@@ -28,14 +28,15 @@ pub(crate) fn only_bar(app: &mut PhotocraftApp, ctx: &Context, document: u64, ca
     let x = (image.center().x - 20.0).clamp(canvas.left() + 4.0, canvas.right() - 44.0);
     let y = (image.bottom() + 10.0).clamp(canvas.top() + 4.0, canvas.bottom() - 44.0);
     let tokens = crate::theme::Tokens::get(ctx);
-    let area = egui::Area::new(egui::Id::new(("ai-prompt-information", document))).order(egui::Order::Foreground).fixed_pos(egui::pos2(x, y)).show(ctx, |ui| {
-        egui::Frame::new()
-            .fill(tokens.card)
-            .stroke(egui::Stroke::new(1.0, tokens.card_border))
-            .corner_radius(tokens.radius_sm)
-            .inner_margin(8)
-            .show(ui, |ui| button(app, ui));
-    });
+    let area =
+        egui::Area::new(egui::Id::unique(("ai-prompt-information", document))).order(egui::Order::Foreground).fixed_pos(egui::pos2(x, y)).show(ctx, |ui| {
+            egui::Frame::new()
+                .fill(tokens.card)
+                .stroke(egui::Stroke::new(1.0, tokens.card_border))
+                .corner_radius(tokens.radius_sm)
+                .inner_margin(8)
+                .show(ui, |ui| button(app, ui));
+        });
     let rect = area.response.rect;
     app.ui.ai.rect = Some([rect.min.x, rect.min.y, rect.max.x, rect.max.y]);
 }
@@ -79,7 +80,7 @@ fn prompt_text(ui: &mut egui::Ui, number: usize, field: &str, value: &str, copy_
             }
         });
         let copy = crate::icons::button(ui, "copy", button_size, false, copy_label);
-        copy.widget_info(|| egui::WidgetInfo::selected(egui::WidgetType::Button, ui.is_enabled(), false, copy_label));
+        copy.widget_info(|| egui::WidgetInfo::selected(egui::Role::Button, ui.is_enabled(), false, copy_label));
         if copy.clicked() {
             ui.ctx().copy_text(value.to_owned());
         }
@@ -151,9 +152,11 @@ pub(crate) fn show(app: &mut PhotocraftApp, ctx: &Context) {
     let page_size = 50usize;
     let pages = app.ui.ai.prompt_records.len().div_ceil(page_size).max(1);
     let mut page = app.ui.ai.prompt_info_page.min(pages.saturating_sub(1));
-    egui::Window::new(tl!("AI Prompt History")).id(egui::Id::new(("ai-prompt-info-window", doc.id.0))).open(&mut open).default_size(vec2(600.0, 420.0)).show(
-        ctx,
-        |ui| {
+    egui::Window::new(tl!("AI Prompt History"))
+        .id(egui::Id::unique(("ai-prompt-info-window", doc.id.0)))
+        .open(&mut open)
+        .default_size(vec2(600.0, 420.0))
+        .show(ctx, |ui| {
             if let Some(error) = &app.ui.ai.prompt_info_error {
                 text(ui, error);
                 return;
@@ -179,8 +182,7 @@ pub(crate) fn show(app: &mut PhotocraftApp, ctx: &Context) {
                     entry(ui, index + 1, prompt);
                 }
             });
-        },
-    );
+        });
     app.ui.ai.prompt_info_open = open;
     app.ui.ai.prompt_info_page = page;
 }
@@ -216,6 +218,7 @@ mod tests {
             .unwrap();
         let mut h = Harness::builder().with_size(vec2(1200.0, 900.0)).with_max_steps(64).build_eframe(move |cc| {
             PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
+            crate::test_fonts::korean(&cc.egui_ctx);
             let mut app = PhotocraftApp::new(session, crate::Services::default());
             app.ui.ai.prompt_info_open = true;
             app
@@ -293,9 +296,12 @@ mod tests {
         state.store(&h.ctx, id);
         let center = h.get_by_value(ORIGINAL).rect().center();
         h.hover_at(center);
+        h.step();
         for pressed in [true, false] {
             h.event(Event::PointerButton { pos: center, button: PointerButton::Secondary, pressed, modifiers: Modifiers::NONE });
+            h.step();
         }
+        // egui 0.37 measures a new popup in an invisible pass before placing it.
         h.step();
         h.get_by_label("Copy").click();
         h.step();

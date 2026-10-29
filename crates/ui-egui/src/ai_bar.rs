@@ -346,14 +346,14 @@ fn translation_controls(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u6
     let enabled = app.session.prefs().integrations.comfyui_translate_prompt;
     let mut change = None;
     let toggle = crate::icons::button(ui, "languages", 24.0, enabled, tl!("Translate prompt to English"));
-    toggle.widget_info(|| egui::WidgetInfo::selected(egui::WidgetType::Checkbox, ui.is_enabled(), enabled, tl!("Translate prompt to English")));
+    toggle.widget_info(|| egui::WidgetInfo::selected(egui::Role::CheckBox, ui.is_enabled(), enabled, tl!("Translate prompt to English")));
     if toggle.clicked() {
         change = Some(("integrations.comfyuiTranslatePrompt", json!(!enabled)));
     }
     if app.ui.ai.translation_models.len() > 1 {
         let mut selected = app.session.prefs().integrations.comfyui_translation_model;
         let old = selected;
-        egui::ComboBox::from_id_salt(("ai-translation-model", document))
+        craft_ui::ComboBox::from_id_salt(("ai-translation-model", document))
             .selected_text(selected.label().trim_start_matches("Hy-MT2 "))
             .width(58.0)
             .show_ui(ui, |ui| {
@@ -460,11 +460,11 @@ fn model_settings_window(app: &mut PhotocraftApp, ctx: &egui::Context) {
     let encoders = photocraft_engine::prefs::custom_model_names(&app.ui.ai.model_settings_encoders).unwrap_or_default();
     let custom = photocraft_engine::prefs::custom_model_names(&app.ui.ai.model_settings_text).unwrap_or_default();
     let mut remove = None;
-    egui::Window::new(tl!("AI model settings")).id(egui::Id::new("ai-model-settings")).open(&mut open).default_width(800.0).show(ctx, |ui| {
+    egui::Window::new(tl!("AI model settings")).id(egui::Id::unique("ai-model-settings")).open(&mut open).default_width(800.0).show(ctx, |ui| {
         #[cfg(not(target_arch = "wasm32"))]
         ui.horizontal(|ui| {
             ui.label(tl!("ComfyUI port"));
-            crate::widgets::integer_value_field(ui, &mut app.ui.ai.model_settings_port, 1..=65535, 70.0);
+            crate::widgets::integer_value_field(ui, &mut app.ui.ai.model_settings_port, 1..=65535, 70.0).accessible_name(tl!("ComfyUI port"));
         });
         ui.horizontal(|ui| {
             ui.selectable_value(&mut app.ui.ai.model_settings_te_tab, false, tl!("Models"));
@@ -503,7 +503,7 @@ fn model_settings_window(app: &mut PhotocraftApp, ctx: &egui::Context) {
                             }
                             ui.add_sized(vec2(175.0, 24.0), egui::Label::new(&name).truncate()).on_hover_text(&name);
                         });
-                        egui::ComboBox::from_id_salt(("model-te", &name))
+                        craft_ui::ComboBox::from_id_salt(("model-te", &name))
                             .selected_text(config.text_encoder.as_deref().unwrap_or("Default"))
                             .width(150.0)
                             .truncate()
@@ -522,7 +522,7 @@ fn model_settings_window(app: &mut PhotocraftApp, ctx: &egui::Context) {
                             crate::widgets::value_field_prec(ui, &mut cfg, 1.0..=100.0, "", 48.0, 2);
                         });
                         config.cfg = f64::from(cfg);
-                        crate::widgets::integer_value_field(ui, &mut config.steps, 1..=1000, 48.0);
+                        crate::widgets::integer_value_field(ui, &mut config.steps, 1..=1000, 48.0).accessible_name(tl!("Sampling steps"));
                         if let Some(model) = pinned {
                             config.turbo = model.is_turbo();
                             ui.label(if config.turbo { "Turbo" } else { tl!("Normal") });
@@ -606,7 +606,7 @@ fn cfg_controls(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
 }
 
 fn negative_id(document: u64) -> egui::Id {
-    egui::Id::new(("photocraft-ai-negative", document))
+    egui::Id::unique(("photocraft-ai-negative", document))
 }
 
 fn model_selector(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u64) {
@@ -617,7 +617,7 @@ fn model_selector(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u64) {
     let mut selected =
         if selected_model == ComfyUiModel::Custom { app.session.prefs().integrations.comfyui_custom_model.clone() } else { selected_model.name().to_owned() };
     let old = selected.clone();
-    egui::ComboBox::from_id_salt(("ai-model", document))
+    craft_ui::ComboBox::from_id_salt(("ai-model", document))
         .selected_text(if selected_model == ComfyUiModel::Custom { selected.trim_end_matches(".safetensors") } else { selected_model.label() })
         .width(135.0)
         .truncate()
@@ -661,7 +661,11 @@ fn model_selector(app: &mut PhotocraftApp, ui: &mut egui::Ui, document: u64) {
 fn step_controls(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
     let default = app.session.prefs().integrations.selected_settings().steps;
     let mut steps = app.ui.ai.steps.unwrap_or(default);
-    if crate::widgets::integer_value_field(ui, &mut steps, 1..=photocraft_engine::ai_cmds::MAX_STEPS, 38.0).on_hover_text(tl!("Sampling steps")).changed() {
+    if crate::widgets::integer_value_field(ui, &mut steps, 1..=photocraft_engine::ai_cmds::MAX_STEPS, 38.0)
+        .accessible_name(tl!("Sampling steps"))
+        .on_hover_text(tl!("Sampling steps"))
+        .changed()
+    {
         app.ui.ai.steps = Some(steps);
     }
     if crate::icons::button(ui, "rotate-cw", 16.0, false, &format!("{} ({default})", tl!("Reset steps to model default"))).clicked() {
@@ -744,7 +748,7 @@ fn quick_action(app: &mut PhotocraftApp, mode: EditMode) -> Result<(), String> {
 }
 
 fn prompt_id(document: u64) -> egui::Id {
-    egui::Id::new(("photocraft-ai-prompt", document))
+    egui::Id::unique(("photocraft-ai-prompt", document))
 }
 
 /// Reserve Ctrl+Enter before global shortcuts and the multiline editor see it.
@@ -789,7 +793,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
         let busy = app.session.job_on(doc.id).is_some();
         let enabled = app.session.prefs().integrations.external_cutout;
         let mut quick = false;
-        let area = egui::Area::new(egui::Id::new(("ai-external-only", doc.id.0)))
+        let area = egui::Area::new(egui::Id::unique(("ai-external-only", doc.id.0)))
             .order(egui::Order::Foreground)
             .fixed_pos(pos2(image.center().x, (image.bottom() + 10.0).min(canvas.bottom() - 40.0)))
             .show(ui.ctx(), |ui| {
@@ -815,7 +819,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     if !app.ui.ai.available || supported_document(&doc).is_err() {
         app.ui.ai.rect = None;
         if app.ui.ai.service_available {
-            let area = egui::Area::new(egui::Id::new(("ai-settings-only", doc.id.0)))
+            let area = egui::Area::new(egui::Id::unique(("ai-settings-only", doc.id.0)))
                 .order(egui::Order::Foreground)
                 .fixed_pos(pos2(image.center().x, (image.bottom() + 10.0).min(canvas.bottom() - 40.0)))
                 .show(ui.ctx(), |ui| {
@@ -893,7 +897,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let mut close = false;
     let mut reroll = false;
     let mut match_colors = false;
-    let area = egui::Area::new(egui::Id::new(("photocraft-ai-bar", doc.id.0))).order(egui::Order::Foreground).fixed_pos(pos2(x, y)).show(ui.ctx(), |ui| {
+    let area = egui::Area::new(egui::Id::unique(("photocraft-ai-bar", doc.id.0))).order(egui::Order::Foreground).fixed_pos(pos2(x, y)).show(ui.ctx(), |ui| {
         egui::Frame::new()
             .fill(tokens.card)
             .stroke(Stroke::new(1.0, tokens.card_border))
@@ -1364,6 +1368,7 @@ mod tests {
             app,
         );
         PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
+        crate::test_fonts::korean(&h.ctx);
         h.run_steps(4);
         h.key_press(egui::Key::Enter);
         h.run_steps(4);
@@ -1527,6 +1532,7 @@ mod tests {
                         app,
                     );
                     PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
+                    crate::test_fonts::korean(&h.ctx);
                     h.run_steps(4);
                     let rect = h.state().ui.ai.rect.unwrap();
                     assert!(rect[3] - rect[1] <= 44.0, "{lang:?} {mode:?} width {width}: {rect:?}");

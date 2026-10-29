@@ -1,5 +1,8 @@
 //! Global identity plus a crop-local alpha guide, using the same Qwen model and job.
-use super::*;
+use super::{
+    AiBackend, AiRequest, Arc, ColorMode, Document, EditRegion, EngineError, JobCtx, Layer, LayerId, PixelFormat, Rect, Resample, Result, Rgba8Image, Surface,
+    byte, from_opacity, opacity, prepare_rect, resize_surface_in_canvas, resolution, result, sampling, tiles,
+};
 
 const PROMPT: &str = "Refine the background-removal alpha for <image1>, which is a detail crop of the complete original in <image2>. <image2> provides the global foreground identity and scene context. <image3> is the current grayscale alpha guide for exactly the crop in <image1>: white keeps foreground, black removes background, gray is partial opacity. Correct the guide using fine details visible in <image1> and the global context. Keep every part belonging to the globally selected foreground subjects, regardless of category. Remove only background and gaps. All opaque foreground surfaces must stay fully opaque regardless of brightness or shading; preserve genuinely translucent materials. Return only the RGBA cutout of <image1> at its original crop dimensions, positions and colors. Do not output the full image, guide, collage, text or extra objects.";
 

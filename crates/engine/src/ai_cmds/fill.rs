@@ -1,6 +1,9 @@
 //! Selection-local input and inverse mapping; model guide and composite coverage are distinct.
 
-use super::*;
+use super::{
+    Builtin, ColorMode, Document, EditRegion, EngineError, Intent, JobCtx, Layer, LayerMask, PixelFormat, Prepared, Rect, Result, Rgba8Image, Surface,
+    Transform, byte, resolution,
+};
 use photocraft_algo::resample::{Resample, resize_surface_in_canvas};
 use photocraft_color::SampleType;
 

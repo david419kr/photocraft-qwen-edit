@@ -182,6 +182,7 @@
 	Group…	Група…
 	Ungroup Layers	Розгрупувати шари
 	Group from Layers…	Група із шарів…
+	New Group from Layers…	Нова група із шарів…
 	Hide Layers	Приховати шари
 	Arrange	Упорядкувати
 	Bring to Front	На передній план
@@ -426,6 +427,10 @@
 	Zoom Out	Зменшити
 	Fit on Screen	Умістити на екрані
 	100%	100%
+	105%	105%
+	110%	110%
+	115%	115%
+	120%	120%
 	200%	200%
 	75%	75%
 	80%	80%
@@ -2343,7 +2348,7 @@
 	Gamut warning color	Колір попередження про колірне охоплення
 	Gamut warning opacity	Непрозорість попередження про колірне охоплення
 	General	Загальні
-	Generator enabled	Генератор увімкнено
+	Enable Generator	Увімкнути генератор
 	Gif	GIF
 	Glossy	Глянцевий
 	Grid color	Колір сітки
@@ -2760,6 +2765,9 @@ fontWeight	Italic	Курсивний
 	Create new document from current state	Створити новий документ із поточного стану
 	Create new fill or adjustment layer	Створити новий шар заливки або корекції
 	Create new snapshot	Створити новий знімок стану
+	From:	З:
+	Full Document	Увесь документ
+	Merged Layers	Об'єднані шари
 	Delete Cropped Pixels	Видаляти обрізані пікселі
 	Delete current state	Видалити поточний стан
 
@@ -3815,6 +3823,8 @@ curves	Smooth	Згладити
 	Vanishing Point is not active	Точка сходження не активна
 	Apply Vanishing Point ({key})	Застосувати точку сходження ({key})
 	Fix the red plane first: its corners must form a convex quad	Спершу виправте червону площину: її кути мають утворювати опуклий чотирикутник
+	Alt-click a plane to set the clone source	Клацніть площину з Alt, щоб задати джерело клонування
+	Too many clone strokes: apply Vanishing Point first	Забагато мазків клонування: спочатку застосуйте «Точку сходження»
 # Select and Mask view modes (#1754)
 	Onion Skin	Калька
 	Marching Ants	Мурашки
@@ -3853,6 +3863,9 @@ curves	Smooth	Згладити
 # History panel menu (#2966)
 	New Snapshot…	Новий знімок стану…
 	History Options…	Параметри історії…
+# History panel › History Options… (#2966)
+	Allow Non-Linear History	Дозволити нелінійну історію
+	Make Layer Visibility Changes Undoable	Дозволити скасування змін видимості шарів
 # Print dialog (#2697)
 	Emulsion Down	Емульсією донизу
 	Functions	Функції
@@ -3939,95 +3952,51 @@ curves	Smooth	Згладити
 	Sent to {printer}	Надіслано на {printer}
 	set in Print Settings…	задається в параметрах друку…
 	ICO is limited to 256 × 256 pixels	ICO обмежено розміром 256 × 256 пікселів
-	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
-	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.
-	Use File › Open to open an image.	Use File › Open to open an image.
-	Import Photoshop brushes (.abr)	Import Photoshop brushes (.abr)
-	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
-	Default Photoshop Size	Default Photoshop Size
-	Grid view	Grid view
-	List view	List view
-	Prompt Edit	Prompt Edit
-	Generative Fill	Generative Fill
-	Describe changes to the whole image	Describe changes to the whole image
-	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
-	ComfyUI is unavailable in this frontend	ComfyUI is unavailable in this frontend
-	Comfyui url	Comfyui url
-	Prompt Edit…	Prompt Edit…
-	Generative Fill…	Generative Fill…
-	Preparing image and selection	Preparing image and selection
-	Uploading image to ComfyUI	Uploading image to ComfyUI
-	Waiting for ComfyUI generation	Waiting for ComfyUI generation
-	Downloading generated image	Downloading generated image
-	Adding generated layer	Adding generated layer
-	Prompt Generate	Створити за промптом
-	Prompt Generate…	Створити за промптом…
-	Regenerate AI Result	Повторно створити результат ШІ
-	Regenerate	Створити знову
-	Describe the image to generate	Опишіть зображення для створення
-	Sampling steps	Кроки семплювання
-	Reset steps to model default	Відновити кількість кроків моделі за замовчуванням
-	Translate prompt to English	Перекласти промпт англійською
-	Prompt translation model	Модель перекладу промптів
-	Prompt information	Інформація про промпт
-	AI Prompt History	Історія промптів ШІ
-	Original prompt	Початковий промпт
-	English translation	Англійський переклад
-	No prompt (remove)	Без промпту (видалення)
-	All nine regions	Усі дев’ять областей
-	No AI prompts recorded	Промпти ШІ не записані
-	Previous	Назад
-	Next	Далі
-	Copy original prompt	Копіювати початковий промпт
-	Copy English translation	Копіювати англійський переклад
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	Модель ComfyUI
-	Comfyui translate prompt	Перекласти промпт англійською
-	Comfyui translation model	Модель перекладу промптів
-	AI model settings	Налаштування моделі ШІ
-	ComfyUI port	Порт ComfyUI
-	Copy negative prompt	Копіювати негативний промпт
-	Custom model filenames (one per line)	Назви файлів власних моделей (одна в рядку)
-	Negative prompt	Негативний промпт
-	One .safetensors filename per line. Compatibility is not checked.	Одна назва файлу .safetensors у рядку. Сумісність не перевіряється.
-	Text encoders	Текстові енкодери
-	Comfyui custom encoders	Власні енкодери ComfyUI
-	Comfyui custom model	Власна модель ComfyUI
-	Comfyui custom models	Власні моделі ComfyUI
-	Comfyui model settings	Налаштування моделей ComfyUI
-	PhotoCraft update available	Доступне оновлення PhotoCraft
-	Update PhotoCraft and restart now?	Оновити PhotoCraft і перезапустити зараз?
-	Automatically check for updates	Автоматично перевіряти оновлення
-	Check for updates now	Перевірити оновлення зараз
-	You can check for updates again in Help → About PhotoCraft.	Перевірити оновлення знову можна в меню Довідка → Про PhotoCraft.
-	Downloading update…	Завантаження оновлення…
-	PhotoCraft is up to date.	Установлено найновішу версію PhotoCraft.
-	Update PhotoCraft	Оновити PhotoCraft
-	Dismiss update	Закрити сповіщення про оновлення
+	Show Favorite Fonts	Показати вибрані шрифти
+	No favorite fonts yet: click the star beside a font to add it.	Вибраних шрифтів ще немає: натисніть зірочку біля шрифту, щоб додати його.
+	Favorite fonts	Вибрані шрифти
+	Add to Favorites	Додати до вибраного
+	Remove from Favorites	Видалити з вибраного
+	Show All Fonts	Показати всі шрифти
+	All Classes	Усі класи
+	Blackletter	Готичні
+	Decorative	Декоративні
+	Font preview:	Попередній перегляд шрифту:
+	Handwritten	Рукописні
+	Hide Font Classes	Сховати класи шрифтів
+	Hide Styles	Сховати накреслення
+	Monospace	Моноширинні
+	No fonts match these filters.	Жоден шрифт не відповідає цим фільтрам.
+	No similar fonts: the current font doesn't say what it looks like.	Немає схожих шрифтів: поточний шрифт не описує свій вигляд.
+	OpenType font	Шрифт OpenType
+	Sans Serif	Без засічок
+	Script	Каліграфічні
+	Serif	Із засічками
+	Show Font Classes	Показати класи шрифтів
+	Show Similar Fonts	Показати схожі шрифти
+	Show Styles	Показати накреслення
+	Show Variable Fonts	Показати варіативні шрифти
+	Slab Serif	Із брускуватими засічками
+	TrueType font	Шрифт TrueType
+	Variable font	Варіативний шрифт
+	Calibration	Калібрування
+	Red Primary	Червоний основний
+	Green Primary	Зелений основний
+	Blue Primary	Синій основний
+	Write xmp sidecars	Записувати супутні файли XMP
+	Set the tone sliders from the image	Встановити повзунки тону за зображенням
+	Settings from {name}	Налаштування з {name}
+	Settings from {name}; {count} not supported: {names}	Налаштування з {name}; не підтримується: {count}: {names}
+	Could not write {name}: {error}	Не вдалося записати {name}: {error}
+	Kept {name}: written by another application	{name} залишено без змін: записаний іншою програмою
+	Shadow Tint	Відтінок тіней
 # PhotoCraft release checks.
 	Check for Updates…	Перевірити оновлення…
 	PhotoCraft Updates	Оновлення PhotoCraft
 	Checking for updates…	Перевірка оновлень…
 	Open the release page to choose an installer for your system.	Відкрийте сторінку випуску й виберіть інсталятор для своєї системи.
 	Open Download Page	Відкрити сторінку завантаження
+	PhotoCraft is up to date.	Установлено найновішу версію PhotoCraft.
 	Could not check for updates.	Не вдалося перевірити оновлення.
 	Updates have not been checked yet.	Оновлення ще не перевірялися.
 	Check Again	Перевірити знову
@@ -4212,13 +4181,133 @@ curves	Smooth	Згладити
 	Grayscale Ramp	Шкала градацій сірого
 	Current Colors	Поточні кольори
 	Make Ramp Web Safe	Зробити шкалу безпечною для вебу
+# Art History Brush (#213).
+	Art History Brush Tool	Інструмент «Художній пензель історії»
+	Tight Short	Щільний короткий
+	Tight Medium	Щільний середній
+	Tight Long	Щільний довгий
+	Loose Medium	Вільний середній
+	Loose Long	Вільний довгий
+	Dab	Мазок
+	Tight Curl	Щільний завиток
+	Loose Curl	Вільний завиток
+	Stylized dabs from a history state	Стилізовані мазки зі стану історії
+
+# Egui 0.37 migration controls (Aspect Ratio, Category, Color Table, Gamma, Interpolation, Profile, Target, Units, Demosaic)
+	Target	Ціль
+	Font size presets	Набори розмірів шрифту
+	Leading presets	Набори інтерліньяжу
+	Tracking presets	Набори трекінгу
+	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
+	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.
+	Use File › Open to open an image.	Use File › Open to open an image.
+	Import Photoshop brushes (.abr)	Import Photoshop brushes (.abr)
+	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
+	Default Photoshop Size	Default Photoshop Size
+	Grid view	Grid view
+	List view	List view
+	Prompt Edit	Prompt Edit
+	Generative Fill	Generative Fill
+	Describe changes to the whole image	Describe changes to the whole image
+	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
+	ComfyUI is unavailable in this frontend	ComfyUI is unavailable in this frontend
+	Comfyui url	Comfyui url
+	Prompt Edit…	Prompt Edit…
+	Generative Fill…	Generative Fill…
+	Preparing image and selection	Preparing image and selection
+	Uploading image to ComfyUI	Uploading image to ComfyUI
+	Waiting for ComfyUI generation	Waiting for ComfyUI generation
+	Downloading generated image	Downloading generated image
+	Adding generated layer	Adding generated layer
+	Prompt Generate	Створити за промптом
+	Prompt Generate…	Створити за промптом…
+	Regenerate AI Result	Повторно створити результат ШІ
+	Regenerate	Створити знову
+	Describe the image to generate	Опишіть зображення для створення
+	Sampling steps	Кроки семплювання
+	Reset steps to model default	Відновити кількість кроків моделі за замовчуванням
+	Translate prompt to English	Перекласти промпт англійською
+	Prompt translation model	Модель перекладу промптів
+	Prompt information	Інформація про промпт
+	AI Prompt History	Історія промптів ШІ
+	Original prompt	Початковий промпт
+	English translation	Англійський переклад
+	No prompt (remove)	Без промпту (видалення)
+	All nine regions	Усі дев’ять областей
+	No AI prompts recorded	Промпти ШІ не записані
+	Previous	Назад
+	Next	Далі
+	Copy original prompt	Копіювати початковий промпт
+	Copy English translation	Копіювати англійський переклад
+	Anime fusal	Anime FUSAL
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Turbo int8	Turbo INT8
+	Turbo q8	Turbo Q8_0
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Comfyui model	Модель ComfyUI
+	Comfyui translate prompt	Перекласти промпт англійською
+	Comfyui translation model	Модель перекладу промптів
+	AI model settings	Налаштування моделі ШІ
+	ComfyUI port	Порт ComfyUI
+	Copy negative prompt	Копіювати негативний промпт
+	Custom model filenames (one per line)	Назви файлів власних моделей (одна в рядку)
+	Negative prompt	Негативний промпт
+	One .safetensors filename per line. Compatibility is not checked.	Одна назва файлу .safetensors у рядку. Сумісність не перевіряється.
+	Text encoders	Текстові енкодери
+	Comfyui custom encoders	Власні енкодери ComfyUI
+	Comfyui custom model	Власна модель ComfyUI
+	Comfyui custom models	Власні моделі ComfyUI
+	Comfyui model settings	Налаштування моделей ComfyUI
+	PhotoCraft update available	Доступне оновлення PhotoCraft
+	Update PhotoCraft and restart now?	Оновити PhotoCraft і перезапустити зараз?
+	Automatically check for updates	Автоматично перевіряти оновлення
+	Check for updates now	Перевірити оновлення зараз
+	You can check for updates again in Help → About PhotoCraft.	Перевірити оновлення знову можна в меню Довідка → Про PhotoCraft.
+	Downloading update…	Завантаження оновлення…
+	Update PhotoCraft	Оновити PhotoCraft
+	Dismiss update	Закрити сповіщення про оновлення
 	Match Surrounding Colors	Узгодити з кольорами оточення
 	Adjust colors with Poisson blending	Налаштувати кольори змішуванням Пуассона
 	Compare with Original Generation	Порівняти з початковим результатом генерації
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Узгоджує кольори з оточенням, збереженим під час генерації. Інтенсивність 0 відновлює початковий результат генерації.
-
 	Attach Reference Image	Додати референс
 	Remove Reference Image	Видалити референс
 	Reference Image	Референс
 	Resize for AI editing	Змінити розмір для ШІ
 	The image exceeds the AI editing size. Resize the document to continue?	Зображення перевищує розмір для ШІ-редагування. Змінити розмір документа й продовжити?
+
+# Upstream 0.17 shared panels, histogram and fork cutout preference.
+	Arrange Panels	Упорядкувати панелі
+	Close Other Panels in Group	Закрити інші панелі в групі
+	Collapse to Icons	Згорнути до піктограм
+	Minimize Panel	Згорнути панель
+	Open Panel in Own Window	Відкрити панель в окремому вікні
+	Artboards	Монтажні області
+	CPU Rendering	Рендеринг на ЦП
+	Calculating…	Обчислення…
+	Click to refresh histogram with uncached data	Натисніть, щоб оновити гістограму без використання кешу
+	Count:	Кількість:
+	Drawn on the CPU: {reason}. Click for System Info.	Малювання на ЦП: {reason}. Натисніть для перегляду відомостей про систему.
+	Level:	Рівень:
+	Percentile:	Процентиль:
+	Remember Settings	Запам’ятати налаштування
+	Show Channels in Color	Показувати канали в кольорі
+	Show Statistics	Показати статистику
+	Source:	Джерело:
+	Uncached Refresh	Оновити без кешу
+	…	…
+	External cutout	Зовнішнє видалення тла

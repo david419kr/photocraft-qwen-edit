@@ -173,6 +173,10 @@
 	Fit Layer on Screen	स्क्रीन पर लेयर फ़िट करें
 	Actual Pixels	वास्तविक पिक्सेल
 	100%	100%
+	105%	105%
+	110%	110%
+	115%	115%
+	120%	120%
 	200%	200%
 	Rulers	रूलर्स
 	Snap	स्नैप
@@ -535,13 +539,44 @@ cameraRaw	Yellow	पीला
 	Missing delete command	हटाने का कमांड नहीं मिला
 	Invalid delete command	हटाने का कमांड अमान्य है
 	Layer deleted, but confirmation preference could not be saved: {error}	लेयर हटा दी गई, लेकिन पुष्टि की प्राथमिकता सहेजी नहीं जा सकी: {error}
+# Art History Brush (#213).
+	Art History Brush	आर्ट हिस्ट्री ब्रश
+	Style	शैली
+	Area	क्षेत्र
+	Tight Short	सघन छोटा
+	Tight Medium	सघन मध्यम
+	Tight Long	सघन लंबा
+	Loose Medium	ढीला मध्यम
+	Loose Long	ढीला लंबा
+	Dab	थपका
+	Tight Curl	सघन घुमाव
+	Loose Curl	ढीला घुमाव
+	Stylized dabs from a history state	इतिहास स्थिति से शैलीबद्ध थपके
+
+# Egui 0.37 migration controls (Aspect Ratio, Category, Color Table, Gamma, Interpolation, Profile, Target, Units, Demosaic)
+	Aspect Ratio	पहलू अनुपात
+	Category	श्रेणी
+	Color Table	रंग तालिका
+	Gamma	गामा
+	Interpolation	इंटरपोलेशन
+	Profile	प्रोफ़ाइल
+	Target	लक्ष्य
+	Units	इकाइयाँ
+	Demosaic	डिमोज़ेक
 	Match Surrounding Colors	आसपास के रंगों से मिलाएँ
 	Adjust colors with Poisson blending	पॉइसन ब्लेंडिंग से रंग समायोजित करें
 	Compare with Original Generation	मूल जनरेट किए गए परिणाम से तुलना करें
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	रंगों को जनरेशन के समय कैप्चर किए गए परिवेश से मिलाता है। तीव्रता 0 मूल जनरेट किए गए परिणाम को पुनर्स्थापित करती है।
-
 	Attach Reference Image	संदर्भ छवि जोड़ें
 	Remove Reference Image	संदर्भ छवि हटाएँ
 	Reference Image	संदर्भ छवि
 	Resize for AI editing	AI संपादन के लिए आकार बदलें
 	The image exceeds the AI editing size. Resize the document to continue?	छवि AI संपादन आकार से बड़ी है। जारी रखने के लिए दस्तावेज़ का आकार बदलें?
+
+# Camera Raw sidecar and calibration controls.
+cameraRaw	Calibration	कैलिब्रेशन
+cameraRaw	Could not write {name}: {error}	{name} लिखा नहीं जा सका: {error}
+cameraRaw	Kept {name}: written by another application	{name} रखा गया: किसी दूसरे अनुप्रयोग ने लिखा है
+cameraRaw	Set the tone sliders from the image	छवि के अनुसार टोन स्लाइडर सेट करें
+cameraRaw	Settings from {name}	{name} की सेटिंग
+cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की सेटिंग; {count} समर्थित नहीं: {names}
