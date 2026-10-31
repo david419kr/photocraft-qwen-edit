@@ -187,5 +187,8 @@
       "aarch64": "cancelled per final user instruction; not passed; do not rerun"
     }
   },
-  "windows_candidate": null
+  "windows_candidate": null,
+  "initial_merge_sha": "733e279a15a780d19143ddfcc0b2dde76693c0d7",
+  "pull_request": 17,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/17"
 }

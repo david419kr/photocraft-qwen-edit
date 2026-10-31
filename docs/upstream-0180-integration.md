@@ -42,10 +42,16 @@ Preserve the dated fork portable updater and its replacement/rollback ownership;
 upstream's semantic-tag self-installer cannot install this distribution. Keep
 upstream control-listener changes, boxed live strokes and new UI controls/tests.
 Retain prior Rust 1.95 compatibility fixes where upstream refactoring overlaps.
+Distinguish finite fixed-size selections from nonzero sparse canvas complements:
+finite off-canvas marquee pixels survive combining and later moves. Existing
+unclipped-marquee regressions retain their full coverage assertions.
 README stable distribution wording remains intact. Restricted brand assets
 remain excluded and icon attribution covers both additions.
 
 ## Validation and delivery
+
+The 0.18.0 PR enables the complete testkit sweep in CI, rather than the daily
+subset, so final candidate validation follows the repository gate.
 
 Run current stable and Rust 1.95 whole-workspace/all-target HEIF Clippy early,
 then focused fork tests with zero-test rejection, installer/package tests,

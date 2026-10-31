@@ -4827,3 +4827,15 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Prompt Generate…	Luo kehotteella…
 	Generative Fill…	Generatiivinen täyttö…
 	Regenerate AI Result	Luo tekoälytulos uudelleen
+	Comfyui url	ComfyUI-palvelimen osoite
+	Comfyui model	ComfyUI-malli
+	Comfyui custom encoders	Omat ComfyUI-kooderit
+	Comfyui custom model	Oma ComfyUI-malli
+	Comfyui custom models	Omat ComfyUI-mallit
+	Comfyui model settings	ComfyUI-malliasetukset
+	Comfyui translate prompt	Käännä kehote englanniksi
+	Comfyui translation model	Kehotteen käännösmalli
+	External cutout	Ulkoinen taustanpoisto
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B

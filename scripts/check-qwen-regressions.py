@@ -39,6 +39,7 @@ def main():
         ("avif", ["-p", "photocraft-codecs", "--features", "avif,avif-decode", "--test", "avif"]),
         ("png-metadata", ["-p", "photocraft-codecs", "--test", "png_clean_metadata"]),
         ("io-metadata", ["-p", "photocraft-io", "--test", "metadata_clean"]),
+        ("io-streamed-metadata", ["-p", "photocraft-io", "--lib", "streamed_png_metadata_none"]),
         ("io-xmp", ["-p", "photocraft-io", "--test", "it", "xmp_export::"]),
         ("io-flat", ["-p", "photocraft-io", "--test", "it", "flat::"]),
         ("panic-hunt", ["-p", "photocraft-engine", "--test", "panic_hunt", "--", "--ignored"]),

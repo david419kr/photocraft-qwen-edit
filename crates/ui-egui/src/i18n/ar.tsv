@@ -3609,3 +3609,15 @@ curves	Smooth	تنعيم
 	Prompt Generate…	توليد بأمر نصي…
 	Generative Fill…	تعبئة توليدية…
 	Regenerate AI Result	إعادة توليد نتيجة الذكاء الاصطناعي
+	Comfyui url	عنوان خادم ComfyUI
+	Comfyui model	نموذج ComfyUI
+	Comfyui custom encoders	مرمّزات ComfyUI المخصصة
+	Comfyui custom model	نموذج ComfyUI المخصص
+	Comfyui custom models	نماذج ComfyUI المخصصة
+	Comfyui model settings	إعدادات نماذج ComfyUI
+	Comfyui translate prompt	ترجمة الأمر إلى الإنجليزية
+	Comfyui translation model	نموذج ترجمة الأوامر
+	External cutout	قص بخدمة خارجية
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B

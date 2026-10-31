@@ -4826,3 +4826,15 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Prompt Generate…	Generer med prompt…
 	Generative Fill…	Generativ udfyldning…
 	Regenerate AI Result	Generer AI-resultat igen
+	Comfyui url	ComfyUI-serveradresse
+	Comfyui model	ComfyUI-model
+	Comfyui custom encoders	Egne ComfyUI-kodere
+	Comfyui custom model	Egen ComfyUI-model
+	Comfyui custom models	Egne ComfyUI-modeller
+	Comfyui model settings	ComfyUI-modelindstillinger
+	Comfyui translate prompt	Oversæt prompt til engelsk
+	Comfyui translation model	Model til promptoversættelse
+	External cutout	Ekstern fritlægning
+	Qwen image21	Qwen 2.1
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B

@@ -446,7 +446,15 @@ fn build() -> Vec<CommandSpec> {
                             tile.bytes().get(start..row_start + x1).is_some_and(|row| row.iter().any(|&v| v != 0))
                         })
                     });
-                    doc.selection = has_on_canvas_pixels.then_some(combined);
+                    // Finite Fixed Size masks retain off-canvas pixels, including those beyond
+                    // this operation's area. A nonzero sparse default instead represents the
+                    // canvas complement, for which only the bounded canvas is meaningful.
+                    let has_pixels = if combined.default_bytes().first().copied().unwrap_or(0) == 0 {
+                        !combined.content_bounds().is_empty()
+                    } else {
+                        has_on_canvas_pixels
+                    };
+                    doc.selection = has_pixels.then_some(combined);
                     Ok(())
                 })?;
                 Ok(Value::Null)
