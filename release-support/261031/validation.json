@@ -1,0 +1,69 @@
+{
+  "source_sha": "70d6f1e99628015169dafae6157f4cea65e447ac",
+  "ci_tests": {
+    "ubuntu": {
+      "passed": 13303,
+      "skipped": 100,
+      "job_id": 124495097609,
+      "full_sweep": true
+    },
+    "windows_unit": {
+      "passed": 10678,
+      "skipped": 81,
+      "slow": 2,
+      "leaky": 3,
+      "leaky_tests": [
+        "photocraft-engine cmd::document_preset_cmds::tests::deletion_marks_preferences_dirty_and_survives_reload",
+        "photocraft-ui-egui panels::histogram_panel::tests::cache_levels_one_still_throttles_recounts_and_an_uncached_refresh_does_not",
+        "photocraft-ui-egui panels::history_panel_select_tests::dragging_a_later_state_shows_its_label_at_the_pointer"
+      ],
+      "job_id": 124495097602
+    },
+    "windows_integration": {
+      "passed": 2544,
+      "skipped": 20,
+      "slow": 35,
+      "leaky": 1,
+      "leaky_test": "photocraft-ui-egui::it workspace_presets::preset_layouts_round_trip_through_remembered_preferences",
+      "job_id": 124495097554
+    },
+    "without_heif": {
+      "passed": 1919,
+      "skipped": 15,
+      "job_id": 124495097528
+    },
+    "corpus": {
+      "passed_gate": true,
+      "job_id": 124495097538
+    },
+    "installer": {
+      "passed": 14
+    },
+    "scripts": {
+      "passed": 11
+    }
+  },
+  "focused_regressions": {
+    "passed": 779,
+    "suites": 33,
+    "manual_ignored": 4
+  },
+  "local_checks": {
+    "focused": {
+      "passed": 779,
+      "suites": 33,
+      "ignored": 4
+    },
+    "engine_unit": {
+      "passed": 2599,
+      "ignored": 18
+    },
+    "ui_unit_with_ci_fonts": {
+      "passed": 4568,
+      "ignored": 21,
+      "font_commit": "b076417b5880bd4154bd22f00695b1d28c6bea83"
+    },
+    "rust_1_95_full_clippy": "passed",
+    "format_1_95_and_stable": "passed"
+  }
+}
