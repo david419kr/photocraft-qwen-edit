@@ -449,11 +449,8 @@ fn build() -> Vec<CommandSpec> {
                     // Finite Fixed Size masks retain off-canvas pixels, including those beyond
                     // this operation's area. A nonzero sparse default instead represents the
                     // canvas complement, for which only the bounded canvas is meaningful.
-                    let has_pixels = if combined.default_bytes().first().copied().unwrap_or(0) == 0 {
-                        !combined.content_bounds().is_empty()
-                    } else {
-                        has_on_canvas_pixels
-                    };
+                    let finite_mask = combined.default_bytes().first().copied().unwrap_or(0) == 0;
+                    let has_pixels = if finite_mask { !combined.content_bounds().is_empty() } else { has_on_canvas_pixels };
                     doc.selection = has_pixels.then_some(combined);
                     Ok(())
                 })?;
