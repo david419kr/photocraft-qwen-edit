@@ -446,11 +446,11 @@ fn build() -> Vec<CommandSpec> {
                             tile.bytes().get(start..row_start + x1).is_some_and(|row| row.iter().any(|&v| v != 0))
                         })
                     });
-                    // Finite Fixed Size masks retain off-canvas pixels, including those beyond
-                    // this operation's area. A nonzero sparse default instead represents the
-                    // canvas complement, for which only the bounded canvas is meaningful.
+                    // An unclipped Fixed Size operation retains finite off-canvas pixels,
+                    // including those beyond its area. Normal clipped operations only retain
+                    // a selection with on-canvas coverage; sparse complements stay bounded.
                     let finite_mask = combined.default_bytes().first().copied().unwrap_or(0) == 0;
-                    let has_pixels = if finite_mask { !combined.content_bounds().is_empty() } else { has_on_canvas_pixels };
+                    let has_pixels = if !clip && finite_mask { !combined.content_bounds().is_empty() } else { has_on_canvas_pixels };
                     doc.selection = has_pixels.then_some(combined);
                     Ok(())
                 })?;

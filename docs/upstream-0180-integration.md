@@ -49,8 +49,10 @@ upstream's semantic-tag self-installer cannot install this distribution. Keep
 upstream control-listener changes, boxed live strokes and new UI controls/tests.
 Retain prior Rust 1.95 compatibility fixes where upstream refactoring overlaps.
 Distinguish finite fixed-size selections from nonzero sparse canvas complements:
-finite off-canvas marquee pixels survive combining and later moves. Existing
-unclipped-marquee regressions retain their full coverage assertions.
+unclipped fixed-size operations retain finite off-canvas pixels for later moves;
+normal clipped subtraction clears the selection when no canvas pixels remain.
+Both the unclipped-marquee and upstream disjoint/default-mask empty-selection
+regressions are included in the focused gate, with their full assertions.
 README stable distribution wording remains intact. Restricted brand assets
 remain excluded and icon attribution covers both additions.
 
