@@ -2,7 +2,7 @@ name: Qwen Windows candidate
 
 on:
   push:
-    branches: ['update/0.17.0']
+    branches: ['update/0.18.0']
   workflow_dispatch:
     inputs:
       build_only:
@@ -24,12 +24,12 @@ env:
   PHOTOCRAFT_NO_PRINT: "1"
   LPDEST: photocraft-no-such-printer
   PHOTOCRAFT_BUILD_SHA: ${{ github.sha }}
-  QWEN_UPSTREAM_SHA: b8c3f3aa8e2918032cadc0e042664414a03be333
-  QWEN_BASE_SHA: de3663c8a60adcb95d5e0f2b11c97c446b58c42c
+  QWEN_UPSTREAM_SHA: 8a87a457abb43ac344deeb3fdb67541b91a72ff1
+  QWEN_BASE_SHA: e7ed50fb5d7285880f872bc0502a1945d83b18c9
 
 jobs:
   lint:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.17.0' && !inputs.build_only
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.18.0' && !inputs.build_only
     name: early Clippy
     runs-on: ubuntu-latest
     steps:
@@ -53,7 +53,7 @@ jobs:
 
   regressions:
     needs: lint
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.17.0'
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.18.0'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -99,7 +99,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.17.0'
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/update/0.18.0'
     runs-on: windows-2022
     timeout-minutes: 120
     env:

@@ -87,3 +87,28 @@ fn clean_opaque_png_does_not_add_alpha_or_change_colour_samples() {
     assert_eq!(restored.layout(), ChannelLayout::Rgb);
     assert_eq!(restored.data(), source.data());
 }
+
+#[test]
+fn streamed_clean_png_matches_whole_encoding_at_both_depths() {
+    for depth in [SampleType::U8, SampleType::U16] {
+        let source = match depth {
+            SampleType::U8 => Image::from_u8(2, 1, ChannelLayout::Rgba, vec![23, 67, 101, 0, 50, 100, 150, 254]).unwrap(),
+            _ => Image::from_u16(2, 1, ChannelLayout::Rgba, &[0x1234, 0x5678, 0x9abc, 0, 100, 200, 300, 65534]).unwrap(),
+        }
+        .with_meta(Metadata { text: vec![("private".into(), "prompt".into())], dpi: Some((300.0, 300.0)), ..Default::default() });
+        for options in [clean(), EncodeOptions::default()] {
+            let whole = decode(&encode(&source, Format::Png, &options).unwrap()).unwrap();
+            let mut bytes = Vec::new();
+            let mut rows = photocraft_codecs::PngRows::new(&mut bytes, &source, 2, &options).unwrap();
+            rows.push(&source).unwrap();
+            rows.push(&source).unwrap();
+            rows.finish().unwrap();
+            let streamed = decode(&bytes).unwrap();
+            assert_eq!(streamed.data(), whole.data().repeat(2));
+            assert_eq!(streamed.meta, whole.meta);
+            if options.png_scrub_alpha_lsb {
+                assert!(chunks(&bytes).iter().all(|kind| matches!(kind, b"IHDR" | b"IDAT" | b"IEND")));
+            }
+        }
+    }
+}
