@@ -40,6 +40,9 @@ source key, preserving fork translations and upstream additions.
 Complete fork menu and preference labels in the five newly complete languages,
 and restore missing current selection/tool labels in existing catalogs. Retain
 the catalog completeness and placeholder checks without exemptions.
+Adapt upstream's explicit JPEG-profile regression to the fork privacy policy:
+Metadata All permits requested ICC embedding; Metadata None removes it even
+when embedding was explicitly requested. Both branches remain asserted.
 
 Preserve the dated fork portable updater and its replacement/rollback ownership;
 upstream's semantic-tag self-installer cannot install this distribution. Keep

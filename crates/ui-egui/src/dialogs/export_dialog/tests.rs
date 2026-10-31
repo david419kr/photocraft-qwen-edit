@@ -745,12 +745,17 @@ fn untagged_jpeg_export_embeds_the_requested_srgb_profile() {
         assert!(doc.icc_profile.is_none());
         let before = doc.clone();
         let mut fields =
-            json!({"format": "jpg", "profile": "srgb", "embedProfile": true, "metadata": "none", "width": 8, "height": 8}).as_object().unwrap().clone();
+            json!({"format": "jpg", "profile": "srgb", "embedProfile": true, "metadata": "all", "width": 8, "height": 8}).as_object().unwrap().clone();
         let converted = default_export_document(&doc, &fields, None).unwrap();
         let bytes = photocraft_io::export(&converted, "out.jpg", &settings(&fields).io_options()).unwrap().bytes;
         let reloaded = photocraft_io::import("out.jpg", &bytes).unwrap().document;
         let profile = photocraft_cms::Profile::parse(reloaded.icc_profile.as_deref().expect("explicit sRGB export must embed its profile")).unwrap();
         assert!(profile.same_colors(photocraft_cms::Builtin::Srgb.profile()), "{depth:?}");
+        // Fork privacy contract: Metadata None overrides even explicit ICC embedding.
+        fields.insert("metadata".into(), json!("none"));
+        let bytes = photocraft_io::export(&converted, "out.jpg", &settings(&fields).io_options()).unwrap().bytes;
+        assert!(photocraft_io::import("out.jpg", &bytes).unwrap().document.icc_profile.is_none(), "Metadata None removes the profile");
+        fields.insert("metadata".into(), json!("all"));
         fields.insert("embedProfile".into(), json!(false));
         let bytes = photocraft_io::export(&converted, "out.jpg", &settings(&fields).io_options()).unwrap().bytes;
         assert!(photocraft_io::import("out.jpg", &bytes).unwrap().document.icc_profile.is_none(), "embedding remains optional");
