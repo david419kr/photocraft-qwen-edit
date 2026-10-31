@@ -7,6 +7,15 @@
 #![forbid(unsafe_code)]
 #![deny(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::unimplemented, clippy::todo, clippy::unreachable)]
 
+/// PhotoCraft as craft-update knows it, with its 128 px icon and accent colour: the update
+/// prompt shows both, and an AppImage's menu entry gets the icon.
+#[cfg(not(target_arch = "wasm32"))]
+pub const UPDATE_APP: craft_update::app::App = craft_update::app::App {
+    icon_png: Some(include_bytes!("../../../assets/app-icon/hicolor/128x128/apps/ai.storyteller.photocraft.png")),
+    accent: Some([0x2f, 0x7b, 0xf5]),
+    ..craft_update::suite::PHOTOCRAFT
+};
+
 /// Translate a string literal into the current UI language: `tl!("Image Size…")`.
 macro_rules! tl {
     ($s:expr) => {
@@ -16,12 +25,14 @@ macro_rules! tl {
 pub mod ai_bar;
 pub mod ai_edit_ui;
 mod ai_prompt_info;
+mod brush_mode_menu;
 pub mod canvas;
 pub mod control;
 pub mod dialogs;
 pub mod dock;
 pub mod file_dialog;
 pub mod file_open;
+pub mod frame_stages;
 pub mod gpu_status;
 pub mod i18n;
 mod icon_data;
@@ -33,6 +44,7 @@ pub mod menu_catalog;
 pub mod menus;
 pub mod monitor_status;
 pub mod notices;
+pub mod os_window;
 pub mod panels;
 pub mod preset_files_ui;
 pub mod proxy;
@@ -152,6 +164,7 @@ pub use dialogs::rasterize_prompt;
 pub use dialogs::replace_prompt;
 use dialogs::rgb_histogram;
 pub use dialogs::screen_picker;
+pub use dialogs::select_mask_ui;
 pub use dialogs::shape_dialog;
 pub(crate) use dialogs::shape_fill_ui;
 use dialogs::sizing;
@@ -200,6 +213,7 @@ pub use panels::brushes_tab;
 pub use panels::channels_panel;
 pub use panels::chrome_ui;
 pub use panels::clip_line_ui;
+pub use panels::color_hud;
 pub use panels::color_panel_ui;
 pub use panels::comps_ui;
 pub use panels::doc_props_ui;
@@ -274,6 +288,7 @@ pub use tools::move_hover;
 pub use tools::move_lock;
 pub use tools::move_mods;
 pub use tools::object_finder;
+use tools::path_components;
 pub use tools::perspective_crop_ui;
 pub use tools::perspective_ui;
 pub use tools::puppet_ui;
@@ -334,6 +349,9 @@ pub struct PhotocraftApp {
     monitors: monitor_status::State,
     checker: Option<egui::TextureHandle>,
     drag: Option<canvas::Drag>,
+    /// An owned vector drag was cancelled (`canvas::cancel_stale_vector_drag`): the rest of its
+    /// pointer events go nowhere.
+    pub(crate) cancelled_vector_drag: bool,
     /// A Move-tool press landed on a locked layer: the first pointer move shows Photoshop's
     /// message (`move_lock`), a plain click shows nothing.
     pub(crate) move_blocked: bool,
@@ -455,6 +473,9 @@ pub struct PhotocraftApp {
     pub(crate) drop_places: std::collections::VecDeque<file_open::DropPlace>,
     /// The document each of `ui.views` belongs to, as of the last [`Self::sync_views`].
     view_docs: Vec<DocId>,
+    /// The document `ui.selected_path` belongs to, as of the last [`Self::sync_views`]: a Paths
+    /// panel selection never carries over to a same-named path in another tab.
+    path_document: Option<(DocId, u64, std::sync::Weak<Document>)>,
     pub fps: f32,
     pub(crate) last_frame_time: f64,
     thumbs: HashMap<(photocraft_doc::LayerId, u8), (u64, egui::TextureHandle)>,
@@ -509,6 +530,10 @@ pub struct PhotocraftApp {
     /// makes shortcut- and dialog-triggered commands pass the same policy as
     /// direct control calls.
     pub(crate) automation_input: bool,
+    /// How many `run_command` calls are on the stack. Only the outermost one writes the frame's
+    /// command stage: a nested run (`file.save` → `layer.smartObjects.saveContents`,
+    /// `actions.play` → its steps) is already inside the outer call's time.
+    run_depth: u32,
     /// Action playbacks paused at a step dialog, by the token in that dialog's fields
     /// ([`actions::RESUME`]): what to play next and the automation gate it paused under.
     pub(crate) paused_playbacks: actions::PausedPlaybacks,
@@ -623,6 +648,8 @@ pub struct PhotocraftApp {
     pub stroke_trace: stroke_trace::StrokeTrace,
     /// Why each document's view is drawn on the CPU, and the history of changes (`render_path`).
     pub render_path: render_path::RenderPath,
+    /// The last slow frames and their stages (`perf.slowFrames`, see `frame_stages`).
+    pub slow_frames: frame_stages::SlowFrames,
     /// Preferences, autosave and snapping runtime state (see `prefs_ui`, `snap_ui`).
     pub(crate) prefs_rt: prefs_ui::Runtime,
     pub(crate) updates_rt: updates_ui::Runtime,
@@ -748,6 +775,9 @@ mod transform_undo_tests;
 mod transform_type_tests;
 
 #[cfg(test)]
+mod transform_several_tests;
+
+#[cfg(test)]
 mod psd_open_tests;
 #[cfg(test)]
 mod save_identity_tests;
@@ -852,3 +882,9 @@ mod ai_edit_ui_tests;
 
 #[cfg(test)]
 mod test_fonts;
+
+#[cfg(test)]
+mod saved_path_edit_tests;
+
+#[cfg(test)]
+mod pen_path_ownership_tests;
