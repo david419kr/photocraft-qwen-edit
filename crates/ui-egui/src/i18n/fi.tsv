@@ -4849,3 +4849,9 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Check Again	Tarkista uudelleen
 	Installed version: {version}	Asennettu versio: {version}
 	PhotoCraft {version} is available.	PhotoCraft {version} on saatavilla.
+	Answer the open import question first, then import this file again.	Vastaa ensin avoimeen tuontikysymykseen ja tuo sitten tämä tiedosto uudelleen.
+	Import as New Group	Tuo uutena ryhmänä
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Tuo uutena ryhmänä säilyttää ryhmän ”{group}” ja lisää tiedoston sen viereen uutena ryhmänä.
+	No import is waiting. Import the file again.	Yhtään tuontia ei ole odottamassa. Tuo tiedosto uudelleen.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Korvaaminen poistaa ensin kaiken ryhmästä ”{group}”, myös muokkaamasi tai sinne siirtämäsi esimääritykset. Tätä ei voi kumota.
+	{message} into “{group}”	{message} ryhmään ”{group}”

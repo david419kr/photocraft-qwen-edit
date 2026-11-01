@@ -4550,3 +4550,9 @@ prompt-region	Bottom right	Jobb alsó
 	Check Again	Újraellenőrzés
 	Installed version: {version}	Telepített verzió: {version}
 	PhotoCraft {version} is available.	Elérhető a PhotoCraft {version}.
+	Answer the open import question first, then import this file again.	Először válaszoljon a megnyitott importálási kérdésre, majd importálja újra ezt a fájlt.
+	Import as New Group	Importálás új csoportként
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Az Importálás új csoportként megtartja a(z) „{group}” csoportot, és mellé új csoportként adja hozzá a fájlt.
+	No import is waiting. Import the file again.	Nincs várakozó importálás. Importálja újra a fájlt.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	A csere először mindent töröl a(z) „{group}” csoportból, beleértve az ott szerkesztett vagy oda áthelyezett készleteket is. Ez nem vonható vissza.
+	{message} into “{group}”	{message} a(z) „{group}” csoportba

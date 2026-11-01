@@ -3330,3 +3330,9 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Check Again	重新检查
 	Installed version: {version}	已安装版本：{version}
 	PhotoCraft {version} is available.	PhotoCraft {version} 已发布。
+	Answer the open import question first, then import this file again.	请先回答当前的导入问题，然后再次导入此文件。
+	Import as New Group	导入为新组
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	“导入为新组”会保留“{group}”，并在其旁边将文件添加为新组。
+	No import is waiting. Import the file again.	没有等待处理的导入。请重新导入文件。
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	替换会先删除“{group}”中的所有内容，包括您编辑或移入的预设。此操作无法撤销。
+	{message} into “{group}”	将{message}导入“{group}”

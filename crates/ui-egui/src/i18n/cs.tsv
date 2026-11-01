@@ -4384,3 +4384,9 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Check Again	Zkontrolovat znovu
 	Installed version: {version}	Nainstalovaná verze: {version}
 	PhotoCraft {version} is available.	PhotoCraft {version} je k dispozici.
+	Answer the open import question first, then import this file again.	Nejprve odpovězte na otevřenou otázku importu a potom tento soubor importujte znovu.
+	Import as New Group	Importovat jako novou skupinu
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Importovat jako novou skupinu zachová „{group}“ a přidá soubor vedle jako novou skupinu.
+	No import is waiting. Import the file again.	Žádný import nečeká. Importujte soubor znovu.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Nahrazení nejprve odstraní vše ve skupině „{group}“, včetně předvoleb, které jste tam upravili nebo přesunuli. Tuto akci nelze vrátit zpět.
+	{message} into “{group}”	{message} do „{group}“

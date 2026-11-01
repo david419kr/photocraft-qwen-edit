@@ -4363,3 +4363,9 @@ prompt-region	Bottom right	Sağ alt
 	Check Again	Yeniden Denetle
 	Installed version: {version}	Yüklü sürüm: {version}
 	PhotoCraft {version} is available.	PhotoCraft {version} kullanılabilir.
+	Answer the open import question first, then import this file again.	Önce açık içe aktarma sorusunu yanıtlayın, ardından bu dosyayı yeniden içe aktarın.
+	Import as New Group	Yeni Grup Olarak İçe Aktar
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Yeni Grup Olarak İçe Aktar, “{group}” grubunu korur ve dosyayı yanına yeni bir grup olarak ekler.
+	No import is waiting. Import the file again.	Bekleyen içe aktarma yok. Dosyayı yeniden içe aktarın.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Değiştir, düzenlediğiniz veya oraya taşıdığınız hazır ayarlar dahil “{group}” içindeki her şeyi önce siler. Bu işlem geri alınamaz.
+	{message} into “{group}”	“{group}” içine {message}

@@ -4318,3 +4318,9 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Checking for updates…	アップデートを確認中…
 	Installed version: {version}	インストール済みのバージョン: {version}
 	PhotoCraft {version} is available.	PhotoCraft {version} が利用可能です。
+	Answer the open import question first, then import this file again.	先に開いている読み込みの質問に回答してから、このファイルを再度読み込んでください。
+	Import as New Group	新規グループとして読み込む
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	「新規グループとして読み込む」は「{group}」を保持し、その隣にファイルを新しいグループとして追加します。
+	No import is waiting. Import the file again.	待機中の読み込みはありません。ファイルを再度読み込んでください。
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	置き換えると、編集したプリセットや移動したプリセットを含め、「{group}」のすべてが先に削除されます。この操作は取り消せません。
+	{message} into “{group}”	「{group}」に{message}

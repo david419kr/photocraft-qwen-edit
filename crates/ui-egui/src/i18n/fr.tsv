@@ -4667,3 +4667,9 @@ shape	Appearance	Apparence
 	Check Again	Vérifier à nouveau
 	Installed version: {version}	Version installée : {version}
 	PhotoCraft {version} is available.	PhotoCraft {version} est disponible.
+	Answer the open import question first, then import this file again.	Répondez d’abord à la question d’importation ouverte, puis importez à nouveau ce fichier.
+	Import as New Group	Importer comme nouveau groupe
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Importer comme nouveau groupe conserve « {group} » et ajoute le fichier dans un nouveau groupe à côté.
+	No import is waiting. Import the file again.	Aucune importation en attente. Importez à nouveau le fichier.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Remplacer supprime d’abord tout le contenu de « {group} », y compris les paramètres prédéfinis que vous y avez modifiés ou déplacés. Cette action est irréversible.
+	{message} into “{group}”	{message} dans « {group} »

@@ -4139,3 +4139,9 @@ prompt-region	Bottom right	Dưới phải
 	Checking for updates…	Đang kiểm tra bản cập nhật…
 	Installed version: {version}	Phiên bản đã cài: {version}
 	PhotoCraft {version} is available.	PhotoCraft {version} đã có sẵn.
+	Answer the open import question first, then import this file again.	Trước tiên hãy trả lời câu hỏi nhập đang mở, rồi nhập lại tệp này.
+	Import as New Group	Nhập thành nhóm mới
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Nhập thành nhóm mới giữ lại “{group}” và thêm tệp thành một nhóm mới bên cạnh.
+	No import is waiting. Import the file again.	Không có lượt nhập nào đang chờ. Hãy nhập lại tệp.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Thay thế sẽ xóa toàn bộ nội dung trong “{group}” trước, kể cả các thiết lập sẵn bạn đã sửa hoặc chuyển vào đó. Không thể hoàn tác thao tác này.
+	{message} into “{group}”	{message} vào “{group}”

@@ -3632,3 +3632,9 @@ curves	Smooth	تنعيم
 	Check Again	التحقق مرة أخرى
 	Installed version: {version}	الإصدار المثبت: {version}
 	PhotoCraft {version} is available.	يتوفر PhotoCraft {version}.
+	Answer the open import question first, then import this file again.	أجب أولاً عن سؤال الاستيراد المفتوح، ثم استورد هذا الملف مرة أخرى.
+	Import as New Group	استيراد كمجموعة جديدة
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	يحتفظ الاستيراد كمجموعة جديدة بالمجموعة «{group}» ويضيف الملف كمجموعة جديدة بجانبها.
+	No import is waiting. Import the file again.	لا توجد عملية استيراد معلّقة. استورد الملف مرة أخرى.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	يؤدي الاستبدال أولاً إلى حذف كل ما في «{group}»، بما في ذلك الإعدادات المسبقة التي عدّلتها أو نقلتها إليها. لا يمكن التراجع عن هذا الإجراء.
+	{message} into “{group}”	{message} إلى «{group}»

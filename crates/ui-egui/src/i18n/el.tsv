@@ -4337,3 +4337,9 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Check Again	Νέος έλεγχος
 	Installed version: {version}	Εγκατεστημένη έκδοση: {version}
 	PhotoCraft {version} is available.	Το PhotoCraft {version} είναι διαθέσιμο.
+	Answer the open import question first, then import this file again.	Απαντήστε πρώτα στην ανοιχτή ερώτηση εισαγωγής και μετά εισαγάγετε ξανά αυτό το αρχείο.
+	Import as New Group	Εισαγωγή ως νέα ομάδα
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Η εισαγωγή ως νέα ομάδα διατηρεί την «{group}» και προσθέτει το αρχείο ως νέα ομάδα δίπλα της.
+	No import is waiting. Import the file again.	Δεν εκκρεμεί εισαγωγή. Εισαγάγετε ξανά το αρχείο.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Η αντικατάσταση διαγράφει πρώτα τα πάντα στην «{group}», μαζί με τις προεπιλογές που επεξεργαστήκατε ή μετακινήσατε εκεί. Αυτό δεν μπορεί να αναιρεθεί.
+	{message} into “{group}”	{message} στην «{group}»

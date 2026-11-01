@@ -604,3 +604,9 @@ cameraRaw	Kept {name}: written by another application	{name} रखा गया
 cameraRaw	Set the tone sliders from the image	छवि के अनुसार टोन स्लाइडर सेट करें
 cameraRaw	Settings from {name}	{name} की सेटिंग
 cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की सेटिंग; {count} समर्थित नहीं: {names}
+	Answer the open import question first, then import this file again.	पहले खुले आयात प्रश्न का उत्तर दें, फिर इस फ़ाइल को दोबारा आयात करें।
+	Import as New Group	नए समूह के रूप में आयात करें
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	नए समूह के रूप में आयात करने से “{group}” बना रहता है और फ़ाइल उसके बगल में एक नए समूह के रूप में जुड़ती है।
+	No import is waiting. Import the file again.	कोई आयात प्रतीक्षारत नहीं है। फ़ाइल को दोबारा आयात करें।
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	बदलें पहले “{group}” की सारी सामग्री मिटा देता है, जिसमें आपके संपादित या वहाँ स्थानांतरित प्रीसेट भी शामिल हैं। इसे पूर्ववत नहीं किया जा सकता।
+	{message} into “{group}”	“{group}” में {message}

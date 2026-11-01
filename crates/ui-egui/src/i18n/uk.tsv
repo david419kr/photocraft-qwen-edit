@@ -4353,3 +4353,9 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Checking for updates…	Перевірка оновлень…
 	Installed version: {version}	Встановлена версія: {version}
 	PhotoCraft {version} is available.	Доступна версія PhotoCraft {version}.
+	Answer the open import question first, then import this file again.	Спочатку дайте відповідь на відкрите запитання імпорту, а потім імпортуйте цей файл знову.
+	Import as New Group	Імпортувати як нову групу
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Імпорт як нової групи зберігає «{group}» і додає файл поруч як нову групу.
+	No import is waiting. Import the file again.	Немає імпорту в очікуванні. Імпортуйте файл знову.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Заміна спочатку видалить усе в «{group}», включно зі зміненими або переміщеними туди наборами налаштувань. Цю дію неможливо скасувати.
+	{message} into “{group}”	{message} до «{group}»

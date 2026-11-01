@@ -3667,3 +3667,9 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Check Again	Periksa Lagi
 	Installed version: {version}	Versi terpasang: {version}
 	PhotoCraft {version} is available.	PhotoCraft {version} tersedia.
+	Answer the open import question first, then import this file again.	Jawab dahulu pertanyaan impor yang terbuka, lalu impor file ini lagi.
+	Import as New Group	Impor sebagai Grup Baru
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Impor sebagai Grup Baru mempertahankan “{group}” dan menambahkan file sebagai grup baru di sebelahnya.
+	No import is waiting. Import the file again.	Tidak ada impor yang menunggu. Impor file lagi.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Ganti terlebih dahulu menghapus semua isi “{group}”, termasuk preset yang Anda edit atau pindahkan ke sana. Tindakan ini tidak dapat dibatalkan.
+	{message} into “{group}”	{message} ke dalam “{group}”

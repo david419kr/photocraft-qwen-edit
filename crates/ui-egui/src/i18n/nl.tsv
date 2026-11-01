@@ -4392,3 +4392,9 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Check Again	Opnieuw controleren
 	Installed version: {version}	Geïnstalleerde versie: {version}
 	PhotoCraft {version} is available.	PhotoCraft {version} is beschikbaar.
+	Answer the open import question first, then import this file again.	Beantwoord eerst de openstaande importvraag en importeer dit bestand daarna opnieuw.
+	Import as New Group	Als nieuwe groep importeren
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Als nieuwe groep importeren behoudt “{group}” en voegt het bestand ernaast als nieuwe groep toe.
+	No import is waiting. Import the file again.	Er staat geen import klaar. Importeer het bestand opnieuw.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Vervangen verwijdert eerst alles in “{group}”, inclusief voorinstellingen die je daar hebt bewerkt of naartoe hebt verplaatst. Dit kan niet ongedaan worden gemaakt.
+	{message} into “{group}”	{message} in “{group}”

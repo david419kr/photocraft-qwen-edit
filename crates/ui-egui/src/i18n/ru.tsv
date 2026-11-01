@@ -4827,3 +4827,9 @@ shape	Appearance	Оформление
 	Check Again	Проверить снова
 	Installed version: {version}	Установленная версия: {version}
 	PhotoCraft {version} is available.	Доступна версия PhotoCraft {version}.
+	Answer the open import question first, then import this file again.	Сначала ответьте на открытый вопрос импорта, затем импортируйте этот файл снова.
+	Import as New Group	Импортировать как новую группу
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Импорт как новой группы сохраняет «{group}» и добавляет файл рядом в виде новой группы.
+	No import is waiting. Import the file again.	Нет ожидающего импорта. Импортируйте файл снова.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Замена сначала удалит всё в «{group}», включая изменённые или перемещённые туда наборы настроек. Это действие нельзя отменить.
+	{message} into “{group}”	{message} в «{group}»

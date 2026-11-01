@@ -4848,3 +4848,9 @@ cameraRaw	White Balance: As Shot	Hvitbalanse: som fotografert
 	Check Again	Sjekk igjen
 	Installed version: {version}	Installert versjon: {version}
 	PhotoCraft {version} is available.	PhotoCraft {version} er tilgjengelig.
+	Answer the open import question first, then import this file again.	Svar først på det åpne importspørsmålet, og importer deretter filen på nytt.
+	Import as New Group	Importer som ny gruppe
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Importer som ny gruppe beholder «{group}» og legger til filen som en ny gruppe ved siden av den.
+	No import is waiting. Import the file again.	Ingen import venter. Importer filen på nytt.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Erstatt sletter først alt i «{group}», inkludert forhåndsinnstillinger du har redigert eller flyttet dit. Dette kan ikke angres.
+	{message} into “{group}”	{message} til «{group}»
