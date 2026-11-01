@@ -1,5 +1,5 @@
 {
-  "status": "candidate_integration",
+  "status": "candidate_validation",
   "upstream_repository": "storytold/photocraft",
   "upstream_release_id": 430808229,
   "upstream_tag": "v0.19.0",
@@ -225,5 +225,9 @@
     }
   },
   "validation": "Pending final exact-source checks.",
-  "windows_candidate": null
+  "windows_candidate": null,
+  "pull_request": 18,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/18",
+  "initial_merge_sha": "450031e5f3b7ec010b06c16da18662e7302719ce",
+  "validation_record": "https://github.com/david419kr/photocraft-qwen-edit/pull/18"
 }
