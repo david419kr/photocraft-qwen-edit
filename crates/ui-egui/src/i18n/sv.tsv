@@ -4852,3 +4852,6 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	No import is waiting. Import the file again.	Ingen import väntar. Importera filen igen.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Ersätt tar först bort allt i ”{group}”, inklusive förinställningar som du redigerat eller flyttat dit. Detta kan inte ångras.
 	{message} into “{group}”	{message} till ”{group}”
+	Recently Used Colors	Senast använda färger
+	Shapes can't use patterns yet	Former kan inte använda mönster ännu
+	Stop Color	Färg vid färgstopp

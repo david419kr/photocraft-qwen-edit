@@ -610,3 +610,9 @@ cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की स
 	No import is waiting. Import the file again.	कोई आयात प्रतीक्षारत नहीं है। फ़ाइल को दोबारा आयात करें।
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	बदलें पहले “{group}” की सारी सामग्री मिटा देता है, जिसमें आपके संपादित या वहाँ स्थानांतरित प्रीसेट भी शामिल हैं। इसे पूर्ववत नहीं किया जा सकता।
 	{message} into “{group}”	“{group}” में {message}
+	Color Picker	रंग चयनकर्ता
+	Recently Used Colors	हाल ही में उपयोग किए गए रंग
+	Shapes can't use patterns yet	आकृतियाँ अभी पैटर्न का उपयोग नहीं कर सकतीं
+	Solid Color	एकसमान रंग
+	Stop Color	ग्रेडिएंट बिंदु का रंग
+	Tint Color	आभा का रंग

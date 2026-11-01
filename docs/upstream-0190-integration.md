@@ -49,7 +49,8 @@ PR and Actions provenance; this source document does not claim a passing build.
   accepts. Apply De Morgan simplification with the same short-circuit order;
   no lint suppression or toolchain change.
 - The release adds six preset-import dialog literals without catalog entries.
-  Supply their translations in all 26 bundled catalogs; retain the exhaustive
+  Supply their translations in all 26 bundled catalogs, plus missing new colour
+  dialog labels in Arabic, Hindi and the Nordic catalogs; retain the exhaustive
   literal coverage and placeholder-consistency tests unchanged.
 - Regenerate scorecard from the combined source. Keep every existing floor and
   all upstream tests, including the complete testkit sweep on this PR.

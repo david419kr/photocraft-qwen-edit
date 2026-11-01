@@ -4854,3 +4854,6 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	No import is waiting. Import the file again.	Ingen import venter. Importér filen igen.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Erstat sletter først alt i “{group}”, inklusive forudindstillinger, du har redigeret eller flyttet dertil. Dette kan ikke fortrydes.
 	{message} into “{group}”	{message} til “{group}”
+	Recently Used Colors	Senest anvendte farver
+	Shapes can't use patterns yet	Former kan endnu ikke bruge mønstre
+	Stop Color	Farvestoppets farve

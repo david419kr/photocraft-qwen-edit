@@ -3638,3 +3638,9 @@ curves	Smooth	تنعيم
 	No import is waiting. Import the file again.	لا توجد عملية استيراد معلّقة. استورد الملف مرة أخرى.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	يؤدي الاستبدال أولاً إلى حذف كل ما في «{group}»، بما في ذلك الإعدادات المسبقة التي عدّلتها أو نقلتها إليها. لا يمكن التراجع عن هذا الإجراء.
 	{message} into “{group}”	{message} إلى «{group}»
+	Color Picker	منتقي الألوان
+	Recently Used Colors	الألوان المستخدمة مؤخراً
+	Shapes can't use patterns yet	لا يمكن للأشكال استخدام الأنماط بعد
+	Solid Color	لون موحّد
+	Stop Color	لون نقطة التدرج
+	Tint Color	لون الصبغة

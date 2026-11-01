@@ -4855,3 +4855,6 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	No import is waiting. Import the file again.	Yhtään tuontia ei ole odottamassa. Tuo tiedosto uudelleen.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Korvaaminen poistaa ensin kaiken ryhmästä ”{group}”, myös muokkaamasi tai sinne siirtämäsi esimääritykset. Tätä ei voi kumota.
 	{message} into “{group}”	{message} ryhmään ”{group}”
+	Recently Used Colors	Viimeksi käytetyt värit
+	Shapes can't use patterns yet	Muodot eivät vielä tue kuvioita
+	Stop Color	Väripisteen väri
