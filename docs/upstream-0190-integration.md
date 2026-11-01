@@ -32,7 +32,9 @@ PR and Actions provenance; this source document does not claim a passing build.
 - Combine upstream colour-channel command registration and filter targeting
   with the fork's ComfyUI registration and optional per-fill harmonization.
 - Preserve the Brush fallback for a fresh profile and the last-selected-tool
-  persistence contract; upstream now defaults new profiles to Move.
+  persistence contract; upstream now defaults new profiles to Move. Keep the
+  full persistence, invalid-preference and temporary-shortcut assertions aligned
+  with the fork default, including explicit non-default Move persistence.
 - Combine upstream held zoom edits with fork numeric speed/hover-wheel handling.
   Retain upstream input bounds and IME truncation behaviour.
 - Keep the dated fork portable updater and its replacement/rollback ownership.
@@ -43,6 +45,9 @@ PR and Actions provenance; this source document does not claim a passing build.
 - Preserve fork distribution README and attribution while adding upstream asset
   credits. Keep all translation keys required by the fork's update window.
   Restricted ArtCraft trademark assets remain excluded.
+- Rust 1.95 flags two new menu/zoom boolean expressions that stable 1.99.1
+  accepts. Apply De Morgan simplification with the same short-circuit order;
+  no lint suppression or toolchain change.
 - Regenerate scorecard from the combined source. Keep every existing floor and
   all upstream tests, including the complete testkit sweep on this PR.
 
