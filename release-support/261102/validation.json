@@ -1,0 +1,56 @@
+{
+  "source_sha": "ced72073ec8ca6575aa40e7644947bccb2729c74",
+  "ci_tests": {
+    "ubuntu": {
+      "passed": 13695,
+      "skipped": 103,
+      "job_id": 124994868646,
+      "full_sweep": true
+    },
+    "windows_unit": {
+      "passed": 10972,
+      "skipped": 83,
+      "slow": 2,
+      "leaky": 2,
+      "job_id": 124994868530
+    },
+    "windows_integration": {
+      "passed": 2628,
+      "skipped": 21,
+      "slow": 32,
+      "leaky": 5,
+      "job_id": 124994868581
+    },
+    "without_heif": {
+      "passed": 1998,
+      "skipped": 16,
+      "job_id": 124994868786
+    },
+    "corpus": {
+      "passed_gate": true,
+      "job_id": 124994868616
+    },
+    "installer": {
+      "passed": 14
+    },
+    "scripts": {
+      "passed": 11
+    }
+  },
+  "focused_regressions": {
+    "passed": 803,
+    "suites": 33,
+    "manual_ignored": 4
+  },
+  "local_checks": {
+    "location": "saved cloud environment only",
+    "ui_unit_with_ci_fonts": {
+      "passed": 4721,
+      "ignored": 21,
+      "font_commit": "b076417b5880bd4154bd22f00695b1d28c6bea83"
+    },
+    "rust_1_95_full_clippy": "passed",
+    "stable_full_clippy": "passed",
+    "actual_gpu_ui_tested": false
+  }
+}
