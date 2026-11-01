@@ -3644,3 +3644,5 @@ curves	Smooth	تنعيم
 	Solid Color	لون موحّد
 	Stop Color	لون نقطة التدرج
 	Tint Color	لون الصبغة
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).

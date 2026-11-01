@@ -4748,3 +4748,5 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	No import is waiting. Import the file again.	Nessuna importazione in attesa. Importa di nuovo il file.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Sostituisci elimina prima tutto il contenuto di “{group}”, compresi i predefiniti modificati o spostati lì. Questa operazione non può essere annullata.
 	{message} into “{group}”	{message} in “{group}”
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Il gruppo di pennelli “{group}” contiene già tuoi pennelli (numero: {n}).|Il gruppo di pennelli “{group}” contiene già tuoi pennelli (numero: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Il gruppo di sfumature “{group}” esiste già (numero di sfumature: {n}).|Il gruppo di sfumature “{group}” esiste già (numero di sfumature: {n}).

@@ -3673,3 +3673,5 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	No import is waiting. Import the file again.	Tidak ada impor yang menunggu. Impor file lagi.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Ganti terlebih dahulu menghapus semua isi “{group}”, termasuk preset yang Anda edit atau pindahkan ke sana. Tindakan ini tidak dapat dibatalkan.
 	{message} into “{group}”	{message} ke dalam “{group}”
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Grup kuas “{group}” sudah berisi {n} kuas milik Anda.
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Grup gradien “{group}” sudah ada ({n} gradien).

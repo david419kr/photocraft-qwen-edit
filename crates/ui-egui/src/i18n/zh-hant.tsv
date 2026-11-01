@@ -3292,3 +3292,5 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	No import is waiting. Import the file again.	沒有等待處理的匯入。請重新匯入檔案。
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	取代會先刪除「{group}」中的所有內容，包括您編輯或移入的預設集。此操作無法復原。
 	{message} into “{group}”	將{message}匯入「{group}」
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	筆刷群組「{group}」中已有您的 {n} 個筆刷。
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	漸層群組「{group}」已存在（{n} 個漸層）。

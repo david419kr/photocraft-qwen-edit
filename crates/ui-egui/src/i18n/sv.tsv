@@ -4855,3 +4855,5 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Recently Used Colors	Senast använda färger
 	Shapes can't use patterns yet	Former kan inte använda mönster ännu
 	Stop Color	Färg vid färgstopp
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen ”{group}” innehåller redan dina penslar (antal: {n}).|Penselgruppen ”{group}” innehåller redan dina penslar (antal: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Övertoningsgruppen ”{group}” finns redan (antal övertoningar: {n}).|Övertoningsgruppen ”{group}” finns redan (antal övertoningar: {n}).

@@ -4369,3 +4369,5 @@ prompt-region	Bottom right	Sağ alt
 	No import is waiting. Import the file again.	Bekleyen içe aktarma yok. Dosyayı yeniden içe aktarın.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Değiştir, düzenlediğiniz veya oraya taşıdığınız hazır ayarlar dahil “{group}” içindeki her şeyi önce siler. Bu işlem geri alınamaz.
 	{message} into “{group}”	“{group}” içine {message}
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	“{group}” fırça grubunda zaten size ait {n} fırça var.
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	“{group}” gradyan grubu zaten var ({n} gradyan).

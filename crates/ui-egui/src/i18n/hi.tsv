@@ -616,3 +616,5 @@ cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की स
 	Solid Color	एकसमान रंग
 	Stop Color	ग्रेडिएंट बिंदु का रंग
 	Tint Color	आभा का रंग
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	ब्रश समूह “{group}” में आपके ब्रश पहले से मौजूद हैं (संख्या: {n})।|ब्रश समूह “{group}” में आपके ब्रश पहले से मौजूद हैं (संख्या: {n})।
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।|ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।

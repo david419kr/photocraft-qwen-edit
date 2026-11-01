@@ -4857,3 +4857,5 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Recently Used Colors	Senest anvendte farver
 	Shapes can't use patterns yet	Former kan endnu ikke bruge mønstre
 	Stop Color	Farvestoppets farve
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).|Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).|Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).

@@ -4324,3 +4324,5 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	No import is waiting. Import the file again.	待機中の読み込みはありません。ファイルを再度読み込んでください。
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	置き換えると、編集したプリセットや移動したプリセットを含め、「{group}」のすべてが先に削除されます。この操作は取り消せません。
 	{message} into “{group}”	「{group}」に{message}
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	ブラシグループ「{group}」には、あなたのブラシがすでに{n}個あります。
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	グラデーショングループ「{group}」はすでに存在します（グラデーション{n}個）。

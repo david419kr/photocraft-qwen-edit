@@ -4833,3 +4833,5 @@ shape	Appearance	Оформление
 	No import is waiting. Import the file again.	Нет ожидающего импорта. Импортируйте файл снова.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Замена сначала удалит всё в «{group}», включая изменённые или перемещённые туда наборы настроек. Это действие нельзя отменить.
 	{message} into “{group}”	{message} в «{group}»
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).|Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).|Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Группа градиентов «{group}» уже существует (количество градиентов: {n}).|Группа градиентов «{group}» уже существует (количество градиентов: {n}).|Группа градиентов «{group}» уже существует (количество градиентов: {n}).

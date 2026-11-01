@@ -4343,3 +4343,5 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	No import is waiting. Import the file again.	Δεν εκκρεμεί εισαγωγή. Εισαγάγετε ξανά το αρχείο.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Η αντικατάσταση διαγράφει πρώτα τα πάντα στην «{group}», μαζί με τις προεπιλογές που επεξεργαστήκατε ή μετακινήσατε εκεί. Αυτό δεν μπορεί να αναιρεθεί.
 	{message} into “{group}”	{message} στην «{group}»
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Η ομάδα πινέλων «{group}» περιέχει ήδη δικά σας πινέλα (πλήθος: {n}).|Η ομάδα πινέλων «{group}» περιέχει ήδη δικά σας πινέλα (πλήθος: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Η ομάδα ντεγκραντέ «{group}» υπάρχει ήδη (πλήθος ντεγκραντέ: {n}).|Η ομάδα ντεγκραντέ «{group}» υπάρχει ήδη (πλήθος ντεγκραντέ: {n}).

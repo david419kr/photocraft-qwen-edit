@@ -4858,3 +4858,5 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Recently Used Colors	Viimeksi käytetyt värit
 	Shapes can't use patterns yet	Muodot eivät vielä tue kuvioita
 	Stop Color	Väripisteen väri
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Sivellinryhmä ”{group}” sisältää jo omia siveltimiäsi (määrä: {n}).|Sivellinryhmä ”{group}” sisältää jo omia siveltimiäsi (määrä: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Liukuväriryhmä ”{group}” on jo olemassa (liukuvärien määrä: {n}).|Liukuväriryhmä ”{group}” on jo olemassa (liukuvärien määrä: {n}).

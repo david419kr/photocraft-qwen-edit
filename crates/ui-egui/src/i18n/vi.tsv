@@ -4145,3 +4145,5 @@ prompt-region	Bottom right	Dưới phải
 	No import is waiting. Import the file again.	Không có lượt nhập nào đang chờ. Hãy nhập lại tệp.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Thay thế sẽ xóa toàn bộ nội dung trong “{group}” trước, kể cả các thiết lập sẵn bạn đã sửa hoặc chuyển vào đó. Không thể hoàn tác thao tác này.
 	{message} into “{group}”	{message} vào “{group}”
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Nhóm cọ “{group}” đã có {n} cọ của bạn.
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Nhóm chuyển sắc “{group}” đã tồn tại ({n} chuyển sắc).

@@ -4692,3 +4692,5 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	No import is waiting. Import the file again.	Nema uvoza na čekanju. Ponovo uvezite datoteku.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Zamena prvo briše sve u grupi „{group}“, uključujući unapred podešene postavke koje ste tamo izmenili ili premestili. Ovo se ne može opozvati.
 	{message} into “{group}”	{message} u „{group}“
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Grupa četkica „{group}“ već sadrži vaše četkice (broj: {n}).|Grupa četkica „{group}“ već sadrži vaše četkice (broj: {n}).|Grupa četkica „{group}“ već sadrži vaše četkice (broj: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Grupa preliva „{group}“ već postoji (broj preliva: {n}).|Grupa preliva „{group}“ već postoji (broj preliva: {n}).|Grupa preliva „{group}“ već postoji (broj preliva: {n}).

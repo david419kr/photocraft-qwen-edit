@@ -48,7 +48,8 @@ PR and Actions provenance; this source document does not claim a passing build.
 - Rust 1.95 flags two new menu/zoom boolean expressions that stable 1.99.1
   accepts. Apply De Morgan simplification with the same short-circuit order;
   no lint suppression or toolchain change.
-- The release adds six preset-import dialog literals without catalog entries.
+- The release adds six preset-import dialog literals and two counted messages
+  without catalog entries.
   Supply their translations in all 26 bundled catalogs, plus missing new colour
   dialog labels in Arabic, Hindi and the Nordic catalogs; retain the exhaustive
   literal coverage and placeholder-consistency tests unchanged.

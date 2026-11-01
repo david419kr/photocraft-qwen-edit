@@ -4673,3 +4673,5 @@ shape	Appearance	Apparence
 	No import is waiting. Import the file again.	Aucune importation en attente. Importez à nouveau le fichier.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Remplacer supprime d’abord tout le contenu de « {group} », y compris les paramètres prédéfinis que vous y avez modifiés ou déplacés. Cette action est irréversible.
 	{message} into “{group}”	{message} dans « {group} »
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Le groupe de pinceaux « {group} » contient déjà vos pinceaux (nombre : {n}).|Le groupe de pinceaux « {group} » contient déjà vos pinceaux (nombre : {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Le groupe de dégradés « {group} » existe déjà (nombre de dégradés : {n}).|Le groupe de dégradés « {group} » existe déjà (nombre de dégradés : {n}).

@@ -4556,3 +4556,5 @@ prompt-region	Bottom right	Jobb alsó
 	No import is waiting. Import the file again.	Nincs várakozó importálás. Importálja újra a fájlt.
 	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	A csere először mindent töröl a(z) „{group}” csoportból, beleértve az ott szerkesztett vagy oda áthelyezett készleteket is. Ez nem vonható vissza.
 	{message} into “{group}”	{message} a(z) „{group}” csoportba
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	A(z) „{group}” ecsetcsoport már tartalmaz saját ecseteket (darabszám: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	A(z) „{group}” színátmenetcsoport már létezik (színátmenetek száma: {n}).
