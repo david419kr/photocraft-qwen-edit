@@ -584,6 +584,10 @@ cameraRaw	Yellow	पीला
 	Refine Hair needs hair detection, which isn't available yet	बाल परिशोधित करने के लिए बालों की पहचान चाहिए, जो अभी उपलब्ध नहीं है
 	Select and Mask was closed: its document is no longer the active one	चयन और मास्क बंद कर दिया गया: उसका दस्तावेज़ अब सक्रिय नहीं है
 	Select and Mask was closed: another layer was selected	चयन और मास्क बंद कर दिया गया: दूसरी लेयर चुनी गई
+# Art History Brush (#213).
+
+# Egui 0.37 migration controls (Aspect Ratio, Category, Color Table, Gamma, Interpolation, Profile, Target, Units, Demosaic)
+	Invalid numeric entry. An integer between {min}% and {max}% is required. Previous value was inserted.	अमान्य संख्यात्मक प्रविष्टि। {min}% और {max}% के बीच एक पूर्णांक आवश्यक है। पिछला मान डाला गया।
 	Edit Brush…	ब्रश संपादित करें…
 	Match Surrounding Colors	आसपास के रंगों से मिलाएँ
 	Adjust colors with Poisson blending	पॉइसन ब्लेंडिंग से रंग समायोजित करें
@@ -600,3 +604,17 @@ cameraRaw	Kept {name}: written by another application	{name} रखा गया
 cameraRaw	Set the tone sliders from the image	छवि के अनुसार टोन स्लाइडर सेट करें
 cameraRaw	Settings from {name}	{name} की सेटिंग
 cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की सेटिंग; {count} समर्थित नहीं: {names}
+	Answer the open import question first, then import this file again.	पहले खुले आयात प्रश्न का उत्तर दें, फिर इस फ़ाइल को दोबारा आयात करें।
+	Import as New Group	नए समूह के रूप में आयात करें
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	नए समूह के रूप में आयात करने से “{group}” बना रहता है और फ़ाइल उसके बगल में एक नए समूह के रूप में जुड़ती है।
+	No import is waiting. Import the file again.	कोई आयात प्रतीक्षारत नहीं है। फ़ाइल को दोबारा आयात करें।
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	बदलें पहले “{group}” की सारी सामग्री मिटा देता है, जिसमें आपके संपादित या वहाँ स्थानांतरित प्रीसेट भी शामिल हैं। इसे पूर्ववत नहीं किया जा सकता।
+	{message} into “{group}”	“{group}” में {message}
+	Color Picker	रंग चयनकर्ता
+	Recently Used Colors	हाल ही में उपयोग किए गए रंग
+	Shapes can't use patterns yet	आकृतियाँ अभी पैटर्न का उपयोग नहीं कर सकतीं
+	Solid Color	एकसमान रंग
+	Stop Color	ग्रेडिएंट बिंदु का रंग
+	Tint Color	आभा का रंग
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	ब्रश समूह “{group}” में आपके ब्रश पहले से मौजूद हैं (संख्या: {n})।|ब्रश समूह “{group}” में आपके ब्रश पहले से मौजूद हैं (संख्या: {n})।
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।|ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।

@@ -2627,7 +2627,7 @@ cameraRaw	Roughness	Grovhet
 	Frequency	Frekvens
 	Use tablet pressure to change pen width	Använd tryckkänslighet på ritplattan för att ändra pennans bredd
 
-# About ▸ Contributors / Models (credits, craftrules standards/contributors.md)
+# About ▸ Contributors / Models (credits)
 	About	Om
 	Contributors	Medverkande
 	Models	Modeller
@@ -3276,17 +3276,8 @@ curves	Smooth	Jämna ut
 	Shadow Opacity	Skuggopacitet
 # PhotoCraft release checks.
 	Check for Updates…	Sök efter uppdateringar…
-	PhotoCraft Updates	PhotoCraft-uppdateringar
-	Checking for updates…	Söker efter uppdateringar…
 	Open the release page to choose an installer for your system.	Öppna versionssidan för att välja ett installationsprogram för ditt system.
-	Open Download Page	Öppna hämtningssida
-	PhotoCraft is up to date.	PhotoCraft är uppdaterat.
-	Could not check for updates.	Det gick inte att söka efter uppdateringar.
-	Updates have not been checked yet.	Ingen sökning efter uppdateringar har gjorts ännu.
-	Check Again	Sök igen
 	Automatically Check for Updates	Sök efter uppdateringar automatiskt
-	Installed version: {version}	Installerad version: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} finns tillgänglig.
 # Embedded Profile Mismatch: profile names beside the choices, Remember this choice
 	Use the embedded profile ({profile})	Använd den inbäddade profilen ({profile})
 	Convert to the working space ({profile})	Konvertera till arbetsfärgrymden ({profile})
@@ -4721,7 +4712,6 @@ shape	Appearance	Utseende
 	Level:	Nivå:
 	Percentile:	Percentil:
 	Refine Edge…	Förfina kant…
-	Release Notes	Versionsinformation
 	Remember Settings	Kom ihåg inställningar
 	Reset Essentials	Återställ Grundläggande
 	Rounded Rectangle Tool	Verktyget Rundad rektangel
@@ -4732,7 +4722,6 @@ shape	Appearance	Utseende
 	Tile Horizontally	Lägg sida vid sida vågrätt
 	Tile Vertically	Lägg sida vid sida lodrätt
 	Uncached Refresh	Uppdatera utan cache
-	Update and Restart	Uppdatera och starta om
 	Warming Filter (81)	Värmefilter (81)
 	Warming Filter (LBA)	Värmefilter (LBA)
 @plural	{n} document|{n} documents	{n} dokument|{n} dokument
@@ -4846,3 +4835,25 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Update PhotoCraft	Uppdatera PhotoCraft
 	…	…
 	Turbo int8	Turbo INT8
+
+# Fork portable update information
+	PhotoCraft Updates	PhotoCraft-uppdateringar
+	Checking for updates…	Söker efter uppdateringar…
+	Open Download Page	Öppna hämtningssida
+	PhotoCraft is up to date.	PhotoCraft är uppdaterat.
+	Could not check for updates.	Det gick inte att söka efter uppdateringar.
+	Updates have not been checked yet.	Ingen sökning efter uppdateringar har gjorts ännu.
+	Check Again	Sök igen
+	Installed version: {version}	Installerad version: {version}
+	PhotoCraft {version} is available.	PhotoCraft {version} finns tillgänglig.
+	Answer the open import question first, then import this file again.	Svara först på den öppna importfrågan och importera sedan filen igen.
+	Import as New Group	Importera som ny grupp
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Importera som ny grupp behåller ”{group}” och lägger till filen som en ny grupp bredvid den.
+	No import is waiting. Import the file again.	Ingen import väntar. Importera filen igen.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Ersätt tar först bort allt i ”{group}”, inklusive förinställningar som du redigerat eller flyttat dit. Detta kan inte ångras.
+	{message} into “{group}”	{message} till ”{group}”
+	Recently Used Colors	Senast använda färger
+	Shapes can't use patterns yet	Former kan inte använda mönster ännu
+	Stop Color	Färg vid färgstopp
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen ”{group}” innehåller redan dina penslar (antal: {n}).|Penselgruppen ”{group}” innehåller redan dina penslar (antal: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Övertoningsgruppen ”{group}” finns redan (antal övertoningar: {n}).|Övertoningsgruppen ”{group}” finns redan (antal övertoningar: {n}).

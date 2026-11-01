@@ -50,6 +50,8 @@ mod mac_menu;
 mod mac_window;
 mod updater;
 // Pure logic is tested on every platform; only Linux runs the check.
+#[cfg(not(target_arch = "wasm32"))]
+mod external_svg;
 #[cfg(any(target_os = "linux", test))]
 mod linux_libs;
 mod logging;

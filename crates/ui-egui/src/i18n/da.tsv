@@ -2629,7 +2629,7 @@ cameraRaw	Roughness	Ruhed
 	Frequency	Frekvens
 	Use tablet pressure to change pen width	Brug tablettryk til at ændre penbredden
 
-# About ▸ Contributors / Models (credits, craftrules standards/contributors.md)
+# About ▸ Contributors / Models (credits)
 	About	Om
 	Contributors	Bidragydere
 	Models	Modeller
@@ -3278,17 +3278,8 @@ curves	Smooth	Udjævn
 	Shadow Opacity	Skyggeopacitet
 # PhotoCraft release checks.
 	Check for Updates…	Søg efter opdateringer…
-	PhotoCraft Updates	PhotoCraft-opdateringer
-	Checking for updates…	Søger efter opdateringer…
 	Open the release page to choose an installer for your system.	Åbn udgivelsessiden for at vælge et installationsprogram til dit system.
-	Open Download Page	Åbn downloadsiden
-	PhotoCraft is up to date.	PhotoCraft er opdateret.
-	Could not check for updates.	Kunne ikke søge efter opdateringer.
-	Updates have not been checked yet.	Der er endnu ikke søgt efter opdateringer.
-	Check Again	Søg igen
 	Automatically Check for Updates	Søg automatisk efter opdateringer
-	Installed version: {version}	Installeret version: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} er tilgængelig.
 # Embedded Profile Mismatch: profile names beside the choices, Remember this choice
 	Use the embedded profile ({profile})	Brug den indlejrede profil ({profile})
 	Convert to the working space ({profile})	Konvertér til arbejdsfarverummet ({profile})
@@ -4723,7 +4714,6 @@ shape	Appearance	Udseende
 	Level:	Niveau:
 	Percentile:	Percentil:
 	Refine Edge…	Forfin kant…
-	Release Notes	Udgivelsesnoter
 	Remember Settings	Husk indstillinger
 	Reset Essentials	Nulstil Grundlæggende
 	Rounded Rectangle Tool	Afrundet rektangelværktøj
@@ -4734,7 +4724,6 @@ shape	Appearance	Udseende
 	Tile Horizontally	Side om side vandret
 	Tile Vertically	Side om side lodret
 	Uncached Refresh	Opdatering uden cache
-	Update and Restart	Opdatér og genstart
 	Warming Filter (81)	Opvarmningsfilter (81)
 	Warming Filter (LBA)	Opvarmningsfilter (LBA)
 @plural	{n} document|{n} documents	{n} dokument|{n} dokumenter
@@ -4848,3 +4837,25 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Update PhotoCraft	Opdater PhotoCraft
 	…	…
 	Turbo int8	Turbo INT8
+
+# Fork portable update information
+	PhotoCraft Updates	PhotoCraft-opdateringer
+	Checking for updates…	Søger efter opdateringer…
+	Open Download Page	Åbn downloadsiden
+	PhotoCraft is up to date.	PhotoCraft er opdateret.
+	Could not check for updates.	Kunne ikke søge efter opdateringer.
+	Updates have not been checked yet.	Der er endnu ikke søgt efter opdateringer.
+	Check Again	Søg igen
+	Installed version: {version}	Installeret version: {version}
+	PhotoCraft {version} is available.	PhotoCraft {version} er tilgængelig.
+	Answer the open import question first, then import this file again.	Besvar først det åbne importspørgsmål, og importér derefter filen igen.
+	Import as New Group	Importér som ny gruppe
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Importér som ny gruppe bevarer “{group}” og tilføjer filen som en ny gruppe ved siden af den.
+	No import is waiting. Import the file again.	Ingen import venter. Importér filen igen.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Erstat sletter først alt i “{group}”, inklusive forudindstillinger, du har redigeret eller flyttet dertil. Dette kan ikke fortrydes.
+	{message} into “{group}”	{message} til “{group}”
+	Recently Used Colors	Senest anvendte farver
+	Shapes can't use patterns yet	Former kan endnu ikke bruge mønstre
+	Stop Color	Farvestoppets farve
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).|Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).|Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).

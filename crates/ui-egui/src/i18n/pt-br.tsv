@@ -32,7 +32,7 @@
 
 # Layer Style dialog: style presets and per-effect defaults
 
-# About ▸ Contributors / Models (credits, craftrules standards/contributors.md)
+# About ▸ Contributors / Models (credits)
 
 # Swatches panel
 # Layer Style > Blending Options (Advanced Blending)
@@ -4125,17 +4125,8 @@ layerLabel	No Color	Sem cor
 	Kept {name}: written by another application	{name} mantido: gravado por outro aplicativo
 	Shadow Tint	Matiz das sombras
 	Check for Updates…	Verificar atualizações…
-	PhotoCraft Updates	Atualizações do PhotoCraft
-	Checking for updates…	Verificando atualizações…
 	Open the release page to choose an installer for your system.	Abra a página da versão para escolher um instalador para o seu sistema.
-	Open Download Page	Abrir página de download
-	PhotoCraft is up to date.	O PhotoCraft está atualizado.
-	Could not check for updates.	Não foi possível verificar atualizações.
-	Updates have not been checked yet.	As atualizações ainda não foram verificadas.
-	Check Again	Verificar novamente
 	Automatically Check for Updates	Verificar atualizações automaticamente
-	Installed version: {version}	Versão instalada: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} está disponível.
 	Paints from the History panel's source state	Pinta a partir do estado de origem do painel Histórico
 	Sets the source for the history brush	Define a origem do pincel do histórico
 	Highlight Mode	Modo de realces
@@ -4244,6 +4235,9 @@ layerLabel	No Color	Sem cor
 	There is no color table to save.	Não há tabela de cores para salvar.
 @plural	Saved {n} color to {file}|Saved {n} colors to {file}	{n} cor salva em {file}|{n} cores salvas em {file}
 	GPU adapter	Adaptador de GPU
+smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	O conteúdo AI/PDF/EPS será editado como SVG. Salvar substitui a origem incorporada; recursos específicos do formato podem mudar.
+
+# Styles panel: Import / Export Styles (.asl)
 	Import Styles…	Importar estilos…
 	Export Selected Styles…	Exportar estilos selecionados…
 	Export Styles…	Exportar estilos…
@@ -4423,6 +4417,7 @@ layerLabel	No Color	Sem cor
 	Font size presets	Predefinições de tamanho da fonte
 	Leading presets	Predefinições de entrelinha
 	Tracking presets	Predefinições de tracking
+	Invalid numeric entry. An integer between {min}% and {max}% is required. Previous value was inserted.	Entrada numérica inválida. É necessário um número inteiro entre {min}% e {max}%. O valor anterior foi inserido.
 	Color Aware	Com reconhecimento de cor
 	Decontaminate Colors	Descontaminar cores
 	Edge Detection	Detecção de borda
@@ -4440,6 +4435,11 @@ layerLabel	No Color	Sem cor
 	Select and Mask was closed: its document is no longer the active one	Selecionar e mascarar foi fechado: o documento dele não está mais ativo
 	Select and Mask was closed: another layer was selected	Selecionar e mascarar foi fechado: outra camada foi selecionada
 	Drag to move the selected path	Arraste para mover o demarcador selecionado
+
+# Shape Fill/Stroke popover and colour swatches opening the Color Picker
+	Recently Used Colors	Cores usadas recentemente
+	Stop Color	Cor da parada
+	Shapes can't use patterns yet	Formas ainda não podem usar padrões
 	Edit Brush…	Editar pincel…
 	Drag to move the active shape's path or the Work Path	Arraste para mover o demarcador da forma ativa ou o demarcador de trabalho
 	Move Up	Mover para cima
@@ -4550,3 +4550,22 @@ layerLabel	No Color	Sem cor
 	External cutout	Recorte externo
 	No matching fonts	Nenhuma fonte correspondente
 	Select Layer Under Cursor	Selecionar camada sob o cursor
+
+# Fork portable update information
+	PhotoCraft Updates	Atualizações do PhotoCraft
+	Checking for updates…	Verificando atualizações…
+	Open Download Page	Abrir página de download
+	PhotoCraft is up to date.	O PhotoCraft está atualizado.
+	Could not check for updates.	Não foi possível verificar atualizações.
+	Updates have not been checked yet.	As atualizações ainda não foram verificadas.
+	Check Again	Verificar novamente
+	Installed version: {version}	Versão instalada: {version}
+	PhotoCraft {version} is available.	PhotoCraft {version} está disponível.
+	Answer the open import question first, then import this file again.	Responda primeiro à pergunta de importação aberta e importe este arquivo novamente.
+	Import as New Group	Importar como novo grupo
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Importar como novo grupo mantém “{group}” e adiciona o arquivo como um novo grupo ao lado dele.
+	No import is waiting. Import the file again.	Não há importação pendente. Importe o arquivo novamente.
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Substituir exclui primeiro tudo em “{group}”, incluindo as predefinições que você editou ou moveu para lá. Isso não pode ser desfeito.
+	{message} into “{group}”	{message} em “{group}”
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	O grupo de pincéis “{group}” já contém pincéis seus (quantidade: {n}).|O grupo de pincéis “{group}” já contém pincéis seus (quantidade: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	O grupo de degradês “{group}” já existe (quantidade de degradês: {n}).|O grupo de degradês “{group}” já existe (quantidade de degradês: {n}).

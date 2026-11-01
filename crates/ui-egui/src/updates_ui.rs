@@ -25,6 +25,8 @@ pub(crate) fn check(app: &mut PhotocraftApp, _ctx: &egui::Context, params: Value
     if result.is_ok() || failed_to_start {
         app.ui.updates_open = true;
         app.updates_rt.startup_checked = true;
+        // A release the user dismissed is offered again by a manual check.
+        app.updates_rt.notified_version = None;
     }
     result
 }

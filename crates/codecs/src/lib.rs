@@ -32,7 +32,9 @@ pub use crate::codecs::gif_frames::{AnimationFrame, MAX_GIF_FRAMES};
 pub use crate::codecs::png::encode_indexed_clean as encode_png_indexed_clean;
 pub use crate::codecs::png::encode_indexed_with_xmp as encode_png_indexed_with_xmp;
 pub use crate::codecs::png::{PngPalette, PngRows, encode_indexed as encode_png_indexed, palette as png_palette, stereo as png_stereo};
-pub use crate::codecs::tiff::{PhotoshopTags as TiffPhotoshopTags, photoshop_tags as tiff_photoshop_tags, writes_little_endian as tiff_writes_little_endian};
+pub use crate::codecs::tiff::{
+    PhotoshopTags as TiffPhotoshopTags, TiffBands, photoshop_tags as tiff_photoshop_tags, writes_little_endian as tiff_writes_little_endian,
+};
 pub use crate::codecs::tiff_ifd::{TiffInfo, TiffPage, TiffPageKind};
 pub use crate::error::CodecError;
 pub use crate::exif_color::{EXIF_COLOR_SPACE_SRGB, exif_color_space};
