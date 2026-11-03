@@ -4181,6 +4181,9 @@ navigator	Zoom	Zoom
 @plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} paso aún no tiene equivalente en PhotoCraft|{n} pasos aún no tienen equivalente en PhotoCraft
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	Se guardó {n} acción en {file}|Se guardaron {n} acciones en {file}
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	{n} paso sin equivalente en Photoshop omitido|{n} pasos sin equivalente en Photoshop omitidos
+@plural	{n} action file loaded|{n} action files loaded	Se cargó {n} archivo de acciones|Se cargaron {n} archivos de acciones
+	{set} from {file} replaced the one from {earlier}	El conjunto {set} de {file} reemplazó al de {earlier}
+@plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	No se pudo cargar {n} archivo: {errors}|No se pudieron cargar {n} archivos: {errors}
 	Starting serial	Número de serie inicial
 	Insert Stop…	Insertar detención…
 	Save Set…	Guardar conjunto…
@@ -4555,3 +4558,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	{message} into “{group}”	{message} en “{group}”
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	El grupo de pinceles “{group}” ya contiene pinceles tuyos (cantidad: {n}).|El grupo de pinceles “{group}” ya contiene pinceles tuyos (cantidad: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	El grupo de degradados “{group}” ya existe (cantidad de degradados: {n}).|El grupo de degradados “{group}” ya existe (cantidad de degradados: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Opciones de puntas de flecha
+	Arrowheads	Puntas de flecha
+	Concavity	Concavidad
+	End	Final
+	Set as default	Establecer como predeterminado
+	Start	Inicio
+	Use these settings for new arrows	Usar estos ajustes para las flechas nuevas

@@ -3183,6 +3183,9 @@ curves	Smooth	Tasoita
 @plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} vaiheella ei ole vielä vastaavuutta PhotoCraftissa|{n} vaiheella ei ole vielä vastaavuutta PhotoCraftissa
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	Tallennettu {n} toiminto tiedostoon {file}|Tallennettu {n} toimintoa tiedostoon {file}
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	{n} vaihe jätettiin pois, koska sillä ei ole Photoshop-vastinetta|{n} vaihetta jätettiin pois, koska niillä ei ole Photoshop-vastinetta
+@plural	{n} action file loaded|{n} action files loaded	Ladattu {n} toimintotiedosto|Ladattu {n} toimintotiedostoa
+	{set} from {file} replaced the one from {earlier}	Sarja {set} tiedostosta {file} korvasi sarjan tiedostosta {earlier}
+@plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	{n} tiedoston lataaminen epäonnistui: {errors}|{n} tiedoston lataaminen epäonnistui: {errors}
 
 	File Naming	Tiedostojen nimeäminen
 	Starting serial	Aloitusnumero
@@ -4860,3 +4863,12 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Stop Color	Väripisteen väri
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Sivellinryhmä ”{group}” sisältää jo omia siveltimiäsi (määrä: {n}).|Sivellinryhmä ”{group}” sisältää jo omia siveltimiäsi (määrä: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Liukuväriryhmä ”{group}” on jo olemassa (liukuvärien määrä: {n}).|Liukuväriryhmä ”{group}” on jo olemassa (liukuvärien määrä: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Nuolenkärkien asetukset
+	Arrowheads	Nuolenkärjet
+	Concavity	Koveruus
+	End	Loppu
+	Set as default	Aseta oletukseksi
+	Start	Alku
+	Use these settings for new arrows	Käytä näitä asetuksia uusille nuolille

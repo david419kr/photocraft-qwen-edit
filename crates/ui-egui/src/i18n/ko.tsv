@@ -3473,6 +3473,9 @@ curves	Smooth	매끄럽게
 @plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n}개 단계에는 아직 PhotoCraft에 해당하는 기능이 없습니다
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	{file}에 액션 {n}개를 저장했습니다
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	Photoshop에 해당하는 기능이 없는 {n}개 단계를 제외했습니다
+@plural	{n} action file loaded|{n} action files loaded	액션 파일 {n}개를 불러왔습니다
+	{set} from {file} replaced the one from {earlier}	{file}의 세트 {set}이(가) {earlier}의 세트를 대체했습니다
+@plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	파일 {n}개를 불러오지 못했습니다: {errors}
 	File Naming	파일 이름 지정
 	Starting serial	시작 일련번호
 	Insert Stop…	정지 삽입…
@@ -3937,3 +3940,13 @@ prompt-region	Bottom right	우하단
 	{message} into “{group}”	“{group}”에 {message}
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	브러시 그룹 “{group}”에 사용자 브러시가 이미 {n}개 있습니다.
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	그레이디언트 그룹 “{group}”이 이미 있습니다(그레이디언트 {n}개).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	화살촉 옵션
+	Arrowheads	화살촉
+	Concavity	오목도
+	End	끝
+	Set as default	기본값으로 설정
+	Start	시작
+	Use these settings for new arrows	새 화살표에 이 설정 사용
+	Create new set	새 세트 만들기

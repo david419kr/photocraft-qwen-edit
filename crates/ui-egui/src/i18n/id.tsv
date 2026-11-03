@@ -3278,6 +3278,9 @@ curves	Smooth	Haluskan
 @plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} langkah belum memiliki padanan di PhotoCraft
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	{n} tindakan disimpan ke {file}
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	{n} langkah tanpa padanan Photoshop dilewati
+@plural	{n} action file loaded|{n} action files loaded	{n} file tindakan dimuat
+	{set} from {file} replaced the one from {earlier}	Set {set} dari {file} menggantikan set dari {earlier}
+@plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	{n} file tidak dapat dimuat: {errors}
 	File Naming	Penamaan Berkas
 	Starting serial	Nomor urut awal
 	Insert Stop…	Sisipkan Berhenti…
@@ -3675,3 +3678,13 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	{message} into “{group}”	{message} ke dalam “{group}”
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Grup kuas “{group}” sudah berisi {n} kuas milik Anda.
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Grup gradien “{group}” sudah ada ({n} gradien).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Opsi kepala panah
+	Arrowheads	Kepala panah
+	Concavity	Kecekungan
+	End	Akhir
+	Set as default	Tetapkan sebagai default
+	Start	Awal
+	Use these settings for new arrows	Gunakan pengaturan ini untuk panah baru
+	Length	Panjang

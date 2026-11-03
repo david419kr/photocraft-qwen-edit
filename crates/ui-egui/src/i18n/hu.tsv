@@ -4144,6 +4144,9 @@ cameraRaw	Yellow	Sárga
 @plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} lépésnek még nincs megfelelője a PhotoCraftban
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	{n} művelet mentve. Cél: {file}
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	{n} Photoshop-megfelelő nélküli lépés kihagyva
+@plural	{n} action file loaded|{n} action files loaded	{n} műveletfájl betöltve
+	{set} from {file} replaced the one from {earlier}	A(z) {file} {set} készlete lecserélte a(z) {earlier} készletét
+@plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	{n} fájlt nem sikerült betölteni: {errors}
 	Starting serial	Kezdő sorszám
 	Insert Stop…	Leállítás beszúrása…
 	Save Set…	Készlet mentése…
@@ -4558,3 +4561,12 @@ prompt-region	Bottom right	Jobb alsó
 	{message} into “{group}”	{message} a(z) „{group}” csoportba
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	A(z) „{group}” ecsetcsoport már tartalmaz saját ecseteket (darabszám: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	A(z) „{group}” színátmenetcsoport már létezik (színátmenetek száma: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Nyílhegyek beállításai
+	Arrowheads	Nyílhegyek
+	Concavity	Homorúság
+	End	Vég
+	Set as default	Beállítás alapértelmezettként
+	Start	Kezdet
+	Use these settings for new arrows	Ezek a beállítások legyenek érvényesek az új nyilakra

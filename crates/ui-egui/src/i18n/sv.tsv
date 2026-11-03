@@ -3180,6 +3180,9 @@ curves	Smooth	Jämna ut
 @plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} steg saknar ännu motsvarighet i PhotoCraft|{n} steg saknar ännu motsvarighet i PhotoCraft
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	Sparade {n} åtgärd i {file}|Sparade {n} åtgärder i {file}
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	{n} steg utan motsvarighet i Photoshop utelämnades|{n} steg utan motsvarighet i Photoshop utelämnades
+@plural	{n} action file loaded|{n} action files loaded	{n} åtgärdsfil inläst|{n} åtgärdsfiler inlästa
+	{set} from {file} replaced the one from {earlier}	Uppsättningen {set} från {file} ersatte den från {earlier}
+@plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	{n} fil kunde inte läsas in: {errors}|{n} filer kunde inte läsas in: {errors}
 
 	File Naming	Filnamngivning
 	Starting serial	Startnummer
@@ -4857,3 +4860,12 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Stop Color	Färg vid färgstopp
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen ”{group}” innehåller redan dina penslar (antal: {n}).|Penselgruppen ”{group}” innehåller redan dina penslar (antal: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Övertoningsgruppen ”{group}” finns redan (antal övertoningar: {n}).|Övertoningsgruppen ”{group}” finns redan (antal övertoningar: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Alternativ för pilspetsar
+	Arrowheads	Pilspetsar
+	Concavity	Konkavitet
+	End	Slut
+	Set as default	Ange som standard
+	Start	Start
+	Use these settings for new arrows	Använd dessa inställningar för nya pilar

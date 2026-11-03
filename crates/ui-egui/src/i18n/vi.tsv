@@ -3725,6 +3725,9 @@ curves	Smooth	Làm mượt
 @plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} bước chưa có chức năng tương ứng trong PhotoCraft
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	Đã lưu {n} hành động vào {file}
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	Đã bỏ qua {n} bước không có chức năng tương ứng trong Photoshop
+@plural	{n} action file loaded|{n} action files loaded	Đã nạp {n} tệp hành động
+	{set} from {file} replaced the one from {earlier}	Bộ {set} từ {file} đã thay thế bộ từ {earlier}
+@plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	Không thể nạp {n} tệp: {errors}
 	File Naming	Đặt tên tệp
 	Starting serial	Số thứ tự bắt đầu
 	Insert Stop…	Chèn điểm dừng…
@@ -4147,3 +4150,13 @@ prompt-region	Bottom right	Dưới phải
 	{message} into “{group}”	{message} vào “{group}”
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Nhóm cọ “{group}” đã có {n} cọ của bạn.
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Nhóm chuyển sắc “{group}” đã tồn tại ({n} chuyển sắc).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Tùy chọn đầu mũi tên
+	Arrowheads	Đầu mũi tên
+	Concavity	Độ lõm
+	End	Cuối
+	Set as default	Đặt làm mặc định
+	Start	Đầu
+	Use these settings for new arrows	Dùng các thiết lập này cho mũi tên mới
+	Create new set	Tạo bộ mới

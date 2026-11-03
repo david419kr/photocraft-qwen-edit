@@ -3182,6 +3182,9 @@ curves	Smooth	Udjævn
 @plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} trin har ingen PhotoCraft-ækvivalent endnu|{n} trin har ingen PhotoCraft-ækvivalent endnu
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	Gemte {n} handling i {file}|Gemte {n} handlinger i {file}
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	{n} trin uden Photoshop-ækvivalent udeladt|{n} trin uden Photoshop-ækvivalent udeladt
+@plural	{n} action file loaded|{n} action files loaded	{n} handlingsfil indlæst|{n} handlingsfiler indlæst
+	{set} from {file} replaced the one from {earlier}	Sættet {set} fra {file} erstattede det fra {earlier}
+@plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	{n} fil kunne ikke indlæses: {errors}|{n} filer kunne ikke indlæses: {errors}
 
 	File Naming	Filnavngivning
 	Starting serial	Startserienummer
@@ -4859,3 +4862,12 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Stop Color	Farvestoppets farve
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).|Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).|Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Indstillinger for pilespidser
+	Arrowheads	Pilespidser
+	Concavity	Konkavitet
+	End	Slutning
+	Set as default	Angiv som standard
+	Start	Start
+	Use these settings for new arrows	Brug disse indstillinger til nye pile

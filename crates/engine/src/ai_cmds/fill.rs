@@ -127,7 +127,8 @@ fn prepare_area(doc: &Document, selected: Rect, prompt_regions: Vec<crate::ai_pr
     let mut source = Surface::new(PixelFormat::RGBA32F);
     photocraft_compose::render_bands(doc, bounds, 128, |band| -> Result<()> {
         ctx.check()?;
-        let pixels: Vec<f32> = band.px.into_iter().flatten().collect();
+        // Buffer returns its pixel allocation to the scratch pool on drop.
+        let pixels: Vec<f32> = band.px.iter().flatten().copied().collect();
         let mut converted = vec![0.0; pixels.len()];
         transform.convert_f32(&pixels, 4, &mut converted, 4, true);
         source.write_region(band.rect.translate(-bounds.x0, -bounds.y0), &converted);

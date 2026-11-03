@@ -4026,6 +4026,9 @@ curves	Smooth	Vloeiend maken
 @plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} stap heeft nog geen equivalent in PhotoCraft|{n} stappen hebben nog geen equivalent in PhotoCraft
 @plural	Saved {n} action to {file}|Saved {n} actions to {file}	{n} handeling opgeslagen in {file}|{n} handelingen opgeslagen in {file}
 @plural	{n} step with no Photoshop equivalent left out|{n} steps with no Photoshop equivalent left out	{n} stap zonder Photoshop-equivalent weggelaten|{n} stappen zonder Photoshop-equivalent weggelaten
+@plural	{n} action file loaded|{n} action files loaded	{n} handelingenbestand geladen|{n} handelingenbestanden geladen
+	{set} from {file} replaced the one from {earlier}	Set {set} uit {file} heeft die uit {earlier} vervangen
+@plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	{n} bestand kon niet worden geladen: {errors}|{n} bestanden konden niet worden geladen: {errors}
 	File Naming	Bestandsnamen
 	Starting serial	Beginnummer
 	Insert Stop…	Stop invoegen…
@@ -4400,3 +4403,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	{message} into “{group}”	{message} in “{group}”
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	De penseelgroep “{group}” bevat al jouw penselen (aantal: {n}).|De penseelgroep “{group}” bevat al jouw penselen (aantal: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	De verloopgroep “{group}” bestaat al (aantal verlopen: {n}).|De verloopgroep “{group}” bestaat al (aantal verlopen: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Pijlpuntopties
+	Arrowheads	Pijlpunten
+	Concavity	Holling
+	End	Einde
+	Set as default	Als standaard instellen
+	Start	Begin
+	Use these settings for new arrows	Deze instellingen gebruiken voor nieuwe pijlen
