@@ -1,0 +1,2 @@
+# Retain the minimized CMYK adjustment Fill failure found by main CI 41584005048.
+cc d1757ee3cfe1063f960af4de5515d32032837a4cee17d5f0c8d4c499cbc5329d

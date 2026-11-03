@@ -225,9 +225,36 @@ fn ref_adjusted(l: &Layer, adj: &Adjustment, clipped: &[Layer], p: Cmyka, x: i32
         // Opacity and mask are the chance the pixel takes the adjustment fully.
         return if k > 0.0 && crate::dissolve_noise(x, y) < k { [a[0], a[1], a[2], a[3], p[4]] } else { p };
     }
+    let special = l.fill_opacity < 1.0
+        && matches!(
+            l.blend,
+            BlendMode::ColorBurn
+                | BlendMode::LinearBurn
+                | BlendMode::ColorDodge
+                | BlendMode::LinearDodge
+                | BlendMode::VividLight
+                | BlendMode::LinearLight
+                | BlendMode::HardMix
+                | BlendMode::Difference
+        );
+    let k = if special { l.opacity * ref_mask(l, x, y) } else { k };
     let mut o = p;
     for c in 0..4 {
-        o[c] = p[c] + (ref_blend(l.blend, p[c], a[c]) - p[c]) * k;
+        // Independent ink-space form of Fill's pull toward the blend mode's neutral colour.
+        let f = l.fill_opacity;
+        let b = if !special {
+            ref_blend(l.blend, p[c], a[c])
+        } else if l.blend == BlendMode::HardMix {
+            1.0 - ((1.0 - p[c] - f * a[c]) / (1.0 - f)).clamp(0.0, 1.0)
+        } else {
+            let source = match l.blend {
+                BlendMode::ColorBurn | BlendMode::LinearBurn => a[c] * f,
+                BlendMode::VividLight | BlendMode::LinearLight => 0.5 + (a[c] - 0.5) * f,
+                _ => 1.0 - (1.0 - a[c]) * f,
+            };
+            ref_blend(l.blend, p[c], source)
+        };
+        o[c] = p[c] + (b - p[c]) * k;
     }
     o
 }
@@ -1155,6 +1182,82 @@ fn invert_and_posterize_work_ink_by_ink() {
     d.layers.push(adjustment(Adjustment::Posterize { levels: 2 }));
     // Two levels: brightness below half goes dark (full ink), above half light (no ink).
     assert_eq!(render1(&d, 0, 0), [0.0, 0.0, 1.0, 1.0, 1.0]);
+}
+
+#[test]
+fn adjustment_fill_linear_dodge_uses_fill_inside_the_blend() {
+    // Main CI seed d1757ee3: after Posterize(2), K's brightness is 1. Linear Dodge
+    // adds Fill * 1 to the original brightness (~0.565), saturating to white/K=0.
+    // Fading the full-strength blend instead incorrectly leaves K=59/255.
+    for depth in [SampleType::U8, SampleType::U16, SampleType::F32] {
+        for clipped in [false, true] {
+            let mut d = Document::new("fill", Size::new(2, 2), ColorMode::Cmyk, depth);
+            let mut base = Layer::raster("K", PixelFormat { sample: depth, ..CMYKA8 });
+            base.surface_mut().unwrap().fill_rect(Rect::new(0, 0, 1, 1), &[0.0, 0.0, 0.0, 0.435_821_38, 1.0]);
+            let mut adj = adjustment(Adjustment::Posterize { levels: 2 });
+            adj.blend = BlendMode::LinearDodge;
+            adj.fill_opacity = 0.467_382_94;
+            adj.clipped = clipped;
+            let mut inner = Layer::group("inner", vec![base, adj]);
+            inner.blend = BlendMode::Normal;
+            let mut outer = Layer::group("outer", vec![inner]);
+            outer.blend = BlendMode::Normal;
+            d.layers = vec![outer];
+            let via = split_render(&d);
+            let exact = render_cmyk(&d, via.rect).unwrap();
+            let at = (0 - via.rect.y0) as usize * via.rect.width() as usize + (0 - via.rect.x0) as usize;
+            let want = [0.0, 0.0, 0.0, 0.0, 1.0];
+            assert!(near(exact.px[at], want, 1e-6), "exact {depth:?}, clipped={clipped}: {:?}", exact.px[at]);
+            assert!(near(via.px[at], want, 1e-6), "split {depth:?}, clipped={clipped}: {:?}", via.px[at]);
+        }
+    }
+}
+
+#[test]
+fn adjustment_fill_modes_preserve_mask_opacity_and_coverage() {
+    let modes = [
+        BlendMode::ColorBurn,
+        BlendMode::LinearBurn,
+        BlendMode::ColorDodge,
+        BlendMode::LinearDodge,
+        BlendMode::VividLight,
+        BlendMode::LinearLight,
+        BlendMode::HardMix,
+        BlendMode::Difference,
+        BlendMode::Normal,
+        BlendMode::Dissolve,
+    ];
+    for mode in modes {
+        for fill in [0.0, 0.4, 1.0] {
+            for opacity in [0.27, 1.0] {
+                for mask_value in [0.0, 0.37, 1.0] {
+                    for clipped in [false, true] {
+                        let mut d = doc(2, 2);
+                        let base = layer(&[(Rect::new(0, 0, 1, 1), [0.22, 0.43, 0.61, 0.82, 1.0]), (Rect::new(1, 0, 2, 1), [0.73, 0.51, 0.32, 0.12, 0.5])]);
+                        let mut adj = adjustment(Adjustment::Posterize { levels: 2 });
+                        adj.blend = mode;
+                        adj.fill_opacity = fill;
+                        adj.opacity = opacity;
+                        adj.mask = Some(mask(&[], mask_value, 1.0, true));
+                        adj.clipped = clipped;
+                        d.layers = vec![base, adj];
+                        let via = split_render(&d);
+                        let exact = render_cmyk(&d, via.rect).unwrap();
+                        for (i, (a, b)) in exact.px.iter().zip(&via.px).enumerate() {
+                            assert!((a[4] - b[4]).abs() <= 1e-5, "alpha {mode:?}, {fill}, {opacity}, {mask_value}, {clipped}: {i}");
+                            if a[4] > 1e-4 {
+                                assert!(
+                                    near(*a, *b, 1e-5),
+                                    "{mode:?}, fill={fill}, opacity={opacity}, mask={mask_value}, clipped={clipped}: {i}: {a:?} vs {b:?}"
+                                );
+                            }
+                        }
+                        assert_matches_reference(&d);
+                    }
+                }
+            }
+        }
+    }
 }
 
 /// Levels' composite record changes every ink, the black record only K; channels a record
