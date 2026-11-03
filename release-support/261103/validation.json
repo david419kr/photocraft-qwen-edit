@@ -1,0 +1,65 @@
+{
+  "source_sha": "cef30b514d9de4e9c954013550dc6c897581e86f",
+  "ci_tests": {
+    "ubuntu": {
+      "passed": 14091,
+      "skipped": 103,
+      "job_id": 125720363970,
+      "full_sweep": true
+    },
+    "windows_unit": {
+      "passed": 11226,
+      "skipped": 83,
+      "slow": 2,
+      "leaky": 1,
+      "job_id": 125720363929
+    },
+    "windows_integration": {
+      "passed": 2768,
+      "skipped": 21,
+      "slow": 43,
+      "leaky": 4,
+      "job_id": 125720363924
+    },
+    "without_heif": {
+      "passed": 2014,
+      "skipped": 16,
+      "job_id": 125720363927
+    },
+    "corpus": {
+      "passed": 5890,
+      "ignored": 40,
+      "job_id": 125720363857
+    },
+    "installer": {
+      "passed": 14
+    },
+    "scripts": {
+      "passed": 11
+    }
+  },
+  "focused_regressions": {
+    "passed": 804,
+    "suites": 33,
+    "manual_ignored": 4
+  },
+  "local_checks": {
+    "location": "saved cloud environment only",
+    "rust_1_95_full_clippy": "passed",
+    "stable_1_99_1_full_clippy": "passed",
+    "ui_i18n": {
+      "passed": 75
+    },
+    "xtask_i18n": {
+      "passed": 8
+    },
+    "actual_gpu_ui_tested": false
+  },
+  "analysis_limits": {
+    "sonar_workflow_run": 41575998480,
+    "sonar_actual_scan": "not_run: SONAR_TOKEN unavailable; workflow success is not analysis success",
+    "freebsd": "manual-only, excluded, unrun",
+    "manual_model_probes_and_performance": "unrun",
+    "actual_cuda_vram_interactive_ui": "unrun; no user PC accessed"
+  }
+}
