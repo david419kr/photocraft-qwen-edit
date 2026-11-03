@@ -48,6 +48,23 @@ are recorded together in the PR; this document does not claim completed gates.
   README release reference describes the already published 0.19.0, not this
   unapproved candidate.
 
+## Validation fixes
+
+- Upstream composite buffers now return their pixel allocation to the scratch
+  pool in `Drop`. Fill reads the same float samples by reference instead of moving
+  the field out, retaining the buffer return and existing colour conversion.
+  Existing fill tests cover source pixels, boundaries, depths and Undo.
+  The Smart Displace preview regression uses the new `into_px()` accessor
+  to retain its complete expected-pixel assertion.
+
+- Rust 1.95 reports `collapsible_match` in upstream Close/ask handling; move
+  the dirty check into its match guard and retain a separate clean-ask arm.
+  Existing Save As/Close and Save a Copy/Close tests verify both outcomes.
+  Rust stable 1.99.1 did not report this lint; no lint suppression is added.
+
+Draft PR: https://github.com/david419kr/photocraft-qwen-edit/pull/19
+Initial merge: `e90e862337e20b584c1c0a575985be07bfced890`.
+
 ## Validation policy
 
 Current stable full-workspace/all-target HEIF Clippy and Rust 1.95 Clippy/build

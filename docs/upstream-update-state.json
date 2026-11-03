@@ -265,5 +265,8 @@
   },
   "validation": "Pending final exact-source checks; actual CUDA/VRAM/UI not run.",
   "windows_candidate": null,
-  "upstream_updated_at": "2026-11-03T01:24:40Z"
+  "upstream_updated_at": "2026-11-03T01:24:40Z",
+  "pull_request": 19,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/19",
+  "initial_merge_sha": "e90e862337e20b584c1c0a575985be07bfced890"
 }
