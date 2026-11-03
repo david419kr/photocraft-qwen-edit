@@ -739,8 +739,8 @@ impl<'a> Planner<'a> {
             p.a = Some(before);
             p.b = Some(adjusted);
             p.mode = layer.blend;
-            // A clipped adjustment takes Fill as coverage in every mode.
-            (p.opacity, p.fill) = (opacity, 1.0);
+            // Clipping preserves alpha; it does not change the adjustment's Fill semantics.
+            (p.opacity, p.fill) = adjustment_fill(layer, opacity);
             p.mask = self.mask_use(layer);
             return Ok(self.emit(p));
         }

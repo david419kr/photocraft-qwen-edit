@@ -451,8 +451,7 @@ pub(crate) fn composite_layer_plain(layer: &Layer, clipped: &[Layer], backdrop: 
         } else {
             // Fill below 100% in one of the special eight changes the blend itself and leaves
             // coverage to Opacity, as for a pixel layer (psblend::composite_fill, #9501).
-            let (k, fill) =
-                if layer.fill_opacity < 1.0 && psblend::fill_is_special(layer.blend) { (layer.opacity, layer.fill_opacity) } else { (opacity, 1.0) };
+            let (k, fill) = adjustment_coverage(layer);
             match &mv {
                 Some(m) => blend_back(&mut backdrop.px, &adjusted.px, m.iter().map(|v| k * v), layer.blend, fill),
                 None => blend_back(&mut backdrop.px, &adjusted.px, std::iter::repeat(k), layer.blend, fill),
@@ -590,14 +589,24 @@ pub(crate) fn composite_atop(layer: &Layer, base: &mut Buffer, cx: &Ctx) {
     }
 }
 
+/// Special blend modes apply Fill inside the blend; only Opacity controls adjustment coverage.
+pub(super) fn adjustment_coverage(layer: &Layer) -> (f32, f32) {
+    if layer.fill_opacity < 1.0 && psblend::fill_is_special(layer.blend) {
+        (layer.opacity, layer.fill_opacity)
+    } else {
+        (layer.opacity * layer.fill_opacity, 1.0)
+    }
+}
+
 fn composite_atop_any(layer: &Layer, base: &mut Buffer, cx: &Ctx) {
     let rect = base.rect;
     if let LayerContent::Adjustment(adj) = &layer.content {
         let mut adjusted = base.clone();
         cx.apply_adjustment(adj, &mut adjusted);
         let mv = mask_vals(layer, rect, cx);
+        let (opacity, fill) = adjustment_coverage(layer);
         for (i, p) in base.px.iter_mut().enumerate() {
-            let k = layer.opacity * layer.fill_opacity * mask_k(&mv, i);
+            let k = opacity * mask_k(&mv, i);
             let a = adjusted.px[i];
             if layer.blend == BlendMode::Dissolve {
                 let x = rect.x0 + (i % rect.width() as usize) as i32;
@@ -607,7 +616,7 @@ fn composite_atop_any(layer: &Layer, base: &mut Buffer, cx: &Ctx) {
                 }
                 continue;
             }
-            let bl = blend::blend_rgb(layer.blend, [p[0], p[1], p[2]], [a[0], a[1], a[2]]);
+            let bl = psblend::blend_rgb_fill(layer.blend, [p[0], p[1], p[2]], [a[0], a[1], a[2]], fill);
             for c in 0..3 {
                 p[c] += (bl[c] - p[c]) * k;
             }

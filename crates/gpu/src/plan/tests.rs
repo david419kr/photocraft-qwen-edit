@@ -3,6 +3,25 @@ use photocraft_color::{Color, ColorMode, SampleType};
 use photocraft_geom::Size;
 
 #[test]
+fn clipped_adjustments_keep_special_fill_separate_from_opacity() {
+    for clipped in [false, true] {
+        for (mode, opacity, fill) in [(BlendMode::ColorDodge, 0.5, 0.3), (BlendMode::Normal, 0.15, 1.0), (BlendMode::Dissolve, 0.15, 1.0)] {
+            let mut doc = Document::with_background("adjustment Fill", Size::new(2, 2), ColorMode::Rgb, SampleType::U8, Color::WHITE);
+            let mut adj = Layer::new("invert", LayerContent::Adjustment(Adjustment::Invert));
+            adj.blend = mode;
+            adj.opacity = 0.5;
+            adj.fill_opacity = 0.3;
+            adj.clipped = clipped;
+            doc.layers.push(adj);
+            let planned = plan(&doc).unwrap();
+            let mix = planned.passes.iter().find(|p| p.kernel == Kernel::AdjMix).expect("adjustment mix pass");
+            assert!((mix.opacity - opacity).abs() < 1e-6, "{mode:?}, clipped={clipped}: {}", mix.opacity);
+            assert!((mix.fill - fill).abs() < 1e-6, "{mode:?}, clipped={clipped}: {}", mix.fill);
+        }
+    }
+}
+
+#[test]
 fn nested_pass_through_groups_with_clipped_layers_are_not_planned_exponentially() {
     let mut layers = vec![Layer::raster("leaf", photocraft_color::PixelFormat::RGBA8)];
     for _ in 0..30 {
