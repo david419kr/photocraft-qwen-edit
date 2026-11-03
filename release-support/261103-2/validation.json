@@ -1,0 +1,131 @@
+{
+  "source_sha": "953cfe44f9a35a6aec1a3c1836c30f4f2bdf5bd2",
+  "ci_tests": {
+    "corpus": {
+      "passed": 5890,
+      "ignored": 40,
+      "job_id": 125780830208
+    },
+    "without_heif": {
+      "passed": 2014,
+      "skipped": 16,
+      "job_id": 125780830227
+    },
+    "ubuntu": {
+      "passed": 14094,
+      "skipped": 103,
+      "slow": 5,
+      "job_id": 125780830243,
+      "full_sweep": true
+    },
+    "windows_unit": {
+      "passed": 11229,
+      "skipped": 83,
+      "slow": 3,
+      "leaky": 1,
+      "job_id": 125780830250
+    },
+    "windows_integration": {
+      "passed": 2768,
+      "skipped": 21,
+      "slow": 25,
+      "leaky": 3,
+      "job_id": 125780830472
+    },
+    "installer": {
+      "passed": 14,
+      "job_id": 125781666622
+    },
+    "scripts": {
+      "passed": 11,
+      "job_id": 125781666622
+    },
+    "windows_updater": {
+      "passed": 3,
+      "job_id": 125780042294
+    }
+  },
+  "local_checks": {
+    "location": "saved cloud environment only",
+    "compose_tests": {
+      "passed": 419,
+      "timing_ignored": 2
+    },
+    "gpu_unit_tests": {
+      "passed": 42
+    },
+    "gpu_parity_tests": {
+      "passed": 2,
+      "required_backend": "vulkan",
+      "required_adapter": "llvmpipe",
+      "silent_adapter_skip_allowed": false
+    },
+    "compose_gpu_clippy_rust_1_95": "passed",
+    "compose_gpu_clippy_stable_1_99_1": "passed",
+    "rust_1_95_fmt": "passed",
+    "layers_crates": 31,
+    "wasm_crates": 24,
+    "wasm_codec_variants": [
+      "heif",
+      "avif-decode",
+      "avif"
+    ],
+    "cpu_quick_measured_rows": 16,
+    "performance_regression_comparison": "skipped: baseline machine class differs",
+    "actual_gpu_ui_tested": false,
+    "updater_revision_2_from_revision_1_and_0_19": "passed; same-version offer suppressed",
+    "final_directed_tests_on_unmodified_upstream_production": "both fail as expected; upstream production source at 327c4cc82e737a3e0af7c147a477126d77525495"
+  },
+  "analysis_limits": {
+    "sonar_workflow_run": 41594965078,
+    "sonar_actual_scan": "not_run: SONAR_TOKEN unavailable; workflow success is not analysis success",
+    "freebsd": "manual-only, excluded, unrun",
+    "actual_cuda_vram_comfyui_interactive_ui": "unrun; no user PC accessed",
+    "u8_half_level_rounding": "separate one-level ink/brightness interpolation boundary observed; not claimed fixed; documented in docs/cmyk-adjustment-fill-fix.md"
+  },
+  "focused_regressions": {
+    "passed": 804,
+    "suites": 33,
+    "manual_ignored": 4
+  },
+  "post_merge": {
+    "sha": "06c7aa3073df2be65b7bb06d7293a1e4d30b1d34",
+    "tree": "ed9a01c14627bd016aa53aafbdf4dcd04b57eed4",
+    "ci_run": 41600064325,
+    "all_required_jobs": "success",
+    "tests": {
+      "ubuntu": {
+        "passed": 14094,
+        "skipped": 103,
+        "slow": 2,
+        "job_id": 125797549362,
+        "full_sweep": false,
+        "gate_steps_passed": 9
+      },
+      "windows_unit": {
+        "passed": 11229,
+        "skipped": 83,
+        "slow": 2,
+        "leaky": 2,
+        "job_id": 125797549346
+      },
+      "windows_integration": {
+        "passed": 2768,
+        "skipped": 21,
+        "slow": 29,
+        "job_id": 125797549226
+      },
+      "corpus": {
+        "passed": 5890,
+        "ignored": 40,
+        "suites": 37,
+        "job_id": 125797549213
+      },
+      "without_heif": {
+        "passed": 2014,
+        "skipped": 16,
+        "job_id": 125797549228
+      }
+    }
+  }
+}
