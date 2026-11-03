@@ -3297,3 +3297,14 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	{message} into “{group}”	將{message}匯入「{group}」
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	筆刷群組「{group}」中已有您的 {n} 個筆刷。
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	漸層群組「{group}」已存在（{n} 個漸層）。
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	箭頭端點選項
+	Arrowheads	箭頭端點
+	Concavity	凹度
+	End	終點
+	Set as default	設為預設值
+	Start	起點
+	Use these settings for new arrows	對新箭頭使用這些設定
+	Create new set	建立新組
+	Length	長度

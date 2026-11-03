@@ -4348,3 +4348,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	{message} into “{group}”	{message} στην «{group}»
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Η ομάδα πινέλων «{group}» περιέχει ήδη δικά σας πινέλα (πλήθος: {n}).|Η ομάδα πινέλων «{group}» περιέχει ήδη δικά σας πινέλα (πλήθος: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Η ομάδα ντεγκραντέ «{group}» υπάρχει ήδη (πλήθος ντεγκραντέ: {n}).|Η ομάδα ντεγκραντέ «{group}» υπάρχει ήδη (πλήθος ντεγκραντέ: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Επιλογές αιχμών βελών
+	Arrowheads	Αιχμές βελών
+	Concavity	Κοιλότητα
+	End	Τέλος
+	Set as default	Ορισμός ως προεπιλογή
+	Start	Αρχή
+	Use these settings for new arrows	Χρήση αυτών των ρυθμίσεων για νέα βέλη

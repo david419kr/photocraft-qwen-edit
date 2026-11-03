@@ -4561,3 +4561,12 @@ prompt-region	Bottom right	Jobb alsó
 	{message} into “{group}”	{message} a(z) „{group}” csoportba
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	A(z) „{group}” ecsetcsoport már tartalmaz saját ecseteket (darabszám: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	A(z) „{group}” színátmenetcsoport már létezik (színátmenetek száma: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Nyílhegyek beállításai
+	Arrowheads	Nyílhegyek
+	Concavity	Homorúság
+	End	Vég
+	Set as default	Beállítás alapértelmezettként
+	Start	Kezdet
+	Use these settings for new arrows	Ezek a beállítások legyenek érvényesek az új nyilakra

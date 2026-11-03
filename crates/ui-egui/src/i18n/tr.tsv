@@ -4374,3 +4374,12 @@ prompt-region	Bottom right	Sağ alt
 	{message} into “{group}”	“{group}” içine {message}
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	“{group}” fırça grubunda zaten size ait {n} fırça var.
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	“{group}” gradyan grubu zaten var ({n} gradyan).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Ok ucu seçenekleri
+	Arrowheads	Ok uçları
+	Concavity	İçbükeylik
+	End	Bitiş
+	Set as default	Varsayılan olarak ayarla
+	Start	Başlangıç
+	Use these settings for new arrows	Yeni oklar için bu ayarları kullan

@@ -4572,3 +4572,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	{message} into “{group}”	{message} em “{group}”
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	O grupo de pincéis “{group}” já contém pincéis seus (quantidade: {n}).|O grupo de pincéis “{group}” já contém pincéis seus (quantidade: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	O grupo de degradês “{group}” já existe (quantidade de degradês: {n}).|O grupo de degradês “{group}” já existe (quantidade de degradês: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Opções de pontas de seta
+	Arrowheads	Pontas de seta
+	Concavity	Concavidade
+	End	Fim
+	Set as default	Definir como padrão
+	Start	Início
+	Use these settings for new arrows	Usar estas configurações para novas setas

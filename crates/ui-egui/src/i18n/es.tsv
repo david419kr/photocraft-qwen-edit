@@ -4558,3 +4558,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	{message} into “{group}”	{message} en “{group}”
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	El grupo de pinceles “{group}” ya contiene pinceles tuyos (cantidad: {n}).|El grupo de pinceles “{group}” ya contiene pinceles tuyos (cantidad: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	El grupo de degradados “{group}” ya existe (cantidad de degradados: {n}).|El grupo de degradados “{group}” ya existe (cantidad de degradados: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Opciones de puntas de flecha
+	Arrowheads	Puntas de flecha
+	Concavity	Concavidad
+	End	Final
+	Set as default	Establecer como predeterminado
+	Start	Inicio
+	Use these settings for new arrows	Usar estos ajustes para las flechas nuevas

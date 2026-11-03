@@ -4860,3 +4860,12 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Stop Color	Färg vid färgstopp
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen ”{group}” innehåller redan dina penslar (antal: {n}).|Penselgruppen ”{group}” innehåller redan dina penslar (antal: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Övertoningsgruppen ”{group}” finns redan (antal övertoningar: {n}).|Övertoningsgruppen ”{group}” finns redan (antal övertoningar: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Alternativ för pilspetsar
+	Arrowheads	Pilspetsar
+	Concavity	Konkavitet
+	End	Slut
+	Set as default	Ange som standard
+	Start	Start
+	Use these settings for new arrows	Använd dessa inställningar för nya pilar

@@ -626,3 +626,14 @@ cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की स
 @plural	{n} action file loaded|{n} action files loaded	{n} एक्शन फ़ाइल लोड हुई|{n} एक्शन फ़ाइलें लोड हुईं
 	{set} from {file} replaced the one from {earlier}	{file} के सेट {set} ने {earlier} वाले सेट की जगह ले ली
 @plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	{n} फ़ाइल लोड नहीं हो सकी: {errors}|{n} फ़ाइलें लोड नहीं हो सकीं: {errors}
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	तीर के सिरों के विकल्प
+	Arrowheads	तीर के सिरे
+	Concavity	अवतलता
+	End	अंत
+	Set as default	डिफ़ॉल्ट के रूप में सेट करें
+	Start	आरंभ
+	Use these settings for new arrows	नए तीरों के लिए इन सेटिंग का उपयोग करें
+	Create new set	नया सेट बनाएँ
+	Length	लंबाई

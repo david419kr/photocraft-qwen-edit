@@ -4403,3 +4403,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	{message} into “{group}”	{message} in “{group}”
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	De penseelgroep “{group}” bevat al jouw penselen (aantal: {n}).|De penseelgroep “{group}” bevat al jouw penselen (aantal: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	De verloopgroep “{group}” bestaat al (aantal verlopen: {n}).|De verloopgroep “{group}” bestaat al (aantal verlopen: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Pijlpuntopties
+	Arrowheads	Pijlpunten
+	Concavity	Holling
+	End	Einde
+	Set as default	Als standaard instellen
+	Start	Begin
+	Use these settings for new arrows	Deze instellingen gebruiken voor nieuwe pijlen

@@ -4395,3 +4395,13 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	{message} into “{group}”	{message} do „{group}“
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Skupina štětců „{group}“ již obsahuje vaše štětce (počet: {n}).|Skupina štětců „{group}“ již obsahuje vaše štětce (počet: {n}).|Skupina štětců „{group}“ již obsahuje vaše štětce (počet: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Skupina přechodů „{group}“ již existuje (počet přechodů: {n}).|Skupina přechodů „{group}“ již existuje (počet přechodů: {n}).|Skupina přechodů „{group}“ již existuje (počet přechodů: {n}).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Možnosti hrotů šipek
+	Arrowheads	Hroty šipek
+	Concavity	Prohnutí
+	End	Konec
+	Set as default	Nastavit jako výchozí
+	Start	Začátek
+	Use these settings for new arrows	Použít tato nastavení pro nové šipky
+	Create new set	Vytvořit novou sadu

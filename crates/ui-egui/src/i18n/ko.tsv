@@ -3940,3 +3940,13 @@ prompt-region	Bottom right	우하단
 	{message} into “{group}”	“{group}”에 {message}
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	브러시 그룹 “{group}”에 사용자 브러시가 이미 {n}개 있습니다.
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	그레이디언트 그룹 “{group}”이 이미 있습니다(그레이디언트 {n}개).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	화살촉 옵션
+	Arrowheads	화살촉
+	Concavity	오목도
+	End	끝
+	Set as default	기본값으로 설정
+	Start	시작
+	Use these settings for new arrows	새 화살표에 이 설정 사용
+	Create new set	새 세트 만들기

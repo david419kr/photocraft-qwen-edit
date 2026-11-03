@@ -62,6 +62,15 @@ are recorded together in the PR; this document does not claim completed gates.
   Existing Save As/Close and Save a Copy/Close tests verify both outcomes.
   Rust stable 1.99.1 did not report this lint; no lint suppression is added.
 
+- The first complete Ubuntu gate executed 14,091 tests: 14,089 passed and
+  two catalog-coverage tests failed on seven new upstream arrowhead labels.
+  Add the missing translations to all 26 bundled catalogs, including Korean;
+  keep both coverage assertions and all existing translations unchanged.
+  A complete coverage report also identified `Create new set` and `Length`
+  gaps in nine catalogs; fill those entries before repeating the same tests.
+  The independent cloud UI suite reproduced the same failure (4,762 passed,
+  one failed, 21 ignored) before the catalog repair.
+
 Draft PR: https://github.com/david419kr/photocraft-qwen-edit/pull/19
 Initial merge: `e90e862337e20b584c1c0a575985be07bfced890`.
 

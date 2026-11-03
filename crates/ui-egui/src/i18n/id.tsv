@@ -3678,3 +3678,13 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	{message} into “{group}”	{message} ke dalam “{group}”
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Grup kuas “{group}” sudah berisi {n} kuas milik Anda.
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Grup gradien “{group}” sudah ada ({n} gradien).
+
+# Arrowhead settings (upstream 0.20.1)
+	Arrowhead options	Opsi kepala panah
+	Arrowheads	Kepala panah
+	Concavity	Kecekungan
+	End	Akhir
+	Set as default	Tetapkan sebagai default
+	Start	Awal
+	Use these settings for new arrows	Gunakan pengaturan ini untuk panah baru
+	Length	Panjang
