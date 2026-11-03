@@ -36,7 +36,12 @@ Fading a full-strength blend instead leaves the erroneous K=59/255.
 Share the adjustment coverage/Fill decision, use the existing Fill-aware blend
 on CMYK channel brightness and clipped RGB adjustments, and preserve alpha and
 Dissolve's noise/coverage behavior. The reference compositor independently
-expresses the same Fill rule in ink space. Existing assertions, tolerances,
+expresses the same Fill rule in ink space. The GPU planner also passes separate
+Opacity and Fill to its existing Fill-aware adjustment shader for clipped layers.
+The first fix CI exposed this missing GPU counterpart in two existing parity
+tests (ColorDodge with mask/opacity and clipped ColorBurn). A device-independent
+planner regression fails before the planner fix and checks both clipped/unclipped
+special modes plus unchanged Normal/Dissolve coverage semantics. Existing assertions, tolerances,
 property case counts and filters are unchanged.
 
 Added deterministic checks cover the minimized nested groups at 8/16/32-bit,
@@ -61,7 +66,11 @@ Cloud checks passed: compose 419 tests (two existing timing tests ignored),
 45 CMYK tests after restoring all five seeds, compose all-target Clippy on
 Rust 1.95.0 and stable 1.99.1, layering (31 crates), and wasm (24 crates plus
 HEIF/AVIF codec variants). The CPU quick performance suite measured 16 rows;
-its regression comparison was skipped because the baseline machine differs. The
+its regression comparison was skipped because the baseline machine differs.
+After the mirrored GPU planner correction, all 42 GPU unit tests and the two
+previously failing parity tests passed on forced llvmpipe/Vulkan in the saved
+cloud environment. Setting `WGPU_BACKEND` makes missing adapters fail instead
+of silently skipping these checks. The
 withdrawn `261103-0.20.1` release is now a draft (ID 432312262), as explicitly
 approved by the user after this defect was reproduced. Its tag, ZIP and checksum
 are preserved. The user also approved merging and publishing the corrected build
