@@ -44,6 +44,8 @@ with and without clipping; a 360-case matrix covers all eight special modes,
 Normal/Dissolve, zero/partial/full Fill and mask, partial/full Opacity, clipping,
 opaque/partial/empty coverage. Both new tests failed before the production fix.
 The original CI seed is retained in the current module's proptest regression file.
+The four historical seeds are migrated from `cmyk_tests.txt` to `cmyk/tests.txt`:
+the old path stopped being discovered when the test module moved to `cmyk/tests.rs`.
 
 During matrix development, exact half-level U8 rounding exposed a separate
 one-level disagreement between the existing ink-space and brightness-space
@@ -54,7 +56,18 @@ property assertions and failing CI input remain intact.
 
 ## Validation and release boundary
 
-Check the associated fix PR for final commit-bound test and CI results. The
-published `261103-0.20.1` release, tag, ZIP and checksum are unchanged. This fix
-requires review and separate merge/release approval. No actual GPU, CUDA/VRAM,
+Check the associated fix PR for final commit-bound test and CI results.
+Cloud checks passed: compose 419 tests (two existing timing tests ignored),
+45 CMYK tests after restoring all five seeds, compose all-target Clippy on
+Rust 1.95.0 and stable 1.99.1, layering (31 crates), and wasm (24 crates plus
+HEIF/AVIF codec variants). The CPU quick performance suite measured 16 rows;
+its regression comparison was skipped because the baseline machine differs. The
+withdrawn `261103-0.20.1` release is now a draft (ID 432312262), as explicitly
+approved by the user after this defect was reproduced. Its tag, ZIP and checksum
+are preserved. The user also approved merging and publishing the corrected build
+after validation. The replacement identity is `261103-2-0.20.1`, following the
+existing same-day revision convention; no existing tag or asset will be overwritten.
+The candidate workflow retains the exact upstream release provenance and records
+main `6ee15434818f1229569b8f650e7316e27a8d827c` as this fix's fork base.
+No actual GPU, CUDA/VRAM,
 ComfyUI or interactive UI validation was performed; no user PC was accessed.
