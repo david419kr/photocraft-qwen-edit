@@ -618,3 +618,11 @@ cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की स
 	Tint Color	आभा का रंग
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	ब्रश समूह “{group}” में आपके ब्रश पहले से मौजूद हैं (संख्या: {n})।|ब्रश समूह “{group}” में आपके ब्रश पहले से मौजूद हैं (संख्या: {n})।
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।|ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।
+
+# Actions panel: loading several action files at once
+	{message} ({note})	{message} ({note})
+@plural	{n} action|{n} actions	{n} एक्शन|{n} एक्शन
+@plural	{n} step has no PhotoCraft equivalent yet|{n} steps have no PhotoCraft equivalent yet	{n} चरण का अभी PhotoCraft में कोई समकक्ष नहीं है|{n} चरणों का अभी PhotoCraft में कोई समकक्ष नहीं है
+@plural	{n} action file loaded|{n} action files loaded	{n} एक्शन फ़ाइल लोड हुई|{n} एक्शन फ़ाइलें लोड हुईं
+	{set} from {file} replaced the one from {earlier}	{file} के सेट {set} ने {earlier} वाले सेट की जगह ले ली
+@plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	{n} फ़ाइल लोड नहीं हो सकी: {errors}|{n} फ़ाइलें लोड नहीं हो सकीं: {errors}
