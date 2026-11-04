@@ -13,8 +13,15 @@ use photocraft_psd::{
 use crate::IoError;
 
 /// Default allowance for PSD layer, mask and merged-image pixels, including conversion
-/// workspace and tile padding. Other format/parser limits still apply. Callers may lower it.
-pub const DEFAULT_PSD_IMPORT_PIXEL_BYTES: u64 = if cfg!(target_arch = "wasm32") { 1 << 30 } else { 2 << 30 };
+/// workspace and tile padding. Native 64-bit imports allow 20 GiB; wasm keeps 1 GiB
+/// and other targets keep 2 GiB. Other format/parser limits still apply. Callers may lower it.
+pub const DEFAULT_PSD_IMPORT_PIXEL_BYTES: u64 = if cfg!(target_arch = "wasm32") {
+    1 << 30
+} else if cfg!(target_pointer_width = "64") {
+    20 << 30
+} else {
+    2 << 30
+};
 
 #[derive(Default)]
 struct ImportBudget {

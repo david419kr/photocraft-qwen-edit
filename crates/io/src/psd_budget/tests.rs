@@ -49,7 +49,7 @@ fn large_off_canvas_layer_is_rejected_without_decoding_its_tiny_data() {
     let mut file = testgen::small(Version::Psd, Compression::Zip);
     file.header.width = 1;
     file.header.height = 1;
-    file.layers_mut()[0].rect = Rect::from_xywh(-10_000, -10_000, 20_000, 20_000);
+    file.layers_mut()[0].rect = Rect::from_xywh(-15_000, -15_000, 30_000, 30_000);
     assert!(matches!(check(&file, DEFAULT_PSD_IMPORT_PIXEL_BYTES), Err(IoError::PsdImportBudget { .. })));
     // Both ordinary import routes must fail before reading a deliberately missing merged
     // section. No enormous decoded plane is ever constructed by this test.
@@ -118,7 +118,7 @@ fn accepted_off_canvas_pixels_and_depths_are_preserved() {
 #[test]
 fn legacy_conversion_reports_a_rejected_import_instead_of_decoding_it() {
     let mut file = testgen::small(Version::Psd, Compression::Zip);
-    file.layers_mut()[0].rect = Rect::from_xywh(0, 0, 20000, 20000);
+    file.layers_mut()[0].rect = Rect::from_xywh(0, 0, 30_000, 30_000);
     let (doc, warnings) = crate::psd_to_document(&file);
     assert!(doc.layers.is_empty());
     assert!(warnings.iter().any(|warning| warning.contains("pixel memory")));
@@ -191,4 +191,34 @@ fn an_unknown_color_mode_pays_for_the_layers_it_imports_as_rgb() {
     let source = photocraft_psd::Source::new(bytes);
     let refused = crate::import_source_with_limit("mode5.psd", source, &photocraft_raster::Interrupt::NONE, required - 1);
     assert!(matches!(refused, Err(IoError::PsdImportBudget { .. })), "{:?}", refused.map(|(r, _)| r.warnings));
+}
+
+#[test]
+fn default_allowance_preserves_platform_address_space_limits() {
+    let expected = if cfg!(target_arch = "wasm32") {
+        1_u64 << 30
+    } else if cfg!(target_pointer_width = "64") {
+        20_u64 << 30
+    } else {
+        2_u64 << 30
+    };
+    assert_eq!(DEFAULT_PSD_IMPORT_PIXEL_BYTES, expected);
+    assert_eq!(crate::ImportOptions::default().psd_max_pixel_bytes, expected);
+}
+
+#[test]
+fn default_allowance_accepts_its_boundary_and_rejects_one_byte_more() {
+    let limit = DEFAULT_PSD_IMPORT_PIXEL_BYTES;
+    // Only arithmetic: these boundary checks never allocate gigabytes of pixel storage.
+    let mut budget = ImportBudget { retained: limit - 8192, workspace: 8192 };
+    assert!(budget.check(limit).is_ok());
+    budget.retain(1).unwrap();
+    assert!(matches!(budget.check(limit), Err(IoError::PsdImportBudget { required, limit: cap }) if required == limit + 1 && cap == limit));
+}
+
+#[test]
+fn reported_large_import_estimate_fits_only_the_native_64_bit_default() {
+    let budget = ImportBudget { retained: 2_559_631_404, workspace: 0 };
+    assert!(matches!(budget.check(2 << 30), Err(IoError::PsdImportBudget { .. })));
+    assert_eq!(budget.check(DEFAULT_PSD_IMPORT_PIXEL_BYTES).is_ok(), cfg!(all(not(target_arch = "wasm32"), target_pointer_width = "64")));
 }

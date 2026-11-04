@@ -11,6 +11,7 @@ def main():
     output = root / "target" / "qwen-regressions"
     output.mkdir(parents=True, exist_ok=True)
     cases = [
+        ("io-psd-budget", ["-p", "photocraft-io", "--lib", "psd_budget::tests"]),
         ("app-gpu-startup", ["-p", "photocraft", "--bin", "photocraft", "gpu_startup::tests"]),
         ("ui-tool-colors", ["-p", "photocraft-ui-egui", "--lib", "tool_colors_"]),
         ("engine-fixed-size-marquee", ["-p", "photocraft-engine", "--lib", "unclipped_marquee"]),
