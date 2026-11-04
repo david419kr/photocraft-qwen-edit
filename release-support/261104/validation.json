@@ -1,0 +1,58 @@
+{
+  "source_sha": "730192e89a5d4ca40553a7c4892437037349abe2",
+  "ci_tests": {
+    "ubuntu": {
+      "passed": 14097,
+      "skipped": 103
+    },
+    "windows_unit": {
+      "passed": 11232
+    },
+    "windows_integration": {
+      "passed": 2768,
+      "skipped": 21,
+      "slow": 42,
+      "leaky": 3,
+      "job_id": 126710321510
+    },
+    "corpus": {
+      "passed": 5893,
+      "ignored": 40
+    },
+    "without_heif": {
+      "passed": 2017,
+      "skipped": 16
+    }
+  },
+  "local_checks": {
+    "location": "saved cloud environment only",
+    "psd_budget": {
+      "passed": 15
+    },
+    "io_library": {
+      "passed": 496,
+      "ignored": 2
+    },
+    "actual_gpu_ui_tested": false
+  },
+  "analysis_limits": {
+    "sonar_actual_scan": "not_run: SONAR_TOKEN unavailable; wrapper success is not analysis success",
+    "freebsd": "manual-only, unrun",
+    "actual_cuda_vram_comfyui_interactive_ui": "not independently tested; no user PC accessed",
+    "user_report": "Owner reported the candidate works locally; no broader hardware validation claimed"
+  },
+  "focused_regressions": {
+    "passed": 819,
+    "suites": 34,
+    "manual_ignored": 4
+  },
+  "post_merge": {
+    "sha": "973eb64ebfb3073851fb9602201645e088c6470f",
+    "tree": "803f22b3804542df3b4d3f940aae341d670db33a",
+    "ci_run": 41861188849,
+    "attempt": 2,
+    "all_required_jobs": "success",
+    "initial_attempt": "One existing brush rendering test hit GPU Wait timed out; unchanged rerun passed all 2768 integration tests",
+    "completed_at_utc": "2026-11-04T17:42:35Z"
+  }
+}
