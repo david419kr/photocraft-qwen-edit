@@ -3990,6 +3990,7 @@ curves	Smooth	Εξομάλυνση
 	Sent to {printer}	Στάλθηκε στον {printer}
 	set in Print Settings…	ορίζεται στις ρυθμίσεις εκτύπωσης…
 	ICO is limited to 256 × 256 pixels	Το ICO περιορίζεται σε 256 × 256 εικονοστοιχεία
+	Memory usage percent	Χρήση μνήμης (%)
 	Show Favorite Fonts	Εμφάνιση αγαπημένων γραμματοσειρών
 	No favorite fonts yet: click the star beside a font to add it.	Δεν υπάρχουν ακόμη αγαπημένες γραμματοσειρές: κάντε κλικ στο αστέρι δίπλα σε μια γραμματοσειρά για να την προσθέσετε.
 	Favorite fonts	Αγαπημένες γραμματοσειρές
@@ -4052,6 +4053,7 @@ curves	Smooth	Εξομάλυνση
 	Chisel Soft	Μαλακή σμίλευση
 	Open color-less EXR as ACEScg	Άνοιγμα EXR χωρίς χρωματική δήλωση ως ACEScg
 	Do not append "copy" to filename when saving a copy	Να μην προστίθεται «copy» στο όνομα αρχείου κατά την αποθήκευση αντιγράφου
+	Save Full-Size Composite in .pcraft Files	Αποθήκευση σύνθετης εικόνας πλήρους μεγέθους στα αρχεία .pcraft
 	EXIF	EXIF
 	Edit Selected Guides	Επεξεργασία επιλεγμένων οδηγών
 	Clear Selected Guides	Απαλοιφή επιλεγμένων οδηγών
@@ -4105,6 +4107,7 @@ curves	Smooth	Εξομάλυνση
 	This document's layers: {needed} of {budget} for layers	Επίπεδα αυτού του εγγράφου: {needed} από {budget} για επίπεδα
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Τα επίπεδα αυτού του εγγράφου χρειάζονται {needed} αλλά μπορούν να καταλάβουν {budget}: η επανασχεδίαση όλου του εγγράφου γίνεται στη CPU
 	GPU Memory (MB, 0 = Automatic)	Μνήμη GPU (MB, 0 = Αυτόματο)
+	Scratch Size Limit (MB, 0 = No Limit)	Όριο μεγέθους δίσκου προσωρινής αποθήκευσης (MB, 0 = χωρίς όριο)
 	{path}: the path is not valid Unicode; save under another name.	{path}: η διαδρομή δεν είναι έγκυρο Unicode· αποθηκεύστε με άλλο όνομα.
 	{name} was changed by another app after it was opened or saved here.	Το {name} άλλαξε από άλλη εφαρμογή αφού ανοίχτηκε ή αποθηκεύτηκε εδώ.
 	Replace it with this document, or cancel and use File › Save As to keep both.	Αντικαταστήστε το με αυτό το έγγραφο ή ακυρώστε και χρησιμοποιήστε Αρχείο › Αποθήκευση ως για να κρατήσετε και τα δύο.
@@ -4357,3 +4360,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set as default	Ορισμός ως προεπιλογή
 	Start	Αρχή
 	Use these settings for new arrows	Χρήση αυτών των ρυθμίσεων για νέα βέλη
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Μια εντολή ακυρώθηκε ή σταμάτησε κατά τη μαζική επεξεργασία. Συνέχεια με το επόμενο αρχείο ή διακοπή;
+	Attribute	Ιδιότητα
+	Batch preview	Προεπισκόπηση μαζικής επεξεργασίας
+	Data Sets as Files is unavailable on the web	Τα σύνολα δεδομένων ως αρχεία δεν είναι διαθέσιμα στον ιστό
+	Effect	Εφέ
+	Empty	Κενά
+	Filter for embedded smart objects	Φιλτράρισμα ενσωματωμένων έξυπνων αντικειμένων
+	Filter for linked smart objects that are missing	Φιλτράρισμα συνδεδεμένων έξυπνων αντικειμένων που λείπουν
+	Filter for smart objects linked locally	Φιλτράρισμα έξυπνων αντικειμένων συνδεδεμένων με τοπικά αρχεία
+	High Memory Photoshop Document	Έγγραφο Photoshop με υψηλές απαιτήσεις μνήμης
+	Image Compression	Συμπίεση εικόνας
+	LZW	LZW
+	Layer Effects	Εφέ επιπέδου
+	Lining	Ίσου ύψους
+	Linked	Συνδεδεμένα
+	No Adv. Blending	Χωρίς σύνθετη ανάμειξη
+	No Layer Effects	Χωρίς εφέ επιπέδου
+	No Layer Mask	Χωρίς μάσκα επιπέδου
+	No Vector Mask	Χωρίς διανυσματική μάσκα
+	Not Clipped	Χωρίς μάσκα αποκοπής
+	Not Empty	Μη κενά
+	Not Linked	Μη συνδεδεμένα
+	Not Locked	Μη κλειδωμένα
+	Not Visible	Μη ορατά
+	Numerals	Αριθμητικά ψηφία
+	Open anyway	Άνοιγμα ούτως ή άλλως
+	Opening this document uses more memory and may slow down your computer or other running applications.	Το άνοιγμα αυτού του εγγράφου απαιτεί περισσότερη μνήμη και μπορεί να επιβραδύνει τον υπολογιστή ή άλλες εφαρμογές που εκτελούνται.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Το άνοιγμα του «{name}» απαιτεί περίπου {est} GiB μνήμης ({avail} GiB διαθέσιμα).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Το άνοιγμα του «{name}» απαιτεί περίπου {est} GiB μνήμης. Δεν ήταν δυνατή η μέτρηση της διαθέσιμης μνήμης.
+	Proportional	Αναλογικού πλάτους
+	Proportional Lining	Αναλογικού πλάτους και ίσου ύψους
+	Proportional Oldstyle	Αναλογικού πλάτους παλαιού τύπου
+	Save Image Pyramid	Αποθήκευση πυραμίδας εικόνας
+	Save Transparency	Αποθήκευση διαφάνειας
+	Tabular	Σταθερού πλάτους
+	Tabular Lining	Σταθερού πλάτους και ίσου ύψους
+	Tabular Oldstyle	Σταθερού πλάτους παλαιού τύπου
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} εγγράφηκαν στο {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: απέτυχε η έξοδος {n} πόρου εικόνας|{what}: απέτυχε η έξοδος {n} πόρων εικόνας

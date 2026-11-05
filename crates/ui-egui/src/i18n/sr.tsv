@@ -4334,6 +4334,7 @@ shape	Appearance	Izgled
 	Kept {name}: written by another application	{name} je zadržan: upisala ga je druga aplikacija
 	Shadow Tint	Nijansa senki
 	Redrawing	Ponovno iscrtavanje
+	Memory usage percent	Procenat korišćenja memorije
 	Show Favorite Fonts	Прикажи омиљене фонтове
 	No favorite fonts yet: click the star beside a font to add it.	Још нема омиљених фонтова: кликните на звездицу поред фонта да бисте га додали.
 	Favorite fonts	Омиљени фонтови
@@ -4396,6 +4397,7 @@ shape	Appearance	Izgled
 	Chisel Soft	Meko klesanje
 	Open color-less EXR as ACEScg	Otvori EXR bez podatka o bojama kao ACEScg
 	Do not append "copy" to filename when saving a copy	Ne dodaji „copy“ u ime fajla pri čuvanju kopije
+	Save Full-Size Composite in .pcraft Files	Čuvaj složenu sliku u punoj veličini u .pcraft fajlovima
 	Show home recent files	Prikaži nedavne datoteke na početnom ekranu
 	Edit Selected Guides	Uredi izabrane vodilje
 	Clear Selected Guides	Ukloni izabrane vodilje
@@ -4472,6 +4474,7 @@ shape	Appearance	Izgled
 	This document's layers: {needed} of {budget} for layers	Slojevi ovog dokumenta: {needed} od {budget} za slojeve
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Slojevima ovog dokumenta treba {needed}, a smeju da zauzmu {budget}: ceo dokument se ponovo iscrtava na CPU-u
 	GPU Memory (MB, 0 = Automatic)	GPU memorija (MB, 0 = Automatski)
+	Scratch Size Limit (MB, 0 = No Limit)	Ograničenje veličine radnog diska (MB, 0 = bez ograničenja)
 	{path}: the path is not valid Unicode; save under another name.	{path}: putanja nije ispravan Unicode; sačuvajte pod drugim imenom.
 	{name} was changed by another app after it was opened or saved here.	Datoteku {name} je izmenila druga aplikacija nakon što je ovde otvorena ili sačuvana.
 	Replace it with this document, or cancel and use File › Save As to keep both.	Zameni je ovim dokumentom ili otkaži i koristi Datoteka › Sačuvaj kao da zadržiš obe.
@@ -4706,3 +4709,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set as default	Постави као подразумевано
 	Start	Почетак
 	Use these settings for new arrows	Користи ове поставке за нове стрелице
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Komanda je otkazana ili zaustavljena tokom grupne obrade. Nastaviti sa sledećom datotekom ili zaustaviti?
+	Attribute	Atribut
+	Batch preview	Pregled grupne obrade
+	Data Sets as Files is unavailable on the web	Skupovi podataka kao datoteke nisu dostupni na vebu
+	Effect	Efekat
+	Empty	Prazno
+	Filter for embedded smart objects	Filtriraj ugrađene pametne objekte
+	Filter for linked smart objects that are missing	Filtriraj povezane pametne objekte koji nedostaju
+	Filter for smart objects linked locally	Filtriraj pametne objekte povezane sa lokalnim datotekama
+	High Memory Photoshop Document	Photoshop dokument sa velikim zahtevima za memoriju
+	Image Compression	Kompresija slike
+	LZW	LZW
+	Layer Effects	Efekti sloja
+	Lining	Verzalne
+	Linked	Povezano
+	No Adv. Blending	Bez naprednog stapanja
+	No Layer Effects	Bez efekata sloja
+	No Layer Mask	Bez maske sloja
+	No Vector Mask	Bez vektorske maske
+	Not Clipped	Bez maske odsecanja
+	Not Empty	Nije prazno
+	Not Linked	Nije povezano
+	Not Locked	Nije zaključano
+	Not Visible	Nije vidljivo
+	Numerals	Cifre
+	Open anyway	Ipak otvori
+	Opening this document uses more memory and may slow down your computer or other running applications.	Otvaranje ovog dokumenta zahteva više memorije i može usporiti računar ili druge pokrenute aplikacije.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Otvaranje „{name}” zahteva približno {est} GiB memorije (dostupno: {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Otvaranje „{name}” zahteva približno {est} GiB memorije. Dostupna memorija nije mogla da se izmeri.
+	Proportional	Proporcionalne
+	Proportional Lining	Proporcionalne verzalne
+	Proportional Oldstyle	Proporcionalne minuskle
+	Save Image Pyramid	Sačuvaj piramidu slike
+	Save Transparency	Sačuvaj providnost
+	Tabular	Tabelarne
+	Tabular Lining	Tabelarne verzalne
+	Tabular Oldstyle	Tabelarne minuskle
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} upisano u {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: nije uspelo čuvanje {n} slikovnog resursa|{what}: nije uspelo čuvanje {n} slikovna resursa|{what}: nije uspelo čuvanje {n} slikovnih resursa

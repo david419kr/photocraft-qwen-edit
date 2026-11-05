@@ -4195,6 +4195,7 @@ cameraRaw	Yellow	Sárga
 	Kept {name}: written by another application	{name} megtartva: egy másik alkalmazás írta
 	Shadow Tint	Árnyék színezet
 	Redrawing	Újrarajzolás
+	Memory usage percent	Memóriahasználat százaléka
 	Show Favorite Fonts	Kedvenc betűtípusok megjelenítése
 	No favorite fonts yet: click the star beside a font to add it.	Még nincsenek kedvenc betűtípusok: kattintson a betűtípus melletti csillagra a hozzáadáshoz.
 	Favorite fonts	Kedvenc betűtípusok
@@ -4244,6 +4245,7 @@ cameraRaw	Yellow	Sárga
 	Chisel Soft	Lágy vésés
 	Open color-less EXR as ACEScg	Színinformáció nélküli EXR megnyitása ACEScg-ként
 	Do not append "copy" to filename when saving a copy	Ne fűzze a „copy” szót a fájlnévhez másolat mentésekor
+	Save Full-Size Composite in .pcraft Files	Teljes méretű kompozit kép mentése a .pcraft fájlokba
 	Edit Selected Guides	Kijelölt segédvonalak szerkesztése
 	Clear Selected Guides	Kijelölt segédvonalak törlése
 	Bicubic Automatic	Automatikus bikubikus
@@ -4319,6 +4321,7 @@ cameraRaw	Yellow	Sárga
 	This document's layers: {needed} of {budget} for layers	A dokumentum rétegei: {needed} / {budget} a rétegeknek
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	A dokumentum rétegeinek {needed} kell, de {budget} foglalhatnak: a teljes dokumentum újrarajzolása a CPU-n fut
 	GPU Memory (MB, 0 = Automatic)	GPU-memória (MB, 0 = Automatikus)
+	Scratch Size Limit (MB, 0 = No Limit)	Lapozólemez méretkorlátja (MB, 0 = nincs korlát)
 	{path}: the path is not valid Unicode; save under another name.	{path}: az elérési út nem érvényes Unicode-szöveg. Mentsd más néven.
 	{name} was changed by another app after it was opened or saved here.	A(z) {name} fájlt egy másik alkalmazás módosította, miután itt megnyitották vagy mentették.
 	Replace it with this document, or cancel and use File › Save As to keep both.	Cserélje le erre a dokumentumra, vagy válassza a Mégse gombot, és a Fájl › Mentés másként paranccsal tartsa meg mindkettőt.
@@ -4570,3 +4573,45 @@ prompt-region	Bottom right	Jobb alsó
 	Set as default	Beállítás alapértelmezettként
 	Start	Kezdet
 	Use these settings for new arrows	Ezek a beállítások legyenek érvényesek az új nyilakra
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Egy parancs megszakadt vagy leállt a kötegelt feldolgozás során. Folytatja a következő fájllal, vagy leállítja?
+	Attribute	Tulajdonság
+	Batch preview	Köteg előnézete
+	Data Sets as Files is unavailable on the web	Az adatkészletek fájlként történő mentése nem érhető el a weben
+	Effect	Effektus
+	Empty	Üres
+	Filter for embedded smart objects	Beágyazott intelligens objektumok szűrése
+	Filter for linked smart objects that are missing	Hiányzó csatolt intelligens objektumok szűrése
+	Filter for smart objects linked locally	Helyi fájlokhoz csatolt intelligens objektumok szűrése
+	High Memory Photoshop Document	Nagy memóriaigényű Photoshop-dokumentum
+	Image Compression	Képtömörítés
+	LZW	LZW
+	Layer Effects	Rétegeffektusok
+	Lining	Álló számjegyek
+	Linked	Csatolt
+	No Adv. Blending	Speciális keverés nélkül
+	No Layer Effects	Rétegeffektusok nélkül
+	No Layer Mask	Rétegmaszk nélkül
+	No Vector Mask	Vektormaszk nélkül
+	Not Clipped	Vágómaszk nélkül
+	Not Empty	Nem üres
+	Not Linked	Nem csatolt
+	Not Locked	Nem zárolt
+	Not Visible	Nem látható
+	Numerals	Számjegyek
+	Open anyway	Megnyitás mégis
+	Opening this document uses more memory and may slow down your computer or other running applications.	A dokumentum megnyitása több memóriát igényel, és lelassíthatja a számítógépet vagy más futó alkalmazásokat.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	A(z) „{name}” megnyitásához becslés szerint {est} GiB memória szükséges ({avail} GiB érhető el).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	A(z) „{name}” megnyitásához becslés szerint {est} GiB memória szükséges. A rendelkezésre álló memória nem mérhető.
+	Proportional	Arányos
+	Proportional Lining	Arányos álló számjegyek
+	Proportional Oldstyle	Arányos ugráló számjegyek
+	Save Image Pyramid	Képpiramis mentése
+	Save Transparency	Átlátszóság mentése
+	Tabular	Azonos szélességű
+	Tabular Lining	Azonos szélességű álló számjegyek
+	Tabular Oldstyle	Azonos szélességű ugráló számjegyek
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} kiírva ide: {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} képi erőforrás kiírása sikertelen

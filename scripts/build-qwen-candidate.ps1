@@ -44,11 +44,12 @@ $source = (git rev-parse HEAD).Trim()
 if ($LASTEXITCODE -ne 0) { throw 'Cannot resolve source commit.' }
 $rust = (rustc +1.95.0 --version).Trim()
 if ($LASTEXITCODE -ne 0) { throw 'Cannot resolve Rust version.' }
+$upstreamState = Get-Content 'docs/upstream-update-state.json' -Raw | ConvertFrom-Json
 $metadata = [ordered]@{
     source_sha = $source
     fork_base_sha = $env:QWEN_BASE_SHA
-    upstream_tag = 'v0.20.1'
-    upstream_release_id = 432155025
+    upstream_tag = $upstreamState.upstream_tag
+    upstream_release_id = $upstreamState.upstream_release_id
     upstream_sha = $env:QWEN_UPSTREAM_SHA
     toolchain = $rust
     target = 'x86_64-pc-windows-msvc'
@@ -63,6 +64,8 @@ $metadata = [ordered]@{
     built_at_utc = [DateTimeOffset]::UtcNow.ToString('o')
 }
 $metadata | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 dist/candidate-build.json
+python scripts/verify-candidate-provenance.py --metadata dist/candidate-build.json --state docs/upstream-update-state.json
+if ($LASTEXITCODE -ne 0) { throw 'Candidate upstream provenance does not match update state.' }
 # Keep provenance inspectable through the job-log API when artifact transfer is unavailable.
 $metadata | ConvertTo-Json -Depth 4 | Write-Output
 if ($env:GITHUB_STEP_SUMMARY) {

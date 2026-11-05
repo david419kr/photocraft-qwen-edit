@@ -3302,6 +3302,7 @@ curves	Smooth	Haluskan
 	Sent to {printer}	Dikirim ke {printer}
 	set in Print Settings…	diatur di Pengaturan Cetak…
 	ICO is limited to 256 × 256 pixels	ICO dibatasi hingga 256 × 256 piksel
+	Memory usage percent	Pemakaian memori (%)
 	Show Favorite Fonts	Tampilkan Font Favorit
 	No favorite fonts yet: click the star beside a font to add it.	Belum ada font favorit: klik bintang di samping font untuk menambahkannya.
 	Favorite fonts	Font favorit
@@ -3364,6 +3365,7 @@ curves	Smooth	Haluskan
 	Chisel Soft	Pahat Lembut
 	Open color-less EXR as ACEScg	Buka EXR tanpa informasi warna sebagai ACEScg
 	Do not append "copy" to filename when saving a copy	Jangan tambahkan "copy" ke nama file saat menyimpan salinan
+	Save Full-Size Composite in .pcraft Files	Simpan gambar komposit ukuran penuh di file .pcraft
 	Edit Selected Guides	Edit Panduan Terpilih
 	Clear Selected Guides	Hapus Panduan Terpilih
 	Bicubic Automatic	Bicubic otomatis
@@ -3418,6 +3420,7 @@ curves	Smooth	Haluskan
 	This document's layers: {needed} of {budget} for layers	Layer dokumen ini: {needed} dari {budget} untuk layer
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Layer dokumen ini membutuhkan {needed} tetapi boleh memakai {budget}: penggambaran ulang seluruh dokumen memakai CPU
 	GPU Memory (MB, 0 = Automatic)	Memori GPU (MB, 0 = Otomatis)
+	Scratch Size Limit (MB, 0 = No Limit)	Batas ukuran disk scratch (MB, 0 = Tanpa batas)
 	{path}: the path is not valid Unicode; save under another name.	{path}: jalur bukan Unicode yang valid; simpan dengan nama lain.
 	Replace	Ganti
 	{name} was changed by another app after it was opened or saved here.	{name} diubah oleh aplikasi lain setelah dibuka atau disimpan di sini.
@@ -3688,3 +3691,46 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Start	Awal
 	Use these settings for new arrows	Gunakan pengaturan ini untuk panah baru
 	Length	Panjang
+
+# Upstream 0.20.2: batch, layer filters, memory admission and numeral styles.
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Perintah dibatalkan atau dihentikan selama pemrosesan batch. Lanjutkan ke berkas berikutnya atau berhenti?
+	Attribute	Atribut
+	Batch	Pemrosesan Batch
+	Batch preview	Pratinjau batch
+	Data Sets as Files is unavailable on the web	Ekspor Kumpulan Data sebagai Berkas tidak tersedia di web
+	Effect	Efek
+	Empty	Kosong
+	Filter for embedded smart objects	Filter objek pintar yang disematkan
+	Filter for linked smart objects that are missing	Filter objek pintar dengan berkas tertaut yang hilang
+	Filter for smart objects linked locally	Filter objek pintar yang ditautkan secara lokal
+	High Memory Photoshop Document	Dokumen Photoshop dengan Penggunaan Memori Tinggi
+	Image Compression	Kompresi Gambar
+	LZW	LZW
+	Layer Effects	Efek Lapisan
+	Lining	Angka Sejajar
+	Linked	Tertaut
+	No Adv. Blending	Tanpa Pencampuran Lanjutan
+	No Layer Effects	Tanpa Efek Lapisan
+	No Layer Mask	Tanpa Masker Lapisan
+	No Vector Mask	Tanpa Masker Vektor
+	Not Clipped	Tidak Terkliping
+	Not Empty	Tidak Kosong
+	Not Linked	Tidak Tertaut
+	Not Locked	Tidak Terkunci
+	Not Visible	Tidak Terlihat
+	Numerals	Angka
+	Open anyway	Tetap buka
+	Opening this document uses more memory and may slow down your computer or other running applications.	Membuka dokumen ini menggunakan lebih banyak memori dan dapat memperlambat komputer atau aplikasi lain yang sedang berjalan.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Membuka “{name}” diperkirakan memerlukan memori {est} GiB ({avail} GiB tersedia).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Membuka “{name}” diperkirakan memerlukan memori {est} GiB. Memori yang tersedia tidak dapat diukur.
+	Proportional	Proporsional
+	Proportional Lining	Angka Sejajar Proporsional
+	Proportional Oldstyle	Angka Gaya Lama Proporsional
+	Save Image Pyramid	Simpan Piramida Gambar
+	Save Transparency	Simpan Transparansi
+	Tabular	Lebar Tetap
+	Tabular Lining	Angka Sejajar Lebar Tetap
+	Tabular Oldstyle	Angka Gaya Lama Lebar Tetap
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} ditulis ke {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: keluaran {n} Aset Gambar gagal

@@ -3906,6 +3906,7 @@ curves	Smooth	Wygładź
 	Sent to {printer}	Wysłano do {printer}
 	set in Print Settings…	ustawiane w ustawieniach druku…
 	ICO is limited to 256 × 256 pixels	ICO jest ograniczony do 256 × 256 pikseli
+	Memory usage percent	Użycie pamięci (%)
 	Show Favorite Fonts	Pokaż ulubione czcionki
 	No favorite fonts yet: click the star beside a font to add it.	Brak ulubionych czcionek: kliknij gwiazdkę obok czcionki, aby ją dodać.
 	Favorite fonts	Ulubione czcionki
@@ -3968,6 +3969,7 @@ curves	Smooth	Wygładź
 	Chisel Soft	Dłuto miękkie
 	Open color-less EXR as ACEScg	Otwieraj EXR bez profilu koloru jako ACEScg
 	Do not append "copy" to filename when saving a copy	Nie dodawaj „copy” do nazwy pliku przy zapisywaniu kopii
+	Save Full-Size Composite in .pcraft Files	Zapisuj obraz złożony w pełnym rozmiarze w plikach .pcraft
 	Edit Selected Guides	Edytuj zaznaczone prowadnice
 	Clear Selected Guides	Usuń zaznaczone prowadnice
 	Bicubic Automatic	Dwusześcienna automatyczna
@@ -4020,6 +4022,7 @@ curves	Smooth	Wygładź
 	This document's layers: {needed} of {budget} for layers	Warstwy tego dokumentu: {needed} z {budget} na warstwy
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Warstwy tego dokumentu potrzebują {needed}, ale mogą zająć {budget}: odświeżanie całego dokumentu używa CPU
 	GPU Memory (MB, 0 = Automatic)	Pamięć GPU (MB, 0 = Automatycznie)
+	Scratch Size Limit (MB, 0 = No Limit)	Limit rozmiaru dysku roboczego (MB, 0 = bez limitu)
 	{path}: the path is not valid Unicode; save under another name.	{path}: ścieżka nie jest prawidłowym Unicode; zapisz pod inną nazwą.
 	Replace	Zastąp
 	{name} was changed by another app after it was opened or saved here.	Plik {name} został zmieniony przez inną aplikację po otwarciu lub zapisaniu go tutaj.
@@ -4278,3 +4281,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set as default	Ustaw jako domyślne
 	Start	Początek
 	Use these settings for new arrows	Używaj tych ustawień dla nowych strzałek
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Polecenie zostało anulowane lub zatrzymane podczas przetwarzania wsadowego. Kontynuować z następnym plikiem czy zatrzymać?
+	Attribute	Atrybut
+	Batch preview	Podgląd przetwarzania wsadowego
+	Data Sets as Files is unavailable on the web	Zestawy danych jako pliki są niedostępne w wersji internetowej
+	Effect	Efekt
+	Empty	Puste
+	Filter for embedded smart objects	Filtruj osadzone obiekty inteligentne
+	Filter for linked smart objects that are missing	Filtruj brakujące połączone obiekty inteligentne
+	Filter for smart objects linked locally	Filtruj obiekty inteligentne połączone lokalnie
+	High Memory Photoshop Document	Dokument Photoshop wymagający dużej ilości pamięci
+	Image Compression	Kompresja obrazu
+	LZW	LZW
+	Layer Effects	Efekty warstwy
+	Lining	Majuskułowe
+	Linked	Połączone
+	No Adv. Blending	Bez zaawansowanego mieszania
+	No Layer Effects	Bez efektów warstwy
+	No Layer Mask	Bez maski warstwy
+	No Vector Mask	Bez maski wektorowej
+	Not Clipped	Bez maski przycinającej
+	Not Empty	Niepuste
+	Not Linked	Niepołączone
+	Not Locked	Niezablokowane
+	Not Visible	Niewidoczne
+	Numerals	Cyfry
+	Open anyway	Otwórz mimo to
+	Opening this document uses more memory and may slow down your computer or other running applications.	Otwarcie tego dokumentu wymaga więcej pamięci i może spowolnić komputer lub inne uruchomione aplikacje.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Otwarcie „{name}” wymaga około {est} GiB pamięci (dostępne: {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Otwarcie „{name}” wymaga około {est} GiB pamięci. Nie można było zmierzyć dostępnej pamięci.
+	Proportional	Proporcjonalne
+	Proportional Lining	Proporcjonalne majuskułowe
+	Proportional Oldstyle	Proporcjonalne nautyczne
+	Save Image Pyramid	Zapisz piramidę obrazu
+	Save Transparency	Zapisz przezroczystość
+	Tabular	Tabelaryczne
+	Tabular Lining	Tabelaryczne majuskułowe
+	Tabular Oldstyle	Tabelaryczne nautyczne
+	ZIP	ZIP
+	{ok} written to {dir}	Zapisano {ok} w {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: nie udało się zapisać {n} zasobu obrazu|{what}: nie udało się zapisać {n} zasobów obrazu|{what}: nie udało się zapisać {n} zasobów obrazu

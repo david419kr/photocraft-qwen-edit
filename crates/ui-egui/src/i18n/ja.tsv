@@ -3965,6 +3965,7 @@ curves	Smooth	スムーズ
 	Reset All Locked Settings	ロックされた設定をすべて初期化
 	Copy Texture to Other Tools	テクスチャを他のツールにコピー
 	ICO is limited to 256 × 256 pixels	ICO は 256 × 256 ピクセルまでです
+	Memory usage percent	メモリ使用率 (%)
 	Show Favorite Fonts	お気に入りのフォントを表示
 	No favorite fonts yet: click the star beside a font to add it.	お気に入りのフォントはまだありません。フォントの横の星をクリックして追加してください。
 	Favorite fonts	お気に入りのフォント
@@ -4032,6 +4033,7 @@ curves	Smooth	スムーズ
 	Chisel Soft	チゼルソフト
 	Open color-less EXR as ACEScg	色空間のないEXRをACEScgとして開く
 	Do not append "copy" to filename when saving a copy	コピーを保存するときにファイル名に「copy」を付けない
+	Save Full-Size Composite in .pcraft Files	.pcraftファイルにフルサイズの合成画像を保存
 	Edit Selected Guides	選択したガイドを編集
 	Clear Selected Guides	選択したガイドを消去
 	Bicubic Automatic	バイキュービック法 (自動)
@@ -4084,6 +4086,7 @@ curves	Smooth	スムーズ
 	This document's layers: {needed} of {budget} for layers	このドキュメントのレイヤー: レイヤー用 {budget} のうち {needed}
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	このドキュメントのレイヤーには {needed} が必要ですが、使えるのは {budget} です: ドキュメント全体の再描画は CPU で行われます
 	GPU Memory (MB, 0 = Automatic)	GPU メモリ（MB、0 = 自動）
+	Scratch Size Limit (MB, 0 = No Limit)	仮想記憶ディスクのサイズ上限（MB、0 = 上限なし）
 	{path}: the path is not valid Unicode; save under another name.	{path}: パスが有効な Unicode ではありません。別の名前で保存してください。
 	Replace	置き換え
 	{name} was changed by another app after it was opened or saved here.	{name} は、ここで開くか保存した後に別のアプリで変更されました。
@@ -4338,3 +4341,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set as default	初期設定にする
 	Start	始点
 	Use these settings for new arrows	新しい矢印にこの設定を使用
+
+# Upstream 0.20.2: batch, layer filters, memory admission and numeral styles.
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	バッチ処理中にコマンドがキャンセルまたは停止されました。次のファイルに進みますか、それとも停止しますか？
+	Attribute	属性
+	Batch preview	バッチプレビュー
+	Data Sets as Files is unavailable on the web	Web版ではデータセットのファイル書き出しを利用できません
+	Effect	効果
+	Empty	空
+	Filter for embedded smart objects	埋め込みスマートオブジェクトで絞り込む
+	Filter for linked smart objects that are missing	リンク先が見つからないスマートオブジェクトで絞り込む
+	Filter for smart objects linked locally	ローカルにリンクされたスマートオブジェクトで絞り込む
+	High Memory Photoshop Document	大量のメモリを使用するPhotoshopドキュメント
+	Image Compression	画像圧縮
+	LZW	LZW
+	Layer Effects	レイヤー効果
+	Lining	ライニング
+	Linked	リンクあり
+	No Adv. Blending	高度な合成なし
+	No Layer Effects	レイヤー効果なし
+	No Layer Mask	レイヤーマスクなし
+	No Vector Mask	ベクトルマスクなし
+	Not Clipped	クリッピングなし
+	Not Empty	空ではない
+	Not Linked	リンクなし
+	Not Locked	ロックなし
+	Not Visible	非表示
+	Numerals	数字
+	Open anyway	それでも開く
+	Opening this document uses more memory and may slow down your computer or other running applications.	このドキュメントを開くと大量のメモリを使用し、コンピューターや他の実行中のアプリケーションが遅くなることがあります。
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	「{name}」を開くには推定 {est} GiB のメモリが必要です（利用可能: {avail} GiB）。
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	「{name}」を開くには推定 {est} GiB のメモリが必要です。利用可能なメモリを測定できませんでした。
+	Proportional	プロポーショナル
+	Proportional Lining	プロポーショナルライニング
+	Proportional Oldstyle	プロポーショナルオールドスタイル
+	Save Image Pyramid	画像ピラミッドを保存
+	Save Transparency	透明部分を保存
+	Tabular	等幅
+	Tabular Lining	等幅ライニング
+	Tabular Oldstyle	等幅オールドスタイル
+	ZIP	ZIP
+	{ok} written to {dir}	{dir} に {ok} 件を書き込みました
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} 件の画像アセットの出力に失敗しました

@@ -3758,6 +3758,7 @@ curves	Smooth	Làm mượt
 	Sent to {printer}	Đã gửi tới {printer}
 	set in Print Settings…	đặt trong thiết lập in…
 	ICO is limited to 256 × 256 pixels	ICO giới hạn ở 256 × 256 pixel
+	Memory usage percent	Tỷ lệ sử dụng bộ nhớ
 	Show Favorite Fonts	Hiển thị phông chữ yêu thích
 	No favorite fonts yet: click the star beside a font to add it.	Chưa có phông chữ yêu thích: nhấp vào ngôi sao bên cạnh phông chữ để thêm.
 	Favorite fonts	Phông chữ yêu thích
@@ -3825,6 +3826,7 @@ curves	Smooth	Làm mượt
 	Chisel Soft	Đục mềm
 	Open color-less EXR as ACEScg	Mở EXR không khai báo màu sắc dưới dạng ACEScg
 	Do not append "copy" to filename when saving a copy	Không thêm "copy" vào tên tệp khi lưu bản sao
+	Save Full-Size Composite in .pcraft Files	Lưu ảnh tổng hợp kích thước đầy đủ trong tệp .pcraft
 	Edit Selected Guides	Sửa đường căn đã chọn
 	Clear Selected Guides	Xóa đường căn đã chọn
 	Bicubic Automatic	Bicubic tự động
@@ -3902,6 +3904,7 @@ curves	Smooth	Làm mượt
 	This document's layers: {needed} of {budget} for layers	Các lớp của tài liệu này: {needed} trên {budget} dành cho lớp
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Các lớp của tài liệu này cần {needed} nhưng chỉ được dùng {budget}: vẽ lại toàn bộ tài liệu dùng CPU
 	GPU Memory (MB, 0 = Automatic)	Bộ nhớ GPU (MB, 0 = Tự động)
+	Scratch Size Limit (MB, 0 = No Limit)	Giới hạn dung lượng đĩa tạm (MB, 0 = Không giới hạn)
 	{path}: the path is not valid Unicode; save under another name.	{path}: đường dẫn không phải Unicode hợp lệ; hãy lưu với tên khác.
 	Replace	Thay thế
 	{name} was changed by another app after it was opened or saved here.	{name} đã bị một ứng dụng khác thay đổi sau khi được mở hoặc lưu ở đây.
@@ -4160,3 +4163,45 @@ prompt-region	Bottom right	Dưới phải
 	Start	Đầu
 	Use these settings for new arrows	Dùng các thiết lập này cho mũi tên mới
 	Create new set	Tạo bộ mới
+
+# Upstream 0.20.2: batch, layer filters, memory admission and numeral styles.
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Một lệnh đã bị hủy hoặc dừng trong khi xử lý hàng loạt. Tiếp tục với tệp tiếp theo hay dừng lại?
+	Attribute	Thuộc tính
+	Batch preview	Xem trước xử lý hàng loạt
+	Data Sets as Files is unavailable on the web	Không thể xuất bộ dữ liệu thành tệp trên web
+	Effect	Hiệu ứng
+	Empty	Trống
+	Filter for embedded smart objects	Lọc đối tượng thông minh được nhúng
+	Filter for linked smart objects that are missing	Lọc đối tượng thông minh có tệp liên kết bị thiếu
+	Filter for smart objects linked locally	Lọc đối tượng thông minh liên kết với tệp cục bộ
+	High Memory Photoshop Document	Tài liệu Photoshop cần nhiều bộ nhớ
+	Image Compression	Nén ảnh
+	LZW	LZW
+	Layer Effects	Hiệu ứng lớp
+	Lining	Chữ số cùng chiều cao
+	Linked	Đã liên kết
+	No Adv. Blending	Không có hòa trộn nâng cao
+	No Layer Effects	Không có hiệu ứng lớp
+	No Layer Mask	Không có mặt nạ lớp
+	No Vector Mask	Không có mặt nạ véc-tơ
+	Not Clipped	Không bị cắt
+	Not Empty	Không trống
+	Not Linked	Chưa liên kết
+	Not Locked	Chưa khóa
+	Not Visible	Không hiển thị
+	Numerals	Kiểu chữ số
+	Open anyway	Vẫn mở
+	Opening this document uses more memory and may slow down your computer or other running applications.	Mở tài liệu này sẽ sử dụng nhiều bộ nhớ hơn và có thể làm chậm máy tính hoặc các ứng dụng khác đang chạy.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Mở “{name}” ước tính cần {est} GiB bộ nhớ (hiện có {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Mở “{name}” ước tính cần {est} GiB bộ nhớ. Không thể đo bộ nhớ khả dụng.
+	Proportional	Độ rộng tỷ lệ
+	Proportional Lining	Chữ số cùng chiều cao, độ rộng tỷ lệ
+	Proportional Oldstyle	Chữ số kiểu cổ, độ rộng tỷ lệ
+	Save Image Pyramid	Lưu tháp ảnh
+	Save Transparency	Lưu độ trong suốt
+	Tabular	Độ rộng cố định
+	Tabular Lining	Chữ số cùng chiều cao, độ rộng cố định
+	Tabular Oldstyle	Chữ số kiểu cổ, độ rộng cố định
+	ZIP	ZIP
+	{ok} written to {dir}	Đã ghi {ok} vào {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: không thể xuất {n} tài sản hình ảnh

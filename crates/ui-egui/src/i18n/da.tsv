@@ -3361,6 +3361,7 @@ curves	Smooth	Udjævn
 	This document's layers: {needed} of {budget} for layers	Dette dokuments lag: {needed} af {budget} til lag
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Dette dokuments lag kræver {needed}, men kan rumme {budget}: gentegninger af hele dokumentet bruger CPU'en
 	GPU Memory (MB, 0 = Automatic)	GPU-hukommelse (MB, 0 = automatisk)
+	Scratch Size Limit (MB, 0 = No Limit)	Størrelsesgrænse for arbejdsdisk (MB, 0 = ingen grænse)
 	{path}: the path is not valid Unicode; save under another name.	{path}: stien er ikke gyldig Unicode; gem under et andet navn.
 	Replace	Erstat
 	{name} was changed by another app after it was opened or saved here.	{name} blev ændret af et andet program, efter at den blev åbnet eller gemt her.
@@ -4871,3 +4872,47 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Set as default	Angiv som standard
 	Start	Start
 	Use these settings for new arrows	Brug disse indstillinger til nye pile
+
+# Upstream 0.20.2 UI labels
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	En kommando blev annulleret eller stoppet under batchbehandlingen. Fortsæt med den næste fil eller stop?
+	Attribute	Attribut
+	Batch preview	Batchforhåndsvisning
+	Data Sets as Files is unavailable on the web	Datasæt som filer er ikke tilgængelig på nettet
+	Effect	Effekt
+	Empty	Tom
+	Filter for embedded smart objects	Filtrer efter indlejrede smartobjekter
+	Filter for linked smart objects that are missing	Filtrer efter manglende sammenkædede smartobjekter
+	Filter for smart objects linked locally	Filtrer efter lokalt sammenkædede smartobjekter
+	High Memory Photoshop Document	Photoshop-dokument med højt hukommelsesforbrug
+	Image Compression	Billedkomprimering
+	LZW	LZW
+	Layer Effects	Lageffekter
+	Lining	Versaltal
+	Linked	Sammenkædet
+	No Adv. Blending	Ingen avanceret blanding
+	No Layer Effects	Ingen lageffekter
+	No Layer Mask	Ingen lagmaske
+	No Vector Mask	Ingen vektormaske
+	Not Clipped	Ikke klippet
+	Not Empty	Ikke tom
+	Not Linked	Ikke sammenkædet
+	Not Locked	Ikke låst
+	Not Visible	Ikke synlig
+	Numerals	Tal
+	Open anyway	Åbn alligevel
+	Opening this document uses more memory and may slow down your computer or other running applications.	Åbning af dette dokument bruger mere hukommelse og kan gøre din computer eller andre kørende programmer langsommere.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Åbning af “{name}” kræver anslået {est} GiB hukommelse ({avail} GiB tilgængelig).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Åbning af “{name}” kræver anslået {est} GiB hukommelse. Den tilgængelige hukommelse kunne ikke måles.
+	Proportional	Proportionale
+	Proportional Lining	Proportionale versaltal
+	Proportional Oldstyle	Proportionale minuskeltal
+	Save Image Pyramid	Gem billedpyramide
+	Save Transparency	Gem gennemsigtighed
+	Tabular	Tabellariske
+	Tabular Lining	Tabellariske versaltal
+	Tabular Oldstyle	Tabellariske minuskeltal
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} skrevet til {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} eksport af billedaktiver mislykkedes|{what}: {n} eksporter af billedaktiver mislykkedes
+	Memory usage percent	Hukommelsesforbrug i procent
+	Save Full-Size Composite in .pcraft Files	Gem sammensat billede i fuld størrelse i .pcraft-filer

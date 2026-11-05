@@ -3283,6 +3283,7 @@ curves	Smooth	Сгладить
 	Gray Value (Median)	Уровень серого (медиана)
 	Integrated Density	Интегральная плотность
 	Length	Длина
+	Memory usage percent	Использование памяти (%)
 	Show Favorite Fonts	Показать избранные шрифты
 	No favorite fonts yet: click the star beside a font to add it.	Избранных шрифтов пока нет: нажмите на звёздочку рядом со шрифтом, чтобы добавить его.
 	Favorite fonts	Избранные шрифты
@@ -3332,6 +3333,7 @@ curves	Smooth	Сгладить
 	Chisel Soft	Мягкая огранка
 	Open color-less EXR as ACEScg	Открывать EXR без цветового профиля как ACEScg
 	Do not append "copy" to filename when saving a copy	Не добавлять «copy» к имени файла при сохранении копии
+	Save Full-Size Composite in .pcraft Files	Сохранять сведённое изображение в полном размере в файлах .pcraft
 	Edit Selected Guides	Изменить выбранные направляющие
 	Clear Selected Guides	Удалить выбранные направляющие
 	Bicubic Automatic	Бикубическая, автоматически
@@ -3387,6 +3389,7 @@ curves	Smooth	Сгладить
 	This document's layers: {needed} of {budget} for layers	Слои этого документа: {needed} из {budget} для слоёв
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Слоям этого документа нужно {needed}, но занимать они могут {budget}: весь документ перерисовывается на CPU
 	GPU Memory (MB, 0 = Automatic)	Память GPU (МБ, 0 = автоматически)
+	Scratch Size Limit (MB, 0 = No Limit)	Предел размера рабочего диска (МБ, 0 = без ограничения)
 	{path}: the path is not valid Unicode; save under another name.	{path}: путь не является допустимым Unicode; сохраните под другим именем.
 	Replace	Заменить
 	{name} was changed by another app after it was opened or saved here.	Файл {name} был изменён другим приложением после того, как его открыли или сохранили здесь.
@@ -4847,3 +4850,45 @@ shape	Appearance	Оформление
 	Set as default	Использовать по умолчанию
 	Start	Начало
 	Use these settings for new arrows	Использовать эти настройки для новых стрелок
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Команда отменена или остановлена во время пакетной обработки. Продолжить со следующим файлом или остановиться?
+	Attribute	Атрибут
+	Batch preview	Предпросмотр пакетной обработки
+	Data Sets as Files is unavailable on the web	Наборы данных в виде файлов недоступны в веб-версии
+	Effect	Эффект
+	Empty	Пустые
+	Filter for embedded smart objects	Фильтровать встроенные смарт-объекты
+	Filter for linked smart objects that are missing	Фильтровать отсутствующие связанные смарт-объекты
+	Filter for smart objects linked locally	Фильтровать смарт-объекты, связанные с локальными файлами
+	High Memory Photoshop Document	Документ Photoshop с высоким потреблением памяти
+	Image Compression	Сжатие изображения
+	LZW	LZW
+	Layer Effects	Эффекты слоя
+	Lining	Маюскульные
+	Linked	Связанные
+	No Adv. Blending	Без расширенного наложения
+	No Layer Effects	Без эффектов слоя
+	No Layer Mask	Без маски слоя
+	No Vector Mask	Без векторной маски
+	Not Clipped	Без обтравочной маски
+	Not Empty	Непустые
+	Not Linked	Несвязанные
+	Not Locked	Незаблокированные
+	Not Visible	Невидимые
+	Numerals	Цифры
+	Open anyway	Всё равно открыть
+	Opening this document uses more memory and may slow down your computer or other running applications.	Открытие этого документа требует больше памяти и может замедлить работу компьютера или других запущенных приложений.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Для открытия «{name}» требуется примерно {est} GiB памяти (доступно {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Для открытия «{name}» требуется примерно {est} GiB памяти. Не удалось измерить доступную память.
+	Proportional	Пропорциональные
+	Proportional Lining	Пропорциональные маюскульные
+	Proportional Oldstyle	Пропорциональные минускульные
+	Save Image Pyramid	Сохранить пирамиду изображения
+	Save Transparency	Сохранить прозрачность
+	Tabular	Табличные
+	Tabular Lining	Табличные маюскульные
+	Tabular Oldstyle	Табличные минускульные
+	ZIP	ZIP
+	{ok} written to {dir}	Записано {ok} в {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: не удалось вывести {n} графический ресурс|{what}: не удалось вывести {n} графических ресурса|{what}: не удалось вывести {n} графических ресурсов

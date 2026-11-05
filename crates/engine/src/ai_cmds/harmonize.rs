@@ -76,7 +76,7 @@ fn same_pixels(a: &Surface, b: &Surface) -> bool {
     a.format() == b.format()
         && a.default_pixel() == b.default_pixel()
         && a.tile_count() == b.tile_count()
-        && a.tiles().zip(b.tiles()).all(|((pa, a), (pb, b))| pa == pb && (std::ptr::eq(a.bytes(), b.bytes()) || a.bytes() == b.bytes()))
+        && a.tiles().zip(b.tiles()).all(|((pa, a), (pb, b))| pa == pb && a == b)
 }
 
 impl Source {

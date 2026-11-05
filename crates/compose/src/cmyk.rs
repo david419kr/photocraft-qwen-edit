@@ -193,6 +193,8 @@ pub fn blend_ink(mode: BlendMode, cb: [f32; 4], cs: [f32; 4]) -> [f32; 4] {
     blend_ink_fill(mode, cb, cs, 1.0)
 }
 
+/// [`blend_ink`] at `fill`: below 100% the special eight change the blend itself
+/// (`psblend::blend_rgb_fill`, on each ink's brightness); other modes ignore `fill`.
 fn blend_ink_fill(mode: BlendMode, cb: [f32; 4], cs: [f32; 4], fill: f32) -> [f32; 4] {
     let b = |i: usize| 1.0 - cb[i];
     let s = |i: usize| 1.0 - cs[i];
@@ -405,7 +407,8 @@ fn adjust_inks(adj: &Adjustment, buf: &mut CmykBuffer, depth: SampleType) {
 }
 
 /// Mixes an adjustment's result back into `base` in the layer's blend mode, by its opacity and
-/// mask; coverage is unchanged (the compositor's adjustment mix).
+/// mask; coverage is unchanged (the compositor's adjustment mix). Fill below 100% in one of the
+/// special eight is part of the blend and leaves the mix to Opacity, as on the RGB compositor.
 fn mix_adjusted(l: &Layer, base: &mut CmykBuffer, adjusted: &CmykBuffer, cx: &Ctx) {
     let (opacity, fill) = super::composite::adjustment_coverage(l);
     let rect = base.rect;

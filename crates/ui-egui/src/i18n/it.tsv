@@ -4253,6 +4253,7 @@ navigator	Zoom	Zoom
 	Sent to {printer}	Inviato a {printer}
 	set in Print Settings…	impostato nelle impostazioni di stampa…
 	ICO is limited to 256 × 256 pixels	ICO è limitato a 256 × 256 pixel
+	Memory usage percent	Uso memoria (%)
 	Show Favorite Fonts	Mostra font preferiti
 	No favorite fonts yet: click the star beside a font to add it.	Ancora nessun font preferito: fai clic sulla stella accanto a un font per aggiungerlo.
 	Favorite fonts	Font preferiti
@@ -4315,6 +4316,7 @@ navigator	Zoom	Zoom
 	Chisel Soft	Cesello morbido
 	Open color-less EXR as ACEScg	Apri gli EXR senza spazio colore come ACEScg
 	Do not append "copy" to filename when saving a copy	Non aggiungere "copy" al nome del file quando si salva una copia
+	Save Full-Size Composite in .pcraft Files	Salva l'immagine composita a dimensione piena nei file .pcraft
 	Adobe-rgb-compat	Adobe RGB (compatibile)
 	All shortcuts reset to Photoshop defaults.	Tutte le scorciatoie ripristinate ai default di Photoshop.
 	Arc Lower	Arco inferiore
@@ -4528,6 +4530,7 @@ shape	Appearance	Aspetto
 	This document's layers: {needed} of {budget} for layers	Livelli di questo documento: {needed} su {budget} per i livelli
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	I livelli di questo documento richiedono {needed} ma possono occupare {budget}: i ridisegni dell'intero documento usano la CPU
 	GPU Memory (MB, 0 = Automatic)	Memoria GPU (MB, 0 = Automatico)
+	Scratch Size Limit (MB, 0 = No Limit)	Limite dimensioni disco di memoria virtuale (MB, 0 = nessun limite)
 	{path}: the path is not valid Unicode; save under another name.	{path}: il percorso non è Unicode valido; salva con un altro nome.
 	{name} was changed by another app after it was opened or saved here.	{name} è stato modificato da un'altra app dopo essere stato aperto o salvato qui.
 	Replace it with this document, or cancel and use File › Save As to keep both.	Sostituiscilo con questo documento, oppure annulla e usa File › Salva con nome per tenerli entrambi.
@@ -4762,3 +4765,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set as default	Imposta come predefinito
 	Start	Inizio
 	Use these settings for new arrows	Usa queste impostazioni per le nuove frecce
+
+# Upstream 0.20.2 UI labels
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Un comando è stato annullato o interrotto durante l’elaborazione in batch. Continuare con il file successivo o interrompere?
+	Attribute	Attributo
+	Batch preview	Anteprima batch
+	Data Sets as Files is unavailable on the web	Set di dati come file non è disponibile sul Web
+	Effect	Effetto
+	Empty	Vuoto
+	Filter for embedded smart objects	Filtra gli oggetti avanzati incorporati
+	Filter for linked smart objects that are missing	Filtra gli oggetti avanzati collegati mancanti
+	Filter for smart objects linked locally	Filtra gli oggetti avanzati collegati localmente
+	High Memory Photoshop Document	Documento Photoshop con elevato uso di memoria
+	Image Compression	Compressione immagine
+	LZW	LZW
+	Layer Effects	Effetti livello
+	Lining	Cifre maiuscole
+	Linked	Collegato
+	No Adv. Blending	Senza fusione avanzata
+	No Layer Effects	Senza effetti livello
+	No Layer Mask	Senza maschera di livello
+	No Vector Mask	Senza maschera vettoriale
+	Not Clipped	Non ritagliato
+	Not Empty	Non vuoto
+	Not Linked	Non collegato
+	Not Locked	Non bloccato
+	Not Visible	Non visibile
+	Numerals	Cifre
+	Open anyway	Apri comunque
+	Opening this document uses more memory and may slow down your computer or other running applications.	L’apertura di questo documento utilizza più memoria e può rallentare il computer o altre applicazioni in esecuzione.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	L’apertura di «{name}» richiede circa {est} GiB di memoria ({avail} GiB disponibili).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	L’apertura di «{name}» richiede circa {est} GiB di memoria. Non è stato possibile misurare la memoria disponibile.
+	Proportional	Proporzionali
+	Proportional Lining	Cifre maiuscole proporzionali
+	Proportional Oldstyle	Cifre minuscole proporzionali
+	Save Image Pyramid	Salva piramide immagine
+	Save Transparency	Salva trasparenza
+	Tabular	Tabulari
+	Tabular Lining	Cifre maiuscole tabulari
+	Tabular Oldstyle	Cifre minuscole tabulari
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} scritti in {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} esportazione di risorse immagine non riuscita|{what}: {n} esportazioni di risorse immagine non riuscite

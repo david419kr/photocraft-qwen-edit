@@ -2908,6 +2908,7 @@ curves	Smooth	平滑
 	Sent to {printer}	已傳送至 {printer}
 	set in Print Settings…	在列印設定中設定…
 	ICO is limited to 256 × 256 pixels	ICO 最大為 256 × 256 像素
+	Memory usage percent	記憶體使用比例 (%)
 	Show Favorite Fonts	顯示我的最愛字體
 	No favorite fonts yet: click the star beside a font to add it.	尚無我的最愛字體：按一下字體旁的星號即可加入。
 	Favorite fonts	我的最愛字體
@@ -2970,6 +2971,7 @@ curves	Smooth	平滑
 	Chisel Soft	雕刻柔和
 	Open color-less EXR as ACEScg	將無色彩空間資訊的 EXR 以 ACEScg 開啟
 	Do not append "copy" to filename when saving a copy	儲存副本時不在檔名後加上「copy」
+	Save Full-Size Composite in .pcraft Files	在 .pcraft 檔案中儲存全尺寸合成影像
 	Color Profile	色彩描述檔
 	EXIF	EXIF
 	Edit Selected Guides	編輯所選參考線
@@ -3029,6 +3031,7 @@ curves	Smooth	平滑
 	This document's layers: {needed} of {budget} for layers	此文件的圖層：圖層可用 {budget} 中的 {needed}
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	此文件的圖層需要 {needed}，但只能佔用 {budget}：整份文件的重繪使用 CPU
 	GPU Memory (MB, 0 = Automatic)	GPU 記憶體（MB，0 = 自動）
+	Scratch Size Limit (MB, 0 = No Limit)	暫存磁碟大小上限（MB，0 = 無限制）
 	{path}: the path is not valid Unicode; save under another name.	{path}：路徑不是有效的 Unicode；請以其他名稱儲存。
 	Replace	取代
 	{name} was changed by another app after it was opened or saved here.	{name} 在此處開啟或儲存後已被其他 App 更改。
@@ -3308,3 +3311,47 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Use these settings for new arrows	對新箭頭使用這些設定
 	Create new set	建立新組
 	Length	長度
+
+# Upstream 0.20.2: batch, layer filters, memory admission and numeral styles.
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	批次處理期間有命令遭取消或停止。要繼續處理下一個檔案，還是停止？
+	Advanced Blending	進階混合
+	Attribute	屬性
+	Batch	批次處理
+	Batch preview	批次處理預覽
+	Data Sets as Files is unavailable on the web	網頁版不支援將資料集匯出為檔案
+	Effect	效果
+	Empty	空白
+	Filter for embedded smart objects	篩選內嵌的智慧型物件
+	Filter for linked smart objects that are missing	篩選連結檔案遺失的智慧型物件
+	Filter for smart objects linked locally	篩選連結至本機檔案的智慧型物件
+	High Memory Photoshop Document	高記憶體用量的 Photoshop 文件
+	Image Compression	影像壓縮
+	LZW	LZW
+	Layer Effects	圖層效果
+	Lining	齊線數字
+	Linked	已連結
+	No Adv. Blending	無進階混合
+	No Layer Effects	無圖層效果
+	No Layer Mask	無圖層遮色片
+	No Vector Mask	無向量圖遮色片
+	Not Clipped	未剪裁
+	Not Empty	非空白
+	Not Linked	未連結
+	Not Locked	未鎖定
+	Not Visible	不可見
+	Numerals	數字樣式
+	Open anyway	仍然開啟
+	Opening this document uses more memory and may slow down your computer or other running applications.	開啟此文件會使用較多記憶體，可能導致電腦或其他執行中的應用程式變慢。
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	開啟「{name}」預估需要 {est} GiB 記憶體（可用記憶體為 {avail} GiB）。
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	開啟「{name}」預估需要 {est} GiB 記憶體。無法測量可用記憶體。
+	Proportional	比例寬度
+	Proportional Lining	比例齊線數字
+	Proportional Oldstyle	比例舊式數字
+	Save Image Pyramid	儲存影像金字塔
+	Save Transparency	儲存透明度
+	Tabular	等寬
+	Tabular Lining	等寬齊線數字
+	Tabular Oldstyle	等寬舊式數字
+	ZIP	ZIP
+	{ok} written to {dir}	已將 {ok} 項寫入 {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}：{n} 個影像資產輸出失敗
