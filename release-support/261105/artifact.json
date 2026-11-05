@@ -1,0 +1,10 @@
+{
+  "source_sha": "6ec7e63bdf14d4ca0d18435d18d2c65cec4af928",
+  "run_id": 42015894041,
+  "artifact_id": 13410602149,
+  "artifact_name": "qwen-windows-x64-6ec7e63bdf14d4ca0d18435d18d2c65cec4af928",
+  "outer_artifact_sha256": "8da8126da4230d8995e2c02250e5fff63f9513e2ee34e8bed0e02f24c57c6d87",
+  "zip_sha256": "992f86cb83dc697be66d50d9a6786868794a123f411149cc00f2a29913deca21",
+  "executable_sha256": "dcb53d37c84c38588bdea7335878fae8ccf9d477456c037e82eaf3233ead0104",
+  "release_tag": "261105-0.20.2"
+}

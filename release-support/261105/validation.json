@@ -1,0 +1,206 @@
+{
+  "source_sha": "f1dfdf24a7ee6ffe6d44484dd51a48f7f4b05828",
+  "ci_tests": {
+    "ubuntu": {
+      "passed": 14861,
+      "skipped": 106,
+      "failed": 0,
+      "slow": 2,
+      "job_id": 127263562170,
+      "all_nine_gate_stages": "passed",
+      "panic_hunt": {
+        "passed": 1,
+        "skipped": 1
+      }
+    },
+    "windows_unit": {
+      "passed": 11736,
+      "skipped": 83,
+      "failed": 0,
+      "slow": 2,
+      "leaky_process_warnings": 22,
+      "job_id": 127263562001
+    },
+    "windows_integration": {
+      "passed": 3009,
+      "skipped": 24,
+      "failed": 0,
+      "slow": 30,
+      "leaky_process_warnings": 15,
+      "job_id": 127263561754
+    },
+    "corpus": {
+      "passed": 6311,
+      "ignored": 42,
+      "failed": 0,
+      "suites": 40,
+      "job_id": 127263561801
+    },
+    "without_heif": {
+      "passed": 2115,
+      "skipped": 18,
+      "failed": 0,
+      "job_id": 127263561656
+    }
+  },
+  "local_checks": {
+    "location": "Default cloud computer; no owner PC accessed",
+    "results": {
+      "full_workspace_clippy": {
+        "rust_1_95_0": "passed with --workspace --all-targets --locked --features heif -- -D warnings",
+        "stable_1_99_1": "passed with same arguments"
+      },
+      "preferences_ui": {
+        "passed": 91,
+        "failed": 0,
+        "ignored": 0
+      },
+      "catalogs": {
+        "passed": 75,
+        "failed": 0,
+        "ignored": 0
+      },
+      "translation_filter_on_built_source": {
+        "passed": 38,
+        "failed": 1,
+        "failure": "Chinese live rendering lacked CJK glyph fonts in local sandbox; hosted full CI uses pinned craft-fonts"
+      },
+      "cmyk": {
+        "passed": 59,
+        "ignored": 1,
+        "ignored_reason": "timing benchmark"
+      },
+      "gpu_library": {
+        "passed": 44
+      },
+      "central_memory": {
+        "passed": 20
+      },
+      "local_full_io": {
+        "passed": 514,
+        "failed": 41,
+        "ignored": 2,
+        "failure": "sandbox cgroup memory files unavailable; fail-closed memory budget zero. Hosted corpus independently passed full IO556 tests on built source."
+      },
+      "installer": {
+        "passed": 14
+      },
+      "packaging_python": {
+        "passed": 11,
+        "skipped": 3,
+        "skip_reason": "Windows-only cases retained in Windows CI"
+      },
+      "parity": "644/644; floors unchanged",
+      "formatting": "passed"
+    },
+    "actual_gpu_ui_tested": false
+  },
+  "analysis_limits": {
+    "sonar_actual_scan": "Skipped: SONAR_TOKEN unavailable; wrapper success is not completed analysis. Verified job127230085647.",
+    "freebsd": "manual-only, unrun",
+    "actual_cuda_vram_comfyui_interactive_ui": "not independently tested; no user PC accessed",
+    "user_report": "Owner reported the candidate works locally; no broader hardware validation claimed"
+  },
+  "focused_regressions": {
+    "passed": 847,
+    "suites": 34,
+    "manual_ignored": 4
+  },
+  "post_merge": {
+    "sha": "f69112e5ae550834899044c8d72eac2083c45947",
+    "tree": "f5d41d1ca9db554c574dfaa0be520f52b9c8602b",
+    "ci_run": 42032369917,
+    "attempt": 1,
+    "all_required_jobs": "success",
+    "completed_at_utc": "2026-11-05T13:54:31Z",
+    "web": {
+      "largest_file_bytes": 13963990,
+      "limit_bytes": 25165824,
+      "passed": true,
+      "job_id": 127262052690
+    }
+  },
+  "built_source_sha": "6ec7e63bdf14d4ca0d18435d18d2c65cec4af928",
+  "test_only_correction": {
+    "built_source_sha": "6ec7e63bdf14d4ca0d18435d18d2c65cec4af928",
+    "built_source_tree": "1fd1777e9bab0f15e2f65f62495aa29b3d871065",
+    "validated_source_sha": "f1dfdf24a7ee6ffe6d44484dd51a48f7f4b05828",
+    "validated_source_tree": "f5d41d1ca9db554c574dfaa0be520f52b9c8602b",
+    "only_changed_file": "crates/ui-egui/src/prefs/prefs_ui/tests.rs",
+    "exact_diff_sha256": "5730cd3565937573f317fc8a3826c2ca79fd7c18305b897d5c37946cc7d287f5",
+    "before_blob": "a75ab7ced33e740ad54899241cf678afafb945ac",
+    "after_blob": "86a1cf64a446f11588835731855c2c27bcc0ac21",
+    "unchanged_parent_blob": "0bfb10c1b018f42ce093bf0e6811698d9dd5e72a",
+    "included_only_under_cfg_test": true
+  },
+  "original_built_source_ci": {
+    "run": 42015905484,
+    "ubuntu": {
+      "passed": 14859,
+      "failed": 1,
+      "skipped": 106,
+      "failure": "stale fork test asserted scratch disks hidden despite implemented upstream feature"
+    },
+    "corpus_io": {
+      "passed": 556,
+      "failed": 0,
+      "ignored": 2
+    },
+    "without_heif": {
+      "passed": 2115,
+      "skipped": 18
+    },
+    "web_max_file_bytes": 13963991,
+    "web_limit_bytes": 25165824,
+    "other_unfinished_jobs": "Cancelled on test-only follow-up; not claimed passed"
+  },
+  "candidate_ci_tests": {
+    "corpus": {
+      "passed": 6311,
+      "ignored": 42,
+      "failed": 0,
+      "suites": 40,
+      "job_id": 127231530012
+    },
+    "without_heif": {
+      "passed": 2115,
+      "skipped": 18,
+      "failed": 0,
+      "job_id": 127231529955
+    },
+    "web": {
+      "largest_file_bytes": 13963991,
+      "limit_bytes": 25165824,
+      "passed": true,
+      "job_id": 127230267520
+    },
+    "ubuntu": {
+      "passed": 14861,
+      "skipped": 106,
+      "failed": 0,
+      "job_id": 127231530044,
+      "all_nine_gate_stages": "passed",
+      "panic_hunt": {
+        "passed": 1,
+        "skipped": 1
+      },
+      "scratch_fork_contract": "passed",
+      "cjk_live_render": "passed"
+    },
+    "windows_unit": {
+      "passed": 11736,
+      "skipped": 83,
+      "failed": 0,
+      "leaky_process_warnings": 15,
+      "job_id": 127231530008
+    },
+    "windows_integration": {
+      "passed": 3009,
+      "skipped": 24,
+      "failed": 0,
+      "slow": 18,
+      "leaky_process_warnings": 18,
+      "job_id": 127231530010
+    }
+  }
+}
