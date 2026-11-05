@@ -2241,8 +2241,16 @@ fn unimplemented_preferences_are_hidden_from_the_dialog_fork_contract() {
     let values = prefs::Preferences::default().to_json();
     assert!(has_visible_fields(&values, "general"));
     assert!(has_visible_fields(&values, "fileHandling"));
-    // Every setting of these sections is still unimplemented.
-    assert!(!has_visible_fields(&values, "scratchDisks"), "scratchDisks");
+    // Upstream 0.20.2 implements tile spilling and its size cap; both settings have dialog rows.
+    assert!(has_visible_fields(&values, "scratchDisks"));
+    let scratch = values["scratchDisks"].as_object().unwrap();
+    for key in ["disks", "sizeLimitMb"] {
+        assert!(!prefs::is_hidden(&format!("scratchDisks.{key}")), "{key}");
+        assert!(field_visible("scratchDisks", scratch, key, ""), "{key}");
+    }
+    // Settings without implementations must still stay hidden, even in otherwise live sections.
+    assert!(prefs::is_hidden("performance.legacyCompositing"));
+    assert!(prefs::is_hidden("type.textEngine"));
     // "Fill new type layers with placeholder text" and "Use Escape to Commit" are live; other Type rows stay hidden.
     assert!(has_visible_fields(&values, "type"));
     assert!(!prefs::is_hidden("type.fillNewTypeLayersWithPlaceholder"));
