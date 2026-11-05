@@ -4912,3 +4912,5 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	ZIP	ZIP
 	{ok} written to {dir}	{ok} skrivna till {dir}
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} export av bildresurser misslyckades|{what}: {n} exporter av bildresurser misslyckades
+	Memory usage percent	Minnesanvändning i procent
+	Save Full-Size Composite in .pcraft Files	Spara sammansatt bild i full storlek i .pcraft-filer

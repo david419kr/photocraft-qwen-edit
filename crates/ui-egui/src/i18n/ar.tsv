@@ -3703,3 +3703,5 @@ curves	Smooth	تنعيم
 	ZIP	ZIP
 	{ok} written to {dir}	تمت كتابة {ok} إلى {dir}
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})
+	Memory usage percent	نسبة استخدام الذاكرة
+	Save Full-Size Composite in .pcraft Files	حفظ الصورة المركبة بالحجم الكامل في ملفات .pcraft

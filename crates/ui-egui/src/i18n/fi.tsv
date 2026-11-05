@@ -4915,3 +4915,5 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	ZIP	ZIP
 	{ok} written to {dir}	{ok} kirjoitettu kohteeseen {dir}
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} kuvaresurssin vienti epäonnistui|{what}: {n} kuvaresurssin vientiä epäonnistui
+	Memory usage percent	Muistin käyttö prosentteina
+	Save Full-Size Composite in .pcraft Files	Tallenna täysikokoinen yhdistelmäkuva .pcraft-tiedostoihin

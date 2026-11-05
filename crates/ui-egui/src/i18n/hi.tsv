@@ -681,3 +681,5 @@ cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की स
 	ZIP	ZIP
 	{ok} written to {dir}	{dir} में {ok} लिखे गए
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} छवि एसेट का आउटपुट विफल हुआ|{what}: {n} छवि एसेट का आउटपुट विफल हुआ
+	Memory usage percent	मेमोरी उपयोग प्रतिशत
+	Save Full-Size Composite in .pcraft Files	.pcraft फ़ाइलों में पूर्ण आकार की संयुक्त छवि सहेजें

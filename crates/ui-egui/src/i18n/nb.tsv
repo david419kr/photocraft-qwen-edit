@@ -4914,3 +4914,5 @@ cameraRaw	White Balance: As Shot	Hvitbalanse: som fotografert
 	ZIP	ZIP
 	{ok} written to {dir}	{ok} skrevet til {dir}
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} eksport av bilderessurser mislyktes|{what}: {n} eksporter av bilderessurser mislyktes
+	Memory usage percent	Minnebruk i prosent
+	Save Full-Size Composite in .pcraft Files	Lagre sammensatt bilde i full størrelse i .pcraft-filer
