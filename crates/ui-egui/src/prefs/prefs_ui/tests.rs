@@ -2237,10 +2237,8 @@ fn tool_colors_ignore_invalid_swatches_without_losing_valid_preferences() {
 }
 
 #[test]
-fn unimplemented_preferences_are_hidden_from_the_dialog_fork_contract() {
+fn implemented_scratch_preferences_are_visible_in_the_dialog_fork_contract() {
     let values = prefs::Preferences::default().to_json();
-    assert!(has_visible_fields(&values, "general"));
-    assert!(has_visible_fields(&values, "fileHandling"));
     // Upstream 0.20.2 implements tile spilling and its size cap; both settings have dialog rows.
     assert!(has_visible_fields(&values, "scratchDisks"));
     let scratch = values["scratchDisks"].as_object().unwrap();
@@ -2248,6 +2246,13 @@ fn unimplemented_preferences_are_hidden_from_the_dialog_fork_contract() {
         assert!(!prefs::is_hidden(&format!("scratchDisks.{key}")), "{key}");
         assert!(field_visible("scratchDisks", scratch, key, ""), "{key}");
     }
+}
+
+#[test]
+fn unimplemented_preferences_are_hidden_from_the_dialog_fork_contract() {
+    let values = prefs::Preferences::default().to_json();
+    assert!(has_visible_fields(&values, "general"));
+    assert!(has_visible_fields(&values, "fileHandling"));
     // Settings without implementations must still stay hidden, even in otherwise live sections.
     assert!(prefs::is_hidden("performance.legacyCompositing"));
     assert!(prefs::is_hidden("type.textEngine"));
