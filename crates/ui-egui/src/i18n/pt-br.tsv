@@ -4584,3 +4584,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set as default	Definir como padrão
 	Start	Início
 	Use these settings for new arrows	Usar estas configurações para novas setas
+
+# Upstream 0.20.2 UI labels
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Um comando foi cancelado ou interrompido durante o processamento em lote. Continuar com o próximo arquivo ou parar?
+	Attribute	Atributo
+	Batch preview	Visualização do lote
+	Data Sets as Files is unavailable on the web	Conjuntos de dados como arquivos não está disponível na Web
+	Effect	Efeito
+	Empty	Vazio
+	Filter for embedded smart objects	Filtrar objetos inteligentes incorporados
+	Filter for linked smart objects that are missing	Filtrar objetos inteligentes vinculados ausentes
+	Filter for smart objects linked locally	Filtrar objetos inteligentes vinculados localmente
+	High Memory Photoshop Document	Documento do Photoshop com alto uso de memória
+	Image Compression	Compactação da imagem
+	LZW	LZW
+	Layer Effects	Efeitos de camada
+	Lining	Algarismos alinhados
+	Linked	Vinculado
+	No Adv. Blending	Sem mesclagem avançada
+	No Layer Effects	Sem efeitos de camada
+	No Layer Mask	Sem máscara de camada
+	No Vector Mask	Sem máscara vetorial
+	Not Clipped	Sem corte
+	Not Empty	Não vazio
+	Not Linked	Não vinculado
+	Not Locked	Não bloqueado
+	Not Visible	Não visível
+	Numerals	Algarismos
+	Open anyway	Abrir mesmo assim
+	Opening this document uses more memory and may slow down your computer or other running applications.	Abrir este documento usa mais memória e pode deixar o computador ou outros aplicativos em execução mais lentos.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Abrir “{name}” requer aproximadamente {est} GiB de memória ({avail} GiB disponíveis).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Abrir “{name}” requer aproximadamente {est} GiB de memória. Não foi possível medir a memória disponível.
+	Proportional	Proporcionais
+	Proportional Lining	Algarismos alinhados proporcionais
+	Proportional Oldstyle	Algarismos de estilo antigo proporcionais
+	Save Image Pyramid	Salvar pirâmide de imagens
+	Save Transparency	Salvar transparência
+	Tabular	Tabulares
+	Tabular Lining	Algarismos alinhados tabulares
+	Tabular Oldstyle	Algarismos de estilo antigo tabulares
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} gravados em {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: falha em {n} saída de recursos de imagem|{what}: falha em {n} saídas de recursos de imagem

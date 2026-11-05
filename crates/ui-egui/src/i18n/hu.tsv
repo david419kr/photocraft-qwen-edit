@@ -4573,3 +4573,45 @@ prompt-region	Bottom right	Jobb alsó
 	Set as default	Beállítás alapértelmezettként
 	Start	Kezdet
 	Use these settings for new arrows	Ezek a beállítások legyenek érvényesek az új nyilakra
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Egy parancs megszakadt vagy leállt a kötegelt feldolgozás során. Folytatja a következő fájllal, vagy leállítja?
+	Attribute	Tulajdonság
+	Batch preview	Köteg előnézete
+	Data Sets as Files is unavailable on the web	Az adatkészletek fájlként történő mentése nem érhető el a weben
+	Effect	Effektus
+	Empty	Üres
+	Filter for embedded smart objects	Beágyazott intelligens objektumok szűrése
+	Filter for linked smart objects that are missing	Hiányzó csatolt intelligens objektumok szűrése
+	Filter for smart objects linked locally	Helyi fájlokhoz csatolt intelligens objektumok szűrése
+	High Memory Photoshop Document	Nagy memóriaigényű Photoshop-dokumentum
+	Image Compression	Képtömörítés
+	LZW	LZW
+	Layer Effects	Rétegeffektusok
+	Lining	Álló számjegyek
+	Linked	Csatolt
+	No Adv. Blending	Speciális keverés nélkül
+	No Layer Effects	Rétegeffektusok nélkül
+	No Layer Mask	Rétegmaszk nélkül
+	No Vector Mask	Vektormaszk nélkül
+	Not Clipped	Vágómaszk nélkül
+	Not Empty	Nem üres
+	Not Linked	Nem csatolt
+	Not Locked	Nem zárolt
+	Not Visible	Nem látható
+	Numerals	Számjegyek
+	Open anyway	Megnyitás mégis
+	Opening this document uses more memory and may slow down your computer or other running applications.	A dokumentum megnyitása több memóriát igényel, és lelassíthatja a számítógépet vagy más futó alkalmazásokat.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	A(z) „{name}” megnyitásához becslés szerint {est} GiB memória szükséges ({avail} GiB érhető el).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	A(z) „{name}” megnyitásához becslés szerint {est} GiB memória szükséges. A rendelkezésre álló memória nem mérhető.
+	Proportional	Arányos
+	Proportional Lining	Arányos álló számjegyek
+	Proportional Oldstyle	Arányos ugráló számjegyek
+	Save Image Pyramid	Képpiramis mentése
+	Save Transparency	Átlátszóság mentése
+	Tabular	Azonos szélességű
+	Tabular Lining	Azonos szélességű álló számjegyek
+	Tabular Oldstyle	Azonos szélességű ugráló számjegyek
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} kiírva ide: {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} képi erőforrás kiírása sikertelen

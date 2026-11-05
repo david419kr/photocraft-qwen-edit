@@ -4415,3 +4415,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set as default	Als standaard instellen
 	Start	Begin
 	Use these settings for new arrows	Deze instellingen gebruiken voor nieuwe pijlen
+
+# Upstream 0.20.2 UI labels
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Een opdracht is geannuleerd of gestopt tijdens de batchverwerking. Doorgaan met het volgende bestand of stoppen?
+	Attribute	Kenmerk
+	Batch preview	Batchvoorbeeld
+	Data Sets as Files is unavailable on the web	Gegevenssets als bestanden is niet beschikbaar op het web
+	Effect	Effect
+	Empty	Leeg
+	Filter for embedded smart objects	Filteren op ingesloten slimme objecten
+	Filter for linked smart objects that are missing	Filteren op ontbrekende gekoppelde slimme objecten
+	Filter for smart objects linked locally	Filteren op lokaal gekoppelde slimme objecten
+	High Memory Photoshop Document	Photoshop-document met hoog geheugengebruik
+	Image Compression	Afbeeldingscompressie
+	LZW	LZW
+	Layer Effects	Laageffecten
+	Lining	Kapitaalcijfers
+	Linked	Gekoppeld
+	No Adv. Blending	Geen geavanceerde overvloeiing
+	No Layer Effects	Geen laageffecten
+	No Layer Mask	Geen laagmasker
+	No Vector Mask	Geen vectormasker
+	Not Clipped	Niet uitgeknipt
+	Not Empty	Niet leeg
+	Not Linked	Niet gekoppeld
+	Not Locked	Niet vergrendeld
+	Not Visible	Niet zichtbaar
+	Numerals	Cijfers
+	Open anyway	Toch openen
+	Opening this document uses more memory and may slow down your computer or other running applications.	Het openen van dit document gebruikt meer geheugen en kan uw computer of andere actieve toepassingen vertragen.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Het openen van ‘{name}’ vereist naar schatting {est} GiB geheugen ({avail} GiB beschikbaar).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Het openen van ‘{name}’ vereist naar schatting {est} GiB geheugen. Het beschikbare geheugen kon niet worden gemeten.
+	Proportional	Proportioneel
+	Proportional Lining	Proportionele kapitaalcijfers
+	Proportional Oldstyle	Proportionele uithangende cijfers
+	Save Image Pyramid	Afbeeldingspiramide opslaan
+	Save Transparency	Transparantie opslaan
+	Tabular	Tabellarisch
+	Tabular Lining	Tabellarische kapitaalcijfers
+	Tabular Oldstyle	Tabellarische uithangende cijfers
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} geschreven naar {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} uitvoer van afbeeldingsmiddelen mislukt|{what}: {n} uitvoeren van afbeeldingsmiddelen mislukt

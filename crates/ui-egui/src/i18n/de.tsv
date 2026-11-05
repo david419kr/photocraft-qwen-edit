@@ -3699,3 +3699,46 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Start	Anfang
 	Use these settings for new arrows	Diese Einstellungen für neue Pfeile verwenden
 	Create new set	Neues Set erstellen
+
+# Upstream 0.20.2 UI labels
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Ein Befehl wurde während der Stapelverarbeitung abgebrochen oder angehalten. Mit der nächsten Datei fortfahren oder stoppen?
+	Attribute	Attribut
+	Batch preview	Stapelvorschau
+	Data Sets as Files is unavailable on the web	Datensätze als Dateien sind im Web nicht verfügbar
+	Effect	Effekt
+	Empty	Leer
+	Filter for embedded smart objects	Nach eingebetteten Smartobjekten filtern
+	Filter for linked smart objects that are missing	Nach fehlenden verknüpften Smartobjekten filtern
+	Filter for smart objects linked locally	Nach lokal verknüpften Smartobjekten filtern
+	High Memory Photoshop Document	Photoshop-Dokument mit hohem Speicherbedarf
+	Image Compression	Bildkomprimierung
+	LZW	LZW
+	Layer Effects	Ebeneneffekte
+	Lining	Versalziffern
+	Linked	Verknüpft
+	No Adv. Blending	Ohne erweiterte Fülloptionen
+	No Layer Effects	Ohne Ebeneneffekte
+	No Layer Mask	Ohne Ebenenmaske
+	No Vector Mask	Ohne Vektormaske
+	Not Clipped	Nicht beschnitten
+	Not Empty	Nicht leer
+	Not Linked	Nicht verknüpft
+	Not Locked	Nicht gesperrt
+	Not Visible	Nicht sichtbar
+	Numerals	Ziffern
+	Open anyway	Trotzdem öffnen
+	Opening this document uses more memory and may slow down your computer or other running applications.	Das Öffnen dieses Dokuments benötigt mehr Arbeitsspeicher und kann Ihren Computer oder andere laufende Anwendungen verlangsamen.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Das Öffnen von „{name}“ benötigt geschätzt {est} GiB Arbeitsspeicher ({avail} GiB verfügbar).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Das Öffnen von „{name}“ benötigt geschätzt {est} GiB Arbeitsspeicher. Der verfügbare Arbeitsspeicher konnte nicht ermittelt werden.
+	Proportional	Proportional
+	Proportional Lining	Proportionale Versalziffern
+	Proportional Oldstyle	Proportionale Mediävalziffern
+	Save Image Pyramid	Bildpyramide speichern
+	Save Transparency	Transparenz speichern
+	Tabular	Tabellarisch
+	Tabular Lining	Tabellarische Versalziffern
+	Tabular Oldstyle	Tabellarische Mediävalziffern
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} nach {dir} geschrieben
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} Ausgabe von Bild-Assets fehlgeschlagen|{what}: {n} Ausgaben von Bild-Assets fehlgeschlagen
+	Batch	Stapelverarbeitung

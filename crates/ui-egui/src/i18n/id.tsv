@@ -3691,3 +3691,46 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Start	Awal
 	Use these settings for new arrows	Gunakan pengaturan ini untuk panah baru
 	Length	Panjang
+
+# Upstream 0.20.2: batch, layer filters, memory admission and numeral styles.
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Perintah dibatalkan atau dihentikan selama pemrosesan batch. Lanjutkan ke berkas berikutnya atau berhenti?
+	Attribute	Atribut
+	Batch	Pemrosesan Batch
+	Batch preview	Pratinjau batch
+	Data Sets as Files is unavailable on the web	Ekspor Kumpulan Data sebagai Berkas tidak tersedia di web
+	Effect	Efek
+	Empty	Kosong
+	Filter for embedded smart objects	Filter objek pintar yang disematkan
+	Filter for linked smart objects that are missing	Filter objek pintar dengan berkas tertaut yang hilang
+	Filter for smart objects linked locally	Filter objek pintar yang ditautkan secara lokal
+	High Memory Photoshop Document	Dokumen Photoshop dengan Penggunaan Memori Tinggi
+	Image Compression	Kompresi Gambar
+	LZW	LZW
+	Layer Effects	Efek Lapisan
+	Lining	Angka Sejajar
+	Linked	Tertaut
+	No Adv. Blending	Tanpa Pencampuran Lanjutan
+	No Layer Effects	Tanpa Efek Lapisan
+	No Layer Mask	Tanpa Masker Lapisan
+	No Vector Mask	Tanpa Masker Vektor
+	Not Clipped	Tidak Terkliping
+	Not Empty	Tidak Kosong
+	Not Linked	Tidak Tertaut
+	Not Locked	Tidak Terkunci
+	Not Visible	Tidak Terlihat
+	Numerals	Angka
+	Open anyway	Tetap buka
+	Opening this document uses more memory and may slow down your computer or other running applications.	Membuka dokumen ini menggunakan lebih banyak memori dan dapat memperlambat komputer atau aplikasi lain yang sedang berjalan.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Membuka “{name}” diperkirakan memerlukan memori {est} GiB ({avail} GiB tersedia).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Membuka “{name}” diperkirakan memerlukan memori {est} GiB. Memori yang tersedia tidak dapat diukur.
+	Proportional	Proporsional
+	Proportional Lining	Angka Sejajar Proporsional
+	Proportional Oldstyle	Angka Gaya Lama Proporsional
+	Save Image Pyramid	Simpan Piramida Gambar
+	Save Transparency	Simpan Transparansi
+	Tabular	Lebar Tetap
+	Tabular Lining	Angka Sejajar Lebar Tetap
+	Tabular Oldstyle	Angka Gaya Lama Lebar Tetap
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} ditulis ke {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: keluaran {n} Aset Gambar gagal

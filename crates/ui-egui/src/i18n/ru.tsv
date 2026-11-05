@@ -4850,3 +4850,45 @@ shape	Appearance	Оформление
 	Set as default	Использовать по умолчанию
 	Start	Начало
 	Use these settings for new arrows	Использовать эти настройки для новых стрелок
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Команда отменена или остановлена во время пакетной обработки. Продолжить со следующим файлом или остановиться?
+	Attribute	Атрибут
+	Batch preview	Предпросмотр пакетной обработки
+	Data Sets as Files is unavailable on the web	Наборы данных в виде файлов недоступны в веб-версии
+	Effect	Эффект
+	Empty	Пустые
+	Filter for embedded smart objects	Фильтровать встроенные смарт-объекты
+	Filter for linked smart objects that are missing	Фильтровать отсутствующие связанные смарт-объекты
+	Filter for smart objects linked locally	Фильтровать смарт-объекты, связанные с локальными файлами
+	High Memory Photoshop Document	Документ Photoshop с высоким потреблением памяти
+	Image Compression	Сжатие изображения
+	LZW	LZW
+	Layer Effects	Эффекты слоя
+	Lining	Маюскульные
+	Linked	Связанные
+	No Adv. Blending	Без расширенного наложения
+	No Layer Effects	Без эффектов слоя
+	No Layer Mask	Без маски слоя
+	No Vector Mask	Без векторной маски
+	Not Clipped	Без обтравочной маски
+	Not Empty	Непустые
+	Not Linked	Несвязанные
+	Not Locked	Незаблокированные
+	Not Visible	Невидимые
+	Numerals	Цифры
+	Open anyway	Всё равно открыть
+	Opening this document uses more memory and may slow down your computer or other running applications.	Открытие этого документа требует больше памяти и может замедлить работу компьютера или других запущенных приложений.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Для открытия «{name}» требуется примерно {est} GiB памяти (доступно {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Для открытия «{name}» требуется примерно {est} GiB памяти. Не удалось измерить доступную память.
+	Proportional	Пропорциональные
+	Proportional Lining	Пропорциональные маюскульные
+	Proportional Oldstyle	Пропорциональные минускульные
+	Save Image Pyramid	Сохранить пирамиду изображения
+	Save Transparency	Сохранить прозрачность
+	Tabular	Табличные
+	Tabular Lining	Табличные маюскульные
+	Tabular Oldstyle	Табличные минускульные
+	ZIP	ZIP
+	{ok} written to {dir}	Записано {ok} в {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: не удалось вывести {n} графический ресурс|{what}: не удалось вывести {n} графических ресурса|{what}: не удалось вывести {n} графических ресурсов

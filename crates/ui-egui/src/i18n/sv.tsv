@@ -4870,3 +4870,45 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Set as default	Ange som standard
 	Start	Start
 	Use these settings for new arrows	Använd dessa inställningar för nya pilar
+
+# Upstream 0.20.2 UI labels
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Ett kommando avbröts eller stoppades under gruppbearbetningen. Fortsätta med nästa fil eller stoppa?
+	Attribute	Attribut
+	Batch preview	Förhandsvisning av gruppbearbetning
+	Data Sets as Files is unavailable on the web	Datauppsättningar som filer är inte tillgängligt på webben
+	Effect	Effekt
+	Empty	Tom
+	Filter for embedded smart objects	Filtrera efter inbäddade smarta objekt
+	Filter for linked smart objects that are missing	Filtrera efter saknade länkade smarta objekt
+	Filter for smart objects linked locally	Filtrera efter lokalt länkade smarta objekt
+	High Memory Photoshop Document	Photoshop-dokument med hög minnesanvändning
+	Image Compression	Bildkomprimering
+	LZW	LZW
+	Layer Effects	Lagereffekter
+	Lining	Versalsiffror
+	Linked	Länkad
+	No Adv. Blending	Ingen avancerad blandning
+	No Layer Effects	Inga lagereffekter
+	No Layer Mask	Ingen lagermask
+	No Vector Mask	Ingen vektormask
+	Not Clipped	Inte urklippt
+	Not Empty	Inte tom
+	Not Linked	Inte länkad
+	Not Locked	Inte låst
+	Not Visible	Inte synlig
+	Numerals	Siffror
+	Open anyway	Öppna ändå
+	Opening this document uses more memory and may slow down your computer or other running applications.	Att öppna det här dokumentet använder mer minne och kan göra datorn eller andra program som körs långsammare.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Att öppna ”{name}” kräver uppskattningsvis {est} GiB minne ({avail} GiB tillgängligt).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Att öppna ”{name}” kräver uppskattningsvis {est} GiB minne. Det tillgängliga minnet kunde inte mätas.
+	Proportional	Proportionella
+	Proportional Lining	Proportionella versalsiffror
+	Proportional Oldstyle	Proportionella gemena siffror
+	Save Image Pyramid	Spara bildpyramid
+	Save Transparency	Spara genomskinlighet
+	Tabular	Tabellsiffror
+	Tabular Lining	Tabellversalsiffror
+	Tabular Oldstyle	Gemena tabellsiffror
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} skrivna till {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} export av bildresurser misslyckades|{what}: {n} exporter av bildresurser misslyckades

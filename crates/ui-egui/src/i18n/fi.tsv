@@ -4873,3 +4873,45 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Set as default	Aseta oletukseksi
 	Start	Alku
 	Use these settings for new arrows	Käytä näitä asetuksia uusille nuolille
+
+# Upstream 0.20.2 UI labels
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Komento peruutettiin tai pysäytettiin eräkäsittelyn aikana. Jatketaanko seuraavaan tiedostoon vai lopetetaanko?
+	Attribute	Ominaisuus
+	Batch preview	Erän esikatselu
+	Data Sets as Files is unavailable on the web	Tietojoukot tiedostoina ei ole käytettävissä verkossa
+	Effect	Tehoste
+	Empty	Tyhjä
+	Filter for embedded smart objects	Suodata upotetut älykkäät objektit
+	Filter for linked smart objects that are missing	Suodata puuttuvat linkitetyt älykkäät objektit
+	Filter for smart objects linked locally	Suodata paikallisesti linkitetyt älykkäät objektit
+	High Memory Photoshop Document	Paljon muistia käyttävä Photoshop-asiakirja
+	Image Compression	Kuvan pakkaus
+	LZW	LZW
+	Layer Effects	Tasotehosteet
+	Lining	Versaalinumerot
+	Linked	Linkitetty
+	No Adv. Blending	Ei edistynyttä sekoitusta
+	No Layer Effects	Ei tasotehosteita
+	No Layer Mask	Ei tasomaskia
+	No Vector Mask	Ei vektorimaskia
+	Not Clipped	Ei leikattu
+	Not Empty	Ei tyhjä
+	Not Linked	Ei linkitetty
+	Not Locked	Ei lukittu
+	Not Visible	Ei näkyvissä
+	Numerals	Numerot
+	Open anyway	Avaa silti
+	Opening this document uses more memory and may slow down your computer or other running applications.	Tämän asiakirjan avaaminen käyttää enemmän muistia ja voi hidastaa tietokonetta tai muita käynnissä olevia sovelluksia.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Asiakirjan ”{name}” avaaminen vaatii arviolta {est} GiB muistia ({avail} GiB käytettävissä).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Asiakirjan ”{name}” avaaminen vaatii arviolta {est} GiB muistia. Käytettävissä olevaa muistia ei voitu mitata.
+	Proportional	Suhteelliset
+	Proportional Lining	Suhteelliset versaalinumerot
+	Proportional Oldstyle	Suhteelliset gemenanumerot
+	Save Image Pyramid	Tallenna kuvapyramidi
+	Save Transparency	Tallenna läpinäkyvyys
+	Tabular	Tasalevyiset
+	Tabular Lining	Tasalevyiset versaalinumerot
+	Tabular Oldstyle	Tasalevyiset gemenanumerot
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} kirjoitettu kohteeseen {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} kuvaresurssin vienti epäonnistui|{what}: {n} kuvaresurssin vientiä epäonnistui

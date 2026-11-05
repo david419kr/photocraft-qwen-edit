@@ -4690,3 +4690,45 @@ shape	Appearance	Apparence
 	Set as default	Définir par défaut
 	Start	Début
 	Use these settings for new arrows	Utiliser ces paramètres pour les nouvelles flèches
+
+# Upstream 0.20.2 UI labels
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Une commande a été annulée ou interrompue pendant le traitement par lots. Continuer avec le fichier suivant ou arrêter ?
+	Attribute	Attribut
+	Batch preview	Aperçu du traitement par lots
+	Data Sets as Files is unavailable on the web	L’exportation des ensembles de données sous forme de fichiers n’est pas disponible sur le Web
+	Effect	Effet
+	Empty	Vide
+	Filter for embedded smart objects	Filtrer les objets dynamiques incorporés
+	Filter for linked smart objects that are missing	Filtrer les objets dynamiques liés manquants
+	Filter for smart objects linked locally	Filtrer les objets dynamiques liés localement
+	High Memory Photoshop Document	Document Photoshop nécessitant beaucoup de mémoire
+	Image Compression	Compression de l’image
+	LZW	LZW
+	Layer Effects	Effets de calque
+	Lining	Chiffres alignés
+	Linked	Lié
+	No Adv. Blending	Sans fusion avancée
+	No Layer Effects	Sans effets de calque
+	No Layer Mask	Sans masque de fusion
+	No Vector Mask	Sans masque vectoriel
+	Not Clipped	Non écrêté
+	Not Empty	Non vide
+	Not Linked	Non lié
+	Not Locked	Non verrouillé
+	Not Visible	Non visible
+	Numerals	Chiffres
+	Open anyway	Ouvrir quand même
+	Opening this document uses more memory and may slow down your computer or other running applications.	L’ouverture de ce document utilise davantage de mémoire et peut ralentir votre ordinateur ou les autres applications en cours d’exécution.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	L’ouverture de « {name} » nécessite environ {est} GiB de mémoire ({avail} GiB disponibles).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	L’ouverture de « {name} » nécessite environ {est} GiB de mémoire. La mémoire disponible n’a pas pu être mesurée.
+	Proportional	Proportionnels
+	Proportional Lining	Chiffres alignés proportionnels
+	Proportional Oldstyle	Chiffres elzéviriens proportionnels
+	Save Image Pyramid	Enregistrer la pyramide d’images
+	Save Transparency	Enregistrer la transparence
+	Tabular	Tabulaires
+	Tabular Lining	Chiffres alignés tabulaires
+	Tabular Oldstyle	Chiffres elzéviriens tabulaires
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} écrits dans {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what} : échec de {n} exportation de ressource d’image|{what} : échec de {n} exportations de ressources d’image

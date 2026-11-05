@@ -4408,3 +4408,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Start	Začátek
 	Use these settings for new arrows	Použít tato nastavení pro nové šipky
 	Create new set	Vytvořit novou sadu
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Během dávkového zpracování byl příkaz zrušen nebo zastaven. Pokračovat dalším souborem, nebo zastavit?
+	Attribute	Atribut
+	Batch preview	Náhled dávky
+	Data Sets as Files is unavailable on the web	Datové sady jako soubory nejsou na webu dostupné
+	Effect	Efekt
+	Empty	Prázdné
+	Filter for embedded smart objects	Filtrovat vložené inteligentní objekty
+	Filter for linked smart objects that are missing	Filtrovat chybějící propojené inteligentní objekty
+	Filter for smart objects linked locally	Filtrovat místně propojené inteligentní objekty
+	High Memory Photoshop Document	Dokument Photoshopu s vysokými nároky na paměť
+	Image Compression	Komprese obrazu
+	LZW	LZW
+	Layer Effects	Efekty vrstvy
+	Lining	Verzálkové
+	Linked	Propojené
+	No Adv. Blending	Bez pokročilého prolnutí
+	No Layer Effects	Bez efektů vrstvy
+	No Layer Mask	Bez masky vrstvy
+	No Vector Mask	Bez vektorové masky
+	Not Clipped	Bez ořezové masky
+	Not Empty	Neprázdné
+	Not Linked	Nepropojené
+	Not Locked	Nezamčené
+	Not Visible	Neviditelné
+	Numerals	Číslice
+	Open anyway	Přesto otevřít
+	Opening this document uses more memory and may slow down your computer or other running applications.	Otevření tohoto dokumentu vyžaduje více paměti a může zpomalit počítač nebo jiné spuštěné aplikace.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Otevření „{name}“ vyžaduje odhadem {est} GiB paměti (dostupných {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Otevření „{name}“ vyžaduje odhadem {est} GiB paměti. Dostupnou paměť se nepodařilo změřit.
+	Proportional	Proporcionální
+	Proportional Lining	Proporcionální verzálkové
+	Proportional Oldstyle	Proporcionální minuskové
+	Save Image Pyramid	Uložit obrazovou pyramidu
+	Save Transparency	Uložit průhlednost
+	Tabular	Tabulkové
+	Tabular Lining	Tabulkové verzálkové
+	Tabular Oldstyle	Tabulkové minuskové
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} zapsáno do {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: selhal výstup {n} obrazového datového zdroje|{what}: selhal výstup {n} obrazových datových zdrojů|{what}: selhal výstup {n} obrazových datových zdrojů

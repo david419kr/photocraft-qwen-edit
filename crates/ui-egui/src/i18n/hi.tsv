@@ -637,3 +637,47 @@ cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की स
 	Use these settings for new arrows	नए तीरों के लिए इन सेटिंग का उपयोग करें
 	Create new set	नया सेट बनाएँ
 	Length	लंबाई
+
+# Upstream 0.20.2: batch, layer filters, memory admission and numeral styles.
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	बैच प्रोसेसिंग के दौरान कोई कमांड रद्द या बंद हो गई। अगली फ़ाइल के साथ जारी रखें या रोक दें?
+	Advanced Blending	उन्नत मिश्रण
+	Attribute	विशेषता
+	Batch	बैच प्रोसेसिंग
+	Batch preview	बैच पूर्वावलोकन
+	Data Sets as Files is unavailable on the web	वेब पर डेटा सेट को फ़ाइलों के रूप में निर्यात करना उपलब्ध नहीं है
+	Effect	प्रभाव
+	Empty	खाली
+	Filter for embedded smart objects	एम्बेड किए गए स्मार्ट ऑब्जेक्ट छाँटें
+	Filter for linked smart objects that are missing	गायब लिंक की गई फ़ाइलों वाले स्मार्ट ऑब्जेक्ट छाँटें
+	Filter for smart objects linked locally	स्थानीय फ़ाइलों से जुड़े स्मार्ट ऑब्जेक्ट छाँटें
+	High Memory Photoshop Document	अधिक मेमोरी वाला Photoshop दस्तावेज़
+	Image Compression	छवि संपीड़न
+	LZW	LZW
+	Layer Effects	लेयर प्रभाव
+	Lining	समान ऊँचाई वाले अंक
+	Linked	जुड़ा हुआ
+	No Adv. Blending	उन्नत मिश्रण नहीं
+	No Layer Effects	लेयर प्रभाव नहीं
+	No Layer Mask	लेयर मास्क नहीं
+	No Vector Mask	वेक्टर मास्क नहीं
+	Not Clipped	क्लिप नहीं किया गया
+	Not Empty	खाली नहीं
+	Not Linked	जुड़ा नहीं
+	Not Locked	लॉक नहीं
+	Not Visible	दिखाई नहीं देता
+	Numerals	अंक शैली
+	Open anyway	फिर भी खोलें
+	Opening this document uses more memory and may slow down your computer or other running applications.	इस दस्तावेज़ को खोलने में अधिक मेमोरी लगेगी और आपका कंप्यूटर या अन्य चल रहे अनुप्रयोग धीमे हो सकते हैं।
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	“{name}” खोलने के लिए अनुमानित {est} GiB मेमोरी चाहिए ({avail} GiB उपलब्ध है)।
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	“{name}” खोलने के लिए अनुमानित {est} GiB मेमोरी चाहिए। उपलब्ध मेमोरी मापी नहीं जा सकी।
+	Proportional	आनुपातिक चौड़ाई
+	Proportional Lining	आनुपातिक चौड़ाई के समान ऊँचाई वाले अंक
+	Proportional Oldstyle	आनुपातिक चौड़ाई के पुरानी शैली वाले अंक
+	Save Image Pyramid	छवि पिरामिड सहेजें
+	Save Transparency	पारदर्शिता सहेजें
+	Tabular	समान चौड़ाई
+	Tabular Lining	समान चौड़ाई और ऊँचाई वाले अंक
+	Tabular Oldstyle	समान चौड़ाई के पुरानी शैली वाले अंक
+	ZIP	ZIP
+	{ok} written to {dir}	{dir} में {ok} लिखे गए
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} छवि एसेट का आउटपुट विफल हुआ|{what}: {n} छवि एसेट का आउटपुट विफल हुआ

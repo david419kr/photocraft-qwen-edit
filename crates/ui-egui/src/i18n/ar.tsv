@@ -3660,3 +3660,46 @@ curves	Smooth	تنعيم
 	Start	البداية
 	Use these settings for new arrows	استخدام هذه الإعدادات للأسهم الجديدة
 	Create new set	إنشاء مجموعة جديدة
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	أُلغي أمر أو توقف أثناء المعالجة الدفعية. هل تريد المتابعة بالملف التالي أم التوقف؟
+	Attribute	السمة
+	Batch	معالجة دفعية
+	Batch preview	معاينة المعالجة الدفعية
+	Data Sets as Files is unavailable on the web	مجموعات البيانات كملفات غير متاحة على الويب
+	Effect	التأثير
+	Empty	فارغ
+	Filter for embedded smart objects	تصفية الكائنات الذكية المضمّنة
+	Filter for linked smart objects that are missing	تصفية الكائنات الذكية المرتبطة المفقودة
+	Filter for smart objects linked locally	تصفية الكائنات الذكية المرتبطة بملفات محلية
+	High Memory Photoshop Document	مستند Photoshop يتطلب ذاكرة كبيرة
+	Image Compression	ضغط الصورة
+	LZW	LZW
+	Layer Effects	تأثيرات الطبقة
+	Lining	متساوية الارتفاع
+	Linked	مرتبط
+	No Adv. Blending	بدون مزج متقدم
+	No Layer Effects	بدون تأثيرات طبقة
+	No Layer Mask	بدون قناع طبقة
+	No Vector Mask	بدون قناع متجه
+	Not Clipped	بدون قناع قص
+	Not Empty	غير فارغ
+	Not Linked	غير مرتبط
+	Not Locked	غير مقفل
+	Not Visible	غير مرئي
+	Numerals	الأرقام
+	Open anyway	فتح على أي حال
+	Opening this document uses more memory and may slow down your computer or other running applications.	يتطلب فتح هذا المستند مزيدًا من الذاكرة وقد يبطئ الكمبيوتر أو التطبيقات الأخرى قيد التشغيل.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	يتطلب فتح «{name}» ذاكرة تُقدّر بـ {est} GiB (المتاح {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	يتطلب فتح «{name}» ذاكرة تُقدّر بـ {est} GiB. تعذّر قياس الذاكرة المتاحة.
+	Proportional	متناسبة العرض
+	Proportional Lining	متناسبة العرض ومتساوية الارتفاع
+	Proportional Oldstyle	متناسبة العرض بالطراز القديم
+	Save Image Pyramid	حفظ هرم الصورة
+	Save Transparency	حفظ الشفافية
+	Tabular	ثابتة العرض
+	Tabular Lining	ثابتة العرض ومتساوية الارتفاع
+	Tabular Oldstyle	ثابتة العرض بالطراز القديم
+	ZIP	ZIP
+	{ok} written to {dir}	تمت كتابة {ok} إلى {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})

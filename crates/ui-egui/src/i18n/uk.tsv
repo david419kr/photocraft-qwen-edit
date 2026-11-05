@@ -4376,3 +4376,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set as default	Установити за замовчуванням
 	Start	Початок
 	Use these settings for new arrows	Використовувати ці налаштування для нових стрілок
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Команду скасовано або зупинено під час пакетної обробки. Продовжити з наступним файлом чи зупинитися?
+	Attribute	Атрибут
+	Batch preview	Попередній перегляд пакетної обробки
+	Data Sets as Files is unavailable on the web	Набори даних як файли недоступні у вебверсії
+	Effect	Ефект
+	Empty	Порожні
+	Filter for embedded smart objects	Фільтрувати вбудовані смартоб’єкти
+	Filter for linked smart objects that are missing	Фільтрувати відсутні пов’язані смартоб’єкти
+	Filter for smart objects linked locally	Фільтрувати смартоб’єкти, пов’язані з локальними файлами
+	High Memory Photoshop Document	Документ Photoshop із великим споживанням пам’яті
+	Image Compression	Стиснення зображення
+	LZW	LZW
+	Layer Effects	Ефекти шару
+	Lining	Маюскульні
+	Linked	Пов’язані
+	No Adv. Blending	Без розширеного змішування
+	No Layer Effects	Без ефектів шару
+	No Layer Mask	Без маски шару
+	No Vector Mask	Без векторної маски
+	Not Clipped	Без відсічної маски
+	Not Empty	Непорожні
+	Not Linked	Непов’язані
+	Not Locked	Незаблоковані
+	Not Visible	Невидимі
+	Numerals	Цифри
+	Open anyway	Усе одно відкрити
+	Opening this document uses more memory and may slow down your computer or other running applications.	Відкриття цього документа потребує більше пам’яті та може сповільнити комп’ютер або інші запущені програми.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Для відкриття «{name}» потрібно приблизно {est} GiB пам’яті (доступно {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Для відкриття «{name}» потрібно приблизно {est} GiB пам’яті. Не вдалося виміряти доступну пам’ять.
+	Proportional	Пропорційні
+	Proportional Lining	Пропорційні маюскульні
+	Proportional Oldstyle	Пропорційні мінускульні
+	Save Image Pyramid	Зберегти піраміду зображення
+	Save Transparency	Зберегти прозорість
+	Tabular	Табличні
+	Tabular Lining	Табличні маюскульні
+	Tabular Oldstyle	Табличні мінускульні
+	ZIP	ZIP
+	{ok} written to {dir}	Записано {ok} у {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: не вдалося вивести {n} графічний ресурс|{what}: не вдалося вивести {n} графічні ресурси|{what}: не вдалося вивести {n} графічних ресурсів

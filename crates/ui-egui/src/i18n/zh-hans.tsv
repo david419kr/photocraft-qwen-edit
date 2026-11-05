@@ -3355,3 +3355,47 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Use these settings for new arrows	对新箭头使用这些设置
 	Create new set	创建新组
 	Length	长度
+
+# Upstream 0.20.2: batch, layer filters, memory admission and numeral styles.
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	批处理中有命令被取消或停止。要继续处理下一个文件，还是停止？
+	Advanced Blending	高级混合
+	Attribute	属性
+	Batch	批处理
+	Batch preview	批处理预览
+	Data Sets as Files is unavailable on the web	网页版不支持将数据组导出为文件
+	Effect	效果
+	Empty	空
+	Filter for embedded smart objects	筛选嵌入的智能对象
+	Filter for linked smart objects that are missing	筛选链接文件缺失的智能对象
+	Filter for smart objects linked locally	筛选链接到本地文件的智能对象
+	High Memory Photoshop Document	高内存占用的 Photoshop 文档
+	Image Compression	图像压缩
+	LZW	LZW
+	Layer Effects	图层效果
+	Lining	齐线数字
+	Linked	已链接
+	No Adv. Blending	无高级混合
+	No Layer Effects	无图层效果
+	No Layer Mask	无图层蒙版
+	No Vector Mask	无矢量蒙版
+	Not Clipped	未剪贴
+	Not Empty	非空
+	Not Linked	未链接
+	Not Locked	未锁定
+	Not Visible	不可见
+	Numerals	数字样式
+	Open anyway	仍然打开
+	Opening this document uses more memory and may slow down your computer or other running applications.	打开此文档会占用较多内存，可能导致计算机或其他正在运行的应用程序变慢。
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	打开“{name}”预计需要 {est} GiB 内存（可用内存为 {avail} GiB）。
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	打开“{name}”预计需要 {est} GiB 内存。无法测量可用内存。
+	Proportional	比例宽度
+	Proportional Lining	比例齐线数字
+	Proportional Oldstyle	比例旧式数字
+	Save Image Pyramid	保存图像金字塔
+	Save Transparency	保存透明度
+	Tabular	等宽
+	Tabular Lining	等宽齐线数字
+	Tabular Oldstyle	等宽旧式数字
+	ZIP	ZIP
+	{ok} written to {dir}	已将 {ok} 项写入 {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}：{n} 个图像资源输出失败

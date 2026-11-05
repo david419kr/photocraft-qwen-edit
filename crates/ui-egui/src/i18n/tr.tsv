@@ -4386,3 +4386,45 @@ prompt-region	Bottom right	Sağ alt
 	Set as default	Varsayılan olarak ayarla
 	Start	Başlangıç
 	Use these settings for new arrows	Yeni oklar için bu ayarları kullan
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Toplu işleme sırasında bir komut iptal edildi veya durduruldu. Sonraki dosyayla devam edilsin mi, durdurulsun mu?
+	Attribute	Öznitelik
+	Batch preview	Toplu işlem önizlemesi
+	Data Sets as Files is unavailable on the web	Veri Kümelerini Dosya Olarak Kaydet web sürümünde kullanılamaz
+	Effect	Efekt
+	Empty	Boş
+	Filter for embedded smart objects	Gömülü akıllı nesneleri filtrele
+	Filter for linked smart objects that are missing	Eksik bağlantılı akıllı nesneleri filtrele
+	Filter for smart objects linked locally	Yerel dosyalara bağlı akıllı nesneleri filtrele
+	High Memory Photoshop Document	Yüksek bellek gerektiren Photoshop belgesi
+	Image Compression	Görüntü sıkıştırma
+	LZW	LZW
+	Layer Effects	Katman efektleri
+	Lining	Eşit yükseklikte
+	Linked	Bağlantılı
+	No Adv. Blending	Gelişmiş karıştırma yok
+	No Layer Effects	Katman efekti yok
+	No Layer Mask	Katman maskesi yok
+	No Vector Mask	Vektör maskesi yok
+	Not Clipped	Kırpma maskesi yok
+	Not Empty	Boş değil
+	Not Linked	Bağlantılı değil
+	Not Locked	Kilitli değil
+	Not Visible	Görünür değil
+	Numerals	Rakamlar
+	Open anyway	Yine de aç
+	Opening this document uses more memory and may slow down your computer or other running applications.	Bu belgeyi açmak daha fazla bellek gerektirir ve bilgisayarınızı veya çalışan diğer uygulamaları yavaşlatabilir.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	“{name}” belgesini açmak için tahmini {est} GiB bellek gerekir ({avail} GiB kullanılabilir).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	“{name}” belgesini açmak için tahmini {est} GiB bellek gerekir. Kullanılabilir bellek ölçülemedi.
+	Proportional	Orantılı
+	Proportional Lining	Orantılı eşit yükseklikte
+	Proportional Oldstyle	Orantılı eski stil
+	Save Image Pyramid	Görüntü piramidini kaydet
+	Save Transparency	Saydamlığı kaydet
+	Tabular	Eşit genişlikte
+	Tabular Lining	Eşit genişlikte ve yükseklikte
+	Tabular Oldstyle	Eşit genişlikte eski stil
+	ZIP	ZIP
+	{ok} written to {dir}	{dir} konumuna {ok} yazıldı
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} görüntü varlığı çıktısı başarısız

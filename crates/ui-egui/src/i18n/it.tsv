@@ -4765,3 +4765,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set as default	Imposta come predefinito
 	Start	Inizio
 	Use these settings for new arrows	Usa queste impostazioni per le nuove frecce
+
+# Upstream 0.20.2 UI labels
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Un comando è stato annullato o interrotto durante l’elaborazione in batch. Continuare con il file successivo o interrompere?
+	Attribute	Attributo
+	Batch preview	Anteprima batch
+	Data Sets as Files is unavailable on the web	Set di dati come file non è disponibile sul Web
+	Effect	Effetto
+	Empty	Vuoto
+	Filter for embedded smart objects	Filtra gli oggetti avanzati incorporati
+	Filter for linked smart objects that are missing	Filtra gli oggetti avanzati collegati mancanti
+	Filter for smart objects linked locally	Filtra gli oggetti avanzati collegati localmente
+	High Memory Photoshop Document	Documento Photoshop con elevato uso di memoria
+	Image Compression	Compressione immagine
+	LZW	LZW
+	Layer Effects	Effetti livello
+	Lining	Cifre maiuscole
+	Linked	Collegato
+	No Adv. Blending	Senza fusione avanzata
+	No Layer Effects	Senza effetti livello
+	No Layer Mask	Senza maschera di livello
+	No Vector Mask	Senza maschera vettoriale
+	Not Clipped	Non ritagliato
+	Not Empty	Non vuoto
+	Not Linked	Non collegato
+	Not Locked	Non bloccato
+	Not Visible	Non visibile
+	Numerals	Cifre
+	Open anyway	Apri comunque
+	Opening this document uses more memory and may slow down your computer or other running applications.	L’apertura di questo documento utilizza più memoria e può rallentare il computer o altre applicazioni in esecuzione.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	L’apertura di «{name}» richiede circa {est} GiB di memoria ({avail} GiB disponibili).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	L’apertura di «{name}» richiede circa {est} GiB di memoria. Non è stato possibile misurare la memoria disponibile.
+	Proportional	Proporzionali
+	Proportional Lining	Cifre maiuscole proporzionali
+	Proportional Oldstyle	Cifre minuscole proporzionali
+	Save Image Pyramid	Salva piramide immagine
+	Save Transparency	Salva trasparenza
+	Tabular	Tabulari
+	Tabular Lining	Cifre maiuscole tabulari
+	Tabular Oldstyle	Cifre minuscole tabulari
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} scritti in {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} esportazione di risorse immagine non riuscita|{what}: {n} esportazioni di risorse immagine non riuscite

@@ -4709,3 +4709,45 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set as default	Постави као подразумевано
 	Start	Почетак
 	Use these settings for new arrows	Користи ове поставке за нове стрелице
+
+# Upstream 0.20.2 memory, batch, layer filters and numeral options
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Komanda je otkazana ili zaustavljena tokom grupne obrade. Nastaviti sa sledećom datotekom ili zaustaviti?
+	Attribute	Atribut
+	Batch preview	Pregled grupne obrade
+	Data Sets as Files is unavailable on the web	Skupovi podataka kao datoteke nisu dostupni na vebu
+	Effect	Efekat
+	Empty	Prazno
+	Filter for embedded smart objects	Filtriraj ugrađene pametne objekte
+	Filter for linked smart objects that are missing	Filtriraj povezane pametne objekte koji nedostaju
+	Filter for smart objects linked locally	Filtriraj pametne objekte povezane sa lokalnim datotekama
+	High Memory Photoshop Document	Photoshop dokument sa velikim zahtevima za memoriju
+	Image Compression	Kompresija slike
+	LZW	LZW
+	Layer Effects	Efekti sloja
+	Lining	Verzalne
+	Linked	Povezano
+	No Adv. Blending	Bez naprednog stapanja
+	No Layer Effects	Bez efekata sloja
+	No Layer Mask	Bez maske sloja
+	No Vector Mask	Bez vektorske maske
+	Not Clipped	Bez maske odsecanja
+	Not Empty	Nije prazno
+	Not Linked	Nije povezano
+	Not Locked	Nije zaključano
+	Not Visible	Nije vidljivo
+	Numerals	Cifre
+	Open anyway	Ipak otvori
+	Opening this document uses more memory and may slow down your computer or other running applications.	Otvaranje ovog dokumenta zahteva više memorije i može usporiti računar ili druge pokrenute aplikacije.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Otvaranje „{name}” zahteva približno {est} GiB memorije (dostupno: {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Otvaranje „{name}” zahteva približno {est} GiB memorije. Dostupna memorija nije mogla da se izmeri.
+	Proportional	Proporcionalne
+	Proportional Lining	Proporcionalne verzalne
+	Proportional Oldstyle	Proporcionalne minuskle
+	Save Image Pyramid	Sačuvaj piramidu slike
+	Save Transparency	Sačuvaj providnost
+	Tabular	Tabelarne
+	Tabular Lining	Tabelarne verzalne
+	Tabular Oldstyle	Tabelarne minuskle
+	ZIP	ZIP
+	{ok} written to {dir}	{ok} upisano u {dir}
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: nije uspelo čuvanje {n} slikovnog resursa|{what}: nije uspelo čuvanje {n} slikovna resursa|{what}: nije uspelo čuvanje {n} slikovnih resursa
