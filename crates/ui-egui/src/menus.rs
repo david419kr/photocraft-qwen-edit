@@ -227,12 +227,25 @@ mod reveal_label_tests {
         let de = crate::i18n::Lang::from_code("de").unwrap();
         let expected = match reveal_label() {
             "Reveal in Finder" => "Im Finder anzeigen",
-            "Show in Explorer" => "Im Explorer anzeigen",
+            "Reveal in Explorer" => "Im Explorer anzeigen",
             _ => "Im Ordner anzeigen",
         };
         assert_eq!(translated_menu_label(de, reveal[0]), expected);
         // The menu catalogue (and docs/parity-checklist.md) keeps Photoshop's macOS name.
         assert!(crate::menu_catalog::CATALOG.iter().any(|(_, label, _, i)| *i == id && *label == "Reveal in Finder"));
+    }
+
+    #[test]
+    fn all_platform_reveal_labels_have_independent_german_translations() {
+        let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let mut item = menu_items(&app).into_iter().find(|item| item.id == "layer.smartObjects.revealInFinder").unwrap();
+        let de = crate::i18n::Lang::from_code("de").unwrap();
+        for (label, expected) in
+            [("Reveal in Finder", "Im Finder anzeigen"), ("Reveal in Explorer", "Im Explorer anzeigen"), ("Show in Folder", "Im Ordner anzeigen")]
+        {
+            item.label = label.into();
+            assert_eq!(translated_menu_label(de, &item), expected, "{label}");
+        }
     }
 }
 
