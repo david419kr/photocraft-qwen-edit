@@ -81,6 +81,7 @@
 	Right	يمين
 	Open Recent	فتح الملفات الأخيرة
 	Clear Recent Files	مسح الملفات الأخيرة
+	Clear Recent File List	مسح الملفات الأخيرة
 	Remove from Recent	إزالة من الملفات الأخيرة
 	Remove {name} from Recent	إزالة {name} من الملفات الأخيرة
 	Close	إغلاق
@@ -89,6 +90,10 @@
 	Restore	استعادة
 	Close All	إغلاق الكل
 	Close Others	إغلاق المستندات الأخرى
+	New Document…	مستند جديد…
+	Open Document…	فتح…
+	Consolidate All to Here	توحيد الكل هنا
+	Move to New Window	نقل إلى نافذة جديدة
 	Save	حفظ
 	Save As…	حفظ باسم…
 	Save a Copy…	حفظ نسخة…
@@ -141,6 +146,7 @@
 	Create Smart Object after Loading Layers	إنشاء كائن ذكي بعد تحميل الطبقات
 	Reveal in Finder	إظهار في Finder
 	Show in Explorer	إظهار في Explorer
+	Reveal in Explorer	إظهار في Explorer
 	Show in Folder	إظهار في المجلد
 	File Info…	معلومات الملف…
 	Print…	طباعة…
@@ -229,6 +235,7 @@
 	Units & Rulers…	الوحدات والمساطر…
 	Guides, Grid & Slices…	خطوط التوجيه والشبكة والشرائح…
 	Plug-ins…	المكونات الإضافية…
+	Plugins…	المكونات الإضافية…
 	Type…	النص…
 	Enhanced Controls…	عناصر التحكم المحسنة…
 	Camera Raw…	Camera Raw…
@@ -386,6 +393,8 @@
 	Smart Object	كائن ذكي
 	Convert to Smart Object	تحويل إلى كائن ذكي
 	Convert to Embedded	تحويل إلى مضمّن
+	Embed Linked	تضمين المرتبط
+	Embed All Linked	تضمين كل المرتبط
 	Convert to Layers	تحويل إلى طبقات
 	Convert to Linked…	تحويل إلى مرتبط…
 	Edit Contents	تحرير المحتويات
@@ -459,7 +468,9 @@
 	Unite Shapes	توحيد الأشكال
 	Subtract Front Shape	طرح الشكل الأمامي
 	Intersect Shape Areas	تقاطع مناطق الأشكال
+	Unite Shapes at Overlap	تقاطع مناطق الأشكال
 	Exclude Overlapping Shapes	استبعاد الأشكال المتداخلة
+	Subtract Shapes at Overlap	استبعاد الأشكال المتداخلة
 	Merge Shape Components	دمج مكونات الشكل
 	Align	محاذاة
 	Top Edges	الحواف العلوية
@@ -660,6 +671,7 @@
 	Minimum…	الحد الأدنى…
 	Offset…	إزاحة…
 	Plug-ins	المكونات الإضافية
+	Plugins	المكونات الإضافية
 	Proof Setup	إعداد المعاينة الطباعية
 	Proof Colors	ألوان المعاينة الطباعية
 	Gamut Warning	تحذير النطاق اللوني
@@ -668,9 +680,9 @@
 	Working Magenta Plate	لوح الأرجواني العامل
 	Working Yellow Plate	لوح الأصفر العامل
 	Working Black Plate	لوح الأسود العامل
-	Working CMY Plate	لوح CMY العامل
-	Legacy Macintosh RGB	RGB القديم لنظام Macintosh
-	Internet Standard RGB	RGB القياسي للإنترنت
+	Working CMY Plates	لوح CMY العامل
+	Legacy Macintosh RGB (Gamma 1.8)	RGB القديم لنظام Macintosh (Gamma 1.8)
+	Internet Standard RGB (sRGB)	RGB القياسي للإنترنت (sRGB)
 	Monitor RGB	RGB الشاشة
 	Color Blindness — Protanopia-type	عمى الألوان — نوع بروتانوبيا
 	Color Blindness — Deuteranopia-type	عمى الألوان — نوع ديوتيرانوبيا
@@ -752,7 +764,7 @@
 	Consolidate All to Tabs	توحيد الكل في علامات تبويب
 	Float in Window	تعويم في نافذة
 	Float All in Windows	تعويم الكل في نوافذ
-	New Window for Document	نافذة جديدة للمستند
+	New Window	نافذة جديدة للمستند
 	Workspace	مساحة العمل
 	Essentials	الأساسيات
 	Graphic and Web	الرسومات والويب
@@ -1924,6 +1936,11 @@
 	Show canvas dots	إظهار نقاط مساحة الرسم
 	Clip thumbnails to layer bounds	قصر الصور المصغرة على حدود الطبقة
 	Clip Thumbnails to Layer Bounds	قصر الصور المصغرة على حدود الطبقة
+	No Thumbnails	بلا صور مصغرة
+	Small Thumbnails	صور مصغرة صغيرة
+	Medium Thumbnails	صور مصغرة متوسطة
+	Large Thumbnails	صور مصغرة كبيرة
+	Clip Thumbnails to Document Bounds	قصر الصور المصغرة على حدود المستند
 	Canvas color	لون مساحة الرسم
 	Canvas custom color	لون مخصص لمساحة الرسم
 	Color picker	منتقي الألوان
@@ -2041,7 +2058,6 @@
 	Show only crosshair while painting	إظهار نقطة التصويب فقط أثناء الرسم
 	Show slice numbers	إظهار أرقام الشرائح
 	Show tooltips	إظهار تلميحات الأدوات
-	Enable animations	تمكين الحركات
 	Show highlight on rollover	إظهار التمييز عند التمرير
 	Show bounding box when dragging layer	إظهار مربع الإحاطة عند سحب الطبقة
 	System title bar	شريط عنوان النظام
@@ -3281,6 +3297,8 @@ curves	Smooth	تنعيم
 	Step {step} is waiting for its dialog	الخطوة {step} بانتظار مربع الحوار الخاص بها
 @plural	{n} action|{n} actions	{n} إجراء|{n} إجراء|{n} إجراءان|{n} إجراءات|{n} إجراءً|{n} إجراء
 	Background (Default)	الخلفية (الافتراضية)
+	Background (default)	الخلفية (الافتراضية)
+	Transparent (default)	شفاف (افتراضي)
 	Content-Aware Fill	تعبئة مراعية للمحتوى
 # Batch / Image Processor
 	Include All Subfolders	تضمين كل المجلدات الفرعية
@@ -3412,6 +3430,7 @@ curves	Smooth	تنعيم
 	Low-Latency Drawing (vsync off, applies at next launch)	رسم بزمن استجابة منخفض (إيقاف vsync، يسري عند التشغيل التالي)
 # Free Transform: a new layer while the box is open (#5859)
 	Reference point location	موقع النقطة المرجعية
+	Toggle reference point	إظهار/إخفاء النقطة المرجعية
 	Free Transform is still being applied; try again when it has finished.	لا يزال التحويل الحر قيد التطبيق؛ حاول مرة أخرى عند انتهائه.
 	The transform couldn't be applied.	تعذر تطبيق التحويل.
 # Preferences › Performance › GPU Memory; the status bar and slow-redraw notice
@@ -3705,3 +3724,110 @@ curves	Smooth	تنعيم
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})
 	Memory usage percent	نسبة استخدام الذاكرة
 	Save Full-Size Composite in .pcraft Files	حفظ الصورة المركبة بالحجم الكامل في ملفات .pcraft
+
+# Action Stop message (#8386)
+	Message	رسالة
+# Playback Options (#5212)
+	Playback Options…	خيارات التشغيل…
+	Playback Options	خيارات التشغيل
+	Accelerated	مُسرَّع
+	Step by Step	خطوة بخطوة
+	Pause For:	إيقاف مؤقت لمدة:
+	Pause For	إيقاف مؤقت لمدة
+	seconds	ثانية
+	Create a single history state	إنشاء حالة سجل واحدة
+
+# Channels panel menu (#11451)
+	New Channel…	قناة جديدة…
+	Duplicate Channel	تكرار القناة
+	Delete Channel	حذف القناة
+	New Spot Channel…	قناة لون موضعي جديدة…
+	Merge Spot Channel	دمج قناة اللون الموضعي
+	Channel Options…	خيارات القناة…
+	Split Channels	تقسيم القنوات
+	Merge Channels…	دمج القنوات…
+	Specify Channels:	تحديد القنوات:
+	Not enough grayscale documents for this mode.	لا توجد مستندات كافية بتدرج الرمادي لهذا الوضع.
+	Pick a different document for each channel.	اختر مستندًا مختلفًا لكل قناة.
+	A picked document is no longer open.	أحد المستندات المختارة لم يعد مفتوحًا.
+	A picked document is no longer a grayscale document of the same size.	أحد المستندات المختارة لم يعد مستندًا بتدرج الرمادي بالحجم نفسه.
+
+# Upstream 0.21.0 frame, placement and memory messages.
+	A file is still being placed; try again when it has finished.	لا يزال وضع ملف قيد التنفيذ؛ حاول مجددًا عند اكتماله.
+	A frame supports affine transforms; select its image for perspective transforms	يدعم الإطار التحويلات التآلفية؛ حدد صورته لإجراء تحويلات المنظور
+	A frame supports affine transforms; select its image to warp it	يدعم الإطار التحويلات التآلفية؛ حدد صورته لالتوائها
+	Automatically Create First Snapshot	إنشاء اللقطة الأولى تلقائيًا
+	Automatically Create New Snapshot When Saving	إنشاء لقطة جديدة تلقائيًا عند الحفظ
+	Cancelled placing {name}	أُلغي وضع {name}
+	Convert to Frame…	تحويل إلى إطار…
+	Create a new custom frame	إنشاء إطار مخصص جديد
+	Create a new polygonal frame	إنشاء إطار مضلع جديد
+	Create a new triangular frame	إنشاء إطار مثلث جديد
+	Dropped files weren't placed: their document was closed.	لم تُوضع الملفات المسقطة: أُغلق مستندها.
+	Dropped files weren't placed: too many are waiting for their document.	لم تُوضع الملفات المسقطة: هناك ملفات كثيرة جدًا تنتظر مستندها.
+	Duplicate	تكرار
+	Fit Content to Frame	ملاءمة المحتوى للإطار
+	Fit Frame to Content	ملاءمة الإطار للمحتوى
+	Frame coordinates must be finite and within 600000 pixels	يجب أن تكون إحداثيات الإطار محدودة وضمن 600000 بكسل
+	Import Image…	استيراد صورة…
+	Invalid frame transform	تحويل إطار غير صالح
+	Invalid nested file drop	إسقاط ملف متداخل غير صالح
+	Learn	تعلّم
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	ستتبقى ذاكرة قليلة بعد فتح هذا الملف. أغلق التطبيقات الأخرى أولًا، وإلا فقد تنفد ذاكرة PhotoCraft.
+	New Frame	إطار جديد
+	New file	ملف جديد
+	No recent files	لا توجد ملفات حديثة
+	Nudge	تحريك طفيف
+	On your computer	على حاسوبك
+	Replace Image…	استبدال الصورة…
+	Show New Snapshot Dialog by Default	إظهار مربع حوار اللقطة الجديدة افتراضيًا
+	Source: {name}	المصدر: {name}
+	The GPU compositor is still being prepared	لا يزال مُركّب GPU قيد الإعداد
+	The History Brush source was deleted: set a new source in the History panel	حُذف مصدر فرشاة السجل: حدد مصدرًا جديدًا في لوحة السجل
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	لا يُبلغ مجلد القرص المؤقت الحالي ({path}) عن مساحته الحرة، لذلك لا يمكن لـ PhotoCraft التوقف قبل امتلائه، ولا تحصل الملفات الكبيرة على مساحة إضافية منه دون حد لحجم القرص المؤقت. ينطبق هذا التحذير على الإعدادات الحالية؛ تسري التغييرات أعلاه عند الضغط على تطبيق أو موافق. عيّن حدًا أو استخدم قرصًا محليًا.
+	The frame is locked	الإطار مقفل
+	The frame is unavailable	الإطار غير متاح
+	Website	الموقع الإلكتروني
+
+# OpenType stylistic sets.
+	Stylistic Sets	مجموعات أسلوبية
+	Set 	مجموعة
+	Set 1	مجموعة 1
+	Set 2	مجموعة 2
+	Set 3	مجموعة 3
+	Set 4	مجموعة 4
+	Set 5	مجموعة 5
+	Set 6	مجموعة 6
+	Set 7	مجموعة 7
+	Set 8	مجموعة 8
+	Set 9	مجموعة 9
+	Set 10	مجموعة 10
+	Set 11	مجموعة 11
+	Set 12	مجموعة 12
+	Set 13	مجموعة 13
+	Set 14	مجموعة 14
+	Set 15	مجموعة 15
+	Set 16	مجموعة 16
+	Set 17	مجموعة 17
+	Set 18	مجموعة 18
+	Set 19	مجموعة 19
+	Set 20	مجموعة 20
+
+# Pen tablet input preferences and platform API names.
+	Tablet input	إدخال اللوح الرسومي
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (الافتراضي)
+
+# Generated filter fields and LUT format identifiers.
+	Data Encoding	ترميز البيانات
+	Lut Format	تنسيق LUT
+	Shape Id	معرّف الشكل
+	Shape Name	اسم الشكل
+	Shape Origin Type	نوع أصل الشكل
+	Shape Path	مسار الشكل
+	Text	نص
+	File Name	اسم الملف
+	3dl	3DL
+	Base64	Base64
+	Cube	CUBE
+	Look	LOOK

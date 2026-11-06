@@ -87,6 +87,7 @@
 	Right	Oikea
 	Open Recent	Viimeksi avatut
 	Clear Recent Files	Tyhjennä viimeisimmät tiedostot
+	Clear Recent File List	Tyhjennä viimeisimmät tiedostot
 	Remove from Recent	Poista viimeisimmistä
 	Remove {name} from Recent	Poista {name} viimeisimmistä
 	Close	Sulje
@@ -95,6 +96,10 @@
 	Restore	Palauta
 	Close All	Sulje kaikki
 	Close Others	Sulje muut
+	New Document…	Uusi asiakirja…
+	Open Document…	Avaa…
+	Consolidate All to Here	Kokoa kaikki tähän
+	Move to New Window	Siirrä uuteen ikkunaan
 	Save	Tallenna
 	Save As…	Tallenna nimellä…
 	Save a Copy…	Tallenna kopio…
@@ -509,7 +514,6 @@
 	Match Location	Täsmäytä sijainti
 	Match Rotation	Täsmäytä kierto
 	Match All	Täsmäytä kaikki
-	New Window for Document	Uusi ikkuna asiakirjalle
 	Workspace	Työtila
 	Extensions	Laajennukset
 	Panels	Paneelit
@@ -687,6 +691,7 @@
 	Units & Rulers…	Yksiköt ja viivaimet…
 	Guides, Grid & Slices…	Apuviivat, ruudukko ja viipaleet…
 	Plug-ins…	Laajennukset…
+	Plugins…	Laajennukset…
 	Technology Previews	Teknologian esikatselut
 	Scratch Disks…	Työlevyt…
 	Export Preferences…	Vientiasetukset…
@@ -921,8 +926,8 @@
 	ACES	ACES
 	Industry Standard	Alan standardi
 	Web	Verkko
-	Internet Standard RGB	Internetin standardi-RGB
-	Legacy Macintosh RGB	Vanha Macintosh RGB
+	Internet Standard RGB (sRGB)	Internetin standardi-RGB (sRGB)
+	Legacy Macintosh RGB (Gamma 1.8)	Vanha Macintosh RGB (Gamma 1.8)
 	Monitor RGB	Näytön RGB
 	Windows LCD	Windows LCD
 	Coated CMYK	CMYK, päällystetty paperi
@@ -1743,6 +1748,7 @@
 	Saved	Tallennettu
 	Reveal in Finder	Näytä Finderissa
 	Show in Explorer	Näytä Resurssienhallinnassa
+	Reveal in Explorer	Näytä Resurssienhallinnassa
 	Show in Folder	Näytä kansiossa
 	Before (Y)	Ennen (Y)
 	Save Settings…	Tallenna asetukset…
@@ -1922,6 +1928,8 @@
 	Combine Shapes	Yhdistä muodot
 	Contract…	Supista…
 	Convert to Embedded	Muunna upotetuksi
+	Embed Linked	Upota linkitetty
+	Embed All Linked	Upota kaikki linkitetyt
 	Convert to Layers	Muunna tasoiksi
 	Convert to Linked…	Muunna linkitetyksi…
 	Count	Laskuri
@@ -2009,6 +2017,7 @@
 	Pixelate	Pikselöinti
 	Place Scale Marker…	Sijoita mittakaavamerkki…
 	Plug-ins	Laajennukset
+	Plugins	Laajennukset
 	Print One Copy	Tulosta yksi kopio
 	Print…	Tulosta…
 	Range	Alue
@@ -2053,7 +2062,7 @@
 	Vertical Centers	Pystykeskikohdat
 	Video Frames to Layers…	Videoruudut tasoiksi…
 	WIA Support…	WIA-tuki…
-	Working CMY Plate	Työ-CMY-levy
+	Working CMY Plates	Työ-CMY-levy
 
 # tl! literals (third pass)
 	Absolute	Absoluuttinen
@@ -2339,6 +2348,11 @@
 	Show canvas dots	Näytä kankaan pisteet
 	Clip thumbnails to layer bounds	Rajaa pikkukuvat tason rajoihin
 	Clip Thumbnails to Layer Bounds	Rajaa pikkukuvat tason rajoihin
+	No Thumbnails	Ei pikkukuvia
+	Small Thumbnails	Pienet pikkukuvat
+	Medium Thumbnails	Keskikokoiset pikkukuvat
+	Large Thumbnails	Suuret pikkukuvat
+	Clip Thumbnails to Document Bounds	Rajaa pikkukuvat asiakirjan rajoihin
 	Canvas color	Kankaan väri
 	Canvas custom color	Kankaan mukautettu väri
 	Classic	Klassinen
@@ -2465,7 +2479,6 @@
 	Show only crosshair while painting	Näytä vain hiusristikko maalattaessa
 	Show slice numbers	Näytä viipaleiden numerot
 	Show tooltips	Näytä työkaluvihjeet
-	Enable animations	Ota animaatiot käyttöön
 	Show highlight on rollover	Korosta kohde osoittimen alla
 	Show bounding box when dragging layer	Näytä rajauslaatikko tasoa vedettäessä
 	System title bar	Järjestelmän otsikkorivi
@@ -3200,6 +3213,8 @@ curves	Smooth	Tasoita
 	Step {step} is waiting for its dialog	Vaihe {step} odottaa valintaikkunaansa
 @plural	{n} action|{n} actions	{n} toiminto|{n} toimintoa
 	Background (Default)	Tausta (oletus)
+	Background (default)	Tausta (oletus)
+	Transparent (default)	Läpinäkyvä (oletus)
 	Content-Aware Fill	Sisältötietoinen täyttö
 # Batch / Image Processor
 	Include All Subfolders	Sisällytä kaikki alikansiot
@@ -4917,3 +4932,97 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} kuvaresurssin vienti epäonnistui|{what}: {n} kuvaresurssin vientiä epäonnistui
 	Memory usage percent	Muistin käyttö prosentteina
 	Save Full-Size Composite in .pcraft Files	Tallenna täysikokoinen yhdistelmäkuva .pcraft-tiedostoihin
+
+# Action Stop message (#8386)
+	Message	Viesti
+# Playback Options (#5212)
+	Playback Options…	Toistoasetukset…
+	Playback Options	Toistoasetukset
+	Accelerated	Kiihdytetty
+	Step by Step	Vaihe kerrallaan
+	Pause For:	Tauko:
+	Pause For	Tauko
+	seconds	sekuntia
+	Create a single history state	Luo yksi historiatila
+
+# Channels panel menu (#11451)
+	Channel Options…	Kanavan asetukset…
+	Specify Channels:	Määritä kanavat:
+	Not enough grayscale documents for this mode.	Harmaasävyasiakirjoja ei ole tarpeeksi tähän tilaan.
+	Pick a different document for each channel.	Valitse jokaiselle kanavalle eri asiakirja.
+	A picked document is no longer open.	Yksi valituista asiakirjoista ei ole enää auki.
+	A picked document is no longer a grayscale document of the same size.	Yksi valituista asiakirjoista ei ole enää samankokoinen harmaasävyasiakirja.
+
+# Upstream 0.21.0 frame, placement and memory messages.
+	A file is still being placed; try again when it has finished.	Tiedoston sijoittaminen on vielä kesken; yritä uudelleen sen valmistuttua.
+	A frame supports affine transforms; select its image for perspective transforms	Kehys tukee affiinisia muunnoksia; valitse sen kuva perspektiivimuunnoksia varten
+	A frame supports affine transforms; select its image to warp it	Kehys tukee affiinisia muunnoksia; valitse sen kuva käyristämistä varten
+	Cancelled placing {name}	Tiedoston {name} sijoittaminen peruutettiin
+	Convert to Frame…	Muunna kehykseksi…
+	Create a new custom frame	Luo uusi mukautettu kehys
+	Create a new polygonal frame	Luo uusi monikulmainen kehys
+	Create a new triangular frame	Luo uusi kolmionmuotoinen kehys
+	Dropped files weren't placed: their document was closed.	Pudotettuja tiedostoja ei sijoitettu: niiden asiakirja suljettiin.
+	Dropped files weren't placed: too many are waiting for their document.	Pudotettuja tiedostoja ei sijoitettu: liian moni odottaa asiakirjaansa.
+	Fit Content to Frame	Sovita sisältö kehykseen
+	Fit Frame to Content	Sovita kehys sisältöön
+	Frame coordinates must be finite and within 600000 pixels	Kehyksen koordinaattien on oltava äärellisiä ja 600000 pikselin rajoissa
+	Import Image…	Tuo kuva…
+	Invalid frame transform	Virheellinen kehyksen muunnos
+	Invalid nested file drop	Virheellinen sisäkkäinen tiedoston pudotus
+	Learn	Opi
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Tiedoston avaamisen jälkeen muistia jäisi vähän. Sulje ensin muut sovellukset, tai PhotoCraftin muisti voi loppua.
+	New Frame	Uusi kehys
+	New file	Uusi tiedosto
+	Nudge	Siirrä hieman
+	On your computer	Omalla tietokoneella
+	Replace Image…	Korvaa kuva…
+	Source: {name}	Lähde: {name}
+	The GPU compositor is still being prepared	GPU-koostajaa valmistellaan vielä
+	The History Brush source was deleted: set a new source in the History panel	Historiasiveltimen lähde poistettiin: aseta uusi lähde Historia-paneelissa
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Nykyinen työlevyhakemisto ({path}) ei ilmoita vapaata tilaansa, joten PhotoCraft ei voi pysähtyä ennen sen täyttymistä eivätkä suuret tiedostot saa siitä lisätilaa ilman työlevyn kokorajoitusta. Tämä varoitus koskee nykyistä kokoonpanoa; yllä olevat muutokset tulevat voimaan painamalla Käytä tai OK. Aseta raja tai käytä paikallista levyä.
+	The frame is locked	Kehys on lukittu
+	The frame is unavailable	Kehys ei ole käytettävissä
+	Website	Verkkosivusto
+
+# OpenType stylistic sets.
+	Stylistic Sets	Tyylijoukot
+	Set 	Joukko
+	Set 1	Joukko 1
+	Set 2	Joukko 2
+	Set 3	Joukko 3
+	Set 4	Joukko 4
+	Set 5	Joukko 5
+	Set 6	Joukko 6
+	Set 7	Joukko 7
+	Set 8	Joukko 8
+	Set 9	Joukko 9
+	Set 10	Joukko 10
+	Set 11	Joukko 11
+	Set 12	Joukko 12
+	Set 13	Joukko 13
+	Set 14	Joukko 14
+	Set 15	Joukko 15
+	Set 16	Joukko 16
+	Set 17	Joukko 17
+	Set 18	Joukko 18
+	Set 19	Joukko 19
+	Set 20	Joukko 20
+
+# Pen tablet input preferences and platform API names.
+	Tablet input	Piirtopöydän syöte
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (oletus)
+
+# Generated filter fields and LUT format identifiers.
+	Data Encoding	Tietojen koodaus
+	Lut Format	LUT-muoto
+	Shape Id	Muodon tunniste
+	Shape Name	Muodon nimi
+	Shape Origin Type	Muodon alkuperän tyyppi
+	Shape Path	Muodon polku
+	Text	Teksti
+	3dl	3DL
+	Base64	Base64
+	Cube	CUBE
+	Look	LOOK

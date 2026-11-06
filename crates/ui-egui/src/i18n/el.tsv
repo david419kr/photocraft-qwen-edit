@@ -144,6 +144,7 @@
 	Right	Δεξιά
 	Open Recent	Πρόσφατα αρχεία
 	Clear Recent Files	Εκκαθάριση πρόσφατων αρχείων
+	Clear Recent File List	Εκκαθάριση πρόσφατων αρχείων
 	Remove from Recent	Αφαίρεση από τα πρόσφατα
 	Remove {name} from Recent	Αφαίρεση του {name} από τα πρόσφατα
 	Close	Κλείσιμο
@@ -152,6 +153,10 @@
 	Restore	Επαναφορά
 	Close All	Κλείσιμο όλων
 	Close Others	Κλείσιμο των υπόλοιπων
+	New Document…	Νέο έγγραφο…
+	Open Document…	Άνοιγμα…
+	Consolidate All to Here	Συγκέντρωση όλων εδώ
+	Move to New Window	Μετακίνηση σε νέο παράθυρο
 	Save	Αποθήκευση
 	Save As…	Αποθήκευση ως…
 	Save a Copy…	Αποθήκευση αντιγράφου…
@@ -203,6 +208,7 @@
 	Create Smart Object after Loading Layers	Δημιουργία έξυπνου αντικειμένου μετά τη φόρτωση επιπέδων
 	Reveal in Finder	Εμφάνιση στο Finder
 	Show in Explorer	Εμφάνιση στην Εξερεύνηση αρχείων
+	Reveal in Explorer	Εμφάνιση στην Εξερεύνηση αρχείων
 	Show in Folder	Εμφάνιση στον φάκελο
 	File Info…	Πληροφορίες αρχείου…
 	Print…	Εκτύπωση…
@@ -936,6 +942,7 @@
 	Show Extras Options	Εμφάνιση επιπλέον επιλογών
 	Soften	Απαλότητα
 	Source: set	Πηγή: ορίστηκε
+	Source: {name}	Πηγή: {name}
 	Std Dev:	Τυπική απόκλιση:
 	Subtract	Αφαίρεση
 	Text Replacement	Αντικατάσταση κειμένου
@@ -1605,7 +1612,6 @@
 	Show only crosshair while painting	Εμφάνιση μόνο σταυρονήματος κατά τη ζωγραφική
 	Show slice numbers	Εμφάνιση αριθμών τομών
 	Show tooltips	Εμφάνιση επεξηγήσεων
-	Enable animations	Ενεργοποίηση κινούμενων εφέ
 	Show highlight on rollover	Εμφάνιση επισήμανσης κατά την κατάδειξη
 	Show bounding box when dragging layer	Εμφάνιση πλαισίου οριοθέτησης κατά τη μετακίνηση επιπέδου
 	Show transformation values	Εμφάνιση τιμών μετασχηματισμού
@@ -1765,6 +1771,11 @@
 	Show canvas dots	Εμφάνιση κουκκίδων καμβά
 	Clip thumbnails to layer bounds	Περικοπή μικρογραφιών στα όρια του επιπέδου
 	Clip Thumbnails to Layer Bounds	Περικοπή μικρογραφιών στα όρια του επιπέδου
+	No Thumbnails	Χωρίς μικρογραφίες
+	Small Thumbnails	Μικρές μικρογραφίες
+	Medium Thumbnails	Μεσαίες μικρογραφίες
+	Large Thumbnails	Μεγάλες μικρογραφίες
+	Clip Thumbnails to Document Bounds	Περικοπή μικρογραφιών στα όρια του εγγράφου
 	Canvas color	Χρώμα καμβά
 	Canvas custom color	Προσαρμοσμένο χρώμα καμβά
 	Color picker	Επιλογέας χρώματος
@@ -1846,6 +1857,7 @@
 	Units & Rulers…	Μονάδες και χάρακες…
 	Guides, Grid & Slices…	Οδηγοί, πλέγμα και τομές…
 	Plug-ins…	Πρόσθετα…
+	Plugins…	Πρόσθετα…
 	Type…	Κείμενο…
 	Enhanced Controls…	Προηγμένα χειριστήρια…
 	Raw Defaults…	Προεπιλογές RAW…
@@ -1950,6 +1962,8 @@
 	Hide Selection	Απόκρυψη επιλογής
 	From Transparency	Από διαφάνεια
 	Convert to Embedded	Μετατροπή σε ενσωματωμένο
+	Embed Linked	Ενσωμάτωση συνδεδεμένου
+	Embed All Linked	Ενσωμάτωση όλων των συνδεδεμένων
 	Convert to Linked…	Μετατροπή σε συνδεδεμένο…
 	Edit Contents	Επεξεργασία περιεχομένου
 	Replace Contents…	Αντικατάσταση περιεχομένου…
@@ -2008,7 +2022,9 @@
 	Unite Shapes	Ένωση σχημάτων
 	Subtract Front Shape	Αφαίρεση μπροστινού σχήματος
 	Intersect Shape Areas	Τομή περιοχών σχημάτων
+	Unite Shapes at Overlap	Τομή περιοχών σχημάτων
 	Exclude Overlapping Shapes	Εξαίρεση επικαλυπτόμενων σχημάτων
+	Subtract Shapes at Overlap	Εξαίρεση επικαλυπτόμενων σχημάτων
 	Merge Shape Components	Συγχώνευση συστατικών σχήματος
 	Path operations	Λειτουργίες διαδρομών
 	Top Edges	Επάνω ακμές
@@ -2664,7 +2680,7 @@
 	Install Plug-in	Εγκατάσταση προσθέτου
 	Integrations	Ενσωματώσεις
 	Interlaced	Πεπλεγμένο
-	Internet Standard RGB	Τυπικό RGB διαδικτύου
+	Internet Standard RGB (sRGB)	Τυπικό RGB διαδικτύου (sRGB)
 	Interpolation:	Παρεμβολή:
 	Interpret Footage	Ερμηνεία πλάνων
 	Intersect with selection  ({key})	Τομή με την επιλογή  ({key})
@@ -2717,7 +2733,7 @@
 	Leave as is (don't color manage)	Διατήρηση ως έχει (χωρίς διαχείριση χρώματος)
 	Left align text	Αριστερή στοίχιση κειμένου
 	Legacy	Παλαιού τύπου
-	Legacy Macintosh RGB	Παλαιό Macintosh RGB
+	Legacy Macintosh RGB (Gamma 1.8)	Παλαιό Macintosh RGB (Gamma 1.8)
 	Legacy compositing	Παλαιός τρόπος σύνθεσης
 	Legal	Μέγεθος Legal
 	Length:	Μήκος:
@@ -2854,7 +2870,6 @@
 	New Video Group	Νέα ομάδα βίντεο
 	New Video Layer	Νέο επίπεδο βίντεο
 	New Video Layer from File	Νέο επίπεδο βίντεο από αρχείο
-	New Window for Document	Νέο παράθυρο για το έγγραφο
 	New Workspace	Νέος χώρος εργασίας
 	New Workspace…	Νέος χώρος εργασίας…
 	New document…	Νέο έγγραφο…
@@ -2947,6 +2962,7 @@
 	Play	Αναπαραγωγή
 	Play selection	Αναπαραγωγή επιλογής
 	Plug-ins	Πρόσθετα
+	Plugins	Πρόσθετα
 	Point size	Μέγεθος σε σημεία
 	Pointillize	Πουαντιγισμός
 	Pointillize…	Πουαντιγισμός…
@@ -3370,7 +3386,7 @@
 	Word Spacing	Διάστημα λέξεων
 	Work Path	Διαδρομή εργασίας
 	Working Black Plate	Κανάλι μαύρου εργασίας
-	Working CMY Plate	Κανάλια CMY εργασίας
+	Working CMY Plates	Κανάλια CMY εργασίας
 	Working CMYK	Χώρος εργασίας CMYK
 	Working Cyan Plate	Κανάλι κυανού εργασίας
 	Working Gray Plate	Κανάλι γκρι εργασίας
@@ -3982,6 +3998,8 @@ curves	Smooth	Εξομάλυνση
 	Step {step} is waiting for its dialog	Το βήμα {step} περιμένει το παράθυρο διαλόγου του
 @plural	{n} action|{n} actions	{n} ενέργεια|{n} ενέργειες
 	Background (Default)	Φόντο (προεπιλογή)
+	Background (default)	Φόντο (προεπιλογή)
+	Transparent (default)	Διαφανές (προεπιλογή)
 	Include All Subfolders	Συμπερίληψη όλων των υποφακέλων
 	Auto Add/Delete	Αυτόματη προσθήκη/διαγραφή
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Μην ενεργοποιείτε επίσης τον κατοπτρισμό στις ρυθμίσεις εκτύπωσης: οι δύο αναστροφές αλληλοαναιρούνται.
@@ -4034,6 +4052,7 @@ curves	Smooth	Εξομάλυνση
 	Automatically Check for Updates	Αυτόματος έλεγχος ενημερώσεων
 	Paints from the History panel's source state	Βάφει από την κατάσταση πηγής του πίνακα Ιστορικό
 	Sets the source for the history brush	Ορίζει την πηγή για το πινέλο ιστορικού
+	The History Brush source was deleted: set a new source in the History panel	Η πηγή για το πινέλο ιστορικού διαγράφηκε: ορίστε νέα πηγή στον πίνακα Ιστορικό
 	Highlight Mode	Λειτουργία φωτεινών τόνων
 	Highlight Color	Χρώμα φωτεινών τόνων
 	Highlight Opacity	Αδιαφάνεια φωτεινών τόνων
@@ -4196,6 +4215,8 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Font size presets	Προεπιλογές μεγέθους γραμματοσειράς
 	Leading presets	Προεπιλογές διάστιχου
 	Tracking presets	Προεπιλογές διαστήματος χαρακτήρων
+
+	The GPU compositor is still being prepared	The GPU compositor is still being prepared
 	Invalid numeric entry. An integer between {min}% and {max}% is required. Previous value was inserted.	Μη έγκυρη αριθμητική τιμή. Απαιτείται ακέραιος αριθμός μεταξύ {min}% και {max}%. Εισήχθη η προηγούμενη τιμή.
 	Color Aware	Με βάση το χρώμα
 	Decontaminate Colors	Απολύμανση χρωμάτων
@@ -4227,8 +4248,8 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Import Photoshop brushes (.abr)	Import Photoshop brushes (.abr)
 	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
 	Default Photoshop Size	Default Photoshop Size
-	Grid view	Grid view
-	List view	List view
+	Grid view	Προβολή πλέγματος
+	List view	Προβολή λίστας
 	Prompt Edit	Prompt Edit
 	Generative Fill	Generative Fill
 	Describe changes to the whole image	Describe changes to the whole image
@@ -4402,3 +4423,104 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	ZIP	ZIP
 	{ok} written to {dir}	{ok} εγγράφηκαν στο {dir}
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: απέτυχε η έξοδος {n} πόρου εικόνας|{what}: απέτυχε η έξοδος {n} πόρων εικόνας
+
+# Action Stop message (#8386)
+	Message	Μήνυμα
+# Playback Options (#5212)
+	Playback Options…	Επιλογές αναπαραγωγής…
+	Playback Options	Επιλογές αναπαραγωγής
+	Accelerated	Επιταχυνόμενη
+	Step by Step	Βήμα προς βήμα
+	Pause For:	Παύση για:
+	Pause For	Παύση για
+	seconds	δευτερόλεπτα
+	Create a single history state	Δημιουργία μίας κατάστασης ιστορικού
+	Generator enabled	Ενεργοποίηση γεννήτριας
+	On your computer	Στον υπολογιστή σας
+	New file	Νέο αρχείο
+	Learn	Εκμάθηση
+	Website	Ιστότοπος
+
+# Frame Tool and other branch translations.
+	A frame supports affine transforms; select its image for perspective transforms	Το πλαίσιο υποστηρίζει αφινικούς μετασχηματισμούς· επιλέξτε την εικόνα του για μετασχηματισμούς προοπτικής
+	A frame supports affine transforms; select its image to warp it	Το πλαίσιο υποστηρίζει αφινικούς μετασχηματισμούς· επιλέξτε την εικόνα του για στρέβλωση
+	Convert to Frame…	Μετατροπή σε πλαίσιο…
+	Create a new custom frame	Δημιουργία νέου προσαρμοσμένου πλαισίου
+	Create a new polygonal frame	Δημιουργία νέου πολυγωνικού πλαισίου
+	Create a new triangular frame	Δημιουργία νέου τριγωνικού πλαισίου
+	Fit Content to Frame	Προσαρμογή περιεχομένου στο πλαίσιο
+	Fit Frame to Content	Προσαρμογή πλαισίου στο περιεχόμενο
+	Frame coordinates must be finite and within 600000 pixels	Οι συντεταγμένες του πλαισίου πρέπει να είναι πεπερασμένες και εντός 600000 pixel
+	Import Image…	Εισαγωγή εικόνας…
+	Invalid frame transform	Μη έγκυρος μετασχηματισμός πλαισίου
+	Invalid nested file drop	Μη έγκυρη ένθετη απόθεση αρχείου
+	New Frame	Νέο πλαίσιο
+	Replace Image…	Αντικατάσταση εικόνας…
+	The frame is locked	Το πλαίσιο είναι κλειδωμένο
+	The frame is unavailable	Το πλαίσιο δεν είναι διαθέσιμο
+
+# Channels panel menu (#11451)
+	New Channel…	Νέο κανάλι…
+	Duplicate Channel	Δημιουργία αντιγράφου καναλιού
+	Delete Channel	Διαγραφή καναλιού
+	New Spot Channel…	Νέο κανάλι πλακάτου χρώματος…
+	Merge Spot Channel	Συγχώνευση καναλιού πλακάτου χρώματος
+	Channel Options…	Επιλογές καναλιού…
+	Split Channels	Διαχωρισμός καναλιών
+	Merge Channels…	Συγχώνευση καναλιών…
+	Specify Channels:	Καθορισμός καναλιών:
+	Not enough grayscale documents for this mode.	Δεν υπάρχουν αρκετά έγγραφα σε κλίμακα του γκρι για αυτή τη λειτουργία.
+	Pick a different document for each channel.	Επιλέξτε διαφορετικό έγγραφο για κάθε κανάλι.
+	A picked document is no longer open.	Ένα από τα επιλεγμένα έγγραφα δεν είναι πλέον ανοιχτό.
+	A picked document is no longer a grayscale document of the same size.	Ένα από τα επιλεγμένα έγγραφα δεν είναι πλέον έγγραφο σε κλίμακα του γκρι ίδιου μεγέθους.
+
+# Placement and memory-admission notices from upstream 0.21.0.
+	A file is still being placed; try again when it has finished.	Ένα αρχείο εξακολουθεί να τοποθετείται· δοκιμάστε ξανά όταν ολοκληρωθεί.
+	Cancelled placing {name}	Ακυρώθηκε η τοποθέτηση του {name}
+	Dropped files weren't placed: their document was closed.	Τα αρχεία που σύρθηκαν δεν τοποθετήθηκαν: το έγγραφό τους έκλεισε.
+	Dropped files weren't placed: too many are waiting for their document.	Τα αρχεία που σύρθηκαν δεν τοποθετήθηκαν: πάρα πολλά αρχεία περιμένουν το έγγραφό τους.
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Μετά το άνοιγμα αυτού του αρχείου θα απέμενε λίγη μνήμη. Κλείστε πρώτα άλλες εφαρμογές, διαφορετικά το PhotoCraft μπορεί να εξαντλήσει τη μνήμη.
+	Nudge	Μικρή μετατόπιση
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Ο τρέχων κατάλογος προσωρινής αποθήκευσης ({path}) δεν αναφέρει τον ελεύθερο χώρο του, οπότε το PhotoCraft δεν μπορεί να σταματήσει πριν γεμίσει και τα μεγάλα αρχεία δεν αποκτούν επιπλέον χώρο χωρίς όριο μεγέθους προσωρινής αποθήκευσης. Αυτή η προειδοποίηση αφορά την τρέχουσα διαμόρφωση· οι παραπάνω αλλαγές εφαρμόζονται με το Εφαρμογή ή το OK. Ορίστε ένα όριο ή χρησιμοποιήστε τοπικό δίσκο.
+
+# OpenType stylistic-set labels.
+	Stylistic Sets	Σύνολα στυλ
+	Set 	Σύνολο
+	Set 1	Σύνολο 1
+	Set 2	Σύνολο 2
+	Set 3	Σύνολο 3
+	Set 4	Σύνολο 4
+	Set 5	Σύνολο 5
+	Set 6	Σύνολο 6
+	Set 7	Σύνολο 7
+	Set 8	Σύνολο 8
+	Set 9	Σύνολο 9
+	Set 10	Σύνολο 10
+	Set 11	Σύνολο 11
+	Set 12	Σύνολο 12
+	Set 13	Σύνολο 13
+	Set 14	Σύνολο 14
+	Set 15	Σύνολο 15
+	Set 16	Σύνολο 16
+	Set 17	Σύνολο 17
+	Set 18	Σύνολο 18
+	Set 19	Σύνολο 19
+	Set 20	Σύνολο 20
+
+# Pen tablet input preferences and platform API names.
+	Tablet input	Είσοδος ταμπλέτας
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (προεπιλογή)
+
+# Generated filter fields and LUT format identifiers.
+	Data Encoding	Κωδικοποίηση δεδομένων
+	Lut Format	Μορφή LUT
+	Shape Id	Αναγνωριστικό σχήματος
+	Shape Name	Όνομα σχήματος
+	Shape Origin Type	Τύπος προέλευσης σχήματος
+	Shape Path	Διαδρομή σχήματος
+	Text	Κείμενο
+	3dl	3DL
+	Base64	Base64
+	Cube	CUBE
+	Look	LOOK

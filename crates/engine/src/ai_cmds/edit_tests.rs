@@ -115,6 +115,59 @@ fn failed_or_cancelled_resize_never_changes_native_document_or_redo() {
     }
 }
 
+/// Sparse retained pixels must be budgeted before an approved AI resize allocates or submits work.
+#[test]
+fn approved_resize_rejects_oversized_hidden_pixels_without_editing_or_generating() {
+    struct CountGeneration(std::sync::atomic::AtomicUsize);
+    impl AiBackend for CountGeneration {
+        fn generate(&self, _request: &AiRequest, _ctx: &JobCtx) -> Result<Rgba8Image> {
+            self.0.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+            Err(EngineError::Other("generation must not be reached".into()))
+        }
+    }
+    for background in [false, true] {
+        let mut s = source(4101, 65);
+        s.edit("retained off-canvas pixel", |doc, _| {
+            // Only one distant tile is allocated, not the rectangle between it and the canvas.
+            doc.layers[0].surface_mut().unwrap().write_pixel(99_999, 99_999, &[1.0, 0.0, 0.0, 1.0]);
+            Ok(())
+        })
+        .unwrap();
+        s.edit("redo fixture", |doc, _| {
+            doc.layers[0].surface_mut().unwrap().write_pixel(5, 5, &[0.0, 0.0, 1.0, 1.0]);
+            Ok(())
+        })
+        .unwrap();
+        s.execute("edit.undo", json!({})).unwrap();
+        s.active_mut().unwrap().color_samplers = vec![[3100.0, 40.0]];
+        let before = s.active().unwrap().doc.clone();
+        let revision = s.active().unwrap().revision;
+        let past = s.active().unwrap().history.past_len();
+        assert!(s.active().unwrap().history.can_undo());
+        assert!(s.active().unwrap().history.can_redo());
+        let plan = edit_preflight(&s).unwrap();
+        assert_eq!(plan["needsResizeApproval"], true);
+        let backend = Arc::new(CountGeneration(std::sync::atomic::AtomicUsize::new(0)));
+        s.ai_backend = Some(backend.clone());
+        let params = json!({"prompt":"change","resizeApproval":plan["approval"]});
+        let err = if background {
+            let crate::jobs::Started::Job(id) = s.start("edit.promptEdit", params).unwrap() else { panic!("job expected") };
+            s.wait_job(id).unwrap_err().to_string()
+        } else {
+            s.execute("edit.promptEdit", params).unwrap_err().to_string()
+        };
+        assert!(err.contains("pixels outside the canvas"), "{err}");
+        assert_eq!(backend.0.load(std::sync::atomic::Ordering::SeqCst), 0);
+        let after = s.active().unwrap();
+        assert!(Arc::ptr_eq(&after.doc, &before));
+        assert_eq!(after.revision, revision);
+        assert_eq!(after.history.past_len(), past);
+        assert!(after.history.can_undo());
+        assert!(after.history.can_redo());
+        assert_eq!(after.color_samplers, vec![[3100.0, 40.0]]);
+    }
+}
+
 #[test]
 fn approved_resize_preserves_native_formats_profile_and_maps_samplers_only_once() {
     for mode in ["rgb", "gray", "cmyk", "lab"] {

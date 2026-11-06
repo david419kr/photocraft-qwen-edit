@@ -84,6 +84,7 @@
 	Right	Höger
 	Open Recent	Öppna senaste
 	Clear Recent Files	Rensa senaste filer
+	Clear Recent File List	Rensa senaste filer
 	Remove from Recent	Ta bort från senaste
 	Remove {name} from Recent	Ta bort {name} från senaste
 	Close	Stäng
@@ -92,6 +93,10 @@
 	Restore	Återställ
 	Close All	Stäng alla
 	Close Others	Stäng övriga
+	New Document…	Nytt dokument…
+	Open Document…	Öppna…
+	Consolidate All to Here	Samla alla här
+	Move to New Window	Flytta till nytt fönster
 	Save	Spara
 	Save As…	Spara som…
 	Save a Copy…	Spara en kopia…
@@ -506,7 +511,6 @@
 	Match Location	Matcha plats
 	Match Rotation	Matcha rotation
 	Match All	Matcha alla
-	New Window for Document	Nytt fönster för dokument
 	Workspace	Arbetsyta
 	Extensions	Tillägg
 	Panels	Paneler
@@ -684,6 +688,7 @@
 	Units & Rulers…	Enheter och linjaler…
 	Guides, Grid & Slices…	Stödlinjer, rutnät och skivor…
 	Plug-ins…	Plugin-program…
+	Plugins…	Plugin-program…
 	Technology Previews	Teknikförhandsgranskningar
 	Scratch Disks…	Arbetsdiskar…
 	Export Preferences…	Exportinställningar…
@@ -918,8 +923,8 @@
 	ACES	ACES
 	Industry Standard	Branschstandard
 	Web	Webb
-	Internet Standard RGB	Internetstandard-RGB
-	Legacy Macintosh RGB	Äldre Macintosh RGB
+	Internet Standard RGB (sRGB)	Internetstandard-RGB (sRGB)
+	Legacy Macintosh RGB (Gamma 1.8)	Äldre Macintosh RGB (Gamma 1.8)
 	Monitor RGB	Bildskärms-RGB
 	Windows LCD	Windows LCD
 	Coated CMYK	Bestruket CMYK
@@ -1740,6 +1745,7 @@
 	Saved	Sparat
 	Reveal in Finder	Visa i Finder
 	Show in Explorer	Visa i Utforskaren
+	Reveal in Explorer	Visa i Utforskaren
 	Show in Folder	Visa i mapp
 	Before (Y)	Före (Y)
 	Save Settings…	Spara inställningar…
@@ -1919,6 +1925,8 @@
 	Combine Shapes	Kombinera former
 	Contract…	Dra ihop…
 	Convert to Embedded	Konvertera till inbäddat
+	Embed Linked	Bädda in länkat
+	Embed All Linked	Bädda in alla länkade
 	Convert to Layers	Konvertera till lager
 	Convert to Linked…	Konvertera till länkat…
 	Count	Antal
@@ -2006,6 +2014,7 @@
 	Pixelate	Pixla
 	Place Scale Marker…	Placera skalmarkör…
 	Plug-ins	Plugin-program
+	Plugins	Plugin-program
 	Print One Copy	Skriv ut en kopia
 	Print…	Skriv ut…
 	Range	Intervall
@@ -2050,7 +2059,7 @@
 	Vertical Centers	Lodräta mittpunkter
 	Video Frames to Layers…	Videobildrutor till lager…
 	WIA Support…	WIA-stöd…
-	Working CMY Plate	CMY-arbetsplåt
+	Working CMY Plates	CMY-arbetsplåt
 
 # tl! literals (third pass)
 	Absolute	Absolut
@@ -2336,6 +2345,11 @@
 	Show canvas dots	Visa punkter på arbetsytan
 	Clip thumbnails to layer bounds	Begränsa miniatyrer till lagergränser
 	Clip Thumbnails to Layer Bounds	Begränsa miniatyrer till lagergränser
+	No Thumbnails	Inga miniatyrer
+	Small Thumbnails	Små miniatyrer
+	Medium Thumbnails	Medelstora miniatyrer
+	Large Thumbnails	Stora miniatyrer
+	Clip Thumbnails to Document Bounds	Begränsa miniatyrer till dokumentgränser
 	Canvas color	Arbetsytans färg
 	Canvas custom color	Anpassad färg för arbetsytan
 	Classic	Klassisk
@@ -2462,7 +2476,6 @@
 	Show only crosshair while painting	Visa bara hårkors vid målning
 	Show slice numbers	Visa skivnummer
 	Show tooltips	Visa verktygstips
-	Enable animations	Aktivera animeringar
 	Show highlight on rollover	Visa framhävning när pekaren förs över
 	Show bounding box when dragging layer	Visa begränsningsram när lager dras
 	System title bar	Systemets namnlist
@@ -3197,6 +3210,8 @@ curves	Smooth	Jämna ut
 	Step {step} is waiting for its dialog	Steg {step} väntar på sin dialogruta
 @plural	{n} action|{n} actions	{n} åtgärd|{n} åtgärder
 	Background (Default)	Bakgrund (standard)
+	Background (default)	Bakgrund (standard)
+	Transparent (default)	Genomskinlig (standard)
 	Content-Aware Fill	Innehållsmedveten fyllning
 # Batch / Image Processor
 	Include All Subfolders	Ta med alla undermappar
@@ -4914,3 +4929,97 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} export av bildresurser misslyckades|{what}: {n} exporter av bildresurser misslyckades
 	Memory usage percent	Minnesanvändning i procent
 	Save Full-Size Composite in .pcraft Files	Spara sammansatt bild i full storlek i .pcraft-filer
+
+# Action Stop message (#8386)
+	Message	Meddelande
+# Playback Options (#5212)
+	Playback Options…	Uppspelningsalternativ…
+	Playback Options	Uppspelningsalternativ
+	Accelerated	Accelererad
+	Step by Step	Steg för steg
+	Pause For:	Paus i:
+	Pause For	Paus i
+	seconds	sekunder
+	Create a single history state	Skapa ett enda historikläge
+
+# Channels panel menu (#11451)
+	Channel Options…	Kanalalternativ…
+	Specify Channels:	Ange kanaler:
+	Not enough grayscale documents for this mode.	Det finns inte tillräckligt många gråskaledokument för det här läget.
+	Pick a different document for each channel.	Välj ett annat dokument för varje kanal.
+	A picked document is no longer open.	Ett av de valda dokumenten är inte längre öppet.
+	A picked document is no longer a grayscale document of the same size.	Ett av de valda dokumenten är inte längre ett gråskaledokument i samma storlek.
+
+# Upstream 0.21.0 frame, placement and memory messages.
+	A file is still being placed; try again when it has finished.	En fil håller fortfarande på att monteras; försök igen när det är klart.
+	A frame supports affine transforms; select its image for perspective transforms	En ram stöder affina transformeringar; välj dess bild för perspektivtransformeringar
+	A frame supports affine transforms; select its image to warp it	En ram stöder affina transformeringar; välj dess bild för att tänja den
+	Cancelled placing {name}	Montering av {name} avbröts
+	Convert to Frame…	Konvertera till ram…
+	Create a new custom frame	Skapa en ny anpassad ram
+	Create a new polygonal frame	Skapa en ny polygonal ram
+	Create a new triangular frame	Skapa en ny triangulär ram
+	Dropped files weren't placed: their document was closed.	De släppta filerna monterades inte: deras dokument stängdes.
+	Dropped files weren't placed: too many are waiting for their document.	De släppta filerna monterades inte: för många väntar på sitt dokument.
+	Fit Content to Frame	Anpassa innehåll till ram
+	Fit Frame to Content	Anpassa ram till innehåll
+	Frame coordinates must be finite and within 600000 pixels	Ramkoordinater måste vara ändliga och inom 600000 pixlar
+	Import Image…	Importera bild…
+	Invalid frame transform	Ogiltig ramtransformering
+	Invalid nested file drop	Ogiltigt kapslat filsläpp
+	Learn	Lär dig
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Det skulle finnas lite minne kvar efter att filen öppnats. Stäng andra appar först, annars kan PhotoCraft få slut på minne.
+	New Frame	Ny ram
+	New file	Ny fil
+	Nudge	Flytta lite
+	On your computer	På din dator
+	Replace Image…	Ersätt bild…
+	Source: {name}	Källa: {name}
+	The GPU compositor is still being prepared	GPU-kompositorn förbereds fortfarande
+	The History Brush source was deleted: set a new source in the History panel	Händelsepenselns källa raderades: ange en ny källa i panelen Händelser
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Den aktuella mappen för virtuellt minne ({path}) rapporterar inte sitt lediga utrymme, så PhotoCraft kan inte stanna innan den är full, och stora filer får inget extra utrymme där utan en storleksgräns för virtuellt minne. Varningen gäller den aktuella konfigurationen; ändringarna ovan börjar gälla vid Verkställ eller OK. Ange en gräns eller använd en lokal disk.
+	The frame is locked	Ramen är låst
+	The frame is unavailable	Ramen är inte tillgänglig
+	Website	Webbplats
+
+# OpenType stylistic sets.
+	Stylistic Sets	Stilistiska uppsättningar
+	Set 	Uppsättning
+	Set 1	Uppsättning 1
+	Set 2	Uppsättning 2
+	Set 3	Uppsättning 3
+	Set 4	Uppsättning 4
+	Set 5	Uppsättning 5
+	Set 6	Uppsättning 6
+	Set 7	Uppsättning 7
+	Set 8	Uppsättning 8
+	Set 9	Uppsättning 9
+	Set 10	Uppsättning 10
+	Set 11	Uppsättning 11
+	Set 12	Uppsättning 12
+	Set 13	Uppsättning 13
+	Set 14	Uppsättning 14
+	Set 15	Uppsättning 15
+	Set 16	Uppsättning 16
+	Set 17	Uppsättning 17
+	Set 18	Uppsättning 18
+	Set 19	Uppsättning 19
+	Set 20	Uppsättning 20
+
+# Pen tablet input preferences and platform API names.
+	Tablet input	Inmatning från ritplatta
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (standard)
+
+# Generated filter fields and LUT format identifiers.
+	Data Encoding	Datakodning
+	Lut Format	LUT-format
+	Shape Id	Form-ID
+	Shape Name	Formnamn
+	Shape Origin Type	Formens ursprungstyp
+	Shape Path	Formbana
+	Text	Text
+	3dl	3DL
+	Base64	Base64
+	Cube	CUBE
+	Look	LOOK

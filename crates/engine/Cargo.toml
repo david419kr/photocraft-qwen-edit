@@ -23,6 +23,8 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 thiserror = { workspace = true }
 rayon = { workspace = true }
+chrono = { workspace = true }
+web-time = { workspace = true }
 photocraft-paint = { workspace = true }
 photocraft-algo = { workspace = true }
 photocraft-text = { workspace = true }
@@ -48,7 +50,9 @@ reqwest = { version = "0.12", default-features = false, features = ["blocking", 
 uuid = { version = "1", features = ["v4"] }
 tungstenite = { version = "0.30", default-features = false, features = ["handshake", "rustls-tls-webpki-roots"] }
 tempfile = "3"
-chrono = { workspace = true }
+# `clock`: the local time that names History Options' snapshot on save (#2966); already in the
+# tree through rmcp. The web build has no local clock here and names it "Snapshot N".
+chrono = { workspace = true, features = ["clock"] }
 
 # `file_cmds::same_file` on Windows: the volume serial number and file index, so a hard link to a
 # file is that file (std's `MetadataExt::file_index` is unstable).

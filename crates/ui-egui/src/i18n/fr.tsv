@@ -171,6 +171,7 @@
 	Right	Droite
 	Open Recent	Ouvrir un fichier récent
 	Clear Recent Files	Effacer la liste des fichiers récents
+	Clear Recent File List	Effacer la liste des fichiers récents
 	Remove from Recent	Retirer des fichiers récents
 	Remove {name} from Recent	Retirer {name} des fichiers récents
 	Close	Fermer
@@ -179,6 +180,10 @@
 	Restore	Restaurer
 	Close All	Tout fermer
 	Close Others	Fermer les autres
+	New Document…	Nouveau document…
+	Open Document…	Ouvrir…
+	Consolidate All to Here	Tout regrouper ici
+	Move to New Window	Déplacer vers une nouvelle fenêtre
 	Save	Enregistrer
 	Save As…	Enregistrer sous…
 	Save a Copy…	Enregistrer une copie…
@@ -231,6 +236,7 @@
 	Create Smart Object after Loading Layers	Créer un objet intelligent après le chargement des calques
 	Reveal in Finder	Afficher dans le Finder
 	Show in Explorer	Afficher dans l'Explorateur
+	Reveal in Explorer	Afficher dans l'Explorateur
 	Show in Folder	Afficher dans le dossier
 	File Info…	Informations sur le fichier…
 	Print…	Imprimer…
@@ -317,6 +323,7 @@
 	Units & Rulers…	Unités et règles…
 	Guides, Grid & Slices…	Repères, grille et tranches…
 	Plug-ins…	Extensions…
+	Plugins…	Extensions…
 	Type…	Texte…
 	Enhanced Controls…	Commandes avancées…
 	Camera Raw…	Camera Raw…
@@ -466,6 +473,8 @@
 	Smart Object	Objet intelligent
 	Convert to Smart Object	Convertir en objet intelligent
 	Convert to Embedded	Convertir en objet incorporé
+	Embed Linked	Incorporer le lié
+	Embed All Linked	Incorporer tous les liés
 	Convert to Layers	Convertir en calques
 	Convert to Linked…	Convertir en objet lié…
 	Edit Contents	Modifier le contenu
@@ -718,6 +727,7 @@
 	Minimum…	Minimum…
 	Offset…	Décalage…
 	Plug-ins	Extensions
+	Plugins	Extensions
 	Proof Setup	Configuration d'épreuve
 	Proof Colors	Couleurs d'épreuve
 	Gamut Warning	Alerte de gamut
@@ -726,9 +736,9 @@
 	Working Magenta Plate	Plaque magenta de travail
 	Working Yellow Plate	Plaque jaune de travail
 	Working Black Plate	Plaque noire de travail
-	Working CMY Plate	Plaque CMJ de travail
-	Legacy Macintosh RGB	RVB Macintosh (ancien)
-	Internet Standard RGB	RVB standard d'Internet
+	Working CMY Plates	Plaque CMJ de travail
+	Legacy Macintosh RGB (Gamma 1.8)	RVB Macintosh (ancien) (Gamma 1.8)
+	Internet Standard RGB (sRGB)	RVB standard d'Internet (sRGB)
 	Monitor RGB	RVB du moniteur
 	Color Blindness — Protanopia-type	Daltonisme — type protanopie
 	Color Blindness — Deuteranopia-type	Daltonisme — type deutéranopie
@@ -820,7 +830,6 @@
 	Consolidate All to Tabs	Tout regrouper dans des onglets
 	Float in Window	Flottante dans une fenêtre
 	Float All in Windows	Toutes flottantes dans des fenêtres
-	New Window for Document	Nouvelle fenêtre pour le document
 	Workspace	Espace de travail
 	Essentials	Essentiel
 	Graphic and Web	Graphisme et Web
@@ -1904,6 +1913,7 @@
 	Soften	Adoucir
 	Source	Source
 	Source: set	Source : définie
+	Source: {name}	Source : {name}
 	Sponge Tool	Outil Éponge
 	Spot Healing Brush Tool	Outil Correcteur localisé
 	Spread	Grossissement
@@ -1978,6 +1988,11 @@
 	Show canvas dots	Afficher les points du canevas
 	Clip thumbnails to layer bounds	Rogner les vignettes aux limites du calque
 	Clip Thumbnails to Layer Bounds	Rogner les vignettes aux limites du calque
+	No Thumbnails	Aucune vignette
+	Small Thumbnails	Petites vignettes
+	Medium Thumbnails	Vignettes moyennes
+	Large Thumbnails	Grandes vignettes
+	Clip Thumbnails to Document Bounds	Rogner les vignettes aux limites du document
 	Canvas color	Couleur du canevas
 	Canvas custom color	Couleur personnalisée du canevas
 	Color picker	Sélecteur de couleurs
@@ -2095,7 +2110,6 @@
 	Show only crosshair while painting	N'afficher que le réticule pendant la peinture
 	Show slice numbers	Afficher les numéros de tranche
 	Show tooltips	Afficher les info-bulles
-	Enable animations	Activer les animations
 	Show highlight on rollover	Afficher la mise en surbrillance au survol
 	Show transformation values	Afficher les valeurs de transformation
 	Slice color	Couleur des tranches
@@ -3288,6 +3302,8 @@ curves	Smooth	Lisser
 	Step {step} is waiting for its dialog	L’étape {step} attend sa boîte de dialogue
 @plural	{n} action|{n} actions	{n} action|{n} actions
 	Background (Default)	Arrière-plan (par défaut)
+	Background (default)	Arrière-plan (par défaut)
+	Transparent (default)	Transparent (par défaut)
 	Content-Aware Fill	Remplissage d'après le contenu
 	Include All Subfolders	Inclure tous les sous-dossiers
 	Auto Add/Delete	Ajout/suppr. auto
@@ -3341,6 +3357,7 @@ curves	Smooth	Lisser
 	Automatically Check for Updates	Rechercher automatiquement des mises à jour
 	Paints from the History panel's source state	Peint à partir de l'état source du panneau Historique
 	Sets the source for the history brush	Définit la source du pinceau d'historique
+	The History Brush source was deleted: set a new source in the History panel	La source du pinceau d'historique a été supprimée : définissez une nouvelle source dans le panneau Historique
 	Highlight Mode	Mode des tons clairs
 	Highlight Color	Couleur des tons clairs
 	Highlight Opacity	Opacité des tons clairs
@@ -4533,6 +4550,8 @@ shape	Appearance	Apparence
 	Font size presets	Tailles de police prédéfinies
 	Leading presets	Interlignages prédéfinis
 	Tracking presets	Approches prédéfinies
+
+	The GPU compositor is still being prepared	The GPU compositor is still being prepared
 	Invalid numeric entry. An integer between {min}% and {max}% is required. Previous value was inserted.	Entrée numérique non valide. Un entier compris entre {min}% et {max}% est requis. La valeur précédente a été insérée.
 	Color Aware	Selon la couleur
 	Decontaminate Colors	Décontaminer les couleurs
@@ -4732,3 +4751,97 @@ shape	Appearance	Apparence
 	ZIP	ZIP
 	{ok} written to {dir}	{ok} écrits dans {dir}
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what} : échec de {n} exportation de ressource d’image|{what} : échec de {n} exportations de ressources d’image
+
+# Action Stop message (#8386)
+	Message	Message
+# Playback Options (#5212)
+	Playback Options…	Options d'exécution…
+	Playback Options	Options d'exécution
+	Accelerated	Accélérée
+	Step by Step	Pas à pas
+	Pause For:	Pause de :
+	Pause For	Pause de
+	seconds	secondes
+	Create a single history state	Créer un seul état d'historique
+	Generator enabled	Générateur activé
+	On your computer	Sur votre ordinateur
+	New file	Nouveau fichier
+	Learn	Apprendre
+	Website	Site web
+
+# Frame Tool and other branch translations.
+	A frame supports affine transforms; select its image for perspective transforms	Un cadre accepte les transformations affines ; sélectionnez son image pour les transformations de perspective
+	A frame supports affine transforms; select its image to warp it	Un cadre accepte les transformations affines ; sélectionnez son image pour la déformer
+	Convert to Frame…	Convertir en cadre…
+	Create a new custom frame	Créer un cadre personnalisé
+	Create a new polygonal frame	Créer un cadre polygonal
+	Create a new triangular frame	Créer un cadre triangulaire
+	Fit Content to Frame	Adapter le contenu au cadre
+	Fit Frame to Content	Adapter le cadre au contenu
+	Frame coordinates must be finite and within 600000 pixels	Les coordonnées du cadre doivent être finies et comprises dans une limite de 600000 pixels
+	Import Image…	Importer une image…
+	Invalid frame transform	Transformation du cadre non valide
+	Invalid nested file drop	Dépôt de fichier imbriqué non valide
+	New Frame	Nouveau cadre
+	Replace Image…	Remplacer l’image…
+	The frame is locked	Le cadre est verrouillé
+	The frame is unavailable	Le cadre n’est pas disponible
+
+# Channels panel menu (#11451)
+	Channel Options…	Options de canal…
+	Specify Channels:	Indiquer les canaux :
+	Not enough grayscale documents for this mode.	Pas assez de documents en niveaux de gris pour ce mode.
+	Pick a different document for each channel.	Choisissez un document différent pour chaque canal.
+	A picked document is no longer open.	Un des documents choisis n'est plus ouvert.
+	A picked document is no longer a grayscale document of the same size.	Un des documents choisis n'est plus un document en niveaux de gris de même taille.
+
+# Placement and memory-admission notices from upstream 0.21.0.
+	A file is still being placed; try again when it has finished.	Un fichier est encore en cours d’importation ; réessayez une fois celle-ci terminée.
+	Cancelled placing {name}	Importation de {name} annulée
+	Dropped files weren't placed: their document was closed.	Les fichiers déposés n’ont pas été importés : leur document a été fermé.
+	Dropped files weren't placed: too many are waiting for their document.	Les fichiers déposés n’ont pas été importés : trop de fichiers attendent leur document.
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Il resterait peu de mémoire après l’ouverture de ce fichier. Fermez d’abord les autres applications, sinon PhotoCraft risque de manquer de mémoire.
+	Nudge	Déplacer légèrement
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Le dossier de travail actuel ({path}) ne signale pas son espace libre. PhotoCraft ne peut donc pas s’arrêter avant qu’il soit plein, et les fichiers volumineux ne bénéficient d’aucun espace supplémentaire sans limite de taille du disque de travail. Cet avertissement concerne la configuration actuelle ; les modifications ci-dessus prennent effet avec Appliquer ou OK. Définissez une limite ou utilisez un disque local.
+
+# OpenType stylistic-set labels.
+	Stylistic Sets	Jeux stylistiques
+	Set 	Jeu
+	Set 1	Jeu 1
+	Set 2	Jeu 2
+	Set 3	Jeu 3
+	Set 4	Jeu 4
+	Set 5	Jeu 5
+	Set 6	Jeu 6
+	Set 7	Jeu 7
+	Set 8	Jeu 8
+	Set 9	Jeu 9
+	Set 10	Jeu 10
+	Set 11	Jeu 11
+	Set 12	Jeu 12
+	Set 13	Jeu 13
+	Set 14	Jeu 14
+	Set 15	Jeu 15
+	Set 16	Jeu 16
+	Set 17	Jeu 17
+	Set 18	Jeu 18
+	Set 19	Jeu 19
+	Set 20	Jeu 20
+
+# Pen tablet input preferences and platform API names.
+	Tablet input	Entrée tablette
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (par défaut)
+
+# Generated filter fields and LUT format identifiers.
+	Data Encoding	Encodage des données
+	Lut Format	Format LUT
+	Shape Id	Identifiant de la forme
+	Shape Name	Nom de la forme
+	Shape Origin Type	Type d’origine de la forme
+	Shape Path	Tracé de la forme
+	Text	Texte
+	3dl	3DL
+	Base64	Base64
+	Cube	CUBE
+	Look	LOOK

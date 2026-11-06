@@ -608,7 +608,7 @@ fn run(s: &mut Session, p: &Value, operation: Operation) -> Result<Value> {
                 ctx.check()?;
                 ctx.progress(0.01, "Resizing document for AI editing");
                 let mut resized = (*source).clone();
-                crate::image_cmds::resample_doc(&mut resized, w, h, resize_filter);
+                crate::image_cmds::resample_doc(&mut resized, command, w, h, resize_filter)?;
                 ctx.check()?;
                 Arc::new(resized)
             } else {

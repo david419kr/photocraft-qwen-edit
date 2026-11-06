@@ -389,7 +389,7 @@ fn adjust_inks(adj: &Adjustment, buf: &mut CmykBuffer, depth: SampleType) {
     let luts = matches!(adj, Adjustment::Levels { .. } | Adjustment::Curves { .. }).then(|| super::adjust::tone_luts_depth(adj, Some(depth)));
     let tone = |ch: usize, v: f32| match adj {
         Adjustment::Invert => 1.0 - v,
-        Adjustment::Posterize { levels } => super::adjust::posterize(v, *levels),
+        Adjustment::Posterize { levels } => super::adjust::posterize_in(v, *levels, Some(depth)),
         _ => luts.as_ref().and_then(|t| t.get(ch)).map_or(v, |t| lut_at(t, v)),
     };
     for p in &mut buf.px {
@@ -411,6 +411,10 @@ fn adjust_inks(adj: &Adjustment, buf: &mut CmykBuffer, depth: SampleType) {
 /// special eight is part of the blend and leaves the mix to Opacity, as on the RGB compositor.
 fn mix_adjusted(l: &Layer, base: &mut CmykBuffer, adjusted: &CmykBuffer, cx: &Ctx) {
     let (opacity, fill) = super::composite::adjustment_coverage(l);
+    if fill <= 0.0 {
+        // Zero special Fill is exactly the backdrop, without a brightness round trip.
+        return;
+    }
     let rect = base.rect;
     let w = (rect.width() as usize).max(1);
     let mv = mask_vals(l, rect, cx);
@@ -429,7 +433,9 @@ fn mix_adjusted(l: &Layer, base: &mut CmykBuffer, adjusted: &CmykBuffer, cx: &Ct
             }
             continue;
         }
-        let bl = blend_ink_fill(l.blend, [p[0], p[1], p[2], p[3]], [a[0], a[1], a[2], a[3]], fill);
+        let cb = [p[0], p[1], p[2], p[3]];
+        let cs = [a[0], a[1], a[2], a[3]];
+        let bl = if fill < 1.0 { blend_ink_fill(l.blend, cb, cs, fill) } else { blend_ink(l.blend, cb, cs) };
         for (v, b) in p.iter_mut().zip(bl) {
             *v = if k >= 1.0 { b } else { *v + (b - *v) * k };
         }
@@ -457,6 +463,7 @@ fn composite_clipped(clipped: &[Layer], base: &mut CmykBuffer, cx: &Ctx) {
         if let LayerContent::Adjustment(adj) = &c.content {
             let mut adjusted = base.clone();
             adjust_inks(adj, &mut adjusted, cx.depth);
+            // Match the RGB compositor: special Fill participates in the blend, not twice in coverage.
             mix_adjusted(c, base, &adjusted, cx);
             continue;
         }

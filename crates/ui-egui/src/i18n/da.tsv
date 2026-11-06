@@ -86,6 +86,7 @@
 	Right	Højre
 	Open Recent	Åbn seneste
 	Clear Recent Files	Ryd seneste filer
+	Clear Recent File List	Ryd seneste filer
 	Remove from Recent	Fjern fra seneste
 	Remove {name} from Recent	Fjern {name} fra seneste
 	Close	Luk
@@ -94,6 +95,10 @@
 	Restore	Gendan
 	Close All	Luk alle
 	Close Others	Luk andre
+	New Document…	Nyt dokument…
+	Open Document…	Åbn…
+	Consolidate All to Here	Saml alle her
+	Move to New Window	Flyt til nyt vindue
 	Save	Gem
 	Save As…	Gem som…
 	Save a Copy…	Gem en kopi…
@@ -508,7 +513,6 @@
 	Match Location	Afstem placering
 	Match Rotation	Afstem rotation
 	Match All	Afstem alle
-	New Window for Document	Nyt vindue til dokument
 	Workspace	Arbejdsområde
 	Extensions	Udvidelser
 	Panels	Paneler
@@ -686,6 +690,7 @@
 	Units & Rulers…	Enheder og linealer…
 	Guides, Grid & Slices…	Hjælpelinjer, gitter og udsnit…
 	Plug-ins…	Plug-ins…
+	Plugins…	Plug-ins…
 	Technology Previews	Teknologieksempler
 	Scratch Disks…	Arbejdsdiske…
 	Export Preferences…	Eksportpræferencer…
@@ -920,8 +925,8 @@
 	ACES	ACES
 	Industry Standard	Industristandard
 	Web	Web
-	Internet Standard RGB	Internetstandard-RGB
-	Legacy Macintosh RGB	Ældre Macintosh RGB
+	Internet Standard RGB (sRGB)	Internetstandard-RGB (sRGB)
+	Legacy Macintosh RGB (Gamma 1.8)	Ældre Macintosh RGB (Gamma 1.8)
 	Monitor RGB	Skærm-RGB
 	Windows LCD	Windows LCD
 	Coated CMYK	Bestrøget CMYK
@@ -1742,6 +1747,7 @@
 	Saved	Gemt
 	Reveal in Finder	Vis i Finder
 	Show in Explorer	Vis i Stifinder
+	Reveal in Explorer	Vis i Stifinder
 	Show in Folder	Vis i mappe
 	Before (Y)	Før (Y)
 	Save Settings…	Gem indstillinger…
@@ -1921,6 +1927,8 @@
 	Combine Shapes	Kombinér former
 	Contract…	Formindsk…
 	Convert to Embedded	Konvertér til indlejret
+	Embed Linked	Indlejr sammenkædet
+	Embed All Linked	Indlejr alle sammenkædede
 	Convert to Layers	Konvertér til lag
 	Convert to Linked…	Konvertér til sammenkædet…
 	Count	Optælling
@@ -2008,6 +2016,7 @@
 	Pixelate	Pixelér
 	Place Scale Marker…	Placér skalamarkør…
 	Plug-ins	Plug-ins
+	Plugins	Plug-ins
 	Print One Copy	Udskriv én kopi
 	Print…	Udskriv…
 	Range	Spændvidde
@@ -2052,7 +2061,7 @@
 	Vertical Centers	Lodrette midtpunkter
 	Video Frames to Layers…	Videobilleder til lag…
 	WIA Support…	WIA-support…
-	Working CMY Plate	Arbejds-CMY-plade
+	Working CMY Plates	Arbejds-CMY-plade
 
 # tl! literals (third pass)
 	Absolute	Absolut
@@ -2338,6 +2347,11 @@
 	Show canvas dots	Vis lærredsprikker
 	Clip thumbnails to layer bounds	Klip miniaturer til laggrænser
 	Clip Thumbnails to Layer Bounds	Klip miniaturer til laggrænser
+	No Thumbnails	Ingen miniaturer
+	Small Thumbnails	Små miniaturer
+	Medium Thumbnails	Mellemstore miniaturer
+	Large Thumbnails	Store miniaturer
+	Clip Thumbnails to Document Bounds	Klip miniaturer til dokumentgrænser
 	Canvas color	Lærredsfarve
 	Canvas custom color	Brugerdefineret lærredsfarve
 	Classic	Klassisk
@@ -2464,7 +2478,6 @@
 	Show only crosshair while painting	Vis kun trådkors under maling
 	Show slice numbers	Vis udsnitsnumre
 	Show tooltips	Vis værktøjstips
-	Enable animations	Aktivér animationer
 	Show highlight on rollover	Fremhæv ved pegning
 	Show bounding box when dragging layer	Vis afgrænsningsramme, når et lag trækkes
 	System title bar	Systemtitellinje
@@ -3199,6 +3212,8 @@ curves	Smooth	Udjævn
 	Step {step} is waiting for its dialog	Trin {step} venter på sin dialog
 @plural	{n} action|{n} actions	{n} handling|{n} handlinger
 	Background (Default)	Baggrund (standard)
+	Background (default)	Baggrund (standard)
+	Transparent (default)	Gennemsigtig (standard)
 	Content-Aware Fill	Indholdsbevidst udfyldning
 # Batch / Image Processor
 	Include All Subfolders	Medtag alle undermapper
@@ -4916,3 +4931,97 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} eksport af billedaktiver mislykkedes|{what}: {n} eksporter af billedaktiver mislykkedes
 	Memory usage percent	Hukommelsesforbrug i procent
 	Save Full-Size Composite in .pcraft Files	Gem sammensat billede i fuld størrelse i .pcraft-filer
+
+# Action Stop message (#8386)
+	Message	Meddelelse
+# Playback Options (#5212)
+	Playback Options…	Afspilningsindstillinger…
+	Playback Options	Afspilningsindstillinger
+	Accelerated	Accelereret
+	Step by Step	Trin for trin
+	Pause For:	Pause i:
+	Pause For	Pause i
+	seconds	sekunder
+	Create a single history state	Opret én historiktilstand
+
+# Channels panel menu (#11451)
+	Channel Options…	Kanalindstillinger…
+	Specify Channels:	Angiv kanaler:
+	Not enough grayscale documents for this mode.	Der er ikke nok dokumenter i gråtoner til denne tilstand.
+	Pick a different document for each channel.	Vælg et andet dokument til hver kanal.
+	A picked document is no longer open.	Et af de valgte dokumenter er ikke længere åbent.
+	A picked document is no longer a grayscale document of the same size.	Et af de valgte dokumenter er ikke længere et dokument i gråtoner i samme størrelse.
+
+# Upstream 0.21.0 frame, placement and memory messages.
+	A file is still being placed; try again when it has finished.	En fil er stadig ved at blive placeret; prøv igen, når det er færdigt.
+	A frame supports affine transforms; select its image for perspective transforms	En ramme understøtter affine transformationer; vælg dens billede for perspektivtransformationer
+	A frame supports affine transforms; select its image to warp it	En ramme understøtter affine transformationer; vælg dens billede for at forvrænge det
+	Cancelled placing {name}	Placering af {name} annulleret
+	Convert to Frame…	Konvertér til ramme…
+	Create a new custom frame	Opret en ny brugerdefineret ramme
+	Create a new polygonal frame	Opret en ny polygonal ramme
+	Create a new triangular frame	Opret en ny trekantet ramme
+	Dropped files weren't placed: their document was closed.	De slupne filer blev ikke placeret: deres dokument blev lukket.
+	Dropped files weren't placed: too many are waiting for their document.	De slupne filer blev ikke placeret: for mange venter på deres dokument.
+	Fit Content to Frame	Tilpas indhold til ramme
+	Fit Frame to Content	Tilpas ramme til indhold
+	Frame coordinates must be finite and within 600000 pixels	Rammekoordinater skal være endelige og inden for 600000 pixels
+	Import Image…	Importér billede…
+	Invalid frame transform	Ugyldig rammetransformation
+	Invalid nested file drop	Ugyldigt indlejret filslip
+	Learn	Lær
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Der ville være lidt hukommelse tilbage efter åbning af denne fil. Luk andre apps først, ellers kan PhotoCraft løbe tør for hukommelse.
+	New Frame	Ny ramme
+	New file	Ny fil
+	Nudge	Flyt lidt
+	On your computer	På din computer
+	Replace Image…	Erstat billede…
+	Source: {name}	Kilde: {name}
+	The GPU compositor is still being prepared	GPU-kompositoren er stadig ved at blive klargjort
+	The History Brush source was deleted: set a new source in the History panel	Kilden til historikpenslen blev slettet: angiv en ny kilde i panelet Historik
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Den aktuelle mappe til arbejdsdisk ({path}) oplyser ikke sin ledige plads, så PhotoCraft kan ikke stoppe, før den er fuld, og store filer får ikke ekstra plads fra den uden en størrelsesgrænse for arbejdsdisken. Denne advarsel gælder den aktuelle konfiguration; ændringerne ovenfor træder i kraft ved Anvend eller OK. Angiv en grænse, eller brug en lokal disk.
+	The frame is locked	Rammen er låst
+	The frame is unavailable	Rammen er ikke tilgængelig
+	Website	Websted
+
+# OpenType stylistic sets.
+	Stylistic Sets	Stilistiske sæt
+	Set 	Sæt
+	Set 1	Sæt 1
+	Set 2	Sæt 2
+	Set 3	Sæt 3
+	Set 4	Sæt 4
+	Set 5	Sæt 5
+	Set 6	Sæt 6
+	Set 7	Sæt 7
+	Set 8	Sæt 8
+	Set 9	Sæt 9
+	Set 10	Sæt 10
+	Set 11	Sæt 11
+	Set 12	Sæt 12
+	Set 13	Sæt 13
+	Set 14	Sæt 14
+	Set 15	Sæt 15
+	Set 16	Sæt 16
+	Set 17	Sæt 17
+	Set 18	Sæt 18
+	Set 19	Sæt 19
+	Set 20	Sæt 20
+
+# Pen tablet input preferences and platform API names.
+	Tablet input	Input fra tegneplade
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (standard)
+
+# Generated filter fields and LUT format identifiers.
+	Data Encoding	Datakodning
+	Lut Format	LUT-format
+	Shape Id	Form-id
+	Shape Name	Formnavn
+	Shape Origin Type	Formens oprindelsestype
+	Shape Path	Formkurve
+	Text	Tekst
+	3dl	3DL
+	Base64	Base64
+	Cube	CUBE
+	Look	LOOK
