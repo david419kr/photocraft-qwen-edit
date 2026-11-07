@@ -1,0 +1,242 @@
+{
+  "source_sha": "b4ce47cf1782b0f63ebc501b31c5300169fbb096",
+  "built_source_sha": "b4ce47cf1782b0f63ebc501b31c5300169fbb096",
+  "tree_sha": "b004830b60ab0d1d5d61b28af3be9067aa19d7cb",
+  "ci_tests": {
+    "windows_unit": {
+      "job": 128218122562,
+      "passed": 12712,
+      "failed": 0,
+      "skipped": 84,
+      "reveal_label_regression": "passed"
+    },
+    "windows_integration": {
+      "job": 128218122647,
+      "passed": 3258,
+      "failed": 0,
+      "skipped": 26
+    },
+    "without_heif": {
+      "job": 128218122632,
+      "passed": 2252,
+      "failed": 0,
+      "skipped": 18
+    },
+    "corpus": {
+      "job": 128218122571,
+      "summary_count": 46,
+      "passed": 6826,
+      "failed": 0,
+      "ignored": 44
+    },
+    "ubuntu": {
+      "job": 128218122884,
+      "main": {
+        "passed": 16080,
+        "skipped": 109
+      },
+      "panic_hunt": {
+        "passed": 1,
+        "skipped": 1
+      },
+      "lavapipe_selected": {
+        "passed": 1462,
+        "skipped_or_excluded": 4369
+      },
+      "other_gates": [
+        "fmt",
+        "full workspace all-target HEIF Clippy",
+        "layers",
+        "scorecard",
+        "doctests",
+        "WASM workspace and HEIF/AVIF codec features"
+      ],
+      "passed": 16080
+    }
+  },
+  "focused_regressions": {
+    "passed": 951,
+    "suites": 36,
+    "manual_ignored": 4
+  },
+  "local_checks": {
+    "clippy_195": "passed full workspace/all-target locked HEIF",
+    "clippy_stable": "passed full workspace/all-target locked HEIF on 1.99.1",
+    "catalog_tests": {
+      "passed": 77,
+      "failed": 0
+    },
+    "prefs_labels": {
+      "passed": 1,
+      "failed": 0
+    },
+    "generated_filter_labels": {
+      "passed": 4,
+      "failed": 0
+    },
+    "home_chrome": {
+      "passed": 3,
+      "failed": 0
+    },
+    "cmyk": {
+      "passed": 49,
+      "failed": 0
+    },
+    "memory_policy": {
+      "passed": 28,
+      "failed": 0
+    },
+    "layers": {
+      "crates": 31,
+      "violations": 0
+    },
+    "installer_python": {
+      "passed": 14
+    },
+    "packaging_python": {
+      "passed": 11,
+      "skipped_windows_only": 3
+    },
+    "psd_budget": {
+      "passed": 27,
+      "failed": 3,
+      "cause": "Unreadable sandbox cgroup memory constraints cause intentional fail-closed zero available RAM"
+    },
+    "engine_ai": {
+      "passed": 95,
+      "failed": 1,
+      "ignored": 2,
+      "cause": "Prompt-history PSD reopen refused under sandbox zero available RAM"
+    }
+  },
+  "local_checks_scope": "Preliminary local diagnostics; final exact-source hosted acceptance is recorded under ci_tests and focused_regressions. Post-merge results are recorded separately under post_merge.",
+  "analysis_limits": {
+    "sonarcloud": "Scan and coverage skipped because SONAR_TOKEN absent; wrapper success is not analysis.",
+    "nix": "No flake.nix; actual check skipped, wrapper success only.",
+    "freebsd": "Not dispatched, manual only.",
+    "manual_fuzz_and_performance": "Not run.",
+    "actual_cuda_vram_interactive_ui": "Not run by CI."
+  },
+  "post_merge": {
+    "sha": "7f360316cc207bc64f52cd67a92be53459ca7de5",
+    "tree": "b004830b60ab0d1d5d61b28af3be9067aa19d7cb",
+    "ci_run": 42320159817,
+    "ubuntu_waiver": {
+      "scope": "261107-0.21.0",
+      "run_id": 42320159817,
+      "job_id": 128245237315,
+      "job_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/42320159817/job/128245237315",
+      "outcome": "failure; hosted runner lost communication with the server",
+      "observed_steps": "Gate in_progress with no conclusion; later lockfile/cleanup steps pending; prior setup succeeded",
+      "authorization": "Owner explicitly requested skipping Ubuntu for this Windows release after the runner-disconnection diagnosis.",
+      "candidate_ubuntu": "Passed on b4ce47cf1782b0f63ebc501b31c5300169fbb096, CI42311791820",
+      "constraints": "One release only; no source/CI workflow changes, no Ubuntu rerun; every other required post-merge job must pass."
+    },
+    "tests": {
+      "windows_unit": {
+        "passed": 12712,
+        "skipped": 84,
+        "leaky": 13
+      },
+      "corpus": {
+        "passed": 6826,
+        "failed": 0,
+        "ignored": 44,
+        "summaries": 46
+      },
+      "without_heif": {
+        "passed": 2252,
+        "skipped": 18
+      },
+      "windows_integration": {
+        "passed": 3258,
+        "skipped": 26,
+        "slow": 41,
+        "leaky": 9
+      }
+    },
+    "ci_status": "completed",
+    "ci_conclusion": "failure",
+    "ubuntu_failure": {
+      "job_id": 128245237315,
+      "annotation": "The hosted runner lost communication with the server. Anything in your workflow that terminates the runner process, starves it for CPU/Memory, or blocks its network access can cause this error.",
+      "annotation_source": "Public GitHub job annotation: https://github.com/david419kr/photocraft-qwen-edit/actions/runs/42320159817/job/128245237315",
+      "logs_error": "404 Azure BlobNotFound",
+      "gate_step_left_in_progress": true,
+      "first_targeted_rerun": "HTTP403: workflow already running; rerun did not execute",
+      "retry_waived": "Owner explicitly waived post-merge Ubuntu retry for this Windows release; no rerun executed.",
+      "ubuntu_pass_count": null
+    },
+    "other_workflows": [
+      {
+        "id": 42320159482,
+        "name": "House rules",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7f360316cc207bc64f52cd67a92be53459ca7de5",
+        "event": "push",
+        "html_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/42320159482",
+        "run_attempt": 1
+      },
+      {
+        "id": 42320159452,
+        "name": "Nix",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7f360316cc207bc64f52cd67a92be53459ca7de5",
+        "event": "push",
+        "html_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/42320159452",
+        "run_attempt": 1
+      },
+      {
+        "id": 42320160112,
+        "name": "SonarCloud",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7f360316cc207bc64f52cd67a92be53459ca7de5",
+        "event": "push",
+        "html_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/42320160112",
+        "run_attempt": 1
+      },
+      {
+        "id": 42320159531,
+        "name": "Packaging lint",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7f360316cc207bc64f52cd67a92be53459ca7de5",
+        "event": "push",
+        "html_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/42320159531",
+        "run_attempt": 1
+      },
+      {
+        "id": 42320159817,
+        "name": "CI",
+        "status": "completed",
+        "conclusion": "failure",
+        "head_sha": "7f360316cc207bc64f52cd67a92be53459ca7de5",
+        "event": "push",
+        "html_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/42320159817",
+        "run_attempt": 1
+      },
+      {
+        "id": 42320159105,
+        "name": "Documentation",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "7f360316cc207bc64f52cd67a92be53459ca7de5",
+        "event": "push",
+        "html_url": "https://github.com/david419kr/photocraft-qwen-edit/actions/runs/42320159105",
+        "run_attempt": 1
+      }
+    ],
+    "web": {
+      "raw_wasm_bytes": 32005170,
+      "largest_shipped_bytes": 14339891,
+      "limit": 25165824
+    }
+  },
+  "main_merge_authorized": true,
+  "tag_authorized": true,
+  "public_release_authorized": true,
+  "actual_gpu_ui_tested": false
+}
