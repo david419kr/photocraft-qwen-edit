@@ -128,6 +128,7 @@
 	Right	Rechts
 	Open Recent	Recent geopend
 	Clear Recent Files	Recente bestanden wissen
+	Clear Recent File List	Recente bestanden wissen
 	Remove from Recent	Verwijderen uit recente bestanden
 	Remove {name} from Recent	{name} verwijderen uit recente bestanden
 	Close	Sluiten
@@ -136,6 +137,10 @@
 	Restore	Herstellen
 	Close All	Alles sluiten
 	Close Others	Andere sluiten
+	New Document…	Nieuw document…
+	Open Document…	Openen…
+	Consolidate All to Here	Alles hier samenvoegen
+	Move to New Window	Verplaatsen naar nieuw venster
 	Save	Opslaan
 	Save As…	Opslaan als…
 	Save a Copy…	Kopie opslaan…
@@ -187,6 +192,7 @@
 	Create Smart Object after Loading Layers	Slim object maken na laden van lagen
 	Reveal in Finder	Weergeven in Finder
 	Show in Explorer	Weergeven in Verkenner
+	Reveal in Explorer	Weergeven in Verkenner
 	Show in Folder	Weergeven in map
 	File Info…	Bestandsinformatie…
 	Print…	Afdrukken…
@@ -275,6 +281,7 @@
 	Units & Rulers…	Eenheden en linialen…
 	Guides, Grid & Slices…	Hulplijnen, raster en segmenten…
 	Plug-ins…	Plug-ins…
+	Plugins…	Plug-ins…
 	Type…	Tekst…
 	Enhanced Controls…	Uitgebreide bediening…
 	Camera Raw…	Camera Raw…
@@ -431,6 +438,8 @@
 	Smart Object	Slim object
 	Convert to Smart Object	Omzetten naar slim object
 	Convert to Embedded	Omzetten naar ingesloten
+	Embed Linked	Gekoppeld insluiten
+	Embed All Linked	Alles gekoppeld insluiten
 	Convert to Layers	Omzetten naar lagen
 	Convert to Linked…	Omzetten naar gekoppeld…
 	Edit Contents	Inhoud bewerken
@@ -504,7 +513,9 @@
 	Unite Shapes	Vormen verenigen
 	Subtract Front Shape	Voorste vorm aftrekken
 	Intersect Shape Areas	Overlappende vormgebieden
+	Unite Shapes at Overlap	Overlappende vormgebieden
 	Exclude Overlapping Shapes	Overlappende vormen uitsluiten
+	Subtract Shapes at Overlap	Overlappende vormen uitsluiten
 	Merge Shape Components	Vormcomponenten samenvoegen
 	Path operations	Padbewerkingen
 	Align	Uitlijnen
@@ -687,6 +698,7 @@
 	Minimum…	Minimum…
 	Offset…	Verschuiving…
 	Plug-ins	Plug-ins
+	Plugins	Plug-ins
 	Proof Setup	Proefinstellingen
 	Proof Colors	Proefkleuren
 	Gamut Warning	Waarschuwing kleurbereik
@@ -695,9 +707,9 @@
 	Working Magenta Plate	Werkplaat magenta
 	Working Yellow Plate	Werkplaat geel
 	Working Black Plate	Werkplaat zwart
-	Working CMY Plate	Werkplaat CMY
-	Legacy Macintosh RGB	Verouderde Macintosh RGB
-	Internet Standard RGB	Internetstandaard RGB
+	Working CMY Plates	Werkplaat CMY
+	Legacy Macintosh RGB (Gamma 1.8)	Verouderde Macintosh RGB (Gamma 1.8)
+	Internet Standard RGB (sRGB)	Internetstandaard RGB (sRGB)
 	Monitor RGB	Monitor-RGB
 	Color Blindness — Protanopia-type	Kleurenblindheid — type protanopie
 	Color Blindness — Deuteranopia-type	Kleurenblindheid — type deuteranopie
@@ -779,7 +791,6 @@
 	Consolidate All to Tabs	Alles samenvoegen in tabbladen
 	Float in Window	Zwevend in venster
 	Float All in Windows	Alles zwevend in vensters
-	New Window for Document	Nieuw venster voor document
 	Workspace	Werkruimte
 	Essentials	Basis
 	Graphic and Web	Grafisch en web
@@ -1871,6 +1882,7 @@
 	Soften	Verzachten
 	Source	Bron
 	Source: set	Bron: ingesteld
+	Source: {name}	Bron: {name}
 	Sponge Tool	Sponsgereedschap
 	Spot Healing Brush Tool	Snel herstelpenseel
 	Spread	Spreiden
@@ -1947,6 +1959,11 @@
 	Show canvas dots	Canvasstippen tonen
 	Clip thumbnails to layer bounds	Miniaturen bijsnijden tot laaggrenzen
 	Clip Thumbnails to Layer Bounds	Miniaturen bijsnijden tot laaggrenzen
+	No Thumbnails	Geen miniaturen
+	Small Thumbnails	Kleine miniaturen
+	Medium Thumbnails	Middelgrote miniaturen
+	Large Thumbnails	Grote miniaturen
+	Clip Thumbnails to Document Bounds	Miniaturen bijsnijden tot documentgrenzen
 	Canvas color	Canvaskleur
 	Canvas custom color	Aangepaste canvaskleur
 	Color picker	Kleurkiezer
@@ -2064,7 +2081,6 @@
 	Show only crosshair while painting	Alleen dradenkruis tonen tijdens schilderen
 	Show slice numbers	Segmentnummers tonen
 	Show tooltips	Knopinfo tonen
-	Enable animations	Animaties inschakelen
 	Show highlight on rollover	Markering bij aanwijzen tonen
 	Show bounding box when dragging layer	Selectiekader tonen bij slepen van laag
 	System title bar	Titelbalk van systeem
@@ -4041,6 +4057,8 @@ curves	Smooth	Vloeiend maken
 	Step {step} is waiting for its dialog	Stap {step} wacht op zijn dialoogvenster
 @plural	{n} action|{n} actions	{n} handeling|{n} handelingen
 	Background (Default)	Achtergrond (standaard)
+	Background (default)	Achtergrond (standaard)
+	Transparent (default)	Transparant (standaard)
 	Include All Subfolders	Alle submappen opnemen
 	Auto Add/Delete	Automatisch toevoegen/verwijderen
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Schakel niet ook Spiegelbeeld in bij de afdrukinstellingen: de twee spiegelingen heffen elkaar op.
@@ -4093,6 +4111,7 @@ curves	Smooth	Vloeiend maken
 	Automatically Check for Updates	Automatisch op updates controleren
 	Paints from the History panel's source state	Schildert vanuit de bronstatus van het deelvenster Geschiedenis
 	Sets the source for the history brush	Stelt de bron voor het historiepenseel in
+	The History Brush source was deleted: set a new source in the History panel	De bron voor het historiepenseel is verwijderd: stel een nieuwe bron in het deelvenster Geschiedenis in
 	Highlight Mode	Hooglichtmodus
 	Highlight Color	Hooglichtkleur
 	Highlight Opacity	Hooglichtdekking
@@ -4253,6 +4272,8 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Font size presets	Voorinstellingen lettergrootte
 	Leading presets	Voorinstellingen interlinie
 	Tracking presets	Voorinstellingen spatiëring
+
+	The GPU compositor is still being prepared	The GPU compositor is still being prepared
 	Invalid numeric entry. An integer between {min}% and {max}% is required. Previous value was inserted.	Ongeldige numerieke invoer. Er is een geheel getal tussen {min}% en {max}% vereist. De vorige waarde is ingevoegd.
 	Color Aware	Kleurbewust
 	Decontaminate Colors	Kleuren zuiveren
@@ -4283,8 +4304,8 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Import Photoshop brushes (.abr)	Import Photoshop brushes (.abr)
 	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
 	Default Photoshop Size	Default Photoshop Size
-	Grid view	Grid view
-	List view	List view
+	Grid view	Rasterweergave
+	List view	Lijstweergave
 	Prompt Edit	Prompt Edit
 	Generative Fill	Generative Fill
 	Describe changes to the whole image	Describe changes to the whole image
@@ -4457,3 +4478,104 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	ZIP	ZIP
 	{ok} written to {dir}	{ok} geschreven naar {dir}
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} uitvoer van afbeeldingsmiddelen mislukt|{what}: {n} uitvoeren van afbeeldingsmiddelen mislukt
+
+# Action Stop message (#8386)
+	Message	Bericht
+# Playback Options (#5212)
+	Playback Options…	Afspeelopties…
+	Playback Options	Afspeelopties
+	Accelerated	Versneld
+	Step by Step	Stap voor stap
+	Pause For:	Pauzeren gedurende:
+	Pause For	Pauzeren gedurende
+	seconds	seconden
+	Create a single history state	Eén historiestatus maken
+	Generator enabled	Generator ingeschakeld
+	On your computer	Op je computer
+	New file	Nieuw bestand
+	Learn	Leren
+	Website	Website
+
+# Frame Tool and other branch translations.
+	A frame supports affine transforms; select its image for perspective transforms	Een kader ondersteunt affiene transformaties; selecteer de afbeelding voor perspectieftransformaties
+	A frame supports affine transforms; select its image to warp it	Een kader ondersteunt affiene transformaties; selecteer de afbeelding om deze te verdraaien
+	Convert to Frame…	Omzetten naar kader…
+	Create a new custom frame	Nieuw aangepast kader maken
+	Create a new polygonal frame	Nieuw veelhoekig kader maken
+	Create a new triangular frame	Nieuw driehoekig kader maken
+	Fit Content to Frame	Inhoud aanpassen aan kader
+	Fit Frame to Content	Kader aanpassen aan inhoud
+	Frame coordinates must be finite and within 600000 pixels	Kadercoördinaten moeten eindig zijn en binnen 600000 pixels liggen
+	Import Image…	Afbeelding importeren…
+	Invalid frame transform	Ongeldige kadertransformatie
+	Invalid nested file drop	Ongeldige geneste bestandsneerzetting
+	New Frame	Nieuw kader
+	Replace Image…	Afbeelding vervangen…
+	The frame is locked	Het kader is vergrendeld
+	The frame is unavailable	Het kader is niet beschikbaar
+
+# Channels panel menu (#11451)
+	New Channel…	Nieuw kanaal…
+	Duplicate Channel	Kanaal dupliceren
+	Delete Channel	Kanaal verwijderen
+	New Spot Channel…	Nieuw steunkleurkanaal…
+	Merge Spot Channel	Steunkleurkanaal samenvoegen
+	Channel Options…	Kanaalopties…
+	Split Channels	Kanalen splitsen
+	Merge Channels…	Kanalen samenvoegen…
+	Specify Channels:	Kanalen opgeven:
+	Not enough grayscale documents for this mode.	Niet genoeg grijswaardendocumenten voor deze modus.
+	Pick a different document for each channel.	Kies voor elk kanaal een ander document.
+	A picked document is no longer open.	Een gekozen document is niet meer geopend.
+	A picked document is no longer a grayscale document of the same size.	Een gekozen document is geen grijswaardendocument van hetzelfde formaat meer.
+
+# Placement and memory-admission notices from upstream 0.21.0.
+	A file is still being placed; try again when it has finished.	Er wordt nog een bestand geplaatst; probeer het opnieuw zodra dat klaar is.
+	Cancelled placing {name}	Plaatsen van {name} geannuleerd
+	Dropped files weren't placed: their document was closed.	De neergezette bestanden zijn niet geplaatst: hun document is gesloten.
+	Dropped files weren't placed: too many are waiting for their document.	De neergezette bestanden zijn niet geplaatst: er wachten te veel bestanden op hun document.
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Na het openen van dit bestand zou er weinig geheugen overblijven. Sluit eerst andere apps, anders kan PhotoCraft zonder geheugen komen te zitten.
+	Nudge	Een stapje verplaatsen
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	De huidige werkschijfmap ({path}) meldt de vrije ruimte niet. PhotoCraft kan daarom niet stoppen voordat deze vol is, en grote bestanden krijgen zonder limiet voor de werkschijfgrootte geen extra ruimte. Deze waarschuwing geldt voor de huidige configuratie; bovenstaande wijzigingen worden van kracht met Toepassen of OK. Stel een limiet in of gebruik een lokale schijf.
+
+# OpenType stylistic-set labels.
+	Stylistic Sets	Stijlsets
+	Set 	Set
+	Set 1	Set 1
+	Set 2	Set 2
+	Set 3	Set 3
+	Set 4	Set 4
+	Set 5	Set 5
+	Set 6	Set 6
+	Set 7	Set 7
+	Set 8	Set 8
+	Set 9	Set 9
+	Set 10	Set 10
+	Set 11	Set 11
+	Set 12	Set 12
+	Set 13	Set 13
+	Set 14	Set 14
+	Set 15	Set 15
+	Set 16	Set 16
+	Set 17	Set 17
+	Set 18	Set 18
+	Set 19	Set 19
+	Set 20	Set 20
+
+# Pen tablet input preferences and platform API names.
+	Tablet input	Tabletinvoer
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (standaard)
+
+# Generated filter fields and LUT format identifiers.
+	Data Encoding	Gegevenscodering
+	Lut Format	LUT-indeling
+	Shape Id	Vorm-ID
+	Shape Name	Vormnaam
+	Shape Origin Type	Oorsprongstype van vorm
+	Shape Path	Vormpad
+	Text	Tekst
+	3dl	3DL
+	Base64	Base64
+	Cube	CUBE
+	Look	LOOK

@@ -311,7 +311,6 @@ mod ai_harmonize_tests;
 /// Commands outside `filter.*` that get the schema dialog *with* live preview.
 pub const PREVIEWED: &[&str] = &[
     photocraft_engine::ai_cmds::harmonize::COMMAND,
-    "image.adjustments.selectiveColor",
     "image.adjustments.colorLookup",
     "image.adjustments.shadowsHighlights",
     "image.adjustments.replaceColor",

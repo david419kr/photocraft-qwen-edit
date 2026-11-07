@@ -203,6 +203,7 @@
 	Right	Vpravo
 	Open Recent	Otevřít nedávné
 	Clear Recent Files	Vymazat nedávné soubory
+	Clear Recent File List	Vymazat nedávné soubory
 	Remove from Recent	Odebrat z nedávných
 	Remove {name} from Recent	Odebrat {name} z nedávných
 	Close	Zavřít
@@ -211,6 +212,10 @@
 	Restore	Obnovit
 	Close All	Zavřít vše
 	Close Others	Zavřít ostatní
+	New Document…	Nový dokument…
+	Open Document…	Otevřít…
+	Consolidate All to Here	Sloučit vše sem
+	Move to New Window	Přesunout do nového okna
 	Save	Uložit
 	Save As…	Uložit jako…
 	Save a Copy…	Uložit kopii…
@@ -262,6 +267,7 @@
 	Create Smart Object after Loading Layers	Po načtení vrstev vytvořit chytrý objekt
 	Reveal in Finder	Zobrazit ve Finderu
 	Show in Explorer	Zobrazit v Průzkumníkovi
+	Reveal in Explorer	Zobrazit v Průzkumníkovi
 	Show in Folder	Zobrazit ve složce
 	File Info…	Informace o souboru…
 	Print…	Tisk…
@@ -350,6 +356,7 @@
 	Units & Rulers…	Jednotky a pravítka…
 	Guides, Grid & Slices…	Vodítka, mřížka a řezy…
 	Plug-ins…	Zásuvné moduly…
+	Plugins…	Zásuvné moduly…
 	Type…	Text…
 	Enhanced Controls…	Rozšířené ovládání…
 	Camera Raw…	Camera Raw…
@@ -507,6 +514,8 @@
 	Smart Object	Chytrý objekt
 	Convert to Smart Object	Převést na chytrý objekt
 	Convert to Embedded	Převést na vložený
+	Embed Linked	Vložit propojené
+	Embed All Linked	Vložit všechna propojená
 	Convert to Layers	Převést na vrstvy
 	Convert to Linked…	Převést na propojený…
 	Edit Contents	Upravit obsah
@@ -764,6 +773,7 @@
 	Minimum…	Minimum…
 	Offset…	Posun…
 	Plug-ins	Zásuvné moduly
+	Plugins	Zásuvné moduly
 	Proof Setup	Nastavení nátisku
 	Proof Colors	Nátiskové barvy
 	Gamut Warning	Upozornění na gamut
@@ -772,9 +782,9 @@
 	Working Magenta Plate	Pracovní purpurový výtažek
 	Working Yellow Plate	Pracovní žlutý výtažek
 	Working Black Plate	Pracovní černý výtažek
-	Working CMY Plate	Pracovní výtažky CMY
-	Legacy Macintosh RGB	Starší Macintosh RGB
-	Internet Standard RGB	Internetový standard RGB
+	Working CMY Plates	Pracovní výtažky CMY
+	Legacy Macintosh RGB (Gamma 1.8)	Starší Macintosh RGB (Gamma 1.8)
+	Internet Standard RGB (sRGB)	Internetový standard RGB (sRGB)
 	Monitor RGB	RGB monitoru
 	Color Blindness — Protanopia-type	Barvoslepost — protanopie
 	Color Blindness — Deuteranopia-type	Barvoslepost — deuteranopie
@@ -866,7 +876,7 @@
 	Consolidate All to Tabs	Sloučit vše do záložek
 	Float in Window	Uvolnit do plovoucího okna
 	Float All in Windows	Uvolnit vše do plovoucích oken
-	New Window for Document	Nové okno dokumentu
+	New Window	Nové okno dokumentu
 	Workspace	Pracovní prostor
 	Essentials	Základy
 	Graphic and Web	Grafika a web
@@ -1964,6 +1974,7 @@
 	Soften	Změkčení
 	Source	Zdroj
 	Source: set	Zdroj: nastaven
+	Source: {name}	Zdroj: {name}
 	Sponge Tool	Nástroj houba
 	Spot Healing Brush Tool	Nástroj bodový retušovací štětec
 	Spread	Rozprostření
@@ -2040,6 +2051,11 @@
 	Show canvas dots	Zobrazit tečky plátna
 	Clip thumbnails to layer bounds	Oříznout miniatury na hranice vrstvy
 	Clip Thumbnails to Layer Bounds	Oříznout miniatury na hranice vrstvy
+	No Thumbnails	Bez miniatur
+	Small Thumbnails	Malé miniatury
+	Medium Thumbnails	Střední miniatury
+	Large Thumbnails	Velké miniatury
+	Clip Thumbnails to Document Bounds	Oříznout miniatury na hranice dokumentu
 	Canvas color	Barva plátna
 	Canvas custom color	Vlastní barva plátna
 	Color picker	Výběr barvy
@@ -2157,7 +2173,6 @@
 	Show only crosshair while painting	Při malování zobrazit jen nitkový kříž
 	Show slice numbers	Zobrazit čísla řezů
 	Show tooltips	Zobrazit popisky nástrojů
-	Enable animations	Povolit animace
 	Show highlight on rollover	Zobrazit zvýraznění při přejetí
 	Show bounding box when dragging layer	Při přetahování vrstvy zobrazit ohraničovací rámeček
 	System title bar	Systémové záhlaví okna
@@ -3899,6 +3914,8 @@ navigator	Zoom	Zvětšení
 	Step {step} is waiting for its dialog	Krok {step} čeká na svůj dialog
 @plural	{n} action|{n} actions	{n} akce|{n} akce|{n} akcí
 	Background (Default)	Pozadí (výchozí)
+	Background (default)	Pozadí (výchozí)
+	Transparent (default)	Průhledné (výchozí)
 	Include All Subfolders	Zahrnout všechny podsložky
 	Auto Add/Delete	Automaticky přidat/odstranit
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Nezapínejte současně zrcadlení v nastavení tisku: obě převrácení se navzájem zruší.
@@ -3907,6 +3924,9 @@ navigator	Zoom	Zvětšení
 	Sent to {printer}	Odesláno do {printer}
 	set in Print Settings…	nastavuje se v nastavení tisku…
 	ICO is limited to 256 × 256 pixels	ICO je omezen na 256 × 256 pixelů
+	Automatically Create First Snapshot	Automaticky vytvořit první snímek
+	Automatically Create New Snapshot When Saving	Automaticky vytvořit nový snímek při ukládání
+	Show New Snapshot Dialog by Default	Ve výchozím nastavení zobrazit dialog Nový snímek
 	Memory usage percent	Využití paměti (%)
 	Show Favorite Fonts	Zobrazit oblíbená písma
 	No favorite fonts yet: click the star beside a font to add it.	Zatím žádná oblíbená písma: přidejte písmo kliknutím na hvězdičku vedle něj.
@@ -3951,6 +3971,7 @@ navigator	Zoom	Zvětšení
 	Automatically Check for Updates	Automaticky kontrolovat aktualizace
 	Paints from the History panel's source state	Maluje ze zdrojového stavu panelu Historie
 	Sets the source for the history brush	Nastaví zdroj pro štětec historie
+	The History Brush source was deleted: set a new source in the History panel	Zdroj štětce historie byl smazán: nastavte nový zdroj v panelu Historie
 	Highlight Mode	Režim světel
 	Highlight Color	Barva světel
 	Highlight Opacity	Krytí světel
@@ -4013,6 +4034,7 @@ navigator	Zoom	Zvětšení
 	{shortcut} is reserved by the system and can't be assigned.	{shortcut} je vyhrazena systémem a nelze ji přiřadit.
 	Low-Latency Drawing (vsync off, applies at next launch)	Kreslení s nízkou latencí (bez vertikální synchronizace, platí po dalším spuštění)
 	Reference point location	Umístění referenčního bodu
+	Toggle reference point	Zobrazit/skrýt referenční bod
 	Free Transform is still being applied; try again when it has finished.	Volná transformace se stále použije; zkuste to znovu, až skončí.
 	The transform couldn't be applied.	Transformaci nelze použít.
 	Its layers need {needed} of GPU memory; the budget leaves them {budget}.	Vrstvy potřebují {needed} paměti GPU; rozpočet jim ponechává {budget}.
@@ -4242,6 +4264,8 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Font size presets	Předvolby velikosti písma
 	Leading presets	Předvolby prokladu
 	Tracking presets	Předvolby prostrkání
+
+	The GPU compositor is still being prepared	The GPU compositor is still being prepared
 	Invalid numeric entry. An integer between {min}% and {max}% is required. Previous value was inserted.	Neplatná číselná hodnota. Je vyžadováno celé číslo mezi {min}% a {max}%. Byla vložena předchozí hodnota.
 	Color Aware	Podle barev
 	Decontaminate Colors	Dekontaminovat barvy
@@ -4450,3 +4474,98 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	ZIP	ZIP
 	{ok} written to {dir}	{ok} zapsáno do {dir}
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: selhal výstup {n} obrazového datového zdroje|{what}: selhal výstup {n} obrazových datových zdrojů|{what}: selhal výstup {n} obrazových datových zdrojů
+
+# Action Stop message (#8386)
+	Message	Zpráva
+# Playback Options (#5212)
+	Playback Options…	Možnosti přehrávání…
+	Playback Options	Možnosti přehrávání
+	Accelerated	Zrychlené
+	Step by Step	Krok za krokem
+	Pause For:	Pozastavit na:
+	Pause For	Pozastavit na
+	seconds	sekund
+	Create a single history state	Vytvořit jeden stav historie
+	Generator enabled	Generátor zapnut
+	On your computer	V tomto počítači
+	New file	Nový soubor
+	Learn	Učit se
+	No recent files	Žádné nedávné soubory
+	Website	Web
+
+# Frame Tool and other branch translations.
+	A frame supports affine transforms; select its image for perspective transforms	Rámeček podporuje afinní transformace; pro perspektivní transformace vyberte jeho obrázek
+	A frame supports affine transforms; select its image to warp it	Rámeček podporuje afinní transformace; pro pokřivení vyberte jeho obrázek
+	Convert to Frame…	Převést na rámeček…
+	Create a new custom frame	Vytvořit nový vlastní rámeček
+	Create a new polygonal frame	Vytvořit nový mnohoúhelníkový rámeček
+	Create a new triangular frame	Vytvořit nový trojúhelníkový rámeček
+	Fit Content to Frame	Přizpůsobit obsah rámečku
+	Fit Frame to Content	Přizpůsobit rámeček obsahu
+	Frame coordinates must be finite and within 600000 pixels	Souřadnice rámečku musí být konečné a v rozsahu 600000 pixelů
+	Import Image…	Importovat obrázek…
+	Invalid frame transform	Neplatná transformace rámečku
+	Invalid nested file drop	Neplatné vnořené přetažení souboru
+	New Frame	Nový rámeček
+	Replace Image…	Nahradit obrázek…
+	The frame is locked	Rámeček je zamčený
+	The frame is unavailable	Rámeček není dostupný
+
+# Channels panel menu (#11451)
+	Channel Options…	Možnosti kanálu…
+	Specify Channels:	Určit kanály:
+	Not enough grayscale documents for this mode.	Pro tento režim není dost dokumentů ve stupních šedi.
+	Pick a different document for each channel.	Pro každý kanál vyberte jiný dokument.
+	A picked document is no longer open.	Jeden z vybraných dokumentů už není otevřený.
+	A picked document is no longer a grayscale document of the same size.	Jeden z vybraných dokumentů už není dokument ve stupních šedi stejné velikosti.
+
+# Placement and memory-admission notices from upstream 0.21.0.
+	A file is still being placed; try again when it has finished.	Soubor se stále umísťuje; zkuste to znovu po dokončení.
+	Cancelled placing {name}	Umístění {name} zrušeno
+	Dropped files weren't placed: their document was closed.	Přetažené soubory nebyly umístěny: jejich dokument byl zavřen.
+	Dropped files weren't placed: too many are waiting for their document.	Přetažené soubory nebyly umístěny: na jejich dokument čeká příliš mnoho souborů.
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Po otevření tohoto souboru by zbylo málo paměti. Nejprve zavřete ostatní aplikace, jinak může PhotoCraft dojít paměť.
+	Nudge	Posun o krok
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Aktuální odkládací adresář ({path}) nehlásí volné místo, takže PhotoCraft nemůže zastavit před jeho zaplněním a velké soubory bez limitu velikosti odkládacího prostoru nezískají další místo. Toto upozornění platí pro aktuální konfiguraci; výše uvedené změny se projeví po stisknutí Použít nebo OK. Nastavte limit nebo použijte místní disk.
+
+# OpenType stylistic-set labels.
+	Stylistic Sets	Stylistické sady
+	Set 	Sada
+	Set 1	Sada 1
+	Set 2	Sada 2
+	Set 3	Sada 3
+	Set 4	Sada 4
+	Set 5	Sada 5
+	Set 6	Sada 6
+	Set 7	Sada 7
+	Set 8	Sada 8
+	Set 9	Sada 9
+	Set 10	Sada 10
+	Set 11	Sada 11
+	Set 12	Sada 12
+	Set 13	Sada 13
+	Set 14	Sada 14
+	Set 15	Sada 15
+	Set 16	Sada 16
+	Set 17	Sada 17
+	Set 18	Sada 18
+	Set 19	Sada 19
+	Set 20	Sada 20
+
+# Pen tablet input preferences and platform API names.
+	Tablet input	Vstup z tabletu
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (výchozí)
+
+# Generated filter fields and LUT format identifiers.
+	Data Encoding	Kódování dat
+	Lut Format	Formát LUT
+	Shape Id	ID tvaru
+	Shape Name	Název tvaru
+	Shape Origin Type	Typ původu tvaru
+	Shape Path	Cesta tvaru
+	Text	Text
+	3dl	3DL
+	Base64	Base64
+	Cube	CUBE
+	Look	LOOK

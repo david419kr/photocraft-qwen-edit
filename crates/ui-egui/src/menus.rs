@@ -117,6 +117,33 @@ mod open_recent_tests {
         assert!(invoke(&mut app, &ctx, "file.removeRecent", json!({})).is_err(), "needs a path");
     }
 
+    #[test]
+    fn push_recent_evicts_thumbnails_beyond_cap() {
+        let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        {
+            let mut cache = app.thumbnail_cache.lock().unwrap();
+            for i in 0..25 {
+                cache.entries.insert(
+                    format!("/tmp/item_{i}.png"),
+                    crate::home_recent_ui::ThumbnailEntry {
+                        key: crate::home_recent_ui::CacheKey::OpenDoc { revision: 1 },
+                        texture: None,
+                        #[cfg(not(target_arch = "wasm32"))]
+                        last_checked: std::time::Instant::now(),
+                    },
+                );
+            }
+        }
+        for i in 0..25 {
+            app.push_recent(&format!("/tmp/item_{i}.png"));
+        }
+        let cache = app.thumbnail_cache.lock().unwrap();
+        for i in 0..5 {
+            assert!(!cache.entries.contains_key(&format!("/tmp/item_{i}.png")), "evicted item_{i} must be removed from cache");
+        }
+        assert_eq!(app.ui.recent_files.len(), 20);
+    }
+
     #[cfg(not(target_arch = "wasm32"))]
     #[test]
     fn opening_a_file_records_it_as_recent() {
@@ -176,7 +203,7 @@ mod reveal_label_tests {
         let expected = if cfg!(target_os = "macos") {
             "Reveal in Finder"
         } else if cfg!(windows) {
-            "Show in Explorer"
+            "Reveal in Explorer"
         } else {
             "Show in Folder"
         };
@@ -200,12 +227,25 @@ mod reveal_label_tests {
         let de = crate::i18n::Lang::from_code("de").unwrap();
         let expected = match reveal_label() {
             "Reveal in Finder" => "Im Finder anzeigen",
-            "Show in Explorer" => "Im Explorer anzeigen",
+            "Reveal in Explorer" => "Im Explorer anzeigen",
             _ => "Im Ordner anzeigen",
         };
         assert_eq!(translated_menu_label(de, reveal[0]), expected);
         // The menu catalogue (and docs/parity-checklist.md) keeps Photoshop's macOS name.
         assert!(crate::menu_catalog::CATALOG.iter().any(|(_, label, _, i)| *i == id && *label == "Reveal in Finder"));
+    }
+
+    #[test]
+    fn all_platform_reveal_labels_have_independent_german_translations() {
+        let app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
+        let mut item = menu_items(&app).into_iter().find(|item| item.id == "layer.smartObjects.revealInFinder").unwrap();
+        let de = crate::i18n::Lang::from_code("de").unwrap();
+        for (label, expected) in
+            [("Reveal in Finder", "Im Finder anzeigen"), ("Reveal in Explorer", "Im Explorer anzeigen"), ("Show in Folder", "Im Ordner anzeigen")]
+        {
+            item.label = label.into();
+            assert_eq!(translated_menu_label(de, &item), expected, "{label}");
+        }
     }
 }
 
