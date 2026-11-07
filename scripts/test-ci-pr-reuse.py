@@ -6,6 +6,7 @@ import unittest
 from unittest.mock import patch
 import tempfile
 import os
+import re
 
 SPEC = importlib.util.spec_from_file_location("reuse", Path(__file__).with_name("ci-pr-reuse.py"))
 reuse = importlib.util.module_from_spec(SPEC)
@@ -134,10 +135,45 @@ class ReuseTests(unittest.TestCase):
         self.jobs.pop()
         self.assertFalse(self.result())
 
+    def job_condition(self, job, cancelled=False, proof="success", skip="false"):
+        text = (Path(__file__).resolve().parents[1] / ".github/workflows/ci.yml").read_text()
+        block = text.split(f"\n  {job}:\n", 1)[1].split("\n  #", 1)[0]
+        expression = re.search(r"^    if: (.+)$", block, re.MULTILINE).group(1)
+        # Evaluate the small boolean/string subset used by these actual job guards.
+        self.assertTrue(expression.startswith("${{ !cancelled() && "))
+        self.assertTrue(expression.endswith(" }}"))
+        values = {
+            "needs.provenance.result": proof, "needs.provenance.outputs.skip": skip,
+            "needs.lint.result": "success", "needs.platforms.result": "success",
+            "needs.platforms.outputs.windows": "true", "needs.platforms.outputs.web": "true",
+            "github.event.action": "synchronize", "github.event.label.name": "",
+        }
+        expression = expression[3:-2].strip()
+        expression = re.sub(r"(?:needs|github)\.[a-z.]+", lambda match: repr(values[match[0]]), expression)
+        expression = expression.replace("!cancelled()", repr(not cancelled))
+        expression = expression.replace("&&", " and ").replace("||", " or ")
+        return eval(expression, {"__builtins__": {}}, {})
+
+    def test_failed_proof_still_runs_validation(self):
+        jobs = ["lint", "platforms", "gate", "windows", "test-without-heif", "corpus", "web"]
+        for proof in ["failure", "cancelled", "skipped", "success"]:
+            for skip in ["", "false", "true"]:
+                for job in jobs:
+                    with self.subTest(proof=proof, skip=skip, job=job):
+                        expected = not (job in ["lint", "platforms"] and proof == "success" and skip == "true")
+                        self.assertEqual(self.job_condition(job, proof=proof, skip=skip), expected)
+
+    def test_cancelled_run_starts_no_validation_jobs(self):
+        for job in ["lint", "platforms", "gate", "windows", "test-without-heif", "corpus", "web"]:
+            for proof in ["success", "failure", "cancelled"]:
+                for skip in ["", "false", "true"]:
+                    with self.subTest(job=job, proof=proof, skip=skip):
+                        self.assertFalse(self.job_condition(job, cancelled=True, proof=proof, skip=skip))
+
     def test_workflow_contract(self):
         text = (Path(__file__).resolve().parents[1] / ".github/workflows/ci.yml").read_text()
         self.assertIn("name: CI provenance (PR ${{ github.event.pull_request.number || 0 }}, ${{ github.sha }})", text)
-        self.assertEqual(text.count("if: always() && (needs.provenance.result != 'success' || needs.provenance.outputs.skip != 'true')"), 2)
+        self.assertEqual(text.count("if: ${{ !cancelled() && (needs.provenance.result != 'success' || needs.provenance.outputs.skip != 'true')"), 2)
         # These jobs must use default checkout of github.sha, not a PR head/custom ref.
         for job in ["provenance", "lint", "platforms", "windows", "test-without-heif", "corpus", "web"]:
             block = text.split(f"\n  {job}:\n", 1)[1].split("\n  #", 1)[0]
