@@ -1,0 +1,59 @@
+name: Stop superseded PR 24 CI once
+on:
+  push:
+    branches: ['maintenance/cancel-pr24-42327756795']
+permissions:
+  contents: read
+  actions: write
+  pull-requests: read
+concurrency:
+  group: cancel-pr24-42327756795
+  cancel-in-progress: false
+jobs:
+  cancel:
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/maintenance/cancel-pr24-42327756795'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify pinned superseded run and force-cancel only it
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess, time
+          repo = 'david419kr/photocraft-qwen-edit'
+          assert os.environ['GITHUB_REPOSITORY'] == repo
+          old_id, new_id = 42327756795, 42328056322
+          old_sha = '2e01aeded91dadbac5ea298968f967de3a9ebdfa'
+          new_sha = '207fa79609c96237a97764dfb72d1fedeed0de6e'
+          def get(path):
+              return json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/{path}'], text=True))
+          pr = get('pulls/24')
+          old = get(f'actions/runs/{old_id}')
+          new = get(f'actions/runs/{new_id}')
+          assert pr['state'] == 'open' and not pr['merged'] and pr['head']['sha'] == new_sha
+          for run, rid, sha in ((old,old_id,old_sha),(new,new_id,new_sha)):
+              assert run['id'] == rid and run['head_sha'] == sha
+              assert run['repository']['full_name'] == repo
+              assert run['event'] == 'pull_request' and run['path'] == '.github/workflows/ci.yml'
+              assert run['head_branch'] == 'ci/reuse-successful-pr-validation'
+          assert old_sha != new_sha
+          print(json.dumps({'old':{k:old[k] for k in ('id','head_sha','status','conclusion')},'new':{k:new[k] for k in ('id','head_sha','status','conclusion')}}))
+          if old['status'] == 'completed':
+              print('Superseded run already completed; no cancellation performed.')
+          else:
+              assert old['status'] == 'in_progress'
+              assert new['status'] in ('pending','queued','waiting')
+              # Force cancellation is required for obsolete always() jobs. Logs are retained.
+              subprocess.run(['gh','api','--method','POST',f'repos/{repo}/actions/runs/{old_id}/force-cancel'], check=True)
+              for _ in range(12):
+                  old = get(f'actions/runs/{old_id}')
+                  if old['status'] == 'completed':
+                      break
+                  time.sleep(5)
+              assert old['status'] == 'completed' and old['conclusion'] == 'cancelled'
+              print('Pinned superseded run cancelled; logs and results retained.')
+          current = get(f'actions/runs/{new_id}')
+          assert current['head_sha'] == new_sha and current['conclusion'] != 'cancelled'
+          print(json.dumps({k:current[k] for k in ('id','head_sha','status','conclusion','html_url')}))
+          PY
