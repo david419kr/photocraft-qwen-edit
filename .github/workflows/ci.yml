@@ -1,6 +1,6 @@
 name: CI
 
-# Quality gates for every push to main and every pull request. The Linux gate runs through the
+# Quality gates for every PR and every unproven push to main. The Linux gate runs through the
 # suite's shared gate workflow in craft-common-actions (`cargo xtask ci`); the Windows legs, the
 # test variant and the corpus, web and fuzz jobs are PhotoCraft's own.
 on:
@@ -47,7 +47,7 @@ on:
         type: boolean
         default: false
 
-# The token is only used to check out the code: no job writes to the repository.
+# No job writes to the repository. The provenance job also reads PR/run metadata.
 permissions:
   contents: read
 
@@ -68,9 +68,36 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  # GitHub expands github.sha into the server-side job name. On pull_request it is
+  # the tested merge SHA, unlike the run API's head_sha (the PR branch head).
+  provenance:
+    name: CI provenance (PR ${{ github.event.pull_request.number || 0 }}, ${{ github.sha }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+    outputs:
+      skip: ${{ steps.reuse.outputs.skip }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Test reuse policy
+        run: python3 scripts/test-ci-pr-reuse.py
+      - name: Prove successful PR validation
+        id: reuse
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/ci-pr-reuse.py
+
   # Detect stable-toolchain lint changes before the long native test builds.
   # Keep the platform jobs' own Clippy steps as independent final checks.
   lint:
+    needs: provenance
+    # A failed/timed-out proof job must not suppress validation.
+    if: ${{ !cancelled() && (needs.provenance.result != 'success' || needs.provenance.outputs.skip != 'true') }}
     name: early Clippy
     runs-on: ubuntu-latest
     steps:
@@ -98,7 +125,8 @@ jobs:
   # Format changes must exercise the Windows-only publication barriers (#8034). macOS is tested
   # only by release.yml.
   platforms:
-    if: github.event.action != 'labeled' || github.event.label.name == 'full-ci'
+    needs: provenance
+    if: ${{ !cancelled() && (needs.provenance.result != 'success' || needs.provenance.outputs.skip != 'true') && (github.event.action != 'labeled' || github.event.label.name == 'full-ci') }}
     timeout-minutes: 10
     name: select platforms
     runs-on: ubuntu-latest
@@ -169,7 +197,7 @@ jobs:
   # The Linux gate. Its rust-cache entry is the one `test (without heif)` restores.
   gate:
     needs: lint
-    if: github.event.action != 'labeled' || github.event.label.name == 'full-ci'
+    if: ${{ !cancelled() && needs.lint.result == 'success' && (github.event.action != 'labeled' || github.event.label.name == 'full-ci') }}
     # Tracks @main so suite-wide CI fixes reach every app without a PR in each repository.
     uses: storytold/craft-common-actions/.github/workflows/gate.yml@main
     with:
@@ -198,7 +226,7 @@ jobs:
   # which needs its own action step.
   windows:
     needs: [platforms, lint]
-    if: needs.platforms.outputs.windows == 'true'
+    if: ${{ !cancelled() && needs.lint.result == 'success' && needs.platforms.result == 'success' && needs.platforms.outputs.windows == 'true' }}
     timeout-minutes: 100
     name: test (windows-latest, ${{ matrix.part }})
     runs-on: windows-latest
@@ -300,7 +328,7 @@ jobs:
   # (#2688).
   test-without-heif:
     needs: lint
-    if: github.event.action != 'labeled' || github.event.label.name == 'full-ci'
+    if: ${{ !cancelled() && needs.lint.result == 'success' && (github.event.action != 'labeled' || github.event.label.name == 'full-ci') }}
     timeout-minutes: 60
     name: test (without heif)
     # The gate's runner: its cache entry is keyed on the OS.
@@ -339,7 +367,7 @@ jobs:
 
   corpus:
     needs: lint
-    if: github.event.action != 'labeled' || github.event.label.name == 'full-ci'
+    if: ${{ !cancelled() && needs.lint.result == 'success' && (github.event.action != 'labeled' || github.event.label.name == 'full-ci') }}
     timeout-minutes: 30
     # Real-file corpus tests (cargo feature `corpus`), on every PR and on main. The corpora are
     # pinned in xtask/src/corpus_pins.rs and sha256-verified (xtask/*.sha256) after both a cache
@@ -379,7 +407,7 @@ jobs:
     name: web build and wasm size gate
     # PRs run it only when web-relevant files change (see `platforms`); main always does.
     needs: platforms
-    if: needs.platforms.outputs.web == 'true'
+    if: ${{ !cancelled() && needs.platforms.result == 'success' && needs.platforms.outputs.web == 'true' }}
     runs-on: ubuntu-latest
     env:
       # Match release.yml so PR results reflect what would actually ship.
