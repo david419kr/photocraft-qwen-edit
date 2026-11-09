@@ -4337,6 +4337,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Uncached Refresh	キャッシュを使わずに更新
 	…	…
 	External cutout	外部背景除去
+	External erase	外部消去
 	No matching fonts	一致するフォントはありません
 	Locked	ロック済み
 	Select Layer Under Cursor	カーソル下のレイヤーを選択

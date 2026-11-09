@@ -3301,6 +3301,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Uncached Refresh	不使用快取重新整理
 	…	…
 	External cutout	外部去背
+	External erase	外部擦除
 	X	X
 	Y	Y
 	No matching fonts	沒有相符的字型

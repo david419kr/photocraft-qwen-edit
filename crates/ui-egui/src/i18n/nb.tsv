@@ -4843,6 +4843,7 @@ cameraRaw	White Balance: As Shot	Hvitbalanse: som fotografert
 	Comfyui translate prompt	Oversett ledetekst til engelsk
 	Comfyui translation model	Modell for ledetekstoversettelse
 	External cutout	Ekstern bakgrunnsfjerning
+	External erase	Ekstern sletting
 	Qwen image21	Qwen 2.1
 	Hy mt18 heretic	Hy-MT2 1.8B
 	Hy mt7 abliterated	Hy-MT2 7B
