@@ -3945,6 +3945,7 @@ prompt-region	Bottom right	우하단
 	Uncached Refresh	캐시 없이 새로 고침
 	…	…
 	External cutout	외부 배경 제거
+	External erase	외부 지우기
 	X	X
 	Y	Y
 	No matching fonts	일치하는 글꼴 없음

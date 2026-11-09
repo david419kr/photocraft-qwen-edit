@@ -757,3 +757,6 @@ cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की स
 	Tablet input	टैबलेट इनपुट
 	WinTab	WinTab
 	Windows Ink (default)	Windows Ink (डिफ़ॉल्ट)
+
+# External selection erase preference.
+	External erase	बाहरी मिटाना
