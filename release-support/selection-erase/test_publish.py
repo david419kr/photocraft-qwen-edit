@@ -1,4 +1,7 @@
 import copy
+import contextlib
+import io
+import tempfile
 import importlib.util
 import json
 import os
@@ -108,7 +111,7 @@ class SafetyTests(unittest.TestCase):
         jobs = self.post_jobs()
         with patch.object(m, 'run', return_value='2026-11-09T23:50:00Z Reusing successful PR validation of this exact tree.\n') as run:
             m.verify_post_merge_jobs(jobs)
-            run.assert_called_once_with('gh', 'api', f"repos/{m.C['repo']}/actions/jobs/17/logs")
+            run.assert_called_once_with('gh', 'api', '--allow-escape-sequences', f"repos/{m.C['repo']}/actions/jobs/17/logs")
 
     def test_post_main_without_proof_log_rejected(self):
         jobs = self.post_jobs()
@@ -141,6 +144,31 @@ class SafetyTests(unittest.TestCase):
         self.assertIn('if tag == "261109-2-0.21.0":', source)
         self.assertIn('previous_tags.append("261109-0.21.0")', source)
         self.assertIn('select(fixture(tag, name, hash), tag).unwrap().is_none()', source)
+
+    def test_ansi_log_is_captured_not_printed(self):
+        jobs = self.post_jobs()
+        raw_log = '\x1b[32msetup output\x1b[0m\n2026-11-09T23:50:00Z Reusing successful PR validation of this exact tree.\n'
+        visible = io.StringIO()
+        with patch.object(m.subprocess, 'check_output', return_value=raw_log) as capture, contextlib.redirect_stdout(visible):
+            m.verify_post_merge_jobs(jobs)
+        capture.assert_called_once_with(('gh', 'api', '--allow-escape-sequences', f"repos/{m.C['repo']}/actions/jobs/17/logs"), text=True, encoding='utf-8')
+        self.assertEqual(visible.getvalue(), '')
+
+    def test_binary_download_preserves_esc_bytes_in_file(self):
+        m.C = self.config()
+        data = b'PK\x03\x04\x00\x1b[31m\xff\r\n'
+        def fake_download(args, stdout, check):
+            self.assertEqual(args, ['gh', 'api', '--allow-escape-sequences', f"repos/{m.C['repo']}/actions/artifacts/23/zip"])
+            self.assertTrue(check)
+            self.assertIn('b', stdout.mode)
+            stdout.write(data)
+        visible = io.StringIO()
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory)/'artifact.zip'
+            with patch.object(m.subprocess, 'run', side_effect=fake_download), contextlib.redirect_stdout(visible):
+                m.download_artifact_bytes(23, destination)
+            self.assertEqual(destination.read_bytes(), data)
+        self.assertEqual(visible.getvalue(), '')
 
     def test_public_release_never_mutated(self):
         m.C = self.config()

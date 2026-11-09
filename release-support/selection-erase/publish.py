@@ -99,7 +99,8 @@ def verify_post_merge_jobs(jobs):
                 j['conclusion'] == ('success' if j['name'] == provenance_name else 'skipped')
                 for j in jobs), 'Post-main CI not clean reuse')
     require(len(jobs) > 1, 'Post-main skipped jobs missing')
-    log = run('gh', 'api', f"repos/{C['repo']}/actions/jobs/{successful[0]['id']}/logs")
+    # gh's ANSI guard applies even to captured stdout. Keep raw logs private.
+    log = run('gh', 'api', '--allow-escape-sequences', f"repos/{C['repo']}/actions/jobs/{successful[0]['id']}/logs")
     # This is emitted by the executed proof script only after server-side reuse
     # validation, not by workflow YAML or a step name. Exact PR checks remain above.
     require(any(line.endswith('Reusing successful PR validation of this exact tree.')
@@ -153,13 +154,21 @@ def source_gates():
     return {'pr_ci': ci['html_url'], 'candidate_run': C['candidate_run'], 'post_merge_ci': post['html_url'], 'pr_test_merge': proofs[0][2]}
 
 
+def download_artifact_bytes(rid, archive):
+    # ZIP bytes may contain ESC; preserve them verbatim in a binary file only.
+    # https://cli.github.com/manual/gh_api documents this explicit opt-in.
+    with archive.open('wb') as out:
+        subprocess.run(['gh', 'api', '--allow-escape-sequences',
+                        f"repos/{C['repo']}/actions/artifacts/{rid}/zip"],
+                       stdout=out, check=True)
+
+
 def artifact(rid, name, sha256, destination):
     obj = api(f'actions/artifacts/{rid}')
     require(not obj['expired'] and obj['name'] == name and obj['digest'] == 'sha256:'+sha256, 'Artifact identity/digest mismatch')
     require(obj['workflow_run']['id'] == C['candidate_run'] and obj['workflow_run']['head_sha'] == C['build_sha'], 'Artifact not from pinned candidate')
     archive = ROOT/f'{rid}.zip'
-    with archive.open('wb') as out:
-        subprocess.run(['gh', 'api', f"repos/{C['repo']}/actions/artifacts/{rid}/zip"], stdout=out, check=True)
+    download_artifact_bytes(rid, archive)
     require(digest(archive) == sha256, 'Downloaded artifact digest mismatch')
     destination.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(archive) as z:
