@@ -5023,3 +5023,13 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Base64	Base64
 	Cube	CUBE
 	Look	LOOK
+	Upscale	Förstora
+	Tiling	Dela upp i rutor
+	Tile size	Rutstorlek
+	Overlap	Överlappning
+	Noise reduction	Brusreducering
+	Alpha channel	Alfakanal
+	Batch size	Batchstorlek
+	No local upscaler installed	Ingen lokal förstoringsmodell är installerad
+	External erase	Extern borttagning
+	Highest	Högsta

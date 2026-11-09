@@ -4728,3 +4728,13 @@ prompt-region	Bottom right	Jobb alsó
 	Base64	Base64
 	Cube	CUBE
 	Look	LOOK
+	Upscale	Felnagyítás
+	Tiling	Csempézés
+	Tile size	Csempeméret
+	Overlap	Átfedés
+	Noise reduction	Zajcsökkentés
+	Alpha channel	Alfacsatorna
+	Batch size	Kötegméret
+	No local upscaler installed	Nincs telepítve helyi nagyítómodell
+	External erase	Külső eltávolítás
+	Highest	Legmagasabb

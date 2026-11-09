@@ -5026,3 +5026,13 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Base64	Base64
 	Cube	CUBE
 	Look	LOOK
+	Upscale	Suurenna
+	Tiling	Laatoitus
+	Tile size	Laatan koko
+	Overlap	Päällekkäisyys
+	Noise reduction	Kohinanvaimennus
+	Alpha channel	Alfakanava
+	Batch size	Eräkoko
+	No local upscaler installed	Paikallista suurennusmallia ei ole asennettu
+	External erase	Ulkoinen poisto
+	Highest	Korkein

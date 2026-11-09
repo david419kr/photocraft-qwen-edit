@@ -4845,3 +4845,13 @@ shape	Appearance	Apparence
 	Base64	Base64
 	Cube	CUBE
 	Look	LOOK
+	Upscale	Agrandir
+	Tiling	Découpage en tuiles
+	Tile size	Taille des tuiles
+	Overlap	Chevauchement
+	Noise reduction	Réduction du bruit
+	Alpha channel	Canal alpha
+	Batch size	Taille du lot
+	No local upscaler installed	Aucun modèle local d’agrandissement installé
+	External erase	Suppression externe
+	Highest	Maximum

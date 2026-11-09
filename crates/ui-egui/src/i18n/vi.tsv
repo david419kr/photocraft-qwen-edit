@@ -4330,3 +4330,14 @@ prompt-region	Bottom right	Dưới phải
 	Base64	Base64
 	Cube	CUBE
 	Look	LOOK
+	Upscale	Phóng lớn
+	Tiling	Chia ô
+	Tile size	Kích thước ô
+	Overlap	Phần chồng lấn
+	Noise reduction	Giảm nhiễu
+	Alpha channel	Kênh alpha
+	Batch size	Kích thước lô
+	Disable	Tắt
+	No local upscaler installed	Chưa cài đặt mô hình phóng lớn cục bộ
+	External erase	Xóa bên ngoài
+	Highest	Cao nhất

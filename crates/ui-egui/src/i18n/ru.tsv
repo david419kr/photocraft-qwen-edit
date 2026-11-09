@@ -5005,3 +5005,13 @@ shape	Appearance	Оформление
 	Base64	Base64
 	Cube	CUBE
 	Look	LOOK
+	Upscale	Увеличить
+	Tiling	Разбиение на плитки
+	Tile size	Размер плитки
+	Overlap	Перекрытие
+	Noise reduction	Подавление шума
+	Alpha channel	Альфа-канал
+	Batch size	Размер пакета
+	No local upscaler installed	Локальная модель увеличения не установлена
+	External erase	Внешнее удаление
+	Highest	Максимальный

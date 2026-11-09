@@ -5025,3 +5025,13 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Base64	Base64
 	Cube	CUBE
 	Look	LOOK
+	Upscale	Opskaler
+	Tiling	Opdeling i felter
+	Tile size	Feltstørrelse
+	Overlap	Overlap
+	Noise reduction	Støjreduktion
+	Alpha channel	Alfakanal
+	Batch size	Batchstørrelse
+	No local upscaler installed	Ingen lokal opskaleringsmodel er installeret
+	External erase	Ekstern fjernelse
+	Highest	Højest

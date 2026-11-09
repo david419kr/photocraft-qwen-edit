@@ -3872,3 +3872,14 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Base64	Base64
 	Cube	CUBE
 	Look	LOOK
+	Upscale	Hochskalieren
+	Tiling	Kachelung
+	Tile size	Kachelgröße
+	Overlap	Überlappung
+	Noise reduction	Rauschreduzierung
+	Alpha channel	Alphakanal
+	Batch size	Stapelgröße
+	Disable	Deaktivieren
+	No local upscaler installed	Kein lokaler Upscaler installiert
+	External erase	Externes Entfernen
+	Highest	Höchste

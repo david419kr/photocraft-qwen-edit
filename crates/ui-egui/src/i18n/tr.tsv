@@ -4552,3 +4552,13 @@ prompt-region	Bottom right	Sağ alt
 	Base64	Base64
 	Cube	CUBE
 	Look	LOOK
+	Upscale	Büyüt
+	Tiling	Döşeme
+	Tile size	Döşeme boyutu
+	Overlap	Örtüşme
+	Noise reduction	Gürültü azaltma
+	Alpha channel	Alfa kanalı
+	Batch size	Toplu işlem boyutu
+	No local upscaler installed	Yerel büyütme modeli yüklü değil
+	External erase	Harici kaldırma
+	Highest	En yüksek
