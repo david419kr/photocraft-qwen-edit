@@ -1167,6 +1167,7 @@ pub struct Integrations {
     pub external_cutout: bool,
     /// Use the installed local selection-removal backend for the Remove button.
     pub external_erase: bool,
+    pub upscale: crate::upscale::Preferences,
     pub comfyui_translation_model: ComfyUiTranslationModel,
 }
 
@@ -1184,6 +1185,7 @@ impl Default for Integrations {
             comfyui_translate_prompt: false,
             external_cutout: false,
             external_erase: false,
+            upscale: crate::upscale::Preferences::default(),
             comfyui_translation_model: ComfyUiTranslationModel::default(),
         }
     }

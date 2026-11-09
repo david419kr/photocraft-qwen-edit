@@ -9,6 +9,7 @@
 
 mod actions_record;
 pub mod adjust_params;
+pub mod upscale;
 pub mod ai_cmds;
 pub mod ai_models;
 pub mod ai_prompts;

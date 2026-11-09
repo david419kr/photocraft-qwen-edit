@@ -12,6 +12,8 @@ use std::sync::{Arc, Mutex, PoisonError, Weak};
 
 use crate::PhotocraftApp;
 
+type UpscaleDeviceProbe = Arc<Mutex<Option<Result<serde_json::Value, String>>>>;
+
 #[derive(Clone)]
 pub(crate) struct ReferencePreview(pub Arc<photocraft_engine::ai_cmds::reference::Reference>, pub egui::TextureHandle);
 impl std::fmt::Debug for ReferencePreview {
@@ -51,6 +53,10 @@ pub struct AiUi {
     pub model_settings_port: u32,
     pub model_settings_configs: std::collections::BTreeMap<String, ModelSettings>,
     pub model_settings_te_tab: bool,
+    pub model_settings_upscale_tab: bool,
+    pub upscale_settings: photocraft_engine::upscale::Preferences,
+    #[serde(skip)]
+    upscale_devices: Option<UpscaleDeviceProbe>,
     #[serde(rename = "modelSettingsError")]
     pub model_settings_error: Option<String>,
     #[serde(rename = "translationModels")]
@@ -110,6 +116,8 @@ impl PartialEq for AiUi {
             && self.model_settings_port == other.model_settings_port
             && self.model_settings_configs == other.model_settings_configs
             && self.model_settings_te_tab == other.model_settings_te_tab
+            && self.model_settings_upscale_tab == other.model_settings_upscale_tab
+            && self.upscale_settings == other.upscale_settings
             && self.model_settings_error == other.model_settings_error
             && self.translation_models == other.translation_models
             && self.prompt_info_open == other.prompt_info_open
@@ -330,6 +338,8 @@ fn external_only_controls(app: &mut PhotocraftApp, ui: &mut egui::Ui, mode: Edit
         if mode == EditMode::GenerativeFill { app.session.prefs().integrations.external_erase } else { app.session.prefs().integrations.external_cutout };
     ui.add_enabled_ui(!busy, |ui| {
         ui.horizontal(|ui| {
+            model_settings_button(app, ui);
+            upscale_button(app, ui);
             let quick = ui.add_enabled(enabled, egui::Button::new(quick_label(mode))).clicked();
             external_toggle(app, ui, label, 24.0, mode == EditMode::GenerativeFill);
             if has_history {
@@ -439,6 +449,20 @@ pub(crate) fn open_model_settings(app: &mut PhotocraftApp) {
     app.ui.ai.model_settings_text = config.comfyui_custom_models.clone();
     app.ui.ai.model_settings_encoders = config.comfyui_custom_encoders.clone();
     app.ui.ai.model_settings_configs = config.comfyui_model_settings.clone();
+    app.ui.ai.upscale_settings = config.upscale.clone();
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let slot = Arc::new(Mutex::new(None));
+        let result = Arc::clone(&slot);
+        let spawned = std::thread::Builder::new().name("upscale-gpu-probe".into()).spawn(move || {
+            let devices = photocraft_engine::upscale::devices();
+            *result.lock().unwrap_or_else(PoisonError::into_inner) = Some(devices);
+        });
+        if let Err(error) = spawned {
+            *slot.lock().unwrap_or_else(PoisonError::into_inner) = Some(Err(error.to_string()));
+        }
+        app.ui.ai.upscale_devices = Some(slot);
+    }
     #[cfg(not(target_arch = "wasm32"))]
     {
         app.ui.ai.model_settings_port = endpoint_port(&config.comfyui_url);
@@ -450,6 +474,15 @@ pub(crate) fn open_model_settings(app: &mut PhotocraftApp) {
 fn model_settings_button(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
     if crate::icons::button(ui, "settings", 24.0, app.ui.ai.model_settings_open, tl!("AI model settings")).clicked() {
         open_model_settings(app);
+    }
+}
+
+fn upscale_button(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
+    if ui.add_enabled(!photocraft_engine::upscale::catalog().is_empty(), egui::Button::new(tl!("Upscale"))).clicked()
+        && let Err(error) = app.run(photocraft_engine::upscale::COMMAND, json!({}))
+    {
+        app.ui.status = error;
+        app.ui.status_error = true;
     }
 }
 
@@ -480,16 +513,29 @@ fn model_settings_window(app: &mut PhotocraftApp, ctx: &egui::Context) {
     let mut remove = None;
     egui::Window::new(tl!("AI model settings")).id(egui::Id::unique("ai-model-settings")).open(&mut open).default_width(800.0).show(ctx, |ui| {
         #[cfg(not(target_arch = "wasm32"))]
+        if !app.ui.ai.model_settings_upscale_tab {
+            ui.horizontal(|ui| {
+                ui.label(tl!("ComfyUI port"));
+                crate::widgets::integer_value_field(ui, &mut app.ui.ai.model_settings_port, 1..=65535, 70.0).accessible_name(tl!("ComfyUI port"));
+            });
+        }
         ui.horizontal(|ui| {
-            ui.label(tl!("ComfyUI port"));
-            crate::widgets::integer_value_field(ui, &mut app.ui.ai.model_settings_port, 1..=65535, 70.0).accessible_name(tl!("ComfyUI port"));
-        });
-        ui.horizontal(|ui| {
-            ui.selectable_value(&mut app.ui.ai.model_settings_te_tab, false, tl!("Models"));
-            ui.selectable_value(&mut app.ui.ai.model_settings_te_tab, true, tl!("Text encoders"));
+            if ui.selectable_label(!app.ui.ai.model_settings_upscale_tab && !app.ui.ai.model_settings_te_tab, tl!("Models")).clicked() {
+                app.ui.ai.model_settings_upscale_tab = false;
+                app.ui.ai.model_settings_te_tab = false;
+            }
+            if ui.selectable_label(!app.ui.ai.model_settings_upscale_tab && app.ui.ai.model_settings_te_tab, tl!("Text encoders")).clicked() {
+                app.ui.ai.model_settings_upscale_tab = false;
+                app.ui.ai.model_settings_te_tab = true;
+            }
+            if ui.selectable_label(app.ui.ai.model_settings_upscale_tab, tl!("Upscale")).clicked() {
+                app.ui.ai.model_settings_upscale_tab = true;
+            }
         });
         ui.separator();
-        if app.ui.ai.model_settings_te_tab {
+        if app.ui.ai.model_settings_upscale_tab {
+            upscale_settings_ui(app, ui);
+        } else if app.ui.ai.model_settings_te_tab {
             if ai_models::resolve_encoder(Some(ai_models::DEFAULT_ENCODER), &app.ui.ai.catalog.encoders).is_ok() {
                 ui.horizontal(|ui| {
                     ui.add(crate::icons::image("lock", 16.0, crate::theme::Tokens::get(ctx).text));
@@ -569,11 +615,14 @@ fn model_settings_window(app: &mut PhotocraftApp, ctx: &egui::Context) {
     }
     app.ui.ai.model_settings_open = open;
     if save {
-        match save_model_settings(app) {
+        let result = if app.ui.ai.model_settings_upscale_tab { save_upscale_settings(app) } else { save_model_settings(app) };
+        match result {
             Ok(()) => {
                 app.ui.ai.model_settings_open = false;
-                app.ui.ai.steps = None;
-                app.ui.ai.cfg = None;
+                if !app.ui.ai.model_settings_upscale_tab {
+                    app.ui.ai.steps = None;
+                    app.ui.ai.cfg = None;
+                }
             }
             Err(error) => app.ui.ai.model_settings_error = Some(error),
         }
@@ -603,6 +652,128 @@ fn save_model_settings(app: &mut PhotocraftApp) -> Result<(), String> {
         config.comfyui_custom_model.clear();
     }
     app.run("prefs.set", json!({"path":"integrations","value":config}))?;
+    crate::prefs_ui::save_preferences(app)
+}
+
+fn upscale_settings_ui(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
+    use photocraft_engine::upscale;
+    let models = upscale::catalog();
+    if models.is_empty() {
+        ui.label(tl!("No local upscaler installed"));
+        return;
+    }
+    let prefs = &mut app.ui.ai.upscale_settings;
+    let Some(first) = models.first() else { return };
+    let mut selected = upscale::selected(prefs, &models).unwrap_or(first).id.clone();
+    ui.horizontal(|ui| {
+        ui.label(tl!("Model"));
+        craft_ui::ComboBox::from_id_salt("upscale-model").selected_text(models.iter().find(|m| m.id == selected).map_or("", |m| m.name.as_str())).show_ui(
+            ui,
+            |ui| {
+                for model in &models {
+                    ui.selectable_value(&mut selected, model.id.clone(), &model.name);
+                }
+            },
+        );
+    });
+    prefs.model = selected;
+    let Some(model) = upscale::selected(prefs, &models) else { return };
+    let settings = prefs.profiles.entry(model.id.clone()).or_insert_with(|| model.defaults.clone());
+    let devices =
+        app.ui.ai.upscale_devices.as_ref().and_then(|s| s.lock().unwrap_or_else(PoisonError::into_inner).clone()).and_then(Result::ok).unwrap_or_default();
+    ui.horizontal(|ui| {
+        ui.label("GPU");
+        let label = devices
+            .as_array()
+            .and_then(|v| v.iter().find(|v| v.get("id").and_then(|x| x.as_i64()) == Some(i64::from(settings.gpu))))
+            .and_then(|v| v.get("name"))
+            .and_then(|v| v.as_str())
+            .map(str::to_owned)
+            .unwrap_or_else(|| if settings.gpu == -1 { tl!("Auto").to_owned() } else { format!("GPU {}", settings.gpu) });
+        craft_ui::ComboBox::from_id_salt("upscale-gpu").selected_text(label).show_ui(ui, |ui| {
+            ui.selectable_value(&mut settings.gpu, -1, tl!("Auto"));
+            if let Some(devices) = devices.as_array() {
+                for device in devices {
+                    if let (Some(id), Some(name)) =
+                        (device.get("id").and_then(|v| v.as_i64()).and_then(|v| i32::try_from(v).ok()), device.get("name").and_then(|v| v.as_str()))
+                    {
+                        ui.selectable_value(&mut settings.gpu, id, name);
+                    }
+                }
+            }
+        });
+    });
+    if model.restoration {
+        ui.horizontal(|ui| {
+            ui.label(tl!("Noise reduction"));
+            let names = ["None", "Low", "Medium", "High", "Highest"];
+            let index = usize::try_from(settings.noise + 1).unwrap_or(0).min(4);
+            craft_ui::ComboBox::from_id_salt("upscale-noise").selected_text(tl!(names.get(index).copied().unwrap_or("None"))).show_ui(ui, |ui| {
+                for (i, name) in names.iter().enumerate() {
+                    ui.selectable_value(&mut settings.noise, i as i32 - 1, tl!(name));
+                }
+            });
+        });
+    } else {
+        ui.checkbox(&mut settings.tiling, tl!("Tiling"));
+    }
+    ui.add_enabled_ui(settings.tiling, |ui| {
+        ui.horizontal(|ui| {
+            ui.label(tl!("Tile size"));
+            let sizes: &[u32] = if model.restoration { &[64, 256, 400, 640] } else { &[128, 256, 512, 1024] };
+            craft_ui::ComboBox::from_id_salt("upscale-tile")
+                .selected_text(settings.tile.to_string())
+                .show_ui(ui, |ui| {
+                    for &size in sizes {
+                        ui.selectable_value(&mut settings.tile, size, size.to_string());
+                    }
+                })
+                .response
+                .on_hover_text(if model.restoration { "400 → 384" } else { "" });
+        });
+        if !model.restoration {
+            ui.horizontal(|ui| {
+                ui.label(tl!("Overlap"));
+                crate::widgets::integer_value_field(ui, &mut settings.overlap, 0..=1023, 70.0);
+            });
+        }
+    });
+    if model.restoration {
+        ui.horizontal(|ui| {
+            ui.label(tl!("Alpha channel"));
+            craft_ui::ComboBox::from_id_salt("upscale-alpha").selected_text(if settings.alpha { tl!("Auto") } else { tl!("Disable") }).show_ui(ui, |ui| {
+                ui.selectable_value(&mut settings.alpha, true, tl!("Auto"));
+                ui.selectable_value(&mut settings.alpha, false, tl!("Disable"));
+            });
+        });
+        ui.checkbox(&mut settings.tta, "TTA");
+        ui.horizontal(|ui| {
+            ui.label(tl!("Batch size"));
+            craft_ui::ComboBox::from_id_salt("upscale-batch").selected_text(settings.batch.to_string()).show_ui(ui, |ui| {
+                for n in [1, 4, 8, 16, 32] {
+                    ui.selectable_value(&mut settings.batch, n, n.to_string());
+                }
+            });
+        });
+    }
+    ui.collapsing(tl!("Advanced"), |ui| {
+        ui.horizontal(|ui| {
+            ui.label("TensorRT workspace (MiB)");
+            crate::widgets::integer_value_field(ui, &mut settings.workspace_mib, 512..=8192, 80.0);
+        });
+    });
+}
+
+fn save_upscale_settings(app: &mut PhotocraftApp) -> Result<(), String> {
+    let prefs = &app.ui.ai.upscale_settings;
+    let models = photocraft_engine::upscale::catalog();
+    for model in &models {
+        if let Some(settings) = prefs.profiles.get(&model.id) {
+            settings.validate(model)?;
+        }
+    }
+    let value = serde_json::to_value(prefs).map_err(|e| e.to_string())?;
+    app.run("prefs.set", json!({"path":"integrations.upscale","value":value}))?;
     crate::prefs_ui::save_preferences(app)
 }
 
@@ -840,13 +1011,14 @@ fn show_with_backends(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canv
     }
     if !app.ui.ai.available || supported_document(&doc).is_err() {
         app.ui.ai.rect = None;
-        if app.ui.ai.service_available {
+        if app.ui.ai.service_available || !photocraft_engine::upscale::catalog().is_empty() {
             let area = egui::Area::new(egui::Id::unique(("ai-settings-only", doc.id.0)))
                 .order(egui::Order::Foreground)
                 .fixed_pos(pos2(image.center().x, (image.bottom() + 10.0).min(canvas.bottom() - 40.0)))
                 .show(ui.ctx(), |ui| {
                     ui.horizontal(|ui| {
                         model_settings_button(app, ui);
+                        upscale_button(app, ui);
                         if has_history {
                             crate::ai_prompt_info::button(app, ui);
                         }
@@ -893,7 +1065,7 @@ fn show_with_backends(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canv
     let external_available = !harmonize && mode != EditMode::PromptGenerate && external_label.is_some();
     let local_enabled =
         if mode == EditMode::GenerativeFill { app.session.prefs().integrations.external_erase } else { app.session.prefs().integrations.external_cutout };
-    let controls_width = 128.0
+    let controls_width = 208.0
         + model_width
         + 80.0
         + if repeat.is_some() { 32.0 } else { 0.0 }
@@ -934,6 +1106,7 @@ fn show_with_backends(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canv
                     ui.add_enabled_ui(!busy, |ui| {
                         ui.horizontal(|ui| {
                             model_settings_button(app, ui);
+                            upscale_button(app, ui);
                             model_selector(app, ui, doc.id.0);
                             cfg_controls(app, ui);
                             step_controls(app, ui);
@@ -1013,7 +1186,10 @@ fn show_with_backends(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canv
                 let can_generate = !busy && ready && valid && app.ui.ai.prompt.len() <= MAX_PROMPT_BYTES && app.ui.ai.negative_prompt.len() <= MAX_PROMPT_BYTES;
                 generate = submitted == Some(doc.id.0) && can_generate;
                 ui.horizontal(|ui| {
-                    ui.add_enabled_ui(!busy, |ui| model_settings_button(app, ui));
+                    ui.add_enabled_ui(!busy, |ui| {
+                        model_settings_button(app, ui);
+                        upscale_button(app, ui);
+                    });
                     ui.add_enabled_ui(!busy, |ui| model_selector(app, ui, doc.id.0));
                     ui.add_enabled_ui(!busy, |ui| cfg_controls(app, ui));
                     ui.add_enabled_ui(!busy, |ui| step_controls(app, ui));

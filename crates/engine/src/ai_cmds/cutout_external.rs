@@ -9,10 +9,11 @@ use std::time::{Duration, Instant};
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
-pub(super) enum Kind {
+pub(crate) enum Kind {
     #[default]
     Cutout,
     Erase,
+    Upscale,
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -30,14 +31,14 @@ struct Manifest {
 }
 
 #[derive(Clone, Debug)]
-pub(super) struct Backend {
-    pub(super) root: PathBuf,
-    pub(super) executable: PathBuf,
-    pub(super) args: Vec<String>,
-    pub(super) label: String,
+pub(crate) struct Backend {
+    pub(crate) root: PathBuf,
+    pub(crate) executable: PathBuf,
+    pub(crate) args: Vec<String>,
+    pub(crate) label: String,
 }
 
-fn local_file(root: &Path, relative: &str) -> Option<PathBuf> {
+pub(crate) fn local_file(root: &Path, relative: &str) -> Option<PathBuf> {
     let path = Path::new(relative);
     if relative.is_empty() || !path.components().all(|part| matches!(part, Component::Normal(_))) {
         return None;
@@ -86,18 +87,19 @@ fn discover_in(parent: &Path, kind: Kind) -> Option<Backend> {
     None
 }
 
-pub(super) fn discover(kind: Kind) -> Option<Backend> {
+pub(crate) fn discover(kind: Kind) -> Option<Backend> {
     type DiscoveryCache = Mutex<Option<(Instant, Option<Backend>)>>;
     static CACHE: OnceLock<DiscoveryCache> = OnceLock::new();
     static ERASE_CACHE: OnceLock<DiscoveryCache> = OnceLock::new();
-    let cache = if kind == Kind::Erase { &ERASE_CACHE } else { &CACHE };
+    static UPSCALE_CACHE: OnceLock<DiscoveryCache> = OnceLock::new();
+    let cache = match kind { Kind::Cutout => &CACHE, Kind::Erase => &ERASE_CACHE, Kind::Upscale => &UPSCALE_CACHE };
     let mut cache = cache.get_or_init(|| Mutex::new(None)).lock().unwrap_or_else(std::sync::PoisonError::into_inner);
     if let Some((at, backend)) = cache.as_ref()
         && at.elapsed() < Duration::from_secs(2)
     {
         return backend.clone();
     }
-    let backend = std::env::current_exe().ok().and_then(|exe| exe.parent().map(|p| p.join("cutout-backends"))).and_then(|p| discover_in(&p, kind));
+    let backend = std::env::current_exe().ok().and_then(|exe| exe.parent().map(|p| p.join("external-backends"))).and_then(|p| discover_in(&p, kind));
     *cache = Some((Instant::now(), backend.clone()));
     backend
 }
@@ -147,7 +149,7 @@ fn source_png(doc: &Document, id: photocraft_doc::LayerId) -> Result<Vec<u8>> {
         .map_err(|e| EngineError::Other(format!("Cannot prepare cutout input: {e}")))
 }
 
-pub(super) fn spawn(backend: &Backend, input: &[u8], selection: Option<&[u8]>, max_output: u64, ctx: &JobCtx) -> Result<Vec<u8>> {
+pub(crate) fn spawn(backend: &Backend, input: &[u8], selection: Option<&[u8]>, max_output: u64, ctx: &JobCtx) -> Result<Vec<u8>> {
     let temporary = tempfile::Builder::new().prefix("photocraft-cutout-").tempdir().map_err(|e| EngineError::Other(e.to_string()))?;
     let src = temporary.path().join("source.png");
     let mask = temporary.path().join("mask.png");
