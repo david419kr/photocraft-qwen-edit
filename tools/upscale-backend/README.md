@@ -14,7 +14,7 @@ mixed-precision ONNX format expected by this backend using an isolated developer
 the resulting runtime has no PyTorch dependency.
 
 The private Python 3.12 runtime needs NumPy, Pillow, CUDA Python, CUDA NVRTC and TensorRT 11;
-the verified versions are recorded in `python/requirements.lock.txt` in the prepared runtime.
+the verified versions are recorded in [requirements.lock.txt](requirements.lock.txt).
 Copy the Python distribution and all required package DLLs into `python/`, with an isolated
 `python312._pth` that references only paths within that directory. Copy the `.py` and `.cu`
 runtime sources into `runtime/`, and put the two JSON manifests at the backend root. Verify the
