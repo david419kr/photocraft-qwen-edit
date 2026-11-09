@@ -2,7 +2,7 @@ name: Qwen Windows candidate
 
 on:
   push:
-    branches: ['update/0.21.0', 'update/0.20.2', 'update/0.20.1', 'fix/cmyk-adjustment-fill', 'fix/psd-import-20gib']
+    branches: ['build/local-selection-erase-261109', 'update/0.21.0', 'update/0.20.2', 'update/0.20.1', 'fix/cmyk-adjustment-fill', 'fix/psd-import-20gib']
   workflow_dispatch:
     inputs:
       build_only:
