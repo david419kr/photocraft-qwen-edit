@@ -26,3 +26,22 @@ PhotoCraft supplies absolute paths in these environment variables:
 The backend must write an 8-bit grayscale PNG at the output path, with exactly the input canvas dimensions: black hides and white reveals the source layer. Intermediate values represent partial coverage. It must exit zero only after the output is complete, return a nonzero code on failure, and periodically stop its own subprocesses when the cancellation file appears. The host terminates an unresponsive process after a grace period. Jobs have a ten-minute limit. Output is validated before applying a layer mask as one undoable document edit; the source pixels remain intact. Temporary input and output files are removed after the job.
 
 Backends are optional, native-only local programs. This protocol does not grant access to other document layers or replace the WebAssembly filter plug-in API.
+
+## Local selected-content removal
+
+A manifest with `"operation":"erase"` is discovered independently of background-removal
+backends (which omit `operation` or use `"cutout"`). Its label appears beside **Remove**
+when there is a partial selection, including when ComfyUI is unavailable. The toggle is
+saved as `integrations.externalErase`; background removal retains its separate toggle.
+
+The host supplies the same process environment plus `PHOTOCRAFT_CUTOUT_SELECTION`, an
+8-bit grayscale PNG at canvas size: white removes, black preserves, intermediate values
+are soft coverage. Input is the visible image composite in sRGB RGBA. The backend must
+return a same-size 8-bit RGBA PNG with the edit already blended through the selection.
+The host preserves native composite values outside the selection and the source alpha
+everywhere. A new full-frame result layer replaces the visible sources (retained but
+hidden so partial alpha is not doubled); Undo restores the prior visibility and layers.
+
+`edit.aiRemoveSelection` with `{}` invokes this backend directly without ComfyUI.
+The regular prompted Generative Fill path continues to use ComfyUI. Backend files,
+models and their runtimes are user-installed separately from the application.
