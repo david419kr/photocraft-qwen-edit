@@ -1,6 +1,6 @@
 //! Local selected-content removal. Preserve native source pixels and alpha outside the edit.
 use super::cutout_external::{self, Backend, Kind};
-use super::{Builtin, Document, EngineError, Intent, JobCtx, Layer, PixelFormat, Rect, Result, Session, Surface, Transform, Value, byte, json};
+use super::{Builtin, Document, EngineError, Intent, JobCtx, Layer, PixelFormat, Rect, Result, Session, Transform, Value, byte, json};
 use photocraft_codecs::{ChannelLayout, DecodeOptions, EncodeOptions, Format, Image, Limits, SampleType};
 
 fn png(image: &Image) -> Result<Vec<u8>> {
@@ -75,17 +75,18 @@ fn result(doc: &Document, source: &[[f32; 4]], mask: &[u8], bytes: &[u8], ctx: &
         return Err(EngineError::Other("Invalid removal input geometry".into()));
     }
     let profile = crate::color_cmds::document_profile(doc);
-    let original = Transform::new(&crate::color_cmds::composite_profile(doc), &profile, Intent::RelativeColorimetric, true)
-        .map_err(|e| EngineError::Other(e.to_string()))?;
     let generated = Transform::new(Builtin::Srgb.profile(), &profile, Intent::RelativeColorimetric, true).map_err(|e| EngineError::Other(e.to_string()))?;
     let fmt = PixelFormat::new(doc.mode, doc.depth, true);
-    let mut surface = Surface::new(fmt);
+    // Keep native CMYK inks and out-of-gamut Lab values: an RGB round trip would
+    // change unselected pixels when the original layers are hidden.
+    ctx.check()?;
+    let mut surface = photocraft_compose::composite_to_surface(doc, doc.bounds(), fmt, None);
     for (y, ((src, coverage), out)) in
         source.chunks_exact(w as usize).zip(mask.chunks_exact(w as usize)).zip(image.data().chunks_exact(w as usize * 4)).enumerate()
     {
         ctx.check()?;
-        let mut native = vec![0.0; w as usize * fmt.channels()];
-        original.convert_f32(src.as_flattened(), 4, &mut native, fmt.channels(), true);
+        let row = Rect::new(0, y as i32, w as i32, y as i32 + 1);
+        let mut native = surface.read_region(row);
         let rgba: Vec<f32> = out.iter().map(|v| f32::from(*v) / 255.0).collect();
         let mut edited = vec![0.0; native.len()];
         generated.convert_f32(&rgba, 4, &mut edited, fmt.channels(), true);
@@ -97,7 +98,7 @@ fn result(doc: &Document, source: &[[f32; 4]], mask: &[u8], bytes: &[u8], ctx: &
                 *alpha = old[3];
             }
         }
-        surface.write_region(Rect::new(0, y as i32, w as i32, y as i32 + 1), &native);
+        surface.write_region(row, &native);
     }
     let mut layer = Layer::raster("Remove", fmt);
     *crate::pixels_mut(&mut layer)? = surface;
@@ -156,6 +157,37 @@ mod tests {
         let ctx = JobCtx::new();
         ctx.cancel();
         assert!(matches!(cutout_external::spawn(&backend, &[], Some(&[]), 1024, &ctx), Err(EngineError::Cancelled)));
+    }
+
+    #[test]
+    fn removal_preserves_unselected_native_cmyk_and_lab_colors() {
+        for depth in [8, 16, 32] {
+            for mode in ["cmyk", "lab"] {
+                for alpha in [1.0, 0.5] {
+                    let mut s = Session::new();
+                    s.execute("file.new", json!({"width":2,"height":2,"depth":depth,"mode":mode})).unwrap();
+                    let mut doc = (*s.active().unwrap().doc).clone();
+                    let fmt = PixelFormat::new(doc.mode, doc.depth, true);
+                    let mut layer = Layer::raster("Colored source", fmt);
+                    // Nontrivial black separation and a Lab color outside sRGB cannot
+                    // survive conversion through the display composite unchanged.
+                    let pixel = if mode == "cmyk" { vec![0.2, 0.6, 0.1, 0.4, alpha] } else { vec![0.6, 1.0, 0.0, alpha] };
+                    crate::pixels_mut(&mut layer).unwrap().write_region(doc.bounds(), &pixel.repeat(4));
+                    let expected = layer.surface().unwrap().pixel(1, 0);
+                    doc.layers = vec![layer];
+                    let source = photocraft_compose::render_reduced(&doc, 2, 2);
+                    let output = png(&Image::from_u8(2, 2, ChannelLayout::Rgba, [255, 0, 0, 0].repeat(4)).unwrap()).unwrap();
+                    let result = result(&doc, &source.px, &[255, 0, 0, 0], &output, &JobCtx::new()).unwrap();
+                    let surface = result.surface().unwrap();
+                    for (x, y) in [(1, 0), (0, 1), (1, 1)] {
+                        for (actual, original) in surface.pixel(x, y).iter().zip(&expected) {
+                            assert!((actual - original).abs() < 1.0e-5, "{mode}/{depth}/{alpha}: unselected native channel changed");
+                        }
+                    }
+                    assert!((surface.pixel(0, 0).last().unwrap() - expected.last().unwrap()).abs() < 1.0e-5, "source alpha must survive the edit");
+                }
+            }
+        }
     }
 
     #[test]
