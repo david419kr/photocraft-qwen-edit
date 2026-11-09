@@ -312,16 +312,34 @@ fn set_translation_pref(app: &mut PhotocraftApp, path: &str, value: serde_json::
     Ok(())
 }
 
-fn external_cutout_toggle(app: &mut PhotocraftApp, ui: &mut egui::Ui, label: &str, height: f32) {
-    let enabled = app.session.prefs().integrations.external_cutout;
+fn external_toggle(app: &mut PhotocraftApp, ui: &mut egui::Ui, label: &str, height: f32, erase: bool) {
+    let enabled = if erase { app.session.prefs().integrations.external_erase } else { app.session.prefs().integrations.external_cutout };
+    let path = if erase { "integrations.externalErase" } else { "integrations.externalCutout" };
     let width = external_cutout_width(ui, label);
     if ui.add_sized(vec2(width, height), egui::Button::new(label).selected(enabled).truncate()).on_hover_text(label).clicked() {
-        let result = app.run("prefs.set", json!({"path":"integrations.externalCutout","value":!enabled})).and_then(|_| crate::prefs_ui::save_preferences(app));
+        let result = app.run("prefs.set", json!({"path":path,"value":!enabled})).and_then(|_| crate::prefs_ui::save_preferences(app));
         if let Err(error) = result {
             app.ui.status = error;
             app.ui.status_error = true;
         }
     }
+}
+
+fn external_only_controls(app: &mut PhotocraftApp, ui: &mut egui::Ui, mode: EditMode, label: &str, busy: bool, has_history: bool) -> bool {
+    let enabled =
+        if mode == EditMode::GenerativeFill { app.session.prefs().integrations.external_erase } else { app.session.prefs().integrations.external_cutout };
+    ui.add_enabled_ui(!busy, |ui| {
+        ui.horizontal(|ui| {
+            let quick = ui.add_enabled(enabled, egui::Button::new(quick_label(mode))).clicked();
+            external_toggle(app, ui, label, 24.0, mode == EditMode::GenerativeFill);
+            if has_history {
+                crate::ai_prompt_info::button(app, ui);
+            }
+            quick
+        })
+        .inner
+    })
+    .inner
 }
 
 fn external_cutout_width(ui: &egui::Ui, label: &str) -> f32 {
@@ -737,6 +755,7 @@ fn quick_action(app: &mut PhotocraftApp, mode: EditMode) -> Result<(), String> {
             photocraft_engine::ai_cmds::REMOVE_BACKGROUND_COMMAND,
             json!({"name":quick_label(mode),"cfg":current_cfg(app),"negativePrompt":app.ui.ai.negative_prompt,"steps":app.ui.ai.steps.unwrap_or(app.session.prefs().integrations.selected_settings().steps)}),
         ),
+        EditMode::GenerativeFill if app.session.prefs().integrations.external_erase && photocraft_engine::ai_cmds::external_erase_label().is_some() => app.run(photocraft_engine::ai_cmds::REMOVE_SELECTION_COMMAND, json!({})),
         EditMode::GenerativeFill => app.run(
             mode.command(),
             json!({"prompt":"","name":quick_label(mode),"cfg":current_cfg(app),"negativePrompt":app.ui.ai.negative_prompt,"steps":app.ui.ai.steps.unwrap_or(app.session.prefs().integrations.selected_settings().steps)}),
@@ -772,47 +791,50 @@ pub(crate) fn keys(app: &mut PhotocraftApp, ctx: &egui::Context) -> bool {
 }
 
 pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, image: Rect, selection: Option<Rect>) {
+    show_with_backends(
+        app,
+        ui,
+        index,
+        canvas,
+        image,
+        selection,
+        [photocraft_engine::ai_cmds::external_cutout_label(), photocraft_engine::ai_cmds::external_erase_label()],
+    );
+}
+
+fn show_with_backends(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, image: Rect, selection: Option<Rect>, backends: [Option<String>; 2]) {
     model_settings_window(app, ui.ctx());
     let submitted = app.ui.ai.submit.take();
     let Some(st) = app.session.documents().get(index) else { return };
     let doc = st.doc.clone();
     let revision = st.revision;
-    let offline_mode = if !app.ui.ai.available { Some(contextual_mode(&app.session, st)) } else { None };
+    let offline_mode = (!app.ui.ai.available).then(|| contextual_mode(&app.session, st));
     let fresh_fill = photocraft_engine::ai_cmds::harmonize::immediate(&app.session);
     if fresh_fill && !app.ui.dialogs.is_empty() {
         app.session.note_action();
     }
     let has_history = crate::ai_prompt_info::has_history(app, &doc, revision);
-    let external_label = photocraft_engine::ai_cmds::external_cutout_label();
+    let [cutout_label, erase_label] = backends;
+    let external_label = if offline_mode == Some(EditMode::GenerativeFill) { erase_label.clone() } else { cutout_label.clone() };
     if !app.ui.ai.available
         && supported_document(&doc).is_ok()
         && external_label.is_some()
-        && offline_mode == Some(EditMode::PromptEdit)
+        && matches!(offline_mode, Some(EditMode::PromptEdit | EditMode::GenerativeFill))
         && app.ui.dialogs.is_empty()
     {
         let busy = app.session.job_on(doc.id).is_some();
-        let enabled = app.session.prefs().integrations.external_cutout;
+        let mode = offline_mode.unwrap_or(EditMode::PromptEdit);
         let mut quick = false;
         let area = egui::Area::new(egui::Id::unique(("ai-external-only", doc.id.0)))
             .order(egui::Order::Foreground)
             .fixed_pos(pos2(image.center().x, (image.bottom() + 10.0).min(canvas.bottom() - 40.0)))
             .show(ui.ctx(), |ui| {
-                ui.add_enabled_ui(!busy, |ui| {
-                    ui.horizontal(|ui| {
-                        quick = ui.add_enabled(enabled, egui::Button::new(tl!("Remove Background"))).clicked();
-                        if let Some(label) = &external_label {
-                            external_cutout_toggle(app, ui, label, 24.0);
-                        }
-                        if has_history {
-                            crate::ai_prompt_info::button(app, ui);
-                        }
-                    });
-                });
+                quick = external_only_controls(app, ui, mode, external_label.as_deref().unwrap_or(""), busy, has_history);
             });
         let rect = area.response.rect;
         app.ui.ai.rect = Some([rect.min.x, rect.min.y, rect.max.x, rect.max.y]);
         if quick {
-            let _ = quick_action(app, EditMode::PromptEdit);
+            let _ = quick_action(app, mode);
         }
         return;
     }
@@ -867,7 +889,10 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
     let quick_caption = if harmonize { tl!("Match Surrounding Colors") } else { quick_label(mode) };
     let quick_text =
         ui.painter().layout_no_wrap(quick_caption.to_owned(), egui::TextStyle::Button.resolve(ui.style()), crate::theme::Tokens::get(ui.ctx()).text);
-    let external_available = mode == EditMode::PromptEdit && external_label.is_some();
+    let external_label = if mode == EditMode::GenerativeFill { erase_label } else { cutout_label };
+    let external_available = !harmonize && mode != EditMode::PromptGenerate && external_label.is_some();
+    let local_enabled =
+        if mode == EditMode::GenerativeFill { app.session.prefs().integrations.external_erase } else { app.session.prefs().integrations.external_cutout };
     let controls_width = 128.0
         + model_width
         + 80.0
@@ -918,7 +943,7 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                             }
                             if mode != EditMode::PromptGenerate {
                                 let clicked = ui
-                                    .add_enabled_ui(ready || harmonize || (external_available && app.session.prefs().integrations.external_cutout), |ui| {
+                                    .add_enabled_ui(ready || harmonize || (external_available && local_enabled), |ui| {
                                         ui.add_sized(vec2(button_width, button_height), egui::Button::new(quick_caption).truncate())
                                             .on_hover_text(if harmonize { tl!("Adjust colors with Poisson blending") } else { quick_caption })
                                     })
@@ -927,14 +952,14 @@ pub fn show(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canvas: Rect, 
                                 match_colors = clicked && harmonize;
                                 quick = clicked && !harmonize;
                             }
+                            if external_available && let Some(label) = &external_label {
+                                external_toggle(app, ui, label, button_height, mode == EditMode::GenerativeFill);
+                            }
                             if let Some((_, model)) = repeat {
                                 ui.add_enabled_ui(model_ready(app, model), |ui| {
                                     reroll =
                                         crate::icons::button(ui, "rotate-cw", 24.0, false, &format!("{} · {}", tl!("Regenerate"), model.label())).clicked();
                                 });
-                            }
-                            if external_available && let Some(label) = &external_label {
-                                external_cutout_toggle(app, ui, label, button_height);
                             }
                             crate::ai_prompt_info::button(app, ui);
                         });
@@ -1342,6 +1367,41 @@ mod tests {
         assert_eq!(*calls.lock().unwrap(), vec![false, true]);
         assert_eq!(app.ui.ai.prompt, "saved draft");
         assert_eq!(app.session.active().unwrap().doc.layers.iter().take(old_visible.len()).map(|l| l.visible).collect::<Vec<_>>(), old_visible);
+    }
+
+    #[test]
+    fn local_remove_is_available_and_remembers_w_without_comfyui() {
+        use egui_kittest::{
+            Harness,
+            kittest::{NodeT, Queryable},
+        };
+        let mut app = PhotocraftApp::new(Session::new(), Services::default());
+        app.run("file.new", json!({"width":20,"height":20})).unwrap();
+        app.run("select.rect", json!({"x":2,"y":2,"width":4,"height":4})).unwrap();
+        assert!(!app.ui.ai.available);
+        let mut h = Harness::builder().with_size(egui::vec2(800.0, 600.0)).build_ui_state(
+            |ui, app| {
+                if !ui.ctx().fonts(|f| f.families().contains(&egui::FontFamily::Name("medium".into()))) {
+                    return;
+                }
+                let canvas = Rect::from_min_size(egui::Pos2::ZERO, vec2(800.0, 600.0));
+                let image = Rect::from_min_size(pos2(100.0, 100.0), vec2(400.0, 300.0));
+                show_with_backends(app, ui, 0, canvas, image, None, [Some("PS".into()), Some("W".into())]);
+            },
+            app,
+        );
+        PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
+        h.run();
+        assert!(h.get_by_label("Remove").accesskit_node().is_disabled());
+        assert!(h.query_by_label("Remove Background").is_none());
+        h.get_by_label("W").click();
+        h.run();
+        assert!(h.state().session.prefs().integrations.external_erase);
+        assert!(!h.get_by_label("Remove").accesskit_node().is_disabled());
+        let mut restored = Session::new();
+        restored.load_prefs_json(&h.state().session.prefs_to_json()).unwrap();
+        assert!(restored.prefs().integrations.external_erase);
+        assert!(!restored.prefs().integrations.external_cutout);
     }
 
     #[test]

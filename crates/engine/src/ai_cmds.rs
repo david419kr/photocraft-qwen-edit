@@ -18,6 +18,8 @@ use crate::{EngineError, Result, Session};
 mod cutout;
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) mod cutout_external;
+#[cfg(not(target_arch = "wasm32"))]
+mod erase_external;
 mod fill;
 mod fill_batch;
 pub mod harmonize;
@@ -33,6 +35,18 @@ pub fn external_cutout_label() -> Option<String> {
     #[cfg(not(target_arch = "wasm32"))]
     {
         cutout_external::label()
+    }
+    #[cfg(target_arch = "wasm32")]
+    {
+        None
+    }
+}
+pub const REMOVE_SELECTION_COMMAND: &str = "edit.aiRemoveSelection";
+/// Label of the locally installed selection-removal backend, independently of ComfyUI.
+pub fn external_erase_label() -> Option<String> {
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        cutout_external::erase_label()
     }
     #[cfg(target_arch = "wasm32")]
     {
@@ -422,6 +436,29 @@ pub fn specs() -> Vec<CommandSpec> {
         params: "{\"steps\":u32?,\"seed\":u64?,\"experimentalRefine\":bool=false} → {layer,mode,seed,steps,workingSize,workingRect,contentSize} or {layer,backend} for an external backend; alpha-only layer mask. experimentalRefine opts into unvalidated multi-pass research; not used by the UI",
         enabled: cutout::enabled,
         run: remove_background,
+        journal: true,
+    });
+    commands.push(CommandSpec {
+        id: REMOVE_SELECTION_COMMAND,
+        label: "Remove Selected Content",
+        menu: &[],
+        shortcut: None,
+        params: "{} → {layer,backend}; local selection removal, new result layer, no ComfyUI required",
+        enabled: can_fill,
+        run: |s, p| {
+            if !p.is_object() || p.as_object().is_some_and(|m| !m.is_empty()) {
+                return Err(bad(REMOVE_SELECTION_COMMAND, "use an empty object"));
+            }
+            can_fill(s).map_err(EngineError::Other)?;
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                erase_external::run(s)
+            }
+            #[cfg(target_arch = "wasm32")]
+            {
+                Err(EngineError::Other("Local selection removal is unavailable in the browser".into()))
+            }
+        },
         journal: true,
     });
     commands.extend(harmonize::specs());

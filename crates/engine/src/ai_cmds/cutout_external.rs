@@ -7,6 +7,14 @@ use std::process::{Command, Stdio};
 use std::sync::{Mutex, OnceLock};
 use std::time::{Duration, Instant};
 
+#[derive(Clone, Copy, Debug, Default, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub(super) enum Kind {
+    #[default]
+    Cutout,
+    Erase,
+}
+
 #[derive(Clone, Debug, Deserialize)]
 struct Manifest {
     version: u32,
@@ -17,14 +25,16 @@ struct Manifest {
     args: Vec<String>,
     #[serde(default)]
     required: Vec<String>,
+    #[serde(default)]
+    operation: Kind,
 }
 
 #[derive(Clone, Debug)]
-struct Backend {
-    root: PathBuf,
-    executable: PathBuf,
-    args: Vec<String>,
-    label: String,
+pub(super) struct Backend {
+    pub(super) root: PathBuf,
+    pub(super) executable: PathBuf,
+    pub(super) args: Vec<String>,
+    pub(super) label: String,
 }
 
 fn local_file(root: &Path, relative: &str) -> Option<PathBuf> {
@@ -36,7 +46,7 @@ fn local_file(root: &Path, relative: &str) -> Option<PathBuf> {
     (resolved.starts_with(root) && resolved.is_file()).then_some(resolved)
 }
 
-fn discover_in(parent: &Path) -> Option<Backend> {
+fn discover_in(parent: &Path, kind: Kind) -> Option<Backend> {
     let mut entries: Vec<_> = std::fs::read_dir(parent).ok()?.take(101).filter_map(std::result::Result::ok).collect();
     if entries.len() > 100 {
         return None;
@@ -55,7 +65,8 @@ fn discover_in(parent: &Path) -> Option<Backend> {
         }
         let Ok(bytes) = std::fs::read(manifest_path) else { continue };
         let Ok(manifest) = serde_json::from_slice::<Manifest>(&bytes) else { continue };
-        if manifest.version != 1
+        if manifest.operation != kind
+            || manifest.version != 1
             || manifest.id.is_empty()
             || manifest.id.len() > 64
             || !manifest.id.bytes().all(|c| c.is_ascii_alphanumeric() || matches!(c, b'-' | b'_' | b'.'))
@@ -75,22 +86,28 @@ fn discover_in(parent: &Path) -> Option<Backend> {
     None
 }
 
-fn discover() -> Option<Backend> {
+pub(super) fn discover(kind: Kind) -> Option<Backend> {
     type DiscoveryCache = Mutex<Option<(Instant, Option<Backend>)>>;
     static CACHE: OnceLock<DiscoveryCache> = OnceLock::new();
-    let mut cache = CACHE.get_or_init(|| Mutex::new(None)).lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+    static ERASE_CACHE: OnceLock<DiscoveryCache> = OnceLock::new();
+    let cache = if kind == Kind::Erase { &ERASE_CACHE } else { &CACHE };
+    let mut cache = cache.get_or_init(|| Mutex::new(None)).lock().unwrap_or_else(std::sync::PoisonError::into_inner);
     if let Some((at, backend)) = cache.as_ref()
         && at.elapsed() < Duration::from_secs(2)
     {
         return backend.clone();
     }
-    let backend = std::env::current_exe().ok().and_then(|exe| exe.parent().map(|p| p.join("cutout-backends"))).and_then(|p| discover_in(&p));
+    let backend = std::env::current_exe().ok().and_then(|exe| exe.parent().map(|p| p.join("cutout-backends"))).and_then(|p| discover_in(&p, kind));
     *cache = Some((Instant::now(), backend.clone()));
     backend
 }
 
 pub(crate) fn label() -> Option<String> {
-    discover().map(|backend| backend.label)
+    discover(Kind::Cutout).map(|backend| backend.label)
+}
+
+pub(crate) fn erase_label() -> Option<String> {
+    discover(Kind::Erase).map(|backend| backend.label)
 }
 
 fn mask_from_png(bytes: &[u8], width: u32, height: u32, ctx: &JobCtx) -> Result<Surface> {
@@ -130,11 +147,15 @@ fn source_png(doc: &Document, id: photocraft_doc::LayerId) -> Result<Vec<u8>> {
         .map_err(|e| EngineError::Other(format!("Cannot prepare cutout input: {e}")))
 }
 
-fn spawn_mask(backend: &Backend, input: &[u8], max_output: u64, ctx: &JobCtx) -> Result<Vec<u8>> {
+pub(super) fn spawn(backend: &Backend, input: &[u8], selection: Option<&[u8]>, max_output: u64, ctx: &JobCtx) -> Result<Vec<u8>> {
     let temporary = tempfile::Builder::new().prefix("photocraft-cutout-").tempdir().map_err(|e| EngineError::Other(e.to_string()))?;
     let src = temporary.path().join("source.png");
     let mask = temporary.path().join("mask.png");
     let cancel = temporary.path().join("cancel");
+    let selected = temporary.path().join("selection.png");
+    if let Some(bytes) = selection {
+        std::fs::write(&selected, bytes).map_err(|e| EngineError::Other(e.to_string()))?;
+    }
     let errors = temporary.path().join("error.log");
     std::fs::write(&src, input).map_err(|e| EngineError::Other(e.to_string()))?;
     let log = std::fs::File::create(&errors).map_err(|e| EngineError::Other(e.to_string()))?;
@@ -150,10 +171,13 @@ fn spawn_mask(backend: &Backend, input: &[u8], max_output: u64, ctx: &JobCtx) ->
         .stdin(Stdio::null())
         .stdout(Stdio::null())
         .stderr(Stdio::from(log));
+    if selection.is_some() {
+        command.env("PHOTOCRAFT_CUTOUT_SELECTION", &selected);
+    }
     #[cfg(windows)]
     command.creation_flags(0x08000000);
     let mut child = command.spawn().map_err(|e| EngineError::Other(format!("Cannot start external backend: {e}")))?;
-    ctx.progress(0.15, "Removing background");
+    ctx.progress(0.15, if selection.is_some() { "Removing selected content" } else { "Removing background" });
     let started = Instant::now();
     let mut cancel_started = None;
     let status = loop {
@@ -181,15 +205,15 @@ fn spawn_mask(backend: &Backend, input: &[u8], max_output: u64, ctx: &JobCtx) ->
         let tail: String = String::from_utf8_lossy(&bytes).chars().rev().take(2000).collect::<String>().chars().rev().collect();
         return Err(EngineError::Other(format!("External backend failed: {tail}")));
     }
-    let metadata = std::fs::metadata(&mask).map_err(|e| EngineError::Other(format!("Cannot read external mask: {e}")))?;
+    let metadata = std::fs::metadata(&mask).map_err(|e| EngineError::Other(format!("Cannot read external result: {e}")))?;
     if metadata.len() > max_output {
-        return Err(EngineError::Other("External mask is too large".into()));
+        return Err(EngineError::Other("External result is too large".into()));
     }
-    std::fs::read(mask).map_err(|e| EngineError::Other(format!("Cannot read external mask: {e}")))
+    std::fs::read(mask).map_err(|e| EngineError::Other(format!("Cannot read external result: {e}")))
 }
 
 pub(crate) fn run(s: &mut Session, id: photocraft_doc::LayerId) -> Result<Value> {
-    let backend = discover().ok_or_else(|| EngineError::Other("External cutout backend is unavailable".into()))?;
+    let backend = discover(Kind::Cutout).ok_or_else(|| EngineError::Other("External cutout backend is unavailable".into()))?;
     run_with(s, id, backend)
 }
 
@@ -200,7 +224,7 @@ fn run_with(s: &mut Session, id: photocraft_doc::LayerId, backend: Backend) -> R
         move |doc, _, ctx| {
             let input = source_png(doc, id)?;
             let max_output = u64::from(doc.size.width).saturating_mul(u64::from(doc.size.height)).saturating_mul(16).saturating_add(1_048_576);
-            let output = spawn_mask(&backend, &input, max_output, ctx)?;
+            let output = spawn(&backend, &input, None, max_output, ctx)?;
             let surface = mask_from_png(&output, doc.size.width, doc.size.height, ctx)?;
             let mask = crate::commands::mask_at_depth(LayerMask { surface, ..LayerMask::reveal_all() }, doc.depth)?;
             crate::extra_cmds::background_to_layer_for_mask(doc, id);
@@ -251,7 +275,7 @@ mod tests {
         }
         let ctx = JobCtx::new();
         ctx.cancel();
-        assert!(matches!(spawn_mask(&backend, &[], 1024, &ctx), Err(EngineError::Cancelled)));
+        assert!(matches!(spawn(&backend, &[], None, 1024, &ctx), Err(EngineError::Cancelled)));
     }
 
     #[test]
@@ -261,12 +285,16 @@ mod tests {
         std::fs::create_dir_all(&root).unwrap();
         let manifest = |executable: &str| json!({"version":1,"id":"example","label":"Test","executable":executable,"required":["model.dat"]}).to_string();
         std::fs::write(root.join("backend.json"), manifest("worker.exe")).unwrap();
-        assert!(discover_in(dir.path()).is_none());
+        assert!(discover_in(dir.path(), Kind::Cutout).is_none());
         std::fs::write(root.join("worker.exe"), []).unwrap();
         std::fs::write(root.join("model.dat"), []).unwrap();
-        assert_eq!(discover_in(dir.path()).unwrap().label, "Test");
+        assert_eq!(discover_in(dir.path(), Kind::Cutout).unwrap().label, "Test");
+        let erase = json!({"version":1,"id":"erase","operation":"erase","label":"W","executable":"worker.exe"});
+        std::fs::write(root.join("backend.json"), erase.to_string()).unwrap();
+        assert!(discover_in(dir.path(), Kind::Cutout).is_none());
+        assert_eq!(discover_in(dir.path(), Kind::Erase).unwrap().label, "W");
         std::fs::write(root.join("backend.json"), manifest("../worker.exe")).unwrap();
-        assert!(discover_in(dir.path()).is_none());
+        assert!(discover_in(dir.path(), Kind::Cutout).is_none());
     }
 
     #[test]

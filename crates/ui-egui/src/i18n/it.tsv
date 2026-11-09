@@ -4754,6 +4754,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Uncached Refresh	Aggiorna senza cache
 	…	…
 	External cutout	Rimozione sfondo esterna
+	External erase	Cancellazione esterna
 	No matching fonts	Nessun carattere corrispondente
 	Select Layer Under Cursor	Seleziona livello sotto il cursore
 

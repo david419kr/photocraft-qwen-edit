@@ -4778,6 +4778,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Minimize Panel	Umanji panel
 	Open Panel in Own Window	Otvori panel u zasebnom prozoru
 	External cutout	Vanjsko uklanjanje pozadine
+	External erase	Vanjsko brisanje
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Grupa četkica „{group}” već sadrži {n} vašu četkicu.|Grupa četkica „{group}” već sadrži {n} vaše četkice.|Grupa četkica „{group}” već sadrži {n} vaših četkica.
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Grupa gradijenata „{group}” već postoji ({n} gradijent).|Grupa gradijenata „{group}” već postoji ({n} gradijenta).|Grupa gradijenata „{group}” već postoji ({n} gradijenata).
 	Lining	Verzalne

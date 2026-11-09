@@ -4841,6 +4841,7 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Comfyui translate prompt	Översätt prompt till engelska
 	Comfyui translation model	Modell för promptöversättning
 	External cutout	Extern friläggning
+	External erase	Extern radering
 	Qwen image21	Qwen 2.1
 	Hy mt18 heretic	Hy-MT2 1.8B
 	Hy mt7 abliterated	Hy-MT2 7B

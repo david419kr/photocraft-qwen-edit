@@ -4844,6 +4844,7 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Comfyui translate prompt	Käännä kehote englanniksi
 	Comfyui translation model	Kehotteen käännösmalli
 	External cutout	Ulkoinen taustanpoisto
+	External erase	Ulkoinen poisto
 	Qwen image21	Qwen 2.1
 	Hy mt18 heretic	Hy-MT2 1.8B
 	Hy mt7 abliterated	Hy-MT2 7B

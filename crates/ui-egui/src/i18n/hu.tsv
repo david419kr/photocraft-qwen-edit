@@ -4561,6 +4561,7 @@ prompt-region	Bottom right	Jobb alsó
 	Uncached Refresh	Frissítés gyorsítótár nélkül
 	…	…
 	External cutout	Külső háttéreltávolítás
+	External erase	Külső törlés
 	No matching fonts	Nincs megfelelő betűtípus
 	Select Layer Under Cursor	Kurzor alatti réteg kijelölése
 	Twirl Counterclockwise	Csavarás az óramutató járásával ellentétesen
