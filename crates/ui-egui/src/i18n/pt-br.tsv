@@ -4859,3 +4859,4 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Zoom current window to screen size	Ajustar a janela atual ao tamanho da tela
 	brush tool	ferramenta Pincel
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: falha em {n} arquivo|{what}: falha em {n} arquivos
+	Open in RAW Develop	Abrir em Revelação RAW

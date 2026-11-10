@@ -281,3 +281,34 @@ fn scaled_preview_fallback_warning_is_drained_and_the_rpc_reply_carries_it() {
     let reply = plain.handle("doc.render", serde_json::json!({"maxSide": 16})).expect("doc.render");
     assert!(reply.get("warnings").is_none(), "{reply}");
 }
+
+/// Native file writes and capability exports must apply the same metadata policy as flat
+/// exports, including when an incremental writer previously saved a metadata-rich snapshot.
+#[test]
+fn native_saves_honor_metadata_selection_without_mutating_source() {
+    use photocraft_io::XmpEmbed;
+
+    let dir = std::env::temp_dir().join(format!("photocraft-native-metadata-{}", std::process::id()));
+    fs::create_dir_all(&dir).unwrap();
+    let mut doc = Document::new("private", Size::new(2, 2), ColorMode::Rgb, SampleType::U8);
+    doc.metadata.xmp = Some("<private>prompt history</private>".into());
+    doc.metadata.text = vec![("Comment".into(), "private note".into())];
+    doc.metadata.exif = Some(Arc::new(vec![1, 2, 3, 4]));
+    let original = doc.clone();
+    let path = dir.join("privacy.pcraft");
+    let mut writer = photocraft_format::PcraftWriter::new();
+    for xmp in [XmpEmbed::All, XmpEmbed::None, XmpEmbed::ExifOnly, XmpEmbed::All] {
+        let opts = ExportOptions { xmp, ..Default::default() };
+        files::save(&doc, &path, None, &opts, Some(&mut writer)).unwrap();
+        let disk = files::open(&path).unwrap().document;
+        let (bytes, _) = files::save_bytes(&doc, "privacy.pcraft", None, &opts).unwrap();
+        let scoped = files::open_bytes("privacy.pcraft", &bytes).unwrap().document;
+        for saved in [disk, scoped] {
+            assert_eq!(saved.metadata.xmp, doc.metadata.xmp.clone().filter(|_| xmp == XmpEmbed::All));
+            assert_eq!(saved.metadata.text, if xmp == XmpEmbed::All { doc.metadata.text.clone() } else { Vec::new() });
+            assert_eq!(saved.metadata.exif, doc.metadata.exif.clone().filter(|_| xmp != XmpEmbed::None));
+        }
+        assert_eq!(doc, original, "export changes only the saved snapshot");
+    }
+    fs::remove_dir_all(dir).unwrap();
+}

@@ -4454,3 +4454,4 @@ prompt-region	Top right	Trên phải
 	Zoom current window to screen size	Thu phóng cửa sổ hiện tại cho vừa màn hình
 	brush tool	công cụ cọ
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} tệp bị lỗi
+	Open in RAW Develop	Mở trong xử lý RAW

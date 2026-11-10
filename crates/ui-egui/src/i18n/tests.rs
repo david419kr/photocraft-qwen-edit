@@ -830,7 +830,7 @@ fn ukrainian_resolves_locales_and_preferences_fork_contract() {
     assert_eq!(tr_id(uk, "select.all", "All"), "Виділити все");
     assert_eq!(tr_ctx(uk, "cameraRaw", "Light"), "Світло");
     assert_eq!(tr_ctx(uk, "fontWeight", "Light"), "Легкий");
-    assert_eq!(fmt(tr(uk, "Camera Raw Filter ({layer})"), &[("layer", "Background")]), "Фільтр Camera Raw (Background)");
+    assert_eq!(fmt(tr(uk, "RAW Develop Filter ({layer})"), &[("layer", "Background")]), "Фільтр Обробка RAW (Background)");
     for key in ["Alt", "⌥"] {
         assert_eq!(fmt(tr(uk, "Add a mask  (from the selection; {key} inverts)"), &[("key", key)]), format!("Додати маску  (із виділення; {key} інвертує)"));
     }
@@ -885,7 +885,7 @@ fn serbian_resolves_locales_and_preferences_fork_contract() {
     assert_eq!(tr(sr, "All"), "Sve");
     assert_eq!(tr_ctx(sr, "cameraRaw", "Light"), "Svetlo");
     assert_eq!(tr_ctx(sr, "fontWeight", "Light"), "Lagano");
-    assert_eq!(fmt(tr(sr, "Camera Raw Filter ({layer})"), &[("layer", "Background")]), "Camera Raw filter (Background)");
+    assert_eq!(fmt(tr(sr, "RAW Develop Filter ({layer})"), &[("layer", "Background")]), "RAW obrada filter (Background)");
     for key in ["Alt", "⌥"] {
         assert_eq!(fmt(tr(sr, "Add a mask  (from the selection; {key} inverts)"), &[("key", key)]), format!("Dodaj masku  (iz selekcije; {key} invertuje)"));
     }
@@ -1425,8 +1425,8 @@ fn camera_raw_labels_are_translated_in_every_available_language() {
     let ru = Lang::from_code("ru").unwrap();
     assert_eq!(tr_ctx(ru, "cameraRaw", "Vibrance"), "Красочность");
     assert_eq!(tr_ctx(ru, "cameraRaw", "Aqua"), "Голубые");
-    let text = fmt(tr(ru, "Camera Raw Filter ({layer})"), &[("layer", "{Background} 影像")]);
-    assert_eq!(text, "Фильтр Camera Raw ({Background} 影像)", "user layer names are not translated");
+    let text = fmt(tr(ru, "RAW Develop Filter ({layer})"), &[("layer", "{Background} 影像")]);
+    assert_eq!(text, "Фильтр Обработка RAW ({Background} 影像)", "user layer names are not translated");
 }
 
 #[test]

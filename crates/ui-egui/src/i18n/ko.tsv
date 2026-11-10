@@ -3938,7 +3938,7 @@ cameraRaw	Temperature	색온도
 	shortcut	단축키
 cameraRaw	Color Detail	색상 세부 정보
 cameraRaw	Color Grading	색상 등급
-cameraRaw	Darks	어두운 영역
+cameraRaw	Darks	어두운 톤
 cameraRaw	Global	전체
 cameraRaw	Hue	색조
 cameraRaw	Luminance Detail	휘도 세부 정보
@@ -3951,7 +3951,7 @@ layerLabel	No Color	색상 없음
 	Make Work Path…	작업 패스 만들기…
 	Create Vector Mask	벡터 마스크 만들기
 	Make Selection…	선택 영역 만들기…
-	Fill Path…	패스 칠…
+	Fill Path…	패스 채우기…
 	Clipping Path…	클리핑 패스…
 	Free Transform Path	패스 자유 변형
 	Copy Fill	칠 복사
@@ -4173,7 +4173,7 @@ cameraRaw	Midtones	중간톤
 cameraRaw	Radius	반경
 cameraRaw	Roundness	원형률
 cameraRaw	Saturation	채도
-cameraRaw	Shadows	어두운 영역
+cameraRaw	Shadows	그림자
 cameraRaw	Size	크기
 cameraRaw	Texture	텍스처
 colorRange	Invert	반전
@@ -4588,3 +4588,4 @@ prompt-region	Top right	우상단
 
 # Dynamic integration labels
 	Selected Area Only	선택 영역만
+	Open in RAW Develop	RAW 현상에서 열기

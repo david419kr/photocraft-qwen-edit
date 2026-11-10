@@ -4961,3 +4961,4 @@ cameraRaw	Cancelled {label}	Otkazano: {label}
 	Save the settings to each raw's sidecar without opening it	Sačuvaj postavke u prateću datoteku svake RAW datoteke bez otvaranja
 	Scroll All Windows	Pomeraj prikaz u svim prozorima
 	Some settings could not be saved; the raws stay open	Neke postavke nisu sačuvane; RAW datoteke ostaju otvorene
+	Open in RAW Develop	Otvori u RAW obradi

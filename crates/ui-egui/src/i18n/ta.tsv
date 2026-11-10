@@ -4620,3 +4620,44 @@ navigator	Zoom	பெரிதாக்கல்
 	{ok} written to {dir}	{dir} இல் {ok} எழுதப்பட்டது
 	{set} from {file} replaced the one from {earlier}	{earlier} இலிருந்து வந்ததை {file} இலுள்ள {set} மாற்றியது
 	…	…
+
+# Dynamic menu labels
+	Collapse to Icons	சின்னங்களாகச் சுருக்கு
+	Color Blindness - Deuteranopia-type	நிறக்குருடு - பச்சை நிற உணர்வின்மை வகை
+	Color Blindness - Protanopia-type	நிறக்குருடு - சிவப்பு நிற உணர்வின்மை வகை
+	Contextual Task Bar	சூழல்சார் பணிப்பட்டை
+	Dismiss update	புதுப்பிப்பு அறிவிப்பை மூடு
+	Embed All Linked	இணைக்கப்பட்ட அனைத்தையும் உட்பொதி
+	Embed Linked	இணைக்கப்பட்டதை உட்பொதி
+	Generative Fill…	உருவாக்க நிரப்புதல்…
+	Internet Standard RGB (sRGB)	இணையத் தரநிலை RGB (sRGB)
+	Legacy Macintosh RGB (Gamma 1.8)	பழைய Macintosh RGB (காமா 1.8)
+	Plugins…	செருகுநிரல்கள்…
+	Prompt Edit…	வழிமொழியால் திருத்து…
+	Prompt Generate…	வழிமொழியால் உருவாக்கு…
+	Regenerate AI Result	AI முடிவை மீண்டும் உருவாக்கு
+	Select Layer Under Cursor	சுட்டிக்குக் கீழுள்ள அடுக்கைத் தேர்ந்தெடு
+	Set 1	தொகுப்பு 1
+	Set 10	தொகுப்பு 10
+	Set 11	தொகுப்பு 11
+	Set 12	தொகுப்பு 12
+	Set 13	தொகுப்பு 13
+	Set 14	தொகுப்பு 14
+	Set 15	தொகுப்பு 15
+	Set 16	தொகுப்பு 16
+	Set 17	தொகுப்பு 17
+	Set 18	தொகுப்பு 18
+	Set 19	தொகுப்பு 19
+	Set 2	தொகுப்பு 2
+	Set 20	தொகுப்பு 20
+	Set 3	தொகுப்பு 3
+	Set 4	தொகுப்பு 4
+	Set 5	தொகுப்பு 5
+	Set 6	தொகுப்பு 6
+	Set 7	தொகுப்பு 7
+	Set 8	தொகுப்பு 8
+	Set 9	தொகுப்பு 9
+	Stylistic Sets	பாணித் தொகுப்புகள்
+	Update PhotoCraft	PhotoCraft ஐப் புதுப்பி
+	Working CMY Plates	பணியிட CMY அச்சுத் தட்டுகள்
+	Open in RAW Develop	RAW உருவாக்கத்தில் திற

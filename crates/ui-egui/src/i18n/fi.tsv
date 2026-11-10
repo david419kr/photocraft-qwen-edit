@@ -5148,3 +5148,4 @@ cameraRaw	Cancelled {label}	Peruutettu: {label}
 	Some settings could not be saved; the raws stay open	Joitakin asetuksia ei voitu tallentaa; RAW-tiedostot pysyvät avoinna
 	Equalize Entire Image Based On Selected Area	Tasaa koko kuva valitun alueen perusteella
 	Equalize Selected Area Only	Tasaa vain valittu alue
+	Open in RAW Develop	Avaa RAW-kehityksessä

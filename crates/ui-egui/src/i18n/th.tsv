@@ -5022,3 +5022,54 @@ cameraRaw	White Balance: As Shot	สมดุลแสงขาว: เท่า
 	{ok} written to {dir}	เขียน {ok} ไปยัง {dir} แล้ว
 	{set} from {file} replaced the one from {earlier}	{set} จาก {file} แทนที่รายการจาก {earlier} แล้ว
 	…	…
+	Arrange Panels	จัดเรียงแผง
+	Close Other Panels in Group	ปิดแผงอื่นในกลุ่ม
+	Collapse to Icons	ยุบเป็นไอคอน
+	Color Blindness - Deuteranopia-type	ตาบอดสี - ชนิดดิวเทอราโนเปีย
+	Color Blindness - Protanopia-type	ตาบอดสี - ชนิดโพรทาโนเปีย
+	Dismiss update	ปิดการแจ้งเตือนอัปเดต
+	Generative Fill…	เติมภาพด้วย AI…
+	Minimize Panel	ย่อแผง
+	Open Panel in Own Window	เปิดแผงในหน้าต่างของตัวเอง
+	Prompt Edit…	แก้ไขด้วยพรอมต์…
+	Prompt Generate…	สร้างด้วยพรอมต์…
+	Regenerate AI Result	สร้างผลลัพธ์ AI ใหม่
+	Update PhotoCraft	อัปเดต PhotoCraft
+	Contextual Task Bar	แถบงานตามบริบท
+	Embed All Linked	ฝังรายการที่เชื่อมโยงทั้งหมด
+	Embed Linked	ฝังรายการที่เชื่อมโยง
+	Internet Standard RGB (sRGB)	RGB มาตรฐานอินเทอร์เน็ต (sRGB)
+	Legacy Macintosh RGB (Gamma 1.8)	RGB ของ Macintosh รุ่นเก่า (แกมมา 1.8)
+	Lining	ตัวเลขความสูงเสมอกัน
+	Numerals	ตัวเลข
+	Plugins…	ปลั๊กอิน…
+	Proportional	ความกว้างตามสัดส่วน
+	Proportional Lining	ตัวเลขความสูงเสมอกันแบบความกว้างตามสัดส่วน
+	Proportional Oldstyle	ตัวเลขแบบเก่าความกว้างตามสัดส่วน
+	Select Layer Under Cursor	เลือกเลเยอร์ใต้เคอร์เซอร์
+	Stylistic Sets	ชุดรูปแบบตัวอักษร
+	Tabular	ความกว้างเท่ากัน
+	Tabular Lining	ตัวเลขความสูงเสมอกันแบบความกว้างเท่ากัน
+	Tabular Oldstyle	ตัวเลขแบบเก่าความกว้างเท่ากัน
+	Working CMY Plates	แม่พิมพ์สี CMY ที่ใช้งาน
+	Set 1	ชุดที่ 1
+	Set 2	ชุดที่ 2
+	Set 3	ชุดที่ 3
+	Set 4	ชุดที่ 4
+	Set 5	ชุดที่ 5
+	Set 6	ชุดที่ 6
+	Set 7	ชุดที่ 7
+	Set 8	ชุดที่ 8
+	Set 9	ชุดที่ 9
+	Set 10	ชุดที่ 10
+	Set 11	ชุดที่ 11
+	Set 12	ชุดที่ 12
+	Set 13	ชุดที่ 13
+	Set 14	ชุดที่ 14
+	Set 15	ชุดที่ 15
+	Set 16	ชุดที่ 16
+	Set 17	ชุดที่ 17
+	Set 18	ชุดที่ 18
+	Set 19	ชุดที่ 19
+	Set 20	ชุดที่ 20
+	Open in RAW Develop	เปิดในการปรับแต่ง RAW

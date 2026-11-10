@@ -4693,3 +4693,4 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Zoom current window to screen size	Přizpůsobit aktuální okno velikosti obrazovky
 	brush tool	nástroj Štětec
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} soubor selhal|{what}: {n} soubory selhaly|{what}: {n} souborů selhalo
+	Open in RAW Develop	Otevřít ve vyvolání RAW

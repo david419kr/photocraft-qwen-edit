@@ -2492,3 +2492,9 @@ fn selected_tool_excludes_spring_and_explicit_choice_clears_overrides() {
         assert_eq!(restored.ui.tool, if explicit { Tool::Eraser } else { Tool::Brush });
     }
 }
+
+#[test]
+fn raw_open_preference_uses_current_display_name() {
+    assert_eq!(humanize("openInCameraRaw"), "Open in RAW Develop");
+    assert!(!prefs::is_hidden("rawDefaults.openInCameraRaw"));
+}

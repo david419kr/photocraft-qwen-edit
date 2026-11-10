@@ -32,6 +32,8 @@ pub(super) fn humanize(key: &str) -> String {
         "automaticUpdateCheck" => return "Automatically check for updates".into(),
         "appearanceMode" => return "Appearance Mode".into(),
         "exrAcesCg" => return "Open color-less EXR as ACEScg".into(),
+        // Retain the serialized preference key while using the current feature name.
+        "openInCameraRaw" => return "Open in RAW Develop".into(),
         "darkTheme" => return "Dark Theme".into(),
         "lightTheme" => return "Light Theme".into(),
         _ => {}

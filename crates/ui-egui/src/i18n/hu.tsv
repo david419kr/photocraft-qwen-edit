@@ -4849,4 +4849,5 @@ prompt-region	Top right	Jobb felső
 	Zoom current window to fill the screen	Aktuális ablak nagyítása a képernyő kitöltéséhez
 	Zoom current window to screen size	Aktuális ablak nagyítása képernyőméretre
 	brush tool	ecseteszköz
-@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} fájl sikertelen|{what}: {n} fájl sikertelen
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} fájl sikertelen
+	Open in RAW Develop	Megnyitás RAW-kidolgozásban

@@ -5078,3 +5078,6 @@ prompt-region	Top right	ზედა მარჯვენა
 	Zoom current window to screen size	მიმდინარე ფანჯრის მასშტაბირება ეკრანის ზომამდე
 	brush tool	ფუნჯის ხელსაწყო
 	{label} is writing the file and can no longer be canceled	{label} წერს ფაილს და მისი გაუქმება აღარ შეიძლება
+	Color Blindness - Deuteranopia-type	ფერთა სიბრმავე — დეიტერანოპიის ტიპი
+	Color Blindness - Protanopia-type	ფერთა სიბრმავე — პროტანოპიის ტიპი
+	Open in RAW Develop	RAW დამუშავებაში გახსნა

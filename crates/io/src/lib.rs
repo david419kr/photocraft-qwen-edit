@@ -413,9 +413,9 @@ pub struct ExportOptions {
     /// Protect RGB 24-bit Targa alpha and flat TIFF composite transparency during in-place
     /// Batch saves. Other encoder losses retain their existing policies and warnings.
     pub preserve_alpha: bool,
-    /// Which part of the document's XMP packet and free-form text a flat export embeds.
-    /// PSD/PSB always keep XMP; `.pcraft` keeps both. Everything by default, as Save As does;
-    /// Export As offers None.
+    /// Which descriptive metadata an export embeds, including layered PSD/PSB and `.pcraft`.
+    /// Everything by default, as Save As does; explicit None also removes EXIF, and flat
+    /// codecs omit ICC/DPI and scrub PNG alpha LSBs. See [`XmpEmbed`].
     pub xmp: XmpEmbed,
     /// Targa: bits per pixel of an RGB file. `None` writes 32 when the document has an alpha
     /// channel or transparency, else 24; Save As asks, starting at [`tga_default_bits`].

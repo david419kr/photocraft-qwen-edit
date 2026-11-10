@@ -5,7 +5,7 @@ use std::path::Path;
 
 use photocraft_doc::Document;
 use photocraft_format::{PcraftWriter, SaveOptions};
-use photocraft_io::{BandRenderer, ExportOptions};
+use photocraft_io::{BandRenderer, ExportOptions, XmpEmbed};
 
 use crate::AutomationError;
 
@@ -86,10 +86,19 @@ fn native_options(doc: &Document, opts: &ExportOptions) -> Result<SaveOptions, A
 /// Encode the name the saved native bundle will report on reopening. Save As updates
 /// the session identity only *after* a successful write; without a separate snapshot
 /// the manifest serializes the previous name instead.
-fn named_for_output(doc: &Document, path: &str) -> Document {
+fn named_for_output(doc: &Document, path: &str, opts: &ExportOptions) -> Document {
     let mut named = doc.clone();
     if let Some(name) = path.rsplit(['/', '\\']).next().filter(|name| !name.is_empty()) {
         named.name = name.to_owned();
+    }
+    // Native writes bypass photocraft_io's export dispatcher. Apply the same privacy policy
+    // to this snapshot before either the incremental writer or capability encoder sees it.
+    if opts.xmp != XmpEmbed::All {
+        named.metadata.xmp = None;
+        named.metadata.text.clear();
+        if opts.xmp == XmpEmbed::None {
+            named.metadata.exif = None;
+        }
     }
     named
 }
@@ -146,7 +155,7 @@ pub fn save_with_renderer_keeping(
         .or_else(|| path.extension().map(|e| e.to_string_lossy().to_ascii_lowercase()))
         .ok_or_else(|| AutomationError::BadRequest(format!("cannot tell the format of `{}`; pass a format", path.display())))?;
     if ext == photocraft_format::EXTENSION {
-        let named = named_for_output(doc, &path.to_string_lossy());
+        let named = named_for_output(doc, &path.to_string_lossy(), opts);
         let mut local = PcraftWriter::new();
         let w = writer.unwrap_or(&mut local);
         w.save_path(&named, path, &native_options(&named, opts)?)?;
@@ -192,7 +201,7 @@ pub fn save_bytes_with_renderer(
         .or_else(|| Path::new(name).extension().map(|extension| extension.to_string_lossy().to_ascii_lowercase()))
         .ok_or_else(|| AutomationError::BadRequest(format!("cannot tell the format of `{name}`; pass a format")))?;
     if ext == photocraft_format::EXTENSION {
-        let named = named_for_output(doc, name);
+        let named = named_for_output(doc, name, opts);
         // Encode before draining: if the options check or the encode fails, the queued
         // diagnostics stay with the renderer for the caller to report alongside the error.
         let bytes = photocraft_format::save_to_bytes(&named, &native_options(&named, opts)?)?;

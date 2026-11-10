@@ -4664,3 +4664,4 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Zoom current window to screen size	Масштабувати поточне вікно за розміром екрана
 	brush tool	інструмент «Пензель»
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: помилка в {n} файлі|{what}: помилка в {n} файлах|{what}: помилка в {n} файлах
+	Open in RAW Develop	Відкривати в обробці RAW

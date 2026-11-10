@@ -5125,3 +5125,4 @@ shape	Appearance	Оформление
 	Zoom current window to screen size	Масштабировать текущее окно по размеру экрана
 	brush tool	инструмент «Кисть»
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: ошибка в {n} файле|{what}: ошибка в {n} файлах|{what}: ошибка в {n} файлах
+	Open in RAW Develop	Открывать в обработке RAW
