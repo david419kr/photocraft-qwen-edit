@@ -39,9 +39,7 @@ fn fixture(tag: &str, name: &str, hash: &str) -> ApiRelease {
 '''
     code += "fn main() {\n"
     code += f"let tag = {json.dumps(tag)}; let name = {json.dumps(name)}; let hash = {json.dumps(build['zip_sha256'])};\n"
-    previous_tags = ["261107-0.21.0"]
-    if tag == "261109-2-0.21.0":
-        previous_tags.append("261109-0.21.0")
+    previous_tags = ["261110-0.21.0", "261107-0.21.0"]
     for previous_tag in previous_tags:
         code += f"    assert!(select(fixture(tag, name, hash), {json.dumps(previous_tag)}).unwrap().is_some());\n"
     code += r'''
@@ -53,7 +51,7 @@ fn fixture(tag: &str, name: &str, hash: &str) -> ApiRelease {
     assert!(select(fixture(tag, name, hash), tag).unwrap().is_none());
     let mut draft = fixture(tag, name, hash); draft.draft = true;
     assert!(select(draft, "261102-0.19.0").unwrap().is_none());
-    println!("Production updater selects the approved upstream 0.21.0 asset; equal installed/latest versions offer no update.");
+    println!("Production updater selects the approved upstream 0.22.0 asset; equal installed/latest versions offer no update.");
 }
 '''
     probe = root / "updater-identity-check.rs"

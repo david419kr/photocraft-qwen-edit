@@ -22,9 +22,10 @@ class SafetyTests(unittest.TestCase):
             c[k] = 'a'*40
         for k in ('artifact_sha256', 'regression_artifact_sha256', 'zip_sha256', 'executable_sha256'):
             c[k] = 'b'*64
-        for k in ('pr', 'pr_ci_run', 'candidate_run', 'post_merge_ci_run', 'artifact_id', 'regression_artifact_id'):
+        for k in ('pr', 'pr_ci_run', 'candidate_run', 'artifact_id', 'regression_artifact_id'):
             c[k] = 1
-        c.update(tag='261110-0.21.0', title='PhotoCraft test', publisher_branch='publish/test', publish_enabled=False, publish_tag='')
+        c.update(upstream_published_at='2026-11-09T00:00:00Z', upstream_updated_at='2026-11-09T00:00:00Z')
+        c.update(tag='261110-0.22.0', title='PhotoCraft test', publisher_branch='publish/test', publish_enabled=False, publish_tag='')
         return c
 
     def test_pending_rejected(self):
@@ -136,13 +137,11 @@ class SafetyTests(unittest.TestCase):
         notes = (ROOT/'release-notes.md').read_text()
         self.assertNotIn('with preview', notes)
         self.assertIn('Selected Areas', notes)
-        self.assertIn('85fe92d71fbe03cdf1c7990c7b29fb5332cb63bc/docs/external-cutout-backends.md', notes)
+        self.assertIn('PR #27', notes)
 
     def test_updater_probe_covers_recent_and_same_day_releases(self):
         source = (ROOT/'check-updater-identity.py').read_text()
-        self.assertIn('previous_tags = ["261107-0.21.0"]', source)
-        self.assertIn('if tag == "261109-2-0.21.0":', source)
-        self.assertIn('previous_tags.append("261109-0.21.0")', source)
+        self.assertIn('previous_tags = ["261110-0.21.0", "261107-0.21.0"]', source)
         self.assertIn('select(fixture(tag, name, hash), tag).unwrap().is_none()', source)
 
     def test_ansi_log_is_captured_not_printed(self):
@@ -169,6 +168,31 @@ class SafetyTests(unittest.TestCase):
                 m.download_artifact_bytes(23, destination)
             self.assertEqual(destination.read_bytes(), data)
         self.assertEqual(visible.getvalue(), '')
+
+    def test_prior_release_snapshot_includes_assets(self):
+        old = {'assets': [{'id': 17, 'name': 'old.zip', 'digest': 'sha256:old', 'size': 10, 'state': 'uploaded'}]}
+        snapshot = m.release_assets(old)
+        old['assets'][0]['digest'] = 'sha256:changed'
+        self.assertNotEqual(snapshot, m.release_assets(old))
+        self.assertEqual(snapshot['17']['digest'], 'sha256:old')
+
+    def test_draft_asset_mismatch_stops_without_upload(self):
+        m.C = self.config()
+        notes = (ROOT/'release-notes.md').read_text().replace('{{TAG}}', m.C['tag'])
+        release = dict(id=1, tag_name=m.C['tag'], draft=True, prerelease=False,
+                       body=notes, name=m.C['title'], target_commitish=m.C['merge_sha'],
+                       assets=[dict(id=17,name='old.zip',digest='sha256:bad',state='uploaded')])
+        ref = dict(ref='refs/tags/'+m.C['tag'], object={'sha':m.C['merge_sha']})
+        with patch.object(m, 'pages', return_value=[release]), patch.object(m, 'api', return_value=[ref]) as api, patch.object(m, 'source_gates'), patch.object(m.subprocess, 'run') as upload, self.assertRaisesRegex(RuntimeError, 'Unexpected draft assets'):
+            m.publish([], {}, {}, None, None)
+        upload.assert_not_called()
+        api.assert_called_once_with('git/matching-refs/tags/'+m.C['tag'])
+
+    def test_final_source_requires_identical_tree_and_no_main_ci_wait(self):
+        source = (ROOT/'publish.py').read_text()
+        self.assertIn("C['build_sha'] == C['feature_sha'] and C['build_tree'] == C['feature_tree']", source)
+        self.assertIn("merge['tree']['sha'] == C['feature_tree']", source)
+        self.assertNotIn("checked_run(C['post_merge_ci_run']", source)
 
     def test_public_release_never_mutated(self):
         m.C = self.config()

@@ -67,11 +67,11 @@ def validate_config(config):
         require(re.fullmatch('[0-9a-f]{40}', config[key]), f'Invalid {key}')
     for key in ('artifact_sha256', 'regression_artifact_sha256', 'zip_sha256', 'executable_sha256'):
         require(re.fullmatch('[0-9a-f]{64}', config[key]), f'Invalid {key}')
-    for key in ('pr', 'pr_ci_run', 'candidate_run', 'post_merge_ci_run', 'artifact_id', 'regression_artifact_id'):
+    for key in ('pr', 'pr_ci_run', 'candidate_run', 'artifact_id', 'regression_artifact_id'):
         require(type(config[key]) is int and config[key] > 0, f'Invalid {key}')
-    require(re.fullmatch(r'\d{6}-(?:(?:[2-9]|[1-9]\d+)-)?0\.21\.0', config['tag']), 'Invalid release tag')
-    require(config['metadata_allowlist'] == ['.github/workflows/qwen-candidate.yml', 'release-tag.txt'], 'Metadata allowance changed')
-    require(config['focused_groups'] == 36, 'Focused group requirement changed')
+    require(re.fullmatch(r'\d{6}-(?:(?:[2-9]|[1-9]\d+)-)?0\.22\.0', config['tag']), 'Invalid release tag')
+    require(config['metadata_allowlist'] == [], 'Metadata allowance changed')
+    require(config['focused_groups'] == 39, 'Focused group requirement changed')
     require(type(config['publish_enabled']) is bool, 'publish_enabled must be boolean')
     require(config['publish_tag'] == (config['tag'] if config['publish_enabled'] else ''), 'Configured publication tag mismatch')
     require(config['publisher_branch'].startswith('publish/') and not any(x in config['publisher_branch'] for x in ('*', '?', '[', ']', '..', ' ', '~', '^', ':', '\\')), 'Invalid publisher branch')
@@ -115,7 +115,7 @@ def source_gates():
         require(run('git', 'rev-parse', sha+'^{tree}') == tree, 'Source tree mismatch')
     changed = run('git', 'diff', '--name-only', C['feature_sha'], C['build_sha']).splitlines()
     require(set(changed) == set(C['metadata_allowlist']), 'Build differs beyond exact release metadata allowance')
-    require(C['build_tree'] != C['feature_tree'], 'Expected distinct metadata trees')
+    require(C['build_sha'] == C['feature_sha'] and C['build_tree'] == C['feature_tree'], 'Artifact must be from exact tested PR source')
     require(Path('release-tag.txt').read_text().strip() == C['tag'], 'Build tag mismatch')
     for ancestor in (C['upstream_sha'], C['fork_base_sha'], C['base_sha']):
         subprocess.run(['git', 'merge-base', '--is-ancestor', ancestor, C['feature_sha']], check=True)
@@ -144,14 +144,11 @@ def source_gates():
     matching_candidates = [r for r in candidate_runs if r['head_branch'] == candidate['head_branch']]
     require(matching_candidates and max(r['id'] for r in matching_candidates) == C['candidate_run'], 'Pinned candidate is not latest for source and branch')
     require({j['name']: j['conclusion'] for j in candidate_jobs} == {'early Clippy': 'success', 'regressions': 'success', 'windows': 'success'}, 'Candidate jobs not all green')
-    post, post_jobs = checked_run(C['post_merge_ci_run'], C['merge_sha'], '.github/workflows/ci.yml', 'push')
-    verify_post_merge_jobs(post_jobs)
-    main_runs = pages('actions/workflows/ci.yml/runs?event=push&head_sha='+C['merge_sha'], 'workflow_runs')
-    require(main_runs and max(r['id'] for r in main_runs) == C['post_merge_ci_run'], 'Pinned main run not latest')
+    # Exact merged tree and parents were verified above. User forbids duplicate main CI waiting.
     upstream = api('releases/tags/'+C['upstream_tag'], repo=C['upstream_repo'])
     require((upstream['id'], upstream['draft'], upstream['prerelease'], upstream['published_at'], upstream['updated_at']) == (C['upstream_release_id'], False, False, C['upstream_published_at'], C['upstream_updated_at']), 'Upstream release changed')
     require(api('git/ref/tags/'+C['upstream_tag'], repo=C['upstream_repo'])['object']['sha'] == C['upstream_sha'], 'Upstream tag changed')
-    return {'pr_ci': ci['html_url'], 'candidate_run': C['candidate_run'], 'post_merge_ci': post['html_url'], 'pr_test_merge': proofs[0][2]}
+    return {'pr_ci': ci['html_url'], 'candidate_run': C['candidate_run'], 'post_merge_ci': 'not required: exact PR/merge tree equality verified', 'pr_test_merge': proofs[0][2]}
 
 
 def download_artifact_bytes(rid, archive):
@@ -200,7 +197,7 @@ def focused_checks():
 def verify_binary(executable):
     output = run('pwsh', '-NoProfile', '-File', str(HERE/'verify-binary.ps1'), '-Executable', str(executable.resolve()))
     evidence = json.loads(output)
-    require(C['tag'] in evidence['version'] and 'upstream 0.21.0' in evidence['version'] and 'PhotoCraft Local Qwen AI ' in evidence['version'], 'Executable identity mismatch')
+    require(C['tag'] in evidence['version'] and 'upstream 0.22.0' in evidence['version'] and 'PhotoCraft Local Qwen AI ' in evidence['version'], 'Executable identity mismatch')
     return evidence
 
 
@@ -308,7 +305,7 @@ def main():
     focused = focused_checks()
     build, archive, exe, verifier, evidence, updater = verify_dist()
     # Stable across retries: no publication run IDs/timestamps in uploaded provenance.
-    provenance = {'build': build, 'release_tag': C['tag'], 'build_source_sha': C['build_sha'], 'build_tree': C['build_tree'], 'feature_sha': C['feature_sha'], 'feature_tree': C['feature_tree'], 'release_tag_commit': C['merge_sha'], 'metadata_only_differences': C['metadata_allowlist'], 'source_identity': 'Full build tree differs from feature/merge tree only in candidate workflow and release-tag.txt; application sources are identical.', 'validation': sources, 'focused_regressions': focused, 'artifact_id': C['artifact_id'], 'artifact_outer_sha256': C['artifact_sha256'], 'regression_artifact_id': C['regression_artifact_id'], 'regression_artifact_outer_sha256': C['regression_artifact_sha256'], 'binary_verification': evidence, 'updater_identity': updater, 'actual_gpu_ui_tested': False, 'actual_ai_model_inference_tested': False, 'analysis_limits': {'sonarcloud_wrapper_run': 42644759977, 'sonarcloud_job': 129255021686, 'sonarcloud_wrapper_conclusion': 'success', 'actual_sonarcloud_scan_ran': False, 'coverage_generation_ran': False, 'sonarcloud_note': 'Actual SonarCloud Scan and all coverage-generation steps were skipped after the token check; wrapper success is not scan or coverage success.', 'manual_fuzz_performance_included': False, 'freebsd_validation_included': False, 'nix_workflow_triggered_for_pr': False, 'hardware_ui_model_inference': 'Actual GPU/UI interaction, external model inference and hardware acceptance were not tested.'}, 'post_main_policy': 'Successful provenance-only CI reuses successful latest PR validation of the exact merge tree; all required PR jobs including Ubuntu passed. No failure waiver.', 'package_policy': 'Original CI ZIP bytes promoted unchanged. External erase backend and models are optional separate user installations; no models bundled.'}
+    provenance = {'build': build, 'release_tag': C['tag'], 'build_source_sha': C['build_sha'], 'build_tree': C['build_tree'], 'feature_sha': C['feature_sha'], 'feature_tree': C['feature_tree'], 'release_tag_commit': C['merge_sha'], 'metadata_only_differences': C['metadata_allowlist'], 'source_identity': 'Build source is the exact tested PR head; build, PR and merged main trees are identical.', 'validation': sources, 'focused_regressions': focused, 'artifact_id': C['artifact_id'], 'artifact_outer_sha256': C['artifact_sha256'], 'regression_artifact_id': C['regression_artifact_id'], 'regression_artifact_outer_sha256': C['regression_artifact_sha256'], 'binary_verification': evidence, 'updater_identity': updater, 'actual_gpu_ui_tested': False, 'actual_ai_model_inference_tested': False, 'analysis_limits': {'actual_sonarcloud_scan_ran': None, 'coverage_generation_ran': None, 'sonarcloud_note': 'Not claimed by this publisher; wrapper status is not analysis evidence.', 'manual_fuzz_performance_included': False, 'freebsd_validation_included': False, 'hardware_ui_model_inference': 'Not tested by this cloud pipeline.'}, 'post_main_policy': 'Latest complete PR CI including Ubuntu and Windows passed; exact merge tree equality checked directly. No duplicate main CI is required. No failure waiver.', 'package_policy': 'Original CI ZIP bytes promoted unchanged. External erase/upscale backends and models are optional separate user installations; no models bundled.'}
     write(ROOT/'release-provenance.json', provenance)
     write(ROOT/'verified-artifact.json', evidence)
     if args.publish:
