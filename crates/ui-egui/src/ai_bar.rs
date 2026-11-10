@@ -352,6 +352,11 @@ fn external_only_controls(app: &mut PhotocraftApp, ui: &mut egui::Ui, mode: Edit
     .inner
 }
 
+fn offline_bar_frame(ctx: &egui::Context) -> egui::Frame {
+    let tokens = crate::theme::Tokens::get(ctx);
+    egui::Frame::new().fill(tokens.card).stroke(Stroke::new(1.0, tokens.card_border)).corner_radius(tokens.radius_sm).inner_margin(egui::Margin::same(8))
+}
+
 fn external_cutout_width(ui: &egui::Ui, label: &str) -> f32 {
     let text = ui.painter().layout_no_wrap(label.to_owned(), egui::TextStyle::Button.resolve(ui.style()), ui.visuals().text_color());
     (text.size().x + ui.spacing().button_padding.x * 2.0 + 8.0).max(38.0)
@@ -607,7 +612,13 @@ fn model_settings_window(app: &mut PhotocraftApp, ctx: &egui::Context) {
         if let Some(error) = &app.ui.ai.model_settings_error {
             ui.label(error);
         }
-        save = ui.button(tl!("Save")).clicked();
+        ui.horizontal(|ui| {
+            save = ui.button(tl!("Save")).clicked();
+            if app.ui.ai.model_settings_upscale_tab && ui.button(tl!("Reset to defaults")).clicked() {
+                app.ui.ai.upscale_settings = photocraft_engine::upscale::Preferences::default();
+                app.ui.ai.model_settings_error = None;
+            }
+        });
     });
     if let Some(name) = remove {
         app.ui.ai.model_settings_text = custom.into_iter().filter(|value| value != &name).collect::<Vec<_>>().join("\n");
@@ -679,6 +690,13 @@ fn upscale_settings_ui(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
     prefs.model = selected;
     let Some(model) = upscale::selected(prefs, &models) else { return };
     let settings = prefs.profiles.entry(model.id.clone()).or_insert_with(|| model.defaults.clone());
+    // Existing saved 1024 px profiles remain runnable, but no longer appear in the selector.
+    if !model.restoration && settings.tile == 1024 {
+        settings.tile = 512;
+        if settings.overlap >= settings.tile {
+            settings.overlap = 128;
+        }
+    }
     let devices =
         app.ui.ai.upscale_devices.as_ref().and_then(|s| s.lock().unwrap_or_else(PoisonError::into_inner).clone()).and_then(Result::ok).unwrap_or_default();
     ui.horizontal(|ui| {
@@ -720,7 +738,7 @@ fn upscale_settings_ui(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
     ui.add_enabled_ui(settings.tiling, |ui| {
         ui.horizontal(|ui| {
             ui.label(tl!("Tile size"));
-            let sizes: &[u32] = if model.restoration { &[64, 256, 400, 640] } else { &[128, 256, 512, 1024] };
+            let sizes: &[u32] = if model.restoration { &[64, 256, 400, 640] } else { &[128, 256, 512] };
             craft_ui::ComboBox::from_id_salt("upscale-tile")
                 .selected_text(settings.tile.to_string())
                 .show_ui(ui, |ui| {
@@ -986,6 +1004,7 @@ fn show_with_backends(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canv
     }
     let has_history = crate::ai_prompt_info::has_history(app, &doc, revision);
     let [cutout_label, erase_label] = backends;
+    let has_local_backend = cutout_label.is_some() || erase_label.is_some() || !photocraft_engine::upscale::catalog().is_empty();
     let external_label = if offline_mode == Some(EditMode::GenerativeFill) { erase_label.clone() } else { cutout_label.clone() };
     if !app.ui.ai.available
         && supported_document(&doc).is_ok()
@@ -998,9 +1017,13 @@ fn show_with_backends(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canv
         let mut quick = false;
         let area = egui::Area::new(egui::Id::unique(("ai-external-only", doc.id.0)))
             .order(egui::Order::Foreground)
+            .pivot(egui::Align2::CENTER_TOP)
             .fixed_pos(pos2(image.center().x, (image.bottom() + 10.0).min(canvas.bottom() - 40.0)))
+            .constrain_to(canvas)
             .show(ui.ctx(), |ui| {
-                quick = external_only_controls(app, ui, mode, external_label.as_deref().unwrap_or(""), busy, has_history);
+                offline_bar_frame(ui.ctx()).show(ui, |ui| {
+                    quick = external_only_controls(app, ui, mode, external_label.as_deref().unwrap_or(""), busy, has_history);
+                });
             });
         let rect = area.response.rect;
         app.ui.ai.rect = Some([rect.min.x, rect.min.y, rect.max.x, rect.max.y]);
@@ -1011,17 +1034,21 @@ fn show_with_backends(app: &mut PhotocraftApp, ui: &egui::Ui, index: usize, canv
     }
     if !app.ui.ai.available || supported_document(&doc).is_err() {
         app.ui.ai.rect = None;
-        if app.ui.ai.service_available || !photocraft_engine::upscale::catalog().is_empty() {
+        if app.ui.ai.service_available || has_local_backend {
             let area = egui::Area::new(egui::Id::unique(("ai-settings-only", doc.id.0)))
                 .order(egui::Order::Foreground)
+                .pivot(egui::Align2::CENTER_TOP)
                 .fixed_pos(pos2(image.center().x, (image.bottom() + 10.0).min(canvas.bottom() - 40.0)))
+                .constrain_to(canvas)
                 .show(ui.ctx(), |ui| {
-                    ui.horizontal(|ui| {
-                        model_settings_button(app, ui);
-                        upscale_button(app, ui);
-                        if has_history {
-                            crate::ai_prompt_info::button(app, ui);
-                        }
+                    offline_bar_frame(ui.ctx()).show(ui, |ui| {
+                        ui.horizontal(|ui| {
+                            model_settings_button(app, ui);
+                            upscale_button(app, ui);
+                            if has_history {
+                                crate::ai_prompt_info::button(app, ui);
+                            }
+                        });
                     });
                 });
             let rect = area.response.rect;
@@ -1568,6 +1595,16 @@ mod tests {
         );
         PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
         h.run();
+        let [left, top, right, bottom] = h.state().ui.ai.rect.unwrap();
+        assert!(((left + right) * 0.5 - 300.0).abs() < 2.0);
+        assert!((right - left) < 400.0 && bottom - top >= 40.0);
+        let card = crate::theme::Tokens::get(&h.ctx).card;
+        assert!(h.output().shapes.iter().any(
+            |shape| matches!(&shape.shape, egui::Shape::Rect(rect) if rect.fill == card && rect.rect.contains(pos2((left + right) * 0.5, (top + bottom) * 0.5)))
+        ));
+        if let Some(path) = std::env::var_os("PHOTOCRAFT_OFFLINE_BAR_SCREENSHOT") {
+            h.render().unwrap().save(path).unwrap();
+        }
         assert!(h.get_by_label("Remove").accesskit_node().is_disabled());
         assert!(h.query_by_label("Remove Background").is_none());
         h.get_by_label("W").click();
@@ -1578,6 +1615,41 @@ mod tests {
         restored.load_prefs_json(&h.state().session.prefs_to_json()).unwrap();
         assert!(restored.prefs().integrations.external_erase);
         assert!(!restored.prefs().integrations.external_cutout);
+    }
+
+    #[test]
+    fn upscale_reset_restores_defaults_and_save_persists_them() {
+        use egui_kittest::{Harness, kittest::Queryable};
+        let saved = Arc::new(Mutex::new(String::new()));
+        let sink = saved.clone();
+        let mut session = Session::new();
+        session.edit_prefs(|prefs| {
+            prefs.integrations.upscale.model = "custom".into();
+            prefs.integrations.upscale.profiles.insert("custom".into(), photocraft_engine::upscale::Settings { tile: 256, ..Default::default() });
+        });
+        let mut app = PhotocraftApp::new(
+            session,
+            Services {
+                save_prefs: Some(Box::new(move |text| {
+                    *sink.lock().unwrap() = text.into();
+                    Ok(())
+                })),
+                ..Default::default()
+            },
+        );
+        open_model_settings(&mut app);
+        app.ui.ai.model_settings_upscale_tab = true;
+        let mut h = Harness::builder().with_size(vec2(1000.0, 700.0)).build_ui_state(|ui, app| model_settings_window(app, ui.ctx()), app);
+        PhotocraftApp::setup_context(&h.ctx, crate::theme::ThemeKind::ALL[0]);
+        h.run();
+        h.get_by_label("Reset to defaults").click();
+        h.run();
+        assert_eq!(h.state().ui.ai.upscale_settings, photocraft_engine::upscale::Preferences::default());
+        h.get_by_label("Save").click();
+        h.run();
+        let mut restored = Session::new();
+        restored.load_prefs_json(&saved.lock().unwrap()).unwrap();
+        assert_eq!(restored.prefs().integrations.upscale, photocraft_engine::upscale::Preferences::default());
     }
 
     #[test]
