@@ -57,7 +57,7 @@
 
 # Filters and adjustments dialogs
 
-# Camera Raw and lens dialogs
+# RAW Develop and lens dialogs
 
 # Adjustments panel
 
@@ -116,7 +116,7 @@
 
 # Preference dialog: generated setting labels and dropdown choices
 # Rendering mode and recovery
-# Camera Raw: contextual controls and window title
+# RAW Develop: contextual controls and window title
 
 
 
@@ -280,7 +280,6 @@
 	Export As…	Експортувати як…
 	Export	Експорт
 	Export…	Експортувати…
-	Quick Export As PNG	Швидкий експорт у PNG
 	Quick Export as PNG	Швидкий експорт у PNG
 	Place Embedded…	Розмістити вбудований…
 	Place Linked…	Розмістити пов'язаний…
@@ -349,8 +348,8 @@
 	Duotone…	Дуплекс…
 	Duotone	Дуплекс
 	Trap…	Трепінг…
-	Layer via Copy	Шар через копіювання
-	Layer via Cut	Шар через вирізання
+	Layer Via Copy	Шар через копіювання
+	Layer Via Cut	Шар через вирізання
 	Duplicate Layer…	Дублювати шар…
 	Duplicate…	Дублювати…
 	Delete	Видалити
@@ -462,7 +461,6 @@
 	All	Усе
 	Deselect	Зняти виділення
 	Reselect	Відновити виділення
-	Inverse Selection	Інвертувати виділення
 	Inverse	Інвертувати
 	Color Range…	Колірний діапазон…
 	Select and Mask…	Виділити та маскувати…
@@ -496,7 +494,7 @@
 	Last Filter	Останній фільтр
 	Filter Gallery…	Галерея фільтрів…
 	Liquify…	Пластика…
-	Camera Raw Filter…	Фільтр Camera Raw…
+	RAW Develop Filter…	Фільтр Обробка RAW…
 	Adaptive Wide Angle…	Адаптивний широкий кут…
 	Lens Correction…	Корекція об'єктива…
 	Vanishing Point…	Точка сходження…
@@ -651,7 +649,7 @@
 	Match Location	Узгодити розташування
 	Match Rotation	Узгодити поворот
 	Match All	Узгодити все
-	New Window	Нове вікно для документа
+	New Window	Нове вікно
 	Workspace	Робочий простір
 	Extensions	Розширення
 	Panels	Панелі
@@ -681,6 +679,12 @@
 	Timeline	Шкала часу
 	Tool Presets	Набори інструментів
 	Tools	Інструменти
+	Contextual Task Bar	Контекстна панель завдань
+	Hide bar	Сховати панель
+	Reset bar position	Скинути положення панелі
+	Pin bar position	Закріпити положення панелі
+	Move bar	Перемістити панель
+	More options	Інші параметри
 	Libraries	Бібліотеки
 	3D	3D
 	Toolbars	Панелі інструментів
@@ -735,8 +739,8 @@
 	Background	Фон
 	Set foreground color	Установити колір переднього плану
 	Set background color	Установити колір фону
-	Swap colours (X)	Поміняти кольори місцями (X)
-	Default colours (D)	Типові кольори (D)
+	Switch Foreground and Background Colors (X)	Поміняти кольори місцями (X)
+	Default Foreground and Background Colors (D)	Типові кольори (D)
 	Brush Tool Options	Параметри пензля
 	Opacity	Непрозорість
 	Flow	Потік
@@ -963,6 +967,8 @@
 	Match Color…	Узгодити колір…
 	Replace Color…	Замінити колір…
 	Equalize	Вирівняти гістограму
+	Equalize Selected Area Only	Вирівняти лише виділену область
+	Equalize Entire Image Based On Selected Area	Вирівняти все зображення за виділеною областю
 	HDR Toning…	Тонування HDR…
 	Shadows/Highlights…	Тіні/світлі ділянки…
 	Amount	Величина
@@ -1020,8 +1026,8 @@
 	Luminance Smoothness	Плавність яскравості
 	Vignetting	Віньєтування
 	White Balance: As Shot	Баланс білого: як під час знімання
-	Camera Raw…	Camera Raw…
-	Camera Raw isn't open	Camera Raw не відкрито
+	RAW Defaults…	Типові параметри RAW…
+	RAW Develop isn't open	Обробка RAW не відкрито
 	Dehaze	Усунення серпанку
 	Texture	Текстура
 	Focal Length	Фокусна відстань
@@ -1277,8 +1283,6 @@
 	Roman Hanging Punctuation	Висяча латинська пунктуація
 	Avoid Widows/Orphans	Уникати висячих рядків
 	Compose	Компонування
-	Adobe Single-line Composer	Однорядковий компонувальник Adobe
-	Adobe Every-line Composer	Багаторядковий компонувальник Adobe
 	Justification	Вирівнювання по ширині
 	Word Spacing	Інтервал між словами
 	Letter Spacing	Інтервал між літерами
@@ -1314,6 +1318,7 @@
 	Path to Illustrator…	Контур до Illustrator…
 	Make Work Path	Створити робочий контур
 	Make Selection	Створити виділення
+	Make Shape	Створити фігуру
 	Fill Path	Залити контур
 	Stroke Path	Обвести контур
 	Clipping Path	Відсічний контур
@@ -1688,7 +1693,7 @@
 	Revert “{name}” to the last saved version? Your changes will be lost.	Повернути «{name}» до останньої збереженої версії? Ваші зміни буде втрачено.
 	{key} to subtract	{key}, щоб відняти
 	↑↓ navigate   {key} run   esc close	↑↓ навігація   {key} виконати   esc закрити
-	Click to restore the current colour	Клацніть, щоб відновити поточний колір
+	Click to restore the current color	Клацніть, щоб відновити поточний колір
 	Click with the Note tool to add a note.	Клацніть інструментом «Нотатка», щоб додати нотатку.
 	Drag a rectangle around the object	Намалюйте прямокутник навколо об'єкта
 	Drag on the image to add a constraint; Shift for horizontal/vertical; right-click a constraint to change or delete it.	Перетягніть на зображенні, щоб додати обмеження; Shift для горизонталі/вертикалі; клацніть правою кнопкою на обмеженні, щоб змінити або видалити його.
@@ -1712,6 +1717,7 @@
 	Move Tool	Інструмент «Переміщення»
 	Could not use the move tool because the layer is locked.	Не вдалося використати інструмент «Переміщення», бо шар заблоковано.
 	Could not complete the Free Transform command because the layer is locked.	Не вдалося виконати команду «Вільна трансформація», бо шар заблоковано.
+	Could not transform because the layer is locked.	Не вдалося трансформувати, бо шар заблоковано.
 	Rectangular Marquee Tool	Інструмент «Прямокутне виділення»
 	Elliptical Marquee Tool	Інструмент «Еліптичне виділення»
 	Single Row Marquee Tool	Інструмент «Виділення одного рядка»
@@ -1769,10 +1775,10 @@
 	Drag to move the active layer	Перетягніть, щоб перемістити активний шар
 	Drag to pan  ·  hold Space with any tool	Перетягніть для панорамування  ·  утримуйте пробіл із будь-яким інструментом
 	Drag to draw a gradient	Перетягніть, щоб намалювати градієнт
-	Click to fill similar colours	Клацніть, щоб залити подібні кольори
+	Click to fill similar colors	Клацніть, щоб залити подібні кольори
 	Click to add text	Клацніть, щоб додати текст
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	Перетягування (ласо) або клацання точок (багатокутне) · {add} додати · {sub} відняти
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Намалюйте рамку кадрування · перетягування всередині переміщує · краї змінюють розмір ({ratio} пропорції, {centre} центр) · пробіл переміщує під час малювання · стрілки зсувають · X змінює орієнтацію · {commit} підтверджує · Esc скасовує
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Намалюйте рамку кадрування · перетягування всередині переміщує · краї змінюють розмір ({ratio} пропорції, {centre} центр) · пробіл переміщує під час малювання · стрілки зсувають · X змінює орієнтацію · {commit} підтверджує · Esc скасовує
 	{mode} Color · {bits} bit	Колір {mode} · {bits} біт
 	Drag to move the layer	Перетягніть, щоб перемістити шар
 	Fit Screen	Умістити на екрані
@@ -1804,7 +1810,6 @@
 	Appearance	Вигляд
 	Text Position:	Положення тексту:
 	Text color	Колір тексту
-	Uses the foreground and background colours.	Використовує кольори переднього плану та фону.
 	Answer the unsaved-changes prompt first	Спочатку дайте відповідь у діалозі незбережених змін
 	Unsaved changes	Незбережені зміни
 	Don't Save	Не зберігати
@@ -1824,7 +1829,7 @@
 	name	назва
 	new	новий
 	Go to Layer	Перейти до шару
-	Open a document to select a colour range.	Відкрийте документ, щоб виділити колірний діапазон.
+	Open a document to select a color range.	Відкрийте документ, щоб виділити колірний діапазон.
 	Saved	Збережено
 	Reveal in Finder	Показати у Finder
 	Show in Explorer	Показати у Провіднику
@@ -1835,8 +1840,8 @@
 	Load Settings…	Завантажити налаштування…
 	Save these settings as a Camera Raw .xmp file	Зберегти ці налаштування у файл Camera Raw .xmp
 	Load settings from a Camera Raw .xmp file	Завантажити налаштування з файлу Camera Raw .xmp
-	Loaded Camera Raw settings from {file}	Налаштування Camera Raw завантажено з {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Налаштування Camera Raw завантажено з {file} (не підтримується: {n})
+	Loaded RAW Develop settings from {file}	Налаштування Обробка RAW завантажено з {file}
+	Loaded RAW Develop settings from {file} ({n} not supported)	Налаштування Обробка RAW завантажено з {file} (не підтримується: {n})
 	After (X)	Після (X)
 	Original	Оригінал
 	Current	Поточний
@@ -1986,8 +1991,8 @@
 	Character Styles Panel	Панель стилів символів
 	Clear Canvas Guides	Очистити напрямні полотна
 	Clear Selected Artboard Guides	Очистити напрямні вибраної монтажної області
-	Color Blindness — Deuteranopia-type	Порушення сприйняття кольору — дейтеранопія
-	Color Blindness — Protanopia-type	Порушення сприйняття кольору — протанопія
+	Color Blindness - Deuteranopia-type	Порушення сприйняття кольору - дейтеранопія
+	Color Blindness - Protanopia-type	Порушення сприйняття кольору - протанопія
 	Color Table…	Таблиця кольорів…
 	Combine Shapes	Об'єднати фігури
 	Contract…	Стиснути…
@@ -2129,7 +2134,7 @@
 	Vertical Centers	Вертикальні центри
 	Video Frames to Layers…	Відеокадри в шари…
 	WIA Support…	Підтримка WIA…
-	Working CMY Plates	Робоча форма CMY
+	Working CMY Plates	Робочі форми CMY
 	Absolute	Абсолютний
 	Action	Дія
 	Adaptive	Адаптивний
@@ -2162,7 +2167,7 @@
 	Canvas	Полотно
 	Capture	Зберегти стан
 	Center Crop Marks	Центральні мітки обрізання
-	Centre the gradient (offset 0, 0)	Центрувати градієнт (зсув 0, 0)
+	Center the gradient (offset 0, 0)	Центрувати градієнт (зсув 0, 0)
 	Gradient Editor	Редактор градієнтів
 	Gradient picker	Вибір градієнта
 	Gradient stops	Точки градієнта
@@ -2319,7 +2324,7 @@
 	Roughness	Шорсткість
 	Roundness	Округлість
 	Rulers & Grids	Лінійки та сітки
-	Sample: foreground colour	Зразок: колір переднього плану
+	Sample: foreground color	Зразок: колір переднього плану
 	Sampling: Background Swatch	Вибірка: зразок фону
 	Sampling: Continuous	Вибірка: безперервна
 	Sampling: Once	Вибірка: одноразова
@@ -2385,6 +2390,7 @@
 	Allow scripts to connect	Дозволити підключення скриптів
 	Always	Завжди
 	Always create smart objects when placing	Завжди створювати смартоб'єкти під час розміщення
+	Skip transform when placing	Пропускати трансформацію під час розміщення
 	Animated zoom	Анімоване масштабування
 	Apply auto tone	Застосовувати автоматичну тонову корекцію
 	Ask	Запитувати
@@ -2401,7 +2407,7 @@
 	CPU (no GPU acceleration)	CPU (без прискорення GPU)
 	Cache levels	Рівні кешу
 	Cache tile size	Розмір плитки кешу
-	Camera Raw Defaults	Типові параметри Camera Raw
+	RAW Defaults	Типові параметри RAW
 	Canvas border	Межа полотна
 	Show canvas dots	Показувати крапки полотна
 	Clip thumbnails to layer bounds	Обрізати мініатюри до меж шару
@@ -2493,7 +2499,6 @@
 	Never	Ніколи
 	Normal tip	Звичайний кінчик
 	Open as smart object	Відкривати як смартоб'єкт
-	Open in camera raw	Відкривати в Camera Raw
 	Open documents as tabs	Відкривати документи у вкладках
 	OpenGL	OpenGL
 	Orange	Оранжевий
@@ -2578,7 +2583,7 @@
 	Alt-click to define a source point to clone from	Alt+клацання, щоб визначити точку джерела клонування
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	Немає контуру для створення виділення: намалюйте його пером або виберіть на панелі контурів.
 	Cancel opening	Скасувати відкриття
-	Cancelled opening {name}	Відкриття {name} скасовано
+	Canceled opening {name}	Відкриття {name} скасовано
 	Damaged Photoshop document	Пошкоджений документ Photoshop
 	The document “{name}” may be damaged.	Документ «{name}», можливо, пошкоджено.
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	Не вдалося прочитати деякі шари, пікселі або маски. Продовжити відкриття?
@@ -2588,7 +2593,7 @@
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	Вбудований колірний профіль документа «{name}» не відповідає поточному робочому простору {mode}.
 	Working: {working}	Робочий простір: {working}
 	Developing {name}	Обробка {name}
-	Cancelled {label}	Скасовано: {label}
+	Canceled {label}	Скасовано: {label}
 	Esc to cancel	Esc для скасування
 	Opened {name}	Відкрито: {name}
 	Opening {name}	Відкриття {name}
@@ -2596,7 +2601,7 @@
 	Saving {name}	Збереження {name}
 	Saving {percent}	Збереження {percent}
 	A save to {name} is still running; try again when it finishes	Збереження в {name} ще триває; спробуйте ще раз, коли воно завершиться
-	{label} is writing the file and can no longer be cancelled	{label}: триває запис файлу, скасувати вже не можна
+	{label} is writing the file and can no longer be canceled	{label}: триває запис файлу, скасувати вже не можна
 	Opening {name}…	Відкриття {name}…
 	Opening…	Відкриття…
 	Reading…	Читання…
@@ -2631,8 +2636,8 @@
 	Tone Histogram	Тонова гістограма
 	Show Selected Region	Показувати вибрану область
 cameraRaw	Light	Світло
-	Camera Raw Filter ({layer})	Фільтр Camera Raw ({layer})
-	Camera Raw ({name})	Camera Raw ({name})
+	RAW Develop Filter ({layer})	Фільтр Обробка RAW ({layer})
+	RAW Develop ({name})	Обробка RAW ({name})
 	Aqua	Аквамариновий
 cameraRaw	Amount	Величина
 cameraRaw	Blacks	Чорні тони
@@ -2687,7 +2692,7 @@ cameraRaw	Roughness	Шорсткість
 	Discard Layers and Save a Copy	Відкинути шари та зберегти копію
 	Don't show again	Більше не показувати
 	Save failed: {error}	Не вдалося зберегти: {error}
-	Save cancelled	Збереження скасовано
+	Save canceled	Збереження скасовано
 	Couldn't place {name}: {error}	Не вдалося розмістити {name}: {error}
 	Magnetic Lasso Tool	Інструмент «Магнітне ласо»
 	Frequency	Частота
@@ -2816,7 +2821,7 @@ fontWeight	Italic	Курсивний
 	Impressionist	Імпресіоністичний
 	Rotate View Tool	Інструмент «Поворот перегляду»
 	Reset View	Скинути перегляд
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Перетягніть навколо центру, щоб повернути перегляд  ·  Shift обмежує крок до 15°
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	Перетягніть навколо центру, щоб повернути перегляд  ·  Shift обмежує крок до 15°
 	(coming soon)	(незабаром)
 	Add a layer style	Додати стиль шару
 	Move effect up	Перемістити ефект вгору
@@ -3030,7 +3035,7 @@ fontWeight	Italic	Курсивний
 	Import Brushes… (.abr or image)	Імпортувати пензлі… (.abr або зображення)
 	Import Brush from Image…	Імпортувати пензель із зображення…
 	System Info	Інформація про систему
-	Click to sample the foreground colour  ·  {key}-click for background	Клацання бере зразок переднього плану  ·  {key}+клацання для фону
+	Click to sample the foreground color  ·  {key}-click for background	Клацання бере зразок переднього плану  ·  {key}+клацання для фону
 	Create Warped Text	Створити деформований текст
 	Rasterize Smart Object	Растеризувати смартоб'єкт
 	Rasterize Fill Content	Растеризувати вміст заливки
@@ -3357,7 +3362,7 @@ cameraRaw	Masking	Маскування
 	Color Settings	Налаштування кольору
 	Assign Profile	Призначити профіль
 	Convert to Profile	Перетворити на профіль
-	Camera Raw	Camera Raw
+	RAW Develop	Обробка RAW
 	Raw Defaults	Типові параметри Raw
 	AI Integrations	Інтеграції ШІ
 	Install Plug-in	Установити плагін
@@ -3404,7 +3409,7 @@ cameraRaw	Masking	Маскування
 	Border	Межа
 	Contract	Стиснути
 	Filter Gallery	Галерея фільтрів
-	Camera Raw Filter	Фільтр Camera Raw
+	RAW Develop Filter	Фільтр Обробка RAW
 	Liquify	Пластика
 	Vanishing Point	Точка сходження
 	Field Blur	Розмиття поля
@@ -3644,7 +3649,6 @@ cameraRaw	Masking	Маскування
 @id	filter.sharpen.sharpen	Підвищити різкість
 	Good	Добра
 	Best	Найкраща
-	Adobe PDF Presets…	Набори Adobe PDF…
 	3D…	3D…
 	Technology Previews…	Попередній перегляд технологій…
 	Background from Layer	Фон із шару
@@ -3697,9 +3701,9 @@ cameraRaw	Masking	Маскування
 	All Layers No Adjustments	Усі шари без коригувань
 	Color to Alpha…	Колір у прозорість…
 	Current & Below No Adjustments	Поточний і нижчі без коригувань
-	Not a web colour: click for the nearest web colour	Колір поза вебпалітрою: клацніть, щоб вибрати найближчий колір із неї
+	Not a web color: click for the nearest web color	Колір поза вебпалітрою: клацніть, щоб вибрати найближчий колір із неї
 	Now drag the selection onto another area	Тепер перетягніть виділення на іншу ділянку
-	Out of gamut for printing: click for the nearest printable colour	Колір поза колірним охопленням друку: клацніть, щоб вибрати найближчий колір, придатний для друку
+	Out of gamut for printing: click for the nearest printable color	Колір поза колірним охопленням друку: клацніть, щоб вибрати найближчий колір, придатний для друку
 	Point Sample	Точкова вибірка
 	Sample Size:	Розмір вибірки:
 	Show Sampling Ring	Показувати кільце вибірки
@@ -4007,7 +4011,7 @@ curves	Smooth	Згладити
 	Auto Add/Delete	Автододавання/видалення
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Не вмикайте також дзеркальне відображення в параметрах друку: два відображення скасовують одне одного.
 	Print Settings…	Параметри друку…
-	Remember to turn off the printer's own colour management in Print Settings…	Не забудьте вимкнути керування кольором самого принтера в параметрах друку…
+	Remember to turn off the printer's own color management in Print Settings…	Не забудьте вимкнути керування кольором самого принтера в параметрах друку…
 	Sent to {printer}	Надіслано на {printer}
 	set in Print Settings…	задається в параметрах друку…
 	ICO is limited to 256 × 256 pixels	ICO обмежено розміром 256 × 256 пікселів
@@ -4052,11 +4056,6 @@ curves	Smooth	Згладити
 	Shadow Tint	Відтінок тіней
 	Check for Updates…	Перевірити оновлення…
 	Open the release page to choose an installer for your system.	Відкрийте сторінку випуску й виберіть інсталятор для своєї системи.
-	Open Download Page	Відкрити сторінку завантаження
-	PhotoCraft is up to date.	Установлено найновішу версію PhotoCraft.
-	Could not check for updates.	Не вдалося перевірити оновлення.
-	Updates have not been checked yet.	Оновлення ще не перевірялися.
-	Check Again	Перевірити знову
 	Automatically Check for Updates	Автоматично перевіряти оновлення
 	Paints from the History panel's source state	Малює з вихідного стану панелі «Історія»
 	Sets the source for the history brush	Задає джерело для пензля історії
@@ -4154,15 +4153,15 @@ curves	Smooth	Згладити
 	Color Picker (Custom Canvas Color)	Вибір кольору (власний колір полотна)
 	This type layer must be rasterized before proceeding. Its text will no longer be editable. Rasterize the type?	Щоб продовжити, потрібно растеризувати цей текстовий шар. Після цього його текст більше не можна буде редагувати. Растеризувати текст?
 	This shape layer must be rasterized before proceeding. It will no longer be editable as a shape. Rasterize the shape?	Щоб продовжити, потрібно растеризувати цей шар фігури. Після цього його більше не можна буде редагувати як фігуру. Растеризувати фігуру?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Щоб продовжити, потрібно растеризувати цей смартоб’єкт. Після цього його вміст більше не можна буде редагувати. Растеризувати смартоб’єкт?
+	This smart object must be rasterized before proceeding. Edit Contents will no longer be available. Rasterize the smart object?	Щоб продовжити, потрібно растеризувати цей смартоб’єкт. Після цього його вміст більше не можна буде редагувати. Растеризувати смартоб’єкт?
 	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Щоб продовжити, потрібно растеризувати цей шар заливки. Після цього його заливку більше не можна буде редагувати. Растеризувати шар?
 	Demosaic	Демозаїк
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Як відновлюється мозаїка кольорового фільтра камери. Застосовується під час відкриття файлу; попередній перегляд показує метод, з яким файл було відкрито.
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Як відновлюється мозаїка кольорового фільтра камери. Застосовується під час відкриття файлу; попередній перегляд показує метод, з яким файл було відкрито.
 	AHD (adaptive homogeneity)	AHD (адаптивна однорідність)
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Хіракава–Паркс: найчистіші краї й найменше кольорової облямівки, найповільніший.
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Інтерполяція з корекцією градієнта: різка й швидка, з невеликою кольоровою облямівкою на дрібних деталях.
-	The fastest and the softest, with colour fringing on fine detail.	Найшвидший і найм'якший, з кольоровою облямівкою на дрібних деталях.
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Хіракава–Паркс: найчистіші краї й найменше кольорової облямівки, найповільніший.
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	Інтерполяція з корекцією градієнта: різка й швидка, з невеликою кольоровою облямівкою на дрібних деталях.
+	The fastest and the softest, with color fringing on fine detail.	Найшвидший і найм'якший, з кольоровою облямівкою на дрібних деталях.
 	Memory Usage	Використання пам’яті
 	Per-document RAM limit (MB)	Ліміт RAM на документ (МБ)
 	Installed RAM: {ram} MB; this limit: {percent}%	Встановлено RAM: {ram} МБ; цей ліміт: {percent}%
@@ -4215,8 +4214,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Grayscale Ramp	Шкала градацій сірого
 	Current Colors	Поточні кольори
 	Make Ramp Web Safe	Зробити шкалу безпечною для вебу
+	Scroll All Windows	Прокручувати всі вікна
 	The path was kept as the Work Path	Контур збережено як робочий контур
 	The path was discarded	Контур видалено
+# Art History Brush (#213).
 	Art History Brush Tool	Інструмент «Художній пензель історії»
 	Tight Short	Щільний короткий
 	Tight Medium	Щільний середній
@@ -4258,189 +4259,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Stop Color	Колір контрольної точки
 	Shapes can't use patterns yet	Фігури поки не можуть використовувати візерунки
 	Edit Brush…	Редагувати пензель…
-	Drag to move the active shape's path or the Work Path	Перетягніть, щоб перемістити контур активної фігури або робочий контур
-	Move Up	Перемістити вгору
-	Move Down	Перемістити вниз
-	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
-	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.
-	Use File › Open to open an image.	Use File › Open to open an image.
-	Import Photoshop brushes (.abr)	Import Photoshop brushes (.abr)
-	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
-	Default Photoshop Size	Default Photoshop Size
-	Grid view	Режим сітки
-	List view	Режим списку
-	Prompt Edit	Prompt Edit
-	Generative Fill	Generative Fill
-	Describe changes to the whole image	Describe changes to the whole image
-	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
-	ComfyUI is unavailable in this frontend	ComfyUI is unavailable in this frontend
-	Comfyui url	Comfyui url
-	Prompt Edit…	Prompt Edit…
-	Generative Fill…	Generative Fill…
-	Preparing image and selection	Preparing image and selection
-	Uploading image to ComfyUI	Uploading image to ComfyUI
-	Waiting for ComfyUI generation	Waiting for ComfyUI generation
-	Downloading generated image	Downloading generated image
-	Adding generated layer	Adding generated layer
-	Prompt Generate	Створити за промптом
-	Prompt Generate…	Створити за промптом…
-	Regenerate AI Result	Повторно створити результат ШІ
-	Regenerate	Створити знову
-	Describe the image to generate	Опишіть зображення для створення
-	Sampling steps	Кроки семплювання
-	Reset steps to model default	Відновити кількість кроків моделі за замовчуванням
-	Translate prompt to English	Перекласти промпт англійською
-	Prompt translation model	Модель перекладу промптів
-	Prompt information	Інформація про промпт
-	AI Prompt History	Історія промптів ШІ
-	Original prompt	Початковий промпт
-	English translation	Англійський переклад
-	No prompt (remove)	Без промпту (видалення)
-	All nine regions	Усі дев’ять областей
-	No AI prompts recorded	Промпти ШІ не записані
-	Previous	Назад
-	Next	Далі
-	Copy original prompt	Копіювати початковий промпт
-	Copy English translation	Копіювати англійський переклад
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	Модель ComfyUI
-	Comfyui translate prompt	Перекласти промпт англійською
-	Comfyui translation model	Модель перекладу промптів
-	AI model settings	Налаштування моделі ШІ
-	ComfyUI port	Порт ComfyUI
-	Copy negative prompt	Копіювати негативний промпт
-	Custom model filenames (one per line)	Назви файлів власних моделей (одна в рядку)
-	Negative prompt	Негативний промпт
-	One .safetensors filename per line. Compatibility is not checked.	Одна назва файлу .safetensors у рядку. Сумісність не перевіряється.
-	Text encoders	Текстові енкодери
-	Comfyui custom encoders	Власні енкодери ComfyUI
-	Comfyui custom model	Власна модель ComfyUI
-	Comfyui custom models	Власні моделі ComfyUI
-	Comfyui model settings	Налаштування моделей ComfyUI
-	PhotoCraft update available	Доступне оновлення PhotoCraft
-	Update PhotoCraft and restart now?	Оновити PhotoCraft і перезапустити зараз?
-	Automatically check for updates	Автоматично перевіряти оновлення
-	Check for updates now	Перевірити оновлення зараз
-	You can check for updates again in Help → About PhotoCraft.	Перевірити оновлення знову можна в меню Довідка → Про PhotoCraft.
-	Downloading update…	Завантаження оновлення…
-	Update PhotoCraft	Оновити PhotoCraft
-	Dismiss update	Закрити сповіщення про оновлення
-	Match Surrounding Colors	Узгодити з кольорами оточення
-	Adjust colors with Poisson blending	Налаштувати кольори змішуванням Пуассона
-	Compare with Original Generation	Порівняти з початковим результатом генерації
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Узгоджує кольори з оточенням, збереженим під час генерації. Інтенсивність 0 відновлює початковий результат генерації.
-	Attach Reference Image	Додати референс
-	Remove Reference Image	Видалити референс
-	Reference Image	Референс
-	Resize for AI editing	Змінити розмір для ШІ
-	The image exceeds the AI editing size. Resize the document to continue?	Зображення перевищує розмір для ШІ-редагування. Змінити розмір документа й продовжити?
-	Arrange Panels	Упорядкувати панелі
-	Close Other Panels in Group	Закрити інші панелі в групі
-	Collapse to Icons	Згорнути до піктограм
-	Minimize Panel	Згорнути панель
-	Open Panel in Own Window	Відкрити панель в окремому вікні
-	Artboards	Монтажні області
-	CPU Rendering	Рендеринг на ЦП
-	Calculating…	Обчислення…
-	Click to refresh histogram with uncached data	Натисніть, щоб оновити гістограму без використання кешу
-	Count:	Кількість:
-	Drawn on the CPU: {reason}. Click for System Info.	Малювання на ЦП: {reason}. Натисніть для перегляду відомостей про систему.
-	Level:	Рівень:
-	Percentile:	Процентиль:
-	Show Channels in Color	Показувати канали в кольорі
-	Show Statistics	Показати статистику
-	Source:	Джерело:
-	Uncached Refresh	Оновити без кешу
-	…	…
-	External cutout	Зовнішнє видалення тла
-	External erase	Зовнішнє стирання
-	No matching fonts	Немає відповідних шрифтів
-	Locked	Заблоковано
-	Select Layer Under Cursor	Вибрати шар під курсором
-	Twirl Counterclockwise	Закручування проти годинникової стрілки
-
-# Fork portable update information
-	PhotoCraft Updates	Оновлення PhotoCraft
-	Checking for updates…	Перевірка оновлень…
-	Installed version: {version}	Встановлена версія: {version}
-	PhotoCraft {version} is available.	Доступна версія PhotoCraft {version}.
-	Answer the open import question first, then import this file again.	Спочатку дайте відповідь на відкрите запитання імпорту, а потім імпортуйте цей файл знову.
-	Import as New Group	Імпортувати як нову групу
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Імпорт як нової групи зберігає «{group}» і додає файл поруч як нову групу.
-	No import is waiting. Import the file again.	Немає імпорту в очікуванні. Імпортуйте файл знову.
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Заміна спочатку видалить усе в «{group}», включно зі зміненими або переміщеними туди наборами налаштувань. Цю дію неможливо скасувати.
-	{message} into “{group}”	{message} до «{group}»
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Група пензлів «{group}» уже містить ваші пензлі (кількість: {n}).|Група пензлів «{group}» уже містить ваші пензлі (кількість: {n}).|Група пензлів «{group}» уже містить ваші пензлі (кількість: {n}).
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Група градієнтів «{group}» уже існує (кількість градієнтів: {n}).|Група градієнтів «{group}» уже існує (кількість градієнтів: {n}).|Група градієнтів «{group}» уже існує (кількість градієнтів: {n}).
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	Параметри наконечників стрілок
-	Arrowheads	Наконечники стрілок
-	Concavity	Увігнутість
-	End	Кінець
-	Set as default	Установити за замовчуванням
-	Start	Початок
-	Use these settings for new arrows	Використовувати ці налаштування для нових стрілок
-
-# Upstream 0.20.2 memory, batch, layer filters and numeral options
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Команду скасовано або зупинено під час пакетної обробки. Продовжити з наступним файлом чи зупинитися?
-	Attribute	Атрибут
-	Batch preview	Попередній перегляд пакетної обробки
-	Data Sets as Files is unavailable on the web	Набори даних як файли недоступні у вебверсії
-	Effect	Ефект
-	Empty	Порожні
-	Filter for embedded smart objects	Фільтрувати вбудовані смартоб’єкти
-	Filter for linked smart objects that are missing	Фільтрувати відсутні пов’язані смартоб’єкти
-	Filter for smart objects linked locally	Фільтрувати смартоб’єкти, пов’язані з локальними файлами
-	High Memory Photoshop Document	Документ Photoshop із великим споживанням пам’яті
-	Image Compression	Стиснення зображення
-	LZW	LZW
-	Layer Effects	Ефекти шару
-	Lining	Маюскульні
-	Linked	Пов’язані
-	No Adv. Blending	Без розширеного змішування
-	No Layer Effects	Без ефектів шару
-	No Layer Mask	Без маски шару
-	No Vector Mask	Без векторної маски
-	Not Clipped	Без відсічної маски
-	Not Empty	Непорожні
-	Not Linked	Непов’язані
-	Not Locked	Незаблоковані
-	Not Visible	Невидимі
-	Numerals	Цифри
-	Open anyway	Усе одно відкрити
-	Opening this document uses more memory and may slow down your computer or other running applications.	Відкриття цього документа потребує більше пам’яті та може сповільнити комп’ютер або інші запущені програми.
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Для відкриття «{name}» потрібно приблизно {est} GiB пам’яті (доступно {avail} GiB).
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Для відкриття «{name}» потрібно приблизно {est} GiB пам’яті. Не вдалося виміряти доступну пам’ять.
-	Proportional	Пропорційні
-	Proportional Lining	Пропорційні маюскульні
-	Proportional Oldstyle	Пропорційні мінускульні
-	Save Image Pyramid	Зберегти піраміду зображення
-	Save Transparency	Зберегти прозорість
-	Tabular	Табличні
-	Tabular Lining	Табличні маюскульні
-	Tabular Oldstyle	Табличні мінускульні
-	ZIP	ZIP
-	{ok} written to {dir}	Записано {ok} у {dir}
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: не вдалося вивести {n} графічний ресурс|{what}: не вдалося вивести {n} графічні ресурси|{what}: не вдалося вивести {n} графічних ресурсів
 
 # Action Stop message (#8386)
 	Message	Повідомлення
@@ -4453,7 +4271,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Pause For	Пауза на
 	seconds	с
 	Create a single history state	Створювати один стан історії
+	Drag to move the active shape's path or the Work Path	Перетягніть, щоб перемістити контур активної фігури або робочий контур
 	Generator enabled	Генератор увімкнено
+	Move Up	Перемістити вгору
+	Move Down	Перемістити вниз
+	Grid view	Режим сітки
+	List view	Режим списку
 	On your computer	На вашому комп’ютері
 	New file	Новий файл
 	Learn	Навчання
@@ -4492,28 +4315,219 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Pick a different document for each channel.	Виберіть окремий документ для кожного каналу.
 	A picked document is no longer open.	Один із вибраних документів більше не відкрито.
 	A picked document is no longer a grayscale document of the same size.	Один із вибраних документів більше не є документом у градаціях сірого того самого розміру.
+	Netscape Gray	Сірий Netscape
+# Move tool options bar (#11381)
+	Align top edges	Вирівняти верхні краї
+	Align vertical centers	Вирівняти центри по вертикалі
+	Align bottom edges	Вирівняти нижні краї
+	Distribute vertically	Розподілити по вертикалі
+	Distribute horizontally	Розподілити по горизонталі
+	Show layer bounds on hover	Показувати межі шару під час наведення
+	Expand layer group on click	Розгортати групу шарів за клацанням
+	Show hover bounds from Layers	Показувати межі під час наведення з панелі «Шари»
+	Saved RAW Develop settings to {file}	Налаштування Обробка RAW збережено в {file}
+	Save the settings to each raw's sidecar without opening it	Зберегти налаштування в супровідний файл кожного raw, не відкриваючи його
+	No settings saved: these raws can't keep a sidecar here	Нічого не збережено: ці raw тут не можуть мати супровідного файлу
+	Some settings could not be saved; the raws stay open	Не вдалося зберегти деякі налаштування; raw залишаються відкритими
+	Nothing to save: these raws are at their default settings	Нічого зберігати: ці raw мають типові налаштування
+# Artboard tool options bar (#11385)
+	Distribute Widths	Розподілити ширину
+	Distribute Heights	Розподілити висоту
+	Auto-nest Layers	Автоматично вкладати шари
+	Auto-size Canvas	Автоматично змінювати розмір полотна
+	Keep Relative Position During Layer Reordering	Зберігати відносне положення під час зміни порядку шарів
+	Shrinkwrap Canvas on Save	Зменшувати полотно до вмісту під час збереження
 
-# Placement and memory-admission notices from upstream 0.21.0.
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Команду скасовано або зупинено під час пакетної обробки. Продовжити з наступним файлом чи зупинитися?
 	A file is still being placed; try again when it has finished.	Файл ще розміщується; спробуйте знову після завершення.
+	AI Prompt History	Історія промптів ШІ
+	AI model settings	Налаштування моделі ШІ
+	Adding generated layer	Adding generated layer
+	Adjust colors with Poisson blending	Налаштувати кольори змішуванням Пуассона
+	Adobe Every-line Composer	Багаторядковий компонувальник Adobe
+	Adobe PDF Presets…	Набори Adobe PDF…
+	Adobe Single-line Composer	Однорядковий компонувальник Adobe
+	All nine regions	Усі дев’ять областей
+	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
+	Anime fusal	Anime FUSAL
+	Answer the open import question first, then import this file again.	Спочатку дайте відповідь на відкрите запитання імпорту, а потім імпортуйте цей файл знову.
+	Arrange Panels	Упорядкувати панелі
+	Arrowhead options	Параметри наконечників стрілок
+	Arrowheads	Наконечники стрілок
+	Artboards	Монтажні області
+	Attach Reference Image	Додати референс
+	Attribute	Атрибут
+	Automatically check for updates	Автоматично перевіряти оновлення
+	Base64	Base64
+	Batch preview	Попередній перегляд пакетної обробки
+	CPU Rendering	Рендеринг на ЦП
+	Calculating…	Обчислення…
+	Camera Raw	Camera Raw
+	Camera Raw ({name})	Camera Raw ({name})
+	Camera Raw Defaults	Типові параметри Camera Raw
+	Camera Raw Filter	Фільтр Camera Raw
+	Camera Raw Filter ({layer})	Фільтр Camera Raw ({layer})
+	Camera Raw Filter…	Фільтр Camera Raw…
+	Camera Raw isn't open	Camera Raw не відкрито
+	Camera Raw…	Camera Raw…
+	Cancelled opening {name}	Відкриття {name} скасовано
 	Cancelled placing {name}	Розміщення {name} скасовано
+	Cancelled {label}	Скасовано: {label}
+	Centre the gradient (offset 0, 0)	Центрувати градієнт (зсув 0, 0)
+	Check Again	Перевірити знову
+	Check for updates now	Перевірити оновлення зараз
+	Checking for updates…	Перевірка оновлень…
+	Click to fill similar colours	Клацніть, щоб залити подібні кольори
+	Click to refresh histogram with uncached data	Натисніть, щоб оновити гістограму без використання кешу
+	Click to restore the current colour	Клацніть, щоб відновити поточний колір
+	Click to sample the foreground colour  ·  {key}-click for background	Клацання бере зразок переднього плану  ·  {key}+клацання для фону
+	Close Other Panels in Group	Закрити інші панелі в групі
+	Collapse to Icons	Згорнути до піктограм
+	Color Blindness — Deuteranopia-type	Порушення сприйняття кольору — дейтеранопія
+	Color Blindness — Protanopia-type	Порушення сприйняття кольору — протанопія
+	ComfyUI is unavailable in this frontend	ComfyUI is unavailable in this frontend
+	ComfyUI port	Порт ComfyUI
+	Comfyui custom encoders	Власні енкодери ComfyUI
+	Comfyui custom model	Власна модель ComfyUI
+	Comfyui custom models	Власні моделі ComfyUI
+	Comfyui model	Модель ComfyUI
+	Comfyui model settings	Налаштування моделей ComfyUI
+	Comfyui translate prompt	Перекласти промпт англійською
+	Comfyui translation model	Модель перекладу промптів
+	Comfyui url	Comfyui url
+	Compare with Original Generation	Порівняти з початковим результатом генерації
+	Concavity	Увігнутість
+	Copy English translation	Копіювати англійський переклад
+	Copy negative prompt	Копіювати негативний промпт
+	Copy original prompt	Копіювати початковий промпт
+	Could not check for updates.	Не вдалося перевірити оновлення.
+	Count:	Кількість:
+	Cube	CUBE
+	Custom model filenames (one per line)	Назви файлів власних моделей (одна в рядку)
+	Data Encoding	Кодування даних
+	Data Sets as Files is unavailable on the web	Набори даних як файли недоступні у вебверсії
+	Default Photoshop Size	Default Photoshop Size
+	Default colours (D)	Типові кольори (D)
+	Describe changes to the whole image	Describe changes to the whole image
+	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
+	Describe the image to generate	Опишіть зображення для створення
+	Dismiss update	Закрити сповіщення про оновлення
+	Downloading generated image	Downloading generated image
+	Downloading update…	Завантаження оновлення…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Намалюйте рамку кадрування · перетягування всередині переміщує · краї змінюють розмір ({ratio} пропорції, {centre} центр) · пробіл переміщує під час малювання · стрілки зсувають · X змінює орієнтацію · {commit} підтверджує · Esc скасовує
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Перетягніть навколо центру, щоб повернути перегляд  ·  Shift обмежує крок до 15°
+	Drawn on the CPU: {reason}. Click for System Info.	Малювання на ЦП: {reason}. Натисніть для перегляду відомостей про систему.
 	Dropped files weren't placed: their document was closed.	Перетягнуті файли не розміщено: їхній документ закрито.
 	Dropped files weren't placed: too many are waiting for their document.	Перетягнуті файли не розміщено: надто багато файлів очікують на свій документ.
+	Effect	Ефект
+	Empty	Порожні
+	End	Кінець
+	English translation	Англійський переклад
+	External cutout	Зовнішнє видалення тла
+	External erase	Зовнішнє стирання
+	File Name	Назва файлу
+	Filter for embedded smart objects	Фільтрувати вбудовані смартоб’єкти
+	Filter for linked smart objects that are missing	Фільтрувати відсутні пов’язані смартоб’єкти
+	Filter for smart objects linked locally	Фільтрувати смартоб’єкти, пов’язані з локальними файлами
+	Generative Fill	Generative Fill
+	Generative Fill…	Generative Fill…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Інтерполяція з корекцією градієнта: різка й швидка, з невеликою кольоровою облямівкою на дрібних деталях.
+	High Memory Photoshop Document	Документ Photoshop із великим споживанням пам’яті
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Хіракава–Паркс: найчистіші краї й найменше кольорової облямівки, найповільніший.
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Як відновлюється мозаїка кольорового фільтра камери. Застосовується під час відкриття файлу; попередній перегляд показує метод, з яким файл було відкрито.
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	Стиснення зображення
+	Import Photoshop brushes (.abr)	Import Photoshop brushes (.abr)
+	Import as New Group	Імпортувати як нову групу
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Імпорт як нової групи зберігає «{group}» і додає файл поруч як нову групу.
+	Installed version: {version}	Встановлена версія: {version}
+	Inverse Selection	Інвертувати виділення
+	LZW	LZW
+	Layer Effects	Ефекти шару
+	Layer via Copy	Шар через копіювання
+	Layer via Cut	Шар через вирізання
+	Level:	Рівень:
+	Lining	Маюскульні
+	Linked	Пов’язані
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Після відкриття цього файлу залишиться мало пам’яті. Спочатку закрийте інші програми, інакше PhotoCraft може забракнути пам’яті.
+	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
+	Loaded Camera Raw settings from {file}	Налаштування Camera Raw завантажено з {file}
+	Loaded Camera Raw settings from {file} ({n} not supported)	Налаштування Camera Raw завантажено з {file} (не підтримується: {n})
+	Locked	Заблоковано
+	Look	LOOK
+	Lut Format	Формат LUT
+	Match Surrounding Colors	Узгодити з кольорами оточення
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Узгоджує кольори з оточенням, збереженим під час генерації. Інтенсивність 0 відновлює початковий результат генерації.
+	Minimize Panel	Згорнути панель
+	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.
+	Negative prompt	Негативний промпт
+	Next	Далі
+	No AI prompts recorded	Промпти ШІ не записані
+	No Adv. Blending	Без розширеного змішування
+	No Layer Effects	Без ефектів шару
+	No Layer Mask	Без маски шару
+	No Vector Mask	Без векторної маски
+	No import is waiting. Import the file again.	Немає імпорту в очікуванні. Імпортуйте файл знову.
+	No matching fonts	Немає відповідних шрифтів
+	No prompt (remove)	Без промпту (видалення)
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Not Clipped	Без відсічної маски
+	Not Empty	Непорожні
+	Not Linked	Непов’язані
+	Not Locked	Незаблоковані
+	Not Visible	Невидимі
+	Not a web colour: click for the nearest web colour	Колір поза вебпалітрою: клацніть, щоб вибрати найближчий колір із неї
 	Nudge	Зсув на крок
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Поточний каталог робочого диска ({path}) не повідомляє про вільне місце, тому PhotoCraft не може зупинитися до його заповнення, а великі файли не отримують додаткового місця без обмеження розміру робочого диска. Це попередження стосується поточної конфігурації; зміни вище набудуть чинності після натискання «Застосувати» або «ОК». Установіть обмеження або скористайтеся локальним диском.
-
-# OpenType stylistic-set labels.
-	Stylistic Sets	Стилістичні набори
+	Numerals	Цифри
+	One .safetensors filename per line. Compatibility is not checked.	Одна назва файлу .safetensors у рядку. Сумісність не перевіряється.
+	Open Download Page	Відкрити сторінку завантаження
+	Open Panel in Own Window	Відкрити панель в окремому вікні
+	Open a document to select a colour range.	Відкрийте документ, щоб виділити колірний діапазон.
+	Open anyway	Усе одно відкрити
+	Open in camera raw	Відкривати в Camera Raw
+	Opening this document uses more memory and may slow down your computer or other running applications.	Відкриття цього документа потребує більше пам’яті та може сповільнити комп’ютер або інші запущені програми.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Для відкриття «{name}» потрібно приблизно {est} GiB пам’яті (доступно {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Для відкриття «{name}» потрібно приблизно {est} GiB пам’яті. Не вдалося виміряти доступну пам’ять.
+	Original prompt	Початковий промпт
+	Out of gamut for printing: click for the nearest printable colour	Колір поза колірним охопленням друку: клацніть, щоб вибрати найближчий колір, придатний для друку
+	Percentile:	Процентиль:
+	PhotoCraft Updates	Оновлення PhotoCraft
+	PhotoCraft is up to date.	Установлено найновішу версію PhotoCraft.
+	PhotoCraft update available	Доступне оновлення PhotoCraft
+	PhotoCraft {version} is available.	Доступна версія PhotoCraft {version}.
+	Preparing image and selection	Preparing image and selection
+	Previous	Назад
+	Prompt Edit	Prompt Edit
+	Prompt Edit…	Prompt Edit…
+	Prompt Generate	Створити за промптом
+	Prompt Generate…	Створити за промптом…
+	Prompt information	Інформація про промпт
+	Prompt translation model	Модель перекладу промптів
+	Proportional	Пропорційні
+	Proportional Lining	Пропорційні маюскульні
+	Proportional Oldstyle	Пропорційні мінускульні
+	Quick Export As PNG	Швидкий експорт у PNG
+	Qwen image21	Qwen 2.1
+	Reference Image	Референс
+	Regenerate	Створити знову
+	Regenerate AI Result	Повторно створити результат ШІ
+	Remember to turn off the printer's own colour management in Print Settings…	Не забудьте вимкнути керування кольором самого принтера в параметрах друку…
+	Remove Reference Image	Видалити референс
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Заміна спочатку видалить усе в «{group}», включно зі зміненими або переміщеними туди наборами налаштувань. Цю дію неможливо скасувати.
+	Reset steps to model default	Відновити кількість кроків моделі за замовчуванням
+	Resize for AI editing	Змінити розмір для ШІ
+	Sample: foreground colour	Зразок: колір переднього плану
+	Sampling steps	Кроки семплювання
+	Save Image Pyramid	Зберегти піраміду зображення
+	Save Transparency	Зберегти прозорість
+	Save cancelled	Збереження скасовано
+	Select Layer Under Cursor	Вибрати шар під курсором
 	Set 	Набір
 	Set 1	Набір 1
-	Set 2	Набір 2
-	Set 3	Набір 3
-	Set 4	Набір 4
-	Set 5	Набір 5
-	Set 6	Набір 6
-	Set 7	Набір 7
-	Set 8	Набір 8
-	Set 9	Набір 9
 	Set 10	Набір 10
 	Set 11	Набір 11
 	Set 12	Набір 12
@@ -4524,23 +4538,68 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set 17	Набір 17
 	Set 18	Набір 18
 	Set 19	Набір 19
+	Set 2	Набір 2
 	Set 20	Набір 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	Введення з планшета
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (типово)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	Кодування даних
-	Lut Format	Формат LUT
+	Set 3	Набір 3
+	Set 4	Набір 4
+	Set 5	Набір 5
+	Set 6	Набір 6
+	Set 7	Набір 7
+	Set 8	Набір 8
+	Set 9	Набір 9
+	Set as default	Установити за замовчуванням
 	Shape Id	Ідентифікатор фігури
 	Shape Name	Назва фігури
 	Shape Origin Type	Тип походження фігури
 	Shape Path	Контур фігури
+	Show Channels in Color	Показувати канали в кольорі
+	Show Statistics	Показати статистику
+	Source:	Джерело:
+	Start	Початок
+	Stylistic Sets	Стилістичні набори
+	Swap colours (X)	Поміняти кольори місцями (X)
+	Tablet input	Введення з планшета
+	Tabular	Табличні
+	Tabular Lining	Табличні маюскульні
+	Tabular Oldstyle	Табличні мінускульні
 	Text	Текст
-	File Name	Назва файлу
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoders	Текстові енкодери
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Поточний каталог робочого диска ({path}) не повідомляє про вільне місце, тому PhotoCraft не може зупинитися до його заповнення, а великі файли не отримують додаткового місця без обмеження розміру робочого диска. Це попередження стосується поточної конфігурації; зміни вище набудуть чинності після натискання «Застосувати» або «ОК». Установіть обмеження або скористайтеся локальним диском.
+	The fastest and the softest, with colour fringing on fine detail.	Найшвидший і найм'якший, з кольоровою облямівкою на дрібних деталях.
+	The image exceeds the AI editing size. Resize the document to continue?	Зображення перевищує розмір для ШІ-редагування. Змінити розмір документа й продовжити?
+	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Щоб продовжити, потрібно растеризувати цей смартоб’єкт. Після цього його вміст більше не можна буде редагувати. Растеризувати смартоб’єкт?
+	Translate prompt to English	Перекласти промпт англійською
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo int8	Turbo INT8
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Turbo q8	Turbo Q8_0
+	Twirl Counterclockwise	Закручування проти годинникової стрілки
+	Uncached Refresh	Оновити без кешу
+	Update PhotoCraft	Оновити PhotoCraft
+	Update PhotoCraft and restart now?	Оновити PhotoCraft і перезапустити зараз?
+	Updates have not been checked yet.	Оновлення ще не перевірялися.
+	Uploading image to ComfyUI	Uploading image to ComfyUI
+	Use File › Open to open an image.	Use File › Open to open an image.
+	Use these settings for new arrows	Використовувати ці налаштування для нових стрілок
+	Uses the foreground and background colours.	Використовує кольори переднього плану та фону.
+	Waiting for ComfyUI generation	Waiting for ComfyUI generation
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (типово)
+	You can check for updates again in Help → About PhotoCraft.	Перевірити оновлення знову можна в меню Довідка → Про PhotoCraft.
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label}: триває запис файлу, скасувати вже не можна
+	{message} into “{group}”	{message} до «{group}»
+	{ok} written to {dir}	Записано {ok} у {dir}
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Група пензлів «{group}» уже містить ваші пензлі (кількість: {n}).|Група пензлів «{group}» уже містить ваші пензлі (кількість: {n}).|Група пензлів «{group}» уже містить ваші пензлі (кількість: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Група градієнтів «{group}» уже існує (кількість градієнтів: {n}).|Група градієнтів «{group}» уже існує (кількість градієнтів: {n}).|Група градієнтів «{group}» уже існує (кількість градієнтів: {n}).
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: не вдалося вивести {n} графічний ресурс|{what}: не вдалося вивести {n} графічні ресурси|{what}: не вдалося вивести {n} графічних ресурсів

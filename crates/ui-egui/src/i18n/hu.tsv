@@ -34,7 +34,7 @@
 
 # Adjustments and filters
 
-# Camera Raw and camera data
+# RAW Develop and camera data
 
 # Dialogs, preferences and file formats
 
@@ -194,6 +194,8 @@
 	Edit	Szerkesztés
 	Enhanced Controls…	Bővített vezérlők…
 	Equalize	Kiegyenlítés
+	Equalize Entire Image Based On Selected Area	A teljes kép kiegyenlítése a kijelölt terület alapján
+	Equalize Selected Area Only	Csak a kijelölt terület kiegyenlítése
 	Exit	Kilépés
 	Export As…	Exportálás másként…
 	Export Preferences…	Beállítások exportálása…
@@ -400,7 +402,6 @@
 	Insert Blank Frame	Üres képkocka beszúrása
 	Interpret Footage…	Videoanyag értelmezése…
 	Intersect Shape Areas	Alakzatterületek metszete
-	Inverse Selection	Kijelölés megfordítása
 	Invert…	Invertálás…
 	Isolate Layers	Rétegek elkülönítése
 	Kurtosis	Csúcsosság
@@ -408,8 +409,8 @@
 	Layer Content Options…	Rétegtartalom beállításai…
 	Layer from Background…	Réteg a háttérből…
 	Layer Style	Rétegstílus
-	Layer via Copy	Réteg másolással
-	Layer via Cut	Réteg kivágással
+	Layer Via Copy	Réteg másolással
+	Layer Via Cut	Réteg kivágással
 	Layer…	Réteg…
 	Left Edges	Bal szélek
 	Link Layer Mask	Rétegmaszk összekapcsolása
@@ -543,7 +544,7 @@
 	Brush Settings	Ecsetbeállítások
 	Brushes	Ecsetek
 	brushes	ecsetek
-	Camera Raw Filter…	Camera Raw szűrő…
+	RAW Develop Filter…	RAW-előhívás szűrő…
 	Canvas Guides	Vászon-segédvonalak
 	Cascade	Lépcsőzetes
 	Change Panel Group	Panelcsoport váltása
@@ -566,8 +567,8 @@
 	Close Panel	Panel bezárása
 	Close Window	Ablak bezárása
 	Clouds	Felhők
-	Color Blindness — Deuteranopia-type	Színtévesztés — deuteranópia típusú
-	Color Blindness — Protanopia-type	Színtévesztés — protanópia típusú
+	Color Blindness - Deuteranopia-type	Színtévesztés - deuteranópia típusú
+	Color Blindness - Protanopia-type	Színtévesztés - protanópia típusú
 	Color Halftone…	Színes féltónus…
 	Color Lookup Tables	Színleképezési táblák
 	Color Picker (Custom Canvas Color)	Színválasztó (egyéni vászonszín)
@@ -811,7 +812,6 @@
 	Proof Colors	Színpróba
 	Proof Setup	Színpróba beállítása
 	Properties	Tulajdonságok
-	Quick Export As PNG	Gyors exportálás PNG-be
 	Quit	Kilépés
 	Quit {app}	Kilépés: {app}
 	Radial Blur…	Sugárirányú elmosás…
@@ -908,6 +908,12 @@
 	Titling Alternates	Címbetű-változatok
 	Tool Presets	Eszköz-előbeállítások
 	Tools	Eszközök
+	Contextual Task Bar	Környezetfüggő feladatsáv
+	Hide bar	Sáv elrejtése
+	Reset bar position	Sáv helyzetének visszaállítása
+	Pin bar position	Sáv helyzetének rögzítése
+	Move bar	Sáv áthelyezése
+	More options	További beállítások
 	Trace Contour…	Kontúrkövetés…
 	Transform Symmetry	Szimmetria alakítása
 	Tree…	Fa…
@@ -1029,7 +1035,7 @@
 	Catch-up on Stroke End	Utolérés a vonás végén
 	Center	Középen
 	Center text	Szöveg középre igazítása
-	Centre the gradient (offset 0, 0)	Színátmenet középre helyezése (eltolás: 0, 0)
+	Center the gradient (offset 0, 0)	Színátmenet középre helyezése (eltolás: 0, 0)
 	Change	Cserél
 	Change All	Mindet cserél
 	Change To:	Csere erre:
@@ -1042,7 +1048,7 @@
 	Click to add a point, right-click to remove	Kattintással pontot adhatsz hozzá, jobb kattintással eltávolíthatod
 	Click to apply, {key}-click to clear overrides, double-click for Style Options	Kattintással alkalmazhatod, {key}+kattintással törölheted a felülbírálásokat, dupla kattintással megnyithatod a stílusbeállításokat
 	Click to edit the gradient	Kattints a színátmenet szerkesztéséhez
-	Click to sample the foreground colour  ·  {key}-click for background	Kattintás: mintavétel az előtérszínhez  ·  {key}+kattintás: a háttérszínhez
+	Click to sample the foreground color  ·  {key}-click for background	Kattintás: mintavétel az előtérszínhez  ·  {key}+kattintás: a háttérszínhez
 	Clone source set at {x}, {y}	Klónozási forrás beállítva: {x}, {y}
 	Clone Stamp	Klónozó bélyegző
 	Close Style Options	Stílusbeállítások bezárása
@@ -1067,6 +1073,7 @@
 	Control:	Vezérlés:
 	Corners	Sarkok
 	Could not complete the Free Transform command because the layer is locked.	A szabad alakítás nem hajtható végre, mert a réteg zárolva van.
+	Could not transform because the layer is locked.	Az alakítás nem hajtható végre, mert a réteg zárolva van.
 	Could not transform: the layer is empty	Az alakítás nem hajtható végre: a réteg üres
 	Could not use Puppet Warp: no opaque pixels	A bábtorzítás nem használható: nincsenek átlátszatlan pixelek
 	Could not use Puppet Warp: the layer is empty	A bábtorzítás nem használható: a réteg üres
@@ -1817,7 +1824,7 @@ layerLabel	Magenta	Bíbor
 	Change Screen Mode  (F)	Képernyőmód váltása  (F)
 	Click the first point or press {key} to close · Esc cancels	Lezárás: kattintás az első pontra vagy {key} · Esc: megszakítás
 	Click the first point or press {key} to close · {del} removes a point · Esc cancels	Lezárás: kattintás az első pontra vagy {key} · {del}: pont eltávolítása · Esc: megszakítás
-	Click to fill similar colours	Kattintással kitöltheted a hasonló színeket
+	Click to fill similar colors	Kattintással kitöltheted a hasonló színeket
 	Click to zoom in  ·  {key}-click to zoom out  ·  drag right/left to zoom in/out	Kattintás: nagyítás  ·  {key}+kattintás: kicsinyítés  ·  húzás jobbra/balra: nagyítás/kicsinyítés
 	Click, then move along an edge · click to fasten a point · {alt}-click for a straight segment · double-click to close	Kattints, majd haladj végig egy élen · kattintás: pont rögzítése · {alt}+kattintás: egyenes szakasz · dupla kattintás: lezárás
 	Clip to layer below	Vágás az alatta lévő réteghez
@@ -1846,7 +1853,7 @@ layerLabel	Magenta	Bíbor
 	Dark	Sötét
 	Data Set: {name}  ({index}/{total})	Adatkészlet: {name}  ({index}/{total})
 	Data Sets	Adatkészletek
-	Default colours (D)	Alapértelmezett színek (D)
+	Default Foreground and Background Colors (D)	Alapértelmezett előtér- és háttérszín (D)
 	Define	Megadás
 	Define at least one variable first.	Előbb adj meg legalább egy változót.
 	Delete Cropped Pixels	Levágott pixelek törlése
@@ -1859,8 +1866,8 @@ layerLabel	Magenta	Bíbor
 	Discord	Discord
 	Doc: {w} × {h} px	Dok.: {w} × {h} px
 	Drag a box or click four corners · drag the corners onto the edges of a skewed shape · {commit} commits · Esc cancels	Húzz egy keretet, vagy kattints a négy sarokra · húzd a sarkokat a ferde alakzat éleire · {commit}: véglegesítés · Esc: megszakítás
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Húzz egy körbevágási keretet · belül húzva mozgatod · az élekkel átméretezed ({ratio}: arány, {centre}: középről) · Space: mozgatás rajzolás közben · nyilak: léptetés · X: tájolás cseréje · {commit}: véglegesítés · Esc: megszakítás
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	A középpont körül húzva forgatod a nézetet  ·  Shift: 15°-os lépések
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Húzz egy körbevágási keretet · belül húzva mozgatod · az élekkel átméretezed ({ratio}: arány, {centre}: középről) · Space: mozgatás rajzolás közben · nyilak: léptetés · X: tájolás cseréje · {commit}: véglegesítés · Esc: megszakítás
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	A középpont körül húzva forgatod a nézetet  ·  Shift: 15°-os lépések
 	Drag or click polygon points · hold Alt during lasso for straight segments · {add} add · {sub} before drawing subtracts	Húzz, vagy kattints sokszögpontokat · lasszózás közben Alt: egyenes szakaszok · {add}: hozzáadás · {sub} rajzolás előtt: kivonás
 	Drag to draw a gradient	Húzással rajzolhatsz színátmenetet
 	Drag to move the active layer	Húzással mozgathatod az aktív réteget
@@ -1992,7 +1999,7 @@ layerLabel	Magenta	Bíbor
 	Source: {name}	Forrás: {name}
 	Style	Stílus
 	Subtract from selection  ({key})	Kivonás a kijelölésből  ({key})
-	Swap colours (X)	Színek cseréje (X)
+	Switch Foreground and Background Colors (X)	Előtér- és háttérszín cseréje (X)
 	System title bar	Rendszer címsora
 	Text Replacement	Szövegcsere
 	Thumbnail size (smallest: list)	Bélyegképméret (a legkisebb: lista)
@@ -2007,7 +2014,7 @@ layerLabel	Magenta	Bíbor
 	Working…	Feldolgozás…
 	Workspaces	Munkaterületek
 	Zoom	Nagyító
-	{label} is writing the file and can no longer be cancelled	{label}: a fájl írása folyamatban, már nem szakítható meg
+	{label} is writing the file and can no longer be canceled	{label}: a fájl írása folyamatban, már nem szakítható meg
 	{message} (notes: {n}; {warning})	{message} (megjegyzések: {n}; {warning})
 	{mode} Color · {bits} bit	Színmód: {mode} · {bits} bit
 	{name} Properties	Tulajdonságok: {name}
@@ -2330,7 +2337,7 @@ navigator	Zoom	Nagyítás mértéke
 	One Flame Along Path	Egy láng az útvonal mentén
 	Opacity Threshold	Átlátszatlansági küszöb
 	Open	Megnyitás
-	Open a document to select a colour range.	Színtartomány kijelöléséhez nyiss meg egy dokumentumot.
+	Open a document to select a color range.	Színtartomány kijelöléséhez nyiss meg egy dokumentumot.
 	Orange	Narancs
 	Out Black	Kimeneti fekete
 	Out From Center	Középponttól kifelé
@@ -2415,7 +2422,7 @@ navigator	Zoom	Nagyítás mértéke
 	Roses	Rózsák
 	Rough Pastels	Durva pasztell
 	Ruler	Vonalzó
-	Sample: foreground colour	Minta: előtérszín
+	Sample: foreground color	Minta: előtérszín
 	Sampled Colors	Mintavételezett színek
 	Sandstone	Homokkő
 	Saturation	Telítettség
@@ -2523,7 +2530,6 @@ navigator	Zoom	Nagyítás mértéke
 	Use Measurement Scale	Mérési méretarány használata
 	Use Selection In Source	Kijelölés használata a forrásban
 	Use Selection In Target	Kijelölés használata a célban
-	Uses the foreground and background colours.	Az előtér- és a háttérszínt használja.
 	Vertical Only	Csak függőleges
 	Vibrance	Élénkség
 	View Options	Nézetbeállítások
@@ -2567,12 +2573,12 @@ navigator	Zoom	Nagyítás mértéke
 	Balance	Egyensúly
 	Before (Y)	Előtte (Y)
 	Blending	Keverés
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Filter	Camera Raw szűrő
-	Camera Raw Filter ({layer})	Camera Raw szűrő ({layer})
-	Camera Raw isn't open	A Camera Raw nincs megnyitva
-	Cancelled opening {name}	Megnyitás megszakítva: {name}
+	RAW Develop	RAW-előhívás
+	RAW Develop ({name})	RAW-előhívás ({name})
+	RAW Develop Filter	RAW-előhívás szűrő
+	RAW Develop Filter ({layer})	RAW-előhívás szűrő ({layer})
+	RAW Develop isn't open	A RAW-előhívás nincs megnyitva
+	Canceled opening {name}	Megnyitás megszakítva: {name}
 	Damaged Photoshop document	Sérült Photoshop-dokumentum
 	The document “{name}” may be damaged.	A(z) „{name}” dokumentum sérült lehet.
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	Egyes rétegeket, képpontokat vagy maszkokat nem sikerült beolvasni. Folytatod a megnyitást?
@@ -2580,7 +2586,7 @@ navigator	Zoom	Nagyítás mértéke
 	The document “{name}” does not have an embedded {mode} profile.	Nincs beágyazott profil ({mode}) ebben a dokumentumban: „{name}”
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	A dokumentum beágyazott színprofilja nem egyezik az aktuális munkaszíntérrel ({mode}): „{name}”
 	Working: {working}	Munkaszíntér: {working}
-	Cancelled {label}	Megszakítva: {label}
+	Canceled {label}	Megszakítva: {label}
 	Clarity	Tisztaság
 	Color Detail	Színrészletesség
 	Color Grading	Színtónusozás
@@ -2624,7 +2630,6 @@ navigator	Zoom	Nagyítás mértéke
 	Noise Luminance	Zajcsökkentés: luminancia
 	Noise Luminance Detail	Zajcsökkentés: luminancia-részletesség
 	Noise Reduction	Zajcsökkentés
-	Open in camera raw	Megnyitás a Camera Raw-ban
 	Paint Overlay	Ráfestés
 	Previous	Előző
 	Purple	Lila
@@ -2724,6 +2729,7 @@ cameraRaw	Yellow	Sárga
 	All Slices	Összes szelet
 	All User Slices	Összes felhasználói szelet
 	Always create smart objects when placing	Elhelyezéskor mindig intelligens objektum létrehozása
+	Skip transform when placing	Alakítás kihagyása elhelyezéskor
 	Answer the unsaved-changes prompt first	Előbb válaszolj a nem mentett módosításokra vonatkozó kérdésre
 	Appearance Settings…	Megjelenési beállítások…
 	Apple Watch 45mm	Apple Watch 45 mm
@@ -2760,7 +2766,7 @@ cameraRaw	Yellow	Sárga
 	Centimeters	Centiméter
 	Clear	Kiürít
 	Clear Existing Guides	Meglévő segédvonalak törlése
-	Click to restore the current colour	Kattints a jelenlegi szín visszaállításához
+	Click to restore the current color	Kattints a jelenlegi szín visszaállításához
 	Cmd	Cmd
 	CMYK Color	CMYK-szín
 	Coated CMYK	Mázolt papíros CMYK
@@ -2941,7 +2947,7 @@ cameraRaw	Yellow	Sárga
 	No model credits were built into this copy.	Ez a példány nem tartalmaz adatokat a modellek készítőiről.
 	No presets of this type.	Ilyen típusú előbeállítás nincs.
 	No saved presets yet.	Még nincs mentett előbeállítás.
-	Not a web colour: click for the nearest web colour	Nem webes szín: kattints a legközelebbi webes színért
+	Not a web color: click for the nearest web color	Nem webes szín: kattints a legközelebbi webes színért
 	Notification Duration (seconds)	Értesítés időtartama (másodperc)
 	Bundle Arrow-Key Nudges	Nyílbillentyűs mozgatások összevonása
 	Nudge Bundle Pause (ms)	Összevonási szünet (ms)
@@ -2952,7 +2958,7 @@ cameraRaw	Yellow	Sárga
 	OpenGL	OpenGL
 	Optimized	Optimalizált
 	Original	Eredeti
-	Out of gamut for printing: click for the nearest printable colour	Nyomtatási színtartományon kívül: kattints a legközelebbi nyomtatható színért
+	Out of gamut for printing: click for the nearest printable color	Nyomtatási színtartományon kívül: kattints a legközelebbi nyomtatható színért
 	Out of memory	Elfogyott a memória
 	Package	Csomagolás
 	Percent	Százalék
@@ -3031,7 +3037,7 @@ cameraRaw	Yellow	Sárga
 	Rulers & Grids	Vonalzók és rácsok
 	Save a Copy	Másolat mentése
 	Save as PDF	Mentés PDF-ként
-	Save cancelled	Mentés megszakítva
+	Save canceled	Mentés megszakítva
 	Save failed: {error}	A mentés nem sikerült: {error}
 	Save for Web (Legacy)	Mentés webre (régi)
 	Save HTML and Images	HTML és képek mentése
@@ -3083,7 +3089,7 @@ cameraRaw	Yellow	Sárga
 	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	A folytatáshoz a kitöltőréteget raszterizálni kell. A kitöltés tartalma ezután nem lesz szerkeszthető. Raszterizálod a réteget?
 	This layer must be rasterized before proceeding.	A folytatáshoz a réteget raszterizálni kell.
 	This shape layer must be rasterized before proceeding. It will no longer be editable as a shape. Rasterize the shape?	A folytatáshoz az alakzatréteget raszterizálni kell. Ezután alakzatként nem lesz szerkeszthető. Raszterizálod az alakzatot?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	A folytatáshoz az intelligens objektumot raszterizálni kell. A tartalma ezután nem lesz szerkeszthető. Raszterizálod az intelligens objektumot?
+	This smart object must be rasterized before proceeding. Edit Contents will no longer be available. Rasterize the smart object?	A folytatáshoz az intelligens objektumot raszterizálni kell. A tartalma ezután nem lesz szerkeszthető. Raszterizálod az intelligens objektumot?
 	This type layer must be rasterized before proceeding. Its text will no longer be editable. Rasterize the type?	A folytatáshoz a szövegréteget raszterizálni kell. A szöveg ezután nem lesz szerkeszthető. Raszterizálod a szöveget?
 	TIFF Options	TIFF-beállítások
 	Top:	Felső:
@@ -3181,8 +3187,8 @@ cameraRaw	Yellow	Sárga
 	Cache levels	Gyorsítótár-szintek
 	Cache tile size	Gyorsítótár csempemérete
 	Camera Data	Fényképezőgép adatai
-	Camera Raw Defaults	Camera Raw-alapértékek
-	Camera Raw…	Camera Raw…
+	RAW Defaults	RAW-alapértékek
+	RAW Defaults…	RAW-alapértékek…
 	Cancel opening	Megnyitás megszakítása
 	Canvas border	Vászonszegély
 	Canvas extension color:	Vászonbővítés színe:
@@ -3443,6 +3449,7 @@ cameraRaw	Yellow	Sárga
 	Magnetic Lasso	Mágneses lasszó
 	Magnetic Lasso Tool	Mágneses lasszó
 	Make Selection	Kijelölés készítése
+	Make Shape	Alakzat készítése
 	Make work path from selection	Munkaútvonal készítése a kijelölésből
 	Manual	Kézi
 	manual	kézi
@@ -3771,9 +3778,6 @@ cameraRaw	Yellow	Sárga
 	Add to selection  (⇧)	Hozzáadás a kijelöléshez  (⇧)
 	Adds grain to the soft edges of the brush tip.	Szemcsézettséget ad az ecsethegy lágy széleihez.
 	Adjustment Layers	Korrekciós rétegek
-	Adobe Every-line Composer	Adobe többsoros szedőmotor
-	Adobe PDF Presets…	Adobe PDF-előbeállítások…
-	Adobe Single-line Composer	Adobe egysoros szedőmotor
 	Advanced Controls	Speciális vezérlők
 	After (X)	Utána (X)
 	Airbrush: keeps painting while the pointer rests.	Festékszóró: a festés akkor is folytatódik, amikor a mutató áll.
@@ -4185,12 +4189,12 @@ cameraRaw	Yellow	Sárga
 	Load Settings…	Beállítások betöltése…
 	Save these settings as a Camera Raw .xmp file	A beállítások mentése Camera Raw .xmp-fájlként
 	Load settings from a Camera Raw .xmp file	Beállítások betöltése Camera Raw .xmp-fájlból
-	Loaded Camera Raw settings from {file}	Camera Raw-beállítások betöltve innen: {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw-beállítások betöltve innen: {file} ({n} nem támogatott)
+	Loaded RAW Develop settings from {file}	RAW-előhívás-beállítások betöltve innen: {file}
+	Loaded RAW Develop settings from {file} ({n} not supported)	RAW-előhívás-beállítások betöltve innen: {file} ({n} nem támogatott)
 	Auto Add/Delete	Automatikus hozzáadás/törlés
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	A nyomtatási beállításokban ne jelöld be a tükrözést is: a két tükrözés kioltja egymást.
 	Print Settings…	Nyomtatási beállítások…
-	Remember to turn off the printer's own colour management in Print Settings…	Ne felejtsd el kikapcsolni a nyomtató saját színkezelését a nyomtatási beállításokban…
+	Remember to turn off the printer's own color management in Print Settings…	Ne felejtsd el kikapcsolni a nyomtató saját színkezelését a nyomtatási beállításokban…
 	Sent to {printer}	Elküldve ide: {printer}
 	set in Print Settings…	a nyomtatási beállításokban adható meg…
 	ICO is limited to 256 × 256 pixels	Az ICO legfeljebb 256 × 256 képpont lehet
@@ -4347,12 +4351,12 @@ cameraRaw	Yellow	Sárga
 	Decrease Brush Hardness	Ecsetkeménység csökkentése
 	Increase Brush Hardness	Ecsetkeménység növelése
 	Demosaic	Demozaikolás
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Hogyan tölti ki a program a kamera színszűrő-mozaikját. A fájl megnyitásakor érvényesül; az előnézet a megnyitáskor használt módszert mutatja.
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Hogyan tölti ki a program a kamera színszűrő-mozaikját. A fájl megnyitásakor érvényesül; az előnézet a megnyitáskor használt módszert mutatja.
 	AHD (adaptive homogeneity)	AHD (adaptív homogenitás)
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: a legtisztább élek és a legkevesebb színes szegély, a leglassabb.
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Gradienskorrigált interpoláció: éles és gyors, apró részleteken némi színes szegéllyel.
-	The fastest and the softest, with colour fringing on fine detail.	A leggyorsabb és a leglágyabb, apró részleteken színes szegéllyel.
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Hirakawa–Parks: a legtisztább élek és a legkevesebb színes szegély, a leglassabb.
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	Gradienskorrigált interpoláció: éles és gyors, apró részleteken némi színes szegéllyel.
+	The fastest and the softest, with color fringing on fine detail.	A leggyorsabb és a leglágyabb, apró részleteken színes szegéllyel.
 	“{name}” already exists. Replace it?	„{name}” már létezik. Lecseréli?
 	The name in the save dialog was “{name}”.	A mentési párbeszédpanelen megadott név: „{name}”.
 	Previous Brush	Előző ecset
@@ -4418,8 +4422,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Grayscale Ramp	Szürkeárnyalatos sáv
 	Current Colors	Aktuális színek
 	Make Ramp Web Safe	Sáv korlátozása webes színekre
+	Scroll All Windows	Összes ablak görgetése
 	The path was kept as the Work Path	Az útvonal munkaútvonalként megmaradt
 	The path was discarded	Az útvonal el lett vetve
+# Art History Brush (#213).
 	Art History Brush Tool	Művészi előzményecset eszköz
 	Tight Short	Szoros, rövid
 	Tight Medium	Szoros, közepes
@@ -4459,182 +4465,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Stop Color	Színpont színe
 	Shapes can't use patterns yet	Az alakzatok még nem használhatnak mintákat
 	Edit Brush…	Ecset szerkesztése…
-	This Layer:	Ez a réteg:
-	Move Up	Mozgatás felfelé
-	Move Down	Mozgatás lefelé
-	AI Prompt History	MI-utasításelőzmények
-	AI model settings	MI-modell beállításai
-	All nine regions	Mind a kilenc terület
-	ComfyUI port	ComfyUI-port
-	Copy English translation	Angol fordítás másolása
-	Copy negative prompt	Negatív utasítás másolása
-	Copy original prompt	Eredeti utasítás másolása
-	Custom model filenames (one per line)	Egyéni modellfájlnevek (soronként egy)
-	Describe changes to the whole image	Írja le a teljes kép módosításait
-	Describe changes, or leave blank to remove	Írja le a módosításokat, vagy hagyja üresen az eltávolításhoz
-	Describe the image to generate	Írja le a létrehozandó képet
-	English translation	Angol fordítás
-	Generative Fill	Generatív kitöltés
-	Negative prompt	Negatív utasítás
-	No AI prompts recorded	Nincsenek rögzített MI-utasítások
-	No prompt (remove)	Nincs utasítás (eltávolítás)
-	One .safetensors filename per line. Compatibility is not checked.	Soronként egy .safetensors fájlnév. A kompatibilitás nincs ellenőrizve.
-	Original prompt	Eredeti utasítás
-	Prompt Edit	Szerkesztés utasítással
-	Prompt Generate	Létrehozás utasítással
-	Prompt information	Utasításinformáció
-	Prompt translation model	Utasításfordító modell
-	Regenerate	Újragenerálás
-	Reset steps to model default	Lépésszám visszaállítása a modell alapértékére
-	Sampling steps	Mintavételi lépések
-	Text encoders	Szövegkódolók
-	Text encoder	Szövegkódoló
-	Translate prompt to English	Utasítás fordítása angolra
-	Steps	Lépések
-	Sampling profile	Mintavételi profil
-	Additional AI models	További MI-modellek
-	Comfyui url	ComfyUI URL-címe
-	Comfyui model	ComfyUI-modell
-	Comfyui custom models	Egyéni ComfyUI-modellek
-	Comfyui custom encoders	Egyéni ComfyUI-kódolók
-	Comfyui custom model	Egyéni ComfyUI-modell
-	Comfyui model settings	ComfyUI-modell beállításai
-	Comfyui translate prompt	ComfyUI-utasítás fordítása
-	Comfyui translation model	ComfyUI-fordítómodell
-	Whole image	Teljes kép
-	Preparing image and selection	Kép és kijelölés előkészítése
-	Uploading image to ComfyUI	Kép feltöltése a ComfyUI-ba
-	Waiting for ComfyUI generation	Várakozás a ComfyUI-generálásra
-	Downloading generated image	Létrehozott kép letöltése
-	Adding generated layer	Létrehozott réteg hozzáadása
-	Translating prompt to English	Utasítás fordítása angolra
-	Regenerate AI Result	MI-eredmény újragenerálása
-	ComfyUI is unavailable in this frontend	A ComfyUI ezen a felületen nem érhető el
-	Prompt Generate…	Létrehozás utasítással…
-	Prompt Edit…	Szerkesztés utasítással…
-	Generative Fill…	Generatív kitöltés…
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-prompt-region	Top left	Bal felső
-prompt-region	Top center	Fent középen
-prompt-region	Top right	Jobb felső
-prompt-region	Middle left	Bal középső
-prompt-region	Center	Közép
-prompt-region	Middle right	Jobb középső
-prompt-region	Bottom left	Bal alsó
-prompt-region	Bottom center	Lent középen
-prompt-region	Bottom right	Jobb alsó
-	PhotoCraft update available	PhotoCraft-frissítés érhető el
-	Update PhotoCraft and restart now?	Frissíti a PhotoCraftot és újraindítja most?
-	Automatically check for updates	Frissítések automatikus keresése
-	Check for updates now	Frissítések keresése most
-	You can check for updates again in Help → About PhotoCraft.	Újra kereshet frissítéseket a Súgó → A PhotoCraft névjegye menüben.
-	Downloading update…	Frissítés letöltése…
-	Update PhotoCraft	PhotoCraft frissítése
-	Dismiss update	Frissítési értesítés bezárása
-	Match Surrounding Colors	Igazítás a környezet színeihez
-	Adjust colors with Poisson blending	Színek igazítása Poisson-keveréssel
-	Compare with Original Generation	Összehasonlítás az eredeti generált képpel
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	A színeket a generáláskor rögzített környezethez igazítja. A 0 erősség visszaállítja az eredeti generált eredményt.
-	Attach Reference Image	Referenciakép csatolása
-	Remove Reference Image	Referenciakép eltávolítása
-	Reference Image	Referenciakép
-	Resize for AI editing	Átméretezés AI-szerkesztéshez
-	The image exceeds the AI editing size. Resize the document to continue?	A kép meghaladja az AI-szerkesztési méretet. Átméretezi a dokumentumot a folytatáshoz?
-	Arrange Panels	Panelek elrendezése
-	Close Other Panels in Group	A csoport többi paneljének bezárása
-	Collapse to Icons	Összecsukás ikonokká
-	Minimize Panel	Panel kis méretre állítása
-	Open Panel in Own Window	Panel megnyitása külön ablakban
-	CPU Rendering	CPU-renderelés
-	Calculating…	Számítás…
-	Click to refresh histogram with uncached data	Kattintson a hisztogram frissítéséhez gyorsítótárazás nélküli adatokkal
-	Count:	Darabszám:
-	Drawn on the CPU: {reason}. Click for System Info.	CPU-val rajzolva: {reason}. Kattintson a rendszerinformációkért.
-	Level:	Szint:
-	Percentile:	Percentilis:
-	Show Channels in Color	Csatornák megjelenítése színesen
-	Show Statistics	Statisztika megjelenítése
-	Source:	Forrás:
-	Uncached Refresh	Frissítés gyorsítótár nélkül
-	…	…
-	External cutout	Külső háttéreltávolítás
-	External erase	Külső törlés
-	No matching fonts	Nincs megfelelő betűtípus
-	Select Layer Under Cursor	Kurzor alatti réteg kijelölése
-	Twirl Counterclockwise	Csavarás az óramutató járásával ellentétesen
-
-# Fork portable update information
-	PhotoCraft Updates	PhotoCraft-frissítések
-	Checking for updates…	Frissítések keresése…
-	Open Download Page	Letöltési oldal megnyitása
-	PhotoCraft is up to date.	A PhotoCraft naprakész.
-	Could not check for updates.	Nem sikerült ellenőrizni a frissítéseket.
-	Updates have not been checked yet.	A frissítések még nem lettek ellenőrizve.
-	Check Again	Újraellenőrzés
-	Installed version: {version}	Telepített verzió: {version}
-	PhotoCraft {version} is available.	Elérhető a PhotoCraft {version}.
-	Answer the open import question first, then import this file again.	Először válaszoljon a megnyitott importálási kérdésre, majd importálja újra ezt a fájlt.
-	Import as New Group	Importálás új csoportként
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Az Importálás új csoportként megtartja a(z) „{group}” csoportot, és mellé új csoportként adja hozzá a fájlt.
-	No import is waiting. Import the file again.	Nincs várakozó importálás. Importálja újra a fájlt.
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	A csere először mindent töröl a(z) „{group}” csoportból, beleértve az ott szerkesztett vagy oda áthelyezett készleteket is. Ez nem vonható vissza.
-	{message} into “{group}”	{message} a(z) „{group}” csoportba
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	A(z) „{group}” ecsetcsoport már tartalmaz saját ecseteket (darabszám: {n}).
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	A(z) „{group}” színátmenetcsoport már létezik (színátmenetek száma: {n}).
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	Nyílhegyek beállításai
-	Arrowheads	Nyílhegyek
-	Concavity	Homorúság
-	End	Vég
-	Set as default	Beállítás alapértelmezettként
-	Start	Kezdet
-	Use these settings for new arrows	Ezek a beállítások legyenek érvényesek az új nyilakra
-
-# Upstream 0.20.2 memory, batch, layer filters and numeral options
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Egy parancs megszakadt vagy leállt a kötegelt feldolgozás során. Folytatja a következő fájllal, vagy leállítja?
-	Attribute	Tulajdonság
-	Batch preview	Köteg előnézete
-	Data Sets as Files is unavailable on the web	Az adatkészletek fájlként történő mentése nem érhető el a weben
-	Effect	Effektus
-	Empty	Üres
-	Filter for embedded smart objects	Beágyazott intelligens objektumok szűrése
-	Filter for linked smart objects that are missing	Hiányzó csatolt intelligens objektumok szűrése
-	Filter for smart objects linked locally	Helyi fájlokhoz csatolt intelligens objektumok szűrése
-	High Memory Photoshop Document	Nagy memóriaigényű Photoshop-dokumentum
-	Image Compression	Képtömörítés
-	LZW	LZW
-	Layer Effects	Rétegeffektusok
-	Lining	Álló számjegyek
-	Linked	Csatolt
-	No Adv. Blending	Speciális keverés nélkül
-	No Layer Effects	Rétegeffektusok nélkül
-	No Layer Mask	Rétegmaszk nélkül
-	No Vector Mask	Vektormaszk nélkül
-	Not Clipped	Vágómaszk nélkül
-	Not Empty	Nem üres
-	Not Linked	Nem csatolt
-	Not Locked	Nem zárolt
-	Not Visible	Nem látható
-	Numerals	Számjegyek
-	Open anyway	Megnyitás mégis
-	Opening this document uses more memory and may slow down your computer or other running applications.	A dokumentum megnyitása több memóriát igényel, és lelassíthatja a számítógépet vagy más futó alkalmazásokat.
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	A(z) „{name}” megnyitásához becslés szerint {est} GiB memória szükséges ({avail} GiB érhető el).
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	A(z) „{name}” megnyitásához becslés szerint {est} GiB memória szükséges. A rendelkezésre álló memória nem mérhető.
-	Proportional	Arányos
-	Proportional Lining	Arányos álló számjegyek
-	Proportional Oldstyle	Arányos ugráló számjegyek
-	Save Image Pyramid	Képpiramis mentése
-	Save Transparency	Átlátszóság mentése
-	Tabular	Azonos szélességű
-	Tabular Lining	Azonos szélességű álló számjegyek
-	Tabular Oldstyle	Azonos szélességű ugráló számjegyek
-	ZIP	ZIP
-	{ok} written to {dir}	{ok} kiírva ide: {dir}
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} képi erőforrás kiírása sikertelen
 
 # Action Stop message (#8386)
 	Message	Üzenet
@@ -4647,7 +4477,10 @@ prompt-region	Bottom right	Jobb alsó
 	Pause For	Szünet ennyi ideig
 	seconds	másodperc
 	Create a single history state	Egyetlen előzményállapot létrehozása
+	This Layer:	Ez a réteg:
 	Generator enabled	Generátor bekapcsolva
+	Move Up	Mozgatás felfelé
+	Move Down	Mozgatás lefelé
 	On your computer	A számítógépen
 	New file	Új fájl
 	Learn	Tanulás
@@ -4678,28 +4511,208 @@ prompt-region	Bottom right	Jobb alsó
 	Pick a different document for each channel.	Minden csatornához másik dokumentumot válasszon.
 	A picked document is no longer open.	Az egyik kiválasztott dokumentum már nincs megnyitva.
 	A picked document is no longer a grayscale document of the same size.	Az egyik kiválasztott dokumentum már nem azonos méretű szürkeárnyalatos dokumentum.
+	Netscape Gray	Netscape-szürke
+# Move tool options bar (#11381)
+	Align top edges	Felső szélek igazítása
+	Align vertical centers	Függőleges középpontok igazítása
+	Align bottom edges	Alsó szélek igazítása
+	Distribute vertically	Egyenletes elosztás függőlegesen
+	Distribute horizontally	Egyenletes elosztás vízszintesen
+	Show layer bounds on hover	Réteghatárok megjelenítése rámutatáskor
+	Expand layer group on click	Rétegcsoport kibontása kattintásra
+	Show hover bounds from Layers	Határok megjelenítése a Rétegek panelről rámutatáskor
+	Saved RAW Develop settings to {file}	RAW-előhívás-beállítások mentve ide: {file}
+	Save the settings to each raw's sidecar without opening it	A beállítások mentése minden raw kísérőfájljába megnyitás nélkül
+	No settings saved: these raws can't keep a sidecar here	Nincs mentve semmi: ezek a raw fájlok itt nem kaphatnak kísérőfájlt
+	Some settings could not be saved; the raws stay open	Néhány beállítást nem sikerült menteni; a raw fájlok nyitva maradnak
+	Nothing to save: these raws are at their default settings	Nincs mit menteni: ezek a raw fájlok alapértelmezett beállításokon vannak
+# Artboard tool options bar (#11385)
+	Distribute Widths	Szélességek elosztása
+	Distribute Heights	Magasságok elosztása
+	Auto-nest Layers	Rétegek automatikus beágyazása
+	Auto-size Canvas	Vászonméret automatikus módosítása
+	Keep Relative Position During Layer Reordering	Relatív pozíció megtartása a rétegek átrendezésekor
+	Shrinkwrap Canvas on Save	Vászon összehúzása a tartalomra mentéskor
 
-# Placement and memory-admission notices from upstream 0.21.0.
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Egy parancs megszakadt vagy leállt a kötegelt feldolgozás során. Folytatja a következő fájllal, vagy leállítja?
 	A file is still being placed; try again when it has finished.	Egy fájl elhelyezése még folyamatban van; próbálja újra, ha befejeződött.
+	AI Prompt History	MI-utasításelőzmények
+	AI model settings	MI-modell beállításai
+	Adding generated layer	Létrehozott réteg hozzáadása
+	Additional AI models	További MI-modellek
+	Adjust colors with Poisson blending	Színek igazítása Poisson-keveréssel
+	Adobe Every-line Composer	Adobe többsoros szedőmotor
+	Adobe PDF Presets…	Adobe PDF-előbeállítások…
+	Adobe Single-line Composer	Adobe egysoros szedőmotor
+	All nine regions	Mind a kilenc terület
+	Answer the open import question first, then import this file again.	Először válaszoljon a megnyitott importálási kérdésre, majd importálja újra ezt a fájlt.
+	Arrange Panels	Panelek elrendezése
+	Arrowhead options	Nyílhegyek beállításai
+	Arrowheads	Nyílhegyek
+	Attach Reference Image	Referenciakép csatolása
+	Attribute	Tulajdonság
+	Automatically check for updates	Frissítések automatikus keresése
+	Base64	Base64
+	Batch preview	Köteg előnézete
+	CPU Rendering	CPU-renderelés
+	Calculating…	Számítás…
+	Camera Raw	Camera Raw
+	Camera Raw ({name})	Camera Raw ({name})
+	Camera Raw Defaults	Camera Raw-alapértékek
+	Camera Raw Filter	Camera Raw szűrő
+	Camera Raw Filter ({layer})	Camera Raw szűrő ({layer})
+	Camera Raw Filter…	Camera Raw szűrő…
+	Camera Raw isn't open	A Camera Raw nincs megnyitva
+	Camera Raw…	Camera Raw…
+	Cancelled opening {name}	Megnyitás megszakítva: {name}
 	Cancelled placing {name}	A(z) {name} elhelyezése megszakítva
+	Cancelled {label}	Megszakítva: {label}
+	Centre the gradient (offset 0, 0)	Színátmenet középre helyezése (eltolás: 0, 0)
+	Check Again	Újraellenőrzés
+	Check for updates now	Frissítések keresése most
+	Checking for updates…	Frissítések keresése…
+	Click to fill similar colours	Kattintással kitöltheted a hasonló színeket
+	Click to refresh histogram with uncached data	Kattintson a hisztogram frissítéséhez gyorsítótárazás nélküli adatokkal
+	Click to restore the current colour	Kattints a jelenlegi szín visszaállításához
+	Click to sample the foreground colour  ·  {key}-click for background	Kattintás: mintavétel az előtérszínhez  ·  {key}+kattintás: a háttérszínhez
+	Close Other Panels in Group	A csoport többi paneljének bezárása
+	Collapse to Icons	Összecsukás ikonokká
+	Color Blindness — Deuteranopia-type	Színtévesztés — deuteranópia típusú
+	Color Blindness — Protanopia-type	Színtévesztés — protanópia típusú
+	ComfyUI is unavailable in this frontend	A ComfyUI ezen a felületen nem érhető el
+	ComfyUI port	ComfyUI-port
+	Comfyui custom encoders	Egyéni ComfyUI-kódolók
+	Comfyui custom model	Egyéni ComfyUI-modell
+	Comfyui custom models	Egyéni ComfyUI-modellek
+	Comfyui model	ComfyUI-modell
+	Comfyui model settings	ComfyUI-modell beállításai
+	Comfyui translate prompt	ComfyUI-utasítás fordítása
+	Comfyui translation model	ComfyUI-fordítómodell
+	Comfyui url	ComfyUI URL-címe
+	Compare with Original Generation	Összehasonlítás az eredeti generált képpel
+	Concavity	Homorúság
+	Copy English translation	Angol fordítás másolása
+	Copy negative prompt	Negatív utasítás másolása
+	Copy original prompt	Eredeti utasítás másolása
+	Could not check for updates.	Nem sikerült ellenőrizni a frissítéseket.
+	Count:	Darabszám:
+	Cube	CUBE
+	Custom model filenames (one per line)	Egyéni modellfájlnevek (soronként egy)
+	Data Encoding	Adatkódolás
+	Data Sets as Files is unavailable on the web	Az adatkészletek fájlként történő mentése nem érhető el a weben
+	Default colours (D)	Alapértelmezett színek (D)
+	Describe changes to the whole image	Írja le a teljes kép módosításait
+	Describe changes, or leave blank to remove	Írja le a módosításokat, vagy hagyja üresen az eltávolításhoz
+	Describe the image to generate	Írja le a létrehozandó képet
+	Dismiss update	Frissítési értesítés bezárása
+	Downloading generated image	Létrehozott kép letöltése
+	Downloading update…	Frissítés letöltése…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Húzz egy körbevágási keretet · belül húzva mozgatod · az élekkel átméretezed ({ratio}: arány, {centre}: középről) · Space: mozgatás rajzolás közben · nyilak: léptetés · X: tájolás cseréje · {commit}: véglegesítés · Esc: megszakítás
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	A középpont körül húzva forgatod a nézetet  ·  Shift: 15°-os lépések
+	Drawn on the CPU: {reason}. Click for System Info.	CPU-val rajzolva: {reason}. Kattintson a rendszerinformációkért.
 	Dropped files weren't placed: their document was closed.	Az áthúzott fájlok nem kerültek elhelyezésre: a dokumentumukat bezárták.
 	Dropped files weren't placed: too many are waiting for their document.	Az áthúzott fájlok nem kerültek elhelyezésre: túl sok fájl vár a dokumentumukra.
+	Effect	Effektus
+	Empty	Üres
+	End	Vég
+	English translation	Angol fordítás
+	External cutout	Külső háttéreltávolítás
+	External erase	Külső törlés
+	Filter for embedded smart objects	Beágyazott intelligens objektumok szűrése
+	Filter for linked smart objects that are missing	Hiányzó csatolt intelligens objektumok szűrése
+	Filter for smart objects linked locally	Helyi fájlokhoz csatolt intelligens objektumok szűrése
+	Generative Fill	Generatív kitöltés
+	Generative Fill…	Generatív kitöltés…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Gradienskorrigált interpoláció: éles és gyors, apró részleteken némi színes szegéllyel.
+	High Memory Photoshop Document	Nagy memóriaigényű Photoshop-dokumentum
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: a legtisztább élek és a legkevesebb színes szegély, a leglassabb.
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Hogyan tölti ki a program a kamera színszűrő-mozaikját. A fájl megnyitásakor érvényesül; az előnézet a megnyitáskor használt módszert mutatja.
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	Képtömörítés
+	Import as New Group	Importálás új csoportként
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Az Importálás új csoportként megtartja a(z) „{group}” csoportot, és mellé új csoportként adja hozzá a fájlt.
+	Installed version: {version}	Telepített verzió: {version}
+	Inverse Selection	Kijelölés megfordítása
+	LZW	LZW
+	Layer Effects	Rétegeffektusok
+	Layer via Copy	Réteg másolással
+	Layer via Cut	Réteg kivágással
+	Level:	Szint:
+	Lining	Álló számjegyek
+	Linked	Csatolt
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	A fájl megnyitása után kevés memória maradna. Előbb zárjon be más alkalmazásokat, különben a PhotoCraft kifogyhat a memóriából.
+	Loaded Camera Raw settings from {file}	Camera Raw-beállítások betöltve innen: {file}
+	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw-beállítások betöltve innen: {file} ({n} nem támogatott)
+	Look	LOOK
+	Lut Format	LUT-formátum
+	Match Surrounding Colors	Igazítás a környezet színeihez
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	A színeket a generáláskor rögzített környezethez igazítja. A 0 erősség visszaállítja az eredeti generált eredményt.
+	Minimize Panel	Panel kis méretre állítása
+	Negative prompt	Negatív utasítás
+	No AI prompts recorded	Nincsenek rögzített MI-utasítások
+	No Adv. Blending	Speciális keverés nélkül
+	No Layer Effects	Rétegeffektusok nélkül
+	No Layer Mask	Rétegmaszk nélkül
+	No Vector Mask	Vektormaszk nélkül
+	No import is waiting. Import the file again.	Nincs várakozó importálás. Importálja újra a fájlt.
+	No matching fonts	Nincs megfelelő betűtípus
+	No prompt (remove)	Nincs utasítás (eltávolítás)
+	Not Clipped	Vágómaszk nélkül
+	Not Empty	Nem üres
+	Not Linked	Nem csatolt
+	Not Locked	Nem zárolt
+	Not Visible	Nem látható
+	Not a web colour: click for the nearest web colour	Nem webes szín: kattints a legközelebbi webes színért
 	Nudge	Léptetés
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	A jelenlegi munkakönyvtár ({path}) nem jelzi a szabad helyét, ezért a PhotoCraft nem tud megállni a megtelése előtt, és a nagy fájlok munkaterületméret-korlát nélkül nem kapnak belőle további helyet. Ez a figyelmeztetés a jelenlegi beállításokra vonatkozik; a fenti módosítások az Alkalmaz vagy az OK gombbal lépnek érvénybe. Állítson be korlátot, vagy használjon helyi lemezt.
-
-# OpenType stylistic-set labels.
-	Stylistic Sets	Stíluskészletek
+	Numerals	Számjegyek
+	One .safetensors filename per line. Compatibility is not checked.	Soronként egy .safetensors fájlnév. A kompatibilitás nincs ellenőrizve.
+	Open Download Page	Letöltési oldal megnyitása
+	Open Panel in Own Window	Panel megnyitása külön ablakban
+	Open a document to select a colour range.	Színtartomány kijelöléséhez nyiss meg egy dokumentumot.
+	Open anyway	Megnyitás mégis
+	Open in camera raw	Megnyitás a Camera Raw-ban
+	Opening this document uses more memory and may slow down your computer or other running applications.	A dokumentum megnyitása több memóriát igényel, és lelassíthatja a számítógépet vagy más futó alkalmazásokat.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	A(z) „{name}” megnyitásához becslés szerint {est} GiB memória szükséges ({avail} GiB érhető el).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	A(z) „{name}” megnyitásához becslés szerint {est} GiB memória szükséges. A rendelkezésre álló memória nem mérhető.
+	Original prompt	Eredeti utasítás
+	Out of gamut for printing: click for the nearest printable colour	Nyomtatási színtartományon kívül: kattints a legközelebbi nyomtatható színért
+	Percentile:	Percentilis:
+	PhotoCraft Updates	PhotoCraft-frissítések
+	PhotoCraft is up to date.	A PhotoCraft naprakész.
+	PhotoCraft update available	PhotoCraft-frissítés érhető el
+	PhotoCraft {version} is available.	Elérhető a PhotoCraft {version}.
+	Preparing image and selection	Kép és kijelölés előkészítése
+	Prompt Edit	Szerkesztés utasítással
+	Prompt Edit…	Szerkesztés utasítással…
+	Prompt Generate	Létrehozás utasítással
+	Prompt Generate…	Létrehozás utasítással…
+	Prompt information	Utasításinformáció
+	Prompt translation model	Utasításfordító modell
+	Proportional	Arányos
+	Proportional Lining	Arányos álló számjegyek
+	Proportional Oldstyle	Arányos ugráló számjegyek
+	Quick Export As PNG	Gyors exportálás PNG-be
+	Qwen image21	Qwen 2.1
+	Reference Image	Referenciakép
+	Regenerate	Újragenerálás
+	Regenerate AI Result	MI-eredmény újragenerálása
+	Remember to turn off the printer's own colour management in Print Settings…	Ne felejtsd el kikapcsolni a nyomtató saját színkezelését a nyomtatási beállításokban…
+	Remove Reference Image	Referenciakép eltávolítása
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	A csere először mindent töröl a(z) „{group}” csoportból, beleértve az ott szerkesztett vagy oda áthelyezett készleteket is. Ez nem vonható vissza.
+	Reset steps to model default	Lépésszám visszaállítása a modell alapértékére
+	Resize for AI editing	Átméretezés AI-szerkesztéshez
+	Sample: foreground colour	Minta: előtérszín
+	Sampling profile	Mintavételi profil
+	Sampling steps	Mintavételi lépések
+	Save Image Pyramid	Képpiramis mentése
+	Save Transparency	Átlátszóság mentése
+	Save cancelled	Mentés megszakítva
+	Select Layer Under Cursor	Kurzor alatti réteg kijelölése
 	Set 	Készlet
 	Set 1	Készlet 1
-	Set 2	Készlet 2
-	Set 3	Készlet 3
-	Set 4	Készlet 4
-	Set 5	Készlet 5
-	Set 6	Készlet 6
-	Set 7	Készlet 7
-	Set 8	Készlet 8
-	Set 9	Készlet 9
 	Set 10	Készlet 10
 	Set 11	Készlet 11
 	Set 12	Készlet 12
@@ -4710,22 +4723,68 @@ prompt-region	Bottom right	Jobb alsó
 	Set 17	Készlet 17
 	Set 18	Készlet 18
 	Set 19	Készlet 19
+	Set 2	Készlet 2
 	Set 20	Készlet 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	Táblagépbevitel
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (alapértelmezett)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	Adatkódolás
-	Lut Format	LUT-formátum
+	Set 3	Készlet 3
+	Set 4	Készlet 4
+	Set 5	Készlet 5
+	Set 6	Készlet 6
+	Set 7	Készlet 7
+	Set 8	Készlet 8
+	Set 9	Készlet 9
+	Set as default	Beállítás alapértelmezettként
 	Shape Id	Alakzat azonosítója
 	Shape Name	Alakzat neve
 	Shape Origin Type	Alakzat eredetének típusa
 	Shape Path	Alakzat görbéje
+	Show Channels in Color	Csatornák megjelenítése színesen
+	Show Statistics	Statisztika megjelenítése
+	Source:	Forrás:
+	Start	Kezdet
+	Steps	Lépések
+	Stylistic Sets	Stíluskészletek
+	Swap colours (X)	Színek cseréje (X)
+	Tablet input	Táblagépbevitel
+	Tabular	Azonos szélességű
+	Tabular Lining	Azonos szélességű álló számjegyek
+	Tabular Oldstyle	Azonos szélességű ugráló számjegyek
 	Text	Szöveg
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoder	Szövegkódoló
+	Text encoders	Szövegkódolók
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	A jelenlegi munkakönyvtár ({path}) nem jelzi a szabad helyét, ezért a PhotoCraft nem tud megállni a megtelése előtt, és a nagy fájlok munkaterületméret-korlát nélkül nem kapnak belőle további helyet. Ez a figyelmeztetés a jelenlegi beállításokra vonatkozik; a fenti módosítások az Alkalmaz vagy az OK gombbal lépnek érvénybe. Állítson be korlátot, vagy használjon helyi lemezt.
+	The fastest and the softest, with colour fringing on fine detail.	A leggyorsabb és a leglágyabb, apró részleteken színes szegéllyel.
+	The image exceeds the AI editing size. Resize the document to continue?	A kép meghaladja az AI-szerkesztési méretet. Átméretezi a dokumentumot a folytatáshoz?
+	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	A folytatáshoz az intelligens objektumot raszterizálni kell. A tartalma ezután nem lesz szerkeszthető. Raszterizálod az intelligens objektumot?
+	Translate prompt to English	Utasítás fordítása angolra
+	Translating prompt to English	Utasítás fordítása angolra
+	Turbo int8	Turbo INT8
+	Twirl Counterclockwise	Csavarás az óramutató járásával ellentétesen
+	Uncached Refresh	Frissítés gyorsítótár nélkül
+	Update PhotoCraft	PhotoCraft frissítése
+	Update PhotoCraft and restart now?	Frissíti a PhotoCraftot és újraindítja most?
+	Updates have not been checked yet.	A frissítések még nem lettek ellenőrizve.
+	Uploading image to ComfyUI	Kép feltöltése a ComfyUI-ba
+	Use these settings for new arrows	Ezek a beállítások legyenek érvényesek az új nyilakra
+	Uses the foreground and background colours.	Az előtér- és a háttérszínt használja.
+	Waiting for ComfyUI generation	Várakozás a ComfyUI-generálásra
+	Whole image	Teljes kép
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (alapértelmezett)
+	You can check for updates again in Help → About PhotoCraft.	Újra kereshet frissítéseket a Súgó → A PhotoCraft névjegye menüben.
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label}: a fájl írása folyamatban, már nem szakítható meg
+	{message} into “{group}”	{message} a(z) „{group}” csoportba
+	{ok} written to {dir}	{ok} kiírva ide: {dir}
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	A(z) „{group}” ecsetcsoport már tartalmaz saját ecseteket (darabszám: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	A(z) „{group}” színátmenetcsoport már létezik (színátmenetek száma: {n}).
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} képi erőforrás kiírása sikertelen
+prompt-region	Bottom center	Lent középen
+prompt-region	Bottom left	Bal alsó
+prompt-region	Bottom right	Jobb alsó
+prompt-region	Center	Közép
+prompt-region	Middle left	Bal középső
+prompt-region	Middle right	Jobb középső
+prompt-region	Top center	Fent középen
+prompt-region	Top left	Bal felső
+prompt-region	Top right	Jobb felső

@@ -29,7 +29,7 @@
 
 # Gradient Editor window, opened from the options bar's gradient swatch.
 
-# Labels added on main after this catalog (depth labels, Wayland drop, profiles, Camera Raw, Patch tool, rendering mode)
+# Labels added on main after this catalog (depth labels, Wayland drop, profiles, RAW Develop, Patch tool, rendering mode)
 
 # Warp grid presets (#388)
 
@@ -319,7 +319,7 @@
 	Plugins…	Plug-in…
 	Type…	Teks…
 	Enhanced Controls…	Kontrol Lanjutan…
-	Camera Raw…	Camera Raw…
+	RAW Defaults…	Default RAW…
 	Raw Defaults…	Default Raw…
 	Integrations…	Integrasi…
 	AI Integrations…	Integrasi AI…
@@ -365,6 +365,8 @@
 	Match Color…	Cocokkan Warna…
 	Replace Color…	Ganti Warna…
 	Equalize	Ekualisasi
+	Equalize Selected Area Only	Ekualisasi seleksi saja
+	Equalize Entire Image Based On Selected Area	Ekualisasi seluruh gambar berdasarkan seleksi
 	Auto Tone	Auto Tone
 	Auto Contrast	Auto Kontras
 	Auto Color	Auto Warna
@@ -401,8 +403,8 @@
 	Artboard…	Artboard…
 	Artboard from Group…	Artboard dari Grup…
 	Artboard from Layers…	Artboard dari Layer…
-	Layer via Copy	Layer via Salin
-	Layer via Cut	Layer via Potong
+	Layer Via Copy	Layer via Salin
+	Layer Via Cut	Layer via Potong
 	Layer From Background…	Layer dari Background…
 	Layer from Background…	Layer dari Background…
 	Background From Layer	Background dari Layer
@@ -614,7 +616,6 @@
 	Deselect	Batalkan Seleksi
 	Reselect	Pilih Ulang
 	Inverse	Kebalikan
-	Inverse Selection	Balik Seleksi
 	Similar	Serupa
 	Color Range…	Rentang Warna…
 	Focus Area…	Area Fokus…
@@ -639,7 +640,7 @@
 	Last Filter	Filter Terakhir
 	Filter Gallery…	Galeri Filter…
 	Adaptive Wide Angle…	Adaptive Wide Angle…
-	Camera Raw Filter…	Filter Camera Raw…
+	RAW Develop Filter…	Filter Pengembangan RAW…
 	Liquify…	Liquify…
 	Vanishing Point…	Vanishing Point…
 	Blur	Blur
@@ -735,8 +736,8 @@
 	Legacy Macintosh RGB (Gamma 1.8)	RGB Macintosh Lawas (Gamma 1.8)
 	Internet Standard RGB (sRGB)	RGB Standar Internet (sRGB)
 	Monitor RGB	RGB Monitor
-	Color Blindness — Protanopia-type	Buta Warna — Tipe Protanopia
-	Color Blindness — Deuteranopia-type	Buta Warna — Tipe Deuteranopia
+	Color Blindness - Protanopia-type	Buta Warna - Tipe Protanopia
+	Color Blindness - Deuteranopia-type	Buta Warna - Tipe Deuteranopia
 	Zoom In	Perbesar
 	Zoom Out	Perkecil
 	Fit on Screen	Pas di Layar
@@ -825,7 +826,7 @@
 	Consolidate All to Tabs	Gabungkan Semua ke Tab
 	Float in Window	Mengambang di Jendela
 	Float All in Windows	Mengambangkan Semua di Jendela
-	New Window	Jendela Baru untuk Dokumen
+	New Window	Jendela Baru
 	Workspace	Ruang Kerja
 	Essentials	Esensial
 	Graphic and Web	Grafis dan Web
@@ -887,6 +888,12 @@
 	Timeline	Timeline
 	Tool Presets	Preset Alat
 	Tools	Alat
+	Contextual Task Bar	Bilah Tugas Kontekstual
+	Hide bar	Sembunyikan bilah
+	Reset bar position	Atur ulang posisi bilah
+	Pin bar position	Sematkan posisi bilah
+	Move bar	Pindahkan bilah
+	More options	Opsi lainnya
 	About PhotoCraft	Tentang PhotoCraft
 	PhotoCraft Website	Situs Web PhotoCraft
 	PhotoCraft on GitHub	PhotoCraft di GitHub
@@ -1003,8 +1010,8 @@
 	Load Settings…	Muat Pengaturan…
 	Save these settings as a Camera Raw .xmp file	Simpan pengaturan ini sebagai berkas .xmp Camera Raw
 	Load settings from a Camera Raw .xmp file	Muat pengaturan dari berkas .xmp Camera Raw
-	Loaded Camera Raw settings from {file}	Pengaturan Camera Raw dimuat dari {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Pengaturan Camera Raw dimuat dari {file} ({n} tidak didukung)
+	Loaded RAW Develop settings from {file}	Pengaturan Pengembangan RAW dimuat dari {file}
+	Loaded RAW Develop settings from {file} ({n} not supported)	Pengaturan Pengembangan RAW dimuat dari {file} ({n} tidak didukung)
 	Begin recording	Mulai merekam
 	Bend:	Lengkung:
 	Bicubic	Bicubic
@@ -1032,7 +1039,7 @@
 	Brush Reconstruct Options	Opsi Rekonstruksi Kuas
 	Brush Tool Options	Opsi Alat Kuas
 	Cache Level:	Level Cache:
-	Camera Raw isn't open	Camera Raw tidak terbuka
+	RAW Develop isn't open	Pengembangan RAW tidak terbuka
 	Cancel	Batal
 	Cancel (Esc)	Batal (Esc)
 	Manage submitted jobs in the system print queue	Kelola pekerjaan yang dikirim dalam antrean cetak sistem
@@ -1065,7 +1072,7 @@
 	Click to add a point · drag off or {key}-click or Delete to remove	Klik untuk menambah titik · seret keluar atau {key}-klik atau Delete untuk menghapus
 	Click to apply, {key}-click to clear overrides, double-click for Style Options	Klik untuk menerapkan, {key}-klik untuk menghapus override, klik dua kali untuk Opsi Gaya
 	Click to edit the gradient	Klik untuk mengedit gradien
-	Click to restore the current colour	Klik untuk memulihkan warna saat ini
+	Click to restore the current color	Klik untuk memulihkan warna saat ini
 	Click to zoom in  ·  {key}-click to zoom out  ·  drag right/left to zoom in/out	Klik untuk zoom in  ·  {key}-klik untuk zoom out  ·  seret kanan/kiri untuk zoom in/out
 	Click with the Note tool to add a note.	Klik dengan alat Catatan untuk menambah catatan.
 	Click: corner · Drag: smooth · Click first point: close · {key} finish · Esc cancel	Klik: sudut · Seret: halus · Klik titik pertama: tutup · {key} selesai · Esc batal
@@ -1148,7 +1155,7 @@
 	Darks	Gelap
 	Data Sets	Data Set
 	Default	Default
-	Default colours (D)	Warna default (D)
+	Default Foreground and Background Colors (D)	Warna default (D)
 	Default printer	Printer default
 	Default restored.	Default dipulihkan.
 	Define	Tentukan
@@ -1425,7 +1432,7 @@
 	Opacity Jitter	Jitter Opasitas
 	Opacity:	Opasitas:
 	Open a document to define variables.	Buka dokumen untuk menentukan variabel.
-	Open a document to select a colour range.	Buka dokumen untuk memilih rentang warna.
+	Open a document to select a color range.	Buka dokumen untuk memilih rentang warna.
 	Open a document to use the timeline.	Buka dokumen untuk memakai timeline.
 	Optical	Optik
 	Optimized	Dioptimalkan
@@ -1501,7 +1508,6 @@
 	Purity	Kemurnian
 	Quality	Kualitas
 	Quick Actions	Aksi Cepat
-	Quick Export As PNG	Ekspor Cepat Sebagai PNG
 	Radial Gradient	Gradien Radial
 	Radius	Radius
 	Radius:	Radius:
@@ -1642,7 +1648,7 @@
 	Subtract from Sample	Kurangi dari Sampel
 	Subtract from selection  ({key})	Kurangi dari seleksi  ({key})
 	Suggestions:	Saran:
-	Swap colours (X)	Tukar warna (X)
+	Switch Foreground and Background Colors (X)	Tukar warna (X)
 	Swaps height and width	Tukar tinggi dan lebar
 	Switch between free transform and warp modes	Beralih antara mode transformasi bebas dan warp
 	Switch theme	Ganti tema
@@ -1744,7 +1750,7 @@
 	Choke	Choke
 	Classic	Klasik
 	Click to add text	Klik untuk menambah teks
-	Click to fill similar colours	Klik untuk mengisi warna serupa
+	Click to fill similar colors	Klik untuk mengisi warna serupa
 	Clone Stamp Tool	Alat Clone Stamp
 	Color Burn	Color Burn
 	Color Dodge	Color Dodge
@@ -1845,6 +1851,7 @@
 	Move Tool	Alat Pindah
 	Could not use the move tool because the layer is locked.	Tidak dapat menggunakan alat Pindahkan karena layer terkunci.
 	Could not complete the Free Transform command because the layer is locked.	Tidak dapat menyelesaikan perintah Transformasi Bebas karena layer terkunci.
+	Could not transform because the layer is locked.	Tidak dapat mentransformasi karena layer terkunci.
 	Multiply	Multiply
 	My Brushes	Kuas Saya
 	Neutrals	Netral
@@ -1903,7 +1910,7 @@
 	Rectangular Marquee Tool	Alat Rectangular Marquee
 	Reds	Merah
 	Reflected	Pantulan
-	Sample: foreground colour	Sampel: warna foreground
+	Sample: foreground color	Sampel: warna foreground
 	Sampled Colors	Warna Sampel
 	Satin	Satin
 	Save Pixel Aspect Ratio	Simpan Rasio Aspek Piksel
@@ -1942,7 +1949,6 @@
 	Transfer	Transfer
 	Triangle Tool	Alat Triangle
 	Unsaved changes	Perubahan belum disimpan
-	Uses the foreground and background colours.	Memakai warna foreground dan background.
 	Web	Web
 	Web Large	Web Besar
 	Web Minimum	Web Minimum
@@ -1977,6 +1983,7 @@
 	Allow scripts to connect	Izinkan skrip terhubung
 	Always	Selalu
 	Always create smart objects when placing	Selalu buat smart object saat menempatkan
+	Skip transform when placing	Lewati transformasi saat menempatkan
 	Animated zoom	Zoom beranimasi
 	Apply auto tone	Terapkan auto tone
 	Ask	Tanya
@@ -1994,7 +2001,7 @@
 	Brush preview color	Warna pratinjau kuas
 	Cache levels	Level cache
 	Cache tile size	Ukuran tile cache
-	Camera Raw Defaults	Default Camera Raw
+	RAW Defaults	Default RAW
 	Canvas border	Border kanvas
 	Show canvas dots	Tampilkan titik kanvas
 	Clip thumbnails to layer bounds	Pangkas thumbnail ke batas layer
@@ -2081,7 +2088,6 @@
 	Never	Tidak pernah
 	Normal tip	Ujung normal
 	Open as smart object	Buka sebagai smart object
-	Open in camera raw	Buka di Camera Raw
 	Open documents as tabs	Buka dokumen sebagai tab
 	Overscroll	Overscroll
 	Performance	Performa
@@ -2210,7 +2216,7 @@
 	Graphics	Grafis
 	Reset GPU Backend	Reset Backend GPU
 	Applies at next launch.	Berlaku saat dibuka berikutnya.
-	Click to sample the foreground colour  ·  {key}-click for background	Klik untuk mengambil sampel warna foreground  ·  {key}-klik untuk background
+	Click to sample the foreground color  ·  {key}-click for background	Klik untuk mengambil sampel warna foreground  ·  {key}-klik untuk background
 	{key}-click to set the source	{key}-klik untuk mengatur sumber
 	{key} to subtract	{key} untuk mengurangi
 	Clone source {n} ({key}-click with Clone Stamp to set)	Sumber clone {n} ({key}-klik dengan Clone Stamp untuk mengatur)
@@ -2268,7 +2274,7 @@
 	Gradient Options	Opsi Gradien
 	Align with layer	Sejajarkan dengan layer
 	Reset Alignment	Reset Penyelarasan
-	Centre the gradient (offset 0, 0)	Tengahkan gradien (offset 0, 0)
+	Center the gradient (offset 0, 0)	Tengahkan gradien (offset 0, 0)
 	Gradient Editor	Editor Gradien
 	Gradient picker	Pemilih gradien
 	Save As Preset	Simpan sebagai Preset
@@ -2300,7 +2306,7 @@
 	Vulkan	Vulkan
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	Tidak ada path untuk dibuat seleksi: gambar dengan alat Pen atau pilih salah satu di panel Path.
 	Cancel opening	Batalkan pembukaan
-	Cancelled opening {name}	Pembukaan {name} dibatalkan
+	Canceled opening {name}	Pembukaan {name} dibatalkan
 	Damaged Photoshop document	Dokumen Photoshop rusak
 	The document “{name}” may be damaged.	Dokumen “{name}” mungkin rusak.
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	Beberapa layer, piksel, atau mask tidak dapat dibaca. Lanjutkan membukanya?
@@ -2310,7 +2316,7 @@
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	Dokumen “{name}” memiliki profil warna tertanam yang tidak cocok dengan working space {mode} saat ini.
 	Working: {working}	Working space: {working}
 	Developing {name}	Mengembangkan {name}
-	Cancelled {label}	{label} dibatalkan
+	Canceled {label}	{label} dibatalkan
 	Esc to cancel	Esc untuk batal
 	Opened {name}	Dibuka: {name}
 	Opening {name}	Membuka {name}
@@ -2318,7 +2324,7 @@
 	Saving {name}	Menyimpan {name}
 	Saving {percent}	Menyimpan {percent}
 	A save to {name} is still running; try again when it finishes	Penyimpanan ke {name} masih berjalan; coba lagi setelah selesai
-	{label} is writing the file and can no longer be cancelled	{label} sedang menulis berkas dan tidak dapat dibatalkan lagi
+	{label} is writing the file and can no longer be canceled	{label} sedang menulis berkas dan tidak dapat dibatalkan lagi
 	Opening {name}…	Membuka {name}…
 	Opening…	Membuka…
 	Reading…	Membaca…
@@ -2482,8 +2488,6 @@
 	Roman Hanging Punctuation	Tanda Baca Menggantung Roman
 	Avoid Widows/Orphans	Hindari Widow/Orphan
 	Compose	Komposisi
-	Adobe Single-line Composer	Adobe Single-line Composer
-	Adobe Every-line Composer	Adobe Every-line Composer
 	Justification	Justifikasi
 	Word Spacing	Spasi Kata
 	Letter Spacing	Spasi Huruf
@@ -2501,6 +2505,7 @@
 	Path to Illustrator…	Path ke Illustrator…
 	Make Work Path	Buat Work Path
 	Make Selection	Buat Seleksi
+	Make Shape	Buat Bentuk
 	Fill Path	Isi Path
 	Stroke Path	Stroke Path
 	Clipping Path	Clipping Path
@@ -2681,7 +2686,7 @@
 	Pixel	Piksel
 	Adjustment	Penyesuaian
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	Seret (lasso) atau klik titik (polygonal) · {add} tambah · {sub} kurangi
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Seret kotak crop · seret di dalam untuk memindah · tepi mengubah ukuran (rasio {ratio}, tengah {centre}) · Space memindah saat menggambar · panah menggeser · X menukar orientasi · {commit} menerapkan · Esc batal
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Seret kotak crop · seret di dalam untuk memindah · tepi mengubah ukuran (rasio {ratio}, tengah {centre}) · Space memindah saat menggambar · panah menggeser · X menukar orientasi · {commit} menerapkan · Esc batal
 	{mode} Color · {bits} bit	Warna {mode} · {bits} bit
 	Drag to move the layer	Seret untuk memindah layer
 	Scrubby Zoom	Zoom Scrubby
@@ -2737,7 +2742,6 @@
 	Intersect with	Irisan dengan
 	Capture Comp	Tangkap Comp
 	No Layer Comps	Tidak Ada Layer Comp
-	Adobe PDF Presets…	Preset Adobe PDF…
 	3D…	3D…
 	Technology Previews…	Pratinjau Teknologi…
 	Background from Layer	Background dari Layer
@@ -2813,8 +2817,8 @@
 	Tone Histogram	Histogram Nada
 	Show Selected Region	Tampilkan Wilayah Terpilih
 cameraRaw	Light	Cahaya
-	Camera Raw Filter ({layer})	Filter Camera Raw ({layer})
-	Camera Raw ({name})	Camera Raw ({name})
+	RAW Develop Filter ({layer})	Filter Pengembangan RAW ({layer})
+	RAW Develop ({name})	Pengembangan RAW ({name})
 cameraRaw	Lights	Nada Terang
 cameraRaw	Darks	Nada Gelap
 cameraRaw	Blacks	Hitam
@@ -2875,7 +2879,7 @@ cameraRaw	Blending	Pembauran
 	Discard Layers and Save a Copy	Buang Layer dan Simpan Salinan
 	Don't show again	Jangan tampilkan lagi
 	Save failed: {error}	Gagal menyimpan: {error}
-	Save cancelled	Penyimpanan dibatalkan
+	Save canceled	Penyimpanan dibatalkan
 	Couldn't place {name}: {error}	Tidak dapat menempatkan {name}: {error}
 	Magnetic Lasso Tool	Alat Magnetic Lasso
 	Frequency	Frekuensi
@@ -3004,7 +3008,7 @@ fontWeight	Italic	Miring
 	Impressionist	Impresionis
 	Rotate View Tool	Alat Putar Tampilan
 	Reset View	Atur Ulang Tampilan
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Seret di sekitar pusat untuk memutar tampilan  ·  Shift membatasi ke 15°
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	Seret di sekitar pusat untuk memutar tampilan  ·  Shift membatasi ke 15°
 	Dual Axis	Sumbu Ganda
 	Diagonal	Diagonal
 	Transform Symmetry	Transformasi Simetri
@@ -3019,8 +3023,8 @@ fontWeight	Italic	Miring
 	All Layers No Adjustments	Semua Layer Tanpa Penyesuaian
 	Current & Below No Adjustments	Saat Ini & Di Bawahnya Tanpa Penyesuaian
 	Show Sampling Ring	Tampilkan Cincin Sampel
-	Out of gamut for printing: click for the nearest printable colour	Di luar gamut cetak: klik untuk warna cetak terdekat
-	Not a web colour: click for the nearest web colour	Bukan warna web: klik untuk warna web terdekat
+	Out of gamut for printing: click for the nearest printable color	Di luar gamut cetak: klik untuk warna cetak terdekat
+	Not a web color: click for the nearest web color	Bukan warna web: klik untuk warna web terdekat
 	Color to Alpha…	Warna ke Alpha…
 	Transparency Threshold	Ambang transparansi
 	Opacity Threshold	Ambang opasitas
@@ -3317,7 +3321,7 @@ curves	Smooth	Haluskan
 	Auto Add/Delete	Tambah/Hapus Otomatis
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Jangan aktifkan juga Gambar Cermin di Pengaturan Cetak: kedua pembalikan saling meniadakan.
 	Print Settings…	Pengaturan Cetak…
-	Remember to turn off the printer's own colour management in Print Settings…	Ingat untuk menonaktifkan pengelolaan warna milik printer di Pengaturan Cetak…
+	Remember to turn off the printer's own color management in Print Settings…	Ingat untuk menonaktifkan pengelolaan warna milik printer di Pengaturan Cetak…
 	Sent to {printer}	Dikirim ke {printer}
 	set in Print Settings…	diatur di Pengaturan Cetak…
 	ICO is limited to 256 × 256 pixels	ICO dibatasi hingga 256 × 256 piksel
@@ -3450,12 +3454,12 @@ curves	Smooth	Haluskan
 	Decrease Brush Hardness	Kurangi kekerasan kuas
 	Increase Brush Hardness	Tambah kekerasan kuas
 	Demosaic	Demosaik
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Cara mosaik filter warna kamera diisi. Diterapkan saat berkas dibuka; pratinjau menampilkan metode yang dipakai saat dibuka.
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Cara mosaik filter warna kamera diisi. Diterapkan saat berkas dibuka; pratinjau menampilkan metode yang dipakai saat dibuka.
 	AHD (adaptive homogeneity)	AHD (homogenitas adaptif)
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: tepi paling bersih dan pinggiran warna paling sedikit, paling lambat.
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Interpolasi terkoreksi gradien: tajam dan cepat, dengan sedikit pinggiran warna pada detail halus.
-	The fastest and the softest, with colour fringing on fine detail.	Paling cepat dan paling lembut, dengan pinggiran warna pada detail halus.
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Hirakawa–Parks: tepi paling bersih dan pinggiran warna paling sedikit, paling lambat.
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	Interpolasi terkoreksi gradien: tajam dan cepat, dengan sedikit pinggiran warna pada detail halus.
+	The fastest and the softest, with color fringing on fine detail.	Paling cepat dan paling lembut, dengan pinggiran warna pada detail halus.
 	“{name}” already exists. Replace it?	“{name}” sudah ada. Ganti?
 	The name in the save dialog was “{name}”.	Nama di dialog simpan adalah “{name}”.
 	Previous Brush	Kuas sebelumnya
@@ -3515,8 +3519,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Grayscale Ramp	Gradasi Grayscale
 	Current Colors	Warna Saat Ini
 	Make Ramp Web Safe	Jadikan Gradasi Aman untuk Web
+	Scroll All Windows	Gulir Semua Jendela
 	The path was kept as the Work Path	Path dipertahankan sebagai Work Path
 	The path was discarded	Path dibuang
+# Art History Brush (#213).
 	Art History Brush Tool	Alat Kuas riwayat artistik
 	Tight Short	Rapet pendek
 	Tight Medium	Rapet sedang
@@ -3565,198 +3571,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Solid Color	Warna Solid
 	Tint Color	Warna Tint
 	Edit Brush…	Edit Kuas…
-	Move Up	Pindah ke atas
-	Move Down	Pindah ke bawah
-	All shortcuts reset to Photoshop defaults.	Semua pintasan direset ke default Photoshop.
-	Import Photoshop brushes (.abr)	Impor kuas Photoshop (.abr)
-	Load Photoshop brushes (.abr)	Muat kuas Photoshop (.abr)
-	Default Photoshop Size	Ukuran Default Photoshop
-	Grid view	Tampilan kisi
-	List view	Tampilan daftar
-	The current gradient (pick one in Window › Gradients)	Gradien saat ini (pilih di Jendela › Gradien)
-	Do you want to save you made to “{name}” before quitting?	Mau simpan perubahan yang kamu buat di “{name}” sebelum keluar?
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Seret kotak crop · seret di dalam untuk memindah · tepi mengubah ukuran (rasio {ratio}, tengah {centre}) · Space memindah saat menggambar · {commit} menerapkan · Esc batal
-	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Seret dan lepas berkas native belum didukung di Wayland. Gunakan Berkas › Buka, atau jalankan PhotoCraft di XWayland dengan `WAYLAND_DISPLAY= photocraft`.
-	Use File › Open to open an image.	Gunakan Berkas › Buka untuk membuka gambar.
-	Prompt Edit	Edit dengan prompt
-	Generative Fill	Isian generatif
-	Describe changes to the whole image	Jelaskan perubahan untuk seluruh gambar
-	Describe changes, or leave blank to remove	Jelaskan perubahan atau kosongkan untuk menghapus
-	ComfyUI is unavailable in this frontend	ComfyUI tidak tersedia di lingkungan ini
-	Comfyui url	URL server ComfyUI
-	Prompt Edit…	Edit dengan prompt…
-	Generative Fill…	Isian generatif…
-	Preparing image and selection	Menyiapkan gambar dan pilihan
-	Uploading image to ComfyUI	Mengunggah ke ComfyUI
-	Waiting for ComfyUI generation	Menunggu generasi ComfyUI
-	Downloading generated image	Mengunduh hasil
-	Adding generated layer	Menambahkan lapisan hasil
-	Prompt Generate	Buat dengan prompt
-	Prompt Generate…	Buat dengan prompt…
-	Regenerate AI Result	Buat ulang hasil AI
-	Regenerate	Buat ulang
-	Describe the image to generate	Jelaskan gambar yang ingin dibuat
-	Sampling steps	Langkah sampling
-	Reset steps to model default	Kembalikan langkah ke bawaan model
-	Translate prompt to English	Terjemahkan prompt ke bahasa Inggris
-	Prompt translation model	Model penerjemahan prompt
-	Prompt information	Informasi prompt
-	AI Prompt History	Riwayat prompt AI
-	Original prompt	Prompt asli
-	English translation	Terjemahan bahasa Inggris
-	No prompt (remove)	Tanpa prompt (hapus)
-	All nine regions	Kesembilan wilayah
-	No AI prompts recorded	Belum ada prompt AI yang tercatat
-	Previous	Sebelumnya
-	Next	Berikutnya
-	Copy original prompt	Salin prompt asli
-	Copy English translation	Salin terjemahan bahasa Inggris
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	Model ComfyUI
-	Comfyui translate prompt	Terjemahkan prompt ke bahasa Inggris
-	Comfyui translation model	Model penerjemahan prompt
-	AI model settings	Pengaturan model AI
-	ComfyUI port	Port ComfyUI
-	Copy negative prompt	Salin prompt negatif
-	Custom model filenames (one per line)	Nama berkas model kustom (satu per baris)
-	Negative prompt	Prompt negatif
-	One .safetensors filename per line. Compatibility is not checked.	Satu nama berkas .safetensors per baris. Kompatibilitas tidak diperiksa.
-	Text encoders	Encoder teks
-	Comfyui custom encoders	Encoder kustom ComfyUI
-	Comfyui custom model	Model kustom ComfyUI
-	Comfyui custom models	Model-model kustom ComfyUI
-	Comfyui model settings	Pengaturan model ComfyUI
-	PhotoCraft update available	Pembaruan PhotoCraft tersedia
-	Update PhotoCraft and restart now?	Perbarui PhotoCraft dan mulai ulang sekarang?
-	Automatically check for updates	Periksa pembaruan secara otomatis
-	Check for updates now	Periksa pembaruan sekarang
-	You can check for updates again in Help → About PhotoCraft.	Anda dapat memeriksa pembaruan lagi di Bantuan → Tentang PhotoCraft.
-	Downloading update…	Mengunduh pembaruan…
-	Update PhotoCraft	Perbarui PhotoCraft
-	Dismiss update	Tutup pemberitahuan pembaruan
-	Match Surrounding Colors	Sesuaikan dengan Warna Sekitar
-	Adjust colors with Poisson blending	Sesuaikan warna dengan pencampuran Poisson
-	Compare with Original Generation	Bandingkan dengan Hasil Generasi Awal
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Menyesuaikan warna dengan lingkungan yang direkam saat generasi. Kekuatan 0 mengembalikan hasil generasi awal.
-	Attach Reference Image	Lampirkan gambar referensi
-	Remove Reference Image	Hapus gambar referensi
-	Reference Image	Gambar referensi
-	Resize for AI editing	Ubah ukuran untuk penyuntingan AI
-	The image exceeds the AI editing size. Resize the document to continue?	Gambar melebihi ukuran penyuntingan AI. Ubah ukuran dokumen untuk melanjutkan?
-	Arrange Panels	Susun Panel
-	Close Other Panels in Group	Tutup Panel Lain dalam Grup
-	Collapse to Icons	Ciutkan ke Ikon
-	Minimize Panel	Minimalkan Panel
-	Open Panel in Own Window	Buka Panel di Jendela Terpisah
-	Artboards	Artboard
-	CPU Rendering	Rendering CPU
-	Calculating…	Menghitung…
-	Click to refresh histogram with uncached data	Klik untuk menyegarkan histogram dengan data tanpa cache
-	Count:	Jumlah:
-	Drawn on the CPU: {reason}. Click for System Info.	Digambar oleh CPU: {reason}. Klik untuk Info Sistem.
-	Level:	Tingkat:
-	Percentile:	Persentil:
-	Show Channels in Color	Tampilkan Kanal Berwarna
-	Show Statistics	Tampilkan Statistik
-	Source:	Sumber:
-	Uncached Refresh	Segarkan Tanpa Cache
-	…	…
-	External cutout	Penghapusan Latar Eksternal
-	External erase	Penghapusan Eksternal
-	No matching fonts	Tidak ada font yang cocok
-	Locked	Terkunci
-	Drag to move the selected path	Seret untuk memindahkan jalur yang dipilih
-	Twirl Counterclockwise	Putar berlawanan arah jarum jam
-
-# Fork portable update information
-	PhotoCraft Updates	Pembaruan PhotoCraft
-	Checking for updates…	Memeriksa pembaruan…
-	Open Download Page	Buka Halaman Unduhan
-	PhotoCraft is up to date.	PhotoCraft sudah versi terbaru.
-	Could not check for updates.	Tidak dapat memeriksa pembaruan.
-	Updates have not been checked yet.	Pembaruan belum diperiksa.
-	Check Again	Periksa Lagi
-	Installed version: {version}	Versi terpasang: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} tersedia.
-	Answer the open import question first, then import this file again.	Jawab dahulu pertanyaan impor yang terbuka, lalu impor file ini lagi.
-	Import as New Group	Impor sebagai Grup Baru
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Impor sebagai Grup Baru mempertahankan “{group}” dan menambahkan file sebagai grup baru di sebelahnya.
-	No import is waiting. Import the file again.	Tidak ada impor yang menunggu. Impor file lagi.
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Ganti terlebih dahulu menghapus semua isi “{group}”, termasuk preset yang Anda edit atau pindahkan ke sana. Tindakan ini tidak dapat dibatalkan.
-	{message} into “{group}”	{message} ke dalam “{group}”
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Grup kuas “{group}” sudah berisi {n} kuas milik Anda.
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Grup gradien “{group}” sudah ada ({n} gradien).
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	Opsi kepala panah
-	Arrowheads	Kepala panah
-	Concavity	Kecekungan
-	End	Akhir
-	Set as default	Tetapkan sebagai default
-	Start	Awal
-	Use these settings for new arrows	Gunakan pengaturan ini untuk panah baru
-	Length	Panjang
-
-# Upstream 0.20.2: batch, layer filters, memory admission and numeral styles.
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Perintah dibatalkan atau dihentikan selama pemrosesan batch. Lanjutkan ke berkas berikutnya atau berhenti?
-	Attribute	Atribut
-	Batch	Pemrosesan Batch
-	Batch preview	Pratinjau batch
-	Data Sets as Files is unavailable on the web	Ekspor Kumpulan Data sebagai Berkas tidak tersedia di web
-	Effect	Efek
-	Empty	Kosong
-	Filter for embedded smart objects	Filter objek pintar yang disematkan
-	Filter for linked smart objects that are missing	Filter objek pintar dengan berkas tertaut yang hilang
-	Filter for smart objects linked locally	Filter objek pintar yang ditautkan secara lokal
-	High Memory Photoshop Document	Dokumen Photoshop dengan Penggunaan Memori Tinggi
-	Image Compression	Kompresi Gambar
-	LZW	LZW
-	Layer Effects	Efek Lapisan
-	Lining	Angka Sejajar
-	Linked	Tertaut
-	No Adv. Blending	Tanpa Pencampuran Lanjutan
-	No Layer Effects	Tanpa Efek Lapisan
-	No Layer Mask	Tanpa Masker Lapisan
-	No Vector Mask	Tanpa Masker Vektor
-	Not Clipped	Tidak Terkliping
-	Not Empty	Tidak Kosong
-	Not Linked	Tidak Tertaut
-	Not Locked	Tidak Terkunci
-	Not Visible	Tidak Terlihat
-	Numerals	Angka
-	Open anyway	Tetap buka
-	Opening this document uses more memory and may slow down your computer or other running applications.	Membuka dokumen ini menggunakan lebih banyak memori dan dapat memperlambat komputer atau aplikasi lain yang sedang berjalan.
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Membuka “{name}” diperkirakan memerlukan memori {est} GiB ({avail} GiB tersedia).
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Membuka “{name}” diperkirakan memerlukan memori {est} GiB. Memori yang tersedia tidak dapat diukur.
-	Proportional	Proporsional
-	Proportional Lining	Angka Sejajar Proporsional
-	Proportional Oldstyle	Angka Gaya Lama Proporsional
-	Save Image Pyramid	Simpan Piramida Gambar
-	Save Transparency	Simpan Transparansi
-	Tabular	Lebar Tetap
-	Tabular Lining	Angka Sejajar Lebar Tetap
-	Tabular Oldstyle	Angka Gaya Lama Lebar Tetap
-	ZIP	ZIP
-	{ok} written to {dir}	{ok} ditulis ke {dir}
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: keluaran {n} Aset Gambar gagal
 
 # Action Stop message (#8386)
 	Message	Pesan
@@ -3770,6 +3584,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	seconds	detik
 	Create a single history state	Buat satu status riwayat
 	Generator enabled	Generator aktif
+	Move Up	Pindah ke atas
+	Move Down	Pindah ke bawah
+	Grid view	Tampilan kisi
+	List view	Tampilan daftar
 	On your computer	Di komputer Anda
 	New file	File baru
 	Learn	Pelajari
@@ -3809,28 +3627,225 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Pick a different document for each channel.	Pilih dokumen yang berbeda untuk setiap channel.
 	A picked document is no longer open.	Salah satu dokumen yang dipilih sudah tidak terbuka.
 	A picked document is no longer a grayscale document of the same size.	Salah satu dokumen yang dipilih bukan lagi dokumen grayscale dengan ukuran yang sama.
+	Netscape Gray	Abu-abu Netscape
+# Move tool options bar (#11381)
+	Align top edges	Ratakan tepi atas
+	Align vertical centers	Ratakan pusat vertikal
+	Align bottom edges	Ratakan tepi bawah
+	Distribute vertically	Distribusikan secara vertikal
+	Distribute horizontally	Distribusikan secara horizontal
+	Show layer bounds on hover	Tampilkan batas layer saat kursor di atasnya
+	Expand layer group on click	Perluas grup layer saat diklik
+	Show hover bounds from Layers	Tampilkan batas saat kursor di atas dari Layer
+	Saved RAW Develop settings to {file}	Pengaturan Pengembangan RAW disimpan ke {file}
+	Save the settings to each raw's sidecar without opening it	Simpan pengaturan ke file sidecar setiap raw tanpa membukanya
+	No settings saved: these raws can't keep a sidecar here	Tidak ada yang disimpan: raw ini tidak dapat memiliki file sidecar di sini
+	Some settings could not be saved; the raws stay open	Beberapa pengaturan tidak dapat disimpan; raw tetap terbuka
+	Nothing to save: these raws are at their default settings	Tidak ada yang perlu disimpan: raw ini memakai pengaturan default
+# Artboard tool options bar (#11385)
+	Distribute Widths	Distribusi lebar
+	Distribute Heights	Distribusi tinggi
+	Auto-nest Layers	Sarangkan layer secara otomatis
+	Auto-size Canvas	Ubah ukuran kanvas otomatis
+	Keep Relative Position During Layer Reordering	Pertahankan posisi relatif saat mengurutkan ulang layer
+	Shrinkwrap Canvas on Save	Kecilkan kanvas sesuai konten saat menyimpan
 
-# Placement and memory-admission notices from upstream 0.21.0.
+# RAW Develop feature labels
+	RAW Develop	Pengembangan RAW
+	RAW Develop Filter	Filter Pengembangan RAW
+
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Perintah dibatalkan atau dihentikan selama pemrosesan batch. Lanjutkan ke berkas berikutnya atau berhenti?
 	A file is still being placed; try again when it has finished.	Sebuah berkas masih sedang ditempatkan; coba lagi setelah selesai.
+	AI Prompt History	Riwayat prompt AI
+	AI model settings	Pengaturan model AI
+	Adding generated layer	Menambahkan lapisan hasil
+	Adjust colors with Poisson blending	Sesuaikan warna dengan pencampuran Poisson
+	Adobe Every-line Composer	Adobe Every-line Composer
+	Adobe PDF Presets…	Preset Adobe PDF…
+	Adobe Single-line Composer	Adobe Single-line Composer
+	All nine regions	Kesembilan wilayah
+	All shortcuts reset to Photoshop defaults.	Semua pintasan direset ke default Photoshop.
+	Anime fusal	Anime FUSAL
+	Answer the open import question first, then import this file again.	Jawab dahulu pertanyaan impor yang terbuka, lalu impor file ini lagi.
+	Arrange Panels	Susun Panel
+	Arrowhead options	Opsi kepala panah
+	Arrowheads	Kepala panah
+	Artboards	Artboard
+	Attach Reference Image	Lampirkan gambar referensi
+	Attribute	Atribut
+	Automatically check for updates	Periksa pembaruan secara otomatis
+	Base64	Base64
+	Batch	Pemrosesan Batch
+	Batch preview	Pratinjau batch
+	CPU Rendering	Rendering CPU
+	Calculating…	Menghitung…
+	Camera Raw ({name})	Camera Raw ({name})
+	Camera Raw Defaults	Default Camera Raw
+	Camera Raw Filter ({layer})	Filter Camera Raw ({layer})
+	Camera Raw Filter…	Filter Camera Raw…
+	Camera Raw isn't open	Camera Raw tidak terbuka
+	Camera Raw…	Camera Raw…
+	Cancelled opening {name}	Pembukaan {name} dibatalkan
 	Cancelled placing {name}	Penempatan {name} dibatalkan
+	Cancelled {label}	{label} dibatalkan
+	Centre the gradient (offset 0, 0)	Tengahkan gradien (offset 0, 0)
+	Check Again	Periksa Lagi
+	Check for updates now	Periksa pembaruan sekarang
+	Checking for updates…	Memeriksa pembaruan…
+	Click to fill similar colours	Klik untuk mengisi warna serupa
+	Click to refresh histogram with uncached data	Klik untuk menyegarkan histogram dengan data tanpa cache
+	Click to restore the current colour	Klik untuk memulihkan warna saat ini
+	Click to sample the foreground colour  ·  {key}-click for background	Klik untuk mengambil sampel warna foreground  ·  {key}-klik untuk background
+	Close Other Panels in Group	Tutup Panel Lain dalam Grup
+	Collapse to Icons	Ciutkan ke Ikon
+	Color Blindness — Deuteranopia-type	Buta Warna — Tipe Deuteranopia
+	Color Blindness — Protanopia-type	Buta Warna — Tipe Protanopia
+	ComfyUI is unavailable in this frontend	ComfyUI tidak tersedia di lingkungan ini
+	ComfyUI port	Port ComfyUI
+	Comfyui custom encoders	Encoder kustom ComfyUI
+	Comfyui custom model	Model kustom ComfyUI
+	Comfyui custom models	Model-model kustom ComfyUI
+	Comfyui model	Model ComfyUI
+	Comfyui model settings	Pengaturan model ComfyUI
+	Comfyui translate prompt	Terjemahkan prompt ke bahasa Inggris
+	Comfyui translation model	Model penerjemahan prompt
+	Comfyui url	URL server ComfyUI
+	Compare with Original Generation	Bandingkan dengan Hasil Generasi Awal
+	Concavity	Kecekungan
+	Copy English translation	Salin terjemahan bahasa Inggris
+	Copy negative prompt	Salin prompt negatif
+	Copy original prompt	Salin prompt asli
+	Could not check for updates.	Tidak dapat memeriksa pembaruan.
+	Count:	Jumlah:
+	Cube	CUBE
+	Custom model filenames (one per line)	Nama berkas model kustom (satu per baris)
+	Data Encoding	Pengodean data
+	Data Sets as Files is unavailable on the web	Ekspor Kumpulan Data sebagai Berkas tidak tersedia di web
+	Default Photoshop Size	Ukuran Default Photoshop
+	Default colours (D)	Warna default (D)
+	Describe changes to the whole image	Jelaskan perubahan untuk seluruh gambar
+	Describe changes, or leave blank to remove	Jelaskan perubahan atau kosongkan untuk menghapus
+	Describe the image to generate	Jelaskan gambar yang ingin dibuat
+	Dismiss update	Tutup pemberitahuan pembaruan
+	Do you want to save you made to “{name}” before quitting?	Mau simpan perubahan yang kamu buat di “{name}” sebelum keluar?
+	Downloading generated image	Mengunduh hasil
+	Downloading update…	Mengunduh pembaruan…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Seret kotak crop · seret di dalam untuk memindah · tepi mengubah ukuran (rasio {ratio}, tengah {centre}) · Space memindah saat menggambar · panah menggeser · X menukar orientasi · {commit} menerapkan · Esc batal
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Seret kotak crop · seret di dalam untuk memindah · tepi mengubah ukuran (rasio {ratio}, tengah {centre}) · Space memindah saat menggambar · {commit} menerapkan · Esc batal
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Seret di sekitar pusat untuk memutar tampilan  ·  Shift membatasi ke 15°
+	Drag to move the selected path	Seret untuk memindahkan jalur yang dipilih
+	Drawn on the CPU: {reason}. Click for System Info.	Digambar oleh CPU: {reason}. Klik untuk Info Sistem.
 	Dropped files weren't placed: their document was closed.	Berkas yang dijatuhkan tidak ditempatkan: dokumennya telah ditutup.
 	Dropped files weren't placed: too many are waiting for their document.	Berkas yang dijatuhkan tidak ditempatkan: terlalu banyak berkas menunggu dokumennya.
+	Effect	Efek
+	Empty	Kosong
+	End	Akhir
+	English translation	Terjemahan bahasa Inggris
+	External cutout	Penghapusan Latar Eksternal
+	External erase	Penghapusan Eksternal
+	File Name	Nama berkas
+	Filter for embedded smart objects	Filter objek pintar yang disematkan
+	Filter for linked smart objects that are missing	Filter objek pintar dengan berkas tertaut yang hilang
+	Filter for smart objects linked locally	Filter objek pintar yang ditautkan secara lokal
+	Generative Fill	Isian generatif
+	Generative Fill…	Isian generatif…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Interpolasi terkoreksi gradien: tajam dan cepat, dengan sedikit pinggiran warna pada detail halus.
+	High Memory Photoshop Document	Dokumen Photoshop dengan Penggunaan Memori Tinggi
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: tepi paling bersih dan pinggiran warna paling sedikit, paling lambat.
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Cara mosaik filter warna kamera diisi. Diterapkan saat berkas dibuka; pratinjau menampilkan metode yang dipakai saat dibuka.
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	Kompresi Gambar
+	Import Photoshop brushes (.abr)	Impor kuas Photoshop (.abr)
+	Import as New Group	Impor sebagai Grup Baru
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Impor sebagai Grup Baru mempertahankan “{group}” dan menambahkan file sebagai grup baru di sebelahnya.
+	Installed version: {version}	Versi terpasang: {version}
+	Inverse Selection	Balik Seleksi
+	LZW	LZW
+	Layer Effects	Efek Lapisan
+	Layer via Copy	Layer via Salin
+	Layer via Cut	Layer via Potong
+	Length	Panjang
+	Level:	Tingkat:
+	Lining	Angka Sejajar
+	Linked	Tertaut
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Hanya sedikit memori yang akan tersisa setelah membuka berkas ini. Tutup aplikasi lain terlebih dahulu, atau PhotoCraft dapat kehabisan memori.
+	Load Photoshop brushes (.abr)	Muat kuas Photoshop (.abr)
+	Loaded Camera Raw settings from {file}	Pengaturan Camera Raw dimuat dari {file}
+	Loaded Camera Raw settings from {file} ({n} not supported)	Pengaturan Camera Raw dimuat dari {file} ({n} tidak didukung)
+	Locked	Terkunci
+	Look	LOOK
+	Lut Format	Format LUT
+	Match Surrounding Colors	Sesuaikan dengan Warna Sekitar
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Menyesuaikan warna dengan lingkungan yang direkam saat generasi. Kekuatan 0 mengembalikan hasil generasi awal.
+	Minimize Panel	Minimalkan Panel
+	Native file drag-and-drop is not supported on Wayland yet. Use File › Open, or run PhotoCraft under XWayland with `WAYLAND_DISPLAY= photocraft`.	Seret dan lepas berkas native belum didukung di Wayland. Gunakan Berkas › Buka, atau jalankan PhotoCraft di XWayland dengan `WAYLAND_DISPLAY= photocraft`.
+	Negative prompt	Prompt negatif
+	Next	Berikutnya
+	No AI prompts recorded	Belum ada prompt AI yang tercatat
+	No Adv. Blending	Tanpa Pencampuran Lanjutan
+	No Layer Effects	Tanpa Efek Lapisan
+	No Layer Mask	Tanpa Masker Lapisan
+	No Vector Mask	Tanpa Masker Vektor
+	No import is waiting. Import the file again.	Tidak ada impor yang menunggu. Impor file lagi.
+	No matching fonts	Tidak ada font yang cocok
+	No prompt (remove)	Tanpa prompt (hapus)
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Not Clipped	Tidak Terkliping
+	Not Empty	Tidak Kosong
+	Not Linked	Tidak Tertaut
+	Not Locked	Tidak Terkunci
+	Not Visible	Tidak Terlihat
+	Not a web colour: click for the nearest web colour	Bukan warna web: klik untuk warna web terdekat
 	Nudge	Geser sedikit
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Direktori cakram kerja saat ini ({path}) tidak melaporkan ruang kosongnya, sehingga PhotoCraft tidak dapat berhenti sebelum penuh dan berkas besar tidak memperoleh ruang tambahan tanpa Batas Ukuran Cakram Kerja. Peringatan ini berlaku untuk konfigurasi saat ini; perubahan di atas berlaku setelah memilih Terapkan atau OK. Tetapkan batas atau gunakan cakram lokal.
-
-# OpenType stylistic-set labels.
-	Stylistic Sets	Set gaya
+	Numerals	Angka
+	One .safetensors filename per line. Compatibility is not checked.	Satu nama berkas .safetensors per baris. Kompatibilitas tidak diperiksa.
+	Open Download Page	Buka Halaman Unduhan
+	Open Panel in Own Window	Buka Panel di Jendela Terpisah
+	Open a document to select a colour range.	Buka dokumen untuk memilih rentang warna.
+	Open anyway	Tetap buka
+	Open in camera raw	Buka di Camera Raw
+	Opening this document uses more memory and may slow down your computer or other running applications.	Membuka dokumen ini menggunakan lebih banyak memori dan dapat memperlambat komputer atau aplikasi lain yang sedang berjalan.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Membuka “{name}” diperkirakan memerlukan memori {est} GiB ({avail} GiB tersedia).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Membuka “{name}” diperkirakan memerlukan memori {est} GiB. Memori yang tersedia tidak dapat diukur.
+	Original prompt	Prompt asli
+	Out of gamut for printing: click for the nearest printable colour	Di luar gamut cetak: klik untuk warna cetak terdekat
+	Percentile:	Persentil:
+	PhotoCraft Updates	Pembaruan PhotoCraft
+	PhotoCraft is up to date.	PhotoCraft sudah versi terbaru.
+	PhotoCraft update available	Pembaruan PhotoCraft tersedia
+	PhotoCraft {version} is available.	PhotoCraft {version} tersedia.
+	Preparing image and selection	Menyiapkan gambar dan pilihan
+	Previous	Sebelumnya
+	Prompt Edit	Edit dengan prompt
+	Prompt Edit…	Edit dengan prompt…
+	Prompt Generate	Buat dengan prompt
+	Prompt Generate…	Buat dengan prompt…
+	Prompt information	Informasi prompt
+	Prompt translation model	Model penerjemahan prompt
+	Proportional	Proporsional
+	Proportional Lining	Angka Sejajar Proporsional
+	Proportional Oldstyle	Angka Gaya Lama Proporsional
+	Quick Export As PNG	Ekspor Cepat Sebagai PNG
+	Qwen image21	Qwen 2.1
+	Reference Image	Gambar referensi
+	Regenerate	Buat ulang
+	Regenerate AI Result	Buat ulang hasil AI
+	Remember to turn off the printer's own colour management in Print Settings…	Ingat untuk menonaktifkan pengelolaan warna milik printer di Pengaturan Cetak…
+	Remove Reference Image	Hapus gambar referensi
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Ganti terlebih dahulu menghapus semua isi “{group}”, termasuk preset yang Anda edit atau pindahkan ke sana. Tindakan ini tidak dapat dibatalkan.
+	Reset steps to model default	Kembalikan langkah ke bawaan model
+	Resize for AI editing	Ubah ukuran untuk penyuntingan AI
+	Sample: foreground colour	Sampel: warna foreground
+	Sampling steps	Langkah sampling
+	Save Image Pyramid	Simpan Piramida Gambar
+	Save Transparency	Simpan Transparansi
+	Save cancelled	Penyimpanan dibatalkan
 	Set 	Set
 	Set 1	Set 1
-	Set 2	Set 2
-	Set 3	Set 3
-	Set 4	Set 4
-	Set 5	Set 5
-	Set 6	Set 6
-	Set 7	Set 7
-	Set 8	Set 8
-	Set 9	Set 9
 	Set 10	Set 10
 	Set 11	Set 11
 	Set 12	Set 12
@@ -3841,23 +3856,68 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set 17	Set 17
 	Set 18	Set 18
 	Set 19	Set 19
+	Set 2	Set 2
 	Set 20	Set 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	Input tablet
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (bawaan)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	Pengodean data
-	Lut Format	Format LUT
+	Set 3	Set 3
+	Set 4	Set 4
+	Set 5	Set 5
+	Set 6	Set 6
+	Set 7	Set 7
+	Set 8	Set 8
+	Set 9	Set 9
+	Set as default	Tetapkan sebagai default
 	Shape Id	ID bentuk
 	Shape Name	Nama bentuk
 	Shape Origin Type	Jenis asal bentuk
 	Shape Path	Jalur bentuk
+	Show Channels in Color	Tampilkan Kanal Berwarna
+	Show Statistics	Tampilkan Statistik
+	Source:	Sumber:
+	Start	Awal
+	Stylistic Sets	Set gaya
+	Swap colours (X)	Tukar warna (X)
+	Tablet input	Input tablet
+	Tabular	Lebar Tetap
+	Tabular Lining	Angka Sejajar Lebar Tetap
+	Tabular Oldstyle	Angka Gaya Lama Lebar Tetap
 	Text	Teks
-	File Name	Nama berkas
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoders	Encoder teks
+	The current gradient (pick one in Window › Gradients)	Gradien saat ini (pilih di Jendela › Gradien)
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Direktori cakram kerja saat ini ({path}) tidak melaporkan ruang kosongnya, sehingga PhotoCraft tidak dapat berhenti sebelum penuh dan berkas besar tidak memperoleh ruang tambahan tanpa Batas Ukuran Cakram Kerja. Peringatan ini berlaku untuk konfigurasi saat ini; perubahan di atas berlaku setelah memilih Terapkan atau OK. Tetapkan batas atau gunakan cakram lokal.
+	The fastest and the softest, with colour fringing on fine detail.	Paling cepat dan paling lembut, dengan pinggiran warna pada detail halus.
+	The image exceeds the AI editing size. Resize the document to continue?	Gambar melebihi ukuran penyuntingan AI. Ubah ukuran dokumen untuk melanjutkan?
+	Translate prompt to English	Terjemahkan prompt ke bahasa Inggris
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo int8	Turbo INT8
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Turbo q8	Turbo Q8_0
+	Twirl Counterclockwise	Putar berlawanan arah jarum jam
+	Uncached Refresh	Segarkan Tanpa Cache
+	Update PhotoCraft	Perbarui PhotoCraft
+	Update PhotoCraft and restart now?	Perbarui PhotoCraft dan mulai ulang sekarang?
+	Updates have not been checked yet.	Pembaruan belum diperiksa.
+	Uploading image to ComfyUI	Mengunggah ke ComfyUI
+	Use File › Open to open an image.	Gunakan Berkas › Buka untuk membuka gambar.
+	Use these settings for new arrows	Gunakan pengaturan ini untuk panah baru
+	Uses the foreground and background colours.	Memakai warna foreground dan background.
+	Waiting for ComfyUI generation	Menunggu generasi ComfyUI
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (bawaan)
+	You can check for updates again in Help → About PhotoCraft.	Anda dapat memeriksa pembaruan lagi di Bantuan → Tentang PhotoCraft.
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label} sedang menulis berkas dan tidak dapat dibatalkan lagi
+	{message} into “{group}”	{message} ke dalam “{group}”
+	{ok} written to {dir}	{ok} ditulis ke {dir}
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Grup kuas “{group}” sudah berisi {n} kuas milik Anda.
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Grup gradien “{group}” sudah ada ({n} gradien).
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: keluaran {n} Aset Gambar gagal

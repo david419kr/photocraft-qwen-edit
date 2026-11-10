@@ -322,7 +322,7 @@
 	Plugins…	Plug-ins…
 	Type…	Tipo…
 	Enhanced Controls…	Controles aprimorados…
-	Camera Raw…	Camera Raw…
+	RAW Defaults…	Padrões RAW…
 	Raw Defaults…	Padrões de Raw…
 	Integrations…	Integrações…
 	AI Integrations…	Integrações de IA…
@@ -368,6 +368,8 @@
 	Match Color…	Corresponder cores…
 	Replace Color…	Substituir cor…
 	Equalize	Equalizar
+	Equalize Selected Area Only	Equalizar somente a área selecionada
+	Equalize Entire Image Based On Selected Area	Equalizar a imagem inteira com base na área selecionada
 	Auto Tone	Tom automático
 	Auto Contrast	Contraste automático
 	Auto Color	Cor automática
@@ -404,8 +406,8 @@
 	Artboard…	Prancheta…
 	Artboard from Group…	Prancheta a partir de grupo…
 	Artboard from Layers…	Prancheta a partir de camadas…
-	Layer via Copy	Camada via cópia
-	Layer via Cut	Camada via recorte
+	Layer Via Copy	Camada via cópia
+	Layer Via Cut	Camada via recorte
 	Layer From Background…	Camada a partir do plano de fundo…
 	Layer from Background…	Camada a partir do plano de fundo…
 	Background From Layer	Plano de fundo a partir da camada
@@ -615,7 +617,6 @@
 	Deselect	Desmarcar
 	Reselect	Selecionar novamente
 	Inverse	Inverter
-	Inverse Selection	Inverter seleção
 	Similar	Semelhante
 	Color Range…	Intervalo de cores…
 	Focus Area…	Área de foco…
@@ -639,7 +640,7 @@
 	Last Filter	Último filtro
 	Filter Gallery…	Galeria de filtros…
 	Adaptive Wide Angle…	Grande angular adaptável…
-	Camera Raw Filter…	Filtro Camera Raw…
+	RAW Develop Filter…	Filtro Revelação RAW…
 	Liquify…	Liquefazer…
 	Vanishing Point…	Ponto de fuga…
 	Blur	Desfoque
@@ -730,12 +731,12 @@
 	Working Magenta Plate	Chapa magenta de trabalho
 	Working Yellow Plate	Chapa amarela de trabalho
 	Working Black Plate	Chapa preta de trabalho
-	Working CMY Plates	Chapa CMY de trabalho
+	Working CMY Plates	Chapas CMY de trabalho
 	Legacy Macintosh RGB (Gamma 1.8)	RGB Macintosh legado (Gamma 1.8)
 	Internet Standard RGB (sRGB)	RGB padrão da Internet (sRGB)
 	Monitor RGB	RGB do monitor
-	Color Blindness — Protanopia-type	Daltonismo — tipo protanopia
-	Color Blindness — Deuteranopia-type	Daltonismo — tipo deuteranopia
+	Color Blindness - Protanopia-type	Daltonismo - tipo protanopia
+	Color Blindness - Deuteranopia-type	Daltonismo - tipo deuteranopia
 	Zoom In	Aumentar zoom
 	Zoom Out	Diminuir zoom
 	Fit on Screen	Ajustar à tela
@@ -885,6 +886,12 @@
 	Timeline	Linha do tempo
 	Tool Presets	Predefinições de ferramentas
 	Tools	Ferramentas
+	Contextual Task Bar	Barra de tarefas contextual
+	Hide bar	Ocultar barra
+	Reset bar position	Redefinir posição da barra
+	Pin bar position	Fixar posição da barra
+	Move bar	Mover barra
+	More options	Mais opções
 	About PhotoCraft	Sobre o PhotoCraft
 	PhotoCraft Website	Site do PhotoCraft
 	PhotoCraft on GitHub	PhotoCraft no GitHub
@@ -986,8 +993,8 @@
 	Load Settings…	Carregar configurações…
 	Save these settings as a Camera Raw .xmp file	Salvar estas configurações como arquivo .xmp do Camera Raw
 	Load settings from a Camera Raw .xmp file	Carregar configurações de um arquivo .xmp do Camera Raw
-	Loaded Camera Raw settings from {file}	Configurações do Camera Raw carregadas de {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Configurações do Camera Raw carregadas de {file} ({n} sem suporte)
+	Loaded RAW Develop settings from {file}	Configurações do Revelação RAW carregadas de {file}
+	Loaded RAW Develop settings from {file} ({n} not supported)	Configurações do Revelação RAW carregadas de {file} ({n} sem suporte)
 	Begin recording	Iniciar gravação
 	Bend:	Curvatura:
 	Bicubic	Bicúbica
@@ -1015,7 +1022,7 @@
 	Brush Reconstruct Options	Opções de reconstrução do pincel
 	Brush Tool Options	Opções da ferramenta Pincel
 	Cache Level:	Nível do cache:
-	Camera Raw isn't open	Camera Raw não está aberto
+	RAW Develop isn't open	Revelação RAW não está aberto
 	Cancel	Cancelar
 	Cancel (Esc)	Cancelar (Esc)
 	Manage submitted jobs in the system print queue	Gerencie os trabalhos enviados na fila de impressão do sistema
@@ -1048,7 +1055,7 @@
 	Click to add a point · drag off or {key}-click or Delete to remove	Clique para adicionar um ponto · arraste para fora, {key}-clique ou Delete para remover
 	Click to apply, {key}-click to clear overrides, double-click for Style Options	Clique para aplicar, {key}-clique para limpar substituições, clique duplo para Opções de estilo
 	Click to edit the gradient	Clique para editar o degradê
-	Click to restore the current colour	Clique para restaurar a cor atual
+	Click to restore the current color	Clique para restaurar a cor atual
 	Click to zoom in  ·  {key}-click to zoom out  ·  drag right/left to zoom in/out	Clique para aumentar o zoom  ·  {key}-clique para diminuir  ·  arraste para a direita/esquerda para aumentar/diminuir
 	Click with the Note tool to add a note.	Clique com a ferramenta Anotação para adicionar uma anotação.
 	Click: corner · Drag: smooth · Click first point: close · {key} finish · Esc cancel	Clique: canto · Arrastar: suave · Clique no primeiro ponto: fechar · {key}: concluir · Esc: cancelar
@@ -1133,7 +1140,7 @@
 	Darks	Escuros
 	Data Sets	Conjuntos de dados
 	Default	Padrão
-	Default colours (D)	Cores padrão (D)
+	Default Foreground and Background Colors (D)	Cores padrão de primeiro plano e plano de fundo (D)
 	Default printer	Impressora padrão
 	Default restored.	Padrão restaurado.
 	Define	Definir
@@ -1409,7 +1416,7 @@
 	Opacity Jitter	Variação da opacidade
 	Opacity:	Opacidade:
 	Open a document to define variables.	Abra um documento para definir variáveis.
-	Open a document to select a colour range.	Abra um documento para selecionar um intervalo de cores.
+	Open a document to select a color range.	Abra um documento para selecionar um intervalo de cores.
 	Open a document to use the timeline.	Abra um documento para usar a linha do tempo.
 	Optical	Óptico
 	Optimized	Otimizado
@@ -1485,7 +1492,6 @@
 	Purity	Pureza
 	Quality	Qualidade
 	Quick Actions	Ações rápidas
-	Quick Export As PNG	Exportação rápida como PNG
 	Radial Gradient	Degradê radial
 	Radius	Raio
 	Radius:	Raio:
@@ -1626,7 +1632,7 @@
 	Subtract from Sample	Subtrair da amostra
 	Subtract from selection  ({key})	Subtrair da seleção  ({key})
 	Suggestions:	Sugestões:
-	Swap colours (X)	Trocar cores (X)
+	Switch Foreground and Background Colors (X)	Alternar cores de primeiro plano e plano de fundo (X)
 	Swaps height and width	Troca a altura e a largura
 	Switch between free transform and warp modes	Alternar entre os modos de transformação livre e deformação
 	Switch theme	Alternar tema
@@ -1727,7 +1733,7 @@
 	Choke	Contrair
 	Classic	Clássico
 	Click to add text	Clique para adicionar texto
-	Click to fill similar colours	Clique para preencher cores semelhantes
+	Click to fill similar colors	Clique para preencher cores semelhantes
 	Clone Stamp Tool	Ferramenta Carimbo
 	Color Burn	Superexposição de cores
 	Color Dodge	Subexposição de cores
@@ -1828,6 +1834,7 @@
 	Move Tool	Ferramenta Mover
 	Could not use the move tool because the layer is locked.	Não foi possível usar a ferramenta Mover porque a camada está bloqueada.
 	Could not complete the Free Transform command because the layer is locked.	Não foi possível concluir o comando Transformação livre porque a camada está bloqueada.
+	Could not transform because the layer is locked.	Não foi possível transformar porque a camada está bloqueada.
 	Multiply	Multiplicação
 	My Brushes	Meus pincéis
 	Neutrals	Neutros
@@ -1886,7 +1893,7 @@
 	Rectangular Marquee Tool	Ferramenta Letreiro retangular
 	Reds	Vermelhos
 	Reflected	Refletido
-	Sample: foreground colour	Amostra: cor de primeiro plano
+	Sample: foreground color	Amostra: cor de primeiro plano
 	Sampled Colors	Cores da amostra
 	Satin	Acetinado
 	Save Pixel Aspect Ratio	Salvar proporção de pixels
@@ -1925,7 +1932,6 @@
 	Transfer	Transferência
 	Triangle Tool	Ferramenta Triângulo
 	Unsaved changes	Alterações não salvas
-	Uses the foreground and background colours.	Usa as cores de primeiro plano e de fundo.
 	Web	Web
 	Web Large	Web grande
 	Web Minimum	Web mínimo
@@ -1960,6 +1966,7 @@
 	Allow scripts to connect	Permitir conexão de scripts
 	Always	Sempre
 	Always create smart objects when placing	Sempre criar objetos inteligentes ao inserir
+	Skip transform when placing	Ignorar transformação ao inserir
 	Animated zoom	Zoom animado
 	Apply auto tone	Aplicar tom automático
 	Ask	Perguntar
@@ -1977,7 +1984,7 @@
 	Brush preview color	Cor da visualização do pincel
 	Cache levels	Níveis do cache
 	Cache tile size	Tamanho do bloco do cache
-	Camera Raw Defaults	Padrões do Camera Raw
+	RAW Defaults	Padrões RAW
 	Canvas border	Borda da tela de pintura
 	Show canvas dots	Mostrar pontos da tela de pintura
 	Clip thumbnails to layer bounds	Recortar miniaturas aos limites da camada
@@ -2064,7 +2071,6 @@
 	Never	Nunca
 	Normal tip	Ponta normal
 	Open as smart object	Abrir como objeto inteligente
-	Open in camera raw	Abrir no Camera Raw
 	Open documents as tabs	Abrir documentos como guias
 	Overscroll	Rolagem além dos limites
 	Performance	Desempenho
@@ -2193,7 +2199,7 @@
 	Graphics	Gráficos
 	Reset GPU Backend	Redefinir backend da GPU
 	Applies at next launch.	Aplica-se na próxima inicialização.
-	Click to sample the foreground colour  ·  {key}-click for background	Clique para obter a cor de primeiro plano  ·  {key}-clique para a cor de fundo
+	Click to sample the foreground color  ·  {key}-click for background	Clique para obter a cor de primeiro plano  ·  {key}-clique para a cor de fundo
 	{key}-click to set the source	{key}-clique para definir a origem
 	{key} to subtract	{key} para subtrair
 	Clone source {n} ({key}-click with Clone Stamp to set)	Origem da clonagem {n} ({key}-clique com o Carimbo para definir)
@@ -2251,7 +2257,7 @@
 	Gradient Options	Opções de degradê
 	Align with layer	Alinhar com a camada
 	Reset Alignment	Redefinir alinhamento
-	Centre the gradient (offset 0, 0)	Centralizar o degradê (deslocamento 0, 0)
+	Center the gradient (offset 0, 0)	Centralizar o degradê (deslocamento 0, 0)
 	Gradient Editor	Editor de degradê
 	Gradient picker	Seletor de degradê
 	Gradient stops	Paradas do degradê
@@ -2285,7 +2291,7 @@
 	Alt-click to define a source point to clone from	Alt-clique para definir um ponto de origem da clonagem
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	Nenhum demarcador para criar a seleção: desenhe um com a ferramenta Caneta ou selecione um no painel Demarcadores.
 	Cancel opening	Cancelar abertura
-	Cancelled opening {name}	Abertura de {name} cancelada
+	Canceled opening {name}	Abertura de {name} cancelada
 	Damaged Photoshop document	Documento do Photoshop danificado
 	The document “{name}” may be damaged.	O documento “{name}” pode estar danificado.
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	Não foi possível ler algumas camadas, pixels ou máscaras. Deseja continuar abrindo?
@@ -2294,7 +2300,7 @@
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	O documento “{name}” tem um perfil de cores incorporado que não corresponde ao espaço de trabalho {mode} atual.
 	Working: {working}	Espaço de trabalho: {working}
 	Developing {name}	Revelando {name}
-	Cancelled {label}	{label} cancelado
+	Canceled {label}	{label} cancelado
 	Esc to cancel	Esc para cancelar
 	Opened {name}	Aberto: {name}
 	Opening {name}	Abrindo {name}
@@ -2302,7 +2308,7 @@
 	Saving {name}	Salvando {name}
 	Saving {percent}	Salvando {percent}
 	A save to {name} is still running; try again when it finishes	Um salvamento em {name} ainda está em andamento; tente novamente quando terminar
-	{label} is writing the file and can no longer be cancelled	{label} está gravando o arquivo e não pode mais ser cancelado
+	{label} is writing the file and can no longer be canceled	{label} está gravando o arquivo e não pode mais ser cancelado
 	Opening {name}…	Abrindo {name}…
 	Opening…	Abrindo…
 	Reading…	Lendo…
@@ -2468,8 +2474,6 @@
 	Roman Hanging Punctuation	Pontuação romana deslocada
 	Avoid Widows/Orphans	Evitar viúvas/órfãs
 	Compose	Compor
-	Adobe Single-line Composer	Compositor de linha única Adobe
-	Adobe Every-line Composer	Compositor de todas as linhas Adobe
 	Justification	Justificação
 	Word Spacing	Espaçamento entre palavras
 	Letter Spacing	Espaçamento entre letras
@@ -2487,6 +2491,7 @@
 	Path to Illustrator…	Demarcador para o Illustrator…
 	Make Work Path	Criar demarcador de trabalho
 	Make Selection	Fazer seleção
+	Make Shape	Fazer forma
 	Fill Path	Preencher demarcador
 	Stroke Path	Traçar demarcador
 	Clipping Path	Demarcador de corte
@@ -2667,7 +2672,7 @@
 	Pixel	Pixel
 	Adjustment	Ajuste
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	Arraste (laço) ou clique nos pontos (poligonal) · {add} adicionar · {sub} subtrair
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Arraste uma caixa de corte · arraste dentro para mover · as bordas redimensionam ({ratio} proporção, {centre} centro) · Espaço move durante o desenho · setas deslocam · X troca a orientação · {commit} confirma · Esc cancela
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Arraste uma caixa de corte · arraste dentro para mover · as bordas redimensionam ({ratio} proporção, {centre} centro) · Espaço move durante o desenho · setas deslocam · X troca a orientação · {commit} confirma · Esc cancela
 	{mode} Color · {bits} bit	Cor {mode} · {bits} bits
 	Drag to move the layer	Arraste para mover a camada
 	Scrubby Zoom	Zoom por arraste
@@ -2724,7 +2729,6 @@
 	Intersect with	Fazer interseção com
 	Capture Comp	Capturar composição
 	No Layer Comps	Nenhuma composição de camadas
-	Adobe PDF Presets…	Predefinições do Adobe PDF…
 	3D…	3D…
 	Technology Previews…	Prévias de tecnologia…
 	Background from Layer	Plano de fundo a partir da camada
@@ -2815,8 +2819,8 @@
 	Tone Histogram	Histograma de tons
 	Show Selected Region	Mostrar região selecionada
 cameraRaw	Light	Luz
-	Camera Raw Filter ({layer})	Filtro Camera Raw ({layer})
-	Camera Raw ({name})	Camera Raw ({name})
+	RAW Develop Filter ({layer})	Filtro Revelação RAW ({layer})
+	RAW Develop ({name})	Revelação RAW ({name})
 cameraRaw	Lights	Claros
 cameraRaw	Darks	Escuros
 cameraRaw	Blacks	Pretos
@@ -2876,7 +2880,7 @@ cameraRaw	Whites	Brancos
 	Discard Layers and Save a Copy	Descartar camadas e salvar uma cópia
 	Don't show again	Não mostrar novamente
 	Save failed: {error}	Falha ao salvar: {error}
-	Save cancelled	Salvamento cancelado
+	Save canceled	Salvamento cancelado
 	Style {name} saved	Estilo {name} salvo
 	Make Default	Definir como padrão
 	Reset to Default	Restaurar padrão
@@ -3009,7 +3013,7 @@ fontWeight	Italic	Itálico
 	Impressionist	Impressionista
 	Rotate View Tool	Ferramenta Girar visualização
 	Reset View	Redefinir visualização
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Arraste ao redor do centro para girar a visualização  ·  Shift restringe a 15°
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	Arraste ao redor do centro para girar a visualização  ·  Shift restringe a 15°
 	Dual Axis	Eixo duplo
 	Diagonal	Diagonal
 	Transform Symmetry	Transformar simetria
@@ -3024,8 +3028,8 @@ fontWeight	Italic	Itálico
 	All Layers No Adjustments	Todas as camadas sem ajustes
 	Current & Below No Adjustments	Atual e abaixo sem ajustes
 	Show Sampling Ring	Mostrar anel de amostragem
-	Out of gamut for printing: click for the nearest printable colour	Fora da gama de impressão: clique para a cor imprimível mais próxima
-	Not a web colour: click for the nearest web colour	Não é uma cor da Web: clique para a cor da Web mais próxima
+	Out of gamut for printing: click for the nearest printable color	Fora da gama de impressão: clique para a cor imprimível mais próxima
+	Not a web color: click for the nearest web color	Não é uma cor da Web: clique para a cor da Web mais próxima
 	Color to Alpha…	Cor para alfa…
 	Transparency Threshold	Limiar de transparência
 	Opacity Threshold	Limiar de opacidade
@@ -3841,8 +3845,8 @@ layerLabel	No Color	Sem cor
 	Border	Borda
 	Box Blur	Desfoque de caixa
 	Calculations	Cálculos
-	Camera Raw	Camera Raw
-	Camera Raw Filter	Filtro do Camera Raw
+	RAW Develop	Revelação RAW
+	RAW Develop Filter	Filtro do Revelação RAW
 	Channel1	Canal 1
 	Channel2	Canal 2
 	Channel3	Canal 3
@@ -4101,7 +4105,7 @@ layerLabel	No Color	Sem cor
 	Auto Add/Delete	Adicionar/excluir automaticamente
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Não ative também a imagem espelhada nas configurações de impressão: as duas inversões se anulam.
 	Print Settings…	Configurações de impressão…
-	Remember to turn off the printer's own colour management in Print Settings…	Lembre-se de desativar o gerenciamento de cores da própria impressora nas configurações de impressão…
+	Remember to turn off the printer's own color management in Print Settings…	Lembre-se de desativar o gerenciamento de cores da própria impressora nas configurações de impressão…
 	Sent to {printer}	Enviado para {printer}
 	set in Print Settings…	definido nas configurações de impressão…
 	ICO is limited to 256 × 256 pixels	ICO é limitado a 256 × 256 pixels
@@ -4231,12 +4235,12 @@ layerLabel	No Color	Sem cor
 	Decrease Brush Hardness	Diminuir dureza do pincel
 	Increase Brush Hardness	Aumentar dureza do pincel
 	Demosaic	Demosaico
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Como o mosaico do filtro de cor da câmera é preenchido. É aplicado ao abrir o arquivo; a visualização mostra o método com que ele foi aberto.
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Como o mosaico do filtro de cor da câmera é preenchido. É aplicado ao abrir o arquivo; a visualização mostra o método com que ele foi aberto.
 	AHD (adaptive homogeneity)	AHD (homogeneidade adaptativa)
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: as bordas mais limpas e o menor franjamento de cor; o mais lento.
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Interpolação com correção de gradiente: nítida e rápida, com algum franjamento de cor em detalhes finos.
-	The fastest and the softest, with colour fringing on fine detail.	O mais rápido e o mais suave, com franjamento de cor em detalhes finos.
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Hirakawa–Parks: as bordas mais limpas e o menor franjamento de cor; o mais lento.
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	Interpolação com correção de gradiente: nítida e rápida, com algum franjamento de cor em detalhes finos.
+	The fastest and the softest, with color fringing on fine detail.	O mais rápido e o mais suave, com franjamento de cor em detalhes finos.
 	“{name}” already exists. Replace it?	“{name}” já existe. Substituir?
 	The name in the save dialog was “{name}”.	O nome na caixa de diálogo Salvar era “{name}”.
 	Previous Brush	Pincel anterior
@@ -4313,7 +4317,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	This layer must be rasterized before proceeding.	Esta camada precisa ser rasterizada antes de continuar.
 	This type layer must be rasterized before proceeding. Its text will no longer be editable. Rasterize the type?	Esta camada de texto precisa ser rasterizada antes de continuar. O texto não poderá mais ser editado. Rasterizar o texto?
 	This shape layer must be rasterized before proceeding. It will no longer be editable as a shape. Rasterize the shape?	Esta camada de forma precisa ser rasterizada antes de continuar. Ela não poderá mais ser editada como forma. Rasterizar a forma?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Este objeto inteligente precisa ser rasterizado antes de continuar. O conteúdo não poderá mais ser editado. Rasterizar o objeto inteligente?
+	This smart object must be rasterized before proceeding. Edit Contents will no longer be available. Rasterize the smart object?	Este objeto inteligente precisa ser rasterizado antes de continuar. O conteúdo não poderá mais ser editado. Rasterizar o objeto inteligente?
 	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Esta camada de preenchimento precisa ser rasterizada antes de continuar. O conteúdo do preenchimento não poderá mais ser editado. Rasterizar a camada?
 	Graphics adapter: {adapter}	Adaptador gráfico: {adapter}
 	Backend: {backend} ({type})	Backend: {backend} ({type})
@@ -4425,8 +4429,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Grayscale Ramp	Rampa de tons de cinza
 	Current Colors	Cores atuais
 	Make Ramp Web Safe	Tornar rampa segura para a Web
+	Scroll All Windows	Rolar todas as janelas
 	The path was kept as the Work Path	O demarcador foi mantido como demarcador de trabalho
 	The path was discarded	O demarcador foi descartado
+# Art History Brush (#213).
 	Art History Brush Tool	Ferramenta Pincel do histórico da arte
 	Tight Short	Curto cerrado
 	Tight Medium	Médio cerrado
@@ -4466,186 +4472,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Stop Color	Cor da parada
 	Shapes can't use patterns yet	Formas ainda não podem usar padrões
 	Edit Brush…	Editar pincel…
-	Drag to move the active shape's path or the Work Path	Arraste para mover o demarcador da forma ativa ou o demarcador de trabalho
-	Move Up	Mover para cima
-	Move Down	Mover para baixo
-	All shortcuts reset to Photoshop defaults.	Todos os atalhos foram redefinidos para os padrões do Photoshop.
-	Import Photoshop brushes (.abr)	Importar pincéis do Photoshop (.abr)
-	Load Photoshop brushes (.abr)	Carregar pincéis do Photoshop (.abr)
-	Default Photoshop Size	Tamanho padrão do Photoshop
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Arraste uma caixa de corte · arraste dentro para mover · as bordas redimensionam ({ratio} proporção, {centre} centro) · Espaço move durante o desenho · {commit} confirma · Esc cancela
-	Prompt Edit	Editar com prompt
-	Generative Fill	Preenchimento generativo
-	Describe changes to the whole image	Descreva alterações na imagem inteira
-	Describe changes, or leave blank to remove	Descreva alterações ou deixe vazio para remover
-	ComfyUI is unavailable in this frontend	ComfyUI não está disponível neste ambiente
-	Comfyui url	URL do servidor ComfyUI
-	Prompt Edit…	Editar com prompt…
-	Generative Fill…	Preenchimento generativo…
-	Preparing image and selection	Preparando imagem e seleção
-	Uploading image to ComfyUI	Enviando imagem ao ComfyUI
-	Waiting for ComfyUI generation	Aguardando geração do ComfyUI
-	Downloading generated image	Baixando resultado
-	Adding generated layer	Adicionando camada gerada
-	Prompt Generate	Gerar com prompt
-	Prompt Generate…	Gerar com prompt…
-	Regenerate AI Result	Gerar novamente o resultado da IA
-	Regenerate	Gerar novamente
-	Describe the image to generate	Descreva a imagem a ser gerada
-	Sampling steps	Etapas de amostragem
-	Reset steps to model default	Restaurar as etapas padrão do modelo
-	Translate prompt to English	Traduzir o prompt para inglês
-	Prompt translation model	Modelo de tradução de prompts
-	Prompt information	Informações do prompt
-	AI Prompt History	Histórico de prompts de IA
-	Original prompt	Prompt original
-	English translation	Tradução em inglês
-	No prompt (remove)	Sem prompt (remover)
-	All nine regions	Todas as nove regiões
-	No AI prompts recorded	Nenhum prompt de IA registrado
-	Copy original prompt	Copiar o prompt original
-	Copy English translation	Copiar a tradução em inglês
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	Modelo ComfyUI
-	Comfyui translate prompt	Traduzir o prompt para inglês
-	Comfyui translation model	Modelo de tradução de prompts
-	AI model settings	Configurações do modelo de IA
-	ComfyUI port	Porta do ComfyUI
-	Copy negative prompt	Copiar prompt negativo
-	Custom model filenames (one per line)	Nomes dos arquivos de modelos personalizados (um por linha)
-	Negative prompt	Prompt negativo
-	One .safetensors filename per line. Compatibility is not checked.	Um nome de arquivo .safetensors por linha. A compatibilidade não é verificada.
-	Text encoders	Codificadores de texto
-	Comfyui custom encoders	Codificadores personalizados do ComfyUI
-	Comfyui custom model	Modelo personalizado do ComfyUI
-	Comfyui custom models	Modelos personalizados do ComfyUI
-	Comfyui model settings	Configurações dos modelos do ComfyUI
-	PhotoCraft update available	Atualização do PhotoCraft disponível
-	Update PhotoCraft and restart now?	Atualizar o PhotoCraft e reiniciar agora?
-	Automatically check for updates	Verificar atualizações automaticamente
-	Check for updates now	Verificar atualizações agora
-	You can check for updates again in Help → About PhotoCraft.	Você pode verificar atualizações novamente em Ajuda → Sobre o PhotoCraft.
-	Downloading update…	Baixando atualização…
-	Update PhotoCraft	Atualizar o PhotoCraft
-	Dismiss update	Fechar aviso de atualização
-	Match Surrounding Colors	Ajustar às cores ao redor
-	Adjust colors with Poisson blending	Ajustar cores com mesclagem de Poisson
-	Compare with Original Generation	Comparar com a geração original
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Ajusta as cores ao entorno capturado durante a geração. A intensidade 0 restaura o resultado gerado original.
-	Attach Reference Image	Anexar imagem de referência
-	Remove Reference Image	Remover imagem de referência
-	Reference Image	Imagem de referência
-	Resize for AI editing	Redimensionar para edição com IA
-	The image exceeds the AI editing size. Resize the document to continue?	A imagem excede o tamanho de edição com IA. Redimensionar o documento para continuar?
-	Arrange Panels	Organizar painéis
-	Close Other Panels in Group	Fechar outros painéis do grupo
-	Collapse to Icons	Recolher em ícones
-	Minimize Panel	Minimizar painel
-	Open Panel in Own Window	Abrir painel em janela própria
-	CPU Rendering	Renderização por CPU
-	Calculating…	Calculando…
-	Click to refresh histogram with uncached data	Clique para atualizar o histograma com dados sem cache
-	Count:	Contagem:
-	Drawn on the CPU: {reason}. Click for System Info.	Desenhado pela CPU: {reason}. Clique para ver as informações do sistema.
-	Level:	Nível:
-	Percentile:	Percentil:
-	Show Channels in Color	Mostrar canais em cores
-	Show Statistics	Mostrar estatísticas
-	Source:	Origem:
-	Uncached Refresh	Atualizar sem cache
-	…	…
-	External cutout	Recorte externo
-	External erase	Apagamento externo
-	No matching fonts	Nenhuma fonte correspondente
-	Select Layer Under Cursor	Selecionar camada sob o cursor
-
-# Fork portable update information
-	PhotoCraft Updates	Atualizações do PhotoCraft
-	Checking for updates…	Verificando atualizações…
-	Open Download Page	Abrir página de download
-	PhotoCraft is up to date.	O PhotoCraft está atualizado.
-	Could not check for updates.	Não foi possível verificar atualizações.
-	Updates have not been checked yet.	As atualizações ainda não foram verificadas.
-	Check Again	Verificar novamente
-	Installed version: {version}	Versão instalada: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} está disponível.
-	Answer the open import question first, then import this file again.	Responda primeiro à pergunta de importação aberta e importe este arquivo novamente.
-	Import as New Group	Importar como novo grupo
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Importar como novo grupo mantém “{group}” e adiciona o arquivo como um novo grupo ao lado dele.
-	No import is waiting. Import the file again.	Não há importação pendente. Importe o arquivo novamente.
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Substituir exclui primeiro tudo em “{group}”, incluindo as predefinições que você editou ou moveu para lá. Isso não pode ser desfeito.
-	{message} into “{group}”	{message} em “{group}”
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	O grupo de pincéis “{group}” já contém pincéis seus (quantidade: {n}).|O grupo de pincéis “{group}” já contém pincéis seus (quantidade: {n}).
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	O grupo de degradês “{group}” já existe (quantidade de degradês: {n}).|O grupo de degradês “{group}” já existe (quantidade de degradês: {n}).
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	Opções de pontas de seta
-	Arrowheads	Pontas de seta
-	Concavity	Concavidade
-	End	Fim
-	Set as default	Definir como padrão
-	Start	Início
-	Use these settings for new arrows	Usar estas configurações para novas setas
-
-# Upstream 0.20.2 UI labels
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Um comando foi cancelado ou interrompido durante o processamento em lote. Continuar com o próximo arquivo ou parar?
-	Attribute	Atributo
-	Batch preview	Visualização do lote
-	Data Sets as Files is unavailable on the web	Conjuntos de dados como arquivos não está disponível na Web
-	Effect	Efeito
-	Empty	Vazio
-	Filter for embedded smart objects	Filtrar objetos inteligentes incorporados
-	Filter for linked smart objects that are missing	Filtrar objetos inteligentes vinculados ausentes
-	Filter for smart objects linked locally	Filtrar objetos inteligentes vinculados localmente
-	High Memory Photoshop Document	Documento do Photoshop com alto uso de memória
-	Image Compression	Compactação da imagem
-	LZW	LZW
-	Layer Effects	Efeitos de camada
-	Lining	Algarismos alinhados
-	Linked	Vinculado
-	No Adv. Blending	Sem mesclagem avançada
-	No Layer Effects	Sem efeitos de camada
-	No Layer Mask	Sem máscara de camada
-	No Vector Mask	Sem máscara vetorial
-	Not Clipped	Sem corte
-	Not Empty	Não vazio
-	Not Linked	Não vinculado
-	Not Locked	Não bloqueado
-	Not Visible	Não visível
-	Numerals	Algarismos
-	Open anyway	Abrir mesmo assim
-	Opening this document uses more memory and may slow down your computer or other running applications.	Abrir este documento usa mais memória e pode deixar o computador ou outros aplicativos em execução mais lentos.
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Abrir “{name}” requer aproximadamente {est} GiB de memória ({avail} GiB disponíveis).
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Abrir “{name}” requer aproximadamente {est} GiB de memória. Não foi possível medir a memória disponível.
-	Proportional	Proporcionais
-	Proportional Lining	Algarismos alinhados proporcionais
-	Proportional Oldstyle	Algarismos de estilo antigo proporcionais
-	Save Image Pyramid	Salvar pirâmide de imagens
-	Save Transparency	Salvar transparência
-	Tabular	Tabulares
-	Tabular Lining	Algarismos alinhados tabulares
-	Tabular Oldstyle	Algarismos de estilo antigo tabulares
-	ZIP	ZIP
-	{ok} written to {dir}	{ok} gravados em {dir}
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: falha em {n} saída de recursos de imagem|{what}: falha em {n} saídas de recursos de imagem
 
 # Action Stop message (#8386)
 	Message	Mensagem
@@ -4658,7 +4484,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Pause For	Pausar por
 	seconds	segundos
 	Create a single history state	Criar um único estado de histórico
+	Drag to move the active shape's path or the Work Path	Arraste para mover o demarcador da forma ativa ou o demarcador de trabalho
 	Generator enabled	Gerador ativado
+	Move Up	Mover para cima
+	Move Down	Mover para baixo
 	On your computer	No seu computador
 	New file	Novo arquivo
 	Learn	Aprender
@@ -4689,28 +4518,214 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Pick a different document for each channel.	Escolha um documento diferente para cada canal.
 	A picked document is no longer open.	Um dos documentos escolhidos não está mais aberto.
 	A picked document is no longer a grayscale document of the same size.	Um dos documentos escolhidos não é mais um documento em tons de cinza do mesmo tamanho.
+	Netscape Gray	Cinza Netscape
+# Move tool options bar (#11381)
+	Align top edges	Alinhar bordas superiores
+	Align vertical centers	Alinhar centros verticais
+	Align bottom edges	Alinhar bordas inferiores
+	Distribute vertically	Distribuir verticalmente
+	Distribute horizontally	Distribuir horizontalmente
+	Show layer bounds on hover	Mostrar limites da camada ao passar o cursor
+	Expand layer group on click	Expandir grupo de camadas ao clicar
+	Show hover bounds from Layers	Mostrar limites ao passar o cursor em Camadas
+	Saved RAW Develop settings to {file}	Configurações do Revelação RAW salvas em {file}
+	Save the settings to each raw's sidecar without opening it	Salvar as configurações no arquivo sidecar de cada raw sem abri-lo
+	No settings saved: these raws can't keep a sidecar here	Nada foi salvo: estes raw não podem ter um arquivo sidecar aqui
+	Some settings could not be saved; the raws stay open	Não foi possível salvar algumas configurações; os raw continuam abertos
+	Nothing to save: these raws are at their default settings	Nada para salvar: estes raw estão nas configurações padrão
+# Artboard tool options bar (#11385)
+	Distribute Widths	Distribuir larguras
+	Distribute Heights	Distribuir alturas
+	Auto-nest Layers	Aninhar camadas automaticamente
+	Auto-size Canvas	Ajustar tamanho da tela automaticamente
+	Keep Relative Position During Layer Reordering	Manter a posição relativa ao reordenar camadas
+	Shrinkwrap Canvas on Save	Reduzir a tela ao conteúdo ao salvar
 
-# Placement and memory-admission notices from upstream 0.21.0.
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Um comando foi cancelado ou interrompido durante o processamento em lote. Continuar com o próximo arquivo ou parar?
 	A file is still being placed; try again when it has finished.	Um arquivo ainda está sendo inserido; tente novamente quando terminar.
+	AI Prompt History	Histórico de prompts de IA
+	AI model settings	Configurações do modelo de IA
+	Adding generated layer	Adicionando camada gerada
+	Adjust colors with Poisson blending	Ajustar cores com mesclagem de Poisson
+	Adobe Every-line Composer	Compositor de todas as linhas Adobe
+	Adobe PDF Presets…	Predefinições do Adobe PDF…
+	Adobe Single-line Composer	Compositor de linha única Adobe
+	All nine regions	Todas as nove regiões
+	All shortcuts reset to Photoshop defaults.	Todos os atalhos foram redefinidos para os padrões do Photoshop.
+	Anime fusal	Anime FUSAL
+	Answer the open import question first, then import this file again.	Responda primeiro à pergunta de importação aberta e importe este arquivo novamente.
+	Arrange Panels	Organizar painéis
+	Arrowhead options	Opções de pontas de seta
+	Arrowheads	Pontas de seta
+	Attach Reference Image	Anexar imagem de referência
+	Attribute	Atributo
+	Automatically check for updates	Verificar atualizações automaticamente
+	Base64	Base64
+	Batch preview	Visualização do lote
+	CPU Rendering	Renderização por CPU
+	Calculating…	Calculando…
+	Camera Raw	Camera Raw
+	Camera Raw ({name})	Camera Raw ({name})
+	Camera Raw Defaults	Padrões do Camera Raw
+	Camera Raw Filter	Filtro do Camera Raw
+	Camera Raw Filter ({layer})	Filtro Camera Raw ({layer})
+	Camera Raw Filter…	Filtro Camera Raw…
+	Camera Raw isn't open	Camera Raw não está aberto
+	Camera Raw…	Camera Raw…
+	Cancelled opening {name}	Abertura de {name} cancelada
 	Cancelled placing {name}	Inserção de {name} cancelada
+	Cancelled {label}	{label} cancelado
+	Centre the gradient (offset 0, 0)	Centralizar o degradê (deslocamento 0, 0)
+	Check Again	Verificar novamente
+	Check for updates now	Verificar atualizações agora
+	Checking for updates…	Verificando atualizações…
+	Click to fill similar colours	Clique para preencher cores semelhantes
+	Click to refresh histogram with uncached data	Clique para atualizar o histograma com dados sem cache
+	Click to restore the current colour	Clique para restaurar a cor atual
+	Click to sample the foreground colour  ·  {key}-click for background	Clique para obter a cor de primeiro plano  ·  {key}-clique para a cor de fundo
+	Close Other Panels in Group	Fechar outros painéis do grupo
+	Collapse to Icons	Recolher em ícones
+	Color Blindness — Deuteranopia-type	Daltonismo — tipo deuteranopia
+	Color Blindness — Protanopia-type	Daltonismo — tipo protanopia
+	ComfyUI is unavailable in this frontend	ComfyUI não está disponível neste ambiente
+	ComfyUI port	Porta do ComfyUI
+	Comfyui custom encoders	Codificadores personalizados do ComfyUI
+	Comfyui custom model	Modelo personalizado do ComfyUI
+	Comfyui custom models	Modelos personalizados do ComfyUI
+	Comfyui model	Modelo ComfyUI
+	Comfyui model settings	Configurações dos modelos do ComfyUI
+	Comfyui translate prompt	Traduzir o prompt para inglês
+	Comfyui translation model	Modelo de tradução de prompts
+	Comfyui url	URL do servidor ComfyUI
+	Compare with Original Generation	Comparar com a geração original
+	Concavity	Concavidade
+	Copy English translation	Copiar a tradução em inglês
+	Copy negative prompt	Copiar prompt negativo
+	Copy original prompt	Copiar o prompt original
+	Could not check for updates.	Não foi possível verificar atualizações.
+	Count:	Contagem:
+	Cube	CUBE
+	Custom model filenames (one per line)	Nomes dos arquivos de modelos personalizados (um por linha)
+	Data Encoding	Codificação dos dados
+	Data Sets as Files is unavailable on the web	Conjuntos de dados como arquivos não está disponível na Web
+	Default Photoshop Size	Tamanho padrão do Photoshop
+	Default colours (D)	Cores padrão (D)
+	Describe changes to the whole image	Descreva alterações na imagem inteira
+	Describe changes, or leave blank to remove	Descreva alterações ou deixe vazio para remover
+	Describe the image to generate	Descreva a imagem a ser gerada
+	Dismiss update	Fechar aviso de atualização
+	Downloading generated image	Baixando resultado
+	Downloading update…	Baixando atualização…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Arraste uma caixa de corte · arraste dentro para mover · as bordas redimensionam ({ratio} proporção, {centre} centro) · Espaço move durante o desenho · setas deslocam · X troca a orientação · {commit} confirma · Esc cancela
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · {commit} commits · Esc cancels	Arraste uma caixa de corte · arraste dentro para mover · as bordas redimensionam ({ratio} proporção, {centre} centro) · Espaço move durante o desenho · {commit} confirma · Esc cancela
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Arraste ao redor do centro para girar a visualização  ·  Shift restringe a 15°
+	Drawn on the CPU: {reason}. Click for System Info.	Desenhado pela CPU: {reason}. Clique para ver as informações do sistema.
 	Dropped files weren't placed: their document was closed.	Os arquivos soltos não foram inseridos: o documento deles foi fechado.
 	Dropped files weren't placed: too many are waiting for their document.	Os arquivos soltos não foram inseridos: há arquivos demais aguardando o documento deles.
+	Effect	Efeito
+	Empty	Vazio
+	End	Fim
+	English translation	Tradução em inglês
+	External cutout	Recorte externo
+	External erase	Apagamento externo
+	Filter for embedded smart objects	Filtrar objetos inteligentes incorporados
+	Filter for linked smart objects that are missing	Filtrar objetos inteligentes vinculados ausentes
+	Filter for smart objects linked locally	Filtrar objetos inteligentes vinculados localmente
+	Generative Fill	Preenchimento generativo
+	Generative Fill…	Preenchimento generativo…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Interpolação com correção de gradiente: nítida e rápida, com algum franjamento de cor em detalhes finos.
+	High Memory Photoshop Document	Documento do Photoshop com alto uso de memória
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: as bordas mais limpas e o menor franjamento de cor; o mais lento.
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Como o mosaico do filtro de cor da câmera é preenchido. É aplicado ao abrir o arquivo; a visualização mostra o método com que ele foi aberto.
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	Compactação da imagem
+	Import Photoshop brushes (.abr)	Importar pincéis do Photoshop (.abr)
+	Import as New Group	Importar como novo grupo
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Importar como novo grupo mantém “{group}” e adiciona o arquivo como um novo grupo ao lado dele.
+	Installed version: {version}	Versão instalada: {version}
+	Inverse Selection	Inverter seleção
+	LZW	LZW
+	Layer Effects	Efeitos de camada
+	Layer via Copy	Camada via cópia
+	Layer via Cut	Camada via recorte
+	Level:	Nível:
+	Lining	Algarismos alinhados
+	Linked	Vinculado
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Restaria pouca memória após abrir este arquivo. Feche outros aplicativos primeiro, ou o PhotoCraft poderá ficar sem memória.
+	Load Photoshop brushes (.abr)	Carregar pincéis do Photoshop (.abr)
+	Loaded Camera Raw settings from {file}	Configurações do Camera Raw carregadas de {file}
+	Loaded Camera Raw settings from {file} ({n} not supported)	Configurações do Camera Raw carregadas de {file} ({n} sem suporte)
+	Look	LOOK
+	Lut Format	Formato LUT
+	Match Surrounding Colors	Ajustar às cores ao redor
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Ajusta as cores ao entorno capturado durante a geração. A intensidade 0 restaura o resultado gerado original.
+	Minimize Panel	Minimizar painel
+	Negative prompt	Prompt negativo
+	No AI prompts recorded	Nenhum prompt de IA registrado
+	No Adv. Blending	Sem mesclagem avançada
+	No Layer Effects	Sem efeitos de camada
+	No Layer Mask	Sem máscara de camada
+	No Vector Mask	Sem máscara vetorial
+	No import is waiting. Import the file again.	Não há importação pendente. Importe o arquivo novamente.
+	No matching fonts	Nenhuma fonte correspondente
+	No prompt (remove)	Sem prompt (remover)
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Not Clipped	Sem corte
+	Not Empty	Não vazio
+	Not Linked	Não vinculado
+	Not Locked	Não bloqueado
+	Not Visible	Não visível
+	Not a web colour: click for the nearest web colour	Não é uma cor da Web: clique para a cor da Web mais próxima
 	Nudge	Deslocar ligeiramente
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	O diretório de memória virtual atual ({path}) não informa o espaço livre, então o PhotoCraft não pode parar antes que ele fique cheio, e arquivos grandes não ganham espaço extra sem um limite de tamanho da memória virtual. Este aviso se aplica à configuração atual; as alterações acima entram em vigor ao clicar em Aplicar ou OK. Defina um limite ou use um disco local.
-
-# OpenType stylistic-set labels.
-	Stylistic Sets	Conjuntos estilísticos
+	Numerals	Algarismos
+	One .safetensors filename per line. Compatibility is not checked.	Um nome de arquivo .safetensors por linha. A compatibilidade não é verificada.
+	Open Download Page	Abrir página de download
+	Open Panel in Own Window	Abrir painel em janela própria
+	Open a document to select a colour range.	Abra um documento para selecionar um intervalo de cores.
+	Open anyway	Abrir mesmo assim
+	Open in camera raw	Abrir no Camera Raw
+	Opening this document uses more memory and may slow down your computer or other running applications.	Abrir este documento usa mais memória e pode deixar o computador ou outros aplicativos em execução mais lentos.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Abrir “{name}” requer aproximadamente {est} GiB de memória ({avail} GiB disponíveis).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Abrir “{name}” requer aproximadamente {est} GiB de memória. Não foi possível medir a memória disponível.
+	Original prompt	Prompt original
+	Out of gamut for printing: click for the nearest printable colour	Fora da gama de impressão: clique para a cor imprimível mais próxima
+	Percentile:	Percentil:
+	PhotoCraft Updates	Atualizações do PhotoCraft
+	PhotoCraft is up to date.	O PhotoCraft está atualizado.
+	PhotoCraft update available	Atualização do PhotoCraft disponível
+	PhotoCraft {version} is available.	PhotoCraft {version} está disponível.
+	Preparing image and selection	Preparando imagem e seleção
+	Prompt Edit	Editar com prompt
+	Prompt Edit…	Editar com prompt…
+	Prompt Generate	Gerar com prompt
+	Prompt Generate…	Gerar com prompt…
+	Prompt information	Informações do prompt
+	Prompt translation model	Modelo de tradução de prompts
+	Proportional	Proporcionais
+	Proportional Lining	Algarismos alinhados proporcionais
+	Proportional Oldstyle	Algarismos de estilo antigo proporcionais
+	Quick Export As PNG	Exportação rápida como PNG
+	Qwen image21	Qwen 2.1
+	Reference Image	Imagem de referência
+	Regenerate	Gerar novamente
+	Regenerate AI Result	Gerar novamente o resultado da IA
+	Remember to turn off the printer's own colour management in Print Settings…	Lembre-se de desativar o gerenciamento de cores da própria impressora nas configurações de impressão…
+	Remove Reference Image	Remover imagem de referência
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Substituir exclui primeiro tudo em “{group}”, incluindo as predefinições que você editou ou moveu para lá. Isso não pode ser desfeito.
+	Reset steps to model default	Restaurar as etapas padrão do modelo
+	Resize for AI editing	Redimensionar para edição com IA
+	Sample: foreground colour	Amostra: cor de primeiro plano
+	Sampling steps	Etapas de amostragem
+	Save Image Pyramid	Salvar pirâmide de imagens
+	Save Transparency	Salvar transparência
+	Save cancelled	Salvamento cancelado
+	Select Layer Under Cursor	Selecionar camada sob o cursor
 	Set 	Conjunto
 	Set 1	Conjunto 1
-	Set 2	Conjunto 2
-	Set 3	Conjunto 3
-	Set 4	Conjunto 4
-	Set 5	Conjunto 5
-	Set 6	Conjunto 6
-	Set 7	Conjunto 7
-	Set 8	Conjunto 8
-	Set 9	Conjunto 9
 	Set 10	Conjunto 10
 	Set 11	Conjunto 11
 	Set 12	Conjunto 12
@@ -4721,22 +4736,66 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set 17	Conjunto 17
 	Set 18	Conjunto 18
 	Set 19	Conjunto 19
+	Set 2	Conjunto 2
 	Set 20	Conjunto 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	Entrada da mesa digitalizadora
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (padrão)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	Codificação dos dados
-	Lut Format	Formato LUT
+	Set 3	Conjunto 3
+	Set 4	Conjunto 4
+	Set 5	Conjunto 5
+	Set 6	Conjunto 6
+	Set 7	Conjunto 7
+	Set 8	Conjunto 8
+	Set 9	Conjunto 9
+	Set as default	Definir como padrão
 	Shape Id	ID da forma
 	Shape Name	Nome da forma
 	Shape Origin Type	Tipo de origem da forma
 	Shape Path	Demarcador da forma
+	Show Channels in Color	Mostrar canais em cores
+	Show Statistics	Mostrar estatísticas
+	Source:	Origem:
+	Start	Início
+	Stylistic Sets	Conjuntos estilísticos
+	Swap colours (X)	Trocar cores (X)
+	Tablet input	Entrada da mesa digitalizadora
+	Tabular	Tabulares
+	Tabular Lining	Algarismos alinhados tabulares
+	Tabular Oldstyle	Algarismos de estilo antigo tabulares
 	Text	Texto
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoders	Codificadores de texto
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	O diretório de memória virtual atual ({path}) não informa o espaço livre, então o PhotoCraft não pode parar antes que ele fique cheio, e arquivos grandes não ganham espaço extra sem um limite de tamanho da memória virtual. Este aviso se aplica à configuração atual; as alterações acima entram em vigor ao clicar em Aplicar ou OK. Defina um limite ou use um disco local.
+	The fastest and the softest, with colour fringing on fine detail.	O mais rápido e o mais suave, com franjamento de cor em detalhes finos.
+	The image exceeds the AI editing size. Resize the document to continue?	A imagem excede o tamanho de edição com IA. Redimensionar o documento para continuar?
+	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Este objeto inteligente precisa ser rasterizado antes de continuar. O conteúdo não poderá mais ser editado. Rasterizar o objeto inteligente?
+	Translate prompt to English	Traduzir o prompt para inglês
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo int8	Turbo INT8
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Turbo q8	Turbo Q8_0
+	Uncached Refresh	Atualizar sem cache
+	Update PhotoCraft	Atualizar o PhotoCraft
+	Update PhotoCraft and restart now?	Atualizar o PhotoCraft e reiniciar agora?
+	Updates have not been checked yet.	As atualizações ainda não foram verificadas.
+	Uploading image to ComfyUI	Enviando imagem ao ComfyUI
+	Use these settings for new arrows	Usar estas configurações para novas setas
+	Uses the foreground and background colours.	Usa as cores de primeiro plano e de fundo.
+	Waiting for ComfyUI generation	Aguardando geração do ComfyUI
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (padrão)
+	You can check for updates again in Help → About PhotoCraft.	Você pode verificar atualizações novamente em Ajuda → Sobre o PhotoCraft.
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label} está gravando o arquivo e não pode mais ser cancelado
+	{message} into “{group}”	{message} em “{group}”
+	{ok} written to {dir}	{ok} gravados em {dir}
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	O grupo de pincéis “{group}” já contém pincéis seus (quantidade: {n}).|O grupo de pincéis “{group}” já contém pincéis seus (quantidade: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	O grupo de degradês “{group}” já existe (quantidade de degradês: {n}).|O grupo de degradês “{group}” já existe (quantidade de degradês: {n}).
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: falha em {n} saída de recursos de imagem|{what}: falha em {n} saídas de recursos de imagem

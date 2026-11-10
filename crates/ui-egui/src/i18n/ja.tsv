@@ -42,7 +42,7 @@
 # Strings added to the UI after this catalog was first written (rebase onto main, 2026-10).
 # Gradient Editor window, opened from the options bar's gradient swatch.
 # Rendering mode and recovery
-# Camera Raw: contextual controls and window title
+# RAW Develop: contextual controls and window title
 
 
 
@@ -352,7 +352,7 @@
 	Plugins…	プラグイン…
 	Type…	文字…
 	Enhanced Controls…	拡張コントロール…
-	Camera Raw…	Camera Raw…
+	RAW Defaults…	RAWの既定値…
 	Raw Defaults…	RAW の既定値…
 	Integrations…	連携…
 	AI Integrations…	AI 連携…
@@ -403,6 +403,8 @@
 	Match Color…	カラーを一致…
 	Replace Color…	色を置き換え…
 	Equalize	平均化
+	Equalize Selected Area Only	選択範囲のみ平均化
+	Equalize Entire Image Based On Selected Area	選択範囲に基づいて画像全体を平均化
 	Auto Tone	自動トーン補正
 	Auto Contrast	自動コントラスト
 	Auto Color	自動カラー補正
@@ -439,8 +441,8 @@
 	Artboard…	アートボード…
 	Artboard from Group…	グループからアートボード…
 	Artboard from Layers…	レイヤーからアートボード…
-	Layer via Copy	コピーしたレイヤー
-	Layer via Cut	切り取ったレイヤー
+	Layer Via Copy	コピーしたレイヤー
+	Layer Via Cut	切り取ったレイヤー
 	Layer From Background…	背景からレイヤーへ…
 	Layer from Background…	背景からレイヤーへ…
 	Background From Layer	レイヤーから背景
@@ -660,7 +662,6 @@
 	Deselect	選択を解除
 	Reselect	再選択
 	Inverse	選択範囲を反転
-	Inverse Selection	選択範囲を反転
 	Similar	近似色を選択
 	Color Range…	色域指定…
 	Focus Area…	焦点領域…
@@ -685,7 +686,7 @@
 	Last Filter	直前のフィルター
 	Filter Gallery…	フィルターギャラリー…
 	Adaptive Wide Angle…	広角補正…
-	Camera Raw Filter…	Camera Raw フィルター…
+	RAW Develop Filter…	RAW現像 フィルター…
 	Liquify…	ゆがみ…
 	Vanishing Point…	消点…
 	Blur	ぼかし
@@ -780,8 +781,8 @@
 	Legacy Macintosh RGB (Gamma 1.8)	旧 Macintosh RGB (Gamma 1.8)
 	Internet Standard RGB (sRGB)	インターネット標準 RGB (sRGB)
 	Monitor RGB	モニター RGB
-	Color Blindness — Protanopia-type	色覚特性 — 1 型(P 型)
-	Color Blindness — Deuteranopia-type	色覚特性 — 2 型(D 型)
+	Color Blindness - Protanopia-type	色覚特性 - 1 型(P 型)
+	Color Blindness - Deuteranopia-type	色覚特性 - 2 型(D 型)
 	Zoom In	拡大
 	Zoom Out	縮小
 	Fit on Screen	画面サイズに合わせる
@@ -870,7 +871,7 @@
 	Consolidate All to Tabs	すべてをタブに統合
 	Float in Window	ウィンドウ内に浮動
 	Float All in Windows	すべてをウィンドウ内に浮動
-	New Window	ドキュメントの新規ウィンドウ
+	New Window	新規ウィンドウ
 	Workspace	ワークスペース
 	Essentials	基本
 	Graphic and Web	グラフィックと Web
@@ -932,6 +933,12 @@
 	Timeline	タイムライン
 	Tool Presets	ツールプリセット
 	Tools	ツール
+	Contextual Task Bar	コンテキストタスクバー
+	Hide bar	バーを隠す
+	Reset bar position	バーの位置をリセット
+	Pin bar position	バーの位置を固定
+	Move bar	バーを移動
+	More options	その他のオプション
 	About PhotoCraft	PhotoCraft について
 	PhotoCraft Website	PhotoCraft の Web サイト
 	PhotoCraft on GitHub	GitHub 上の PhotoCraft
@@ -1034,8 +1041,8 @@
 	Load Settings…	設定を読み込み…
 	Save these settings as a Camera Raw .xmp file	この設定を Camera Raw の .xmp ファイルとして保存
 	Load settings from a Camera Raw .xmp file	Camera Raw の .xmp ファイルから設定を読み込む
-	Loaded Camera Raw settings from {file}	{file} から Camera Raw の設定を読み込みました
-	Loaded Camera Raw settings from {file} ({n} not supported)	{file} から Camera Raw の設定を読み込みました（未対応: {n}）
+	Loaded RAW Develop settings from {file}	{file} から RAW現像 の設定を読み込みました
+	Loaded RAW Develop settings from {file} ({n} not supported)	{file} から RAW現像 の設定を読み込みました（未対応: {n}）
 	Begin recording	記録を開始
 	Bend:	曲げ:
 	Bicubic	バイキュービック
@@ -1063,7 +1070,7 @@
 	Brush Reconstruct Options	ブラシの復元オプション
 	Brush Tool Options	ブラシツールのオプション
 	Cache Level:	キャッシュレベル:
-	Camera Raw isn't open	Camera Raw は開いていません
+	RAW Develop isn't open	RAW現像 は開いていません
 	Cancel	キャンセル
 	Cancel (Esc)	キャンセル(Esc)
 	Manage submitted jobs in the system print queue	送信済みのジョブはシステムの印刷キューで管理してください
@@ -1096,7 +1103,7 @@
 	Click to add a point · drag off or {key}-click or Delete to remove	クリックで点を追加 · 外へドラッグ、{key}+クリック、Delete で削除
 	Click to apply, {key}-click to clear overrides, double-click for Style Options	クリックで適用、{key}+クリックで上書き解除、ダブルクリックでスタイルオプション
 	Click to edit the gradient	クリックしてグラデーションを編集
-	Click to restore the current colour	クリックして現在の色に戻す
+	Click to restore the current color	クリックして現在の色に戻す
 	Click to zoom in  ·  {key}-click to zoom out  ·  drag right/left to zoom in/out	クリックで拡大 · {key}+クリックで縮小 · 右/左にドラッグで拡大/縮小
 	Click with the Note tool to add a note.	注釈ツールでクリックすると注釈を追加できます。
 	Click: corner · Drag: smooth · Click first point: close · {key} finish · Esc cancel	クリック: 角 · ドラッグ: 滑らか · 最初の点をクリック: 閉じる · {key} 完了 · Esc キャンセル
@@ -1179,7 +1186,7 @@
 	Darks	暗部
 	Data Sets	データセット
 	Default	既定
-	Default colours (D)	初期カラーに戻す(D)
+	Default Foreground and Background Colors (D)	前景色と背景色を既定に戻す (D)
 	Default printer	既定のプリンター
 	Default restored.	既定に戻しました。
 	Define	定義
@@ -1461,7 +1468,7 @@
 	Opacity Jitter	不透明度のジッター
 	Opacity:	不透明度:
 	Open a document to define variables.	変数を定義するには、ドキュメントを開いてください。
-	Open a document to select a colour range.	色域を指定するには、ドキュメントを開いてください。
+	Open a document to select a color range.	色域を指定するには、ドキュメントを開いてください。
 	Open a document to use the timeline.	タイムラインを使うには、ドキュメントを開いてください。
 	Optical	オプティカル
 	Optimized	最適化
@@ -1537,7 +1544,6 @@
 	Purity	純度
 	Quality	画質
 	Quick Actions	クイックアクション
-	Quick Export As PNG	PNG としてクイック書き出し
 	Radial Gradient	円形グラデーション
 	Radius	半径
 	Radius:	半径:
@@ -1677,7 +1683,7 @@
 	Subtract from Sample	サンプルから削除
 	Subtract from selection  ({key})	選択範囲から削除 ({key})
 	Suggestions:	候補:
-	Swap colours (X)	描画色と背景色を入れ替え(X)
+	Switch Foreground and Background Colors (X)	前景色と背景色を入れ替え (X)
 	Swaps height and width	高さと幅を入れ替えます
 	Switch between free transform and warp modes	自由変形とワープのモードを切り替え
 	Switch theme	テーマを切り替え
@@ -1780,7 +1786,7 @@
 	Choke	境界のぼかし幅
 	Classic	クラシック
 	Click to add text	クリックしてテキストを追加
-	Click to fill similar colours	クリックして近い色を塗りつぶし
+	Click to fill similar colors	クリックして近い色を塗りつぶし
 	Clone Stamp Tool	コピースタンプツール
 	Color Burn	焼き込みカラー
 	Color Dodge	覆い焼きカラー
@@ -1882,6 +1888,7 @@
 	Move Tool	移動ツール
 	Could not use the move tool because the layer is locked.	レイヤーがロックされているため、移動ツールを使用できません。
 	Could not complete the Free Transform command because the layer is locked.	レイヤーがロックされているため、自由変形コマンドを完了できません。
+	Could not transform because the layer is locked.	レイヤーがロックされているため、変形できません。
 	Multiply	乗算
 	My Brushes	マイブラシ
 	Neutrals	中間色系
@@ -1940,7 +1947,7 @@
 	Rectangular Marquee Tool	長方形選択ツール
 	Reds	レッド系
 	Reflected	反射形
-	Sample: foreground colour	サンプル: 描画色
+	Sample: foreground color	サンプル: 描画色
 	Sampled Colors	サンプルしたカラー
 	Satin	サテン
 	Save Pixel Aspect Ratio	ピクセル縦横比を保存
@@ -1979,7 +1986,6 @@
 	Transfer	伝達
 	Triangle Tool	三角形ツール
 	Unsaved changes	未保存の変更
-	Uses the foreground and background colours.	描画色と背景色を使用します。
 	Web	Web
 	Web Large	Web (大)
 	Web Minimum	Web (最小)
@@ -2016,6 +2022,7 @@
 	Allow scripts to connect	スクリプトからの接続を許可
 	Always	常に
 	Always create smart objects when placing	配置時に常にスマートオブジェクトを作成
+	Skip transform when placing	配置時に変形をスキップ
 	Animated zoom	アニメーションズーム
 	Apply auto tone	自動トーン補正を適用
 	Ask	確認する
@@ -2033,7 +2040,7 @@
 	Brush preview color	ブラシプレビューの色
 	Cache levels	キャッシュレベル
 	Cache tile size	キャッシュタイルのサイズ
-	Camera Raw Defaults	Camera Raw の既定値
+	RAW Defaults	RAWの既定値
 	Canvas border	カンバスの境界
 	Show canvas dots	カンバスのドットを表示
 	Clip thumbnails to layer bounds	サムネールをレイヤーの境界でクリップ
@@ -2120,7 +2127,6 @@
 	Never	しない
 	Normal tip	通常の先端
 	Open as smart object	スマートオブジェクトとして開く
-	Open in camera raw	Camera Raw で開く
 	Open documents as tabs	ドキュメントをタブで開く
 	Overscroll	オーバースクロール
 	Performance	パフォーマンス
@@ -2252,7 +2258,7 @@
 	Graphics	グラフィックス
 	Reset GPU Backend	GPU バックエンドをリセット
 	Applies at next launch.	次回の起動時に適用されます。
-	Click to sample the foreground colour  ·  {key}-click for background	クリックで描画色を取得 · {key}+クリックで背景色を取得
+	Click to sample the foreground color  ·  {key}-click for background	クリックで描画色を取得 · {key}+クリックで背景色を取得
 	{key}-click to set the source	{key}+クリックでソースを設定
 	{key} to subtract	{key} で削除
 	Clone source {n} ({key}-click with Clone Stamp to set)	コピーソース {n} ({key}+クリックでコピースタンプのソースを設定)
@@ -2311,7 +2317,7 @@
 	Gradient Options	グラデーションオプション
 	Align with layer	レイヤーに揃える
 	Reset Alignment	位置をリセット
-	Centre the gradient (offset 0, 0)	グラデーションを中央に配置(オフセット 0, 0)
+	Center the gradient (offset 0, 0)	グラデーションを中央に配置(オフセット 0, 0)
 	Gradient Editor	グラデーションエディター
 	Gradient picker	グラデーションピッカー
 	Save As Preset	プリセットとして保存
@@ -2343,7 +2349,7 @@
 	Vulkan	Vulkan
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	選択範囲を作成するパスがありません。ペンツールで描くか、パスパネルでパスを選択してください。
 	Cancel opening	開くのをキャンセル
-	Cancelled opening {name}	{name} を開くのをキャンセルしました
+	Canceled opening {name}	{name} を開くのをキャンセルしました
 	Damaged Photoshop document	破損した Photoshop ドキュメント
 	The document “{name}” may be damaged.	ドキュメント「{name}」は破損している可能性があります。
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	一部のレイヤー、ピクセル、またはマスクを読み込めませんでした。開く処理を続行しますか？
@@ -2353,7 +2359,7 @@
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	ドキュメント「{name}」の埋め込みカラープロファイルは、現在の {mode} 作業用スペースと一致しません。
 	Working: {working}	作業用スペース: {working}
 	Developing {name}	{name} を現像中
-	Cancelled {label}	{label} をキャンセルしました
+	Canceled {label}	{label} をキャンセルしました
 	Esc to cancel	Esc キーでキャンセル
 	Opened {name}	{name} を開きました
 	Opening {name}	{name} を開いています
@@ -2361,7 +2367,7 @@
 	Saving {name}	{name} を保存しています
 	Saving {percent}	保存中 {percent}
 	A save to {name} is still running; try again when it finishes	{name} への保存がまだ実行中です。完了してからもう一度お試しください
-	{label} is writing the file and can no longer be cancelled	{label} はファイルを書き込み中のため、キャンセルできません
+	{label} is writing the file and can no longer be canceled	{label} はファイルを書き込み中のため、キャンセルできません
 	Opening {name}…	{name} を開いています…
 	Opening…	開いています…
 	Reading…	読み込み中…
@@ -2396,8 +2402,8 @@
 	Tone Histogram	階調ヒストグラム
 	Show Selected Region	選択範囲を表示
 cameraRaw	Light	ライト
-	Camera Raw Filter ({layer})	Camera Raw フィルター ({layer})
-	Camera Raw ({name})	Camera Raw ({name})
+	RAW Develop Filter ({layer})	RAW現像 フィルター ({layer})
+	RAW Develop ({name})	RAW現像 ({name})
 cameraRaw	Lights	明部
 cameraRaw	Blending	ブレンド
 cameraRaw	Blacks	黒レベル
@@ -2439,7 +2445,7 @@ cameraRaw	Color	カラー
 	Discard Layers and Save a Copy	レイヤーを破棄してコピーを保存
 	Don't show again	次回から表示しない
 	Save failed: {error}	保存に失敗しました: {error}
-	Save cancelled	保存をキャンセルしました
+	Save canceled	保存をキャンセルしました
 	Magnetic Lasso Tool	マグネット選択ツール
 	Frequency	頻度
 	Use tablet pressure to change pen width	タブレットの筆圧を使用してペンの幅を変更
@@ -2568,7 +2574,7 @@ fontWeight	Italic	斜体
 	Rotate View	表示を回転
 	Rotate View Tool	表示回転ツール
 	Reset View	表示をリセット
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	中心の周りをドラッグして表示を回転  ·  Shift で 15° 単位
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	中心の周りをドラッグして表示を回転  ·  Shift で 15° 単位
 	Dual Axis	二軸
 	Diagonal	斜め
 	Transform Symmetry	対称軸を変形
@@ -2583,8 +2589,8 @@ fontWeight	Italic	斜体
 	All Layers No Adjustments	すべてのレイヤー (色調補正なし)
 	Current & Below No Adjustments	現在のレイヤーとその下 (色調補正なし)
 	Show Sampling Ring	サンプリングリングを表示
-	Out of gamut for printing: click for the nearest printable colour	印刷の色域外: クリックすると最も近い印刷可能な色になります
-	Not a web colour: click for the nearest web colour	Web カラーではありません: クリックすると最も近い Web カラーになります
+	Out of gamut for printing: click for the nearest printable color	印刷の色域外: クリックすると最も近い印刷可能な色になります
+	Not a web color: click for the nearest web color	Web カラーではありません: クリックすると最も近い Web カラーになります
 	Accented Edges	輪郭の強調
 	Adjust Interval For Loops	ループ用に間隔を調整
 	Adjustment Properties	色調補正のプロパティ
@@ -2967,7 +2973,7 @@ fontWeight	Italic	斜体
 	Box Blur	ぼかし (ボックス)
 	Bulge	膨らみ
 	Burn	焼き込み
-	Camera Raw Filter	Camera Raw フィルター
+	RAW Develop Filter	RAW現像 フィルター
 	Canvas Size	カンバスサイズ
 	Circularity	真円度
 	Clipping Path	クリッピングパス
@@ -3041,6 +3047,7 @@ fontWeight	Italic	斜体
 	Magnetic Lasso	マグネット投げ縄
 	Make	作成
 	Make Selection	選択範囲を作成
+	Make Shape	シェイプを作成
 	Make Work Path	作業用パスを作成
 	Match Color	カラーを一致
 	Mezzotint	メゾティント
@@ -3151,7 +3158,7 @@ fontWeight	Italic	斜体
 	Border	境界
 	Browse	参照
 	Calculations	演算
-	Camera Raw	Camera Raw
+	RAW Develop	RAW現像
 	Caption	キャプション
 	Category	カテゴリー
 	Channel	チャンネル
@@ -3337,10 +3344,7 @@ fontWeight	Italic	斜体
 	Add to selection  (⇧)	選択範囲に追加  (⇧)
 	Adds grain to the soft edges of the brush tip.	ブラシ先端の柔らかい縁に粒子を加えます。
 	Adjustment Layer	色調補正レイヤー
-	Adobe Every-line Composer	Adobe 全行コンポーザー
-	Adobe PDF Presets…	Adobe PDF プリセット…
 	Adobe RGB (1998)	Adobe RGB (1998)
-	Adobe Single-line Composer	Adobe 1 行コンポーザー
 	Advanced Controls	詳細コントロール
 	After (X)	後 (X)
 	Airbrush: keeps painting while the pointer rests.	エアブラシ: ポインターを止めている間も描き続けます。
@@ -3426,7 +3430,7 @@ fontWeight	Italic	斜体
 	Document Size	ドキュメントサイズ
 	Dodge/Burn	覆い焼き/焼き込み
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	ドラッグ (投げ縄) またはクリックでポイント指定 (多角形) · {add} 追加 · {sub} 除外
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	切り抜きボックスをドラッグ · 内側をドラッグで移動 · 縁でサイズ変更 ({ratio} で比率、{centre} で中心) · 描画中は Space で移動 · 矢印キーで微調整 · X で縦横を切り替え · {commit} で確定 · Esc で取り消し
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	切り抜きボックスをドラッグ · 内側をドラッグで移動 · 縁でサイズ変更 ({ratio} で比率、{centre} で中心) · 描画中は Space で移動 · 矢印キーで微調整 · X で縦横を切り替え · {commit} で確定 · Esc で取り消し
 	Drag to move the layer	ドラッグしてレイヤーを移動
 	Duplicated selection name	複製した選択範囲の名前
 	Dynamics	ダイナミクス
@@ -3976,7 +3980,7 @@ curves	Smooth	スムーズ
 	Auto Add/Delete	自動追加・削除
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	印刷設定の「鏡像」も有効にしないでください。2回反転すると元に戻ります。
 	Print Settings…	印刷設定…
-	Remember to turn off the printer's own colour management in Print Settings…	印刷設定でプリンター独自のカラーマネジメントを無効にしてください…
+	Remember to turn off the printer's own color management in Print Settings…	印刷設定でプリンター独自のカラーマネジメントを無効にしてください…
 	Sent to {printer}	{printer} に送信しました
 	set in Print Settings…	印刷設定で指定…
 	Drag to pan · Scroll to zoom · Double-click to fit	ドラッグで移動 · スクロールでズーム · ダブルクリックで全体表示
@@ -4025,11 +4029,6 @@ curves	Smooth	スムーズ
 	Shadow Tint	シャドウの色かぶり補正
 	Check for Updates…	アップデートを確認…
 	Open the release page to choose an installer for your system.	リリースページでお使いのシステム用のインストーラーを選択してください。
-	Open Download Page	ダウンロードページを開く
-	PhotoCraft is up to date.	PhotoCraftは最新です。
-	Could not check for updates.	アップデートを確認できませんでした。
-	Updates have not been checked yet.	まだアップデートを確認していません。
-	Check Again	再確認
 	Automatically Check for Updates	アップデートを自動的に確認
 	Paints from the History panel's source state	ヒストリーパネルのソース状態からペイントします
 	Sets the source for the history brush	ヒストリーブラシのソースを設定します
@@ -4116,12 +4115,12 @@ curves	Smooth	スムーズ
 	Decrease Brush Hardness	ブラシの硬さを下げる
 	Increase Brush Hardness	ブラシの硬さを上げる
 	Demosaic	デモザイク
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	カメラのカラーフィルター配列をどのように補間するか。ファイルを開くときに適用されます。プレビューは開いたときの方式で表示されます。
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	カメラのカラーフィルター配列をどのように補間するか。ファイルを開くときに適用されます。プレビューは開いたときの方式で表示されます。
 	AHD (adaptive homogeneity)	AHD（適応的均質性）
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks：エッジが最もきれいで色にじみが最も少ないが、最も遅い。
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	勾配補正補間：シャープで高速だが、細部に多少の色にじみが出る。
-	The fastest and the softest, with colour fringing on fine detail.	最も高速で最も柔らかく、細部に色にじみが出る。
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Hirakawa–Parks：エッジが最もきれいで色にじみが最も少ないが、最も遅い。
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	勾配補正補間：シャープで高速だが、細部に多少の色にじみが出る。
+	The fastest and the softest, with color fringing on fine detail.	最も高速で最も柔らかく、細部に色にじみが出る。
 	“{name}” already exists. Replace it?	「{name}」は既に存在します。置き換えますか？
 	The name in the save dialog was “{name}”.	保存ダイアログで指定した名前は「{name}」でした。
 	Previous Brush	前のブラシ
@@ -4181,8 +4180,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Grayscale Ramp	グレースケールランプ
 	Current Colors	現在のカラー
 	Make Ramp Web Safe	ランプを Web セーフにする
+	Scroll All Windows	すべてのウィンドウをスクロール
 	The path was kept as the Work Path	パスは作業用パスとして保持されました
 	The path was discarded	パスは破棄されました
+# Art History Brush (#213).
 	Art History Brush Tool	アートヒストリーブラシツール
 	Tight Short	タイト・ショート
 	Tight Medium	タイト・ミディアム
@@ -4224,188 +4225,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Stop Color	分岐点のカラー
 	Shapes can't use patterns yet	シェイプではまだパターンを使用できません
 	Edit Brush…	ブラシを編集…
-	Drag to move the active shape's path or the Work Path	ドラッグして、アクティブなシェイプのパスまたは作業用パスを移動
-	This Layer:	現在のレイヤー:
-	Move Up	上へ移動
-	Move Down	下へ移動
-	All shortcuts reset to Photoshop defaults.	すべてのショートカットを初期状態に戻しました。
-	Import Photoshop brushes (.abr)	Photoshop ブラシ(.abr)を読み込み
-	Load Photoshop brushes (.abr)	Photoshop ブラシ(.abr)を読み込み
-	Default Photoshop Size	既定サイズ
-	Grid view	グリッド表示
-	List view	リスト表示
-	The current gradient (pick one in Window › Gradients)	現在のグラデーション(ウィンドウ › グラデーション で選択)
-	Prompt Edit	プロンプトで編集
-	Generative Fill	生成塗りつぶし
-	Describe changes to the whole image	画像全体への変更を説明してください
-	Describe changes, or leave blank to remove	変更を説明してください。空欄なら選択範囲を削除します
-	ComfyUI is unavailable in this frontend	この環境ではComfyUIを利用できません
-	Comfyui url	ComfyUIサーバーURL
-	Prompt Edit…	プロンプトで編集…
-	Generative Fill…	生成塗りつぶし…
-	Preparing image and selection	画像と選択範囲を準備中
-	Uploading image to ComfyUI	ComfyUIに画像を送信中
-	Waiting for ComfyUI generation	ComfyUIの生成を待機中
-	Downloading generated image	生成画像を取得中
-	Adding generated layer	生成レイヤーを追加中
-	Prompt Generate	プロンプトで生成
-	Prompt Generate…	プロンプトで生成…
-	Regenerate AI Result	AIの結果を再生成
-	Regenerate	再生成
-	Describe the image to generate	生成する画像を説明してください
-	Sampling steps	サンプリングステップ数
-	Reset steps to model default	ステップ数をモデルの初期値に戻す
-	Translate prompt to English	プロンプトを英語に翻訳
-	Prompt translation model	プロンプトの翻訳モデル
-	Prompt information	プロンプト情報
-	AI Prompt History	AIプロンプト履歴
-	Original prompt	元のプロンプト
-	English translation	英語訳
-	No prompt (remove)	プロンプトなし（削除）
-	All nine regions	全9領域
-	No AI prompts recorded	AIプロンプトの記録はありません
-	Previous	前へ
-	Next	次へ
-	Copy original prompt	元のプロンプトをコピー
-	Copy English translation	英語訳をコピー
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	ComfyUIモデル
-	Comfyui translate prompt	プロンプトを英語に翻訳
-	Comfyui translation model	プロンプトの翻訳モデル
-	AI model settings	AIモデル設定
-	ComfyUI port	ComfyUIポート
-	Copy negative prompt	ネガティブプロンプトをコピー
-	Custom model filenames (one per line)	カスタムモデルのファイル名（1行に1つ）
-	Negative prompt	ネガティブプロンプト
-	One .safetensors filename per line. Compatibility is not checked.	.safetensorsのファイル名を1行に1つ入力します。互換性は確認されません。
-	Text encoders	テキストエンコーダー
-	Comfyui custom encoders	ComfyUIのカスタムエンコーダー
-	Comfyui custom model	ComfyUIのカスタムモデル
-	Comfyui custom models	ComfyUIのカスタムモデル一覧
-	Comfyui model settings	ComfyUIのモデル設定
-	PhotoCraft update available	PhotoCraftの更新があります
-	Update PhotoCraft and restart now?	PhotoCraftを更新して今すぐ再起動しますか？
-	Automatically check for updates	更新を自動的に確認
-	Check for updates now	今すぐ更新を確認
-	You can check for updates again in Help → About PhotoCraft.	ヘルプ → PhotoCraftについてから再び更新を確認できます。
-	Downloading update…	更新をダウンロード中…
-	Update PhotoCraft	PhotoCraftを更新
-	Dismiss update	更新通知を閉じる
-	Match Surrounding Colors	周囲の色に合わせる
-	Adjust colors with Poisson blending	ポアソンブレンディングで色を調整します
-	Compare with Original Generation	最初の生成結果と比較
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	生成時に記録した周囲の色に合わせます。強度0で最初の生成結果に戻します。
-	Attach Reference Image	参照画像を添付
-	Remove Reference Image	参照画像を削除
-	Reference Image	参照画像
-	Resize for AI editing	AI編集用にサイズ変更
-	The image exceeds the AI editing size. Resize the document to continue?	AI編集のサイズ上限を超えています。ドキュメントをサイズ変更して続行しますか？
-	Arrange Panels	パネルを配置
-	Close Other Panels in Group	グループ内の他のパネルを閉じる
-	Collapse to Icons	アイコンに折りたたむ
-	Minimize Panel	パネルを最小化
-	Open Panel in Own Window	パネルを独立したウィンドウで開く
-	Artboards	アートボード
-	CPU Rendering	CPU レンダリング
-	Calculating…	計算中…
-	Click to refresh histogram with uncached data	クリックしてキャッシュを使わずにヒストグラムを更新
-	Count:	カウント:
-	Drawn on the CPU: {reason}. Click for System Info.	CPU で描画: {reason}。クリックしてシステム情報を表示。
-	Level:	レベル:
-	Percentile:	パーセンタイル:
-	Show Channels in Color	チャンネルをカラーで表示
-	Show Statistics	統計情報を表示
-	Source:	ソース:
-	Uncached Refresh	キャッシュを使わずに更新
-	…	…
-	External cutout	外部背景除去
-	External erase	外部消去
-	No matching fonts	一致するフォントはありません
-	Locked	ロック済み
-	Select Layer Under Cursor	カーソル下のレイヤーを選択
-
-# Fork portable update information
-	PhotoCraft Updates	PhotoCraft のアップデート
-	Checking for updates…	アップデートを確認中…
-	Installed version: {version}	インストール済みのバージョン: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} が利用可能です。
-	Answer the open import question first, then import this file again.	先に開いている読み込みの質問に回答してから、このファイルを再度読み込んでください。
-	Import as New Group	新規グループとして読み込む
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	「新規グループとして読み込む」は「{group}」を保持し、その隣にファイルを新しいグループとして追加します。
-	No import is waiting. Import the file again.	待機中の読み込みはありません。ファイルを再度読み込んでください。
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	置き換えると、編集したプリセットや移動したプリセットを含め、「{group}」のすべてが先に削除されます。この操作は取り消せません。
-	{message} into “{group}”	「{group}」に{message}
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	ブラシグループ「{group}」には、あなたのブラシがすでに{n}個あります。
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	グラデーショングループ「{group}」はすでに存在します（グラデーション{n}個）。
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	矢印先端のオプション
-	Arrowheads	矢印先端
-	Concavity	くぼみ
-	End	終点
-	Set as default	初期設定にする
-	Start	始点
-	Use these settings for new arrows	新しい矢印にこの設定を使用
-
-# Upstream 0.20.2: batch, layer filters, memory admission and numeral styles.
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	バッチ処理中にコマンドがキャンセルまたは停止されました。次のファイルに進みますか、それとも停止しますか？
-	Attribute	属性
-	Batch preview	バッチプレビュー
-	Data Sets as Files is unavailable on the web	Web版ではデータセットのファイル書き出しを利用できません
-	Effect	効果
-	Empty	空
-	Filter for embedded smart objects	埋め込みスマートオブジェクトで絞り込む
-	Filter for linked smart objects that are missing	リンク先が見つからないスマートオブジェクトで絞り込む
-	Filter for smart objects linked locally	ローカルにリンクされたスマートオブジェクトで絞り込む
-	High Memory Photoshop Document	大量のメモリを使用するPhotoshopドキュメント
-	Image Compression	画像圧縮
-	LZW	LZW
-	Layer Effects	レイヤー効果
-	Lining	ライニング
-	Linked	リンクあり
-	No Adv. Blending	高度な合成なし
-	No Layer Effects	レイヤー効果なし
-	No Layer Mask	レイヤーマスクなし
-	No Vector Mask	ベクトルマスクなし
-	Not Clipped	クリッピングなし
-	Not Empty	空ではない
-	Not Linked	リンクなし
-	Not Locked	ロックなし
-	Not Visible	非表示
-	Numerals	数字
-	Open anyway	それでも開く
-	Opening this document uses more memory and may slow down your computer or other running applications.	このドキュメントを開くと大量のメモリを使用し、コンピューターや他の実行中のアプリケーションが遅くなることがあります。
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	「{name}」を開くには推定 {est} GiB のメモリが必要です（利用可能: {avail} GiB）。
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	「{name}」を開くには推定 {est} GiB のメモリが必要です。利用可能なメモリを測定できませんでした。
-	Proportional	プロポーショナル
-	Proportional Lining	プロポーショナルライニング
-	Proportional Oldstyle	プロポーショナルオールドスタイル
-	Save Image Pyramid	画像ピラミッドを保存
-	Save Transparency	透明部分を保存
-	Tabular	等幅
-	Tabular Lining	等幅ライニング
-	Tabular Oldstyle	等幅オールドスタイル
-	ZIP	ZIP
-	{ok} written to {dir}	{dir} に {ok} 件を書き込みました
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} 件の画像アセットの出力に失敗しました
 
 # Action Stop message (#8386)
 	Message	メッセージ
@@ -4418,7 +4237,13 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Pause For	一時停止
 	seconds	秒
 	Create a single history state	単一のヒストリー状態を作成
+	Drag to move the active shape's path or the Work Path	ドラッグして、アクティブなシェイプのパスまたは作業用パスを移動
 	Generator enabled	自動生成を有効にする
+	This Layer:	現在のレイヤー:
+	Move Up	上へ移動
+	Move Down	下へ移動
+	Grid view	グリッド表示
+	List view	リスト表示
 	On your computer	このコンピューター上
 	New file	新規ファイル
 	Learn	学ぶ
@@ -4450,28 +4275,218 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Pick a different document for each channel.	チャンネルごとに別のドキュメントを選択してください。
 	A picked document is no longer open.	選択したドキュメントの一つが開かれていません。
 	A picked document is no longer a grayscale document of the same size.	選択したドキュメントの一つが、同じサイズのグレースケールのドキュメントではなくなりました。
+	Netscape Gray	Netscape グレー
+# Move tool options bar (#11381)
+	Align top edges	上端を揃える
+	Align vertical centers	垂直方向中央を揃える
+	Align bottom edges	下端を揃える
+	Distribute vertically	垂直方向に分布
+	Distribute horizontally	水平方向に分布
+	Show layer bounds on hover	ホバー時にレイヤーの境界を表示
+	Expand layer group on click	クリックでレイヤーグループを展開
+	Show hover bounds from Layers	レイヤーパネルからのホバー境界を表示
+	Saved RAW Develop settings to {file}	RAW現像 の設定を {file} に保存しました
+	Save the settings to each raw's sidecar without opening it	各 Raw のサイドカーファイルに設定を保存し、開かずに閉じます
+	No settings saved: these raws can't keep a sidecar here	保存されませんでした：これらの Raw にはここでサイドカーファイルを作成できません
+	Some settings could not be saved; the raws stay open	一部の設定を保存できませんでした。Raw は開いたままです
+	Nothing to save: these raws are at their default settings	保存するものはありません：これらの Raw は初期設定のままです
+# Artboard tool options bar (#11385)
+	Distribute Widths	幅を分布
+	Distribute Heights	高さを分布
+	Auto-nest Layers	レイヤーを自動でネスト
+	Auto-size Canvas	カンバスサイズを自動調整
+	Keep Relative Position During Layer Reordering	レイヤーの並べ替え中も相対位置を保持
+	Shrinkwrap Canvas on Save	保存時にカンバスを内容に合わせて縮小
 
-# Placement and memory-admission notices from upstream 0.21.0.
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	バッチ処理中にコマンドがキャンセルまたは停止されました。次のファイルに進みますか、それとも停止しますか？
 	A file is still being placed; try again when it has finished.	ファイルの配置中です。完了してからもう一度お試しください。
+	AI Prompt History	AIプロンプト履歴
+	AI model settings	AIモデル設定
+	Adding generated layer	生成レイヤーを追加中
+	Adjust colors with Poisson blending	ポアソンブレンディングで色を調整します
+	Adobe Every-line Composer	Adobe 全行コンポーザー
+	Adobe PDF Presets…	Adobe PDF プリセット…
+	Adobe Single-line Composer	Adobe 1 行コンポーザー
+	All nine regions	全9領域
+	All shortcuts reset to Photoshop defaults.	すべてのショートカットを初期状態に戻しました。
+	Anime fusal	Anime FUSAL
+	Answer the open import question first, then import this file again.	先に開いている読み込みの質問に回答してから、このファイルを再度読み込んでください。
+	Arrange Panels	パネルを配置
+	Arrowhead options	矢印先端のオプション
+	Arrowheads	矢印先端
+	Artboards	アートボード
+	Attach Reference Image	参照画像を添付
+	Attribute	属性
+	Automatically check for updates	更新を自動的に確認
+	Base64	Base64
+	Batch preview	バッチプレビュー
+	CPU Rendering	CPU レンダリング
+	Calculating…	計算中…
+	Camera Raw	Camera Raw
+	Camera Raw ({name})	Camera Raw ({name})
+	Camera Raw Defaults	Camera Raw の既定値
+	Camera Raw Filter	Camera Raw フィルター
+	Camera Raw Filter ({layer})	Camera Raw フィルター ({layer})
+	Camera Raw Filter…	Camera Raw フィルター…
+	Camera Raw isn't open	Camera Raw は開いていません
+	Camera Raw…	Camera Raw…
+	Cancelled opening {name}	{name} を開くのをキャンセルしました
 	Cancelled placing {name}	{name} の配置をキャンセルしました
+	Cancelled {label}	{label} をキャンセルしました
+	Centre the gradient (offset 0, 0)	グラデーションを中央に配置(オフセット 0, 0)
+	Check Again	再確認
+	Check for updates now	今すぐ更新を確認
+	Checking for updates…	アップデートを確認中…
+	Click to fill similar colours	クリックして近い色を塗りつぶし
+	Click to refresh histogram with uncached data	クリックしてキャッシュを使わずにヒストグラムを更新
+	Click to restore the current colour	クリックして現在の色に戻す
+	Click to sample the foreground colour  ·  {key}-click for background	クリックで描画色を取得 · {key}+クリックで背景色を取得
+	Close Other Panels in Group	グループ内の他のパネルを閉じる
+	Collapse to Icons	アイコンに折りたたむ
+	Color Blindness — Deuteranopia-type	色覚特性 — 2 型(D 型)
+	Color Blindness — Protanopia-type	色覚特性 — 1 型(P 型)
+	ComfyUI is unavailable in this frontend	この環境ではComfyUIを利用できません
+	ComfyUI port	ComfyUIポート
+	Comfyui custom encoders	ComfyUIのカスタムエンコーダー
+	Comfyui custom model	ComfyUIのカスタムモデル
+	Comfyui custom models	ComfyUIのカスタムモデル一覧
+	Comfyui model	ComfyUIモデル
+	Comfyui model settings	ComfyUIのモデル設定
+	Comfyui translate prompt	プロンプトを英語に翻訳
+	Comfyui translation model	プロンプトの翻訳モデル
+	Comfyui url	ComfyUIサーバーURL
+	Compare with Original Generation	最初の生成結果と比較
+	Concavity	くぼみ
+	Copy English translation	英語訳をコピー
+	Copy negative prompt	ネガティブプロンプトをコピー
+	Copy original prompt	元のプロンプトをコピー
+	Could not check for updates.	アップデートを確認できませんでした。
+	Count:	カウント:
+	Cube	CUBE
+	Custom model filenames (one per line)	カスタムモデルのファイル名（1行に1つ）
+	Data Encoding	データエンコーディング
+	Data Sets as Files is unavailable on the web	Web版ではデータセットのファイル書き出しを利用できません
+	Default Photoshop Size	既定サイズ
+	Default colours (D)	初期カラーに戻す(D)
+	Describe changes to the whole image	画像全体への変更を説明してください
+	Describe changes, or leave blank to remove	変更を説明してください。空欄なら選択範囲を削除します
+	Describe the image to generate	生成する画像を説明してください
+	Dismiss update	更新通知を閉じる
+	Downloading generated image	生成画像を取得中
+	Downloading update…	更新をダウンロード中…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	切り抜きボックスをドラッグ · 内側をドラッグで移動 · 縁でサイズ変更 ({ratio} で比率、{centre} で中心) · 描画中は Space で移動 · 矢印キーで微調整 · X で縦横を切り替え · {commit} で確定 · Esc で取り消し
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	中心の周りをドラッグして表示を回転  ·  Shift で 15° 単位
+	Drawn on the CPU: {reason}. Click for System Info.	CPU で描画: {reason}。クリックしてシステム情報を表示。
 	Dropped files weren't placed: their document was closed.	ドロップしたファイルは配置されませんでした。対象のドキュメントが閉じられました。
 	Dropped files weren't placed: too many are waiting for their document.	ドロップしたファイルは配置されませんでした。対象のドキュメントで待機中のファイルが多すぎます。
+	Effect	効果
+	Empty	空
+	End	終点
+	English translation	英語訳
+	External cutout	外部背景除去
+	External erase	外部消去
+	File Name	ファイル名
+	Filter for embedded smart objects	埋め込みスマートオブジェクトで絞り込む
+	Filter for linked smart objects that are missing	リンク先が見つからないスマートオブジェクトで絞り込む
+	Filter for smart objects linked locally	ローカルにリンクされたスマートオブジェクトで絞り込む
+	Generative Fill	生成塗りつぶし
+	Generative Fill…	生成塗りつぶし…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	勾配補正補間：シャープで高速だが、細部に多少の色にじみが出る。
+	High Memory Photoshop Document	大量のメモリを使用するPhotoshopドキュメント
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks：エッジが最もきれいで色にじみが最も少ないが、最も遅い。
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	カメラのカラーフィルター配列をどのように補間するか。ファイルを開くときに適用されます。プレビューは開いたときの方式で表示されます。
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	画像圧縮
+	Import Photoshop brushes (.abr)	Photoshop ブラシ(.abr)を読み込み
+	Import as New Group	新規グループとして読み込む
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	「新規グループとして読み込む」は「{group}」を保持し、その隣にファイルを新しいグループとして追加します。
+	Installed version: {version}	インストール済みのバージョン: {version}
+	Inverse Selection	選択範囲を反転
+	LZW	LZW
+	Layer Effects	レイヤー効果
+	Layer via Copy	コピーしたレイヤー
+	Layer via Cut	切り取ったレイヤー
+	Level:	レベル:
+	Lining	ライニング
+	Linked	リンクあり
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	このファイルを開くと空きメモリが少なくなります。先にほかのアプリを閉じてください。そうしないと PhotoCraft のメモリが不足する場合があります。
+	Load Photoshop brushes (.abr)	Photoshop ブラシ(.abr)を読み込み
+	Loaded Camera Raw settings from {file}	{file} から Camera Raw の設定を読み込みました
+	Loaded Camera Raw settings from {file} ({n} not supported)	{file} から Camera Raw の設定を読み込みました（未対応: {n}）
+	Locked	ロック済み
+	Look	LOOK
+	Lut Format	LUT形式
+	Match Surrounding Colors	周囲の色に合わせる
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	生成時に記録した周囲の色に合わせます。強度0で最初の生成結果に戻します。
+	Minimize Panel	パネルを最小化
+	Negative prompt	ネガティブプロンプト
+	Next	次へ
+	No AI prompts recorded	AIプロンプトの記録はありません
+	No Adv. Blending	高度な合成なし
+	No Layer Effects	レイヤー効果なし
+	No Layer Mask	レイヤーマスクなし
+	No Vector Mask	ベクトルマスクなし
+	No import is waiting. Import the file again.	待機中の読み込みはありません。ファイルを再度読み込んでください。
+	No matching fonts	一致するフォントはありません
+	No prompt (remove)	プロンプトなし（削除）
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Not Clipped	クリッピングなし
+	Not Empty	空ではない
+	Not Linked	リンクなし
+	Not Locked	ロックなし
+	Not Visible	非表示
+	Not a web colour: click for the nearest web colour	Web カラーではありません: クリックすると最も近い Web カラーになります
 	Nudge	微調整移動
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	現在のスクラッチディレクトリ（{path}）は空き容量を報告しないため、PhotoCraft は容量がいっぱいになる前に停止できず、スクラッチサイズの上限が未設定の場合は大きなファイル用の追加領域も確保できません。この警告は現在の設定に対するものです。上の変更は「適用」または「OK」で有効になります。上限を設定するか、ローカルディスクを使用してください。
-
-# OpenType stylistic-set labels.
-	Stylistic Sets	異体字セット
+	Numerals	数字
+	One .safetensors filename per line. Compatibility is not checked.	.safetensorsのファイル名を1行に1つ入力します。互換性は確認されません。
+	Open Download Page	ダウンロードページを開く
+	Open Panel in Own Window	パネルを独立したウィンドウで開く
+	Open a document to select a colour range.	色域を指定するには、ドキュメントを開いてください。
+	Open anyway	それでも開く
+	Open in camera raw	Camera Raw で開く
+	Opening this document uses more memory and may slow down your computer or other running applications.	このドキュメントを開くと大量のメモリを使用し、コンピューターや他の実行中のアプリケーションが遅くなることがあります。
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	「{name}」を開くには推定 {est} GiB のメモリが必要です（利用可能: {avail} GiB）。
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	「{name}」を開くには推定 {est} GiB のメモリが必要です。利用可能なメモリを測定できませんでした。
+	Original prompt	元のプロンプト
+	Out of gamut for printing: click for the nearest printable colour	印刷の色域外: クリックすると最も近い印刷可能な色になります
+	Percentile:	パーセンタイル:
+	PhotoCraft Updates	PhotoCraft のアップデート
+	PhotoCraft is up to date.	PhotoCraftは最新です。
+	PhotoCraft update available	PhotoCraftの更新があります
+	PhotoCraft {version} is available.	PhotoCraft {version} が利用可能です。
+	Preparing image and selection	画像と選択範囲を準備中
+	Previous	前へ
+	Prompt Edit	プロンプトで編集
+	Prompt Edit…	プロンプトで編集…
+	Prompt Generate	プロンプトで生成
+	Prompt Generate…	プロンプトで生成…
+	Prompt information	プロンプト情報
+	Prompt translation model	プロンプトの翻訳モデル
+	Proportional	プロポーショナル
+	Proportional Lining	プロポーショナルライニング
+	Proportional Oldstyle	プロポーショナルオールドスタイル
+	Quick Export As PNG	PNG としてクイック書き出し
+	Qwen image21	Qwen 2.1
+	Reference Image	参照画像
+	Regenerate	再生成
+	Regenerate AI Result	AIの結果を再生成
+	Remember to turn off the printer's own colour management in Print Settings…	印刷設定でプリンター独自のカラーマネジメントを無効にしてください…
+	Remove Reference Image	参照画像を削除
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	置き換えると、編集したプリセットや移動したプリセットを含め、「{group}」のすべてが先に削除されます。この操作は取り消せません。
+	Reset steps to model default	ステップ数をモデルの初期値に戻す
+	Resize for AI editing	AI編集用にサイズ変更
+	Sample: foreground colour	サンプル: 描画色
+	Sampling steps	サンプリングステップ数
+	Save Image Pyramid	画像ピラミッドを保存
+	Save Transparency	透明部分を保存
+	Save cancelled	保存をキャンセルしました
+	Select Layer Under Cursor	カーソル下のレイヤーを選択
 	Set 	セット
 	Set 1	セット 1
-	Set 2	セット 2
-	Set 3	セット 3
-	Set 4	セット 4
-	Set 5	セット 5
-	Set 6	セット 6
-	Set 7	セット 7
-	Set 8	セット 8
-	Set 9	セット 9
 	Set 10	セット 10
 	Set 11	セット 11
 	Set 12	セット 12
@@ -4482,23 +4497,127 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set 17	セット 17
 	Set 18	セット 18
 	Set 19	セット 19
+	Set 2	セット 2
 	Set 20	セット 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	タブレット入力
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (既定)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	データエンコーディング
-	Lut Format	LUT形式
+	Set 3	セット 3
+	Set 4	セット 4
+	Set 5	セット 5
+	Set 6	セット 6
+	Set 7	セット 7
+	Set 8	セット 8
+	Set 9	セット 9
+	Set as default	初期設定にする
 	Shape Id	シェイプID
 	Shape Name	シェイプ名
 	Shape Origin Type	シェイプの生成元の種類
 	Shape Path	シェイプのパス
+	Show Channels in Color	チャンネルをカラーで表示
+	Show Statistics	統計情報を表示
+	Source:	ソース:
+	Start	始点
+	Stylistic Sets	異体字セット
+	Swap colours (X)	描画色と背景色を入れ替え(X)
+	Tablet input	タブレット入力
+	Tabular	等幅
+	Tabular Lining	等幅ライニング
+	Tabular Oldstyle	等幅オールドスタイル
 	Text	テキスト
-	File Name	ファイル名
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoders	テキストエンコーダー
+	The current gradient (pick one in Window › Gradients)	現在のグラデーション(ウィンドウ › グラデーション で選択)
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	現在のスクラッチディレクトリ（{path}）は空き容量を報告しないため、PhotoCraft は容量がいっぱいになる前に停止できず、スクラッチサイズの上限が未設定の場合は大きなファイル用の追加領域も確保できません。この警告は現在の設定に対するものです。上の変更は「適用」または「OK」で有効になります。上限を設定するか、ローカルディスクを使用してください。
+	The fastest and the softest, with colour fringing on fine detail.	最も高速で最も柔らかく、細部に色にじみが出る。
+	The image exceeds the AI editing size. Resize the document to continue?	AI編集のサイズ上限を超えています。ドキュメントをサイズ変更して続行しますか？
+	Translate prompt to English	プロンプトを英語に翻訳
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo int8	Turbo INT8
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Turbo q8	Turbo Q8_0
+	Uncached Refresh	キャッシュを使わずに更新
+	Update PhotoCraft	PhotoCraftを更新
+	Update PhotoCraft and restart now?	PhotoCraftを更新して今すぐ再起動しますか？
+	Updates have not been checked yet.	まだアップデートを確認していません。
+	Uploading image to ComfyUI	ComfyUIに画像を送信中
+	Use these settings for new arrows	新しい矢印にこの設定を使用
+	Uses the foreground and background colours.	描画色と背景色を使用します。
+	Waiting for ComfyUI generation	ComfyUIの生成を待機中
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (既定)
+	You can check for updates again in Help → About PhotoCraft.	ヘルプ → PhotoCraftについてから再び更新を確認できます。
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label} はファイルを書き込み中のため、キャンセルできません
+	{message} into “{group}”	「{group}」に{message}
+	{ok} written to {dir}	{dir} に {ok} 件を書き込みました
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	ブラシグループ「{group}」には、あなたのブラシがすでに{n}個あります。
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	グラデーショングループ「{group}」はすでに存在します（グラデーション{n}個）。
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} 件の画像アセットの出力に失敗しました
+
+# Upstream 0.22.0 tool and action labels.
+	Allow Tool Recording	ツールの記録を許可
+	Allows rotation and scaling of selection	選択範囲の回転と拡大・縮小を許可
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	不透明度に常に筆圧を使用。オフの場合はブラシプリセットで筆圧を制御
+	Always use Pressure for Size. When off, Brush Preset controls pressure	サイズに常に筆圧を使用。オフの場合はブラシプリセットで筆圧を制御
+	Bottom align text	テキストを下揃え
+	Choose a menu command. Playback asks for its settings when needed.	メニューコマンドを選択してください。再生時に必要な設定を確認します。
+	Choose a remix mode	リミックスモードを選択
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	クリックして左右に動かすとズームツールで拡大・縮小します（OpenGL のみ）
+	Confirm or cancel the pending Record Again editor first.	先に保留中の再記録エディターを確定またはキャンセルしてください。
+	Confirm or cancel the pending menu item first.	先に保留中のメニュー項目を確定またはキャンセルしてください。
+	Could not use the type tool because the layer is locked.	レイヤーがロックされているため文字ツールを使用できません。
+	Do not erase the foreground swatch color	描画色スウォッチの色を消去しない
+	Draws background color over foreground colors	描画色の上に背景色で描画
+	Enable to remix all layers	すべてのレイヤーをリミックス
+	Erase range of similar colors	類似色の範囲を消去
+	How far to let the erasing spread	消去を広げる範囲
+	Insert Menu Item…	メニュー項目を挿入…
+	Insert Path	パスを挿入
+	No document.	ドキュメントがありません。
+	No menu item belongs to this chooser.	この選択画面に対応するメニュー項目がありません。
+	No menu item is waiting.	保留中のメニュー項目がありません。
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	シェイプにするパスがありません。ペンツールで描くかパスパネルで選択してください。
+	No pixels are selected.	ピクセルが選択されていません。
+	No recorded step belongs to this editor.	このエディターに対応する記録済みステップがありません。
+	No slices are selected. Click a slice in the preview to select it.	スライスが選択されていません。プレビューでクリックして選択してください。
+	No step is waiting.	保留中のステップがありません。
+	Painting Mode	描画モード
+	Record Again	再記録
+	Resize windows when zooming using the Zoom Tool	ズームツール使用時にウィンドウサイズを変更
+	Scroll all open document windows when using the hand tool	手のひらツールで開いているすべてのドキュメントをスクロール
+	Search and select fonts	フォントを検索して選択
+	Select an action first.	先にアクションを選択してください。
+	Select an action step first.	先にアクションのステップを選択してください。
+	Selected Slices	選択したスライス
+	Set flow rate for stroke	ストロークの流量を設定
+	Set font size	フォントサイズを設定
+	Set font style	フォントスタイルを設定
+	Set opacity for stroke	ストロークの不透明度を設定
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	ストロークの滑らかさを設定\n値を大きくするとブラシストロークのぶれが減ります
+	Set symmetry options for Painting	描画の対称オプションを設定
+	Set text color	文字色を設定
+	Set the brush angle	ブラシの角度を設定
+	Smoothing Options	滑らかさのオプション
+	The Record Again command changed.	再記録コマンドが変更されました。
+	The action or insertion command changed. Request Insert Menu Item again.	アクションまたは挿入コマンドが変更されました。メニュー項目の挿入を再度実行してください。
+	The actions changed. Request Record Again again.	アクションが変更されました。再記録を再度実行してください。
+	The command permissions changed. Request Insert Menu Item again.	コマンドの権限が変更されました。メニュー項目の挿入を再度実行してください。
+	The command permissions changed. Request Record Again again.	コマンドの権限が変更されました。再記録を再度実行してください。
+	The document changed. Request Record Again again.	ドキュメントが変更されました。再記録を再度実行してください。
+	The preference could not be saved: {error}	環境設定を保存できませんでした: {error}
+	The step editor could not be opened.	ステップエディターを開けませんでした。
+	The step has no command editor.	このステップにはコマンドエディターがありません。
+	Top align text	テキストを上揃え
+	Use relative positioning for reference point	基準点に相対位置を使用
+	Useful mixer brush combinations	便利な混合ブラシの組み合わせ
+	Zoom current window to 1:1	現在のウィンドウを 1:1 にズーム
+	Zoom current window to fill the screen	現在のウィンドウを画面いっぱいに表示
+	Zoom current window to screen size	現在のウィンドウを画面サイズに合わせる
+	brush tool	ブラシツール

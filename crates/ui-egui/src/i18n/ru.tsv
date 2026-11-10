@@ -66,7 +66,7 @@
 
 # Filters and adjustments dialogs
 
-# Camera Raw and lens dialogs
+# RAW Develop and lens dialogs
 
 # Adjustments panel
 
@@ -125,7 +125,7 @@
 
 # Preference dialog: generated setting labels and dropdown choices
 # Rendering mode and recovery
-# Camera Raw: contextual controls and window title
+# RAW Develop: contextual controls and window title
 
 
 
@@ -199,7 +199,7 @@
 # Preferences › Performance › GPU Memory; the status bar and slow-redraw notice
 
 
-# Dynamic UI labels (fourth pass): filter and adjustment parameters, Camera Raw panels,
+# Dynamic UI labels (fourth pass): filter and adjustment parameters, RAW Develop panels,
 # lighting, History/Layers/paths/channels menus, metadata, System Info, status templates and
 # dialog text that other catalogs already carry. Written from the meaning of the English labels
 # in the ordinary Russian graphics-editor vocabulary; no proprietary resource consulted.
@@ -297,7 +297,6 @@
 	Export As…	Экспортировать как…
 	Export	Экспорт
 	Export…	Экспортировать…
-	Quick Export As PNG	Быстрый экспорт в PNG
 	Quick Export as PNG	Быстрый экспорт в PNG
 	Place Embedded…	Поместить встроенный…
 	Place Linked…	Поместить связанный…
@@ -366,8 +365,8 @@
 	Duotone…	Дуотон…
 	Duotone	Дуотон
 	Trap…	Приводка…
-	Layer via Copy	Скопировать на новый слой
-	Layer via Cut	Вырезать на новый слой
+	Layer Via Copy	Скопировать на новый слой
+	Layer Via Cut	Вырезать на новый слой
 	Duplicate Layer…	Дублировать слой…
 	Duplicate…	Дублировать…
 	Delete	Удалить
@@ -491,7 +490,6 @@
 	All	Всё
 	Deselect	Отменить выделение
 	Reselect	Повторить выделение
-	Inverse Selection	Инвертировать выделение
 	Inverse	Инверсия
 	Color Range…	Цветовой диапазон…
 	Select and Mask…	Выделение и маска…
@@ -525,7 +523,7 @@
 	Last Filter	Последний фильтр
 	Filter Gallery…	Галерея фильтров…
 	Liquify…	Пластичность…
-	Camera Raw Filter…	Фильтр Camera Raw…
+	RAW Develop Filter…	Фильтр Обработка RAW…
 	Adaptive Wide Angle…	Адаптивный широкий угол…
 	Lens Correction…	Коррекция дисторсии…
 	Vanishing Point…	Точка схода…
@@ -710,6 +708,12 @@
 	Timeline	Шкала времени
 	Tool Presets	Наборы инструментов
 	Tools	Инструменты
+	Contextual Task Bar	Контекстная панель задач
+	Hide bar	Скрыть панель
+	Reset bar position	Сбросить положение панели
+	Pin bar position	Закрепить положение панели
+	Move bar	Переместить панель
+	More options	Другие параметры
 	Libraries	Библиотеки
 	3D	3D
 	Toolbars	Панели инструментов
@@ -764,8 +768,8 @@
 	Background	Фон
 	Set foreground color	Основной цвет
 	Set background color	Цвет фона
-	Swap colours (X)	Поменять цвета (X)
-	Default colours (D)	Цвета по умолчанию (D)
+	Switch Foreground and Background Colors (X)	Поменять цвета (X)
+	Default Foreground and Background Colors (D)	Цвета по умолчанию (D)
 	Brush Tool Options	Параметры кисти
 	Opacity	Непрозрачность
 	Flow	Нажим
@@ -992,6 +996,8 @@
 	Match Color…	Подбор цвета…
 	Replace Color…	Замена цвета…
 	Equalize	Выравнивание
+	Equalize Selected Area Only	Выровнять только выделенную область
+	Equalize Entire Image Based On Selected Area	Выровнять всё изображение по выделенной области
 	HDR Toning…	HDR-тонирование…
 	Shadows/Highlights…	Тени/Света…
 	Amount	Эффект
@@ -1049,8 +1055,8 @@
 	Luminance Smoothness	Световая сглаженность
 	Vignetting	Виньетирование
 	White Balance: As Shot	Баланс белого: как снято
-	Camera Raw…	Camera Raw…
-	Camera Raw isn't open	Camera Raw не открыт
+	RAW Defaults…	Настройки RAW по умолчанию…
+	RAW Develop isn't open	Обработка RAW не открыт
 	Dehaze	Устранение дымки
 	Texture	Текстура
 	Focal Length	Фокусное расстояние
@@ -1309,8 +1315,6 @@
 	Roman Hanging Punctuation	Висячая пунктуация (римская)
 	Avoid Widows/Orphans	Избегать висячих строк
 	Compose	Компоновка
-	Adobe Single-line Composer	Построчная компоновка Adobe
-	Adobe Every-line Composer	Абзацная компоновка Adobe
 	Justification	Выключка
 	Word Spacing	Межсловные интервалы
 	Letter Spacing	Межбуквенные интервалы
@@ -1346,6 +1350,7 @@
 	Path to Illustrator…	Контур в Illustrator…
 	Make Work Path	Создать рабочий контур
 	Make Selection	Создать выделение
+	Make Shape	Создать фигуру
 	Fill Path	Залить контур
 	Stroke Path	Обвести контур
 	Clipping Path	Обтравочный контур
@@ -1718,7 +1723,7 @@
 	Revert “{name}” to the last saved version? Your changes will be lost.	Вернуть «{name}» к последней сохранённой версии? Изменения будут потеряны.
 	{key} to subtract	{key} — вычесть
 	↑↓ navigate   {key} run   esc close	↑↓ переход   {key} выполнить   esc закрыть
-	Click to restore the current colour	Щёлкните, чтобы восстановить текущий цвет
+	Click to restore the current color	Щёлкните, чтобы восстановить текущий цвет
 	Click with the Note tool to add a note.	Щёлкните инструментом «Заметки», чтобы добавить заметку.
 	Drag a rectangle around the object	Обведите объект прямоугольником
 	Drag on the image to add a constraint; Shift for horizontal/vertical; right-click a constraint to change or delete it.	Перетащите по изображению, чтобы добавить ограничение; Shift — горизонталь/вертикаль; щелчок правой кнопкой по ограничению — изменить или удалить.
@@ -1742,6 +1747,7 @@
 	Move Tool	Перемещение
 	Could not use the move tool because the layer is locked.	Не удалось использовать инструмент «Перемещение», потому что слой заблокирован.
 	Could not complete the Free Transform command because the layer is locked.	Не удалось выполнить команду «Свободное трансформирование», потому что слой заблокирован.
+	Could not transform because the layer is locked.	Не удалось выполнить трансформирование, потому что слой заблокирован.
 	Rectangular Marquee Tool	Прямоугольная область
 	Elliptical Marquee Tool	Овальная область
 	Single Row Marquee Tool	Область (горизонтальная строка)
@@ -1799,10 +1805,10 @@
 	Drag to move the active layer	Перетащите, чтобы переместить активный слой
 	Drag to pan  ·  hold Space with any tool	Перетащите для панорамирования  ·  удерживайте Space с любым инструментом
 	Drag to draw a gradient	Перетащите, чтобы нарисовать градиент
-	Click to fill similar colours	Щёлкните, чтобы залить похожие цвета
+	Click to fill similar colors	Щёлкните, чтобы залить похожие цвета
 	Click to add text	Щёлкните, чтобы добавить текст
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	Перетащите (лассо) или щёлкайте точки (многоугольное) · {add} добавить · {sub} вычесть
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Выделите рамку кадрирования · перетащите внутри для перемещения · края меняют размер ({ratio} пропорции, {centre} центр) · Space двигает при рисовании · стрелки сдвигают · X меняет ориентацию · {commit} применить · Esc отмена
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Выделите рамку кадрирования · перетащите внутри для перемещения · края меняют размер ({ratio} пропорции, {centre} центр) · Space двигает при рисовании · стрелки сдвигают · X меняет ориентацию · {commit} применить · Esc отмена
 	{mode} Color · {bits} bit	{mode}, {bits} бит
 	Drag to move the layer	Перетащите, чтобы переместить слой
 	Fit Screen	По размеру экрана
@@ -1834,7 +1840,6 @@
 	Appearance	Внешний вид
 	Text Position:	Положение текста:
 	Text color	Цвет текста
-	Uses the foreground and background colours.	Использует основной цвет и цвет фона.
 	Answer the unsaved-changes prompt first	Сначала ответьте на запрос о несохранённых изменениях
 	Unsaved changes	Несохранённые изменения
 	Don't Save	Не сохранять
@@ -1854,7 +1859,7 @@
 	name	имя
 	new	новый
 	Go to Layer	Перейти к слою
-	Open a document to select a colour range.	Откройте документ, чтобы выбрать цветовой диапазон.
+	Open a document to select a color range.	Откройте документ, чтобы выбрать цветовой диапазон.
 	Saved	Сохранено
 	Reveal in Finder	Показать в Finder
 	Show in Explorer	Показать в Проводнике
@@ -1865,8 +1870,8 @@
 	Load Settings…	Загрузить настройки…
 	Save these settings as a Camera Raw .xmp file	Сохранить эти настройки в файл Camera Raw .xmp
 	Load settings from a Camera Raw .xmp file	Загрузить настройки из файла Camera Raw .xmp
-	Loaded Camera Raw settings from {file}	Настройки Camera Raw загружены из {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Настройки Camera Raw загружены из {file} (не поддерживается: {n})
+	Loaded RAW Develop settings from {file}	Настройки Обработка RAW загружены из {file}
+	Loaded RAW Develop settings from {file} ({n} not supported)	Настройки Обработка RAW загружены из {file} (не поддерживается: {n})
 	After (X)	После (X)
 	Original	Оригинал
 	Current	Текущий
@@ -2018,8 +2023,8 @@
 	Character Styles Panel	Панель «Стили символов»
 	Clear Canvas Guides	Удалить направляющие холста
 	Clear Selected Artboard Guides	Удалить направляющие выбранной области
-	Color Blindness — Deuteranopia-type	Цветовая слепота — дейтеранопия
-	Color Blindness — Protanopia-type	Цветовая слепота — протанопия
+	Color Blindness - Deuteranopia-type	Цветовая слепота - дейтеранопия
+	Color Blindness - Protanopia-type	Цветовая слепота - протанопия
 	Color Table…	Цветовая таблица…
 	Combine Shapes	Комбинировать фигуры
 	Contract…	Сжать…
@@ -2159,7 +2164,7 @@
 	Vertical Centers	Центры по вертикали
 	Video Frames to Layers…	Видеокадры в слои…
 	WIA Support…	Поддержка WIA…
-	Working CMY Plates	Рабочая голубая форма
+	Working CMY Plates	Рабочие формы CMY
 	Absolute	Абсолютный
 	Action	Операция
 	Adaptive	Адаптивный
@@ -2192,7 +2197,7 @@
 	Canvas	Холст
 	Capture	Снять
 	Center Crop Marks	Центральные метки кадрирования
-	Centre the gradient (offset 0, 0)	Центрировать градиент (смещение 0, 0)
+	Center the gradient (offset 0, 0)	Центрировать градиент (смещение 0, 0)
 	Change Screen Mode  (F)	Сменить режим экрана  (F)
 	Change To:	Изменить на:
 	Clear All	Очистить всё
@@ -2344,7 +2349,7 @@
 	Roughness	Шероховатость
 	Roundness	Круглость
 	Rulers & Grids	Линейки и сетка
-	Sample: foreground colour	Выборка: основной цвет
+	Sample: foreground color	Выборка: основной цвет
 	Sampling: Background Swatch	Выборка: фоновый образец
 	Sampling: Continuous	Выборка: непрерывная
 	Sampling: Once	Выборка: однократная
@@ -2419,6 +2424,7 @@
 	Allow scripts to connect	Разрешить подключение сценариев
 	Always	Всегда
 	Always create smart objects when placing	Всегда создавать смарт-объекты при помещении
+	Skip transform when placing	Пропускать трансформирование при помещении
 	Animated zoom	Анимированное масштабирование
 	Apply auto tone	Применять автотон
 	Ask	Спрашивать
@@ -2435,7 +2441,7 @@
 	CPU (no GPU acceleration)	ЦП (без ускорения GPU)
 	Cache levels	Уровни кэша
 	Cache tile size	Размер блока кэша
-	Camera Raw Defaults	Значения Camera Raw по умолчанию
+	RAW Defaults	Настройки RAW по умолчанию
 	Canvas border	Рамка холста
 	Show canvas dots	Показывать точки холста
 	Clip thumbnails to layer bounds	Обрезать миниатюры по границам слоя
@@ -2527,7 +2533,6 @@
 	Never	Никогда
 	Normal tip	Контур кисти (50%)
 	Open as smart object	Открывать как смарт-объект
-	Open in camera raw	Открывать в Camera Raw
 	Open documents as tabs	Открывать документы во вкладках
 	OpenGL	OpenGL
 	Orange	Оранжевая
@@ -2614,7 +2619,7 @@
 	Alt-click to define a source point to clone from	Alt+щелчок, чтобы задать точку-источник клонирования
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	Нет контура для создания выделения: нарисуйте его инструментом «Перо» или выберите на панели «Контуры».
 	Cancel opening	Отменить открытие
-	Cancelled opening {name}	Открытие {name} отменено
+	Canceled opening {name}	Открытие {name} отменено
 	Damaged Photoshop document	Повреждённый документ Photoshop
 	The document “{name}” may be damaged.	Документ «{name}», возможно, повреждён.
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	Не удалось прочитать некоторые слои, пикселы или маски. Продолжить открытие?
@@ -2624,7 +2629,7 @@
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	Встроенный цветовой профиль документа «{name}» не совпадает с текущим рабочим пространством {mode}.
 	Working: {working}	Рабочее пространство: {working}
 	Developing {name}	Обработка {name}
-	Cancelled {label}	{label}: отменено
+	Canceled {label}	{label}: отменено
 	Esc to cancel	Esc — отмена
 	Opened {name}	Открыто: {name}
 	Opening {name}	Открытие {name}
@@ -2632,7 +2637,7 @@
 	Saving {name}	Сохранение {name}
 	Saving {percent}	Сохранение {percent}
 	A save to {name} is still running; try again when it finishes	Сохранение в {name} ещё выполняется; повторите попытку после его завершения
-	{label} is writing the file and can no longer be cancelled	{label}: идёт запись файла, отменить уже нельзя
+	{label} is writing the file and can no longer be canceled	{label}: идёт запись файла, отменить уже нельзя
 	Opening {name}…	Открытие {name}…
 	Opening…	Открытие…
 	Reading…	Чтение…
@@ -2667,8 +2672,8 @@
 	Tone Histogram	Тональная гистограмма
 	Show Selected Region	Показать выделенную область
 cameraRaw	Light	Свет
-	Camera Raw Filter ({layer})	Фильтр Camera Raw ({layer})
-	Camera Raw ({name})	Camera Raw ({name})
+	RAW Develop Filter ({layer})	Фильтр Обработка RAW ({layer})
+	RAW Develop ({name})	Обработка RAW ({name})
 	Aqua	Голубой
 cameraRaw	Amount	Интенсивность
 cameraRaw	Blacks	Чёрные
@@ -2724,7 +2729,7 @@ cameraRaw	Roughness	Неровность
 	Discard Layers and Save a Copy	Удалить слои и сохранить копию
 	Don't show again	Больше не показывать
 	Save failed: {error}	Не удалось сохранить: {error}
-	Save cancelled	Сохранение отменено
+	Save canceled	Сохранение отменено
 	Couldn't place {name}: {error}	Не удалось поместить {name}: {error}
 	Magnetic Lasso Tool	Магнитное лассо
 	Frequency	Частота
@@ -2855,7 +2860,7 @@ fontWeight	Italic	Курсив
 	Impressionist	Импрессионист
 	Rotate View Tool	Инструмент поворота вида
 	Reset View	Сбросить вид
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Перетащите вокруг центра, чтобы повернуть вид  ·  Shift фиксирует шаг 15°
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	Перетащите вокруг центра, чтобы повернуть вид  ·  Shift фиксирует шаг 15°
 	Dual Axis	Две оси
 	Diagonal	Диагональная
 	Transform Symmetry	Трансформировать симметрию
@@ -2871,9 +2876,9 @@ fontWeight	Italic	Курсив
 	All Layers No Adjustments	Все слои без коррекции
 	Current & Below No Adjustments	Текущий и ниже без коррекции
 	Show Sampling Ring	Показать кольцо выборки
-	Click to sample the foreground colour  ·  {key}-click for background	Клик — взять основной цвет  ·  {key}-клик — фоновый цвет
-	Out of gamut for printing: click for the nearest printable colour	Вне цветового охвата печати: щёлкните, чтобы выбрать ближайший печатаемый цвет
-	Not a web colour: click for the nearest web colour	Не веб-цвет: щёлкните, чтобы выбрать ближайший веб-цвет
+	Click to sample the foreground color  ·  {key}-click for background	Клик — взять основной цвет  ·  {key}-клик — фоновый цвет
+	Out of gamut for printing: click for the nearest printable color	Вне цветового охвата печати: щёлкните, чтобы выбрать ближайший печатаемый цвет
+	Not a web color: click for the nearest web color	Не веб-цвет: щёлкните, чтобы выбрать ближайший веб-цвет
 	Color to Alpha…	Цвет в альфа-канал…
 	Transparency Threshold	Порог прозрачности
 	Opacity Threshold	Порог непрозрачности
@@ -3266,7 +3271,7 @@ curves	Smooth	Сгладить
 	Auto Add/Delete	Автодобавление/удаление
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Не включайте также зеркальное отражение в параметрах печати: два отражения отменяют друг друга.
 	Print Settings…	Параметры печати…
-	Remember to turn off the printer's own colour management in Print Settings…	Не забудьте отключить управление цветом самого принтера в параметрах печати…
+	Remember to turn off the printer's own color management in Print Settings…	Не забудьте отключить управление цветом самого принтера в параметрах печати…
 	Sent to {printer}	Отправлено на {printer}
 	set in Print Settings…	задаётся в параметрах печати…
 	ICO is limited to 256 × 256 pixels	ICO ограничен размером 256 × 256 пикселей
@@ -3433,13 +3438,11 @@ curves	Smooth	Сгладить
 	Adjustment Layers	Корректирующие слои
 	Adjustment Properties	Свойства коррекции
 	Adjustment layers have nothing to transform	В корректирующих слоях нечего трансформировать
-	Adobe PDF Presets…	Наборы Adobe PDF…
 	Adobe-rgb-compat	Adobe RGB (совместимо)
 	Adwaita (Dark)	Adwaita (тёмная)
 	Adwaita (Light)	Adwaita (светлая)
 	After	После
 	Airbrush: keeps painting while the pointer rests.	Аэрограф: продолжает рисовать, пока указатель неподвижен.
-	All shortcuts reset to Photoshop defaults.	Все комбинации клавиш сброшены к стандартным Photoshop.
 	Altitude	Высота
 	Ambience	Атмосфера
 	Ambient	Окружающий свет
@@ -3524,8 +3527,8 @@ curves	Smooth	Сгладить
 	Brush Type	Тип кисти
 	Burlap	Мешковина
 	Calculations	Вычисления
-	Camera Raw	Camera Raw
-	Camera Raw Filter	Фильтр Camera Raw
+	RAW Develop	Обработка RAW
+	RAW Develop Filter	Фильтр Обработка RAW
 	Cancel transform	Отменить трансформирование
 	Candle Light	Свет свечи
 	Canvas Size	Размер холста
@@ -3672,7 +3675,6 @@ curves	Smooth	Сгладить
 	Deep Yellow	Глубокий жёлтый
 	Default Foreground and Background Colors	Цвета переднего плана и фона по умолчанию
 	Default Leaves	Листья по умолчанию
-	Default Photoshop Size	Размер Photoshop по умолчанию
 	Defaults	По умолчанию
 	Define Brush Preset	Определить кисть
 	Define Custom Shape	Определить свою фигуру
@@ -3910,12 +3912,12 @@ curves	Smooth	Сгладить
 	In White	Входной белый
 	Increase Brush Hardness	Увеличить жёсткость кисти
 	Demosaic	Демозаик
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Как восстанавливается мозаика цветного фильтра камеры. Применяется при открытии файла; превью показывает метод, с которым файл был открыт.
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Как восстанавливается мозаика цветного фильтра камеры. Применяется при открытии файла; превью показывает метод, с которым файл был открыт.
 	AHD (adaptive homogeneity)	AHD (адаптивная однородность)
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Хиракава–Паркс: самые чистые края и меньше всего цветной каймы, самый медленный.
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Интерполяция с коррекцией градиента: резкая и быстрая, с небольшой цветной каймой на мелких деталях.
-	The fastest and the softest, with colour fringing on fine detail.	Самый быстрый и самый мягкий, с цветной каймой на мелких деталях.
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Хиракава–Паркс: самые чистые края и меньше всего цветной каймы, самый медленный.
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	Интерполяция с коррекцией градиента: резкая и быстрая, с небольшой цветной каймой на мелких деталях.
+	The fastest and the softest, with color fringing on fine detail.	Самый быстрый и самый мягкий, с цветной каймой на мелких деталях.
 	“{name}” already exists. Replace it?	«{name}» уже существует. Заменить?
 	The name in the save dialog was “{name}”.	В окне сохранения было указано имя «{name}».
 	Previous Brush	Предыдущая кисть
@@ -4488,7 +4490,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	The file could not be saved.	Не удалось сохранить файл.
 	Thickness	Толщина
 	This Layer:	Этот слой:
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Перед продолжением необходимо растрировать этот смарт-объект. Его содержимое перестанет быть редактируемым. Растрировать смарт-объект?
+	This smart object must be rasterized before proceeding. Edit Contents will no longer be available. Rasterize the smart object?	Перед продолжением необходимо растрировать этот смарт-объект. Его содержимое перестанет быть редактируемым. Растрировать смарт-объект?
 	This adjustment ({key}) is kept as imported and can't be edited yet.	Эта коррекция ({key}) сохраняется в импортированном виде и пока не может быть изменена.
 	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Перед продолжением необходимо растрировать этот слой заливки. Содержимое заливки перестанет быть редактируемым. Растрировать слой?
 	This layer must be rasterized before proceeding.	Перед продолжением необходимо растрировать этот слой.
@@ -4696,8 +4698,10 @@ shape	Appearance	Оформление
 	Grayscale Ramp	Шкала градаций серого
 	Current Colors	Текущие цвета
 	Make Ramp Web Safe	Сделать шкалу безопасной для web
+	Scroll All Windows	Прокручивать все окна
 	The path was kept as the Work Path	Контур сохранён как рабочий контур
 	The path was discarded	Контур удалён
+# Art History Brush (#213).
 	Art History Brush Tool	Инструмент «Кисть истории искусств»
 	Tight Short	Плотный короткий
 	Tight Medium	Плотный средний
@@ -4736,182 +4740,6 @@ shape	Appearance	Оформление
 	Stop Color	Цвет контрольной точки
 	Shapes can't use patterns yet	Фигуры пока не могут использовать узоры
 	Edit Brush…	Изменить кисть…
-	Drag to move the active shape's path or the Work Path	Перетащите, чтобы переместить контур активной фигуры или рабочий контур
-	Hidden	Скрыто
-	Move Up	Переместить вверх
-	Move Down	Переместить вниз
-	Prompt Edit	Редактировать по запросу
-	Generative Fill	Генеративная заливка
-	Describe changes to the whole image	Опишите изменения всего изображения
-	Describe changes, or leave blank to remove	Опишите изменения или оставьте пустым для удаления
-	ComfyUI is unavailable in this frontend	ComfyUI недоступен в этой среде
-	Comfyui url	URL сервера ComfyUI
-	Prompt Edit…	Редактировать по запросу…
-	Generative Fill…	Генеративная заливка…
-	Preparing image and selection	Подготовка изображения и выделения
-	Uploading image to ComfyUI	Загрузка изображения в ComfyUI
-	Waiting for ComfyUI generation	Ожидание генерации ComfyUI
-	Downloading generated image	Скачивание результата
-	Adding generated layer	Добавление нового слоя
-	Prompt Generate	Создать по промпту
-	Prompt Generate…	Создать по промпту…
-	Regenerate AI Result	Повторно создать результат ИИ
-	Regenerate	Создать заново
-	Describe the image to generate	Опишите изображение для создания
-	Sampling steps	Шаги сэмплирования
-	Reset steps to model default	Вернуть число шагов по умолчанию для модели
-	Translate prompt to English	Перевести промпт на английский
-	Prompt translation model	Модель перевода промптов
-	Prompt information	Информация о промпте
-	AI Prompt History	История промптов ИИ
-	Original prompt	Исходный промпт
-	English translation	Английский перевод
-	No prompt (remove)	Без промпта (удаление)
-	All nine regions	Все девять областей
-	No AI prompts recorded	Промпты ИИ не записаны
-	Copy original prompt	Копировать исходный промпт
-	Copy English translation	Копировать английский перевод
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	Модель ComfyUI
-	Comfyui translate prompt	Перевести промпт на английский
-	Comfyui translation model	Модель перевода промптов
-	AI model settings	Настройки модели ИИ
-	ComfyUI port	Порт ComfyUI
-	Copy negative prompt	Копировать негативный промпт
-	Custom model filenames (one per line)	Имена файлов пользовательских моделей (по одному в строке)
-	Negative prompt	Негативный промпт
-	One .safetensors filename per line. Compatibility is not checked.	Одно имя файла .safetensors в строке. Совместимость не проверяется.
-	Text encoders	Текстовые энкодеры
-	Comfyui custom encoders	Пользовательские энкодеры ComfyUI
-	Comfyui custom model	Пользовательская модель ComfyUI
-	Comfyui custom models	Пользовательские модели ComfyUI
-	Comfyui model settings	Настройки моделей ComfyUI
-	PhotoCraft update available	Доступно обновление PhotoCraft
-	Update PhotoCraft and restart now?	Обновить PhotoCraft и перезапустить сейчас?
-	Automatically check for updates	Автоматически проверять обновления
-	Check for updates now	Проверить обновления сейчас
-	You can check for updates again in Help → About PhotoCraft.	Проверить обновления снова можно в меню Справка → О PhotoCraft.
-	Downloading update…	Загрузка обновления…
-	Update PhotoCraft	Обновить PhotoCraft
-	Dismiss update	Закрыть уведомление об обновлении
-	Match Surrounding Colors	Подогнать под цвета окружения
-	Adjust colors with Poisson blending	Настроить цвета с помощью смешивания Пуассона
-	Compare with Original Generation	Сравнить с исходным результатом генерации
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Подгоняет цвета под окружение, сохранённое при генерации. Интенсивность 0 восстанавливает исходный результат генерации.
-	Attach Reference Image	Прикрепить референс
-	Remove Reference Image	Удалить референс
-	Reference Image	Референс
-	Resize for AI editing	Изменить размер для ИИ
-	The image exceeds the AI editing size. Resize the document to continue?	Изображение превышает размер для ИИ-редактирования. Изменить размер документа и продолжить?
-	Arrange Panels	Упорядочить панели
-	Close Other Panels in Group	Закрыть другие панели в группе
-	Collapse to Icons	Свернуть в значки
-	Minimize Panel	Свернуть панель
-	Open Panel in Own Window	Открыть панель в отдельном окне
-	CPU Rendering	Рендеринг на ЦП
-	Calculating…	Вычисление…
-	Click to refresh histogram with uncached data	Нажмите, чтобы обновить гистограмму без использования кэша
-	Count:	Количество:
-	Drawn on the CPU: {reason}. Click for System Info.	Отрисовка на ЦП: {reason}. Нажмите для просмотра сведений о системе.
-	Level:	Уровень:
-	Percentile:	Процентиль:
-	Show Channels in Color	Показывать каналы в цвете
-	Show Statistics	Показать статистику
-	Source:	Источник:
-	Uncached Refresh	Обновить без кэша
-	…	…
-	External cutout	Внешнее удаление фона
-	External erase	Внешнее стирание
-	No matching fonts	Нет подходящих шрифтов
-	Select Layer Under Cursor	Выбрать слой под курсором
-
-# Fork portable update information
-	PhotoCraft Updates	Обновления PhotoCraft
-	Checking for updates…	Проверка обновлений…
-	Open Download Page	Открыть страницу загрузки
-	PhotoCraft is up to date.	Установлена последняя версия PhotoCraft.
-	Could not check for updates.	Не удалось проверить обновления.
-	Updates have not been checked yet.	Обновления ещё не проверялись.
-	Check Again	Проверить снова
-	Installed version: {version}	Установленная версия: {version}
-	PhotoCraft {version} is available.	Доступна версия PhotoCraft {version}.
-	Answer the open import question first, then import this file again.	Сначала ответьте на открытый вопрос импорта, затем импортируйте этот файл снова.
-	Import as New Group	Импортировать как новую группу
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Импорт как новой группы сохраняет «{group}» и добавляет файл рядом в виде новой группы.
-	No import is waiting. Import the file again.	Нет ожидающего импорта. Импортируйте файл снова.
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Замена сначала удалит всё в «{group}», включая изменённые или перемещённые туда наборы настроек. Это действие нельзя отменить.
-	{message} into “{group}”	{message} в «{group}»
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).|Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).|Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Группа градиентов «{group}» уже существует (количество градиентов: {n}).|Группа градиентов «{group}» уже существует (количество градиентов: {n}).|Группа градиентов «{group}» уже существует (количество градиентов: {n}).
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	Параметры наконечников стрелок
-	Arrowheads	Наконечники стрелок
-	Concavity	Вогнутость
-	End	Конец
-	Set as default	Использовать по умолчанию
-	Start	Начало
-	Use these settings for new arrows	Использовать эти настройки для новых стрелок
-
-# Upstream 0.20.2 memory, batch, layer filters and numeral options
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Команда отменена или остановлена во время пакетной обработки. Продолжить со следующим файлом или остановиться?
-	Attribute	Атрибут
-	Batch preview	Предпросмотр пакетной обработки
-	Data Sets as Files is unavailable on the web	Наборы данных в виде файлов недоступны в веб-версии
-	Effect	Эффект
-	Empty	Пустые
-	Filter for embedded smart objects	Фильтровать встроенные смарт-объекты
-	Filter for linked smart objects that are missing	Фильтровать отсутствующие связанные смарт-объекты
-	Filter for smart objects linked locally	Фильтровать смарт-объекты, связанные с локальными файлами
-	High Memory Photoshop Document	Документ Photoshop с высоким потреблением памяти
-	Image Compression	Сжатие изображения
-	LZW	LZW
-	Layer Effects	Эффекты слоя
-	Lining	Маюскульные
-	Linked	Связанные
-	No Adv. Blending	Без расширенного наложения
-	No Layer Effects	Без эффектов слоя
-	No Layer Mask	Без маски слоя
-	No Vector Mask	Без векторной маски
-	Not Clipped	Без обтравочной маски
-	Not Empty	Непустые
-	Not Linked	Несвязанные
-	Not Locked	Незаблокированные
-	Not Visible	Невидимые
-	Numerals	Цифры
-	Open anyway	Всё равно открыть
-	Opening this document uses more memory and may slow down your computer or other running applications.	Открытие этого документа требует больше памяти и может замедлить работу компьютера или других запущенных приложений.
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Для открытия «{name}» требуется примерно {est} GiB памяти (доступно {avail} GiB).
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Для открытия «{name}» требуется примерно {est} GiB памяти. Не удалось измерить доступную память.
-	Proportional	Пропорциональные
-	Proportional Lining	Пропорциональные маюскульные
-	Proportional Oldstyle	Пропорциональные минускульные
-	Save Image Pyramid	Сохранить пирамиду изображения
-	Save Transparency	Сохранить прозрачность
-	Tabular	Табличные
-	Tabular Lining	Табличные маюскульные
-	Tabular Oldstyle	Табличные минускульные
-	ZIP	ZIP
-	{ok} written to {dir}	Записано {ok} в {dir}
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: не удалось вывести {n} графический ресурс|{what}: не удалось вывести {n} графических ресурса|{what}: не удалось вывести {n} графических ресурсов
 
 # Action Stop message (#8386)
 	Message	Сообщение
@@ -4924,7 +4752,11 @@ shape	Appearance	Оформление
 	Pause For	Пауза на
 	seconds	с
 	Create a single history state	Создавать одно состояние истории
+	Drag to move the active shape's path or the Work Path	Перетащите, чтобы переместить контур активной фигуры или рабочий контур
 	Generator enabled	Генератор включён
+	Hidden	Скрыто
+	Move Up	Переместить вверх
+	Move Down	Переместить вниз
 	On your computer	На вашем компьютере
 	New file	Новый файл
 	Learn	Обучение
@@ -4955,28 +4787,211 @@ shape	Appearance	Оформление
 	Pick a different document for each channel.	Выберите отдельный документ для каждого канала.
 	A picked document is no longer open.	Один из выбранных документов больше не открыт.
 	A picked document is no longer a grayscale document of the same size.	Один из выбранных документов больше не является документом в градациях серого того же размера.
+	Netscape Gray	Серый Netscape
+# Move tool options bar (#11381)
+	Align top edges	Выровнять верхние края
+	Align vertical centers	Выровнять центры по вертикали
+	Align bottom edges	Выровнять нижние края
+	Distribute vertically	Распределить по вертикали
+	Distribute horizontally	Распределить по горизонтали
+	Show layer bounds on hover	Показывать границы слоя при наведении
+	Expand layer group on click	Раскрывать группу слоёв по щелчку
+	Show hover bounds from Layers	Показывать границы при наведении из панели «Слои»
+	Saved RAW Develop settings to {file}	Настройки Обработка RAW сохранены в {file}
+	Save the settings to each raw's sidecar without opening it	Сохранить настройки в сопроводительный файл каждого raw, не открывая его
+	No settings saved: these raws can't keep a sidecar here	Ничего не сохранено: у этих raw здесь не может быть сопроводительного файла
+	Some settings could not be saved; the raws stay open	Не удалось сохранить некоторые настройки; raw остаются открытыми
+	Nothing to save: these raws are at their default settings	Нечего сохранять: у этих raw настройки по умолчанию
+# Artboard tool options bar (#11385)
+	Distribute Widths	Распределить ширину
+	Distribute Heights	Распределить высоту
+	Auto-nest Layers	Автоматически вкладывать слои
+	Auto-size Canvas	Автоматически менять размер холста
+	Keep Relative Position During Layer Reordering	Сохранять относительное положение при изменении порядка слоев
+	Shrinkwrap Canvas on Save	Уменьшать холст до содержимого при сохранении
 
-# Placement and memory-admission notices from upstream 0.21.0.
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Команда отменена или остановлена во время пакетной обработки. Продолжить со следующим файлом или остановиться?
 	A file is still being placed; try again when it has finished.	Файл ещё размещается; повторите попытку после завершения.
+	AI Prompt History	История промптов ИИ
+	AI model settings	Настройки модели ИИ
+	Adding generated layer	Добавление нового слоя
+	Adjust colors with Poisson blending	Настроить цвета с помощью смешивания Пуассона
+	Adobe Every-line Composer	Абзацная компоновка Adobe
+	Adobe PDF Presets…	Наборы Adobe PDF…
+	Adobe Single-line Composer	Построчная компоновка Adobe
+	All nine regions	Все девять областей
+	All shortcuts reset to Photoshop defaults.	Все комбинации клавиш сброшены к стандартным Photoshop.
+	Anime fusal	Anime FUSAL
+	Answer the open import question first, then import this file again.	Сначала ответьте на открытый вопрос импорта, затем импортируйте этот файл снова.
+	Arrange Panels	Упорядочить панели
+	Arrowhead options	Параметры наконечников стрелок
+	Arrowheads	Наконечники стрелок
+	Attach Reference Image	Прикрепить референс
+	Attribute	Атрибут
+	Automatically check for updates	Автоматически проверять обновления
+	Base64	Base64
+	Batch preview	Предпросмотр пакетной обработки
+	CPU Rendering	Рендеринг на ЦП
+	Calculating…	Вычисление…
+	Camera Raw	Camera Raw
+	Camera Raw ({name})	Camera Raw ({name})
+	Camera Raw Defaults	Значения Camera Raw по умолчанию
+	Camera Raw Filter	Фильтр Camera Raw
+	Camera Raw Filter ({layer})	Фильтр Camera Raw ({layer})
+	Camera Raw Filter…	Фильтр Camera Raw…
+	Camera Raw isn't open	Camera Raw не открыт
+	Camera Raw…	Camera Raw…
+	Cancelled opening {name}	Открытие {name} отменено
 	Cancelled placing {name}	Размещение {name} отменено
+	Cancelled {label}	{label}: отменено
+	Centre the gradient (offset 0, 0)	Центрировать градиент (смещение 0, 0)
+	Check Again	Проверить снова
+	Check for updates now	Проверить обновления сейчас
+	Checking for updates…	Проверка обновлений…
+	Click to fill similar colours	Щёлкните, чтобы залить похожие цвета
+	Click to refresh histogram with uncached data	Нажмите, чтобы обновить гистограмму без использования кэша
+	Click to restore the current colour	Щёлкните, чтобы восстановить текущий цвет
+	Click to sample the foreground colour  ·  {key}-click for background	Клик — взять основной цвет  ·  {key}-клик — фоновый цвет
+	Close Other Panels in Group	Закрыть другие панели в группе
+	Collapse to Icons	Свернуть в значки
+	Color Blindness — Deuteranopia-type	Цветовая слепота — дейтеранопия
+	Color Blindness — Protanopia-type	Цветовая слепота — протанопия
+	ComfyUI is unavailable in this frontend	ComfyUI недоступен в этой среде
+	ComfyUI port	Порт ComfyUI
+	Comfyui custom encoders	Пользовательские энкодеры ComfyUI
+	Comfyui custom model	Пользовательская модель ComfyUI
+	Comfyui custom models	Пользовательские модели ComfyUI
+	Comfyui model	Модель ComfyUI
+	Comfyui model settings	Настройки моделей ComfyUI
+	Comfyui translate prompt	Перевести промпт на английский
+	Comfyui translation model	Модель перевода промптов
+	Comfyui url	URL сервера ComfyUI
+	Compare with Original Generation	Сравнить с исходным результатом генерации
+	Concavity	Вогнутость
+	Copy English translation	Копировать английский перевод
+	Copy negative prompt	Копировать негативный промпт
+	Copy original prompt	Копировать исходный промпт
+	Could not check for updates.	Не удалось проверить обновления.
+	Count:	Количество:
+	Cube	CUBE
+	Custom model filenames (one per line)	Имена файлов пользовательских моделей (по одному в строке)
+	Data Encoding	Кодирование данных
+	Data Sets as Files is unavailable on the web	Наборы данных в виде файлов недоступны в веб-версии
+	Default Photoshop Size	Размер Photoshop по умолчанию
+	Default colours (D)	Цвета по умолчанию (D)
+	Describe changes to the whole image	Опишите изменения всего изображения
+	Describe changes, or leave blank to remove	Опишите изменения или оставьте пустым для удаления
+	Describe the image to generate	Опишите изображение для создания
+	Dismiss update	Закрыть уведомление об обновлении
+	Downloading generated image	Скачивание результата
+	Downloading update…	Загрузка обновления…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Выделите рамку кадрирования · перетащите внутри для перемещения · края меняют размер ({ratio} пропорции, {centre} центр) · Space двигает при рисовании · стрелки сдвигают · X меняет ориентацию · {commit} применить · Esc отмена
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Перетащите вокруг центра, чтобы повернуть вид  ·  Shift фиксирует шаг 15°
+	Drawn on the CPU: {reason}. Click for System Info.	Отрисовка на ЦП: {reason}. Нажмите для просмотра сведений о системе.
 	Dropped files weren't placed: their document was closed.	Перетащенные файлы не размещены: их документ был закрыт.
 	Dropped files weren't placed: too many are waiting for their document.	Перетащенные файлы не размещены: слишком много файлов ожидают свой документ.
+	Effect	Эффект
+	Empty	Пустые
+	End	Конец
+	English translation	Английский перевод
+	External cutout	Внешнее удаление фона
+	External erase	Внешнее стирание
+	Filter for embedded smart objects	Фильтровать встроенные смарт-объекты
+	Filter for linked smart objects that are missing	Фильтровать отсутствующие связанные смарт-объекты
+	Filter for smart objects linked locally	Фильтровать смарт-объекты, связанные с локальными файлами
+	Generative Fill	Генеративная заливка
+	Generative Fill…	Генеративная заливка…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Интерполяция с коррекцией градиента: резкая и быстрая, с небольшой цветной каймой на мелких деталях.
+	High Memory Photoshop Document	Документ Photoshop с высоким потреблением памяти
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Хиракава–Паркс: самые чистые края и меньше всего цветной каймы, самый медленный.
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Как восстанавливается мозаика цветного фильтра камеры. Применяется при открытии файла; превью показывает метод, с которым файл был открыт.
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	Сжатие изображения
+	Import as New Group	Импортировать как новую группу
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Импорт как новой группы сохраняет «{group}» и добавляет файл рядом в виде новой группы.
+	Installed version: {version}	Установленная версия: {version}
+	Inverse Selection	Инвертировать выделение
+	LZW	LZW
+	Layer Effects	Эффекты слоя
+	Layer via Copy	Скопировать на новый слой
+	Layer via Cut	Вырезать на новый слой
+	Level:	Уровень:
+	Lining	Маюскульные
+	Linked	Связанные
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	После открытия этого файла останется мало памяти. Сначала закройте другие приложения, иначе PhotoCraft может не хватить памяти.
+	Loaded Camera Raw settings from {file}	Настройки Camera Raw загружены из {file}
+	Loaded Camera Raw settings from {file} ({n} not supported)	Настройки Camera Raw загружены из {file} (не поддерживается: {n})
+	Look	LOOK
+	Lut Format	Формат LUT
+	Match Surrounding Colors	Подогнать под цвета окружения
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Подгоняет цвета под окружение, сохранённое при генерации. Интенсивность 0 восстанавливает исходный результат генерации.
+	Minimize Panel	Свернуть панель
+	Negative prompt	Негативный промпт
+	No AI prompts recorded	Промпты ИИ не записаны
+	No Adv. Blending	Без расширенного наложения
+	No Layer Effects	Без эффектов слоя
+	No Layer Mask	Без маски слоя
+	No Vector Mask	Без векторной маски
+	No import is waiting. Import the file again.	Нет ожидающего импорта. Импортируйте файл снова.
+	No matching fonts	Нет подходящих шрифтов
+	No prompt (remove)	Без промпта (удаление)
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Not Clipped	Без обтравочной маски
+	Not Empty	Непустые
+	Not Linked	Несвязанные
+	Not Locked	Незаблокированные
+	Not Visible	Невидимые
+	Not a web colour: click for the nearest web colour	Не веб-цвет: щёлкните, чтобы выбрать ближайший веб-цвет
 	Nudge	Сдвиг на шаг
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Текущий каталог рабочего диска ({path}) не сообщает о свободном месте, поэтому PhotoCraft не может остановиться до его заполнения, а большие файлы не получают дополнительного места без ограничения размера рабочего диска. Это предупреждение относится к текущей конфигурации; изменения выше вступят в силу после нажатия «Применить» или «ОК». Задайте ограничение или используйте локальный диск.
-
-# OpenType stylistic-set labels.
-	Stylistic Sets	Стилистические наборы
+	Numerals	Цифры
+	One .safetensors filename per line. Compatibility is not checked.	Одно имя файла .safetensors в строке. Совместимость не проверяется.
+	Open Download Page	Открыть страницу загрузки
+	Open Panel in Own Window	Открыть панель в отдельном окне
+	Open a document to select a colour range.	Откройте документ, чтобы выбрать цветовой диапазон.
+	Open anyway	Всё равно открыть
+	Open in camera raw	Открывать в Camera Raw
+	Opening this document uses more memory and may slow down your computer or other running applications.	Открытие этого документа требует больше памяти и может замедлить работу компьютера или других запущенных приложений.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Для открытия «{name}» требуется примерно {est} GiB памяти (доступно {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Для открытия «{name}» требуется примерно {est} GiB памяти. Не удалось измерить доступную память.
+	Original prompt	Исходный промпт
+	Out of gamut for printing: click for the nearest printable colour	Вне цветового охвата печати: щёлкните, чтобы выбрать ближайший печатаемый цвет
+	Percentile:	Процентиль:
+	PhotoCraft Updates	Обновления PhotoCraft
+	PhotoCraft is up to date.	Установлена последняя версия PhotoCraft.
+	PhotoCraft update available	Доступно обновление PhotoCraft
+	PhotoCraft {version} is available.	Доступна версия PhotoCraft {version}.
+	Preparing image and selection	Подготовка изображения и выделения
+	Prompt Edit	Редактировать по запросу
+	Prompt Edit…	Редактировать по запросу…
+	Prompt Generate	Создать по промпту
+	Prompt Generate…	Создать по промпту…
+	Prompt information	Информация о промпте
+	Prompt translation model	Модель перевода промптов
+	Proportional	Пропорциональные
+	Proportional Lining	Пропорциональные маюскульные
+	Proportional Oldstyle	Пропорциональные минускульные
+	Quick Export As PNG	Быстрый экспорт в PNG
+	Qwen image21	Qwen 2.1
+	Reference Image	Референс
+	Regenerate	Создать заново
+	Regenerate AI Result	Повторно создать результат ИИ
+	Remember to turn off the printer's own colour management in Print Settings…	Не забудьте отключить управление цветом самого принтера в параметрах печати…
+	Remove Reference Image	Удалить референс
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Замена сначала удалит всё в «{group}», включая изменённые или перемещённые туда наборы настроек. Это действие нельзя отменить.
+	Reset steps to model default	Вернуть число шагов по умолчанию для модели
+	Resize for AI editing	Изменить размер для ИИ
+	Sample: foreground colour	Выборка: основной цвет
+	Sampling steps	Шаги сэмплирования
+	Save Image Pyramid	Сохранить пирамиду изображения
+	Save Transparency	Сохранить прозрачность
+	Save cancelled	Сохранение отменено
+	Select Layer Under Cursor	Выбрать слой под курсором
 	Set 	Набор
 	Set 1	Набор 1
-	Set 2	Набор 2
-	Set 3	Набор 3
-	Set 4	Набор 4
-	Set 5	Набор 5
-	Set 6	Набор 6
-	Set 7	Набор 7
-	Set 8	Набор 8
-	Set 9	Набор 9
 	Set 10	Набор 10
 	Set 11	Набор 11
 	Set 12	Набор 12
@@ -4987,22 +5002,66 @@ shape	Appearance	Оформление
 	Set 17	Набор 17
 	Set 18	Набор 18
 	Set 19	Набор 19
+	Set 2	Набор 2
 	Set 20	Набор 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	Ввод с планшета
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (по умолчанию)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	Кодирование данных
-	Lut Format	Формат LUT
+	Set 3	Набор 3
+	Set 4	Набор 4
+	Set 5	Набор 5
+	Set 6	Набор 6
+	Set 7	Набор 7
+	Set 8	Набор 8
+	Set 9	Набор 9
+	Set as default	Использовать по умолчанию
 	Shape Id	Идентификатор фигуры
 	Shape Name	Имя фигуры
 	Shape Origin Type	Тип происхождения фигуры
 	Shape Path	Контур фигуры
+	Show Channels in Color	Показывать каналы в цвете
+	Show Statistics	Показать статистику
+	Source:	Источник:
+	Start	Начало
+	Stylistic Sets	Стилистические наборы
+	Swap colours (X)	Поменять цвета (X)
+	Tablet input	Ввод с планшета
+	Tabular	Табличные
+	Tabular Lining	Табличные маюскульные
+	Tabular Oldstyle	Табличные минускульные
 	Text	Текст
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoders	Текстовые энкодеры
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Текущий каталог рабочего диска ({path}) не сообщает о свободном месте, поэтому PhotoCraft не может остановиться до его заполнения, а большие файлы не получают дополнительного места без ограничения размера рабочего диска. Это предупреждение относится к текущей конфигурации; изменения выше вступят в силу после нажатия «Применить» или «ОК». Задайте ограничение или используйте локальный диск.
+	The fastest and the softest, with colour fringing on fine detail.	Самый быстрый и самый мягкий, с цветной каймой на мелких деталях.
+	The image exceeds the AI editing size. Resize the document to continue?	Изображение превышает размер для ИИ-редактирования. Изменить размер документа и продолжить?
+	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Перед продолжением необходимо растрировать этот смарт-объект. Его содержимое перестанет быть редактируемым. Растрировать смарт-объект?
+	Translate prompt to English	Перевести промпт на английский
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo int8	Turbo INT8
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Turbo q8	Turbo Q8_0
+	Uncached Refresh	Обновить без кэша
+	Update PhotoCraft	Обновить PhotoCraft
+	Update PhotoCraft and restart now?	Обновить PhotoCraft и перезапустить сейчас?
+	Updates have not been checked yet.	Обновления ещё не проверялись.
+	Uploading image to ComfyUI	Загрузка изображения в ComfyUI
+	Use these settings for new arrows	Использовать эти настройки для новых стрелок
+	Uses the foreground and background colours.	Использует основной цвет и цвет фона.
+	Waiting for ComfyUI generation	Ожидание генерации ComfyUI
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (по умолчанию)
+	You can check for updates again in Help → About PhotoCraft.	Проверить обновления снова можно в меню Справка → О PhotoCraft.
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label}: идёт запись файла, отменить уже нельзя
+	{message} into “{group}”	{message} в «{group}»
+	{ok} written to {dir}	Записано {ok} в {dir}
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).|Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).|Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Группа градиентов «{group}» уже существует (количество градиентов: {n}).|Группа градиентов «{group}» уже существует (количество градиентов: {n}).|Группа градиентов «{group}» уже существует (количество градиентов: {n}).
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: не удалось вывести {n} графический ресурс|{what}: не удалось вывести {n} графических ресурса|{what}: не удалось вывести {n} графических ресурсов

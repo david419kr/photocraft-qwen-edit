@@ -284,7 +284,7 @@
 	Plugins…	Plug-ins…
 	Type…	Tekst…
 	Enhanced Controls…	Uitgebreide bediening…
-	Camera Raw…	Camera Raw…
+	RAW Defaults…	RAW-standaardwaarden…
 	Raw Defaults…	Raw-standaardwaarden…
 	Integrations…	Integraties…
 	AI Integrations…	AI-integraties…
@@ -335,6 +335,8 @@
 	Match Color…	Kleur afstemmen…
 	Replace Color…	Kleur vervangen…
 	Equalize	Egaliseren
+	Equalize Selected Area Only	Alleen geselecteerd gebied egaliseren
+	Equalize Entire Image Based On Selected Area	Hele afbeelding egaliseren op basis van geselecteerd gebied
 	Auto Tone	Automatische tooncorrectie
 	Auto Contrast	Automatisch contrast
 	Auto Color	Automatische kleur
@@ -371,8 +373,8 @@
 	Artboard…	Tekengebied…
 	Artboard from Group…	Tekengebied uit groep…
 	Artboard from Layers…	Tekengebied uit lagen…
-	Layer via Copy	Laag via kopiëren
-	Layer via Cut	Laag via knippen
+	Layer Via Copy	Laag via kopiëren
+	Layer Via Cut	Laag via knippen
 	Layer From Background…	Laag uit achtergrond…
 	Layer from Background…	Laag uit achtergrond…
 	Background From Layer	Achtergrond uit laag
@@ -592,7 +594,6 @@
 	Deselect	Deselecteren
 	Reselect	Opnieuw selecteren
 	Inverse	Omkeren
-	Inverse Selection	Selectie omkeren
 	Similar	Vergelijkbaar
 	Color Range…	Kleurbereik…
 	Focus Area…	Scherptegebied…
@@ -616,7 +617,7 @@
 	Last Filter	Laatste filter
 	Filter Gallery…	Filtergalerie…
 	Adaptive Wide Angle…	Adaptieve groothoek…
-	Camera Raw Filter…	Camera Raw-filter…
+	RAW Develop Filter…	RAW-ontwikkeling-filter…
 	Liquify…	Uitvloeien…
 	Vanishing Point…	Verdwijnpunt…
 	Blur	Vervagen
@@ -707,12 +708,12 @@
 	Working Magenta Plate	Werkplaat magenta
 	Working Yellow Plate	Werkplaat geel
 	Working Black Plate	Werkplaat zwart
-	Working CMY Plates	Werkplaat CMY
+	Working CMY Plates	CMY-werkplaten
 	Legacy Macintosh RGB (Gamma 1.8)	Verouderde Macintosh RGB (Gamma 1.8)
 	Internet Standard RGB (sRGB)	Internetstandaard RGB (sRGB)
 	Monitor RGB	Monitor-RGB
-	Color Blindness — Protanopia-type	Kleurenblindheid — type protanopie
-	Color Blindness — Deuteranopia-type	Kleurenblindheid — type deuteranopie
+	Color Blindness - Protanopia-type	Kleurenblindheid - type protanopie
+	Color Blindness - Deuteranopia-type	Kleurenblindheid - type deuteranopie
 	Zoom In	Inzoomen
 	Zoom Out	Uitzoomen
 	Fit on Screen	Passend in scherm
@@ -854,6 +855,12 @@
 	Timeline	Tijdlijn
 	Tool Presets	Gereedschapsvoorinstellingen
 	Tools	Gereedschappen
+	Contextual Task Bar	Contextuele taakbalk
+	Hide bar	Balk verbergen
+	Reset bar position	Balkpositie herstellen
+	Pin bar position	Balkpositie vastzetten
+	Move bar	Balk verplaatsen
+	More options	Meer opties
 	About PhotoCraft	Over PhotoCraft
 	PhotoCraft Website	Website van PhotoCraft
 	PhotoCraft on GitHub	PhotoCraft op GitHub
@@ -955,8 +962,8 @@
 	Load Settings…	Instellingen laden…
 	Save these settings as a Camera Raw .xmp file	Deze instellingen opslaan als Camera Raw-.xmp-bestand
 	Load settings from a Camera Raw .xmp file	Instellingen laden uit een Camera Raw-.xmp-bestand
-	Loaded Camera Raw settings from {file}	Camera Raw-instellingen geladen uit {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw-instellingen geladen uit {file} ({n} niet ondersteund)
+	Loaded RAW Develop settings from {file}	RAW-ontwikkeling-instellingen geladen uit {file}
+	Loaded RAW Develop settings from {file} ({n} not supported)	RAW-ontwikkeling-instellingen geladen uit {file} ({n} niet ondersteund)
 	Begin recording	Opname starten
 	Bend:	Buiging:
 	Bicubic	Bicubisch
@@ -983,7 +990,7 @@
 	Brush Reconstruct Options	Opties reconstructiepenseel
 	Brush Tool Options	Opties penseelgereedschap
 	Cache Level:	Cacheniveau:
-	Camera Raw isn't open	Camera Raw is niet geopend
+	RAW Develop isn't open	RAW-ontwikkeling is niet geopend
 	Cancel	Annuleren
 	Reset	Herstellen
 	Cancel (Esc)	Annuleren (Esc)
@@ -1017,7 +1024,7 @@
 	Click to add a point · drag off or {key}-click or Delete to remove	Klik om een punt toe te voegen · sleep weg, {key}-klik of Delete om te verwijderen
 	Click to apply, {key}-click to clear overrides, double-click for Style Options	Klik om toe te passen, {key}-klik om overschrijvingen te wissen, dubbelklik voor stijlopties
 	Click to edit the gradient	Klik om het verloop te bewerken
-	Click to restore the current colour	Klik om de huidige kleur te herstellen
+	Click to restore the current color	Klik om de huidige kleur te herstellen
 	Click to zoom in  ·  {key}-click to zoom out  ·  drag right/left to zoom in/out	Klik om in te zoomen  ·  {key}-klik om uit te zoomen  ·  sleep naar rechts/links om in/uit te zoomen
 	Click with the Note tool to add a note.	Klik met het notitiegereedschap om een notitie toe te voegen.
 	Click: corner · Drag: smooth · Click first point: close · {key} finish · Esc cancel	Klik: hoek · Slepen: vloeiend · Klik op eerste punt: sluiten · {key} voltooien · Esc annuleren
@@ -1102,7 +1109,7 @@
 	Darks	Donkere tinten
 	Data Sets	Gegevenssets
 	Default	Standaard
-	Default colours (D)	Standaardkleuren (D)
+	Default Foreground and Background Colors (D)	Standaard voorgrond- en achtergrondkleur (D)
 	Default printer	Standaardprinter
 	Default restored.	Standaard hersteld.
 	Define	Definiëren
@@ -1385,7 +1392,7 @@
 	Opacity Jitter	Dekkingsvariatie
 	Opacity:	Dekking:
 	Open a document to define variables.	Open een document om variabelen te definiëren.
-	Open a document to select a colour range.	Open een document om een kleurbereik te selecteren.
+	Open a document to select a color range.	Open een document om een kleurbereik te selecteren.
 	Open a document to use the timeline.	Open een document om de tijdlijn te gebruiken.
 	Optical	Optisch
 	Optimized	Geoptimaliseerd
@@ -1461,7 +1468,6 @@
 	Purity	Zuiverheid
 	Quality	Kwaliteit
 	Quick Actions	Snelle acties
-	Quick Export As PNG	Snel exporteren als PNG
 	Radial Gradient	Radiaal verloop
 	Radius	Straal
 	Radius:	Straal:
@@ -1600,7 +1606,7 @@
 	Subtract from Sample	Van monster aftrekken
 	Subtract from selection  ({key})	Van selectie aftrekken  ({key})
 	Suggestions:	Suggesties:
-	Swap colours (X)	Kleuren omwisselen (X)
+	Switch Foreground and Background Colors (X)	Voorgrond- en achtergrondkleur omwisselen (X)
 	Swaps height and width	Wisselt hoogte en breedte om
 	Switch between free transform and warp modes	Wisselen tussen vrije transformatie en verbuigen
 	Switch theme	Thema wisselen
@@ -1702,7 +1708,7 @@
 	Choke	Inkrimpen
 	Classic	Klassiek
 	Click to add text	Klik om tekst toe te voegen
-	Click to fill similar colours	Klik om vergelijkbare kleuren te vullen
+	Click to fill similar colors	Klik om vergelijkbare kleuren te vullen
 	Clone Stamp Tool	Kloonstempelgereedschap
 	Color Burn	Kleur doordrukken
 	Color Dodge	Kleur tegenhouden
@@ -1803,6 +1809,7 @@
 	Move Tool	Verplaatsgereedschap
 	Could not use the move tool because the layer is locked.	Kan het verplaatsgereedschap niet gebruiken omdat de laag is vergrendeld.
 	Could not complete the Free Transform command because the layer is locked.	Kan de opdracht Vrije transformatie niet voltooien omdat de laag is vergrendeld.
+	Could not transform because the layer is locked.	Kan niet transformeren omdat de laag is vergrendeld.
 	Multiply	Vermenigvuldigen
 	My Brushes	Mijn penselen
 	Neutrals	Neutrale tinten
@@ -1861,7 +1868,7 @@
 	Rectangular Marquee Tool	Rechthoekig selectiekader
 	Reds	Roodtinten
 	Reflected	Gespiegeld
-	Sample: foreground colour	Monster: voorgrondkleur
+	Sample: foreground color	Monster: voorgrondkleur
 	Sampled Colors	Bemonsterde kleuren
 	Satin	Satijn
 	Save Pixel Aspect Ratio	Pixelverhouding opslaan
@@ -1900,7 +1907,6 @@
 	Transfer	Overdracht
 	Triangle Tool	Driehoekgereedschap
 	Unsaved changes	Niet-opgeslagen wijzigingen
-	Uses the foreground and background colours.	Gebruikt de voorgrond- en achtergrondkleur.
 	Web	Web
 	Web Large	Web groot
 	Web Minimum	Web minimum
@@ -1937,6 +1943,7 @@
 	Allow scripts to connect	Scripts toestaan verbinding te maken
 	Always	Altijd
 	Always create smart objects when placing	Bij plaatsen altijd slimme objecten maken
+	Skip transform when placing	Transformatie overslaan bij plaatsen
 	Animated zoom	Geanimeerd zoomen
 	Apply auto tone	Automatische tooncorrectie toepassen
 	Ask	Vragen
@@ -1954,7 +1961,7 @@
 	Brush preview color	Kleur penseelvoorvertoning
 	Cache levels	Cacheniveaus
 	Cache tile size	Tegelgrootte cache
-	Camera Raw Defaults	Standaardwaarden Camera Raw
+	RAW Defaults	RAW-standaardwaarden
 	Canvas border	Canvasrand
 	Show canvas dots	Canvasstippen tonen
 	Clip thumbnails to layer bounds	Miniaturen bijsnijden tot laaggrenzen
@@ -2041,7 +2048,6 @@
 	Never	Nooit
 	Normal tip	Normale punt
 	Open as smart object	Openen als slim object
-	Open in camera raw	Openen in Camera Raw
 	Open documents as tabs	Documenten openen als tabbladen
 	Overscroll	Doorscrollen
 	Performance	Prestaties
@@ -2170,7 +2176,7 @@
 	Graphics	Grafisch
 	Reset GPU Backend	GPU-backend herstellen
 	Applies at next launch.	Wordt toegepast bij de volgende start.
-	Click to sample the foreground colour  ·  {key}-click for background	Klik om de voorgrondkleur te bemonsteren  ·  {key}-klik voor achtergrond
+	Click to sample the foreground color  ·  {key}-click for background	Klik om de voorgrondkleur te bemonsteren  ·  {key}-klik voor achtergrond
 	{key}-click to set the source	{key}-klik om de bron in te stellen
 	{key} to subtract	{key} om af te trekken
 	Clone source {n} ({key}-click with Clone Stamp to set)	Kloonbron {n} ({key}-klik met kloonstempel om in te stellen)
@@ -2229,7 +2235,7 @@
 	Gradient Options	Verloopopties
 	Align with layer	Uitlijnen met laag
 	Reset Alignment	Uitlijning herstellen
-	Centre the gradient (offset 0, 0)	Het verloop centreren (verschuiving 0, 0)
+	Center the gradient (offset 0, 0)	Het verloop centreren (verschuiving 0, 0)
 	Gradient Editor	Verloopeditor
 	Gradient picker	Verloopkiezer
 	Gradient stops	Verloopstops
@@ -2263,7 +2269,7 @@
 	Alt-click to define a source point to clone from	Alt-klik om een bronpunt te definiëren om van te klonen
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	Geen pad om een selectie van te maken: teken er een met het pengereedschap of selecteer er een in het paneel Paden.
 	Cancel opening	Openen annuleren
-	Cancelled opening {name}	Openen van {name} geannuleerd
+	Canceled opening {name}	Openen van {name} geannuleerd
 	Damaged Photoshop document	Beschadigd Photoshop-document
 	The document “{name}” may be damaged.	Het document ‘{name}’ is mogelijk beschadigd.
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	Sommige lagen, pixels of maskers konden niet worden gelezen. Wilt u doorgaan met openen?
@@ -2272,7 +2278,7 @@
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	Het document “{name}” heeft een ingesloten kleurprofiel dat niet overeenkomt met de huidige {mode}-werkruimte.
 	Working: {working}	Werkruimte: {working}
 	Developing {name}	{name} wordt ontwikkeld
-	Cancelled {label}	{label} geannuleerd
+	Canceled {label}	{label} geannuleerd
 	Esc to cancel	Esc om te annuleren
 	Opened {name}	{name} geopend
 	Opening {name}	{name} openen
@@ -2280,7 +2286,7 @@
 	Saving {name}	{name} opslaan
 	Saving {percent}	Opslaan {percent}
 	A save to {name} is still running; try again when it finishes	Er wordt nog opgeslagen naar {name}; probeer het opnieuw zodra dat klaar is
-	{label} is writing the file and can no longer be cancelled	{label} schrijft het bestand en kan niet meer worden geannuleerd
+	{label} is writing the file and can no longer be canceled	{label} schrijft het bestand en kan niet meer worden geannuleerd
 	Opening {name}…	{name} openen…
 	Opening…	Openen…
 	Reading…	Lezen…
@@ -2323,6 +2329,7 @@
 	Punctuation	Interpunctie
 	Make Work Path	Werkpad maken
 	Make Selection	Selectie maken
+	Make Shape	Vorm maken
 	Fill Path	Pad vullen
 	Stroke Path	Pad omlijnen
 	Delete Path	Pad verwijderen
@@ -2341,7 +2348,7 @@
 	Pixel	Pixel
 	Adjustment	Aanpassing
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	Slepen (lasso) of punten klikken (veelhoek) · {add} toevoegen · {sub} aftrekken
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Sleep een bijsnijkader · sleep binnenin om te verplaatsen · randen wijzigen formaat ({ratio} verhouding, {centre} midden) · Spatie verplaatst tijdens tekenen · pijltjes verschuiven · X wisselt oriëntatie · {commit} past toe · Esc annuleert
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Sleep een bijsnijkader · sleep binnenin om te verplaatsen · randen wijzigen formaat ({ratio} verhouding, {centre} midden) · Spatie verplaatst tijdens tekenen · pijltjes verschuiven · X wisselt oriëntatie · {commit} past toe · Esc annuleert
 	{mode} Color · {bits} bit	{mode}-kleur · {bits} bit
 	Scrubby Zoom	Sleepzoom
 	Auto Erase	Automatisch gummen
@@ -2389,8 +2396,8 @@
 	3 x 3	3 x 3
 	4 x 4	4 x 4
 	5 x 5	5 x 5
-	Camera Raw Filter ({layer})	Camera Raw-filter ({layer})
-	Camera Raw ({name})	Camera Raw ({name})
+	RAW Develop Filter ({layer})	RAW-ontwikkeling-filter ({layer})
+	RAW Develop ({name})	RAW-ontwikkeling ({name})
 	Edit Type	Tekst bewerken
 	Grid:	Raster:
 	Highlight Clipping Warning (O)	Waarschuwing afsnijden hooglichten (O)
@@ -2435,7 +2442,7 @@
 	Discard Layers and Save a Copy	Lagen negeren en kopie opslaan
 	Don't show again	Niet meer tonen
 	Save failed: {error}	Opslaan mislukt: {error}
-	Save cancelled	Opslaan geannuleerd
+	Save canceled	Opslaan geannuleerd
 	Style {name} saved	Stijl {name} opgeslagen
 	Make Default	Als standaard instellen
 	Reset to Default	Terugzetten naar standaard
@@ -2571,7 +2578,7 @@ fontWeight	Italic	Cursief
 	Rotate View	Weergave roteren
 	Rotate View Tool	Weergave-roteergereedschap
 	Reset View	Weergave herstellen
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Sleep rond het midden om de weergave te roteren  ·  Shift beperkt tot 15°
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	Sleep rond het midden om de weergave te roteren  ·  Shift beperkt tot 15°
 @id	select.all	Alles selecteren
 @id	edit.stroke	Omlijnen…
 @id	edit.transform.scale	Schalen
@@ -3390,7 +3397,6 @@ cameraRaw	Color	Kleur
 	Add Pins	Spelden toevoegen
 	Add a mask  (from the selection; ⌥ inverts)	Een masker toevoegen  (vanuit de selectie; ⌥ keert om)
 	Adds grain to the soft edges of the brush tip.	Voegt korrel toe aan de zachte randen van de penseelpunt.
-	Adobe PDF Presets…	Adobe PDF-voorinstellingen…
 	Advanced Blending	Geavanceerd overvloeien
 	After (X)	Na (X)
 	Airbrush: keeps painting while the pointer rests.	Airbrush: blijft schilderen zolang de aanwijzer stilstaat.
@@ -3417,8 +3423,8 @@ cameraRaw	Color	Kleur
 	Border	Rand
 	Box Blur	Kadervervaging
 	Calculations	Berekeningen
-	Camera Raw	Camera Raw
-	Camera Raw Filter	Camera Raw-filter
+	RAW Develop	RAW-ontwikkeling
+	RAW Develop Filter	RAW-ontwikkeling-filter
 	Canvas rotation	Canvasrotatie
 	Channel1	Kanaal 1
 	Channel2	Kanaal 2
@@ -3697,8 +3703,6 @@ cameraRaw	Whites	Witten
 	Mac Crisp	Mac helder
 	Mac Strong	Mac krachtig
 	Mac Smooth	Mac vloeiend
-	Adobe Single-line Composer	Adobe-zetmachine per regel
-	Adobe Every-line Composer	Adobe-zetmachine voor alle regels
 	X	X
 	Y	Y
 	30 fps	30 fps
@@ -3745,8 +3749,8 @@ cameraRaw	Whites	Witten
 @id	filter.sharpen.sharpen	Verscherpen
 	Good	Goed
 	Best	Beste
-	Out of gamut for printing: click for the nearest printable colour	Buiten afdrukbereik: klik voor de dichtstbijzijnde afdrukbare kleur
-	Not a web colour: click for the nearest web colour	Geen webkleur: klik voor de dichtstbijzijnde webkleur
+	Out of gamut for printing: click for the nearest printable color	Buiten afdrukbereik: klik voor de dichtstbijzijnde afdrukbare kleur
+	Not a web color: click for the nearest web color	Geen webkleur: klik voor de dichtstbijzijnde webkleur
 	Adjustment Properties	Eigenschappen aanpassing
 	Brush Stroke	Penseelstreek
 	Default Foreground and Background Colors	Standaard voorgrond- en achtergrondkleur
@@ -4063,7 +4067,7 @@ curves	Smooth	Vloeiend maken
 	Auto Add/Delete	Automatisch toevoegen/verwijderen
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Schakel niet ook Spiegelbeeld in bij de afdrukinstellingen: de twee spiegelingen heffen elkaar op.
 	Print Settings…	Afdrukinstellingen…
-	Remember to turn off the printer's own colour management in Print Settings…	Vergeet niet het eigen kleurbeheer van de printer uit te schakelen in de afdrukinstellingen…
+	Remember to turn off the printer's own color management in Print Settings…	Vergeet niet het eigen kleurbeheer van de printer uit te schakelen in de afdrukinstellingen…
 	Sent to {printer}	Verzonden naar {printer}
 	set in Print Settings…	instellen in de afdrukinstellingen…
 	ICO is limited to 256 × 256 pixels	ICO is beperkt tot 256 × 256 pixels
@@ -4193,12 +4197,12 @@ curves	Smooth	Vloeiend maken
 	Decrease Brush Hardness	Penseelhardheid verlagen
 	Increase Brush Hardness	Penseelhardheid verhogen
 	Demosaic	Demosaicing
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Hoe het kleurfiltermozaïek van de camera wordt ingevuld. Wordt toegepast bij het openen van het bestand; de voorvertoning toont de methode waarmee het is geopend.
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Hoe het kleurfiltermozaïek van de camera wordt ingevuld. Wordt toegepast bij het openen van het bestand; de voorvertoning toont de methode waarmee het is geopend.
 	AHD (adaptive homogeneity)	AHD (adaptieve homogeniteit)
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: de schoonste randen en de minste kleurranden, het traagst.
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Gradiëntgecorrigeerde interpolatie: scherp en snel, met wat kleurranden in fijne details.
-	The fastest and the softest, with colour fringing on fine detail.	Het snelst en het zachtst, met kleurranden in fijne details.
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Hirakawa–Parks: de schoonste randen en de minste kleurranden, het traagst.
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	Gradiëntgecorrigeerde interpolatie: scherp en snel, met wat kleurranden in fijne details.
+	The fastest and the softest, with color fringing on fine detail.	Het snelst en het zachtst, met kleurranden in fijne details.
 	“{name}” already exists. Replace it?	“{name}” bestaat al. Vervangen?
 	The name in the save dialog was “{name}”.	De naam in het venster Opslaan was “{name}”.
 	Previous Brush	Vorig penseel
@@ -4257,8 +4261,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Grayscale Ramp	Grijswaardenbalk
 	Current Colors	Huidige kleuren
 	Make Ramp Web Safe	Balk beperken tot webkleuren
+	Scroll All Windows	Alle vensters schuiven
 	The path was kept as the Work Path	Het pad is behouden als werkpad
 	The path was discarded	Het pad is weggegooid
+# Art History Brush (#213).
 	Art History Brush Tool	Artistiek historiepenseel
 	Tight Short	Strak kort
 	Tight Medium	Strak middel
@@ -4298,187 +4304,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Stop Color	Kleur van het punt
 	Shapes can't use patterns yet	Vormen kunnen nog geen patronen gebruiken
 	Edit Brush…	Penseel bewerken…
-	Move Up	Omhoog
-	Move Down	Omlaag
-	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
-	Import Photoshop brushes (.abr)	Import Photoshop brushes (.abr)
-	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
-	Default Photoshop Size	Default Photoshop Size
-	Grid view	Rasterweergave
-	List view	Lijstweergave
-	Prompt Edit	Prompt Edit
-	Generative Fill	Generative Fill
-	Describe changes to the whole image	Describe changes to the whole image
-	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
-	ComfyUI is unavailable in this frontend	ComfyUI is unavailable in this frontend
-	Comfyui url	Comfyui url
-	Prompt Edit…	Prompt Edit…
-	Generative Fill…	Generative Fill…
-	Preparing image and selection	Preparing image and selection
-	Uploading image to ComfyUI	Uploading image to ComfyUI
-	Waiting for ComfyUI generation	Waiting for ComfyUI generation
-	Downloading generated image	Downloading generated image
-	Adding generated layer	Adding generated layer
-	Prompt Generate	Genereren met prompt
-	Prompt Generate…	Genereren met prompt…
-	Regenerate AI Result	AI-resultaat opnieuw genereren
-	Regenerate	Opnieuw genereren
-	Describe the image to generate	Beschrijf de afbeelding die u wilt genereren
-	Sampling steps	Samplingstappen
-	Reset steps to model default	Stappen terugzetten naar de modelstandaard
-	Translate prompt to English	Prompt naar het Engels vertalen
-	Prompt translation model	Vertaalmodel voor prompts
-	Prompt information	Promptinformatie
-	AI Prompt History	AI-promptgeschiedenis
-	Original prompt	Oorspronkelijke prompt
-	English translation	Engelse vertaling
-	No prompt (remove)	Geen prompt (verwijderen)
-	All nine regions	Alle negen gebieden
-	No AI prompts recorded	Geen AI-prompts vastgelegd
-	Copy original prompt	Oorspronkelijke prompt kopiëren
-	Copy English translation	Engelse vertaling kopiëren
-	Anime fusal	Anime FUSAL
-	Noct q fusal	Noct-Q FUSAL
-	Noct qv4	NoctQ V4
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-	Turbo q8	Turbo Q8_0
-	Turbo bf16 gguf	Turbo BF16 GGUF
-	Turbo ad q2	Turbo AD-Q2_K
-	Turbo ad q3	Turbo AD-Q3_K
-	Turbo ad q4	Turbo AD-Q4_K
-	Turbo ad q5	Turbo AD-Q5_K
-	Turbo ad q6	Turbo AD-Q6_K
-	Turbo q3 k m	Turbo Q3_K_M
-	Turbo q4 k m	Turbo Q4_K_M
-	Turbo q4 k s	Turbo Q4_K_S
-	Turbo q5 k m	Turbo Q5_K_M
-	Turbo q6 k	Turbo Q6_K
-	Comfyui model	ComfyUI-model
-	Comfyui translate prompt	Prompt naar het Engels vertalen
-	Comfyui translation model	Vertaalmodel voor prompts
-	AI model settings	AI-modelinstellingen
-	ComfyUI port	ComfyUI-poort
-	Copy negative prompt	Negatieve prompt kopiëren
-	Custom model filenames (one per line)	Bestandsnamen van aangepaste modellen (één per regel)
-	Negative prompt	Negatieve prompt
-	One .safetensors filename per line. Compatibility is not checked.	Eén .safetensors-bestandsnaam per regel. Compatibiliteit wordt niet gecontroleerd.
-	Text encoders	Tekstencoders
-	Comfyui custom encoders	Aangepaste ComfyUI-encoders
-	Comfyui custom model	Aangepast ComfyUI-model
-	Comfyui custom models	Aangepaste ComfyUI-modellen
-	Comfyui model settings	ComfyUI-modelinstellingen
-	PhotoCraft update available	PhotoCraft-update beschikbaar
-	Update PhotoCraft and restart now?	PhotoCraft nu bijwerken en opnieuw starten?
-	Automatically check for updates	Automatisch op updates controleren
-	Check for updates now	Nu op updates controleren
-	You can check for updates again in Help → About PhotoCraft.	U kunt opnieuw op updates controleren via Help → Over PhotoCraft.
-	Downloading update…	Update downloaden…
-	Update PhotoCraft	PhotoCraft bijwerken
-	Dismiss update	Updatemelding sluiten
-	Match Surrounding Colors	Aan omgevingskleuren aanpassen
-	Adjust colors with Poisson blending	Kleuren aanpassen met Poisson-menging
-	Compare with Original Generation	Vergelijken met oorspronkelijk gegenereerd resultaat
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Past de kleuren aan de omgeving aan die bij het genereren is vastgelegd. Sterkte 0 herstelt het oorspronkelijke gegenereerde resultaat.
-	Attach Reference Image	Referentieafbeelding toevoegen
-	Remove Reference Image	Referentieafbeelding verwijderen
-	Reference Image	Referentieafbeelding
-	Resize for AI editing	Formaat wijzigen voor AI-bewerking
-	The image exceeds the AI editing size. Resize the document to continue?	De afbeelding overschrijdt het formaat voor AI-bewerking. Documentformaat wijzigen en doorgaan?
-	Arrange Panels	Panelen rangschikken
-	Close Other Panels in Group	Andere panelen in groep sluiten
-	Collapse to Icons	Samenvouwen tot pictogrammen
-	Minimize Panel	Paneel minimaliseren
-	Open Panel in Own Window	Paneel in eigen venster openen
-	CPU Rendering	CPU-rendering
-	Calculating…	Berekenen…
-	Click to refresh histogram with uncached data	Klik om het histogram te vernieuwen met gegevens buiten de cache
-	Count:	Aantal:
-	Drawn on the CPU: {reason}. Click for System Info.	Getekend op de CPU: {reason}. Klik voor systeeminformatie.
-	Level:	Niveau:
-	Percentile:	Percentiel:
-	Show Channels in Color	Kanalen in kleur weergeven
-	Show Statistics	Statistieken weergeven
-	Source:	Bron:
-	Uncached Refresh	Vernieuwen zonder cache
-	…	…
-	External cutout	Externe achtergrondverwijdering
-	External erase	Extern wissen
-	No matching fonts	Geen overeenkomende lettertypen
-	Drag to move the selected path	Sleep om het geselecteerde pad te verplaatsen
-	Twirl Counterclockwise	Tegen de klok in draaien
-
-# Fork portable update information
-	PhotoCraft Updates	PhotoCraft-updates
-	Checking for updates…	Controleren op updates…
-	Open Download Page	Downloadpagina openen
-	PhotoCraft is up to date.	PhotoCraft is bijgewerkt.
-	Could not check for updates.	Kan niet controleren op updates.
-	Updates have not been checked yet.	Er is nog niet op updates gecontroleerd.
-	Check Again	Opnieuw controleren
-	Installed version: {version}	Geïnstalleerde versie: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} is beschikbaar.
-	Answer the open import question first, then import this file again.	Beantwoord eerst de openstaande importvraag en importeer dit bestand daarna opnieuw.
-	Import as New Group	Als nieuwe groep importeren
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Als nieuwe groep importeren behoudt “{group}” en voegt het bestand ernaast als nieuwe groep toe.
-	No import is waiting. Import the file again.	Er staat geen import klaar. Importeer het bestand opnieuw.
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Vervangen verwijdert eerst alles in “{group}”, inclusief voorinstellingen die je daar hebt bewerkt of naartoe hebt verplaatst. Dit kan niet ongedaan worden gemaakt.
-	{message} into “{group}”	{message} in “{group}”
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	De penseelgroep “{group}” bevat al jouw penselen (aantal: {n}).|De penseelgroep “{group}” bevat al jouw penselen (aantal: {n}).
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	De verloopgroep “{group}” bestaat al (aantal verlopen: {n}).|De verloopgroep “{group}” bestaat al (aantal verlopen: {n}).
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	Pijlpuntopties
-	Arrowheads	Pijlpunten
-	Concavity	Holling
-	End	Einde
-	Set as default	Als standaard instellen
-	Start	Begin
-	Use these settings for new arrows	Deze instellingen gebruiken voor nieuwe pijlen
-
-# Upstream 0.20.2 UI labels
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Een opdracht is geannuleerd of gestopt tijdens de batchverwerking. Doorgaan met het volgende bestand of stoppen?
-	Attribute	Kenmerk
-	Batch preview	Batchvoorbeeld
-	Data Sets as Files is unavailable on the web	Gegevenssets als bestanden is niet beschikbaar op het web
-	Effect	Effect
-	Empty	Leeg
-	Filter for embedded smart objects	Filteren op ingesloten slimme objecten
-	Filter for linked smart objects that are missing	Filteren op ontbrekende gekoppelde slimme objecten
-	Filter for smart objects linked locally	Filteren op lokaal gekoppelde slimme objecten
-	High Memory Photoshop Document	Photoshop-document met hoog geheugengebruik
-	Image Compression	Afbeeldingscompressie
-	LZW	LZW
-	Layer Effects	Laageffecten
-	Lining	Kapitaalcijfers
-	Linked	Gekoppeld
-	No Adv. Blending	Geen geavanceerde overvloeiing
-	No Layer Effects	Geen laageffecten
-	No Layer Mask	Geen laagmasker
-	No Vector Mask	Geen vectormasker
-	Not Clipped	Niet uitgeknipt
-	Not Empty	Niet leeg
-	Not Linked	Niet gekoppeld
-	Not Locked	Niet vergrendeld
-	Not Visible	Niet zichtbaar
-	Numerals	Cijfers
-	Open anyway	Toch openen
-	Opening this document uses more memory and may slow down your computer or other running applications.	Het openen van dit document gebruikt meer geheugen en kan uw computer of andere actieve toepassingen vertragen.
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Het openen van ‘{name}’ vereist naar schatting {est} GiB geheugen ({avail} GiB beschikbaar).
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Het openen van ‘{name}’ vereist naar schatting {est} GiB geheugen. Het beschikbare geheugen kon niet worden gemeten.
-	Proportional	Proportioneel
-	Proportional Lining	Proportionele kapitaalcijfers
-	Proportional Oldstyle	Proportionele uithangende cijfers
-	Save Image Pyramid	Afbeeldingspiramide opslaan
-	Save Transparency	Transparantie opslaan
-	Tabular	Tabellarisch
-	Tabular Lining	Tabellarische kapitaalcijfers
-	Tabular Oldstyle	Tabellarische uithangende cijfers
-	ZIP	ZIP
-	{ok} written to {dir}	{ok} geschreven naar {dir}
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} uitvoer van afbeeldingsmiddelen mislukt|{what}: {n} uitvoeren van afbeeldingsmiddelen mislukt
 
 # Action Stop message (#8386)
 	Message	Bericht
@@ -4492,6 +4317,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	seconds	seconden
 	Create a single history state	Eén historiestatus maken
 	Generator enabled	Generator ingeschakeld
+	Move Up	Omhoog
+	Move Down	Omlaag
+	Grid view	Rasterweergave
+	List view	Lijstweergave
 	On your computer	Op je computer
 	New file	Nieuw bestand
 	Learn	Leren
@@ -4529,28 +4358,213 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Pick a different document for each channel.	Kies voor elk kanaal een ander document.
 	A picked document is no longer open.	Een gekozen document is niet meer geopend.
 	A picked document is no longer a grayscale document of the same size.	Een gekozen document is geen grijswaardendocument van hetzelfde formaat meer.
+	Netscape Gray	Netscape-grijs
+# Move tool options bar (#11381)
+	Align top edges	Bovenranden uitlijnen
+	Align vertical centers	Verticale middens uitlijnen
+	Align bottom edges	Onderranden uitlijnen
+	Distribute vertically	Verticaal verdelen
+	Distribute horizontally	Horizontaal verdelen
+	Show layer bounds on hover	Laaggrenzen tonen bij aanwijzen
+	Expand layer group on click	Laaggroep uitvouwen bij klikken
+	Show hover bounds from Layers	Aanwijsgrenzen tonen vanuit Lagen
+	Saved RAW Develop settings to {file}	RAW-ontwikkeling-instellingen opgeslagen in {file}
+	Save the settings to each raw's sidecar without opening it	De instellingen in het sidecarbestand van elke raw opslaan zonder die te openen
+	No settings saved: these raws can't keep a sidecar here	Niets opgeslagen: deze raws kunnen hier geen sidecarbestand krijgen
+	Some settings could not be saved; the raws stay open	Sommige instellingen konden niet worden opgeslagen; de raws blijven open
+	Nothing to save: these raws are at their default settings	Niets op te slaan: deze raws staan op hun standaardinstellingen
+# Artboard tool options bar (#11385)
+	Distribute Widths	Breedtes verdelen
+	Distribute Heights	Hoogtes verdelen
+	Auto-nest Layers	Lagen automatisch nesten
+	Auto-size Canvas	Canvasgrootte automatisch aanpassen
+	Keep Relative Position During Layer Reordering	Relatieve positie behouden bij het wijzigen van de laagvolgorde
+	Shrinkwrap Canvas on Save	Canvas bij opslaan verkleinen tot de inhoud
 
-# Placement and memory-admission notices from upstream 0.21.0.
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Een opdracht is geannuleerd of gestopt tijdens de batchverwerking. Doorgaan met het volgende bestand of stoppen?
 	A file is still being placed; try again when it has finished.	Er wordt nog een bestand geplaatst; probeer het opnieuw zodra dat klaar is.
+	AI Prompt History	AI-promptgeschiedenis
+	AI model settings	AI-modelinstellingen
+	Adding generated layer	Adding generated layer
+	Adjust colors with Poisson blending	Kleuren aanpassen met Poisson-menging
+	Adobe Every-line Composer	Adobe-zetmachine voor alle regels
+	Adobe PDF Presets…	Adobe PDF-voorinstellingen…
+	Adobe Single-line Composer	Adobe-zetmachine per regel
+	All nine regions	Alle negen gebieden
+	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
+	Anime fusal	Anime FUSAL
+	Answer the open import question first, then import this file again.	Beantwoord eerst de openstaande importvraag en importeer dit bestand daarna opnieuw.
+	Arrange Panels	Panelen rangschikken
+	Arrowhead options	Pijlpuntopties
+	Arrowheads	Pijlpunten
+	Attach Reference Image	Referentieafbeelding toevoegen
+	Attribute	Kenmerk
+	Automatically check for updates	Automatisch op updates controleren
+	Base64	Base64
+	Batch preview	Batchvoorbeeld
+	CPU Rendering	CPU-rendering
+	Calculating…	Berekenen…
+	Camera Raw	Camera Raw
+	Camera Raw ({name})	Camera Raw ({name})
+	Camera Raw Defaults	Standaardwaarden Camera Raw
+	Camera Raw Filter	Camera Raw-filter
+	Camera Raw Filter ({layer})	Camera Raw-filter ({layer})
+	Camera Raw Filter…	Camera Raw-filter…
+	Camera Raw isn't open	Camera Raw is niet geopend
+	Camera Raw…	Camera Raw…
+	Cancelled opening {name}	Openen van {name} geannuleerd
 	Cancelled placing {name}	Plaatsen van {name} geannuleerd
+	Cancelled {label}	{label} geannuleerd
+	Centre the gradient (offset 0, 0)	Het verloop centreren (verschuiving 0, 0)
+	Check Again	Opnieuw controleren
+	Check for updates now	Nu op updates controleren
+	Checking for updates…	Controleren op updates…
+	Click to fill similar colours	Klik om vergelijkbare kleuren te vullen
+	Click to refresh histogram with uncached data	Klik om het histogram te vernieuwen met gegevens buiten de cache
+	Click to restore the current colour	Klik om de huidige kleur te herstellen
+	Click to sample the foreground colour  ·  {key}-click for background	Klik om de voorgrondkleur te bemonsteren  ·  {key}-klik voor achtergrond
+	Close Other Panels in Group	Andere panelen in groep sluiten
+	Collapse to Icons	Samenvouwen tot pictogrammen
+	Color Blindness — Deuteranopia-type	Kleurenblindheid — type deuteranopie
+	Color Blindness — Protanopia-type	Kleurenblindheid — type protanopie
+	ComfyUI is unavailable in this frontend	ComfyUI is unavailable in this frontend
+	ComfyUI port	ComfyUI-poort
+	Comfyui custom encoders	Aangepaste ComfyUI-encoders
+	Comfyui custom model	Aangepast ComfyUI-model
+	Comfyui custom models	Aangepaste ComfyUI-modellen
+	Comfyui model	ComfyUI-model
+	Comfyui model settings	ComfyUI-modelinstellingen
+	Comfyui translate prompt	Prompt naar het Engels vertalen
+	Comfyui translation model	Vertaalmodel voor prompts
+	Comfyui url	Comfyui url
+	Compare with Original Generation	Vergelijken met oorspronkelijk gegenereerd resultaat
+	Concavity	Holling
+	Copy English translation	Engelse vertaling kopiëren
+	Copy negative prompt	Negatieve prompt kopiëren
+	Copy original prompt	Oorspronkelijke prompt kopiëren
+	Could not check for updates.	Kan niet controleren op updates.
+	Count:	Aantal:
+	Cube	CUBE
+	Custom model filenames (one per line)	Bestandsnamen van aangepaste modellen (één per regel)
+	Data Encoding	Gegevenscodering
+	Data Sets as Files is unavailable on the web	Gegevenssets als bestanden is niet beschikbaar op het web
+	Default Photoshop Size	Default Photoshop Size
+	Default colours (D)	Standaardkleuren (D)
+	Describe changes to the whole image	Describe changes to the whole image
+	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
+	Describe the image to generate	Beschrijf de afbeelding die u wilt genereren
+	Dismiss update	Updatemelding sluiten
+	Downloading generated image	Downloading generated image
+	Downloading update…	Update downloaden…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Sleep een bijsnijkader · sleep binnenin om te verplaatsen · randen wijzigen formaat ({ratio} verhouding, {centre} midden) · Spatie verplaatst tijdens tekenen · pijltjes verschuiven · X wisselt oriëntatie · {commit} past toe · Esc annuleert
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Sleep rond het midden om de weergave te roteren  ·  Shift beperkt tot 15°
+	Drag to move the selected path	Sleep om het geselecteerde pad te verplaatsen
+	Drawn on the CPU: {reason}. Click for System Info.	Getekend op de CPU: {reason}. Klik voor systeeminformatie.
 	Dropped files weren't placed: their document was closed.	De neergezette bestanden zijn niet geplaatst: hun document is gesloten.
 	Dropped files weren't placed: too many are waiting for their document.	De neergezette bestanden zijn niet geplaatst: er wachten te veel bestanden op hun document.
+	Effect	Effect
+	Empty	Leeg
+	End	Einde
+	English translation	Engelse vertaling
+	External cutout	Externe achtergrondverwijdering
+	External erase	Extern wissen
+	Filter for embedded smart objects	Filteren op ingesloten slimme objecten
+	Filter for linked smart objects that are missing	Filteren op ontbrekende gekoppelde slimme objecten
+	Filter for smart objects linked locally	Filteren op lokaal gekoppelde slimme objecten
+	Generative Fill	Generative Fill
+	Generative Fill…	Generative Fill…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Gradiëntgecorrigeerde interpolatie: scherp en snel, met wat kleurranden in fijne details.
+	High Memory Photoshop Document	Photoshop-document met hoog geheugengebruik
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: de schoonste randen en de minste kleurranden, het traagst.
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Hoe het kleurfiltermozaïek van de camera wordt ingevuld. Wordt toegepast bij het openen van het bestand; de voorvertoning toont de methode waarmee het is geopend.
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	Afbeeldingscompressie
+	Import Photoshop brushes (.abr)	Import Photoshop brushes (.abr)
+	Import as New Group	Als nieuwe groep importeren
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Als nieuwe groep importeren behoudt “{group}” en voegt het bestand ernaast als nieuwe groep toe.
+	Installed version: {version}	Geïnstalleerde versie: {version}
+	Inverse Selection	Selectie omkeren
+	LZW	LZW
+	Layer Effects	Laageffecten
+	Layer via Copy	Laag via kopiëren
+	Layer via Cut	Laag via knippen
+	Level:	Niveau:
+	Lining	Kapitaalcijfers
+	Linked	Gekoppeld
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Na het openen van dit bestand zou er weinig geheugen overblijven. Sluit eerst andere apps, anders kan PhotoCraft zonder geheugen komen te zitten.
+	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
+	Loaded Camera Raw settings from {file}	Camera Raw-instellingen geladen uit {file}
+	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw-instellingen geladen uit {file} ({n} niet ondersteund)
+	Look	LOOK
+	Lut Format	LUT-indeling
+	Match Surrounding Colors	Aan omgevingskleuren aanpassen
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Past de kleuren aan de omgeving aan die bij het genereren is vastgelegd. Sterkte 0 herstelt het oorspronkelijke gegenereerde resultaat.
+	Minimize Panel	Paneel minimaliseren
+	Negative prompt	Negatieve prompt
+	No AI prompts recorded	Geen AI-prompts vastgelegd
+	No Adv. Blending	Geen geavanceerde overvloeiing
+	No Layer Effects	Geen laageffecten
+	No Layer Mask	Geen laagmasker
+	No Vector Mask	Geen vectormasker
+	No import is waiting. Import the file again.	Er staat geen import klaar. Importeer het bestand opnieuw.
+	No matching fonts	Geen overeenkomende lettertypen
+	No prompt (remove)	Geen prompt (verwijderen)
+	Noct q fusal	Noct-Q FUSAL
+	Noct qv4	NoctQ V4
+	Not Clipped	Niet uitgeknipt
+	Not Empty	Niet leeg
+	Not Linked	Niet gekoppeld
+	Not Locked	Niet vergrendeld
+	Not Visible	Niet zichtbaar
+	Not a web colour: click for the nearest web colour	Geen webkleur: klik voor de dichtstbijzijnde webkleur
 	Nudge	Een stapje verplaatsen
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	De huidige werkschijfmap ({path}) meldt de vrije ruimte niet. PhotoCraft kan daarom niet stoppen voordat deze vol is, en grote bestanden krijgen zonder limiet voor de werkschijfgrootte geen extra ruimte. Deze waarschuwing geldt voor de huidige configuratie; bovenstaande wijzigingen worden van kracht met Toepassen of OK. Stel een limiet in of gebruik een lokale schijf.
-
-# OpenType stylistic-set labels.
-	Stylistic Sets	Stijlsets
+	Numerals	Cijfers
+	One .safetensors filename per line. Compatibility is not checked.	Eén .safetensors-bestandsnaam per regel. Compatibiliteit wordt niet gecontroleerd.
+	Open Download Page	Downloadpagina openen
+	Open Panel in Own Window	Paneel in eigen venster openen
+	Open a document to select a colour range.	Open een document om een kleurbereik te selecteren.
+	Open anyway	Toch openen
+	Open in camera raw	Openen in Camera Raw
+	Opening this document uses more memory and may slow down your computer or other running applications.	Het openen van dit document gebruikt meer geheugen en kan uw computer of andere actieve toepassingen vertragen.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Het openen van ‘{name}’ vereist naar schatting {est} GiB geheugen ({avail} GiB beschikbaar).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Het openen van ‘{name}’ vereist naar schatting {est} GiB geheugen. Het beschikbare geheugen kon niet worden gemeten.
+	Original prompt	Oorspronkelijke prompt
+	Out of gamut for printing: click for the nearest printable colour	Buiten afdrukbereik: klik voor de dichtstbijzijnde afdrukbare kleur
+	Percentile:	Percentiel:
+	PhotoCraft Updates	PhotoCraft-updates
+	PhotoCraft is up to date.	PhotoCraft is bijgewerkt.
+	PhotoCraft update available	PhotoCraft-update beschikbaar
+	PhotoCraft {version} is available.	PhotoCraft {version} is beschikbaar.
+	Preparing image and selection	Preparing image and selection
+	Prompt Edit	Prompt Edit
+	Prompt Edit…	Prompt Edit…
+	Prompt Generate	Genereren met prompt
+	Prompt Generate…	Genereren met prompt…
+	Prompt information	Promptinformatie
+	Prompt translation model	Vertaalmodel voor prompts
+	Proportional	Proportioneel
+	Proportional Lining	Proportionele kapitaalcijfers
+	Proportional Oldstyle	Proportionele uithangende cijfers
+	Quick Export As PNG	Snel exporteren als PNG
+	Qwen image21	Qwen 2.1
+	Reference Image	Referentieafbeelding
+	Regenerate	Opnieuw genereren
+	Regenerate AI Result	AI-resultaat opnieuw genereren
+	Remember to turn off the printer's own colour management in Print Settings…	Vergeet niet het eigen kleurbeheer van de printer uit te schakelen in de afdrukinstellingen…
+	Remove Reference Image	Referentieafbeelding verwijderen
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Vervangen verwijdert eerst alles in “{group}”, inclusief voorinstellingen die je daar hebt bewerkt of naartoe hebt verplaatst. Dit kan niet ongedaan worden gemaakt.
+	Reset steps to model default	Stappen terugzetten naar de modelstandaard
+	Resize for AI editing	Formaat wijzigen voor AI-bewerking
+	Sample: foreground colour	Monster: voorgrondkleur
+	Sampling steps	Samplingstappen
+	Save Image Pyramid	Afbeeldingspiramide opslaan
+	Save Transparency	Transparantie opslaan
+	Save cancelled	Opslaan geannuleerd
 	Set 	Set
 	Set 1	Set 1
-	Set 2	Set 2
-	Set 3	Set 3
-	Set 4	Set 4
-	Set 5	Set 5
-	Set 6	Set 6
-	Set 7	Set 7
-	Set 8	Set 8
-	Set 9	Set 9
 	Set 10	Set 10
 	Set 11	Set 11
 	Set 12	Set 12
@@ -4561,22 +4575,66 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Set 17	Set 17
 	Set 18	Set 18
 	Set 19	Set 19
+	Set 2	Set 2
 	Set 20	Set 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	Tabletinvoer
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (standaard)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	Gegevenscodering
-	Lut Format	LUT-indeling
+	Set 3	Set 3
+	Set 4	Set 4
+	Set 5	Set 5
+	Set 6	Set 6
+	Set 7	Set 7
+	Set 8	Set 8
+	Set 9	Set 9
+	Set as default	Als standaard instellen
 	Shape Id	Vorm-ID
 	Shape Name	Vormnaam
 	Shape Origin Type	Oorsprongstype van vorm
 	Shape Path	Vormpad
+	Show Channels in Color	Kanalen in kleur weergeven
+	Show Statistics	Statistieken weergeven
+	Source:	Bron:
+	Start	Begin
+	Stylistic Sets	Stijlsets
+	Swap colours (X)	Kleuren omwisselen (X)
+	Tablet input	Tabletinvoer
+	Tabular	Tabellarisch
+	Tabular Lining	Tabellarische kapitaalcijfers
+	Tabular Oldstyle	Tabellarische uithangende cijfers
 	Text	Tekst
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoders	Tekstencoders
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	De huidige werkschijfmap ({path}) meldt de vrije ruimte niet. PhotoCraft kan daarom niet stoppen voordat deze vol is, en grote bestanden krijgen zonder limiet voor de werkschijfgrootte geen extra ruimte. Deze waarschuwing geldt voor de huidige configuratie; bovenstaande wijzigingen worden van kracht met Toepassen of OK. Stel een limiet in of gebruik een lokale schijf.
+	The fastest and the softest, with colour fringing on fine detail.	Het snelst en het zachtst, met kleurranden in fijne details.
+	The image exceeds the AI editing size. Resize the document to continue?	De afbeelding overschrijdt het formaat voor AI-bewerking. Documentformaat wijzigen en doorgaan?
+	Translate prompt to English	Prompt naar het Engels vertalen
+	Turbo ad q2	Turbo AD-Q2_K
+	Turbo ad q3	Turbo AD-Q3_K
+	Turbo ad q4	Turbo AD-Q4_K
+	Turbo ad q5	Turbo AD-Q5_K
+	Turbo ad q6	Turbo AD-Q6_K
+	Turbo bf16 gguf	Turbo BF16 GGUF
+	Turbo int8	Turbo INT8
+	Turbo q3 k m	Turbo Q3_K_M
+	Turbo q4 k m	Turbo Q4_K_M
+	Turbo q4 k s	Turbo Q4_K_S
+	Turbo q5 k m	Turbo Q5_K_M
+	Turbo q6 k	Turbo Q6_K
+	Turbo q8	Turbo Q8_0
+	Twirl Counterclockwise	Tegen de klok in draaien
+	Uncached Refresh	Vernieuwen zonder cache
+	Update PhotoCraft	PhotoCraft bijwerken
+	Update PhotoCraft and restart now?	PhotoCraft nu bijwerken en opnieuw starten?
+	Updates have not been checked yet.	Er is nog niet op updates gecontroleerd.
+	Uploading image to ComfyUI	Uploading image to ComfyUI
+	Use these settings for new arrows	Deze instellingen gebruiken voor nieuwe pijlen
+	Uses the foreground and background colours.	Gebruikt de voorgrond- en achtergrondkleur.
+	Waiting for ComfyUI generation	Waiting for ComfyUI generation
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (standaard)
+	You can check for updates again in Help → About PhotoCraft.	U kunt opnieuw op updates controleren via Help → Over PhotoCraft.
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label} schrijft het bestand en kan niet meer worden geannuleerd
+	{message} into “{group}”	{message} in “{group}”
+	{ok} written to {dir}	{ok} geschreven naar {dir}
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	De penseelgroep “{group}” bevat al jouw penselen (aantal: {n}).|De penseelgroep “{group}” bevat al jouw penselen (aantal: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	De verloopgroep “{group}” bestaat al (aantal verlopen: {n}).|De verloopgroep “{group}” bestaat al (aantal verlopen: {n}).
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} uitvoer van afbeeldingsmiddelen mislukt|{what}: {n} uitvoeren van afbeeldingsmiddelen mislukt
