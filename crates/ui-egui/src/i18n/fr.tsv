@@ -4965,3 +4965,12 @@ shape	Appearance	Apparence
 	Zoom current window to screen size	Adapter la fenêtre active à la taille de l’écran
 	brush tool	outil Pinceau
 	Open in RAW Develop	Ouvrir dans Développement RAW
+	Upscale	Agrandir
+	Tiling	Découpage en tuiles
+	Tile size	Taille des tuiles
+	Overlap	Chevauchement
+	Noise reduction	Réduction du bruit
+	Alpha channel	Canal alpha
+	Batch size	Taille du lot
+	No local upscaler installed	Aucun modèle local d’agrandissement installé
+	Highest	Maximum

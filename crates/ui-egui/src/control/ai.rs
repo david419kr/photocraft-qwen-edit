@@ -7,7 +7,7 @@ pub(super) struct AiSet {
     ai_open: Option<bool>,
     ai_prompt_info: Option<bool>,
     ai_model_settings: Option<bool>,
-    model_settings_tab: Option<bool>,
+    model_settings_tab: Option<u8>,
     ai_cfg: Option<Option<f64>>,
     ai_negative: Option<String>,
     ai_steps: Option<Option<u32>>,
@@ -29,9 +29,10 @@ impl AiSet {
         let ai_model_settings = bool_field(p, "aiModelSettings")?;
         let model_settings_tab = match p.get("aiModelSettingsTab") {
             Some(value) => Some(match value.as_str() {
-                Some("models") => false,
-                Some("encoders") => true,
-                _ => return Err("Tab must be models or encoders".into()),
+                Some("models") => 0,
+                Some("encoders") => 1,
+                Some("upscale") => 2,
+                _ => return Err("Tab must be models, encoders or upscale".into()),
             }),
             None => None,
         };
@@ -103,7 +104,8 @@ impl AiSet {
             app.ui.ai.negative_prompt = negative;
         }
         if let Some(tab) = model_settings_tab {
-            app.ui.ai.model_settings_te_tab = tab;
+            app.ui.ai.model_settings_te_tab = tab == 1;
+            app.ui.ai.model_settings_upscale_tab = tab == 2;
         }
         Ok(())
     }

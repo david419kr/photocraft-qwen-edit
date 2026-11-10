@@ -4648,3 +4648,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	brush tool	εργαλείο πινέλου
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} αρχείο απέτυχε|{what}: {n} αρχεία απέτυχαν
 	Open in RAW Develop	Άνοιγμα στην ανάπτυξη RAW
+	Upscale	Μεγέθυνση
+	Tiling	Διαίρεση σε πλακίδια
+	Tile size	Μέγεθος πλακιδίου
+	Overlap	Επικάλυψη
+	Noise reduction	Μείωση θορύβου
+	Alpha channel	Κανάλι άλφα
+	Batch size	Μέγεθος παρτίδας
+	No local upscaler installed	Δεν έχει εγκατασταθεί τοπικό μοντέλο μεγέθυνσης
+	Highest	Μέγιστο

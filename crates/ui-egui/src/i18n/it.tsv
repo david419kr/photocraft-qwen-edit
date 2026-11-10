@@ -5041,3 +5041,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	brush tool	strumento Pennello
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} file non riuscito|{what}: {n} file non riusciti
 	Open in RAW Develop	Apri in Sviluppo RAW
+	Upscale	Ingrandisci
+	Tiling	Suddivisione in riquadri
+	Tile size	Dimensione riquadro
+	Overlap	Sovrapposizione
+	Noise reduction	Riduzione rumore
+	Alpha channel	Canale alfa
+	Batch size	Dimensione batch
+	No local upscaler installed	Nessun modello locale di ingrandimento installato
+	Highest	Massimo

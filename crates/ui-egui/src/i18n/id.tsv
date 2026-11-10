@@ -3982,3 +3982,13 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Zoom current window to screen size	Perbesar jendela saat ini ke ukuran layar
 	brush tool	alat kuas
 	Open in RAW Develop	Buka dalam Pengembangan RAW
+	Upscale	Perbesar
+	Tiling	Pembagian ubin
+	Tile size	Ukuran ubin
+	Overlap	Tumpang tindih
+	Noise reduction	Pengurangan derau
+	Alpha channel	Kanal alfa
+	Batch size	Ukuran batch
+	Disable	Nonaktifkan
+	No local upscaler installed	Model pembesar lokal belum terpasang
+	Highest	Tertinggi

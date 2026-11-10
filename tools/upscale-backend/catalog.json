@@ -1,0 +1,8 @@
+[
+  {"id":"illustrationjanai-detail-dat2", "name":"IllustrationJaNai V3 Detail DAT2", "scale":4, "restoration":false, "file":"models/janai/4x_IllustrationJaNai_V3detail_DAT2_28k_bf16.onnx"},
+  {"id":"illustrationjanai-denoise-dat2", "name":"IllustrationJaNai V3 Denoise DAT2", "scale":4, "restoration":false, "file":"models/janai/4x_IllustrationJaNai_V3denoise_DAT2_27k_bf16.onnx"},
+  {"id":"illustrationjanai-detail-hatl", "name":"IllustrationJaNai V3 Detail HAT-L", "scale":4, "restoration":false, "file":"models/janai/4x_IllustrationJaNai_V3detail_HAT_L_28k_bf16.onnx"},
+  {"id":"waifu2x-swin_unet_v3", "name":"waifu2x-swin_unet_v3", "scale":2, "restoration":true,
+   "required":["models/waifu2x/scale2x.onnx", "models/waifu2x/noise0_scale2x.onnx", "models/waifu2x/noise1_scale2x.onnx", "models/waifu2x/noise2_scale2x.onnx", "models/waifu2x/noise3_scale2x.onnx"],
+   "defaults":{"tile":640,"noise":0,"alpha":true,"tta":true,"batch":4}}
+]

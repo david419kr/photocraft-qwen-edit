@@ -5126,3 +5126,12 @@ shape	Appearance	Оформление
 	brush tool	инструмент «Кисть»
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: ошибка в {n} файле|{what}: ошибка в {n} файлах|{what}: ошибка в {n} файлах
 	Open in RAW Develop	Открывать в обработке RAW
+	Upscale	Увеличить
+	Tiling	Разбиение на плитки
+	Tile size	Размер плитки
+	Overlap	Перекрытие
+	Noise reduction	Подавление шума
+	Alpha channel	Альфа-канал
+	Batch size	Размер пакета
+	No local upscaler installed	Локальная модель увеличения не установлена
+	Highest	Максимальный

@@ -4701,3 +4701,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	brush tool	penseelgereedschap
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} bestand mislukt|{what}: {n} bestanden mislukt
 	Open in RAW Develop	Openen in RAW-ontwikkeling
+	Upscale	Vergroten
+	Tiling	Tegels
+	Tile size	Tegelgrootte
+	Overlap	Overlap
+	Noise reduction	Ruisonderdrukking
+	Alpha channel	Alfakanaal
+	Batch size	Batchgrootte
+	No local upscaler installed	Geen lokale vergroter geïnstalleerd
+	Highest	Hoogste

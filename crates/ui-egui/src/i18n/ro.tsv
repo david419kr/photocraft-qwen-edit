@@ -4820,3 +4820,11 @@ cameraRaw	Highlights	Zone luminoase
 	Turbo int8	Turbo INT8
 	WinTab	WinTab
 	Windows Ink (default)	Windows Ink (implicit)
+	Alpha channel	Canal alfa
+	Batch size	Dimensiunea lotului
+	No local upscaler installed	Nu este instalat niciun instrument local de mărire a rezoluției
+	Noise reduction	Reducerea zgomotului
+	Overlap	Suprapunere
+	Tile size	Dimensiunea dalei
+	Tiling	Împărțire în dale
+	Upscale	Mărește rezoluția

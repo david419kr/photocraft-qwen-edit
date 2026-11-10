@@ -4675,3 +4675,12 @@ prompt-region	Top right	Sağ üst
 	brush tool	fırça aracı
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} dosya başarısız
 	Open in RAW Develop	RAW Geliştirmede aç
+	Upscale	Büyüt
+	Tiling	Döşeme
+	Tile size	Döşeme boyutu
+	Overlap	Örtüşme
+	Noise reduction	Gürültü azaltma
+	Alpha channel	Alfa kanalı
+	Batch size	Toplu işlem boyutu
+	No local upscaler installed	Yerel büyütme modeli yüklü değil
+	Highest	En yüksek

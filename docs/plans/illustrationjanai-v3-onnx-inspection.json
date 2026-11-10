@@ -1,0 +1,252 @@
+[
+  {
+    "file": "4x_IllustrationJaNai_V3denoise_DAT2_27k_bf16.onnx",
+    "bytes": 43629421,
+    "sha256": "78c1ba6bb07fa22640641baf52a28264432a3d05fc2f1055c8d45d9cab76d7b3",
+    "ir_version": 12,
+    "opsets": {
+      "ai.onnx": 23
+    },
+    "producer": "pytorch",
+    "producer_version": "2.9.1+cu128",
+    "inputs": [
+      {
+        "name": "input",
+        "dtype": "FLOAT",
+        "shape": [
+          1,
+          3,
+          "s53",
+          "s0"
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "output",
+        "dtype": "FLOAT",
+        "shape": [
+          "unk",
+          3,
+          "4*s53",
+          "4*s0"
+        ]
+      }
+    ],
+    "initializer_types": {
+      "INT64": 69,
+      "FLOAT": 144,
+      "BFLOAT16": 1323
+    },
+    "casts_to": {
+      "BFLOAT16": 73,
+      "FLOAT": 73
+    },
+    "ops": {
+      "Cast": 146,
+      "Shape": 83,
+      "Squeeze": 2,
+      "Sub": 41,
+      "Conv": 228,
+      "Mul": 166,
+      "Transpose": 889,
+      "Reshape": 1029,
+      "Concat": 115,
+      "LayerNormalization": 218,
+      "MatMul": 252,
+      "Add": 316,
+      "Gather": 215,
+      "Mod": 4,
+      "Pad": 18,
+      "Slice": 316,
+      "Div": 40,
+      "Relu": 108,
+      "Gemm": 108,
+      "Unsqueeze": 114,
+      "GatherND": 36,
+      "Softmax": 54,
+      "Gelu": 144,
+      "ReduceMean": 36,
+      "Sigmoid": 72,
+      "Split": 36,
+      "ReduceL2": 36,
+      "Clip": 36,
+      "Expand": 47,
+      "Size": 72,
+      "Range": 35,
+      "ScatterND": 36,
+      "Equal": 2,
+      "Not": 2,
+      "Where": 4,
+      "LeakyRelu": 1,
+      "DepthToSpace": 2
+    },
+    "metadata": {},
+    "external_initializers": 0,
+    "checker": "passed"
+  },
+  {
+    "file": "4x_IllustrationJaNai_V3detail_DAT2_28k_bf16.onnx",
+    "bytes": 43629421,
+    "sha256": "331b46435bb1a882ceed39b6f9a4bff2190a4eb4539993fa9b4e5ca95b221479",
+    "ir_version": 12,
+    "opsets": {
+      "ai.onnx": 23
+    },
+    "producer": "pytorch",
+    "producer_version": "2.9.1+cu128",
+    "inputs": [
+      {
+        "name": "input",
+        "dtype": "FLOAT",
+        "shape": [
+          1,
+          3,
+          "s53",
+          "s0"
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "output",
+        "dtype": "FLOAT",
+        "shape": [
+          "unk",
+          3,
+          "4*s53",
+          "4*s0"
+        ]
+      }
+    ],
+    "initializer_types": {
+      "INT64": 69,
+      "FLOAT": 144,
+      "BFLOAT16": 1323
+    },
+    "casts_to": {
+      "BFLOAT16": 73,
+      "FLOAT": 73
+    },
+    "ops": {
+      "Cast": 146,
+      "Shape": 83,
+      "Squeeze": 2,
+      "Sub": 41,
+      "Conv": 228,
+      "Mul": 166,
+      "Transpose": 889,
+      "Reshape": 1029,
+      "Concat": 115,
+      "LayerNormalization": 218,
+      "MatMul": 252,
+      "Add": 316,
+      "Gather": 215,
+      "Mod": 4,
+      "Pad": 18,
+      "Slice": 316,
+      "Div": 40,
+      "Relu": 108,
+      "Gemm": 108,
+      "Unsqueeze": 114,
+      "GatherND": 36,
+      "Softmax": 54,
+      "Gelu": 144,
+      "ReduceMean": 36,
+      "Sigmoid": 72,
+      "Split": 36,
+      "ReduceL2": 36,
+      "Clip": 36,
+      "Expand": 47,
+      "Size": 72,
+      "Range": 35,
+      "ScatterND": 36,
+      "Equal": 2,
+      "Not": 2,
+      "Where": 4,
+      "LeakyRelu": 1,
+      "DepthToSpace": 2
+    },
+    "metadata": {},
+    "external_initializers": 0,
+    "checker": "passed"
+  },
+  {
+    "file": "4x_IllustrationJaNai_V3detail_HAT_L_28k_bf16.onnx",
+    "bytes": 162757361,
+    "sha256": "77a9a3033a198123916044b9ac17a2ea641a9efb2d24583ea3907d79c703c986",
+    "ir_version": 12,
+    "opsets": {
+      "ai.onnx": 22
+    },
+    "producer": "pytorch",
+    "producer_version": "2.9.1",
+    "inputs": [
+      {
+        "name": "input",
+        "dtype": "FLOAT",
+        "shape": [
+          1,
+          3,
+          "height",
+          "width"
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "output",
+        "dtype": "FLOAT",
+        "shape": [
+          "Sliceoutput_dim_0",
+          "unk",
+          "height",
+          "width"
+        ]
+      }
+    ],
+    "initializer_types": {
+      "INT64": 87,
+      "BFLOAT16": 1713
+    },
+    "casts_to": {
+      "BFLOAT16": 11,
+      "FLOAT": 1
+    },
+    "ops": {
+      "Cast": 12,
+      "Shape": 344,
+      "Gather": 1198,
+      "Mul": 255,
+      "Unsqueeze": 1013,
+      "Sub": 26,
+      "Conv": 306,
+      "Slice": 348,
+      "Concat": 997,
+      "Reshape": 1121,
+      "Transpose": 651,
+      "LayerNormalization": 170,
+      "Gelu": 156,
+      "GlobalAveragePool": 72,
+      "Relu": 72,
+      "Sigmoid": 72,
+      "Div": 280,
+      "MatMul": 504,
+      "Add": 784,
+      "Softmax": 84,
+      "ConstantOfShape": 10,
+      "Range": 60,
+      "Expand": 45,
+      "Equal": 10,
+      "Where": 11,
+      "ScatterND": 9,
+      "Not": 1,
+      "Pad": 12,
+      "LeakyRelu": 1,
+      "DepthToSpace": 2
+    },
+    "metadata": {},
+    "external_initializers": 0,
+    "checker": "passed"
+  }
+]

@@ -5143,3 +5143,12 @@ cameraRaw	Cancelled {label}	{label} avbröts
 	brush tool	penselverktyg
 	Open in RAW Develop	Öppna i RAW-framkallning
 	Skip transform when placing	Hoppa över transformering vid placering
+	Upscale	Förstora
+	Tiling	Dela upp i rutor
+	Tile size	Rutstorlek
+	Overlap	Överlappning
+	Noise reduction	Brusreducering
+	Alpha channel	Alfakanal
+	Batch size	Batchstorlek
+	No local upscaler installed	Ingen lokal förstoringsmodell är installerad
+	Highest	Högsta

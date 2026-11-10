@@ -5145,3 +5145,12 @@ cameraRaw	Cancelled {label}	Annullerede {label}
 	brush tool	penselværktøj
 	Open in RAW Develop	Åbn i RAW-fremkaldelse
 	Skip transform when placing	Spring transformering over ved placering
+	Upscale	Opskaler
+	Tiling	Opdeling i felter
+	Tile size	Feltstørrelse
+	Overlap	Overlap
+	Noise reduction	Støjreduktion
+	Alpha channel	Alfakanal
+	Batch size	Batchstørrelse
+	No local upscaler installed	Ingen lokal opskaleringsmodel er installeret
+	Highest	Højest

@@ -4002,3 +4002,13 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	brush tool	Pinselwerkzeug
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} Datei fehlgeschlagen|{what}: {n} Dateien fehlgeschlagen
 	Open in RAW Develop	In RAW-Entwicklung öffnen
+	Upscale	Hochskalieren
+	Tiling	Kachelung
+	Tile size	Kachelgröße
+	Overlap	Überlappung
+	Noise reduction	Rauschreduzierung
+	Alpha channel	Alphakanal
+	Batch size	Stapelgröße
+	Disable	Deaktivieren
+	No local upscaler installed	Kein lokaler Upscaler installiert
+	Highest	Höchste

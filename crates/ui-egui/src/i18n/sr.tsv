@@ -4985,3 +4985,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	brush tool	alat Četkica
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} datoteka nije uspela|{what}: {n} datoteke nisu uspele|{what}: {n} datoteka nije uspelo
 	Open in RAW Develop	Otvori u RAW obradi
+	Upscale	Uvećaj
+	Tiling	Podela na pločice
+	Tile size	Veličina pločice
+	Overlap	Preklapanje
+	Noise reduction	Smanjenje šuma
+	Alpha channel	Alfa kanal
+	Batch size	Veličina grupe
+	No local upscaler installed	Lokalni model za uvećanje nije instaliran
+	Highest	Najviše

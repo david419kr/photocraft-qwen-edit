@@ -4779,3 +4779,11 @@ navigator	Zoom	תקריב
 	Turbo int8	מודל Turbo INT8
 	WinTab	ממשק WinTab
 	Windows Ink (default)	Windows Ink (ברירת מחדל)
+	Alpha channel	ערוץ אלפא
+	Batch size	גודל אצווה
+	No local upscaler installed	לא מותקן כלי מקומי להגדלת רזולוציה
+	Noise reduction	הפחתת רעש
+	Overlap	חפיפה
+	Tile size	גודל אריח
+	Tiling	חלוקה לאריחים
+	Upscale	הגדלת רזולוציה

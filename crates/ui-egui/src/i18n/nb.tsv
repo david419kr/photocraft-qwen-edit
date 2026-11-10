@@ -5145,3 +5145,12 @@ cameraRaw	Cancelled {label}	Avbrøt {label}
 	brush tool	penselverktøy
 	Open in RAW Develop	Åpne i RAW-fremkalling
 	Skip transform when placing	Hopp over transformering ved plassering
+	Upscale	Oppskaler
+	Tiling	Oppdeling i fliser
+	Tile size	Flisstørrelse
+	Overlap	Overlapping
+	Noise reduction	Støyreduksjon
+	Alpha channel	Alfakanal
+	Batch size	Batchstørrelse
+	No local upscaler installed	Ingen lokal oppskaleringsmodell er installert
+	Highest	Høyest

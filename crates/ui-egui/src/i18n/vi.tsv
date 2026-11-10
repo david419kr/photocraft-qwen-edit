@@ -4455,3 +4455,13 @@ prompt-region	Top right	Trên phải
 	brush tool	công cụ cọ
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} tệp bị lỗi
 	Open in RAW Develop	Mở trong xử lý RAW
+	Upscale	Phóng lớn
+	Tiling	Chia ô
+	Tile size	Kích thước ô
+	Overlap	Phần chồng lấn
+	Noise reduction	Giảm nhiễu
+	Alpha channel	Kênh alpha
+	Batch size	Kích thước lô
+	Disable	Tắt
+	No local upscaler installed	Chưa cài đặt mô hình phóng lớn cục bộ
+	Highest	Cao nhất

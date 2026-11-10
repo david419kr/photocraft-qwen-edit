@@ -4851,3 +4851,12 @@ prompt-region	Top right	Jobb felső
 	brush tool	ecseteszköz
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} fájl sikertelen
 	Open in RAW Develop	Megnyitás RAW-kidolgozásban
+	Upscale	Felnagyítás
+	Tiling	Csempézés
+	Tile size	Csempeméret
+	Overlap	Átfedés
+	Noise reduction	Zajcsökkentés
+	Alpha channel	Alfacsatorna
+	Batch size	Kötegméret
+	No local upscaler installed	Nincs telepítve helyi nagyítómodell
+	Highest	Legmagasabb

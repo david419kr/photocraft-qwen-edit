@@ -2,7 +2,7 @@
 
 The native app can optionally use a locally installed external program for background removal. The backend is a trusted local executable; install only backends you trust. No network service or particular model is required by this protocol.
 
-Put each backend in its own directory under `cutout-backends` beside the PhotoCraft executable. PhotoCraft discovers the first valid backend in directory-name order. If one is found, its short label is shown beside Remove Background; the toggle is saved in preferences. When disabled, the normal background-removal path is used. A missing or invalid backend is not shown.
+Put each backend in its own directory under `external-backends` beside the PhotoCraft executable. PhotoCraft discovers the first valid backend in directory-name order. If one is found, its short label is shown beside Remove Background; the toggle is saved in preferences. When disabled, the normal background-removal path is used. A missing or invalid backend is not shown.
 
 ## Manifest
 

@@ -5150,3 +5150,12 @@ cameraRaw	Cancelled {label}	Peruutettu: {label}
 	Equalize Selected Area Only	Tasaa vain valittu alue
 	Open in RAW Develop	Avaa RAW-kehityksessä
 	Skip transform when placing	Ohita muunnos sijoitettaessa
+	Upscale	Suurenna
+	Tiling	Laatoitus
+	Tile size	Laatan koko
+	Overlap	Päällekkäisyys
+	Noise reduction	Kohinanvaimennus
+	Alpha channel	Alfakanava
+	Batch size	Eräkoko
+	No local upscaler installed	Paikallista suurennusmallia ei ole asennettu
+	Highest	Korkein

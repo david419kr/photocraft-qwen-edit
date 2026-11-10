@@ -5095,3 +5095,11 @@ cameraRaw	White Balance: As Shot	สมดุลแสงขาว: เท่า
 	Turbo int8	Turbo INT8
 	WinTab	WinTab
 	Windows Ink (default)	Windows Ink (ค่าเริ่มต้น)
+	Alpha channel	ช่องอัลฟา
+	Batch size	ขนาดชุด
+	No local upscaler installed	ยังไม่ได้ติดตั้งเครื่องมือเพิ่มความละเอียดในเครื่อง
+	Noise reduction	การลดสัญญาณรบกวน
+	Overlap	ส่วนซ้อนทับ
+	Tile size	ขนาดไทล์
+	Tiling	การแบ่งเป็นไทล์
+	Upscale	เพิ่มความละเอียด

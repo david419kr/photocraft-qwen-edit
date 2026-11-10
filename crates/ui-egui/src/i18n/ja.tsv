@@ -4627,3 +4627,13 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 # Dynamic integration labels
 	Selected Area Only	選択範囲のみ
 	Open in RAW Develop	RAW 現像で開く
+	Upscale	アップスケール
+	Tiling	タイル処理
+	Tile size	タイルサイズ
+	Overlap	重なり幅
+	Noise reduction	ノイズ除去
+	Alpha channel	アルファチャンネル
+	Batch size	バッチサイズ
+	Disable	無効
+	No local upscaler installed	ローカルアップスケーラーがインストールされていません
+	Highest	最高

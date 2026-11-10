@@ -3621,3 +3621,13 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 # Dynamic integration labels
 	Selected Area Only	僅選取區域
 	Open in RAW Develop	在 RAW 顯影中開啟
+	Upscale	超解析度放大
+	Tiling	分塊處理
+	Tile size	分塊大小
+	Overlap	重疊大小
+	Noise reduction	降噪
+	Alpha channel	Alpha 色版
+	Batch size	批次大小
+	Disable	停用
+	No local upscaler installed	未安裝本機放大器
+	Highest	最高

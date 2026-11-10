@@ -4903,3 +4903,11 @@ smartSvg	SVG editor opened. Save the SVG to update this Smart Object.	SVG redakt
 	Turbo int8	Turbo INT8
 	WinTab	WinTab
 	Windows Ink (default)	Windows Ink (standart)
+	Alpha channel	Alfa kanalı
+	Batch size	Paket ölçüsü
+	No local upscaler installed	Yerli miqyas böyüdücü quraşdırılmayıb
+	Noise reduction	Səs-küyün azaldılması
+	Overlap	Üst-üstə düşmə
+	Tile size	Plitə ölçüsü
+	Tiling	Plitələrə bölmə
+	Upscale	Miqyası böyüt

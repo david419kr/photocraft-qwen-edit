@@ -1,0 +1,247 @@
+{
+  "date": "2026-11-10",
+  "gpu": "RTX 4090",
+  "driver": "616.56",
+  "engine": "noise0-mixed-t640-b6.engine",
+  "engine_sha256": "cee52f81928a121ef2f14e1963613d6a5c54a4742524ea5fbf10ac993543f476",
+  "gpu_pipeline": {
+    "torch_installed": false,
+    "cases": [
+      {
+        "id": "noise_low",
+        "noise": 0,
+        "tile": 640,
+        "batch": 4,
+        "tta": true,
+        "alpha": true,
+        "fixture": "original",
+        "ok": true,
+        "psnr_vs_pytorch_amp_db": 78.04452168061349,
+        "max_8bit_levels": 0.539863646030426,
+        "alpha_psnr_db": 999,
+        "warm_seconds": [
+          2.24651719999747,
+          2.244972399999824,
+          2.2455795999994734
+        ],
+        "median_seconds": 2.2455795999994734,
+        "transfers": {
+          "h2d_bytes": 30449664,
+          "d2h_bytes": 121798664,
+          "h2d_image_copies": 2,
+          "d2h_image_copies": 2,
+          "d2h_control_copies": 2,
+          "tile_host_copies": 0,
+          "inference_calls": 16,
+          "kernel_launches": 75
+        }
+      },
+      {
+        "id": "alternate_tile256_batch8",
+        "noise": 0,
+        "tile": 256,
+        "batch": 8,
+        "tta": false,
+        "alpha": true,
+        "fixture": "original",
+        "ok": true,
+        "psnr_vs_pytorch_amp_db": 73.68585238562765,
+        "max_8bit_levels": 0.7508093118667603,
+        "alpha_psnr_db": 999,
+        "warm_seconds": [
+          0.332396300000255,
+          0.33040489999984857,
+          0.3325494000018807
+        ],
+        "median_seconds": 0.332396300000255,
+        "transfers": {
+          "h2d_bytes": 30449664,
+          "d2h_bytes": 121798664,
+          "h2d_image_copies": 2,
+          "d2h_image_copies": 2,
+          "d2h_control_copies": 2,
+          "tile_host_copies": 0,
+          "inference_calls": 6,
+          "kernel_launches": 52
+        }
+      },
+      {
+        "id": "soft_alpha_auto",
+        "noise": 0,
+        "tile": 640,
+        "batch": 4,
+        "tta": false,
+        "alpha": true,
+        "fixture": "softalpha",
+        "ok": true,
+        "psnr_vs_pytorch_amp_db": 75.05093661420645,
+        "max_8bit_levels": 1.002371072769165,
+        "alpha_psnr_db": 81.93172871876179,
+        "warm_seconds": [
+          0.5839200000009441,
+          0.5852298999998311,
+          0.5847943000007945
+        ],
+        "median_seconds": 0.5847943000007945,
+        "transfers": {
+          "h2d_bytes": 30449664,
+          "d2h_bytes": 121798664,
+          "h2d_image_copies": 2,
+          "d2h_image_copies": 2,
+          "d2h_control_copies": 2,
+          "tile_host_copies": 0,
+          "inference_calls": 4,
+          "kernel_launches": 37
+        }
+      },
+      {
+        "id": "soft_alpha_disable",
+        "noise": 0,
+        "tile": 640,
+        "batch": 4,
+        "tta": false,
+        "alpha": false,
+        "fixture": "softalpha",
+        "ok": true,
+        "psnr_vs_pytorch_amp_db": 74.75320494595641,
+        "max_8bit_levels": 1.002371072769165,
+        "alpha_psnr_db": null,
+        "warm_seconds": [
+          0.30194439999831957,
+          0.30107180000049993,
+          0.3008601000001363
+        ],
+        "median_seconds": 0.30107180000049993,
+        "transfers": {
+          "h2d_bytes": 30449664,
+          "d2h_bytes": 91348996,
+          "h2d_image_copies": 2,
+          "d2h_image_copies": 1,
+          "d2h_control_copies": 1,
+          "tile_host_copies": 0,
+          "inference_calls": 2,
+          "kernel_launches": 11
+        }
+      }
+    ],
+    "measurement": "1 warmup then 3 runs; CPU float32 inputs to CPU float32 outputs; excludes file decode/encode, engine loading and CUDA compilation"
+  },
+  "pytorch": {
+    "measurement": "1 warmup then 3 runs; CPU float32 inputs to CPU float32 outputs; excludes file decode/encode and engine/model loading",
+    "cases": [
+      {
+        "id": "noise_low",
+        "warm_seconds": [
+          3.0680330999966827,
+          3.067189800000051,
+          3.0662879000010435
+        ],
+        "median_seconds": 3.067189800000051
+      },
+      {
+        "id": "alternate_tile256_batch8",
+        "warm_seconds": [
+          0.41277199999967706,
+          0.4137425999979314,
+          0.41125370000008843
+        ],
+        "median_seconds": 0.41277199999967706
+      },
+      {
+        "id": "soft_alpha_auto",
+        "warm_seconds": [
+          0.7989489999999932,
+          0.7985354000011284,
+          0.7979764999981853
+        ],
+        "median_seconds": 0.7985354000011284
+      },
+      {
+        "id": "soft_alpha_disable",
+        "warm_seconds": [
+          0.41139040000052773,
+          0.40890679999938584,
+          0.40854119999858085
+        ],
+        "median_seconds": 0.40890679999938584
+      }
+    ]
+  },
+  "cpu_numpy_reference": {
+    "measurement": "1 warmup then 3 runs; CPU float32 inputs to CPU float32 outputs; excludes file decode/encode and engine/model loading",
+    "cases": [
+      {
+        "id": "noise_low",
+        "warm_seconds": [
+          5.214889400001994,
+          5.2737014000013005,
+          5.290646399997058
+        ],
+        "median_seconds": 5.2737014000013005
+      },
+      {
+        "id": "alternate_tile256_batch8",
+        "warm_seconds": [
+          0.625040999999328,
+          0.6118304000010539,
+          0.6200882000011916
+        ],
+        "median_seconds": 0.6200882000011916
+      },
+      {
+        "id": "soft_alpha_auto",
+        "warm_seconds": [
+          3.5208906999978353,
+          3.6020229999994626,
+          3.6054068000012194
+        ],
+        "median_seconds": 3.6020229999994626
+      },
+      {
+        "id": "soft_alpha_disable",
+        "warm_seconds": [
+          0.602698099999543,
+          0.6008313999991515,
+          0.6004572999991069
+        ],
+        "median_seconds": 0.6008313999991515
+      }
+    ]
+  },
+  "pixel_and_default_api_checks": {
+    "cases": [
+      {
+        "id": "noise_low",
+        "png_pixels_identical": true,
+        "max_8bit_difference": 0
+      },
+      {
+        "id": "alternate_tile256_batch8",
+        "png_pixels_identical": true,
+        "max_8bit_difference": 0
+      },
+      {
+        "id": "soft_alpha_auto",
+        "png_pixels_identical": true,
+        "max_8bit_difference": 0
+      },
+      {
+        "id": "soft_alpha_disable",
+        "png_pixels_identical": true,
+        "max_8bit_difference": 0
+      }
+    ],
+    "default_api_uses_gpu": true,
+    "default_float_output_identical": true,
+    "input_unchanged": true,
+    "no_pytorch_runtime": true
+  },
+  "private_nvrtc_without_original_environment_verified": true,
+  "nvrtc_package": "13.4.92",
+  "scope": "same image/options; one warmup and 3 timed runs; CPU float32 input/output; excludes image codec, model/engine loading, CUDA compilation; same TensorRT engine unchanged",
+  "implementation": {
+    "trt_runner.py": "8fa9e130aea8eaad5b6f59eaeca32f7dc597d65bb5055eb6b5052e539e983d3d",
+    "trt_gpu.py": "a97a355971fd69988e40103f9b45ff6a48dc66b7420beb39a49be8e3d42db986",
+    "prepost.cu": "5842f4f59e82402b309fefdf3306693707811ae5690a9ea0608be98920ff0f4d"
+  }
+}

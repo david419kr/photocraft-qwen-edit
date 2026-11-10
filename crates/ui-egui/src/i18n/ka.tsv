@@ -5082,3 +5082,11 @@ prompt-region	Top right	ზედა მარჯვენა
 	Color Blindness - Protanopia-type	ფერთა სიბრმავე — პროტანოპიის ტიპი
 	Open in RAW Develop	RAW დამუშავებაში გახსნა
 	Skip transform when placing	გარდაქმნის გამოტოვება განთავსებისას
+	Alpha channel	ალფა არხი
+	Batch size	პაკეტის ზომა
+	No local upscaler installed	ლოკალური გარჩევადობის გამზრდელი დაყენებული არ არის
+	Noise reduction	ხმაურის შემცირება
+	Overlap	გადაფარვა
+	Tile size	ფილის ზომა
+	Tiling	ფილებად დაყოფა
+	Upscale	გარჩევადობის გაზრდა

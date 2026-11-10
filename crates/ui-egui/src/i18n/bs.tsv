@@ -4963,3 +4963,12 @@ cameraRaw	Cancelled {label}	Otkazano: {label}
 	Some settings could not be saved; the raws stay open	Neke postavke nisu sačuvane; RAW datoteke ostaju otvorene
 	Open in RAW Develop	Otvori u RAW obradi
 	Skip transform when placing	Preskoči transformaciju pri postavljanju
+	Upscale	Uvećaj
+	Tiling	Podjela na pločice
+	Tile size	Veličina pločice
+	Overlap	Preklapanje
+	Noise reduction	Smanjenje šuma
+	Alpha channel	Alfa kanal
+	Batch size	Veličina grupe
+	No local upscaler installed	Lokalni model za uvećanje nije instaliran
+	Highest	Najviše

@@ -56,3 +56,15 @@ The first hosted candidate `10802f82f264ab9a64eb99293def7ed644ed2ee2` produced a
 - The UI translation source scanner compared literal backslash-n with a catalog runtime newline. It now decodes supported source-string escapes before lookup, with a regression proving newline/tab/quote/backslash handling and a negative raw-key assertion; the source-key set and coverage threshold are unchanged.
 
 Final hosted validation and replacement Windows artifact must use the corrective candidate SHA recorded in PR #28. The first candidate's ZIP/hash is retained only as historical evidence, not as final acceptance.
+
+## Combined PR 27 candidate
+
+At the user’s request, integrate PR #27 (`feat/external-upscalers`) at exact head
+`a8812d986bbbd02d4068b791f456252d5a62aeec` into this candidate, not into main.
+Preserve the completed upstream 0.22.0 integration and its fixes, including native
+metadata privacy. Catalog conflicts are resolved by context/source key, preserving
+existing 0.22 wording and adding the offline backend labels. Windows binaries must
+be rebuilt and full PR CI and fork regressions rerun for the combined candidate.
+The external runtime and model weights remain separately installed and are not
+redistributed in the portable ZIP. Actual CUDA/VRAM/model/UI validation is not
+claimed by cloud checks. No main merge, public tag or release is authorized here.

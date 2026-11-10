@@ -3962,3 +3962,13 @@ curves	Smooth	تنعيم
 	Equalize Selected Area Only	تسوية المنطقة المحددة فقط
 	Open in RAW Develop	فتح في معالجة RAW
 	Skip transform when placing	تخطي التحويل عند الإدراج
+	Upscale	تكبير
+	Tiling	التقسيم إلى بلاطات
+	Tile size	حجم البلاطة
+	Overlap	التداخل
+	Noise reduction	تقليل الضوضاء
+	Alpha channel	قناة ألفا
+	Batch size	حجم الدفعة
+	Disable	تعطيل
+	No local upscaler installed	لم يُثبّت نموذج تكبير محلي
+	Highest	الأعلى

@@ -4570,3 +4570,13 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	brush tool	narzędzie Pędzel
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: błąd {n} pliku|{what}: błąd {n} plików|{what}: błąd {n} plików
 	Open in RAW Develop	Otwórz w wywoływaniu RAW
+	Upscale	Powiększ
+	Tiling	Podział na kafelki
+	Tile size	Rozmiar kafelka
+	Overlap	Nakładanie
+	Noise reduction	Redukcja szumu
+	Alpha channel	Kanał alfa
+	Batch size	Rozmiar partii
+	Disable	Wyłącz
+	No local upscaler installed	Nie zainstalowano lokalnego modelu powiększania
+	Highest	Najwyższa

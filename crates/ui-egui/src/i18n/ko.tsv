@@ -4589,3 +4589,13 @@ prompt-region	Top right	우상단
 # Dynamic integration labels
 	Selected Area Only	선택 영역만
 	Open in RAW Develop	RAW 현상에서 열기
+	Upscale	업스케일
+	No local upscaler installed	설치된 로컬 업스케일러가 없습니다
+	Noise reduction	노이즈 제거
+	Tiling	타일링
+	Tile size	타일 크기
+	Overlap	겹침 크기
+	Alpha channel	알파 채널
+	Batch size	배치 크기
+	Disable	비활성화
+	Highest	최고
