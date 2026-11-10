@@ -11,6 +11,9 @@ def main():
     output = root / "target" / "qwen-regressions"
     output.mkdir(parents=True, exist_ok=True)
     cases = [
+        ("engine-quick-mask", ["-p", "photocraft-engine", "--lib", "quick_mask"]),
+        ("ui-quick-mask", ["-p", "photocraft-ui-egui", "--lib", "quick_mask"]),
+        ("engine-local-erase", ["-p", "photocraft-engine", "--lib", "erase_external"]),
         ("io-memory-policy", ["-p", "photocraft-io", "--lib", "memory::tests"]),
         ("compose-cmyk", ["-p", "photocraft-compose", "--lib", "cmyk::tests"]),
         ("io-psd-budget", ["-p", "photocraft-io", "--lib", "psd_budget::tests"]),

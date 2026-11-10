@@ -238,7 +238,7 @@
 	Plugins…	المكونات الإضافية…
 	Type…	النص…
 	Enhanced Controls…	عناصر التحكم المحسنة…
-	Camera Raw…	Camera Raw…
+	RAW Defaults…	إعدادات RAW الافتراضية…
 	Raw Defaults…	إعدادات Raw الافتراضية…
 	Integrations…	التكاملات…
 	AI Integrations…	تكاملات الذكاء الاصطناعي…
@@ -325,8 +325,8 @@
 	Artboard…	لوح التصميم…
 	Artboard from Group…	لوح تصميم من مجموعة…
 	Artboard from Layers…	لوح تصميم من طبقات…
-	Layer via Copy	طبقة عبر النسخ
-	Layer via Cut	طبقة عبر القص
+	Layer Via Copy	طبقة عبر النسخ
+	Layer Via Cut	طبقة عبر القص
 	Layer From Background…	طبقة من الخلفية…
 	Layer from Background…	طبقة من الخلفية…
 	Background from Layer	خلفية من طبقة
@@ -546,7 +546,6 @@
 	Deselect	إلغاء التحديد
 	Reselect	إعادة التحديد
 	Inverse	عكس التحديد
-	Inverse Selection	عكس التحديد
 	Similar	مشابه
 	Color Range…	نطاق الألوان…
 	Focus Area…	منطقة التركيز…
@@ -588,7 +587,7 @@
 	Last Filter	آخر فلتر
 	Filter Gallery…	معرض الفلاتر…
 	Adaptive Wide Angle…	زاوية واسعة تكيفية…
-	Camera Raw Filter…	فلتر Camera Raw…
+	RAW Develop Filter…	فلتر معالجة RAW…
 	Liquify…	تمويع…
 	Vanishing Point…	نقطة التلاشي…
 	Blur	ضبابية
@@ -680,12 +679,12 @@
 	Working Magenta Plate	لوح الأرجواني العامل
 	Working Yellow Plate	لوح الأصفر العامل
 	Working Black Plate	لوح الأسود العامل
-	Working CMY Plates	لوح CMY العامل
+	Working CMY Plates	ألواح CMY العاملة
 	Legacy Macintosh RGB (Gamma 1.8)	RGB القديم لنظام Macintosh (Gamma 1.8)
 	Internet Standard RGB (sRGB)	RGB القياسي للإنترنت (sRGB)
 	Monitor RGB	RGB الشاشة
-	Color Blindness — Protanopia-type	عمى الألوان — نوع بروتانوبيا
-	Color Blindness — Deuteranopia-type	عمى الألوان — نوع ديوتيرانوبيا
+	Color Blindness - Protanopia-type	عمى الألوان — نوع بروتانوبيا
+	Color Blindness - Deuteranopia-type	عمى الألوان — نوع ديوتيرانوبيا
 	Zoom In	تكبير
 	Zoom Out	تصغير
 	Fit on Screen	ملاءمة للشاشة
@@ -764,7 +763,7 @@
 	Consolidate All to Tabs	توحيد الكل في علامات تبويب
 	Float in Window	تعويم في نافذة
 	Float All in Windows	تعويم الكل في نوافذ
-	New Window	نافذة جديدة للمستند
+	New Window	نافذة جديدة
 	Workspace	مساحة العمل
 	Essentials	الأساسيات
 	Graphic and Web	الرسومات والويب
@@ -826,6 +825,12 @@
 	Timeline	المخطط الزمني
 	Tool Presets	الإعدادات المسبقة للأدوات
 	Tools	الأدوات
+	Contextual Task Bar	شريط المهام السياقي
+	Hide bar	إخفاء الشريط
+	Reset bar position	إعادة تعيين موضع الشريط
+	Pin bar position	تثبيت موضع الشريط
+	Move bar	نقل الشريط
+	More options	مزيد من الخيارات
 	About PhotoCraft	حول PhotoCraft
 	PhotoCraft Website	موقع PhotoCraft
 	PhotoCraft on GitHub	PhotoCraft على GitHub
@@ -924,8 +929,8 @@
 	Load Settings…	تحميل الإعدادات…
 	Save these settings as a Camera Raw .xmp file	حفظ هذه الإعدادات كملف .xmp لـ Camera Raw
 	Load settings from a Camera Raw .xmp file	تحميل الإعدادات من ملف .xmp لـ Camera Raw
-	Loaded Camera Raw settings from {file}	تم تحميل إعدادات Camera Raw من {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	تم تحميل إعدادات Camera Raw من {file} ({n} غير مدعومة)
+	Loaded RAW Develop settings from {file}	تم تحميل إعدادات معالجة RAW من {file}
+	Loaded RAW Develop settings from {file} ({n} not supported)	تم تحميل إعدادات معالجة RAW من {file} ({n} غير مدعومة)
 	Begin recording	بدء التسجيل
 	Bend:	الانحناء:
 	Bicubic	ثنائي التكعيب
@@ -953,7 +958,7 @@
 	Brush Reconstruct Options	خيارات إعادة بناء الفرشاة
 	Brush Tool Options	خيارات أداة الفرشاة
 	Cache Level:	مستوى ذاكرة التخزين المؤقت:
-	Camera Raw isn't open	Camera Raw غير مفتوح
+	RAW Develop isn't open	معالجة RAW غير مفتوح
 	Cancel	إلغاء
 	Reset	إعادة تعيين
 	Cancel (Esc)	إلغاء (Esc)
@@ -987,7 +992,7 @@
 	Click to add a point · drag off or {key}-click or Delete to remove	انقر لإضافة نقطة · اسحبها بعيدًا أو {key}+نقر أو Delete للإزالة
 	Click to apply, {key}-click to clear overrides, double-click for Style Options	انقر للتطبيق، {key}+نقر لمسح التجاوزات، نقر مزدوج لخيارات النمط
 	Click to edit the gradient	انقر لتحرير التدرج
-	Click to restore the current colour	انقر لاستعادة اللون الحالي
+	Click to restore the current color	انقر لاستعادة اللون الحالي
 	Click to zoom in  ·  {key}-click to zoom out  ·  drag right/left to zoom in/out	انقر للتكبير  ·  {key}+نقر للتصغير  ·  اسحب يمينًا/يسارًا للتكبير/التصغير
 	Click with the Note tool to add a note.	انقر بأداة الملاحظة لإضافة ملاحظة.
 	Click: corner · Drag: smooth · Click first point: close · {key} finish · Esc cancel	نقر: زاوية · سحب: ناعم · نقر على النقطة الأولى: إغلاق · {key} إنهاء · Esc إلغاء
@@ -1073,7 +1078,7 @@
 	Darks	الدرجات الداكنة
 	Data Sets	مجموعات البيانات
 	Default	افتراضي
-	Default colours (D)	الألوان الافتراضية (D)
+	Default Foreground and Background Colors (D)	لونا المقدمة والخلفية الافتراضيان (D)
 	Default printer	الطابعة الافتراضية
 	Default restored.	تمت استعادة الإعدادات الافتراضية.
 	Define	تعريف
@@ -1359,7 +1364,7 @@
 	Opacity Jitter	تذبذب العتامة
 	Opacity:	العتامة:
 	Open a document to define variables.	افتح مستندًا لتعريف المتغيرات.
-	Open a document to select a colour range.	افتح مستندًا لتحديد نطاق ألوان.
+	Open a document to select a color range.	افتح مستندًا لتحديد نطاق ألوان.
 	Open a document to use the timeline.	افتح مستندًا لاستخدام المخطط الزمني.
 	Optical	بصري
 	Optimized	محسّن
@@ -1435,7 +1440,6 @@
 	Purity	النقاء
 	Quality	الجودة
 	Quick Actions	إجراءات سريعة
-	Quick Export As PNG	تصدير سريع بتنسيق PNG
 	Radial Gradient	تدرج شعاعي
 	Radius	نصف القطر
 	Radius:	نصف القطر:
@@ -1577,7 +1581,7 @@
 	Subtract from Sample	طرح من العينة
 	Subtract from selection  ({key})	طرح من التحديد ({key})
 	Suggestions:	الاقتراحات:
-	Swap colours (X)	تبديل الألوان (X)
+	Switch Foreground and Background Colors (X)	تبديل لوني المقدمة والخلفية (X)
 	Swaps height and width	يبدّل الارتفاع والعرض
 	Switch between free transform and warp modes	التبديل بين وضعي التحويل الحر والالتواء
 	Switch theme	تبديل السمة
@@ -1680,7 +1684,7 @@
 	Choke	تضييق
 	Classic	كلاسيكي
 	Click to add text	انقر لإضافة نص
-	Click to fill similar colours	انقر لتعبئة الألوان المتشابهة
+	Click to fill similar colors	انقر لتعبئة الألوان المتشابهة
 	Clone Stamp Tool	أداة ختم النسخ
 	Color Burn	تغميق اللون
 	Color Dodge	تفتيح اللون
@@ -1781,6 +1785,7 @@
 	Move Tool	أداة التحريك
 	Could not use the move tool because the layer is locked.	تعذر استخدام أداة التحريك لأن الطبقة مقفلة.
 	Could not complete the Free Transform command because the layer is locked.	تعذر إكمال أمر التحويل الحر لأن الطبقة مقفلة.
+	Could not transform because the layer is locked.	تعذر التحويل لأن الطبقة مقفلة.
 	Multiply	ضرب
 	My Brushes	الفُرش الخاصة بي
 	Neutrals	الدرجات المحايدة
@@ -1839,7 +1844,7 @@
 	Rectangular Marquee Tool	أداة إطار التحديد المستطيل
 	Reds	درجات الأحمر
 	Reflected	منعكس
-	Sample: foreground colour	العينة: لون المقدمة
+	Sample: foreground color	العينة: لون المقدمة
 	Sampled Colors	الألوان المأخوذة كعينات
 	Satin	ساتان
 	Save Pixel Aspect Ratio	حفظ نسبة أبعاد البكسل
@@ -1877,7 +1882,7 @@
 	Transfer	نقل
 	Triangle Tool	أداة المثلث
 	Unsaved changes	تغييرات غير محفوظة
-	Uses the foreground and background colours.	يستخدم لوني المقدمة والخلفية.
+	Uses the foreground and background colors.	يستخدم لوني المقدمة والخلفية.
 	Web	الويب
 	Web Large	ويب كبير
 	Web Minimum	ويب أدنى
@@ -1931,7 +1936,7 @@
 	Brush preview color	لون معاينة الفرشاة
 	Cache levels	مستويات ذاكرة التخزين المؤقت
 	Cache tile size	حجم بلاطة ذاكرة التخزين المؤقت
-	Camera Raw Defaults	إعدادات Camera Raw الافتراضية
+	RAW Defaults	إعدادات RAW الافتراضية
 	Canvas border	حدود مساحة الرسم
 	Show canvas dots	إظهار نقاط مساحة الرسم
 	Clip thumbnails to layer bounds	قصر الصور المصغرة على حدود الطبقة
@@ -2018,7 +2023,6 @@
 	Never	أبدًا
 	Normal tip	رأس عادي
 	Open as smart object	فتح ككائن ذكي
-	Open in camera raw	فتح في Camera Raw
 	Open documents as tabs	فتح المستندات كعلامات تبويب
 	Overscroll	التمرير الزائد
 	Performance	الأداء
@@ -2149,7 +2153,7 @@
 	Graphics	الرسومات
 	Reset GPU Backend	إعادة تعيين واجهة GPU الخلفية
 	Applies at next launch.	يُطبّق عند التشغيل التالي.
-	Click to sample the foreground colour  ·  {key}-click for background	انقر لأخذ عينة من لون المقدمة  ·  {key}+نقر للون الخلفية
+	Click to sample the foreground color  ·  {key}-click for background	انقر لأخذ عينة من لون المقدمة  ·  {key}+نقر للون الخلفية
 	{key}-click to set the source	{key}+نقر لضبط المصدر
 	{key} to subtract	{key} للطرح
 	Clone source {n} ({key}-click with Clone Stamp to set)	مصدر النسخ {n} ({key}+نقر بأداة ختم النسخ للضبط)
@@ -2210,7 +2214,7 @@
 	Gradient Options	خيارات التدرج
 	Align with layer	محاذاة مع الطبقة
 	Reset Alignment	إعادة تعيين المحاذاة
-	Centre the gradient (offset 0, 0)	توسيط التدرج (إزاحة 0، 0)
+	Center the gradient (offset 0, 0)	توسيط التدرج (إزاحة 0، 0)
 # Gradient Editor window, opened from the options bar's gradient swatch.
 	Gradient Editor	محرر التدرج
 	Gradient picker	منتقي التدرج
@@ -2245,7 +2249,7 @@
 	Alt-click to define a source point to clone from	انقر مع Alt لتحديد نقطة مصدر للنسخ منها
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	لا يوجد مسار لإنشاء تحديد منه: ارسم مسارًا بأداة القلم أو حدد مسارًا في لوحة المسارات.
 	Cancel opening	إلغاء الفتح
-	Cancelled opening {name}	تم إلغاء فتح {name}
+	Canceled opening {name}	تم إلغاء فتح {name}
 	Damaged Photoshop document	مستند Photoshop تالف
 	The document “{name}” may be damaged.	قد يكون المستند «{name}» تالفًا.
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	تعذرت قراءة بعض الطبقات أو البكسلات أو الأقنعة. هل تريد متابعة فتحه؟
@@ -2255,7 +2259,7 @@
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	يحتوي المستند «{name}» على ملف تعريف ألوان مضمّن لا يطابق مساحة عمل {mode} الحالية.
 	Working: {working}	مساحة العمل: {working}
 	Developing {name}	جارٍ معالجة {name}
-	Cancelled {label}	تم إلغاء {label}
+	Canceled {label}	تم إلغاء {label}
 	Esc to cancel	Esc للإلغاء
 	Opened {name}	تم فتح {name}
 	Opening {name}	جارٍ فتح {name}
@@ -2263,7 +2267,7 @@
 	Saving {name}	جارٍ حفظ {name}
 	Saving {percent}	جارٍ الحفظ {percent}
 	A save to {name} is still running; try again when it finishes	لا تزال عملية حفظ في {name} جارية؛ حاول مرة أخرى عند انتهائها
-	{label} is writing the file and can no longer be cancelled	{label} يكتب الملف ولم يعد بالإمكان إلغاؤه
+	{label} is writing the file and can no longer be canceled	{label} يكتب الملف ولم يعد بالإمكان إلغاؤه
 	Opening {name}…	جارٍ فتح {name}…
 	Opening…	جارٍ الفتح…
 	Reading…	جارٍ القراءة…
@@ -2306,6 +2310,7 @@
 	Punctuation	علامات الترقيم
 	Make Work Path	إنشاء مسار عمل
 	Make Selection	إنشاء تحديد
+	Make Shape	إنشاء شكل
 	Fill Path	تعبئة المسار
 	Stroke Path	رسم حدود للمسار
 	Delete Path	حذف المسار
@@ -2325,7 +2330,7 @@
 	Pixel	بكسل
 	Adjustment	تعديل
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	اسحب (حبل) أو انقر على النقاط (مضلع) · {add} إضافة · {sub} طرح
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	اسحب مربع اقتصاص · اسحب من الداخل للتحريك · الحواف لتغيير الحجم ({ratio} للنسبة، {centre} للمركز) · Space للتحريك أثناء الرسم · الأسهم للدفع الدقيق · X لتبديل الاتجاه · {commit} للتأكيد · Esc للإلغاء
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	اسحب مربع اقتصاص · اسحب من الداخل للتحريك · الحواف لتغيير الحجم ({ratio} للنسبة، {centre} للمركز) · Space للتحريك أثناء الرسم · الأسهم للدفع الدقيق · X لتبديل الاتجاه · {commit} للتأكيد · Esc للإلغاء
 	{mode} Color · {bits} bit	لون {mode} · {bits} بت
 	Scrubby Zoom	تكبير سحبي
 	Auto Erase	محو تلقائي
@@ -2373,8 +2378,8 @@
 	3 x 3	3 × 3
 	4 x 4	4 × 4
 	5 x 5	5 × 5
-	Camera Raw Filter ({layer})	فلتر Camera Raw ({layer})
-	Camera Raw ({name})	Camera Raw ({name})
+	RAW Develop Filter ({layer})	فلتر معالجة RAW ({layer})
+	RAW Develop ({name})	معالجة RAW ({name})
 	Edit Type	تحرير النص
 	Grid:	الشبكة:
 	Highlight Clipping Warning (O)	تحذير اقتطاع الإضاءات (O)
@@ -2420,7 +2425,7 @@
 	Discard Layers and Save a Copy	تجاهل الطبقات وحفظ نسخة
 	Don't show again	عدم الإظهار مرة أخرى
 	Save failed: {error}	فشل الحفظ: {error}
-	Save cancelled	تم إلغاء الحفظ
+	Save canceled	تم إلغاء الحفظ
 
 # Layer Style dialog: style presets and per-effect defaults
 	Style {name} saved	تم حفظ النمط {name}
@@ -2573,7 +2578,7 @@ fontWeight	Italic	مائل
 	Rotate View	تدوير العرض
 	Rotate View Tool	أداة تدوير العرض
 	Reset View	إعادة تعيين العرض
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	اسحب حول المركز لتدوير العرض  ·  Shift يقيّد الزاوية بخطوات 15°
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	اسحب حول المركز لتدوير العرض  ·  Shift يقيّد الزاوية بخطوات 15°
 
 # Painting symmetry presets.
 	Dual Axis	محور مزدوج
@@ -2594,8 +2599,8 @@ fontWeight	Italic	مائل
 	Show Sampling Ring	إظهار حلقة أخذ العينات
 
 # Color Picker warnings
-	Out of gamut for printing: click for the nearest printable colour	خارج النطاق اللوني للطباعة: انقر لأقرب لون قابل للطباعة
-	Not a web colour: click for the nearest web colour	ليس لون ويب: انقر لأقرب لون ويب
+	Out of gamut for printing: click for the nearest printable color	خارج النطاق اللوني للطباعة: انقر لأقرب لون قابل للطباعة
+	Not a web color: click for the nearest web color	ليس لون ويب: انقر لأقرب لون ويب
 	Color to Alpha…	اللون إلى ألفا…
 	Transparency Threshold	عتبة الشفافية
 	Opacity Threshold	عتبة العتامة
@@ -3307,7 +3312,7 @@ curves	Smooth	تنعيم
 # Native Windows printing qualification
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	لا تُحدد أيضًا صورة معكوسة في إعدادات الطباعة…: فالانعكاسان يلغي كل منهما الآخر.
 	Print Settings…	إعدادات الطباعة…
-	Remember to turn off the printer's own colour management in Print Settings…	تذكر إيقاف إدارة الألوان الخاصة بالطابعة في إعدادات الطباعة…
+	Remember to turn off the printer's own color management in Print Settings…	تذكر إيقاف إدارة الألوان الخاصة بالطابعة في إعدادات الطباعة…
 	Sent to {printer}	تم الإرسال إلى {printer}
 	set in Print Settings…	يتم ضبطه في إعدادات الطباعة…
 	ICO is limited to 256 × 256 pixels	ملفات ICO محدودة بـ 256 × 256 بكسل
@@ -3448,12 +3453,12 @@ curves	Smooth	تنعيم
 	{name} was changed by another app after it was opened or saved here.	تم تغيير {name} بواسطة تطبيق آخر بعد فتحه أو حفظه هنا.
 	Replace it with this document, or cancel and use File › Save As to keep both.	استبدله بهذا المستند، أو ألغِ واستخدم ملف › حفظ باسم للاحتفاظ بكليهما.
 	Demosaic	إزالة الفسيفساء
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	طريقة ملء فسيفساء مرشح الألوان في الكاميرا. تُطبَّق عند فتح الملف؛ وتعرض المعاينة الطريقة التي فُتح بها.
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	طريقة ملء فسيفساء مرشح الألوان في الكاميرا. تُطبَّق عند فتح الملف؛ وتعرض المعاينة الطريقة التي فُتح بها.
 	AHD (adaptive homogeneity)	AHD (التجانس التكيفي)
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: أنظف الحواف وأقل هالات لونية، والأبطأ.
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	استيفاء مصحح بالتدرج: حاد وسريع، مع بعض الهالات اللونية في التفاصيل الدقيقة.
-	The fastest and the softest, with colour fringing on fine detail.	الأسرع والأنعم، مع هالات لونية في التفاصيل الدقيقة.
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Hirakawa–Parks: أنظف الحواف وأقل هالات لونية، والأبطأ.
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	استيفاء مصحح بالتدرج: حاد وسريع، مع بعض الهالات اللونية في التفاصيل الدقيقة.
+	The fastest and the softest, with color fringing on fine detail.	الأسرع والأنعم، مع هالات لونية في التفاصيل الدقيقة.
 	“{name}” already exists. Replace it?	“{name}” موجود بالفعل. هل تريد استبداله؟
 	The name in the save dialog was “{name}”.	كان الاسم في مربع حوار الحفظ “{name}”.
 	Move Up	تحريك لأعلى
@@ -3521,6 +3526,7 @@ curves	Smooth	تنعيم
 	Grayscale Ramp	شريط التدرج الرمادي
 	Current Colors	الألوان الحالية
 	Make Ramp Web Safe	جعل الشريط آمنًا للويب
+	Scroll All Windows	تمرير جميع النوافذ
 # Art History Brush (#213).
 	Art History Brush	فرشاة السجل الفني
 	Art History Brush Tool	أداة فرشاة السجل الفني
@@ -3568,163 +3574,6 @@ curves	Smooth	تنعيم
 	The path was kept as the Work Path	تم الاحتفاظ بالمسار كمسار عمل
 	The path was discarded	تم تجاهل المسار
 	Edit Brush…	تحرير الفرشاة…
-	AI Prompt History	سجل أوامر الذكاء الاصطناعي
-	AI model settings	إعدادات نموذج الذكاء الاصطناعي
-	Adjust colors with Poisson blending	ضبط الألوان بمزج بواسون
-	All nine regions	المناطق التسع كلها
-	Attach Reference Image	إرفاق صورة مرجعية
-	Automatically check for updates	البحث عن التحديثات تلقائيًا
-	Check for updates now	البحث عن التحديثات الآن
-	ComfyUI port	منفذ ComfyUI
-	Compare with Original Generation	مقارنة بنتيجة التوليد الأصلية
-	Copy English translation	نسخ الترجمة الإنجليزية
-	Copy negative prompt	نسخ الأمر السلبي
-	Copy original prompt	نسخ الأمر الأصلي
-	Custom model filenames (one per line)	أسماء ملفات النماذج المخصصة (واحد في كل سطر)
-	Describe changes to the whole image	صف التغييرات على الصورة بأكملها
-	Describe changes, or leave blank to remove	صف التغييرات، أو اتركه فارغًا للإزالة
-	Describe the image to generate	صف الصورة المراد توليدها
-	Downloading update…	جارٍ تنزيل التحديث…
-	Drag to move the selected path	اسحب لنقل المسار المحدد
-	English translation	الترجمة الإنجليزية
-	Generative Fill	تعبئة توليدية
-	Match Surrounding Colors	مطابقة الألوان المحيطة
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	طابق الألوان مع المحيط المسجل وقت التوليد. تعيد القوة 0 نتيجة التوليد الأصلية.
-	Negative prompt	الأمر السلبي
-	No AI prompts recorded	لم تُسجَّل أوامر ذكاء اصطناعي
-	No matching fonts	لا توجد خطوط مطابقة
-	No prompt (remove)	بلا أمر (إزالة)
-	One .safetensors filename per line. Compatibility is not checked.	اسم ملف .safetensors واحد في كل سطر. لا يتم التحقق من التوافق.
-	Original prompt	الأمر الأصلي
-	PhotoCraft update available	يتوفر تحديث لـ PhotoCraft
-	Prompt Edit	تحرير بأمر نصي
-	Prompt Generate	توليد بأمر نصي
-	Prompt information	معلومات الأمر
-	Prompt translation model	نموذج ترجمة الأوامر
-	Regenerate	إعادة التوليد
-	Remove Reference Image	إزالة الصورة المرجعية
-	Reset steps to model default	إعادة الخطوات إلى افتراضي النموذج
-	Sampling steps	خطوات أخذ العينات
-	Text encoders	مرمّزات النص
-	The image exceeds the AI editing size. Resize the document to continue?	تتجاوز الصورة حجم التحرير بالذكاء الاصطناعي. هل تريد تغيير حجم المستند للمتابعة؟
-	Translate prompt to English	ترجمة الأمر إلى الإنجليزية
-	Update PhotoCraft and restart now?	هل تريد تحديث PhotoCraft وإعادة تشغيله الآن؟
-	You can check for updates again in Help → About PhotoCraft.	يمكنك البحث عن التحديثات مجددًا في مساعدة ← حول PhotoCraft.
-	Delete effect	حذف التأثير
-	Locked	مقفل
-	Move effect down	نقل التأثير لأسفل
-	Move effect up	نقل التأثير لأعلى
-	Next	التالي
-	Path operations	عمليات المسار
-	Previous	السابق
-	Prompt Edit…	تحرير بأمر نصي…
-	Prompt Generate…	توليد بأمر نصي…
-	Generative Fill…	تعبئة توليدية…
-	Regenerate AI Result	إعادة توليد نتيجة الذكاء الاصطناعي
-	Comfyui url	عنوان خادم ComfyUI
-	Comfyui model	نموذج ComfyUI
-	Comfyui custom encoders	مرمّزات ComfyUI المخصصة
-	Comfyui custom model	نموذج ComfyUI المخصص
-	Comfyui custom models	نماذج ComfyUI المخصصة
-	Comfyui model settings	إعدادات نماذج ComfyUI
-	Comfyui translate prompt	ترجمة الأمر إلى الإنجليزية
-	Comfyui translation model	نموذج ترجمة الأوامر
-	External cutout	قص بخدمة خارجية
-	External erase	محو بخدمة خارجية
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Select Layer Under Cursor	تحديد الطبقة تحت المؤشر
-	Twirl Counterclockwise	التواء عكس اتجاه عقارب الساعة
-	Arrange Panels	ترتيب اللوحات
-	Close Other Panels in Group	إغلاق اللوحات الأخرى في المجموعة
-	Collapse to Icons	طي إلى أيقونات
-	Dismiss update	تجاهل التحديث
-	Minimize Panel	تصغير اللوحة
-	Open Panel in Own Window	فتح اللوحة في نافذة مستقلة
-	Update PhotoCraft	تحديث PhotoCraft
-	…	…
-	Turbo int8	توربو INT8
-
-# Fork portable update information
-	PhotoCraft Updates	تحديثات PhotoCraft
-	Checking for updates…	جارٍ التحقق من وجود تحديثات…
-	Open Download Page	فتح صفحة التنزيل
-	PhotoCraft is up to date.	PhotoCraft محدّث.
-	Could not check for updates.	تعذر التحقق من وجود تحديثات.
-	Updates have not been checked yet.	لم يتم التحقق من التحديثات بعد.
-	Check Again	التحقق مرة أخرى
-	Installed version: {version}	الإصدار المثبت: {version}
-	PhotoCraft {version} is available.	يتوفر PhotoCraft {version}.
-	Answer the open import question first, then import this file again.	أجب أولاً عن سؤال الاستيراد المفتوح، ثم استورد هذا الملف مرة أخرى.
-	Import as New Group	استيراد كمجموعة جديدة
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	يحتفظ الاستيراد كمجموعة جديدة بالمجموعة «{group}» ويضيف الملف كمجموعة جديدة بجانبها.
-	No import is waiting. Import the file again.	لا توجد عملية استيراد معلّقة. استورد الملف مرة أخرى.
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	يؤدي الاستبدال أولاً إلى حذف كل ما في «{group}»، بما في ذلك الإعدادات المسبقة التي عدّلتها أو نقلتها إليها. لا يمكن التراجع عن هذا الإجراء.
-	{message} into “{group}”	{message} إلى «{group}»
-	Color Picker	منتقي الألوان
-	Recently Used Colors	الألوان المستخدمة مؤخراً
-	Shapes can't use patterns yet	لا يمكن للأشكال استخدام الأنماط بعد
-	Solid Color	لون موحّد
-	Stop Color	لون نقطة التدرج
-	Tint Color	لون الصبغة
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	خيارات رؤوس الأسهم
-	Arrowheads	رؤوس الأسهم
-	Concavity	التقعر
-	End	النهاية
-	Set as default	تعيين كافتراضي
-	Start	البداية
-	Use these settings for new arrows	استخدام هذه الإعدادات للأسهم الجديدة
-	Create new set	إنشاء مجموعة جديدة
-
-# Upstream 0.20.2 memory, batch, layer filters and numeral options
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	أُلغي أمر أو توقف أثناء المعالجة الدفعية. هل تريد المتابعة بالملف التالي أم التوقف؟
-	Attribute	السمة
-	Batch	معالجة دفعية
-	Batch preview	معاينة المعالجة الدفعية
-	Data Sets as Files is unavailable on the web	مجموعات البيانات كملفات غير متاحة على الويب
-	Effect	التأثير
-	Empty	فارغ
-	Filter for embedded smart objects	تصفية الكائنات الذكية المضمّنة
-	Filter for linked smart objects that are missing	تصفية الكائنات الذكية المرتبطة المفقودة
-	Filter for smart objects linked locally	تصفية الكائنات الذكية المرتبطة بملفات محلية
-	High Memory Photoshop Document	مستند Photoshop يتطلب ذاكرة كبيرة
-	Image Compression	ضغط الصورة
-	LZW	LZW
-	Layer Effects	تأثيرات الطبقة
-	Lining	متساوية الارتفاع
-	Linked	مرتبط
-	No Adv. Blending	بدون مزج متقدم
-	No Layer Effects	بدون تأثيرات طبقة
-	No Layer Mask	بدون قناع طبقة
-	No Vector Mask	بدون قناع متجه
-	Not Clipped	بدون قناع قص
-	Not Empty	غير فارغ
-	Not Linked	غير مرتبط
-	Not Locked	غير مقفل
-	Not Visible	غير مرئي
-	Numerals	الأرقام
-	Open anyway	فتح على أي حال
-	Opening this document uses more memory and may slow down your computer or other running applications.	يتطلب فتح هذا المستند مزيدًا من الذاكرة وقد يبطئ الكمبيوتر أو التطبيقات الأخرى قيد التشغيل.
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	يتطلب فتح «{name}» ذاكرة تُقدّر بـ {est} GiB (المتاح {avail} GiB).
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	يتطلب فتح «{name}» ذاكرة تُقدّر بـ {est} GiB. تعذّر قياس الذاكرة المتاحة.
-	Proportional	متناسبة العرض
-	Proportional Lining	متناسبة العرض ومتساوية الارتفاع
-	Proportional Oldstyle	متناسبة العرض بالطراز القديم
-	Save Image Pyramid	حفظ هرم الصورة
-	Save Transparency	حفظ الشفافية
-	Tabular	ثابتة العرض
-	Tabular Lining	ثابتة العرض ومتساوية الارتفاع
-	Tabular Oldstyle	ثابتة العرض بالطراز القديم
-	ZIP	ZIP
-	{ok} written to {dir}	تمت كتابة {ok} إلى {dir}
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})
-	Memory usage percent	نسبة استخدام الذاكرة
-	Save Full-Size Composite in .pcraft Files	حفظ الصورة المركبة بالحجم الكامل في ملفات .pcraft
 
 # Action Stop message (#8386)
 	Message	رسالة
@@ -3752,56 +3601,213 @@ curves	Smooth	تنعيم
 	Pick a different document for each channel.	اختر مستندًا مختلفًا لكل قناة.
 	A picked document is no longer open.	أحد المستندات المختارة لم يعد مفتوحًا.
 	A picked document is no longer a grayscale document of the same size.	أحد المستندات المختارة لم يعد مستندًا بتدرج الرمادي بالحجم نفسه.
+	Netscape Gray	رمادي Netscape
+# Move tool options bar (#11381)
+	Align top edges	محاذاة الحواف العلوية
+	Align vertical centers	محاذاة المراكز الرأسية
+	Align bottom edges	محاذاة الحواف السفلية
+	Distribute vertically	توزيع رأسي
+	Distribute horizontally	توزيع أفقي
+	Show layer bounds on hover	إظهار حدود الطبقة عند التمرير
+	Expand layer group on click	توسيع مجموعة الطبقات عند النقر
+	Show hover bounds from Layers	إظهار حدود التمرير من الطبقات
+# Artboard tool options bar (#11385)
+	Distribute Widths	توزيع العروض
+	Distribute Heights	توزيع الارتفاعات
+	Auto-nest Layers	تداخل الطبقات تلقائيًا
+	Auto-size Canvas	تحديد حجم مساحة الرسم تلقائيًا
+	Keep Relative Position During Layer Reordering	الإبقاء على الموضع النسبي عند إعادة ترتيب الطبقات
+	Shrinkwrap Canvas on Save	تقليص مساحة الرسم إلى المحتوى عند الحفظ
 
-# Upstream 0.21.0 frame, placement and memory messages.
+# RAW Develop feature labels
+	Saved RAW Develop settings to {file}	تم حفظ إعدادات معالجة RAW في {file}
+	RAW Develop	معالجة RAW
+	RAW Develop Filter	مرشح معالجة RAW
+
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	أُلغي أمر أو توقف أثناء المعالجة الدفعية. هل تريد المتابعة بالملف التالي أم التوقف؟
 	A file is still being placed; try again when it has finished.	لا يزال وضع ملف قيد التنفيذ؛ حاول مجددًا عند اكتماله.
 	A frame supports affine transforms; select its image for perspective transforms	يدعم الإطار التحويلات التآلفية؛ حدد صورته لإجراء تحويلات المنظور
 	A frame supports affine transforms; select its image to warp it	يدعم الإطار التحويلات التآلفية؛ حدد صورته لالتوائها
+	AI Prompt History	سجل أوامر الذكاء الاصطناعي
+	AI model settings	إعدادات نموذج الذكاء الاصطناعي
+	Adjust colors with Poisson blending	ضبط الألوان بمزج بواسون
+	All nine regions	المناطق التسع كلها
+	Answer the open import question first, then import this file again.	أجب أولاً عن سؤال الاستيراد المفتوح، ثم استورد هذا الملف مرة أخرى.
+	Arrange Panels	ترتيب اللوحات
+	Arrowhead options	خيارات رؤوس الأسهم
+	Arrowheads	رؤوس الأسهم
+	Attach Reference Image	إرفاق صورة مرجعية
+	Attribute	السمة
 	Automatically Create First Snapshot	إنشاء اللقطة الأولى تلقائيًا
 	Automatically Create New Snapshot When Saving	إنشاء لقطة جديدة تلقائيًا عند الحفظ
+	Automatically check for updates	البحث عن التحديثات تلقائيًا
+	Base64	Base64
+	Batch	معالجة دفعية
+	Batch preview	معاينة المعالجة الدفعية
+	Cancelled opening {name}	تم إلغاء فتح {name}
 	Cancelled placing {name}	أُلغي وضع {name}
+	Cancelled {label}	تم إلغاء {label}
+	Centre the gradient (offset 0, 0)	توسيط التدرج (إزاحة 0، 0)
+	Check Again	التحقق مرة أخرى
+	Check for updates now	البحث عن التحديثات الآن
+	Checking for updates…	جارٍ التحقق من وجود تحديثات…
+	Click to fill similar colours	انقر لتعبئة الألوان المتشابهة
+	Click to restore the current colour	انقر لاستعادة اللون الحالي
+	Click to sample the foreground colour  ·  {key}-click for background	انقر لأخذ عينة من لون المقدمة  ·  {key}+نقر للون الخلفية
+	Close Other Panels in Group	إغلاق اللوحات الأخرى في المجموعة
+	Collapse to Icons	طي إلى أيقونات
+	Color Blindness — Deuteranopia-type	عمى الألوان — نوع ديوتيرانوبيا
+	Color Blindness — Protanopia-type	عمى الألوان — نوع بروتانوبيا
+	Color Picker	منتقي الألوان
+	ComfyUI port	منفذ ComfyUI
+	Comfyui custom encoders	مرمّزات ComfyUI المخصصة
+	Comfyui custom model	نموذج ComfyUI المخصص
+	Comfyui custom models	نماذج ComfyUI المخصصة
+	Comfyui model	نموذج ComfyUI
+	Comfyui model settings	إعدادات نماذج ComfyUI
+	Comfyui translate prompt	ترجمة الأمر إلى الإنجليزية
+	Comfyui translation model	نموذج ترجمة الأوامر
+	Comfyui url	عنوان خادم ComfyUI
+	Compare with Original Generation	مقارنة بنتيجة التوليد الأصلية
+	Concavity	التقعر
 	Convert to Frame…	تحويل إلى إطار…
+	Copy English translation	نسخ الترجمة الإنجليزية
+	Copy negative prompt	نسخ الأمر السلبي
+	Copy original prompt	نسخ الأمر الأصلي
+	Could not check for updates.	تعذر التحقق من وجود تحديثات.
 	Create a new custom frame	إنشاء إطار مخصص جديد
 	Create a new polygonal frame	إنشاء إطار مضلع جديد
 	Create a new triangular frame	إنشاء إطار مثلث جديد
+	Create new set	إنشاء مجموعة جديدة
+	Cube	CUBE
+	Custom model filenames (one per line)	أسماء ملفات النماذج المخصصة (واحد في كل سطر)
+	Data Encoding	ترميز البيانات
+	Data Sets as Files is unavailable on the web	مجموعات البيانات كملفات غير متاحة على الويب
+	Default colours (D)	الألوان الافتراضية (D)
+	Delete effect	حذف التأثير
+	Describe changes to the whole image	صف التغييرات على الصورة بأكملها
+	Describe changes, or leave blank to remove	صف التغييرات، أو اتركه فارغًا للإزالة
+	Describe the image to generate	صف الصورة المراد توليدها
+	Dismiss update	تجاهل التحديث
+	Downloading update…	جارٍ تنزيل التحديث…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	اسحب مربع اقتصاص · اسحب من الداخل للتحريك · الحواف لتغيير الحجم ({ratio} للنسبة، {centre} للمركز) · Space للتحريك أثناء الرسم · الأسهم للدفع الدقيق · X لتبديل الاتجاه · {commit} للتأكيد · Esc للإلغاء
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	اسحب حول المركز لتدوير العرض  ·  Shift يقيّد الزاوية بخطوات 15°
+	Drag to move the selected path	اسحب لنقل المسار المحدد
 	Dropped files weren't placed: their document was closed.	لم تُوضع الملفات المسقطة: أُغلق مستندها.
 	Dropped files weren't placed: too many are waiting for their document.	لم تُوضع الملفات المسقطة: هناك ملفات كثيرة جدًا تنتظر مستندها.
 	Duplicate	تكرار
+	Effect	التأثير
+	Empty	فارغ
+	End	النهاية
+	English translation	الترجمة الإنجليزية
+	External cutout	قص بخدمة خارجية
+	External erase	محو بخدمة خارجية
+	File Name	اسم الملف
+	Filter for embedded smart objects	تصفية الكائنات الذكية المضمّنة
+	Filter for linked smart objects that are missing	تصفية الكائنات الذكية المرتبطة المفقودة
+	Filter for smart objects linked locally	تصفية الكائنات الذكية المرتبطة بملفات محلية
 	Fit Content to Frame	ملاءمة المحتوى للإطار
 	Fit Frame to Content	ملاءمة الإطار للمحتوى
 	Frame coordinates must be finite and within 600000 pixels	يجب أن تكون إحداثيات الإطار محدودة وضمن 600000 بكسل
+	Generative Fill	تعبئة توليدية
+	Generative Fill…	تعبئة توليدية…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	استيفاء مصحح بالتدرج: حاد وسريع، مع بعض الهالات اللونية في التفاصيل الدقيقة.
+	High Memory Photoshop Document	مستند Photoshop يتطلب ذاكرة كبيرة
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: أنظف الحواف وأقل هالات لونية، والأبطأ.
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	طريقة ملء فسيفساء مرشح الألوان في الكاميرا. تُطبَّق عند فتح الملف؛ وتعرض المعاينة الطريقة التي فُتح بها.
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	ضغط الصورة
 	Import Image…	استيراد صورة…
+	Import as New Group	استيراد كمجموعة جديدة
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	يحتفظ الاستيراد كمجموعة جديدة بالمجموعة «{group}» ويضيف الملف كمجموعة جديدة بجانبها.
+	Installed version: {version}	الإصدار المثبت: {version}
 	Invalid frame transform	تحويل إطار غير صالح
 	Invalid nested file drop	إسقاط ملف متداخل غير صالح
+	Inverse Selection	عكس التحديد
+	LZW	LZW
+	Layer Effects	تأثيرات الطبقة
 	Learn	تعلّم
+	Lining	متساوية الارتفاع
+	Linked	مرتبط
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	ستتبقى ذاكرة قليلة بعد فتح هذا الملف. أغلق التطبيقات الأخرى أولًا، وإلا فقد تنفد ذاكرة PhotoCraft.
+	Locked	مقفل
+	Look	LOOK
+	Lut Format	تنسيق LUT
+	Match Surrounding Colors	مطابقة الألوان المحيطة
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	طابق الألوان مع المحيط المسجل وقت التوليد. تعيد القوة 0 نتيجة التوليد الأصلية.
+	Memory usage percent	نسبة استخدام الذاكرة
+	Minimize Panel	تصغير اللوحة
+	Move effect down	نقل التأثير لأسفل
+	Move effect up	نقل التأثير لأعلى
+	Negative prompt	الأمر السلبي
 	New Frame	إطار جديد
 	New file	ملف جديد
+	Next	التالي
+	No AI prompts recorded	لم تُسجَّل أوامر ذكاء اصطناعي
+	No Adv. Blending	بدون مزج متقدم
+	No Layer Effects	بدون تأثيرات طبقة
+	No Layer Mask	بدون قناع طبقة
+	No Vector Mask	بدون قناع متجه
+	No import is waiting. Import the file again.	لا توجد عملية استيراد معلّقة. استورد الملف مرة أخرى.
+	No matching fonts	لا توجد خطوط مطابقة
+	No prompt (remove)	بلا أمر (إزالة)
 	No recent files	لا توجد ملفات حديثة
+	Not Clipped	بدون قناع قص
+	Not Empty	غير فارغ
+	Not Linked	غير مرتبط
+	Not Locked	غير مقفل
+	Not Visible	غير مرئي
+	Not a web colour: click for the nearest web colour	ليس لون ويب: انقر لأقرب لون ويب
 	Nudge	تحريك طفيف
+	Numerals	الأرقام
 	On your computer	على حاسوبك
+	One .safetensors filename per line. Compatibility is not checked.	اسم ملف .safetensors واحد في كل سطر. لا يتم التحقق من التوافق.
+	Open Download Page	فتح صفحة التنزيل
+	Open Panel in Own Window	فتح اللوحة في نافذة مستقلة
+	Open a document to select a colour range.	افتح مستندًا لتحديد نطاق ألوان.
+	Open anyway	فتح على أي حال
+	Opening this document uses more memory and may slow down your computer or other running applications.	يتطلب فتح هذا المستند مزيدًا من الذاكرة وقد يبطئ الكمبيوتر أو التطبيقات الأخرى قيد التشغيل.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	يتطلب فتح «{name}» ذاكرة تُقدّر بـ {est} GiB (المتاح {avail} GiB).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	يتطلب فتح «{name}» ذاكرة تُقدّر بـ {est} GiB. تعذّر قياس الذاكرة المتاحة.
+	Original prompt	الأمر الأصلي
+	Out of gamut for printing: click for the nearest printable colour	خارج النطاق اللوني للطباعة: انقر لأقرب لون قابل للطباعة
+	Path operations	عمليات المسار
+	PhotoCraft Updates	تحديثات PhotoCraft
+	PhotoCraft is up to date.	PhotoCraft محدّث.
+	PhotoCraft update available	يتوفر تحديث لـ PhotoCraft
+	PhotoCraft {version} is available.	يتوفر PhotoCraft {version}.
+	Previous	السابق
+	Prompt Edit	تحرير بأمر نصي
+	Prompt Edit…	تحرير بأمر نصي…
+	Prompt Generate	توليد بأمر نصي
+	Prompt Generate…	توليد بأمر نصي…
+	Prompt information	معلومات الأمر
+	Prompt translation model	نموذج ترجمة الأوامر
+	Proportional	متناسبة العرض
+	Proportional Lining	متناسبة العرض ومتساوية الارتفاع
+	Proportional Oldstyle	متناسبة العرض بالطراز القديم
+	Quick Export As PNG	تصدير سريع بتنسيق PNG
+	Qwen image21	Qwen 2.1
+	Recently Used Colors	الألوان المستخدمة مؤخراً
+	Regenerate	إعادة التوليد
+	Regenerate AI Result	إعادة توليد نتيجة الذكاء الاصطناعي
+	Remember to turn off the printer's own colour management in Print Settings…	تذكر إيقاف إدارة الألوان الخاصة بالطابعة في إعدادات الطباعة…
+	Remove Reference Image	إزالة الصورة المرجعية
 	Replace Image…	استبدال الصورة…
-	Show New Snapshot Dialog by Default	إظهار مربع حوار اللقطة الجديدة افتراضيًا
-	Source: {name}	المصدر: {name}
-	The GPU compositor is still being prepared	لا يزال مُركّب GPU قيد الإعداد
-	The History Brush source was deleted: set a new source in the History panel	حُذف مصدر فرشاة السجل: حدد مصدرًا جديدًا في لوحة السجل
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	لا يُبلغ مجلد القرص المؤقت الحالي ({path}) عن مساحته الحرة، لذلك لا يمكن لـ PhotoCraft التوقف قبل امتلائه، ولا تحصل الملفات الكبيرة على مساحة إضافية منه دون حد لحجم القرص المؤقت. ينطبق هذا التحذير على الإعدادات الحالية؛ تسري التغييرات أعلاه عند الضغط على تطبيق أو موافق. عيّن حدًا أو استخدم قرصًا محليًا.
-	The frame is locked	الإطار مقفل
-	The frame is unavailable	الإطار غير متاح
-	Website	الموقع الإلكتروني
-
-# OpenType stylistic sets.
-	Stylistic Sets	مجموعات أسلوبية
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	يؤدي الاستبدال أولاً إلى حذف كل ما في «{group}»، بما في ذلك الإعدادات المسبقة التي عدّلتها أو نقلتها إليها. لا يمكن التراجع عن هذا الإجراء.
+	Reset steps to model default	إعادة الخطوات إلى افتراضي النموذج
+	Sample: foreground colour	العينة: لون المقدمة
+	Sampling steps	خطوات أخذ العينات
+	Save Full-Size Composite in .pcraft Files	حفظ الصورة المركبة بالحجم الكامل في ملفات .pcraft
+	Save Image Pyramid	حفظ هرم الصورة
+	Save Transparency	حفظ الشفافية
+	Save cancelled	تم إلغاء الحفظ
+	Select Layer Under Cursor	تحديد الطبقة تحت المؤشر
 	Set 	مجموعة
 	Set 1	مجموعة 1
-	Set 2	مجموعة 2
-	Set 3	مجموعة 3
-	Set 4	مجموعة 4
-	Set 5	مجموعة 5
-	Set 6	مجموعة 6
-	Set 7	مجموعة 7
-	Set 8	مجموعة 8
-	Set 9	مجموعة 9
 	Set 10	مجموعة 10
 	Set 11	مجموعة 11
 	Set 12	مجموعة 12
@@ -3812,23 +3818,157 @@ curves	Smooth	تنعيم
 	Set 17	مجموعة 17
 	Set 18	مجموعة 18
 	Set 19	مجموعة 19
+	Set 2	مجموعة 2
 	Set 20	مجموعة 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	إدخال اللوح الرسومي
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (الافتراضي)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	ترميز البيانات
-	Lut Format	تنسيق LUT
+	Set 3	مجموعة 3
+	Set 4	مجموعة 4
+	Set 5	مجموعة 5
+	Set 6	مجموعة 6
+	Set 7	مجموعة 7
+	Set 8	مجموعة 8
+	Set 9	مجموعة 9
+	Set as default	تعيين كافتراضي
 	Shape Id	معرّف الشكل
 	Shape Name	اسم الشكل
 	Shape Origin Type	نوع أصل الشكل
 	Shape Path	مسار الشكل
+	Shapes can't use patterns yet	لا يمكن للأشكال استخدام الأنماط بعد
+	Show New Snapshot Dialog by Default	إظهار مربع حوار اللقطة الجديدة افتراضيًا
+	Solid Color	لون موحّد
+	Source: {name}	المصدر: {name}
+	Start	البداية
+	Stop Color	لون نقطة التدرج
+	Stylistic Sets	مجموعات أسلوبية
+	Swap colours (X)	تبديل الألوان (X)
+	Tablet input	إدخال اللوح الرسومي
+	Tabular	ثابتة العرض
+	Tabular Lining	ثابتة العرض ومتساوية الارتفاع
+	Tabular Oldstyle	ثابتة العرض بالطراز القديم
 	Text	نص
-	File Name	اسم الملف
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoders	مرمّزات النص
+	The GPU compositor is still being prepared	لا يزال مُركّب GPU قيد الإعداد
+	The History Brush source was deleted: set a new source in the History panel	حُذف مصدر فرشاة السجل: حدد مصدرًا جديدًا في لوحة السجل
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	لا يُبلغ مجلد القرص المؤقت الحالي ({path}) عن مساحته الحرة، لذلك لا يمكن لـ PhotoCraft التوقف قبل امتلائه، ولا تحصل الملفات الكبيرة على مساحة إضافية منه دون حد لحجم القرص المؤقت. ينطبق هذا التحذير على الإعدادات الحالية؛ تسري التغييرات أعلاه عند الضغط على تطبيق أو موافق. عيّن حدًا أو استخدم قرصًا محليًا.
+	The fastest and the softest, with colour fringing on fine detail.	الأسرع والأنعم، مع هالات لونية في التفاصيل الدقيقة.
+	The frame is locked	الإطار مقفل
+	The frame is unavailable	الإطار غير متاح
+	The image exceeds the AI editing size. Resize the document to continue?	تتجاوز الصورة حجم التحرير بالذكاء الاصطناعي. هل تريد تغيير حجم المستند للمتابعة؟
+	Tint Color	لون الصبغة
+	Translate prompt to English	ترجمة الأمر إلى الإنجليزية
+	Turbo int8	توربو INT8
+	Twirl Counterclockwise	التواء عكس اتجاه عقارب الساعة
+	Update PhotoCraft	تحديث PhotoCraft
+	Update PhotoCraft and restart now?	هل تريد تحديث PhotoCraft وإعادة تشغيله الآن؟
+	Updates have not been checked yet.	لم يتم التحقق من التحديثات بعد.
+	Use these settings for new arrows	استخدام هذه الإعدادات للأسهم الجديدة
+	Uses the foreground and background colours.	يستخدم لوني المقدمة والخلفية.
+	Website	الموقع الإلكتروني
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (الافتراضي)
+	You can check for updates again in Help → About PhotoCraft.	يمكنك البحث عن التحديثات مجددًا في مساعدة ← حول PhotoCraft.
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label} يكتب الملف ولم يعد بالإمكان إلغاؤه
+	{message} into “{group}”	{message} إلى «{group}»
+	{ok} written to {dir}	تمت كتابة {ok} إلى {dir}
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})
+
+# Remembered file-import preferences
+	Last folder	آخر مجلد مستخدم
+	Pdf dpi	دقة PDF (نقطة/بوصة)
+	Pdf first page	الصفحة الأولى من PDF
+	Pdf last page	الصفحة الأخيرة من PDF
+
+# Integration source-key coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	أُلغي أمر أو أُوقف أثناء المعالجة الدفعية. هل تريد المتابعة بالملف التالي أم التوقف؟
+	Allow Tool Recording	السماح بتسجيل الأدوات
+	Allows rotation and scaling of selection	يسمح بتدوير التحديد وتغيير حجمه
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	استخدام الضغط دائمًا للتحكم في العتامة. عند الإيقاف، يتحكم إعداد الفرشاة المسبق في الضغط
+	Always use Pressure for Size. When off, Brush Preset controls pressure	استخدام الضغط دائمًا للتحكم في الحجم. عند الإيقاف، يتحكم إعداد الفرشاة المسبق في الضغط
+	Bottom align text	محاذاة النص إلى الأسفل
+	Choose a menu command. Playback asks for its settings when needed.	اختر أمرًا من القائمة. سيطلب التشغيل إعداداته عند الحاجة.
+	Choose a remix mode	اختر وضع المزج
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	انقر وحرّك يسارًا أو يمينًا لتغيير الحجم بأداة التكبير (OpenGL فقط)
+	Click to open the Brush Preset picker	انقر لفتح منتقي إعدادات الفرشاة المسبقة
+	Confirm or cancel the pending Record Again editor first.	أكّد أولًا محرر إعادة التسجيل المفتوح أو ألغِه.
+	Confirm or cancel the pending menu item first.	أكّد أولًا عنصر القائمة المعلّق أو ألغِه.
+	Copy CSS	نسخ CSS
+	Could not use the type tool because the layer is locked.	تعذّر استخدام أداة النص لأن الطبقة مقفلة.
+	Delete Note	حذف الملاحظة
+	Delete this note?	هل تريد حذف هذه الملاحظة؟
+	Do not erase the foreground swatch color	عدم مسح لون عينة المقدمة
+	Draws background color over foreground colors	يرسم بلون الخلفية فوق ألوان المقدمة
+	Enable to remix all layers	فعّل هذا الخيار لمزج كل الطبقات
+	Erase range of similar colors	يمسح نطاقًا من الألوان المتشابهة
+	How far to let the erasing spread	مدى امتداد المسح
+	Insert Menu Item…	إدراج عنصر قائمة…
+	Insert Path	إدراج مسار
+	No document.	لا يوجد مستند.
+	No menu item belongs to this chooser.	لا يوجد عنصر قائمة مرتبط بهذا المنتقي.
+	No menu item is waiting.	لا يوجد عنصر قائمة معلّق.
+	No note to delete	لا توجد ملاحظة لحذفها
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	لا يوجد مسار لإنشاء شكل منه: ارسم مسارًا بأداة القلم أو اختر واحدًا من لوحة المسارات.
+	No pixels are selected.	لم يتم تحديد أي بكسلات.
+	No recorded step belongs to this editor.	لا توجد خطوة مسجلة مرتبطة بهذا المحرر.
+	No slices are selected. Click a slice in the preview to select it.	لم يتم تحديد أي شرائح. انقر على شريحة في المعاينة لتحديدها.
+	No step is waiting.	لا توجد خطوة معلّقة.
+	Note deleted, but the preference could not be saved: {error}	حُذفت الملاحظة، لكن تعذّر حفظ التفضيل: {error}
+	Open as Smart Object…	فتح ككائن ذكي…
+	Painting Mode	وضع الرسم
+	Pick Color From Image	اختيار لون من الصورة
+	Preparing Free Transform	جارٍ تحضير التحويل الحر
+	Record Again	التسجيل مجددًا
+	Resize windows when zooming using the Zoom Tool	تغيير حجم النوافذ عند التكبير بأداة التكبير
+	Scroll all open document windows when using the hand tool	تمرير كل نوافذ المستندات المفتوحة عند استخدام أداة اليد
+	Search and select fonts	البحث عن الخطوط واختيارها
+	Select an action first.	اختر إجراءً أولًا.
+	Select an action step first.	اختر خطوة من الإجراء أولًا.
+	Selected Area Only	المنطقة المحددة فقط
+	Selected Slices	الشرائح المحددة
+	Set flow rate for stroke	ضبط معدل تدفق الضربة
+	Set font size	ضبط حجم الخط
+	Set font style	ضبط نمط الخط
+	Set opacity for stroke	ضبط عتامة الضربة
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	ضبط تنعيم الضربة\nتقلل القيم الأعلى من اهتزاز ضربات الفرشاة
+	Set symmetry options for Painting	ضبط خيارات تماثل الرسم
+	Set text color	ضبط لون النص
+	Set the brush angle	ضبط زاوية الفرشاة
+	Smoothing Options	خيارات التنعيم
+	The Record Again command changed.	تغيّر أمر إعادة التسجيل.
+	The action or insertion command changed. Request Insert Menu Item again.	تغيّر الإجراء أو أمر الإدراج. اطلب إدراج عنصر قائمة مجددًا.
+	The actions changed. Request Record Again again.	تغيّرت الإجراءات. اطلب إعادة التسجيل مجددًا.
+	The command permissions changed. Request Insert Menu Item again.	تغيّرت أذونات الأمر. اطلب إدراج عنصر قائمة مجددًا.
+	The command permissions changed. Request Record Again again.	تغيّرت أذونات الأمر. اطلب إعادة التسجيل مجددًا.
+	The document changed. Request Record Again again.	تغيّر المستند. اطلب إعادة التسجيل مجددًا.
+	The document or its notes changed. Please delete the note again.	تغيّر المستند أو ملاحظاته. احذف الملاحظة مجددًا.
+	The preference could not be saved: {error}	تعذّر حفظ التفضيل: {error}
+	The step editor could not be opened.	تعذّر فتح محرر الخطوة.
+	The step has no command editor.	لا يوجد محرر أمر لهذه الخطوة.
+	Top align text	محاذاة النص إلى الأعلى
+	Use relative positioning for reference point	استخدام موضع نسبي للنقطة المرجعية
+	Useful mixer brush combinations	تركيبات مفيدة لفرشاة المزج
+	Zoom current window to 1:1	تكبير النافذة الحالية إلى 1:1
+	Zoom current window to fill the screen	تكبير النافذة الحالية لملء الشاشة
+	Zoom current window to screen size	تكبير النافذة الحالية لتناسب حجم الشاشة
+	brush tool	أداة الفرشاة
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: فشل {n} ملف|{what}: فشل ملف واحد ({n})|{what}: فشل ملفان ({n})|{what}: فشلت {n} ملفات|{what}: فشل {n} ملفًا|{what}: فشل {n} ملف
+	Save the settings to each raw's sidecar without opening it	حفظ الإعدادات في الملف الجانبي لكل ملف RAW دون فتحه
+	No settings saved: these raws can't keep a sidecar here	لم تُحفظ الإعدادات: لا يمكن إنشاء ملف جانبي لهذه الملفات بصيغة RAW هنا
+	Nothing to save: these raws are at their default settings	لا يوجد ما يُحفظ: تستخدم ملفات RAW هذه إعداداتها الافتراضية
+	Some settings could not be saved; the raws stay open	تعذّر حفظ بعض الإعدادات؛ ستبقى ملفات RAW مفتوحة
+	Equalize Entire Image Based On Selected Area	تسوية الصورة بالكامل بناءً على المنطقة المحددة
+	Equalize Selected Area Only	تسوية المنطقة المحددة فقط
+	Open in RAW Develop	فتح في معالجة RAW
+	Skip transform when placing	تخطي التحويل عند الإدراج
+	Upscale	تكبير
+	Tiling	التقسيم إلى بلاطات
+	Tile size	حجم البلاطة
+	Overlap	التداخل
+	Noise reduction	تقليل الضوضاء
+	Alpha channel	قناة ألفا
+	Batch size	حجم الدفعة
+	Disable	تعطيل
+	No local upscaler installed	لم يُثبّت نموذج تكبير محلي
+	Highest	الأعلى

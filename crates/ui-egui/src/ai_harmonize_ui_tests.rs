@@ -54,6 +54,7 @@ fn original_comparison_is_preview_only_and_confirm_cancel_and_reopen_are_consist
         &[],
         &Default::default(),
         Some(&source),
+        None,
     )
     .unwrap();
     assert_eq!(photocraft_compose::flatten(&preview).px, photocraft_compose::flatten(&original).px);
@@ -69,6 +70,7 @@ fn original_comparison_is_preview_only_and_confirm_cancel_and_reopen_are_consist
         &[],
         &Default::default(),
         Some(&source),
+        None,
     )
     .unwrap();
     assert_eq!(photocraft_compose::flatten(&reduced).px, photocraft_compose::flatten(&crate::proxy::proxy_document(&expected, 4)).px);

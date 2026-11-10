@@ -1,5 +1,7 @@
 # PhotoCraft — Local Qwen AI
 
+This branch prepares upstream **0.22.0** as a candidate. Validation and Windows artifact provenance are tracked in [the integration record](docs/upstream-0220-integration.md).
+
 [한국어](README.ko.md) · [Download the portable release](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 
 A native Rust PhotoCraft fork focused on **Photoshop-style local generative editing** through ComfyUI and Qwen Image 2.1, with optional prompt translation, new result layers and saved prompt history. AVIF opening, saving and export are also included.

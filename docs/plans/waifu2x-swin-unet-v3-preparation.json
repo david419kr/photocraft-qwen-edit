@@ -1,0 +1,259 @@
+{
+  "date": "2026-11-10",
+  "preparation": {
+    "source_commit": "b97423c786dfb998dc39d1f0ef1d688ada89c57e",
+    "archives": [
+      {
+        "file": "waifu2x_pretrained_models_swin_unet_v3_art_20260816.zip",
+        "bytes": 115825363,
+        "sha256": "d623590525e4438b92d8cc0404ff58c427ab79b79c4b02de12ce132e6d89e82e",
+        "official_sha256_verified": true,
+        "url": "https://github.com/nagadomi/nunif/releases/download/0.0.0/waifu2x_pretrained_models_swin_unet_v3_art_20260816.zip"
+      },
+      {
+        "file": "nunif-b97423c786dfb998dc39d1f0ef1d688ada89c57e-source.zip",
+        "bytes": 4291831,
+        "sha256": "826c37223863b30c176881bde595c2e675cd754ab471ca3e159c1553803bb2a1",
+        "official_sha256_verified": false,
+        "url": "https://codeload.github.com/nagadomi/nunif/zip/b97423c786dfb998dc39d1f0ef1d688ada89c57e"
+      }
+    ],
+    "status": "prepared-and-small-cuda-inference-verified-app-integration-not-implemented",
+    "runtime": {
+      "python": "3.12.13",
+      "torch": "2.14.1+cu132",
+      "torchvision": "0.29.1+cu132",
+      "cuda": "13.2",
+      "path": "python/python.exe",
+      "is_venv": false
+    },
+    "active_model_files": [
+      "models/art/scale2x.pth",
+      "models/art/noise0_scale2x.pth",
+      "models/art/noise1_scale2x.pth",
+      "models/art/noise2_scale2x.pth",
+      "models/art/noise3_scale2x.pth"
+    ],
+    "gpu_probe": "gpu-probe.json",
+    "integration_implemented": false,
+    "relocation_probe": "relocation-probe.json"
+  },
+  "models": [
+    {
+      "noise": "None",
+      "file": "models/art/scale2x.pth",
+      "bytes": 14522119,
+      "sha256": "73f90deb37975a107a71d8f50b3dcb620af6f44c5fea1c8471db72ca83a31d11"
+    },
+    {
+      "noise": "Low",
+      "file": "models/art/noise0_scale2x.pth",
+      "bytes": 14523605,
+      "sha256": "b8ce7bf2cf978794544a42a6732c58507dd77487b8ecdfcf040e3489cd0987a3"
+    },
+    {
+      "noise": "Medium",
+      "file": "models/art/noise1_scale2x.pth",
+      "bytes": 14523605,
+      "sha256": "5f9c6a41317704b0033c2728588c4195118bcdc10021c3e12f2e788865cb4104"
+    },
+    {
+      "noise": "High",
+      "file": "models/art/noise2_scale2x.pth",
+      "bytes": 14523605,
+      "sha256": "e3a166b4e5c121b2dc86d5e298c42366664f5701d6861794734e76d7d6215c60"
+    },
+    {
+      "noise": "Highest",
+      "file": "models/art/noise3_scale2x.pth",
+      "bytes": 14523605,
+      "sha256": "2a064bd8c626bd12574a849cc5d7f50e66db542bd03ef86c8a0aedac2f7e3d19"
+    }
+  ],
+  "cuda_probe": {
+    "torch": "2.14.1+cu132",
+    "cuda": "13.2",
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "compute_capability": [
+      8,
+      9
+    ],
+    "checkpoint_metadata": [
+      {
+        "file": "noise0_scale2x.pth",
+        "model_name": "waifu2x.swin_unet_v3_2x",
+        "kwargs": {
+          "in_channels": 3,
+          "out_channels": 3,
+          "encoder_dim": 64,
+          "middle_dim": 128,
+          "decoder_dim": 96,
+          "kwargs": {}
+        },
+        "state_dtypes": [
+          "torch.float32"
+        ]
+      },
+      {
+        "file": "noise1_scale2x.pth",
+        "model_name": "waifu2x.swin_unet_v3_2x",
+        "kwargs": {
+          "in_channels": 3,
+          "out_channels": 3,
+          "encoder_dim": 64,
+          "middle_dim": 128,
+          "decoder_dim": 96,
+          "kwargs": {}
+        },
+        "state_dtypes": [
+          "torch.float32"
+        ]
+      },
+      {
+        "file": "noise2_scale2x.pth",
+        "model_name": "waifu2x.swin_unet_v3_2x",
+        "kwargs": {
+          "in_channels": 3,
+          "out_channels": 3,
+          "encoder_dim": 64,
+          "middle_dim": 128,
+          "decoder_dim": 96,
+          "kwargs": {}
+        },
+        "state_dtypes": [
+          "torch.float32"
+        ]
+      },
+      {
+        "file": "noise3_scale2x.pth",
+        "model_name": "waifu2x.swin_unet_v3_2x",
+        "kwargs": {
+          "in_channels": 3,
+          "out_channels": 3,
+          "encoder_dim": 64,
+          "middle_dim": 128,
+          "decoder_dim": 96,
+          "kwargs": {}
+        },
+        "state_dtypes": [
+          "torch.float32"
+        ]
+      },
+      {
+        "file": "scale2x.pth",
+        "model_name": "waifu2x.swin_unet_v3_2x",
+        "kwargs": {
+          "in_channels": 3,
+          "out_channels": 3,
+          "encoder_dim": 64,
+          "middle_dim": 128,
+          "decoder_dim": 96,
+          "kwargs": {}
+        },
+        "state_dtypes": [
+          "torch.float32"
+        ]
+      }
+    ],
+    "load_seconds": 0.29968209999969986,
+    "tile_mapping": {
+      "64": 64,
+      "256": 256,
+      "400": 384,
+      "640": 640
+    },
+    "noise_cases": [
+      {
+        "noise_level": -1,
+        "shape": [
+          3,
+          146,
+          178
+        ],
+        "finite": true
+      },
+      {
+        "noise_level": 0,
+        "shape": [
+          3,
+          146,
+          178
+        ],
+        "finite": true
+      },
+      {
+        "noise_level": 1,
+        "shape": [
+          3,
+          146,
+          178
+        ],
+        "finite": true
+      },
+      {
+        "noise_level": 2,
+        "shape": [
+          3,
+          146,
+          178
+        ],
+        "finite": true
+      },
+      {
+        "noise_level": 3,
+        "shape": [
+          3,
+          146,
+          178
+        ],
+        "finite": true
+      }
+    ],
+    "alpha_auto_smoke_passed": true,
+    "measurements": [
+      {
+        "mode": "fp16_amp",
+        "seconds": 0.26196859999981825,
+        "peak_torch_allocated_mib": 3600.7216796875,
+        "input": [
+          960,
+          640
+        ],
+        "tile": 640,
+        "batch": 4
+      },
+      {
+        "mode": "fp32",
+        "seconds": 0.3417407999986608,
+        "peak_torch_allocated_mib": 5884.576171875,
+        "input": [
+          960,
+          640
+        ],
+        "tile": 640,
+        "batch": 4,
+        "fp16_vs_fp32_psnr_db": 81.51508003427551
+      },
+      {
+        "mode": "fp16_amp_tta",
+        "seconds": 2.0487200999996276,
+        "peak_torch_allocated_mib": 3846.6396484375,
+        "input": [
+          960,
+          640
+        ],
+        "tile": 640,
+        "batch": 4
+      }
+    ],
+    "scope": "one synthetic input; eager PyTorch, no torch.compile or TensorRT comparison; allocator peak is not total VRAM"
+  },
+  "relocation_probe": {
+    "new_directory_copy": true,
+    "original_python_environment_excluded": true,
+    "all_python_paths_and_imports_contained": true,
+    "cuda_inference_2x_passed": true,
+    "same_pc_only": true,
+    "other_pc_vc_runtime_and_driver_validation_pending": true
+  }
+}

@@ -1,5 +1,7 @@
 # PhotoCraft — 로컬 Qwen AI 기능
 
+이 브랜치는 upstream **0.22.0** 후보를 준비합니다. 검증과 Windows 산출물 출처는 [통합 기록](docs/upstream-0220-integration.md)에 기록합니다.
+
 [English](README.md) · [포터블 릴리스 다운로드](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 
 PhotoCraft에 **포토샵 스타일의 로컬 생성형 AI 편집**을 추가한 fork입니다. ComfyUI의 Qwen Image 2.1을 사용하고 결과를 새 레이어로 추가하며, 프롬프트 기록도 저장합니다. AVIF 열기·저장·내보내기도 지원합니다. 아래는 이 fork의 추가 기능 안내입니다.

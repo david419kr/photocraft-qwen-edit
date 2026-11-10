@@ -142,6 +142,19 @@ fn preferences_search_matches_editable_fields_across_sections() {
     assert_eq!(preference_sections(&values, "").len(), SECTIONS.len());
 }
 
+/// The preview language controls translated search; English schema paths keep their aliases.
+#[test]
+fn azerbaijani_preferences_search_keeps_dotted_i_and_schema_aliases() {
+    let az = crate::i18n::Lang::from_code("az").unwrap();
+    crate::i18n::with_language(az, || {
+        let values = prefs::Preferences::default().to_json();
+        assert!(preference_sections(&values, "İNTERFEYS").iter().any(|(id, _)| *id == "interface"));
+        assert!(super::fields::preference_matches("interface", "language", "DİL"));
+        assert!(!super::fields::preference_matches("interface", "language", "DIL"));
+        assert!(super::fields::preference_matches("interface", "uiScale", "INTERFACE.UISCALE"));
+    });
+}
+
 #[test]
 fn preferences_dialog_width_follows_its_resizable_area() {
     let prefs = serde_json::json!({"__prefsui": "prefs"});
@@ -1121,6 +1134,135 @@ fn selected_tool_excludes_temporary_switches() {
     assert_eq!(stored(&store)["selectedTool"], json!("PolygonLasso"));
 }
 
+/// #3569: a restart keeps the last tool of every group, not only the selected tool's.
+#[test]
+fn group_tools_survive_a_restart() {
+    use crate::state::Tool;
+    let (mut app, store) = app_with_store();
+    let ctx = egui::Context::default();
+    tick(&mut app, &ctx);
+    // Explicitly visit Move: the fork starts on Brush rather than upstream's Move.
+    for tool in [Tool::Move, Tool::Brush, Tool::Pencil, Tool::PaintBucket, Tool::PolygonLasso, Tool::Pencil, Tool::Zoom] {
+        app.ui.tool = tool;
+        crate::tool_memory::persist(&mut app, &ctx);
+        tick(&mut app, &ctx);
+    }
+    assert_eq!(stored(&store)["groupTools"], json!(["Zoom", "Pencil", "PolygonLasso", "PaintBucket", "Brush", "Move"]), "most recent first, each once");
+    let (app2, _) = app_with_saved(store.lock().unwrap().clone());
+    assert_eq!(app2.ui.tool, Tool::Zoom);
+    assert_eq!(app2.ui.group_tools, app.ui.group_tools);
+    assert_eq!(app2.ui.group_tool('B'), Some(Tool::Pencil), "the group's latest tool");
+    assert_eq!(app2.ui.group_tool('G'), Some(Tool::PaintBucket));
+    assert_eq!(app2.ui.group_tool('L'), Some(Tool::PolygonLasso));
+}
+
+#[test]
+fn group_tools_are_flushed_on_exit_without_another_frame() {
+    use crate::state::Tool;
+    let (mut app, store) = app_with_store();
+    app.ui.tool = Tool::Pencil;
+    crate::tool_memory::persist(&mut app, &egui::Context::default());
+    app.ui.tool = Tool::PaintBucket;
+    crate::tool_memory::save_on_exit(&mut app).unwrap();
+    let (app2, _) = app_with_saved(store.lock().unwrap().clone());
+    assert_eq!(app2.ui.group_tool('B'), Some(Tool::Pencil));
+    assert_eq!(app2.ui.group_tool('G'), Some(Tool::PaintBucket));
+}
+
+/// A frame as far as the tools go: the key handling, then what is remembered.
+fn tool_frame(app: &mut PhotocraftApp, ctx: &egui::Context, events: Vec<egui::Event>) {
+    ctx.begin_pass(egui::RawInput { events, ..Default::default() });
+    crate::shortcuts::handle(app, ctx);
+    ctx.end_pass().textures_delta.clear();
+    crate::tool_memory::persist(app, ctx);
+    tick(app, ctx);
+}
+
+/// A tool picked during a drag that ends on the tool it began with: the selected tool never
+/// changed, but that tool's group did.
+#[test]
+fn group_tools_are_saved_when_the_selected_tool_stays_the_same() {
+    use crate::state::Tool;
+    let (mut app, store) = app_with_store();
+    let ctx = egui::Context::default();
+    let pointer = |pressed| egui::Event::PointerButton { pos: egui::Pos2::ZERO, button: egui::PointerButton::Primary, pressed, modifiers: Default::default() };
+    // The fork starts on Brush, so first establish a different explicit selection.
+    // This keeps the upstream scenario about a remembered choice, not fresh-profile defaults.
+    app.ui.tool = Tool::Move;
+    tool_frame(&mut app, &ctx, vec![]);
+    app.ui.tool = Tool::Brush;
+    tool_frame(&mut app, &ctx, vec![]);
+    assert_eq!(stored(&store)["selectedTool"], json!("Brush"), "the pre-drag choice is persisted");
+    tool_frame(&mut app, &ctx, vec![pointer(true)]);
+    app.ui.tool = Tool::PaintBucket;
+    tool_frame(&mut app, &ctx, vec![]);
+    app.ui.tool = Tool::Brush;
+    tool_frame(&mut app, &ctx, vec![]);
+    tool_frame(&mut app, &ctx, vec![pointer(false)]);
+    assert_eq!(stored(&store)["selectedTool"], json!("Brush"));
+    let (app2, _) = app_with_saved(store.lock().unwrap().clone());
+    assert_eq!(app2.ui.group_tool('G'), Some(Tool::PaintBucket));
+}
+
+/// The pen's eraser end and a held tool letter don't change what a group shows or brings back,
+/// neither during the session nor when quitting while they are in use.
+#[test]
+fn group_tools_exclude_temporary_switches() {
+    use crate::state::Tool;
+    let (mut app, store) = app_with_store();
+    let ctx = egui::Context::default();
+    // Preserve the same explicit history regardless of the fork's fresh-profile default.
+    for tool in [Tool::Move, Tool::MagicEraser, Tool::Brush] {
+        app.ui.tool = tool;
+        tool_frame(&mut app, &ctx, vec![]);
+    }
+    app.stylus.tool_before_eraser = Some(Tool::Brush);
+    app.ui.tool = Tool::Eraser;
+    tool_frame(&mut app, &ctx, vec![]);
+    assert_eq!(app.ui.group_tool('E'), Some(Tool::MagicEraser), "the pen's eraser end");
+    app.stylus.tool_before_eraser = None;
+    app.ui.tool = Tool::Brush;
+    let press = egui::Event::Key { key: egui::Key::Z, physical_key: None, pressed: true, repeat: false, modifiers: Default::default() };
+    tool_frame(&mut app, &ctx, vec![press]);
+    tool_frame(&mut app, &ctx, vec![]);
+    assert_eq!(app.ui.tool, Tool::Zoom, "Z is still down");
+    assert_eq!(app.ui.group_tool('Z'), None, "a held letter");
+    crate::tool_memory::save_on_exit(&mut app).unwrap();
+    assert_eq!(stored(&store)["groupTools"], json!(["Brush", "MagicEraser", "Move"]));
+}
+
+/// A selected tool this version doesn't know starts on the default tool. The saved list stays as
+/// it is, names this version doesn't know included, until the next tool is picked.
+#[test]
+fn a_launch_alone_saves_no_group_tools() {
+    use crate::state::Tool;
+    let saved = json!({"selectedTool": "FutureTool", "groupTools": ["Pencil", "FutureTool", "PaintBucket"]});
+    let (mut app, store) = app_with_saved(Some(saved.to_string()));
+    let ctx = egui::Context::default();
+    tool_frame(&mut app, &ctx, vec![]);
+    assert_eq!(stored(&store)["groupTools"], saved["groupTools"]);
+    assert_eq!(app.ui.tool, Tool::Brush, "the fork defaults to Brush");
+    app.ui.tool = Tool::Move;
+    tool_frame(&mut app, &ctx, vec![]);
+    app.ui.tool = Tool::Brush;
+    tool_frame(&mut app, &ctx, vec![]);
+    assert_eq!(stored(&store)["groupTools"], json!(["Brush", "Move", "Pencil", "PaintBucket"]));
+}
+
+/// A damaged or hand-edited `groupTools` costs no other preference, and what reads back counts.
+#[test]
+fn damaged_group_tools_keep_what_reads_back() {
+    use crate::state::Tool;
+    for bad in [json!(null), json!("Pencil"), json!(42), json!({"B": "Pencil"})] {
+        let (app, _) = app_with_saved(Some(json!({"groupTools": bad, "toolOptions": {"feather": 12.0}}).to_string()));
+        assert_eq!(app.ui.group_tools, [Tool::Brush], "{bad}");
+        assert_eq!(app.ui.tool_options.feather, 12.0);
+    }
+    let saved = json!({"groupTools": ["FutureTool", "Pencil", 7, null, {}, "PaintBucket", "Pencil"]});
+    let (app, _) = app_with_saved(Some(saved.to_string()));
+    assert_eq!(app.ui.group_tools, [Tool::Brush, Tool::Pencil, Tool::PaintBucket]);
+}
+
 #[test]
 fn tool_options_survive_a_restart() {
     let (mut app, store) = app_with_store();
@@ -1295,7 +1437,7 @@ fn remembered_tool_brushes_survive_damage() {
 }
 
 /// #6212: Reset Tool forgets that tool's remembered options and brush; Reset All Tools
-/// forgets every tool's.
+/// forgets every tool's: each painting tool keeps only its own starting brush (#11810).
 #[test]
 fn reset_tools_clear_the_remembered_options_and_brushes() {
     use crate::state::Tool;
@@ -1334,10 +1476,12 @@ fn reset_tools_clear_the_remembered_options_and_brushes() {
     tick(&mut app, &ctx);
     let saved = stored(&store);
     assert!(saved["toolOptions"].is_null(), "{saved}");
-    assert!(saved["toolBrushes"]["brushes"].as_object().is_none_or(|m| m.is_empty()), "{saved}");
+    let starting =
+        |brushes: &[(Tool, photocraft_engine::BrushSettings)]| brushes.iter().all(|(t, b)| *b == crate::paint_mouse::fresh_brush(*t, b) && b.size != 77.0);
+    assert!(starting(&app.ui.tool_brushes), "{saved}");
     let (app2, _) = app_with_saved(store.lock().unwrap().clone());
     assert_eq!(app2.ui.tool_options, crate::state::ToolOptions::default());
-    assert!(app2.ui.tool_brushes.is_empty());
+    assert!(!app2.ui.tool_brushes.is_empty() && starting(&app2.ui.tool_brushes), "remembered across a restart");
 }
 
 #[test]
@@ -2016,52 +2160,30 @@ fn edit_dialogs_open() {
     let d = crate::menus::invoke(&mut app, &ctx, "edit.presets.presetManager", json!({})).unwrap()["dialog"].as_u64().unwrap();
     assert!(crate::dialogs::confirm(&mut app, d).is_ok());
 }
-#[test]
-fn reset_section_on_type_keeps_the_favourite_fonts() {
-    // The favourites are the font menu's library, not a Type setting.
-    use egui_kittest::{Harness, kittest::Queryable};
-    let (mut app, store) = app_with_store();
-    app.run("prefs.set", json!({"values": {"interface.language": "en", "type.smartQuotes": false}})).unwrap();
-    app.run("type.font.favorite", json!({"family": "Bebas Neue"})).unwrap();
-    open_preferences(&mut app, "type");
-    let mut h = Harness::builder().with_size(vec2(1280.0, 800.0)).build_eframe(move |cc| {
-        PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
-        app
-    });
-    h.run_steps(4);
-    h.get_by_label("Reset Section").click();
-    h.run_steps(2);
-    h.get_by_label("OK").click();
-    h.run_steps(4);
-    let prefs = h.state().session.prefs().type_.clone();
-    assert!(prefs.smart_quotes, "the Type settings are reset");
-    assert_eq!(prefs.favorite_fonts, ["Bebas Neue"], "the favourites are kept");
-    assert_eq!(stored(&store)["type"]["favoriteFonts"], json!(["Bebas Neue"]));
-}
 
 #[test]
-fn preference_labels_are_translated() {
-    let session = photocraft_engine::Session::new();
-    let v: Value = serde_json::from_str(&session.prefs_to_json()).expect("prefs json");
-    for lang in crate::i18n::Lang::all().filter(|l| l.complete_menus()) {
-        let mut missing = Vec::new();
-        for (sec, title) in SECTIONS {
-            if !crate::i18n::has(lang, title) {
-                missing.push(title.to_string());
-            }
-            let Some(obj) = v.get(sec).and_then(Value::as_object) else { continue };
-            for k in obj.keys() {
-                if sec == "interface" && k == "favoriteThemes" {
-                    continue; // Rendered as star controls beside the theme choices.
-                }
-                let mut labels = vec![humanize(k)];
-                labels.extend(prefs::choices(&format!("{sec}.{k}")).into_iter().flatten().map(|c| choice_label(c)));
-                missing.extend(labels.into_iter().filter(|l| !crate::i18n::has(lang, l)));
-            }
+fn tool_colors_first_saves_keep_other_instances_separate_edits() {
+    for initial in
+        [None, Some("{}".into()), Some(json!({"toolColors": null}).to_string()), Some(json!({"toolColors": crate::tool_memory::default_colors()}).to_string())]
+    {
+        for background_first in [false, true] {
+            let store = Arc::new(Mutex::new(initial.clone()));
+            let (mut foreground, mut background) = (app_on(&store, Arc::default()), app_on(&store, Arc::default()));
+            let fg = [0.25, 0.5, 0.75, 1.0];
+            let bg = [0.75, 0.5, 0.25, 1.0];
+            foreground.run("tools.setColors", json!({"foreground": fg})).unwrap();
+            background.run("tools.setColors", json!({"background": bg})).unwrap();
+            let (first, second) = if background_first { (&mut background, &mut foreground) } else { (&mut foreground, &mut background) };
+            crate::tool_memory::save_on_exit(first).unwrap();
+            crate::tool_memory::save_on_exit(second).unwrap();
+            // Further saves must still keep the other window's independent field.
+            save_preferences(first).unwrap();
+            save_preferences(second).unwrap();
+            let restored = app_on(&store, Arc::default());
+            assert_eq!(restored.session.tools.foreground, fg);
+            assert_eq!(restored.session.tools.background, bg);
+            assert_eq!(restored.session.tools.other_colors, photocraft_engine::ToolState::MASK_COLORS);
         }
-        missing.sort();
-        missing.dedup();
-        assert!(missing.is_empty(), "{}: untranslated preference labels: {missing:#?}", lang.code());
     }
 }
 
@@ -2236,6 +2358,59 @@ fn tool_colors_ignore_invalid_swatches_without_losing_valid_preferences() {
 }
 
 #[test]
+fn reset_section_on_type_keeps_the_favourite_fonts() {
+    // The favourites are the font menu's library, not a Type setting.
+    use egui_kittest::{Harness, kittest::Queryable};
+    let (mut app, store) = app_with_store();
+    app.run("prefs.set", json!({"values": {"interface.language": "en", "type.smartQuotes": false}})).unwrap();
+    app.run("type.font.favorite", json!({"family": "Bebas Neue"})).unwrap();
+    open_preferences(&mut app, "type");
+    let mut h = Harness::builder().with_size(vec2(1280.0, 800.0)).build_eframe(move |cc| {
+        PhotocraftApp::setup_context(&cc.egui_ctx, Default::default());
+        app
+    });
+    h.run_steps(4);
+    h.get_by_label("Reset Section").click();
+    h.run_steps(2);
+    h.get_by_label("OK").click();
+    h.run_steps(4);
+    let prefs = h.state().session.prefs().type_.clone();
+    assert!(prefs.smart_quotes, "the Type settings are reset");
+    assert_eq!(prefs.favorite_fonts, ["Bebas Neue"], "the favourites are kept");
+    assert_eq!(stored(&store)["type"]["favoriteFonts"], json!(["Bebas Neue"]));
+}
+
+#[test]
+fn preference_labels_are_translated() {
+    let session = photocraft_engine::Session::new();
+    let v: Value = serde_json::from_str(&session.prefs_to_json()).expect("prefs json");
+    let mut all_missing = Vec::new();
+    for lang in crate::i18n::Lang::all().filter(|l| l.complete_menus()) {
+        let mut missing = Vec::new();
+        for (sec, title) in SECTIONS {
+            if !crate::i18n::has(lang, title) {
+                missing.push(title.to_string());
+            }
+            let Some(obj) = v.get(sec).and_then(Value::as_object) else { continue };
+            for k in obj.keys() {
+                if sec == "interface" && k == "favoriteThemes" {
+                    continue; // Rendered as star controls beside the theme choices.
+                }
+                let mut labels = vec![humanize(k)];
+                labels.extend(prefs::choices(&format!("{sec}.{k}")).into_iter().flatten().map(|c| choice_label(c)));
+                missing.extend(labels.into_iter().filter(|l| !crate::i18n::has(lang, l)));
+            }
+        }
+        missing.sort();
+        missing.dedup();
+        if !missing.is_empty() {
+            all_missing.push((lang.code(), missing));
+        }
+    }
+    assert!(all_missing.is_empty(), "untranslated preference labels: {all_missing:#?}");
+}
+
+#[test]
 fn implemented_scratch_preferences_are_visible_in_the_dialog_fork_contract() {
     let values = prefs::Preferences::default().to_json();
     // Upstream 0.20.2 implements tile spilling and its size cap; both settings have dialog rows.
@@ -2320,4 +2495,10 @@ fn selected_tool_excludes_spring_and_explicit_choice_clears_overrides() {
         let (restored, _) = app_with_saved(store.lock().unwrap().clone());
         assert_eq!(restored.ui.tool, if explicit { Tool::Eraser } else { Tool::Brush });
     }
+}
+
+#[test]
+fn raw_open_preference_uses_current_display_name() {
+    assert_eq!(humanize("openInCameraRaw"), "Open in RAW Develop");
+    assert!(!prefs::is_hidden("rawDefaults.openInCameraRaw"));
 }

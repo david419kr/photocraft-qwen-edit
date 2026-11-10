@@ -40,7 +40,7 @@
 
 # Tool and Scope strings
 
-# Camera Raw
+# RAW Develop
 
 # Coverage-test keys (English until translated)
 
@@ -160,6 +160,8 @@
 	Layer Mask	लेयर मास्क
 	Hide All	सभी छिपाएँ
 	Reveal Selection	चयन दिखाएँ
+	Reveal in Finder	Finder में दिखाएँ
+	Reveal in Explorer	Explorer में दिखाएँ
 	Hide Selection	चयन छिपाएँ
 	From Transparency	पारदर्शिता से
 	Apply	लागू करें
@@ -235,6 +237,12 @@
 	Info	जानकारी
 	Timeline	टाइमलाइन
 	Tools	टूल्स
+	Contextual Task Bar	प्रासंगिक कार्य पट्टी
+	Hide bar	पट्टी छिपाएँ
+	Reset bar position	पट्टी की स्थिति रीसेट करें
+	Pin bar position	पट्टी की स्थिति पिन करें
+	Move bar	पट्टी खिसकाएँ
+	More options	अधिक विकल्प
 	Options	विकल्प
 	Status Bar	स्टेटस बार
 	Move Tool	मूव टूल
@@ -349,7 +357,8 @@
 	Impressionist	प्रभाववादी
 	Aligned	संरेखित
 	Fit in View	दृश्य में फ़िट करें
-	Camera Raw	Camera Raw
+	RAW Develop	RAW डेवलप
+	RAW Defaults…	RAW डिफ़ॉल्ट…
 cameraRaw	Amount	मात्रा
 	Amount	मात्रा
 cameraRaw	Aqua	एक्वा
@@ -364,16 +373,16 @@ cameraRaw	Blending	मिश्रण
 	Blending	मिश्रण
 cameraRaw	Blue	नीला
 	Blue	नीला
-cameraRaw	Camera Raw ({name})	Camera Raw ({name})
-cameraRaw	Camera Raw Filter ({layer})	Camera Raw फ़िल्टर ({layer})
-	Camera Raw Filter ({layer})	Camera Raw फ़िल्टर ({layer})
-cameraRaw	Camera Raw isn't open	Camera Raw खुला नहीं है
-	Camera Raw isn't open	Camera Raw खुला नहीं है
+cameraRaw	RAW Develop ({name})	RAW डेवलप ({name})
+cameraRaw	RAW Develop Filter ({layer})	RAW डेवलप फ़िल्टर ({layer})
+	RAW Develop Filter ({layer})	RAW डेवलप फ़िल्टर ({layer})
+cameraRaw	RAW Develop isn't open	RAW डेवलप खुला नहीं है
+	RAW Develop isn't open	RAW डेवलप खुला नहीं है
 cameraRaw	Cancel	रद्द करें
-cameraRaw	Cancelled opening {name}	{name} खोलना रद्द किया गया
-	Cancelled opening {name}	{name} खोलना रद्द किया गया
-cameraRaw	Cancelled {label}	{label} रद्द किया गया
-	Cancelled {label}	{label} रद्द किया गया
+cameraRaw	Canceled opening {name}	{name} खोलना रद्द किया गया
+	Canceled opening {name}	{name} खोलना रद्द किया गया
+cameraRaw	Canceled {label}	{label} रद्द किया गया
+	Canceled {label}	{label} रद्द किया गया
 cameraRaw	Clarity	स्पष्टता
 	Clarity	स्पष्टता
 cameraRaw	Color	रंग
@@ -427,8 +436,8 @@ cameraRaw	Load Settings…	सेटिंग्स लोड करें…
 	Load Settings…	सेटिंग्स लोड करें…
 cameraRaw	Load settings from a Camera Raw .xmp file	Camera Raw .xmp फ़ाइल से सेटिंग्स लोड करें
 	Load settings from a Camera Raw .xmp file	Camera Raw .xmp फ़ाइल से सेटिंग्स लोड करें
-cameraRaw	Loaded Camera Raw settings from {file}	{file} से Camera Raw सेटिंग्स लोड की गईं
-	Loaded Camera Raw settings from {file}	{file} से Camera Raw सेटिंग्स लोड की गईं
+cameraRaw	Loaded RAW Develop settings from {file}	{file} से RAW डेवलप सेटिंग्स लोड की गईं
+	Loaded RAW Develop settings from {file}	{file} से RAW डेवलप सेटिंग्स लोड की गईं
 cameraRaw	Luminance	लुमिनेंस
 	Luminance	लुमिनेंस
 cameraRaw	Luminance Detail	लुमिनेंस डिटेल
@@ -550,6 +559,7 @@ cameraRaw	Yellow	पीला
 	Layer deleted, but confirmation preference could not be saved: {error}	लेयर हटा दी गई, लेकिन पुष्टि की प्राथमिकता सहेजी नहीं जा सकी: {error}
 	The path was kept as the Work Path	पथ को कार्य पथ के रूप में रखा गया
 	The path was discarded	पथ हटा दिया गया
+	Scroll All Windows	सभी विंडो स्क्रॉल करें
 	Art History Brush	आर्ट हिस्ट्री ब्रश
 	Style	शैली
 	Area	क्षेत्र
@@ -595,35 +605,6 @@ cameraRaw	Yellow	पीला
 # Egui 0.37 migration controls (Aspect Ratio, Category, Color Table, Gamma, Interpolation, Profile, Target, Units, Demosaic)
 	Invalid numeric entry. An integer between {min}% and {max}% is required. Previous value was inserted.	अमान्य संख्यात्मक प्रविष्टि। {min}% और {max}% के बीच एक पूर्णांक आवश्यक है। पिछला मान डाला गया।
 	Edit Brush…	ब्रश संपादित करें…
-	Match Surrounding Colors	आसपास के रंगों से मिलाएँ
-	Adjust colors with Poisson blending	पॉइसन ब्लेंडिंग से रंग समायोजित करें
-	Compare with Original Generation	मूल जनरेट किए गए परिणाम से तुलना करें
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	रंगों को जनरेशन के समय कैप्चर किए गए परिवेश से मिलाता है। तीव्रता 0 मूल जनरेट किए गए परिणाम को पुनर्स्थापित करती है।
-	Attach Reference Image	संदर्भ छवि जोड़ें
-	Remove Reference Image	संदर्भ छवि हटाएँ
-	Reference Image	संदर्भ छवि
-	Resize for AI editing	AI संपादन के लिए आकार बदलें
-	The image exceeds the AI editing size. Resize the document to continue?	छवि AI संपादन आकार से बड़ी है। जारी रखने के लिए दस्तावेज़ का आकार बदलें?
-cameraRaw	Calibration	कैलिब्रेशन
-cameraRaw	Could not write {name}: {error}	{name} लिखा नहीं जा सका: {error}
-cameraRaw	Kept {name}: written by another application	{name} रखा गया: किसी दूसरे अनुप्रयोग ने लिखा है
-cameraRaw	Set the tone sliders from the image	छवि के अनुसार टोन स्लाइडर सेट करें
-cameraRaw	Settings from {name}	{name} की सेटिंग
-cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की सेटिंग; {count} समर्थित नहीं: {names}
-	Answer the open import question first, then import this file again.	पहले खुले आयात प्रश्न का उत्तर दें, फिर इस फ़ाइल को दोबारा आयात करें।
-	Import as New Group	नए समूह के रूप में आयात करें
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	नए समूह के रूप में आयात करने से “{group}” बना रहता है और फ़ाइल उसके बगल में एक नए समूह के रूप में जुड़ती है।
-	No import is waiting. Import the file again.	कोई आयात प्रतीक्षारत नहीं है। फ़ाइल को दोबारा आयात करें।
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	बदलें पहले “{group}” की सारी सामग्री मिटा देता है, जिसमें आपके संपादित या वहाँ स्थानांतरित प्रीसेट भी शामिल हैं। इसे पूर्ववत नहीं किया जा सकता।
-	{message} into “{group}”	“{group}” में {message}
-	Color Picker	रंग चयनकर्ता
-	Recently Used Colors	हाल ही में उपयोग किए गए रंग
-	Shapes can't use patterns yet	आकृतियाँ अभी पैटर्न का उपयोग नहीं कर सकतीं
-	Solid Color	एकसमान रंग
-	Stop Color	ग्रेडिएंट बिंदु का रंग
-	Tint Color	आभा का रंग
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	ब्रश समूह “{group}” में आपके ब्रश पहले से मौजूद हैं (संख्या: {n})।|ब्रश समूह “{group}” में आपके ब्रश पहले से मौजूद हैं (संख्या: {n})।
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।|ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।
 
 # Frame Tool and other branch translations.
 	A frame supports affine transforms; select its image for perspective transforms	फ़्रेम एफ़ाइन रूपांतरणों का समर्थन करता है; परिप्रेक्ष्य रूपांतरणों के लिए उसकी छवि चुनें
@@ -663,63 +644,6 @@ cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की स
 @plural	{n} action file loaded|{n} action files loaded	{n} एक्शन फ़ाइल लोड हुई|{n} एक्शन फ़ाइलें लोड हुईं
 	{set} from {file} replaced the one from {earlier}	{file} के सेट {set} ने {earlier} वाले सेट की जगह ले ली
 @plural	{n} file could not be loaded: {errors}|{n} files could not be loaded: {errors}	{n} फ़ाइल लोड नहीं हो सकी: {errors}|{n} फ़ाइलें लोड नहीं हो सकीं: {errors}
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	तीर के सिरों के विकल्प
-	Arrowheads	तीर के सिरे
-	Concavity	अवतलता
-	End	अंत
-	Set as default	डिफ़ॉल्ट के रूप में सेट करें
-	Start	आरंभ
-	Use these settings for new arrows	नए तीरों के लिए इन सेटिंग का उपयोग करें
-	Create new set	नया सेट बनाएँ
-	Length	लंबाई
-
-# Upstream 0.20.2: batch, layer filters, memory admission and numeral styles.
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	बैच प्रोसेसिंग के दौरान कोई कमांड रद्द या बंद हो गई। अगली फ़ाइल के साथ जारी रखें या रोक दें?
-	Advanced Blending	उन्नत मिश्रण
-	Attribute	विशेषता
-	Batch	बैच प्रोसेसिंग
-	Batch preview	बैच पूर्वावलोकन
-	Data Sets as Files is unavailable on the web	वेब पर डेटा सेट को फ़ाइलों के रूप में निर्यात करना उपलब्ध नहीं है
-	Effect	प्रभाव
-	Empty	खाली
-	Filter for embedded smart objects	एम्बेड किए गए स्मार्ट ऑब्जेक्ट छाँटें
-	Filter for linked smart objects that are missing	गायब लिंक की गई फ़ाइलों वाले स्मार्ट ऑब्जेक्ट छाँटें
-	Filter for smart objects linked locally	स्थानीय फ़ाइलों से जुड़े स्मार्ट ऑब्जेक्ट छाँटें
-	High Memory Photoshop Document	अधिक मेमोरी वाला Photoshop दस्तावेज़
-	Image Compression	छवि संपीड़न
-	LZW	LZW
-	Layer Effects	लेयर प्रभाव
-	Lining	समान ऊँचाई वाले अंक
-	Linked	जुड़ा हुआ
-	No Adv. Blending	उन्नत मिश्रण नहीं
-	No Layer Effects	लेयर प्रभाव नहीं
-	No Layer Mask	लेयर मास्क नहीं
-	No Vector Mask	वेक्टर मास्क नहीं
-	Not Clipped	क्लिप नहीं किया गया
-	Not Empty	खाली नहीं
-	Not Linked	जुड़ा नहीं
-	Not Locked	लॉक नहीं
-	Not Visible	दिखाई नहीं देता
-	Numerals	अंक शैली
-	Open anyway	फिर भी खोलें
-	Opening this document uses more memory and may slow down your computer or other running applications.	इस दस्तावेज़ को खोलने में अधिक मेमोरी लगेगी और आपका कंप्यूटर या अन्य चल रहे अनुप्रयोग धीमे हो सकते हैं।
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	“{name}” खोलने के लिए अनुमानित {est} GiB मेमोरी चाहिए ({avail} GiB उपलब्ध है)।
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	“{name}” खोलने के लिए अनुमानित {est} GiB मेमोरी चाहिए। उपलब्ध मेमोरी मापी नहीं जा सकी।
-	Proportional	आनुपातिक चौड़ाई
-	Proportional Lining	आनुपातिक चौड़ाई के समान ऊँचाई वाले अंक
-	Proportional Oldstyle	आनुपातिक चौड़ाई के पुरानी शैली वाले अंक
-	Save Image Pyramid	छवि पिरामिड सहेजें
-	Save Transparency	पारदर्शिता सहेजें
-	Tabular	समान चौड़ाई
-	Tabular Lining	समान चौड़ाई और ऊँचाई वाले अंक
-	Tabular Oldstyle	समान चौड़ाई के पुरानी शैली वाले अंक
-	ZIP	ZIP
-	{ok} written to {dir}	{dir} में {ok} लिखे गए
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} छवि एसेट का आउटपुट विफल हुआ|{what}: {n} छवि एसेट का आउटपुट विफल हुआ
-	Memory usage percent	मेमोरी उपयोग प्रतिशत
-	Save Full-Size Composite in .pcraft Files	.pcraft फ़ाइलों में पूर्ण आकार की संयुक्त छवि सहेजें
 	Embed Linked	लिंक किए गए को एम्बेड करें
 	Embed All Linked	सभी लिंक किए गए को एम्बेड करें
 	Toggle reference point	संदर्भ बिंदु दिखाएँ/छिपाएँ
@@ -752,11 +676,122 @@ cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की स
 	Pick a different document for each channel.	हर चैनल के लिए अलग डॉक्यूमेंट चुनें।
 	A picked document is no longer open.	चुना गया एक डॉक्यूमेंट अब खुला नहीं है।
 	A picked document is no longer a grayscale document of the same size.	चुना गया एक डॉक्यूमेंट अब उसी आकार का ग्रेस्केल डॉक्यूमेंट नहीं है।
+	Netscape Gray	Netscape धूसर
+# Move tool options bar (#11381)
+	Align top edges	ऊपरी किनारे संरेखित करें
+	Align vertical centers	ऊर्ध्वाधर केंद्र संरेखित करें
+	Align bottom edges	निचले किनारे संरेखित करें
+	Distribute vertically	ऊर्ध्वाधर रूप से वितरित करें
+	Distribute horizontally	क्षैतिज रूप से वितरित करें
+	Show layer bounds on hover	होवर पर लेयर की सीमाएँ दिखाएँ
+	Expand layer group on click	क्लिक पर लेयर समूह विस्तृत करें
+	Show hover bounds from Layers	लेयर्स से होवर सीमाएँ दिखाएँ
+# Artboard tool options bar (#11385)
+	Distribute Widths	चौड़ाइयाँ वितरित करें
+	Distribute Heights	ऊंचाइयाँ वितरित करें
+	Auto-nest Layers	लेयर्स को स्वचालित रूप से नेस्ट करें
+	Auto-size Canvas	कैनवास का आकार स्वचालित रूप से बदलें
+	Keep Relative Position During Layer Reordering	लेयर्स का क्रम बदलते समय सापेक्ष स्थिति बनाए रखें
+	Shrinkwrap Canvas on Save	सहेजते समय कैनवास को सामग्री के अनुसार छोटा करें
+	RAW Defaults	RAW डिफ़ॉल्ट
 
-# Pen tablet input preferences and platform API names.
+# RAW Develop feature labels
+	Saved RAW Develop settings to {file}	RAW डेवलप सेटिंग्स {file} में सहेजी गईं
+	RAW Develop Filter	RAW डेवलप फ़िल्टर
+	RAW Develop Filter…	RAW डेवलप फ़िल्टर…
+	Loaded RAW Develop settings from {file} ({n} not supported)	{file} से RAW डेवलप सेटिंग्स लोड की गईं ({n} समर्थित नहीं)
+
+# Fork-specific and compatibility labels retained during integration.
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	बैच प्रोसेसिंग के दौरान कोई कमांड रद्द या बंद हो गई। अगली फ़ाइल के साथ जारी रखें या रोक दें?
+	Adjust colors with Poisson blending	पॉइसन ब्लेंडिंग से रंग समायोजित करें
+	Advanced Blending	उन्नत मिश्रण
+	Answer the open import question first, then import this file again.	पहले खुले आयात प्रश्न का उत्तर दें, फिर इस फ़ाइल को दोबारा आयात करें।
+	Arrowhead options	तीर के सिरों के विकल्प
+	Arrowheads	तीर के सिरे
+	Attach Reference Image	संदर्भ छवि जोड़ें
+	Attribute	विशेषता
+	Batch	बैच प्रोसेसिंग
+	Batch preview	बैच पूर्वावलोकन
+	Cancelled opening {name}	{name} खोलना रद्द किया गया
+	Cancelled {label}	{label} रद्द किया गया
+	Color Picker	रंग चयनकर्ता
+	Compare with Original Generation	मूल जनरेट किए गए परिणाम से तुलना करें
+	Concavity	अवतलता
+	Create new set	नया सेट बनाएँ
+	Data Sets as Files is unavailable on the web	वेब पर डेटा सेट को फ़ाइलों के रूप में निर्यात करना उपलब्ध नहीं है
+	Effect	प्रभाव
+	Empty	खाली
+	End	अंत
+	External erase	बाहरी मिटाना
+	Filter for embedded smart objects	एम्बेड किए गए स्मार्ट ऑब्जेक्ट छाँटें
+	Filter for linked smart objects that are missing	गायब लिंक की गई फ़ाइलों वाले स्मार्ट ऑब्जेक्ट छाँटें
+	Filter for smart objects linked locally	स्थानीय फ़ाइलों से जुड़े स्मार्ट ऑब्जेक्ट छाँटें
+	High Memory Photoshop Document	अधिक मेमोरी वाला Photoshop दस्तावेज़
+	Image Compression	छवि संपीड़न
+	Import as New Group	नए समूह के रूप में आयात करें
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	नए समूह के रूप में आयात करने से “{group}” बना रहता है और फ़ाइल उसके बगल में एक नए समूह के रूप में जुड़ती है।
+	LZW	LZW
+	Layer Effects	लेयर प्रभाव
+	Length	लंबाई
+	Lining	समान ऊँचाई वाले अंक
+	Linked	जुड़ा हुआ
+	Match Surrounding Colors	आसपास के रंगों से मिलाएँ
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	रंगों को जनरेशन के समय कैप्चर किए गए परिवेश से मिलाता है। तीव्रता 0 मूल जनरेट किए गए परिणाम को पुनर्स्थापित करती है।
+	Memory usage percent	मेमोरी उपयोग प्रतिशत
+	No Adv. Blending	उन्नत मिश्रण नहीं
+	No Layer Effects	लेयर प्रभाव नहीं
+	No Layer Mask	लेयर मास्क नहीं
+	No Vector Mask	वेक्टर मास्क नहीं
+	No import is waiting. Import the file again.	कोई आयात प्रतीक्षारत नहीं है। फ़ाइल को दोबारा आयात करें।
+	Not Clipped	क्लिप नहीं किया गया
+	Not Empty	खाली नहीं
+	Not Linked	जुड़ा नहीं
+	Not Locked	लॉक नहीं
+	Not Visible	दिखाई नहीं देता
+	Numerals	अंक शैली
+	Open anyway	फिर भी खोलें
+	Opening this document uses more memory and may slow down your computer or other running applications.	इस दस्तावेज़ को खोलने में अधिक मेमोरी लगेगी और आपका कंप्यूटर या अन्य चल रहे अनुप्रयोग धीमे हो सकते हैं।
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	“{name}” खोलने के लिए अनुमानित {est} GiB मेमोरी चाहिए ({avail} GiB उपलब्ध है)।
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	“{name}” खोलने के लिए अनुमानित {est} GiB मेमोरी चाहिए। उपलब्ध मेमोरी मापी नहीं जा सकी।
+	Proportional	आनुपातिक चौड़ाई
+	Proportional Lining	आनुपातिक चौड़ाई के समान ऊँचाई वाले अंक
+	Proportional Oldstyle	आनुपातिक चौड़ाई के पुरानी शैली वाले अंक
+	Recently Used Colors	हाल ही में उपयोग किए गए रंग
+	Reference Image	संदर्भ छवि
+	Remove Reference Image	संदर्भ छवि हटाएँ
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	बदलें पहले “{group}” की सारी सामग्री मिटा देता है, जिसमें आपके संपादित या वहाँ स्थानांतरित प्रीसेट भी शामिल हैं। इसे पूर्ववत नहीं किया जा सकता।
+	Resize for AI editing	AI संपादन के लिए आकार बदलें
+	Save Full-Size Composite in .pcraft Files	.pcraft फ़ाइलों में पूर्ण आकार की संयुक्त छवि सहेजें
+	Save Image Pyramid	छवि पिरामिड सहेजें
+	Save Transparency	पारदर्शिता सहेजें
+	Set as default	डिफ़ॉल्ट के रूप में सेट करें
+	Shapes can't use patterns yet	आकृतियाँ अभी पैटर्न का उपयोग नहीं कर सकतीं
+	Solid Color	एकसमान रंग
+	Start	आरंभ
+	Stop Color	ग्रेडिएंट बिंदु का रंग
 	Tablet input	टैबलेट इनपुट
+	Tabular	समान चौड़ाई
+	Tabular Lining	समान चौड़ाई और ऊँचाई वाले अंक
+	Tabular Oldstyle	समान चौड़ाई के पुरानी शैली वाले अंक
+	The image exceeds the AI editing size. Resize the document to continue?	छवि AI संपादन आकार से बड़ी है। जारी रखने के लिए दस्तावेज़ का आकार बदलें?
+	Tint Color	आभा का रंग
+	Use these settings for new arrows	नए तीरों के लिए इन सेटिंग का उपयोग करें
 	WinTab	WinTab
 	Windows Ink (default)	Windows Ink (डिफ़ॉल्ट)
+	ZIP	ZIP
+	{message} into “{group}”	“{group}” में {message}
+	{ok} written to {dir}	{dir} में {ok} लिखे गए
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	ब्रश समूह “{group}” में आपके ब्रश पहले से मौजूद हैं (संख्या: {n})।|ब्रश समूह “{group}” में आपके ब्रश पहले से मौजूद हैं (संख्या: {n})।
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।|ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} छवि एसेट का आउटपुट विफल हुआ|{what}: {n} छवि एसेट का आउटपुट विफल हुआ
+cameraRaw	Calibration	कैलिब्रेशन
+cameraRaw	Cancelled opening {name}	{name} खोलना रद्द किया गया
+cameraRaw	Cancelled {label}	{label} रद्द किया गया
+cameraRaw	Could not write {name}: {error}	{name} लिखा नहीं जा सका: {error}
+cameraRaw	Kept {name}: written by another application	{name} रखा गया: किसी दूसरे अनुप्रयोग ने लिखा है
+cameraRaw	Set the tone sliders from the image	छवि के अनुसार टोन स्लाइडर सेट करें
+cameraRaw	Settings from {name}	{name} की सेटिंग
+cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की सेटिंग; {count} समर्थित नहीं: {names}
 
-# External selection erase preference.
-	External erase	बाहरी मिटाना
+# Dynamic integration labels
+	Save the settings to each raw's sidecar without opening it	हर RAW फ़ाइल को खोले बिना उसकी साइडकार फ़ाइल में सेटिंग सहेजें

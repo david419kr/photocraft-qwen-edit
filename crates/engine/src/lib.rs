@@ -50,6 +50,7 @@ pub mod select_mask_edits;
 pub mod shell_commands;
 pub mod shortcut_sets;
 pub mod snap;
+pub mod upscale;
 pub use variables_cmds::{export_data_sets_with, import_data_sets_text};
 pub use video_cmds::render_video_with;
 
@@ -115,6 +116,7 @@ pub use cmd::history_select_cmds;
 pub use cmd::history_source_cmds;
 pub use cmd::image_cmds;
 pub use cmd::layer_copy_cmds;
+pub use cmd::layer_css_cmds;
 pub use cmd::layer_label_cmds;
 pub use cmd::layer_list_cmds;
 pub use cmd::layer_mask_props_cmds;
@@ -221,6 +223,13 @@ pub struct Session {
     active_generation: u64,
     /// The document id [`Self::active_generation`] was last bumped for.
     active_doc_for_generation: Option<photocraft_doc::DocId>,
+    /// Change marker: advances at least once whenever the active document or layer changes through
+    /// the `Session` API (commands via `execute`, `start` and finished jobs, `select_layer`,
+    /// `restore_layer_selection`, `layer_multi_cmds::set_selection`, `set_active_layer`, undo / redo /
+    /// rollback, document switches). Compare two readings for equality to know whether anything
+    /// changed in between; it is not an exact count of operations (one operation may advance it
+    /// more than once). Writing `DocState::active_layer` directly bypasses it.
+    active_layer_changes: u64,
     pub tools: ToolState,
     /// Native AI service. Unconfigured headless/test sessions never contact an AI server.
     pub ai_backend: Option<Arc<dyn ai_cmds::AiBackend>>,
@@ -345,9 +354,13 @@ pub struct Session {
 }
 
 #[cfg(test)]
+mod brush_pressure_size_default_tests;
+#[cfg(test)]
 mod embed_all_linked_tests;
 #[cfg(test)]
 mod fill_layer_mode_tests;
+#[cfg(test)]
+mod mixer_indexed_bitmap_tests;
 #[cfg(test)]
 mod pattern_mode_tests;
 #[cfg(test)]
@@ -358,4 +371,6 @@ mod tests;
 #[cfg(test)]
 mod fx_mode_tests;
 
+#[cfg(test)]
+mod brush_clear_background_tests;
 pub mod command_hints;

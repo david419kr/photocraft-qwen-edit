@@ -1,0 +1,402 @@
+{
+  "input_sha256": "b94e0d68c522c715e63566b44e1ebdfa0c2dac80494d22787de32f851763e656",
+  "no_pytorch_runtime": true,
+  "comparison": "official PyTorch AMP; same settings",
+  "threshold_psnr_db": 60,
+  "cases": [
+    {
+      "id": "noise_none",
+      "noise": -1,
+      "tile": 640,
+      "batch": 4,
+      "tta": false,
+      "alpha": true,
+      "fixture": "original",
+      "ok": true,
+      "seconds": 0.5925817000006646,
+      "rgb": {
+        "psnr_db": 73.36590850403547,
+        "mae_8bit_levels": 0.03991308435797691,
+        "max_8bit_levels": 1.128885269165039
+      },
+      "alpha_comparison": {
+        "psnr_db": 999.0,
+        "mae_8bit_levels": 0.0,
+        "max_8bit_levels": 0.0
+      },
+      "output": "trt_noise_none.png",
+      "shape": [
+        3,
+        2478,
+        3072
+      ],
+      "managed_cuda_buffers_mib": 3356.458984375
+    },
+    {
+      "id": "noise_low",
+      "noise": 0,
+      "tile": 640,
+      "batch": 4,
+      "tta": true,
+      "alpha": true,
+      "fixture": "original",
+      "ok": true,
+      "seconds": 5.538946000000578,
+      "rgb": {
+        "psnr_db": 78.04452168061349,
+        "mae_8bit_levels": 0.024237891659140587,
+        "max_8bit_levels": 0.539863646030426
+      },
+      "alpha_comparison": {
+        "psnr_db": 999.0,
+        "mae_8bit_levels": 0.0,
+        "max_8bit_levels": 0.0
+      },
+      "output": "trt_noise_low.png",
+      "shape": [
+        3,
+        2478,
+        3072
+      ],
+      "managed_cuda_buffers_mib": 3459.818359375
+    },
+    {
+      "id": "noise_medium",
+      "noise": 1,
+      "tile": 640,
+      "batch": 1,
+      "tta": false,
+      "alpha": true,
+      "fixture": "original",
+      "ok": true,
+      "seconds": 0.7683410999998159,
+      "rgb": {
+        "psnr_db": 73.38469605832823,
+        "mae_8bit_levels": 0.040335241705179214,
+        "max_8bit_levels": 0.6620612740516663
+      },
+      "alpha_comparison": {
+        "psnr_db": 999.0,
+        "mae_8bit_levels": 0.0,
+        "max_8bit_levels": 0.0
+      },
+      "output": "trt_noise_medium.png",
+      "shape": [
+        3,
+        2478,
+        3072
+      ],
+      "managed_cuda_buffers_mib": 1324.75537109375
+    },
+    {
+      "id": "noise_high",
+      "noise": 2,
+      "tile": 640,
+      "batch": 4,
+      "tta": false,
+      "alpha": true,
+      "fixture": "original",
+      "ok": true,
+      "seconds": 0.764971800001149,
+      "rgb": {
+        "psnr_db": 72.97433233037947,
+        "mae_8bit_levels": 0.04252294823527336,
+        "max_8bit_levels": 1.1185611486434937
+      },
+      "alpha_comparison": {
+        "psnr_db": 999.0,
+        "mae_8bit_levels": 0.0,
+        "max_8bit_levels": 0.0
+      },
+      "output": "trt_noise_high.png",
+      "shape": [
+        3,
+        2478,
+        3072
+      ],
+      "managed_cuda_buffers_mib": 3256.458984375
+    },
+    {
+      "id": "noise_highest",
+      "noise": 3,
+      "tile": 640,
+      "batch": 4,
+      "tta": false,
+      "alpha": true,
+      "fixture": "original",
+      "ok": true,
+      "seconds": 0.7473518000006152,
+      "rgb": {
+        "psnr_db": 72.98032988357525,
+        "mae_8bit_levels": 0.04198165982961655,
+        "max_8bit_levels": 0.7221892476081848
+      },
+      "alpha_comparison": {
+        "psnr_db": 999.0,
+        "mae_8bit_levels": 0.0,
+        "max_8bit_levels": 0.0
+      },
+      "output": "trt_noise_highest.png",
+      "shape": [
+        3,
+        2478,
+        3072
+      ],
+      "managed_cuda_buffers_mib": 3356.458984375
+    },
+    {
+      "id": "alternate_tile256_batch8",
+      "noise": 0,
+      "tile": 256,
+      "batch": 8,
+      "tta": false,
+      "alpha": true,
+      "fixture": "original",
+      "ok": true,
+      "seconds": 0.6402460000008432,
+      "rgb": {
+        "psnr_db": 73.68585238562765,
+        "mae_8bit_levels": 0.03916170448064804,
+        "max_8bit_levels": 0.7508093118667603
+      },
+      "alpha_comparison": {
+        "psnr_db": 999.0,
+        "mae_8bit_levels": 0.0,
+        "max_8bit_levels": 0.0
+      },
+      "output": "trt_alternate_tile256_batch8.png",
+      "shape": [
+        3,
+        2478,
+        3072
+      ],
+      "managed_cuda_buffers_mib": 1048.41796875
+    },
+    {
+      "id": "soft_alpha_auto",
+      "noise": 0,
+      "tile": 640,
+      "batch": 4,
+      "tta": false,
+      "alpha": true,
+      "fixture": "softalpha",
+      "ok": true,
+      "seconds": 3.9406372999983432,
+      "rgb": {
+        "psnr_db": 75.05093661420645,
+        "mae_8bit_levels": 0.028382044285535812,
+        "max_8bit_levels": 1.002371072769165
+      },
+      "alpha_comparison": {
+        "psnr_db": 81.93172871876179,
+        "mae_8bit_levels": 0.01044830959290266,
+        "max_8bit_levels": 0.21569162607192993
+      },
+      "output": "trt_soft_alpha_auto.png",
+      "shape": [
+        3,
+        2478,
+        3072
+      ],
+      "managed_cuda_buffers_mib": 3459.818359375
+    },
+    {
+      "id": "soft_alpha_disable",
+      "noise": 0,
+      "tile": 640,
+      "batch": 4,
+      "tta": false,
+      "alpha": false,
+      "fixture": "softalpha",
+      "ok": true,
+      "seconds": 0.7733351000006223,
+      "rgb": {
+        "psnr_db": 74.75320494595641,
+        "mae_8bit_levels": 0.03253735974431038,
+        "max_8bit_levels": 1.002371072769165
+      },
+      "alpha_comparison": null,
+      "output": "trt_soft_alpha_disable.png",
+      "shape": [
+        3,
+        2478,
+        3072
+      ],
+      "managed_cuda_buffers_mib": 3459.818359375
+    }
+  ],
+  "references": [
+    {
+      "id": "noise_none",
+      "noise": -1,
+      "tile": 640,
+      "batch": 4,
+      "tta": false,
+      "alpha": true,
+      "fixture": "original",
+      "seconds": 0.8643080000001646,
+      "shape": [
+        3,
+        2478,
+        3072
+      ]
+    },
+    {
+      "id": "noise_low",
+      "noise": 0,
+      "tile": 640,
+      "batch": 4,
+      "tta": true,
+      "alpha": true,
+      "fixture": "original",
+      "seconds": 3.0877476000005117,
+      "shape": [
+        3,
+        2478,
+        3072
+      ]
+    },
+    {
+      "id": "noise_medium",
+      "noise": 1,
+      "tile": 640,
+      "batch": 1,
+      "tta": false,
+      "alpha": true,
+      "fixture": "original",
+      "seconds": 0.3624266999995598,
+      "shape": [
+        3,
+        2478,
+        3072
+      ]
+    },
+    {
+      "id": "noise_high",
+      "noise": 2,
+      "tile": 640,
+      "batch": 4,
+      "tta": false,
+      "alpha": true,
+      "fixture": "original",
+      "seconds": 0.41693259999919974,
+      "shape": [
+        3,
+        2478,
+        3072
+      ]
+    },
+    {
+      "id": "noise_highest",
+      "noise": 3,
+      "tile": 640,
+      "batch": 4,
+      "tta": false,
+      "alpha": true,
+      "fixture": "original",
+      "seconds": 0.42008870000063325,
+      "shape": [
+        3,
+        2478,
+        3072
+      ]
+    },
+    {
+      "id": "alternate_tile256_batch8",
+      "noise": 0,
+      "tile": 256,
+      "batch": 8,
+      "tta": false,
+      "alpha": true,
+      "fixture": "original",
+      "seconds": 0.4254576999992423,
+      "shape": [
+        3,
+        2478,
+        3072
+      ]
+    },
+    {
+      "id": "soft_alpha_auto",
+      "noise": 0,
+      "tile": 640,
+      "batch": 4,
+      "tta": false,
+      "alpha": true,
+      "fixture": "softalpha",
+      "seconds": 0.909847400000217,
+      "shape": [
+        3,
+        2478,
+        3072
+      ]
+    },
+    {
+      "id": "soft_alpha_disable",
+      "noise": 0,
+      "tile": 640,
+      "batch": 4,
+      "tta": false,
+      "alpha": false,
+      "fixture": "softalpha",
+      "seconds": 0.39939349999986007,
+      "shape": [
+        3,
+        2478,
+        3072
+      ]
+    }
+  ],
+  "decision": "Use TensorRT mixed FP16/FP32 for deployment; PyTorch is development/reference only",
+  "runtime": {
+    "tensorrt": "11.4.0.106",
+    "cuda_python": "13.5.0",
+    "reported_cuda_runtime": 13040,
+    "gpu": "RTX 4090",
+    "driver": "616.56",
+    "torch_installed_in_runtime": false
+  },
+  "export": {
+    "source": "official dynamo FP32 export",
+    "conversion": "onnxconverter-common 1.16.0; keep_io_types=True; FP32 blocks Pow/ReduceMean/Sqrt/Reciprocal/Softmax/ReduceSum/Div plus converter defaults",
+    "builder_optimization_level": 1,
+    "workspace_gib": 4,
+    "profile": "fixed spatial size; dynamic batch limited to test needs"
+  },
+  "onnx_models": [
+    {
+      "file": "noise0_scale2x.onnx",
+      "bytes": 10007274,
+      "sha256": "cc3b4a5e5cc83b45ef9c186422a3118cf9e8cb220aaf2e87b038a2651cc5a79a"
+    },
+    {
+      "file": "noise1_scale2x.onnx",
+      "bytes": 10007274,
+      "sha256": "2bd9540430707cd9050fdc3fba8d6588213f0065d4260dc12dffecf692962b49"
+    },
+    {
+      "file": "noise2_scale2x.onnx",
+      "bytes": 10007274,
+      "sha256": "0e7418446ef25d904678b0d3f43176ddcb909b4941cc067c40abf5c846c94f38"
+    },
+    {
+      "file": "noise3_scale2x.onnx",
+      "bytes": 10007274,
+      "sha256": "f75cfb3080bcbf6843a10ab1155e881b97eb63871a14aef2a30f1c81882c662f"
+    },
+    {
+      "file": "scale2x.onnx",
+      "bytes": 10007274,
+      "sha256": "32c6b10defd1e68d202965d30fbd2753cef2ca24c51beea9dc20c0b9524d633f"
+    }
+  ],
+  "limitations": [
+    "8 representative cases, not a full parameter cross-product",
+    "test image has opaque alpha; alpha tests use a derived soft mask",
+    "current prototype uses CPU NumPy pre/postprocessing and is slower than PyTorch on the default case",
+    "RTX 4090 only; no other-PC deployment validation",
+    "all dynamic spatial shapes/max batch32-tile640 engine build was unsuccessful; test uses fixed tile profiles",
+    "PyTorch development environment kept; no deletion/space reclamation performed",
+    "Janai model inference on this shared runtime not tested in this turn"
+  ]
+}

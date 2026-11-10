@@ -26,7 +26,7 @@ pub const SECTIONS: [(&str, &str); 18] = [
     ("plugIns", "Plugins"),
     ("type", "Type"),
     ("enhancedControls", "Enhanced Controls"),
-    ("rawDefaults", "Camera Raw Defaults"),
+    ("rawDefaults", "RAW Defaults"),
     ("integrations", "Integrations"),
 ];
 
@@ -59,6 +59,7 @@ pub fn is_hidden(path: &str) -> bool {
             | "integrations.comfyuiCustomModel"
             | "integrations.comfyuiCustomEncoders"
             | "integrations.comfyuiModelSettings"
+            | "integrations.upscale"
     ) || HIDDEN_UNTIL_IMPLEMENTED.contains(&path)
         || (!cfg!(target_os = "linux") && LINUX_ONLY.contains(&path))
 }

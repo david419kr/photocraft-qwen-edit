@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "id": "upscale",
+  "label": "SR",
+  "operation": "upscale",
+  "executable": "python/python.exe",
+  "args": ["runtime/worker.py"],
+  "required": ["runtime/worker.py", "runtime/trt_runner.py", "runtime/trt_gpu.py", "runtime/janai.py", "runtime/prepost.cu", "catalog.json"]
+}

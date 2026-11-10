@@ -111,7 +111,6 @@
 	Export As…	Eksportér som…
 	Export	Eksportér
 	Export…	Eksportér…
-	Quick Export As PNG	Hurtig eksport som PNG
 	Quick Export as PNG	Hurtig eksport som PNG
 	Place Embedded…	Placér indlejret…
 	Place Linked…	Placér sammenkædet…
@@ -186,8 +185,8 @@
 	Trap…	Trap…
 
 # Layer
-	Layer via Copy	Lag via kopiering
-	Layer via Cut	Lag via udklipning
+	Layer Via Copy	Lag via kopiering
+	Layer Via Cut	Lag via udklipning
 	Duplicate Layer…	Duplikér lag…
 	Duplicate…	Duplikér…
 	Delete	Slet
@@ -315,7 +314,6 @@
 	All	Alle
 	Deselect	Fjern markering
 	Reselect	Markér igen
-	Inverse Selection	Invertér markering
 	Inverse	Invertér
 	Color Range…	Farveområde…
 	Select and Mask…	Markér og maskér…
@@ -352,7 +350,7 @@
 	Last Filter	Seneste filter
 	Filter Gallery…	Filtergalleri…
 	Liquify…	Gør flydende…
-	Camera Raw Filter…	Camera Raw-filter…
+	RAW Develop Filter…	RAW-fremkaldelse-filter…
 	Adaptive Wide Angle…	Adaptiv vidvinkel…
 	Lens Correction…	Objektivkorrektion…
 	Vanishing Point…	Forsvindingspunkt…
@@ -542,6 +540,12 @@
 	Timeline	Tidslinje
 	Tool Presets	Værktøjsforudindstillinger
 	Tools	Værktøjer
+	Contextual Task Bar	Kontekstafhængig opgavelinje
+	Hide bar	Skjul linjen
+	Reset bar position	Nulstil linjens placering
+	Pin bar position	Fastgør linjens placering
+	Move bar	Flyt linjen
+	More options	Flere indstillinger
 	Libraries	Biblioteker
 	3D	3D
 	Toolbars	Værktøjslinjer
@@ -600,8 +604,8 @@
 	Background	Baggrund
 	Set foreground color	Angiv forgrundsfarve
 	Set background color	Angiv baggrundsfarve
-	Swap colours (X)	Ombyt farver (X)
-	Default colours (D)	Standardfarver (D)
+	Switch Foreground and Background Colors (X)	Byt om på forgrunds- og baggrundsfarver (X)
+	Default Foreground and Background Colors (D)	Standard forgrunds- og baggrundsfarver (D)
 	Brush Tool Options	Penselværktøjsindstillinger
 	Opacity	Opacitet
 	Flow	Gennemstrømning
@@ -871,7 +875,7 @@
 	Working Black Plate	Arbejdssortplade
 	Working Gray Plate	Arbejdsgråplade
 
-# Camera Raw and lens dialogs
+# RAW Develop and lens dialogs
 	Basic	Grundlæggende
 	Detail	Detalje
 	HSL/Grayscale	HSL/Gråtoner
@@ -901,8 +905,8 @@
 	Luminance Smoothness	Luminansglathed
 	Vignetting	Vignettering
 	White Balance: As Shot	Hvidbalance: Som fotograferet
-	Camera Raw…	Camera Raw…
-	Camera Raw isn't open	Camera Raw er ikke åben
+	RAW Defaults…	RAW-standarder…
+	RAW Develop isn't open	RAW-fremkaldelse er ikke åben
 	Dehaze	Fjern dis
 	Texture	Tekstur
 	Focal Length	Brændvidde
@@ -1173,8 +1177,6 @@
 	Roman Hanging Punctuation	Romersk hængende tegnsætning
 	Avoid Widows/Orphans	Undgå enlige linjer
 	Compose	Komponér
-	Adobe Single-line Composer	Adobe-enkeltlinjeopsætter
-	Adobe Every-line Composer	Adobe-flerlinjeopsætter
 	Justification	Justering
 	Word Spacing	Ordafstand
 	Letter Spacing	Bogstavafstand
@@ -1214,6 +1216,7 @@
 	Path to Illustrator…	Sti til Illustrator…
 	Make Work Path	Opret arbejdssti
 	Make Selection	Opret markering
+	Make Shape	Opret form
 	Fill Path	Udfyld sti
 	Stroke Path	Lav kontur på sti
 	Clipping Path	Udklipningssti
@@ -1607,7 +1610,7 @@
 	Revert “{name}” to the last saved version? Your changes will be lost.	Gendan »{name}« til den sidst gemte version? Dine ændringer går tabt.
 	{key} to subtract	{key} for at trække fra
 	↑↓ navigate   {key} run   esc close	↑↓ navigér   {key} kør   esc luk
-	Click to restore the current colour	Klik for at gendanne den aktuelle farve
+	Click to restore the current color	Klik for at gendanne den aktuelle farve
 	Click with the Note tool to add a note.	Klik med noteværktøjet for at tilføje en note.
 	Drag a rectangle around the object	Træk et rektangel omkring objektet
 	Drag on the image to add a constraint; Shift for horizontal/vertical; right-click a constraint to change or delete it.	Træk på billedet for at tilføje en begrænsning; Shift for vandret/lodret; højreklik på en begrænsning for at ændre eller slette den.
@@ -1631,6 +1634,7 @@
 	Move Tool	Flytteværktøj
 	Could not use the move tool because the layer is locked.	Kunne ikke bruge flytteværktøjet, fordi laget er låst.
 	Could not complete the Free Transform command because the layer is locked.	Kunne ikke fuldføre kommandoen Fri transformering, fordi laget er låst.
+	Could not transform because the layer is locked.	Kunne ikke transformere, fordi laget er låst.
 	Rectangular Marquee Tool	Rektangulært markeringsværktøj
 	Elliptical Marquee Tool	Elliptisk markeringsværktøj
 	Single Row Marquee Tool	Markeringsværktøj til enkelt række
@@ -1688,10 +1692,10 @@
 	Drag to move the active layer	Træk for at flytte det aktive lag
 	Drag to pan  ·  hold Space with any tool	Træk for at panorere  ·  hold mellemrumstasten nede med et hvilket som helst værktøj
 	Drag to draw a gradient	Træk for at tegne en gradient
-	Click to fill similar colours	Klik for at udfylde lignende farver
+	Click to fill similar colors	Klik for at udfylde lignende farver
 	Click to add text	Klik for at tilføje tekst
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	Træk (lasso) eller klik på punkter (polygonalt) · {add} tilføj · {sub} træk fra
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Træk en beskæringsramme · træk inde i den for at flytte · kanter ændrer størrelse ({ratio}-forhold, {centre} centreret) · Mellemrumstasten flytter, mens du tegner · piletaster skubber · X bytter orientering · {commit} bekræfter · Esc annullerer
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Træk en beskæringsramme · træk inde i den for at flytte · kanter ændrer størrelse ({ratio}-forhold, {centre} centreret) · Mellemrumstasten flytter, mens du tegner · piletaster skubber · X bytter orientering · {commit} bekræfter · Esc annullerer
 	{mode} Color · {bits} bit	{mode}-farve · {bits} bit
 	Drag to move the layer	Træk for at flytte laget
 	Fit Screen	Tilpas til skærm
@@ -1723,7 +1727,7 @@
 	Appearance	Udseende
 	Text Position:	Tekstplacering:
 	Text color	Tekstfarve
-	Uses the foreground and background colours.	Bruger forgrundsfarven og baggrundsfarven.
+	Uses the foreground and background colors.	Bruger forgrundsfarven og baggrundsfarven.
 	Answer the unsaved-changes prompt first	Besvar først dialogen om ikke-gemte ændringer
 	Unsaved changes	Ugemte ændringer
 	Don't Save	Gem ikke
@@ -1743,7 +1747,7 @@
 	name	navn
 	new	ny
 	Go to Layer	Gå til lag
-	Open a document to select a colour range.	Åbn et dokument for at markere et farveområde.
+	Open a document to select a color range.	Åbn et dokument for at markere et farveområde.
 	Saved	Gemt
 	Reveal in Finder	Vis i Finder
 	Show in Explorer	Vis i Stifinder
@@ -1754,8 +1758,8 @@
 	Load Settings…	Indlæs indstillinger…
 	Save these settings as a Camera Raw .xmp file	Gem disse indstillinger som en Camera Raw .xmp-fil
 	Load settings from a Camera Raw .xmp file	Indlæs indstillinger fra en Camera Raw .xmp-fil
-	Loaded Camera Raw settings from {file}	Indlæste Camera Raw-indstillinger fra {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Indlæste Camera Raw-indstillinger fra {file} ({n} understøttes ikke)
+	Loaded RAW Develop settings from {file}	Indlæste RAW-fremkaldelse-indstillinger fra {file}
+	Loaded RAW Develop settings from {file} ({n} not supported)	Indlæste RAW-fremkaldelse-indstillinger fra {file} ({n} understøttes ikke)
 	After (X)	Efter (X)
 	Original	Original
 	Current	Aktuel
@@ -1921,8 +1925,8 @@
 	Character Styles Panel	Tegnstilpanel
 	Clear Canvas Guides	Ryd lærredshjælpelinjer
 	Clear Selected Artboard Guides	Ryd hjælpelinjer på markeret tavle
-	Color Blindness — Deuteranopia-type	Farveblindhed — deuteranopi-type
-	Color Blindness — Protanopia-type	Farveblindhed — protanopi-type
+	Color Blindness - Deuteranopia-type	Farveblindhed — deuteranopi-type
+	Color Blindness - Protanopia-type	Farveblindhed — protanopi-type
 	Color Table…	Farvetabel…
 	Combine Shapes	Kombinér former
 	Contract…	Formindsk…
@@ -2061,7 +2065,7 @@
 	Vertical Centers	Lodrette midtpunkter
 	Video Frames to Layers…	Videobilleder til lag…
 	WIA Support…	WIA-support…
-	Working CMY Plates	Arbejds-CMY-plade
+	Working CMY Plates	Arbejds-CMY-plader
 
 # tl! literals (third pass)
 	Absolute	Absolut
@@ -2096,7 +2100,7 @@
 	Canvas	Lærred
 	Capture	Optag
 	Center Crop Marks	Centrerede beskæringsmærker
-	Centre the gradient (offset 0, 0)	Centrér gradienten (forskydning 0, 0)
+	Center the gradient (offset 0, 0)	Centrér gradienten (forskydning 0, 0)
 	Change Screen Mode  (F)	Skift skærmtilstand  (F)
 	Change To:	Ændr til:
 	Clear All	Ryd alt
@@ -2248,7 +2252,7 @@
 	Roughness	Ruhed
 	Roundness	Rundhed
 	Rulers & Grids	Linealer og gitter
-	Sample: foreground colour	Prøve: forgrundsfarve
+	Sample: foreground color	Prøve: forgrundsfarve
 	Sampling: Background Swatch	Prøvetagning: baggrundsfarveprøve
 	Sampling: Continuous	Prøvetagning: fortløbende
 	Sampling: Once	Prøvetagning: én gang
@@ -2342,7 +2346,7 @@
 	CPU (no GPU acceleration)	CPU (ingen GPU-acceleration)
 	Cache levels	Cacheniveauer
 	Cache tile size	Flisestørrelse for cache
-	Camera Raw Defaults	Camera Raw-standarder
+	RAW Defaults	RAW-standarder
 	Canvas border	Lærredskant
 	Show canvas dots	Vis lærredsprikker
 	Clip thumbnails to layer bounds	Klip miniaturer til laggrænser
@@ -2434,7 +2438,6 @@
 	Never	Aldrig
 	Normal tip	Normal spids
 	Open as smart object	Åbn som smartobjekt
-	Open in camera raw	Åbn i Camera Raw
 	Open documents as tabs	Åbn dokumenter som faner
 	OpenGL	OpenGL
 	Orange	Orange
@@ -2521,7 +2524,7 @@
 	Alt-click to define a source point to clone from	Alt-klik for at definere et kildepunkt at klone fra
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	Ingen sti at lave en markering ud fra: tegn én med penværktøjet, eller markér én i panelet Stier.
 	Cancel opening	Annullér åbning
-	Cancelled opening {name}	Annullerede åbning af {name}
+	Canceled opening {name}	Annullerede åbning af {name}
 	Damaged Photoshop document	Beskadiget Photoshop-dokument
 	The document “{name}” may be damaged.	Dokumentet »{name}« er muligvis beskadiget.
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	Nogle lag, pixels eller masker kunne ikke læses. Vil du fortsætte med at åbne det?
@@ -2531,7 +2534,7 @@
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	Dokumentet »{name}« har en indlejret farveprofil, der ikke stemmer overens med det aktuelle {mode}-arbejdsfarverum.
 	Working: {working}	Arbejdsfarverum: {working}
 	Developing {name}	Fremkalder {name}
-	Cancelled {label}	Annullerede {label}
+	Canceled {label}	Annullerede {label}
 	Esc to cancel	Esc for at annullere
 	Opened {name}	Åbnede {name}
 	Opening {name}	Åbner {name}
@@ -2539,7 +2542,7 @@
 	Saving {name}	Gemmer {name}
 	Saving {percent}	Gemmer {percent}
 	A save to {name} is still running; try again when it finishes	Der gemmes stadig til {name}; prøv igen, når det er afsluttet
-	{label} is writing the file and can no longer be cancelled	{label} skriver filen og kan ikke længere annulleres
+	{label} is writing the file and can no longer be canceled	{label} skriver filen og kan ikke længere annulleres
 	Opening {name}…	Åbner {name}…
 	Opening…	Åbner…
 	Reading…	Læser…
@@ -2575,9 +2578,9 @@
 	Tone Histogram	Tonehistogram
 	Show Selected Region	Vis markeret område
 cameraRaw	Light	Lys
-# Camera Raw: contextual controls and window title
-	Camera Raw Filter ({layer})	Camera Raw-filter ({layer})
-	Camera Raw ({name})	Camera Raw ({name})
+# RAW Develop: contextual controls and window title
+	RAW Develop Filter ({layer})	RAW-fremkaldelse-filter ({layer})
+	RAW Develop ({name})	RAW-fremkaldelse ({name})
 	Aqua	Turkis
 cameraRaw	Amount	Mængde
 cameraRaw	Blacks	Sorte
@@ -2636,7 +2639,7 @@ cameraRaw	Roughness	Ruhed
 	Discard Layers and Save a Copy	Kassér lag, og gem en kopi
 	Don't show again	Vis ikke igen
 	Save failed: {error}	Kunne ikke gemme: {error}
-	Save cancelled	Gemning annulleret
+	Save canceled	Gemning annulleret
 	Couldn't place {name}: {error}	Kunne ikke placere {name}: {error}
 	Magnetic Lasso Tool	Magnetisk lassoværktøj
 	Frequency	Frekvens
@@ -2780,7 +2783,7 @@ fontWeight	Italic	Kursiv
 	Impressionist	Impressionistisk
 	Rotate View Tool	Værktøj til at rotere visningen
 	Reset View	Nulstil visning
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Træk rundt om midtpunktet for at rotere visningen  ·  Shift låser til 15°
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	Træk rundt om midtpunktet for at rotere visningen  ·  Shift låser til 15°
 
 # Painting symmetry presets.
 	Dual Axis	Dobbelt akse
@@ -2800,11 +2803,11 @@ fontWeight	Italic	Kursiv
 	All Layers No Adjustments	Alle lag uden justeringer
 	Current & Below No Adjustments	Aktuelt og nedenunder uden justeringer
 	Show Sampling Ring	Vis prøvetagningsring
-	Click to sample the foreground colour  ·  {key}-click for background	Klik for at tage prøve af forgrundsfarven  ·  {key}-klik for baggrundsfarven
+	Click to sample the foreground color  ·  {key}-click for background	Klik for at tage prøve af forgrundsfarven  ·  {key}-klik for baggrundsfarven
 
 # Color Picker warnings
-	Out of gamut for printing: click for the nearest printable colour	Uden for gamut ved udskrivning: klik for at få den nærmeste udskrivbare farve
-	Not a web colour: click for the nearest web colour	Ikke en webfarve: klik for at få den nærmeste webfarve
+	Out of gamut for printing: click for the nearest printable color	Uden for gamut ved udskrivning: klik for at få den nærmeste udskrivbare farve
+	Not a web color: click for the nearest web color	Ikke en webfarve: klik for at få den nærmeste webfarve
 	Color to Alpha…	Farve til alfa…
 	Transparency Threshold	Grænseværdi for gennemsigtighed
 	Opacity Threshold	Grænseværdi for opacitet
@@ -3222,7 +3225,7 @@ curves	Smooth	Udjævn
 # Native Windows printing qualification
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Kryds ikke også Spejlbillede af i Udskriftsindstillinger…: de to spejlvendinger ophæver hinanden.
 	Print Settings…	Udskriftsindstillinger…
-	Remember to turn off the printer's own colour management in Print Settings…	Husk at slå printerens egen farvestyring fra i Udskriftsindstillinger…
+	Remember to turn off the printer's own color management in Print Settings…	Husk at slå printerens egen farvestyring fra i Udskriftsindstillinger…
 	Sent to {printer}	Sendt til {printer}
 	set in Print Settings…	angivet i Udskriftsindstillinger…
 	ICO is limited to 256 × 256 pixels	ICO er begrænset til 256 × 256 pixels
@@ -3382,7 +3385,7 @@ curves	Smooth	Udjævn
 	{name} was changed by another app after it was opened or saved here.	{name} blev ændret af et andet program, efter at den blev åbnet eller gemt her.
 	Replace it with this document, or cancel and use File › Save As to keep both.	Erstat den med dette dokument, eller annullér, og brug Filer › Gem som for at beholde begge.
 
-# Dynamic UI labels (fourth pass): filter and adjustment parameters, Camera Raw panels,
+# Dynamic UI labels (fourth pass): filter and adjustment parameters, RAW Develop panels,
 # lighting, History/Layers/paths/channels menus, metadata, System Info, status templates and
 # dialog text that other catalogs already carry. Written from the meaning of the English labels
 # in the ordinary Russian graphics-editor vocabulary; no proprietary resource consulted.
@@ -3408,13 +3411,11 @@ curves	Smooth	Udjævn
 	Adjustment Layers	Justeringslag
 	Adjustment Properties	Justeringsegenskaber
 	Adjustment layers have nothing to transform	Justeringslag har intet at transformere
-	Adobe PDF Presets…	Adobe PDF-forudindstillinger…
 	Adobe-rgb-compat	Adobe-rgb-kompat
 	Adwaita (Dark)	Adwaita (mørk)
 	Adwaita (Light)	Adwaita (lys)
 	After	Efter
 	Airbrush: keeps painting while the pointer rests.	Airbrush: bliver ved med at male, mens markøren hviler.
-	All shortcuts reset to Photoshop defaults.	Alle genveje er nulstillet til Photoshop-standarderne.
 	Altitude	Højde
 	Ambience	Ambiance
 	Ambient	Omgivende
@@ -3499,8 +3500,8 @@ curves	Smooth	Udjævn
 	Brush Type	Penseltype
 	Burlap	Sækkelærred
 	Calculations	Beregninger
-	Camera Raw	Camera Raw
-	Camera Raw Filter	Camera Raw-filter
+	RAW Develop	RAW-fremkaldelse
+	RAW Develop Filter	RAW-fremkaldelse-filter
 	Cancel transform	Annullér transformering
 	Candle Light	Stearinlys
 	Canvas Size	Lærredsstørrelse
@@ -3647,7 +3648,6 @@ curves	Smooth	Udjævn
 	Deep Yellow	Dyb gul
 	Default Foreground and Background Colors	Standard forgrunds- og baggrundsfarver
 	Default Leaves	Standardblade
-	Default Photoshop Size	Photoshop-standardstørrelse
 	Defaults	Standardindstillinger
 	Define Brush Preset	Definér penselforudindstilling
 	Define Custom Shape	Definér brugerdefineret form
@@ -3886,12 +3886,12 @@ curves	Smooth	Udjævn
 	In White	Input-hvid
 	Increase Brush Hardness	Forøg penselhårdheden
 	Demosaic	Demosaicering
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Hvordan kameraets farvefiltermosaik udfyldes. Det anvendes, når filen åbnes; forhåndsvisningen viser den metode, den blev åbnet med.
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Hvordan kameraets farvefiltermosaik udfyldes. Det anvendes, når filen åbnes; forhåndsvisningen viser den metode, den blev åbnet med.
 	AHD (adaptive homogeneity)	AHD (adaptiv homogenitet)
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: de reneste kanter og de mindste farvefrynser, men den langsomste.
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Gradientkorrigeret interpolation: skarp og hurtig, med nogle farvefrynser i fine detaljer.
-	The fastest and the softest, with colour fringing on fine detail.	Den hurtigste og den blødeste, med farvefrynser i fine detaljer.
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Hirakawa–Parks: de reneste kanter og de mindste farvefrynser, men den langsomste.
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	Gradientkorrigeret interpolation: skarp og hurtig, med nogle farvefrynser i fine detaljer.
+	The fastest and the softest, with color fringing on fine detail.	Den hurtigste og den blødeste, med farvefrynser i fine detaljer.
 	“{name}” already exists. Replace it?	»{name}« findes allerede. Vil du erstatte den?
 	The name in the save dialog was “{name}”.	Navnet i dialogen Gem var »{name}«.
 	Move Up	Flyt op
@@ -4487,7 +4487,7 @@ curves	Smooth	Udjævn
 	The file could not be saved.	Filen kunne ikke gemmes.
 	Thickness	Tykkelse
 	This Layer:	Dette lag:
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Dette smartobjekt skal rasteriseres, før du fortsætter. Dets indhold kan ikke længere redigeres. Vil du rasterisere smartobjektet?
+	This smart object must be rasterized before proceeding. Edit Contents will no longer be available. Rasterize the smart object?	Dette smartobjekt skal rasteriseres, før du fortsætter. Dets indhold kan ikke længere redigeres. Vil du rasterisere smartobjektet?
 	This adjustment ({key}) is kept as imported and can't be edited yet.	Denne justering ({key}) bevares som importeret og kan ikke redigeres endnu.
 	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Dette udfyldningslag skal rasteriseres, før du fortsætter. Dets udfyldningsindhold kan ikke længere redigeres. Vil du rasterisere laget?
 	This layer must be rasterized before proceeding.	Dette lag skal rasteriseres, før du fortsætter.
@@ -4542,7 +4542,6 @@ curves	Smooth	Udjævn
 	Use File › Open to open an image.	Brug Filer › Åbn for at åbne et billede.
 	Use Selection In Source	Brug markering i kilde
 	Use Selection In Target	Brug markering i mål
-	Uses the foreground and background colors.	Bruger forgrunds- og baggrundsfarverne.
 	Vanishing Point	Forsvindingspunkt
 	Variable Data Sets	Variable datasæt
 	Vector Mask Hides Effects	Vektormaske skjuler effekter
@@ -4700,6 +4699,7 @@ shape	Appearance	Udseende
 	Grayscale Ramp	Gråtonerampe
 	Current Colors	Aktuelle farver
 	Make Ramp Web Safe	Gør rampe websikker
+	Scroll All Windows	Rul alle vinduer
 # Art History Brush (#213).
 	Art History Brush Tool	Kunstnerisk historikpenselværktøj
 	Tight Short	Stram kort
@@ -4748,12 +4748,12 @@ shape	Appearance	Udseende
 @plural	{n} document|{n} documents	{n} dokument|{n} dokumenter
 @plural	{n} pixel|{n} pixels	{n} pixel|{n} pixels
 cameraRaw	Before (Y)	Før (Y)
-cameraRaw	Camera Raw ({name})	Camera Raw ({name})
-cameraRaw	Camera Raw Filter ({layer})	Camera Raw-filter ({layer})
-cameraRaw	Camera Raw isn't open	Camera Raw er ikke åben
+cameraRaw	RAW Develop ({name})	RAW-fremkaldelse ({name})
+cameraRaw	RAW Develop Filter ({layer})	RAW-fremkaldelse-filter ({layer})
+cameraRaw	RAW Develop isn't open	RAW-fremkaldelse er ikke åben
 cameraRaw	Cancel	Annullér
-cameraRaw	Cancelled opening {name}	Annullerede åbning af {name}
-cameraRaw	Cancelled {label}	Annullerede {label}
+cameraRaw	Canceled opening {name}	Annullerede åbning af {name}
+cameraRaw	Canceled {label}	Annullerede {label}
 cameraRaw	Color Priority	Farveprioritet
 cameraRaw	Developing {name}	Fremkalder {name}
 cameraRaw	Full-resolution preview unavailable	Forhåndsvisning i fuld opløsning er ikke tilgængelig
@@ -4762,7 +4762,7 @@ cameraRaw	Highlight Clipping Warning (O)	Advarsel om højlysklipning (O)
 cameraRaw	Highlight Priority	Højlysprioritet
 cameraRaw	Load Settings…	Indlæs indstillinger…
 cameraRaw	Load settings from a Camera Raw .xmp file	Indlæs indstillinger fra en Camera Raw .xmp-fil
-cameraRaw	Loaded Camera Raw settings from {file}	Indlæste Camera Raw-indstillinger fra {file}
+cameraRaw	Loaded RAW Develop settings from {file}	Indlæste RAW-fremkaldelse-indstillinger fra {file}
 cameraRaw	Noise Reduction	Støjreduktion
 cameraRaw	OK	OK
 cameraRaw	Open	Åbn
@@ -4788,150 +4788,6 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	The path was discarded	Stien blev kasseret
 	The path was kept as the Work Path	Stien blev bevaret som arbejdssti
 	Edit Brush…	Rediger pensel…
-	AI Prompt History	AI-prompthistorik
-	AI model settings	Indstillinger for AI-model
-	Adjust colors with Poisson blending	Juster farver med Poisson-blanding
-	All nine regions	Alle ni områder
-	Attach Reference Image	Vedhæft referencebillede
-	Automatically check for updates	Søg automatisk efter opdateringer
-	Check for updates now	Søg efter opdateringer nu
-	ComfyUI port	ComfyUI-port
-	Compare with Original Generation	Sammenlign med oprindelig generering
-	Copy English translation	Kopiér engelsk oversættelse
-	Copy negative prompt	Kopiér negativ prompt
-	Copy original prompt	Kopiér oprindelig prompt
-	Custom model filenames (one per line)	Egne modelfilnavne (ét pr. linje)
-	Describe changes to the whole image	Beskriv ændringer til hele billedet
-	Describe changes, or leave blank to remove	Beskriv ændringer, eller lad feltet være tomt for at fjerne
-	Describe the image to generate	Beskriv billedet, der skal genereres
-	Downloading update…	Henter opdatering…
-	Drag to move the selected path	Træk for at flytte den valgte kurve
-	English translation	Engelsk oversættelse
-	Generative Fill	Generativ udfyldning
-	Match Surrounding Colors	Tilpas til omgivende farver
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Tilpas farver til omgivelserne registreret ved genereringen. Styrke 0 gendanner det oprindelige resultat.
-	Negative prompt	Negativ prompt
-	No AI prompts recorded	Ingen AI-prompter registreret
-	No matching fonts	Ingen matchende skrifttyper
-	No prompt (remove)	Ingen prompt (fjern)
-	One .safetensors filename per line. Compatibility is not checked.	Ét .safetensors-filnavn pr. linje. Kompatibilitet kontrolleres ikke.
-	Original prompt	Oprindelig prompt
-	PhotoCraft update available	PhotoCraft-opdatering tilgængelig
-	Prompt Edit	Rediger med prompt
-	Prompt Generate	Generer med prompt
-	Prompt information	Promptoplysninger
-	Prompt translation model	Model til promptoversættelse
-	Regenerate	Generer igen
-	Remove Reference Image	Fjern referencebillede
-	Reset steps to model default	Nulstil trin til modellens standard
-	Sampling steps	Samplingtrin
-	Text encoders	Tekstkodere
-	The image exceeds the AI editing size. Resize the document to continue?	Billedet overskrider størrelsen for AI-redigering. Skal dokumentets størrelse ændres for at fortsætte?
-	Translate prompt to English	Oversæt prompt til engelsk
-	Update PhotoCraft and restart now?	Opdater PhotoCraft og genstart nu?
-	You can check for updates again in Help → About PhotoCraft.	Du kan søge efter opdateringer igen under Hjælp → Om PhotoCraft.
-	Prompt Edit…	Rediger med prompt…
-	Prompt Generate…	Generer med prompt…
-	Generative Fill…	Generativ udfyldning…
-	Regenerate AI Result	Generer AI-resultat igen
-	Comfyui url	ComfyUI-serveradresse
-	Comfyui model	ComfyUI-model
-	Comfyui custom encoders	Egne ComfyUI-kodere
-	Comfyui custom model	Egen ComfyUI-model
-	Comfyui custom models	Egne ComfyUI-modeller
-	Comfyui model settings	ComfyUI-modelindstillinger
-	Comfyui translate prompt	Oversæt prompt til engelsk
-	Comfyui translation model	Model til promptoversættelse
-	External cutout	Ekstern fritlægning
-	External erase	Ekstern sletning
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Select Layer Under Cursor	Vælg lag under markøren
-	Arrange Panels	Arranger paneler
-	Close Other Panels in Group	Luk andre paneler i gruppen
-	Collapse to Icons	Fold sammen til ikoner
-	Dismiss update	Afvis opdateringen
-	Minimize Panel	Minimer panel
-	Open Panel in Own Window	Åbn panel i eget vindue
-	Update PhotoCraft	Opdater PhotoCraft
-	…	…
-	Turbo int8	Turbo INT8
-
-# Fork portable update information
-	PhotoCraft Updates	PhotoCraft-opdateringer
-	Checking for updates…	Søger efter opdateringer…
-	Open Download Page	Åbn downloadsiden
-	PhotoCraft is up to date.	PhotoCraft er opdateret.
-	Could not check for updates.	Kunne ikke søge efter opdateringer.
-	Updates have not been checked yet.	Der er endnu ikke søgt efter opdateringer.
-	Check Again	Søg igen
-	Installed version: {version}	Installeret version: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} er tilgængelig.
-	Answer the open import question first, then import this file again.	Besvar først det åbne importspørgsmål, og importér derefter filen igen.
-	Import as New Group	Importér som ny gruppe
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Importér som ny gruppe bevarer “{group}” og tilføjer filen som en ny gruppe ved siden af den.
-	No import is waiting. Import the file again.	Ingen import venter. Importér filen igen.
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Erstat sletter først alt i “{group}”, inklusive forudindstillinger, du har redigeret eller flyttet dertil. Dette kan ikke fortrydes.
-	{message} into “{group}”	{message} til “{group}”
-	Recently Used Colors	Senest anvendte farver
-	Shapes can't use patterns yet	Former kan endnu ikke bruge mønstre
-	Stop Color	Farvestoppets farve
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).|Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).|Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	Indstillinger for pilespidser
-	Arrowheads	Pilespidser
-	Concavity	Konkavitet
-	End	Slutning
-	Set as default	Angiv som standard
-	Start	Start
-	Use these settings for new arrows	Brug disse indstillinger til nye pile
-
-# Upstream 0.20.2 UI labels
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	En kommando blev annulleret eller stoppet under batchbehandlingen. Fortsæt med den næste fil eller stop?
-	Attribute	Attribut
-	Batch preview	Batchforhåndsvisning
-	Data Sets as Files is unavailable on the web	Datasæt som filer er ikke tilgængelig på nettet
-	Effect	Effekt
-	Empty	Tom
-	Filter for embedded smart objects	Filtrer efter indlejrede smartobjekter
-	Filter for linked smart objects that are missing	Filtrer efter manglende sammenkædede smartobjekter
-	Filter for smart objects linked locally	Filtrer efter lokalt sammenkædede smartobjekter
-	High Memory Photoshop Document	Photoshop-dokument med højt hukommelsesforbrug
-	Image Compression	Billedkomprimering
-	LZW	LZW
-	Layer Effects	Lageffekter
-	Lining	Versaltal
-	Linked	Sammenkædet
-	No Adv. Blending	Ingen avanceret blanding
-	No Layer Effects	Ingen lageffekter
-	No Layer Mask	Ingen lagmaske
-	No Vector Mask	Ingen vektormaske
-	Not Clipped	Ikke klippet
-	Not Empty	Ikke tom
-	Not Linked	Ikke sammenkædet
-	Not Locked	Ikke låst
-	Not Visible	Ikke synlig
-	Numerals	Tal
-	Open anyway	Åbn alligevel
-	Opening this document uses more memory and may slow down your computer or other running applications.	Åbning af dette dokument bruger mere hukommelse og kan gøre din computer eller andre kørende programmer langsommere.
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Åbning af “{name}” kræver anslået {est} GiB hukommelse ({avail} GiB tilgængelig).
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Åbning af “{name}” kræver anslået {est} GiB hukommelse. Den tilgængelige hukommelse kunne ikke måles.
-	Proportional	Proportionale
-	Proportional Lining	Proportionale versaltal
-	Proportional Oldstyle	Proportionale minuskeltal
-	Save Image Pyramid	Gem billedpyramide
-	Save Transparency	Gem gennemsigtighed
-	Tabular	Tabellariske
-	Tabular Lining	Tabellariske versaltal
-	Tabular Oldstyle	Tabellariske minuskeltal
-	ZIP	ZIP
-	{ok} written to {dir}	{ok} skrevet til {dir}
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} eksport af billedaktiver mislykkedes|{what}: {n} eksporter af billedaktiver mislykkedes
-	Memory usage percent	Hukommelsesforbrug i procent
-	Save Full-Size Composite in .pcraft Files	Gem sammensat billede i fuld størrelse i .pcraft-filer
 
 # Action Stop message (#8386)
 	Message	Meddelelse
@@ -4952,51 +4808,196 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Pick a different document for each channel.	Vælg et andet dokument til hver kanal.
 	A picked document is no longer open.	Et af de valgte dokumenter er ikke længere åbent.
 	A picked document is no longer a grayscale document of the same size.	Et af de valgte dokumenter er ikke længere et dokument i gråtoner i samme størrelse.
+	Netscape Gray	Netscape-grå
+# Move tool options bar (#11381)
+	Align top edges	Juster øverste kanter
+	Align vertical centers	Juster lodrette midter
+	Align bottom edges	Juster nederste kanter
+	Distribute vertically	Fordel lodret
+	Distribute horizontally	Fordel vandret
+	Show layer bounds on hover	Vis lagets grænser ved svæv
+	Expand layer group on click	Udvid lagergruppe ved klik
+	Show hover bounds from Layers	Vis svævegrænser fra Lag
+# Artboard tool options bar (#11385)
+	Distribute Widths	Fordel bredder
+	Distribute Heights	Fordel højder
+	Auto-nest Layers	Indlejr lag automatisk
+	Auto-size Canvas	Tilpas lærredsstørrelse automatisk
+	Keep Relative Position During Layer Reordering	Bevar relativ placering ved omorganisering af lag
+	Shrinkwrap Canvas on Save	Beskær lærredet til indholdet ved lagring
 
-# Upstream 0.21.0 frame, placement and memory messages.
+# RAW Develop feature labels
+	Saved RAW Develop settings to {file}	RAW-fremkaldelsesindstillinger gemt i {file}
+
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	En kommando blev annulleret eller stoppet under batchbehandlingen. Fortsæt med den næste fil eller stop?
 	A file is still being placed; try again when it has finished.	En fil er stadig ved at blive placeret; prøv igen, når det er færdigt.
 	A frame supports affine transforms; select its image for perspective transforms	En ramme understøtter affine transformationer; vælg dens billede for perspektivtransformationer
 	A frame supports affine transforms; select its image to warp it	En ramme understøtter affine transformationer; vælg dens billede for at forvrænge det
+	AI Prompt History	AI-prompthistorik
+	AI model settings	Indstillinger for AI-model
+	Adjust colors with Poisson blending	Juster farver med Poisson-blanding
+	All nine regions	Alle ni områder
+	Answer the open import question first, then import this file again.	Besvar først det åbne importspørgsmål, og importér derefter filen igen.
+	Arrange Panels	Arranger paneler
+	Arrowhead options	Indstillinger for pilespidser
+	Arrowheads	Pilespidser
+	Attach Reference Image	Vedhæft referencebillede
+	Attribute	Attribut
+	Automatically check for updates	Søg automatisk efter opdateringer
+	Base64	Base64
+	Batch preview	Batchforhåndsvisning
+	Cancelled opening {name}	Annullerede åbning af {name}
 	Cancelled placing {name}	Placering af {name} annulleret
+	Cancelled {label}	Annullerede {label}
+	Centre the gradient (offset 0, 0)	Centrér gradienten (forskydning 0, 0)
+	Check Again	Søg igen
+	Check for updates now	Søg efter opdateringer nu
+	Checking for updates…	Søger efter opdateringer…
+	Click to fill similar colours	Klik for at udfylde lignende farver
+	Click to restore the current colour	Klik for at gendanne den aktuelle farve
+	Click to sample the foreground colour  ·  {key}-click for background	Klik for at tage prøve af forgrundsfarven  ·  {key}-klik for baggrundsfarven
+	Close Other Panels in Group	Luk andre paneler i gruppen
+	Collapse to Icons	Fold sammen til ikoner
+	Color Blindness — Deuteranopia-type	Farveblindhed — deuteranopi-type
+	Color Blindness — Protanopia-type	Farveblindhed — protanopi-type
+	ComfyUI port	ComfyUI-port
+	Comfyui custom encoders	Egne ComfyUI-kodere
+	Comfyui custom model	Egen ComfyUI-model
+	Comfyui custom models	Egne ComfyUI-modeller
+	Comfyui model	ComfyUI-model
+	Comfyui model settings	ComfyUI-modelindstillinger
+	Comfyui translate prompt	Oversæt prompt til engelsk
+	Comfyui translation model	Model til promptoversættelse
+	Comfyui url	ComfyUI-serveradresse
+	Compare with Original Generation	Sammenlign med oprindelig generering
+	Concavity	Konkavitet
 	Convert to Frame…	Konvertér til ramme…
+	Copy English translation	Kopiér engelsk oversættelse
+	Copy negative prompt	Kopiér negativ prompt
+	Copy original prompt	Kopiér oprindelig prompt
+	Could not check for updates.	Kunne ikke søge efter opdateringer.
 	Create a new custom frame	Opret en ny brugerdefineret ramme
 	Create a new polygonal frame	Opret en ny polygonal ramme
 	Create a new triangular frame	Opret en ny trekantet ramme
+	Cube	CUBE
+	Custom model filenames (one per line)	Egne modelfilnavne (ét pr. linje)
+	Data Encoding	Datakodning
+	Data Sets as Files is unavailable on the web	Datasæt som filer er ikke tilgængelig på nettet
+	Default colours (D)	Standardfarver (D)
+	Describe changes to the whole image	Beskriv ændringer til hele billedet
+	Describe changes, or leave blank to remove	Beskriv ændringer, eller lad feltet være tomt for at fjerne
+	Describe the image to generate	Beskriv billedet, der skal genereres
+	Dismiss update	Afvis opdateringen
+	Downloading update…	Henter opdatering…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Træk en beskæringsramme · træk inde i den for at flytte · kanter ændrer størrelse ({ratio}-forhold, {centre} centreret) · Mellemrumstasten flytter, mens du tegner · piletaster skubber · X bytter orientering · {commit} bekræfter · Esc annullerer
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Træk rundt om midtpunktet for at rotere visningen  ·  Shift låser til 15°
+	Drag to move the selected path	Træk for at flytte den valgte kurve
 	Dropped files weren't placed: their document was closed.	De slupne filer blev ikke placeret: deres dokument blev lukket.
 	Dropped files weren't placed: too many are waiting for their document.	De slupne filer blev ikke placeret: for mange venter på deres dokument.
+	Effect	Effekt
+	Empty	Tom
+	End	Slutning
+	English translation	Engelsk oversættelse
+	External cutout	Ekstern fritlægning
+	External erase	Ekstern sletning
+	Filter for embedded smart objects	Filtrer efter indlejrede smartobjekter
+	Filter for linked smart objects that are missing	Filtrer efter manglende sammenkædede smartobjekter
+	Filter for smart objects linked locally	Filtrer efter lokalt sammenkædede smartobjekter
 	Fit Content to Frame	Tilpas indhold til ramme
 	Fit Frame to Content	Tilpas ramme til indhold
 	Frame coordinates must be finite and within 600000 pixels	Rammekoordinater skal være endelige og inden for 600000 pixels
+	Generative Fill	Generativ udfyldning
+	Generative Fill…	Generativ udfyldning…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Gradientkorrigeret interpolation: skarp og hurtig, med nogle farvefrynser i fine detaljer.
+	High Memory Photoshop Document	Photoshop-dokument med højt hukommelsesforbrug
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: de reneste kanter og de mindste farvefrynser, men den langsomste.
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Hvordan kameraets farvefiltermosaik udfyldes. Det anvendes, når filen åbnes; forhåndsvisningen viser den metode, den blev åbnet med.
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	Billedkomprimering
 	Import Image…	Importér billede…
+	Import as New Group	Importér som ny gruppe
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Importér som ny gruppe bevarer “{group}” og tilføjer filen som en ny gruppe ved siden af den.
+	Installed version: {version}	Installeret version: {version}
 	Invalid frame transform	Ugyldig rammetransformation
 	Invalid nested file drop	Ugyldigt indlejret filslip
+	Inverse Selection	Invertér markering
+	LZW	LZW
+	Layer Effects	Lageffekter
 	Learn	Lær
+	Lining	Versaltal
+	Linked	Sammenkædet
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Der ville være lidt hukommelse tilbage efter åbning af denne fil. Luk andre apps først, ellers kan PhotoCraft løbe tør for hukommelse.
+	Look	LOOK
+	Lut Format	LUT-format
+	Match Surrounding Colors	Tilpas til omgivende farver
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Tilpas farver til omgivelserne registreret ved genereringen. Styrke 0 gendanner det oprindelige resultat.
+	Memory usage percent	Hukommelsesforbrug i procent
+	Minimize Panel	Minimer panel
+	Negative prompt	Negativ prompt
 	New Frame	Ny ramme
 	New file	Ny fil
+	No AI prompts recorded	Ingen AI-prompter registreret
+	No Adv. Blending	Ingen avanceret blanding
+	No Layer Effects	Ingen lageffekter
+	No Layer Mask	Ingen lagmaske
+	No Vector Mask	Ingen vektormaske
+	No import is waiting. Import the file again.	Ingen import venter. Importér filen igen.
+	No matching fonts	Ingen matchende skrifttyper
+	No prompt (remove)	Ingen prompt (fjern)
+	Not Clipped	Ikke klippet
+	Not Empty	Ikke tom
+	Not Linked	Ikke sammenkædet
+	Not Locked	Ikke låst
+	Not Visible	Ikke synlig
+	Not a web colour: click for the nearest web colour	Ikke en webfarve: klik for at få den nærmeste webfarve
 	Nudge	Flyt lidt
+	Numerals	Tal
 	On your computer	På din computer
+	One .safetensors filename per line. Compatibility is not checked.	Ét .safetensors-filnavn pr. linje. Kompatibilitet kontrolleres ikke.
+	Open Download Page	Åbn downloadsiden
+	Open Panel in Own Window	Åbn panel i eget vindue
+	Open a document to select a colour range.	Åbn et dokument for at markere et farveområde.
+	Open anyway	Åbn alligevel
+	Opening this document uses more memory and may slow down your computer or other running applications.	Åbning af dette dokument bruger mere hukommelse og kan gøre din computer eller andre kørende programmer langsommere.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Åbning af “{name}” kræver anslået {est} GiB hukommelse ({avail} GiB tilgængelig).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Åbning af “{name}” kræver anslået {est} GiB hukommelse. Den tilgængelige hukommelse kunne ikke måles.
+	Original prompt	Oprindelig prompt
+	Out of gamut for printing: click for the nearest printable colour	Uden for gamut ved udskrivning: klik for at få den nærmeste udskrivbare farve
+	PhotoCraft Updates	PhotoCraft-opdateringer
+	PhotoCraft is up to date.	PhotoCraft er opdateret.
+	PhotoCraft update available	PhotoCraft-opdatering tilgængelig
+	PhotoCraft {version} is available.	PhotoCraft {version} er tilgængelig.
+	Prompt Edit	Rediger med prompt
+	Prompt Edit…	Rediger med prompt…
+	Prompt Generate	Generer med prompt
+	Prompt Generate…	Generer med prompt…
+	Prompt information	Promptoplysninger
+	Prompt translation model	Model til promptoversættelse
+	Proportional	Proportionale
+	Proportional Lining	Proportionale versaltal
+	Proportional Oldstyle	Proportionale minuskeltal
+	Quick Export As PNG	Hurtig eksport som PNG
+	Qwen image21	Qwen 2.1
+	Recently Used Colors	Senest anvendte farver
+	Regenerate	Generer igen
+	Regenerate AI Result	Generer AI-resultat igen
+	Remember to turn off the printer's own colour management in Print Settings…	Husk at slå printerens egen farvestyring fra i Udskriftsindstillinger…
+	Remove Reference Image	Fjern referencebillede
 	Replace Image…	Erstat billede…
-	Source: {name}	Kilde: {name}
-	The GPU compositor is still being prepared	GPU-kompositoren er stadig ved at blive klargjort
-	The History Brush source was deleted: set a new source in the History panel	Kilden til historikpenslen blev slettet: angiv en ny kilde i panelet Historik
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Den aktuelle mappe til arbejdsdisk ({path}) oplyser ikke sin ledige plads, så PhotoCraft kan ikke stoppe, før den er fuld, og store filer får ikke ekstra plads fra den uden en størrelsesgrænse for arbejdsdisken. Denne advarsel gælder den aktuelle konfiguration; ændringerne ovenfor træder i kraft ved Anvend eller OK. Angiv en grænse, eller brug en lokal disk.
-	The frame is locked	Rammen er låst
-	The frame is unavailable	Rammen er ikke tilgængelig
-	Website	Websted
-
-# OpenType stylistic sets.
-	Stylistic Sets	Stilistiske sæt
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Erstat sletter først alt i “{group}”, inklusive forudindstillinger, du har redigeret eller flyttet dertil. Dette kan ikke fortrydes.
+	Reset steps to model default	Nulstil trin til modellens standard
+	Sample: foreground colour	Prøve: forgrundsfarve
+	Sampling steps	Samplingtrin
+	Save Full-Size Composite in .pcraft Files	Gem sammensat billede i fuld størrelse i .pcraft-filer
+	Save Image Pyramid	Gem billedpyramide
+	Save Transparency	Gem gennemsigtighed
+	Save cancelled	Gemning annulleret
+	Select Layer Under Cursor	Vælg lag under markøren
 	Set 	Sæt
 	Set 1	Sæt 1
-	Set 2	Sæt 2
-	Set 3	Sæt 3
-	Set 4	Sæt 4
-	Set 5	Sæt 5
-	Set 6	Sæt 6
-	Set 7	Sæt 7
-	Set 8	Sæt 8
-	Set 9	Sæt 9
 	Set 10	Sæt 10
 	Set 11	Sæt 11
 	Set 12	Sæt 12
@@ -5007,22 +5008,149 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Set 17	Sæt 17
 	Set 18	Sæt 18
 	Set 19	Sæt 19
+	Set 2	Sæt 2
 	Set 20	Sæt 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	Input fra tegneplade
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (standard)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	Datakodning
-	Lut Format	LUT-format
+	Set 3	Sæt 3
+	Set 4	Sæt 4
+	Set 5	Sæt 5
+	Set 6	Sæt 6
+	Set 7	Sæt 7
+	Set 8	Sæt 8
+	Set 9	Sæt 9
+	Set as default	Angiv som standard
 	Shape Id	Form-id
 	Shape Name	Formnavn
 	Shape Origin Type	Formens oprindelsestype
 	Shape Path	Formkurve
+	Shapes can't use patterns yet	Former kan endnu ikke bruge mønstre
+	Source: {name}	Kilde: {name}
+	Start	Start
+	Stop Color	Farvestoppets farve
+	Stylistic Sets	Stilistiske sæt
+	Swap colours (X)	Ombyt farver (X)
+	Tablet input	Input fra tegneplade
+	Tabular	Tabellariske
+	Tabular Lining	Tabellariske versaltal
+	Tabular Oldstyle	Tabellariske minuskeltal
 	Text	Tekst
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoders	Tekstkodere
+	The GPU compositor is still being prepared	GPU-kompositoren er stadig ved at blive klargjort
+	The History Brush source was deleted: set a new source in the History panel	Kilden til historikpenslen blev slettet: angiv en ny kilde i panelet Historik
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Den aktuelle mappe til arbejdsdisk ({path}) oplyser ikke sin ledige plads, så PhotoCraft kan ikke stoppe, før den er fuld, og store filer får ikke ekstra plads fra den uden en størrelsesgrænse for arbejdsdisken. Denne advarsel gælder den aktuelle konfiguration; ændringerne ovenfor træder i kraft ved Anvend eller OK. Angiv en grænse, eller brug en lokal disk.
+	The fastest and the softest, with colour fringing on fine detail.	Den hurtigste og den blødeste, med farvefrynser i fine detaljer.
+	The frame is locked	Rammen er låst
+	The frame is unavailable	Rammen er ikke tilgængelig
+	The image exceeds the AI editing size. Resize the document to continue?	Billedet overskrider størrelsen for AI-redigering. Skal dokumentets størrelse ændres for at fortsætte?
+	Translate prompt to English	Oversæt prompt til engelsk
+	Turbo int8	Turbo INT8
+	Update PhotoCraft	Opdater PhotoCraft
+	Update PhotoCraft and restart now?	Opdater PhotoCraft og genstart nu?
+	Updates have not been checked yet.	Der er endnu ikke søgt efter opdateringer.
+	Use these settings for new arrows	Brug disse indstillinger til nye pile
+	Uses the foreground and background colours.	Bruger forgrundsfarven og baggrundsfarven.
+	Website	Websted
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (standard)
+	You can check for updates again in Help → About PhotoCraft.	Du kan søge efter opdateringer igen under Hjælp → Om PhotoCraft.
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label} skriver filen og kan ikke længere annulleres
+	{message} into “{group}”	{message} til “{group}”
+	{ok} written to {dir}	{ok} skrevet til {dir}
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).|Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).|Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} eksport af billedaktiver mislykkedes|{what}: {n} eksporter af billedaktiver mislykkedes
+cameraRaw	Cancelled opening {name}	Annullerede åbning af {name}
+cameraRaw	Cancelled {label}	Annullerede {label}
+
+# Remembered file-import preferences
+	Last folder	Senest anvendte mappe
+	Pdf dpi	PDF-opløsning (dpi)
+	Pdf first page	Første PDF-side
+	Pdf last page	Sidste PDF-side
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	En kommando blev annulleret eller stoppet under batchbehandling. Fortsæt med næste fil eller stop?
+	Allow Tool Recording	Tillad værktøjsoptagelse
+	Allows rotation and scaling of selection	Tillader rotation og skalering af markeringen
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Brug altid tryk til opacitet. Når slået fra, styrer penselforudindstillingen trykket
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Brug altid tryk til størrelse. Når slået fra, styrer penselforudindstillingen trykket
+	Bottom align text	Juster tekst til bunden
+	Choose a menu command. Playback asks for its settings when needed.	Vælg en menukommando. Afspilning spørger efter dens indstillinger, når det er nødvendigt.
+	Choose a remix mode	Vælg en genblandingstilstand
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Klik og flyt til venstre eller højre for at skalere med zoomværktøjet (kun OpenGL)
+	Click to open the Brush Preset picker	Klik for at åbne vælgeren til penselforudindstillinger
+	Confirm or cancel the pending Record Again editor first.	Bekræft eller annuller først den ventende editor til Optag igen.
+	Confirm or cancel the pending menu item first.	Bekræft eller annuller først det ventende menupunkt.
+	Copy CSS	Kopiér CSS
+	Could not use the type tool because the layer is locked.	Tekstværktøjet kunne ikke bruges, fordi laget er låst.
+	Delete this note?	Slet denne note?
+	Do not erase the foreground swatch color	Slet ikke forgrundsfarvefeltets farve
+	Draws background color over foreground colors	Tegner baggrundsfarven over forgrundsfarverne
+	Enable to remix all layers	Aktivér for at genblande alle lag
+	Equalize Entire Image Based On Selected Area	Udlign hele billedet ud fra det markerede område
+	Equalize Selected Area Only	Udlign kun det markerede område
+	Erase range of similar colors	Slet et interval af lignende farver
+	How far to let the erasing spread	Hvor langt sletningen må brede sig
+	Insert Menu Item…	Indsæt menupunkt…
+	Insert Path	Indsæt kurve
+	No document.	Intet dokument.
+	No menu item belongs to this chooser.	Intet menupunkt hører til denne vælger.
+	No menu item is waiting.	Intet menupunkt venter.
+	No note to delete	Ingen note at slette
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Ingen kurve at lave en figur fra: tegn en med penværktøjet, eller vælg en i panelet Kurver.
+	No pixels are selected.	Ingen pixels er markeret.
+	No recorded step belongs to this editor.	Intet optaget trin hører til denne editor.
+	No settings saved: these raws can't keep a sidecar here	Ingen indstillinger gemt: disse råfiler kan ikke have en sidefil her
+	No slices are selected. Click a slice in the preview to select it.	Ingen udsnit er markeret. Klik på et udsnit i forhåndsvisningen for at markere det.
+	No step is waiting.	Intet trin venter.
+	Note deleted, but the preference could not be saved: {error}	Noten blev slettet, men indstillingen kunne ikke gemmes: {error}
+	Nothing to save: these raws are at their default settings	Intet at gemme: disse råfiler bruger standardindstillingerne
+	Open as Smart Object…	Åbn som Smart Object…
+	Painting Mode	Maletilstand
+	Preparing Free Transform	Forbereder fri transformering
+	Record Again	Optag igen
+	Resize windows when zooming using the Zoom Tool	Tilpas vinduesstørrelsen ved zoom med zoomværktøjet
+	Save the settings to each raw's sidecar without opening it	Gem indstillingerne i hver råfils sidefil uden at åbne filen
+	Scroll all open document windows when using the hand tool	Rul alle åbne dokumentvinduer ved brug af håndværktøjet
+	Search and select fonts	Søg og vælg skrifttyper
+	Select an action first.	Vælg først en handling.
+	Select an action step first.	Vælg først et handlingstrin.
+	Selected Area Only	Kun markeret område
+	Selected Slices	Markerede udsnit
+	Set flow rate for stroke	Indstil flow for penselstrøg
+	Set font size	Indstil skriftstørrelse
+	Set font style	Indstil skrifttypevariant
+	Set opacity for stroke	Indstil opacitet for penselstrøg
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Indstil udjævning for penselstrøg\nBrug højere værdier for at mindske rystelser i penselstrøg
+	Set symmetry options for Painting	Indstil symmetriindstillinger for maling
+	Set text color	Indstil tekstfarve
+	Set the brush angle	Indstil penselvinklen
+	Smoothing Options	Udjævningsindstillinger
+	Some settings could not be saved; the raws stay open	Nogle indstillinger kunne ikke gemmes; råfilerne forbliver åbne
+	The Record Again command changed.	Kommandoen Optag igen blev ændret.
+	The action or insertion command changed. Request Insert Menu Item again.	Handlingen eller indsættelseskommandoen blev ændret. Anmod om Indsæt menupunkt igen.
+	The actions changed. Request Record Again again.	Handlingerne blev ændret. Anmod om Optag igen på ny.
+	The command permissions changed. Request Insert Menu Item again.	Kommandotilladelserne blev ændret. Anmod om Indsæt menupunkt igen.
+	The command permissions changed. Request Record Again again.	Kommandotilladelserne blev ændret. Anmod om Optag igen på ny.
+	The document changed. Request Record Again again.	Dokumentet blev ændret. Anmod om Optag igen på ny.
+	The document or its notes changed. Please delete the note again.	Dokumentet eller dets noter blev ændret. Slet noten igen.
+	The preference could not be saved: {error}	Indstillingen kunne ikke gemmes: {error}
+	The step editor could not be opened.	Trineditoren kunne ikke åbnes.
+	The step has no command editor.	Trinnet har ingen kommandoeditor.
+	Top align text	Juster tekst til toppen
+	Use relative positioning for reference point	Brug relativ placering af referencepunktet
+	Useful mixer brush combinations	Nyttige kombinationer til blandepenslen
+	Zoom current window to 1:1	Zoom det aktuelle vindue til 1:1
+	Zoom current window to fill the screen	Zoom det aktuelle vindue, så skærmen fyldes
+	Zoom current window to screen size	Zoom det aktuelle vindue til skærmstørrelse
+	brush tool	penselværktøj
+	Open in RAW Develop	Åbn i RAW-fremkaldelse
+	Skip transform when placing	Spring transformering over ved placering
+	Upscale	Opskaler
+	Tiling	Opdeling i felter
+	Tile size	Feltstørrelse
+	Overlap	Overlap
+	Noise reduction	Støjreduktion
+	Alpha channel	Alfakanal
+	Batch size	Batchstørrelse
+	No local upscaler installed	Ingen lokal opskaleringsmodel er installeret
+	Highest	Højest

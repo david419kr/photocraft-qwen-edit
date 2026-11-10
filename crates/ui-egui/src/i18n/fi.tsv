@@ -112,7 +112,6 @@
 	Export As…	Vie nimellä…
 	Export	Vie
 	Export…	Vie…
-	Quick Export As PNG	Pikavienti PNG-muodossa
 	Quick Export as PNG	Pikavienti PNG-muotoon
 	Place Embedded…	Sijoita upotettuna…
 	Place Linked…	Sijoita linkitettynä…
@@ -187,8 +186,8 @@
 	Trap…	Trappaus…
 
 # Layer
-	Layer via Copy	Taso kopioimalla
-	Layer via Cut	Taso leikkaamalla
+	Layer Via Copy	Taso kopioimalla
+	Layer Via Cut	Taso leikkaamalla
 	Duplicate Layer…	Monista taso…
 	Duplicate…	Monista…
 	Delete	Poista
@@ -316,7 +315,6 @@
 	All	Kaikki
 	Deselect	Poista valinta
 	Reselect	Valitse uudelleen
-	Inverse Selection	Käänteinen valinta
 	Inverse	Käännä valinta
 	Color Range…	Värialue…
 	Select and Mask…	Valitse ja maskaa…
@@ -353,7 +351,7 @@
 	Last Filter	Viimeisin suodatin
 	Filter Gallery…	Suodatingalleria…
 	Liquify…	Nesteytä…
-	Camera Raw Filter…	Camera Raw -suodatin…
+	RAW Develop Filter…	RAW-kehitys -suodatin…
 	Adaptive Wide Angle…	Mukautuva laajakulma…
 	Lens Correction…	Objektiivin korjaus…
 	Vanishing Point…	Pakopiste…
@@ -543,6 +541,12 @@
 	Timeline	Aikajana
 	Tool Presets	Työkalujen esiasetukset
 	Tools	Työkalut
+	Contextual Task Bar	Kontekstuaalinen tehtäväpalkki
+	Hide bar	Piilota palkki
+	Reset bar position	Palauta palkin sijainti
+	Pin bar position	Kiinnitä palkin sijainti
+	Move bar	Siirrä palkkia
+	More options	Lisää vaihtoehtoja
 	Libraries	Kirjastot
 	3D	3D
 	Toolbars	Työkalurivit
@@ -601,8 +605,8 @@
 	Background	Tausta
 	Set foreground color	Aseta edustaväri
 	Set background color	Aseta taustaväri
-	Swap colours (X)	Vaihda värit (X)
-	Default colours (D)	Oletusvärit (D)
+	Switch Foreground and Background Colors (X)	Vaihda edusta- ja taustaväri keskenään (X)
+	Default Foreground and Background Colors (D)	Oletusarvoiset edusta- ja taustavärit (D)
 	Brush Tool Options	Sivellintyökalun asetukset
 	Opacity	Peittävyys
 	Flow	Virtaus
@@ -872,7 +876,7 @@
 	Working Black Plate	Työ-mustalevy
 	Working Gray Plate	Harmaa työlevy
 
-# Camera Raw and lens dialogs
+# RAW Develop and lens dialogs
 	Basic	Perusasetukset
 	Detail	Yksityiskohdat
 	HSL/Grayscale	HSL/harmaasävy
@@ -902,8 +906,8 @@
 	Luminance Smoothness	Luminanssin tasaisuus
 	Vignetting	Vinjetointi
 	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
-	Camera Raw…	Camera Raw…
-	Camera Raw isn't open	Camera Raw ei ole auki
+	RAW Defaults…	RAW-oletukset…
+	RAW Develop isn't open	RAW-kehitys ei ole auki
 	Dehaze	Usvanpoisto
 	Texture	Tekstuuri
 	Focal Length	Polttoväli
@@ -1174,8 +1178,6 @@
 	Roman Hanging Punctuation	Latinalainen riippuva välimerkitys
 	Avoid Widows/Orphans	Vältä leski- ja orporivejä
 	Compose	Sommittele
-	Adobe Single-line Composer	Adobe yksirivinen asettelija
-	Adobe Every-line Composer	Adobe kaikkien rivien asettelija
 	Justification	Tasaus
 	Word Spacing	Sanaväli
 	Letter Spacing	Merkkiväli
@@ -1215,6 +1217,7 @@
 	Path to Illustrator…	Polku Illustratoriin…
 	Make Work Path	Luo työpolku
 	Make Selection	Luo valinta
+	Make Shape	Luo muoto
 	Fill Path	Täytä polku
 	Stroke Path	Piirrä polun reunaviiva
 	Clipping Path	Leikkauspolku
@@ -1608,7 +1611,7 @@
 	Revert “{name}” to the last saved version? Your changes will be lost.	Palautetaanko ”{name}” viimeksi tallennettuun versioon? Muutokset menetetään.
 	{key} to subtract	{key}: vähennä
 	↑↓ navigate   {key} run   esc close	↑↓ siirry   {key} suorita   esc sulje
-	Click to restore the current colour	Palauta nykyinen väri napsauttamalla
+	Click to restore the current color	Palauta nykyinen väri napsauttamalla
 	Click with the Note tool to add a note.	Lisää muistiinpano napsauttamalla Muistiinpano-työkalulla.
 	Drag a rectangle around the object	Vedä suorakulmio kohteen ympärille
 	Drag on the image to add a constraint; Shift for horizontal/vertical; right-click a constraint to change or delete it.	Lisää rajoite vetämällä kuvassa; Shift vaaka-/pystysuunnalle; muuta tai poista rajoite napsauttamalla sitä hiiren kakkospainikkeella.
@@ -1632,6 +1635,7 @@
 	Move Tool	Siirtotyökalu
 	Could not use the move tool because the layer is locked.	Siirtotyökalua ei voitu käyttää, koska taso on lukittu.
 	Could not complete the Free Transform command because the layer is locked.	Vapaa muunnos -komentoa ei voitu suorittaa, koska taso on lukittu.
+	Could not transform because the layer is locked.	Muuntaminen ei onnistunut, koska taso on lukittu.
 	Rectangular Marquee Tool	Suorakulmainen valintakehys
 	Elliptical Marquee Tool	Elliptinen valintakehys
 	Single Row Marquee Tool	Yhden rivin valintakehys
@@ -1689,10 +1693,10 @@
 	Drag to move the active layer	Siirrä aktiivista tasoa vetämällä
 	Drag to pan  ·  hold Space with any tool	Panoroi vetämällä  ·  tai pidä Välilyöntiä painettuna millä tahansa työkalulla
 	Drag to draw a gradient	Piirrä liukuväri vetämällä
-	Click to fill similar colours	Täytä samankaltaiset värit napsauttamalla
+	Click to fill similar colors	Täytä samankaltaiset värit napsauttamalla
 	Click to add text	Lisää teksti napsauttamalla
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	Vedä (lasso) tai napsauta pisteitä (monikulmio) · {add} lisää · {sub} vähennä
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Vedä rajauslaatikko · siirrä vetämällä sisältä · reunat muuttavat kokoa ({ratio} suhde, {centre} keskeltä) · Välilyönti siirtää piirrettäessä · nuolet siirtävät · X vaihtaa suunnan · {commit} vahvistaa · Esc peruuttaa
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Vedä rajauslaatikko · siirrä vetämällä sisältä · reunat muuttavat kokoa ({ratio} suhde, {centre} keskeltä) · Välilyönti siirtää piirrettäessä · nuolet siirtävät · X vaihtaa suunnan · {commit} vahvistaa · Esc peruuttaa
 	{mode} Color · {bits} bit	{mode}-väri · {bits}-bittinen
 	Drag to move the layer	Siirrä tasoa vetämällä
 	Fit Screen	Sovita näyttöön
@@ -1724,7 +1728,7 @@
 	Appearance	Ulkoasu
 	Text Position:	Tekstin sijainti:
 	Text color	Tekstin väri
-	Uses the foreground and background colours.	Käyttää edusta- ja taustaväriä.
+	Uses the foreground and background colors.	Käyttää edusta- ja taustaväriä.
 	Answer the unsaved-changes prompt first	Vastaa ensin tallentamattomien muutosten kyselyyn
 	Unsaved changes	Tallentamattomat muutokset
 	Don't Save	Älä tallenna
@@ -1744,7 +1748,7 @@
 	name	nimi
 	new	uusi
 	Go to Layer	Siirry tasoon
-	Open a document to select a colour range.	Avaa asiakirja valitaksesi värialueen.
+	Open a document to select a color range.	Avaa asiakirja valitaksesi värialueen.
 	Saved	Tallennettu
 	Reveal in Finder	Näytä Finderissa
 	Show in Explorer	Näytä Resurssienhallinnassa
@@ -1755,8 +1759,8 @@
 	Load Settings…	Lataa asetukset…
 	Save these settings as a Camera Raw .xmp file	Tallenna nämä asetukset Camera Raw .xmp -tiedostona
 	Load settings from a Camera Raw .xmp file	Lataa asetukset Camera Raw .xmp -tiedostosta
-	Loaded Camera Raw settings from {file}	Camera Raw -asetukset ladattu tiedostosta {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw -asetukset ladattu tiedostosta {file} ({n} tukematonta)
+	Loaded RAW Develop settings from {file}	RAW-kehitys -asetukset ladattu tiedostosta {file}
+	Loaded RAW Develop settings from {file} ({n} not supported)	RAW-kehitys -asetukset ladattu tiedostosta {file} ({n} tukematonta)
 	After (X)	Jälkeen (X)
 	Original	Alkuperäinen
 	Current	Nykyinen
@@ -1922,8 +1926,8 @@
 	Character Styles Panel	Merkkityylipaneeli
 	Clear Canvas Guides	Poista kankaan apuviivat
 	Clear Selected Artboard Guides	Poista valitun piirtoalustan apuviivat
-	Color Blindness — Deuteranopia-type	Värisokeus — deuteranopia
-	Color Blindness — Protanopia-type	Värisokeus — protanopia
+	Color Blindness - Deuteranopia-type	Värisokeus — deuteranopia
+	Color Blindness - Protanopia-type	Värisokeus — protanopia
 	Color Table…	Väritaulukko…
 	Combine Shapes	Yhdistä muodot
 	Contract…	Supista…
@@ -2062,7 +2066,7 @@
 	Vertical Centers	Pystykeskikohdat
 	Video Frames to Layers…	Videoruudut tasoiksi…
 	WIA Support…	WIA-tuki…
-	Working CMY Plates	Työ-CMY-levy
+	Working CMY Plates	Työ-CMY-levyt
 
 # tl! literals (third pass)
 	Absolute	Absoluuttinen
@@ -2097,7 +2101,7 @@
 	Canvas	Kangas
 	Capture	Kaappaa
 	Center Crop Marks	Keskikohdan rajausmerkit
-	Centre the gradient (offset 0, 0)	Keskitä liukuväri (siirtymä 0, 0)
+	Center the gradient (offset 0, 0)	Keskitä liukuväri (siirtymä 0, 0)
 	Change Screen Mode  (F)	Vaihda näyttötilaa  (F)
 	Change To:	Muuta muotoon:
 	Clear All	Tyhjennä kaikki
@@ -2249,7 +2253,7 @@
 	Roughness	Karheus
 	Roundness	Pyöreys
 	Rulers & Grids	Viivaimet ja ruudukot
-	Sample: foreground colour	Näyte: edustaväri
+	Sample: foreground color	Näyte: edustaväri
 	Sampling: Background Swatch	Näytteistys: taustan värimalli
 	Sampling: Continuous	Näytteistys: jatkuva
 	Sampling: Once	Näytteistys: kerran
@@ -2343,7 +2347,7 @@
 	CPU (no GPU acceleration)	CPU (ei GPU-kiihdytystä)
 	Cache levels	Välimuistitasot
 	Cache tile size	Välimuistin laatan koko
-	Camera Raw Defaults	Camera Raw -oletukset
+	RAW Defaults	RAW-oletukset
 	Canvas border	Kankaan reunus
 	Show canvas dots	Näytä kankaan pisteet
 	Clip thumbnails to layer bounds	Rajaa pikkukuvat tason rajoihin
@@ -2435,7 +2439,6 @@
 	Never	Ei koskaan
 	Normal tip	Normaali kärki
 	Open as smart object	Avaa älykkäänä objektina
-	Open in camera raw	Avaa Camera Raw'ssa
 	Open documents as tabs	Avaa asiakirjat välilehtinä
 	OpenGL	OpenGL
 	Orange	Oranssi
@@ -2522,7 +2525,7 @@
 	Alt-click to define a source point to clone from	Määritä kloonauksen lähdepiste Alt-napsautuksella
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	Ei polkua, josta luoda valinta: piirrä polku kynätyökalulla tai valitse polku Polut-paneelissa.
 	Cancel opening	Peruuta avaaminen
-	Cancelled opening {name}	Tiedoston {name} avaaminen peruutettu
+	Canceled opening {name}	Tiedoston {name} avaaminen peruutettu
 	Damaged Photoshop document	Vioittunut Photoshop-asiakirja
 	The document “{name}” may be damaged.	Asiakirja ”{name}” saattaa olla vioittunut.
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	Joitakin tasoja, pikseleitä tai maskeja ei voitu lukea. Haluatko jatkaa avaamista?
@@ -2532,7 +2535,7 @@
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	Asiakirjassa ”{name}” on upotettu väriprofiili, joka ei vastaa nykyistä {mode}-työavaruutta.
 	Working: {working}	Työavaruus: {working}
 	Developing {name}	Kehitetään tiedostoa {name}
-	Cancelled {label}	Peruutettu: {label}
+	Canceled {label}	Peruutettu: {label}
 	Esc to cancel	Peruuta painamalla Esc
 	Opened {name}	Avattu {name}
 	Opening {name}	Avataan tiedostoa {name}
@@ -2540,7 +2543,7 @@
 	Saving {name}	Tallennetaan tiedostoa {name}
 	Saving {percent}	Tallennetaan {percent}
 	A save to {name} is still running; try again when it finishes	Tallennus tiedostoon {name} on vielä käynnissä; yritä uudelleen sen päätyttyä
-	{label} is writing the file and can no longer be cancelled	{label}: tiedostoa kirjoitetaan, eikä toimintoa voi enää peruuttaa
+	{label} is writing the file and can no longer be canceled	{label}: tiedostoa kirjoitetaan, eikä toimintoa voi enää peruuttaa
 	Opening {name}…	Avataan tiedostoa {name}…
 	Opening…	Avataan…
 	Reading…	Luetaan…
@@ -2576,9 +2579,9 @@
 	Tone Histogram	Sävyhistogrammi
 	Show Selected Region	Näytä valittu alue
 cameraRaw	Light	Valo
-# Camera Raw: contextual controls and window title
-	Camera Raw Filter ({layer})	Camera Raw -suodatin ({layer})
-	Camera Raw ({name})	Camera Raw ({name})
+# RAW Develop: contextual controls and window title
+	RAW Develop Filter ({layer})	RAW-kehitys -suodatin ({layer})
+	RAW Develop ({name})	RAW-kehitys ({name})
 	Aqua	Turkoosi
 cameraRaw	Amount	Määrä
 cameraRaw	Blacks	Mustat
@@ -2637,7 +2640,7 @@ cameraRaw	Roughness	Karheus
 	Discard Layers and Save a Copy	Hylkää tasot ja tallenna kopio
 	Don't show again	Älä näytä uudelleen
 	Save failed: {error}	Tallennus epäonnistui: {error}
-	Save cancelled	Tallennus peruutettu
+	Save canceled	Tallennus peruutettu
 	Couldn't place {name}: {error}	Kohteen {name} sijoittaminen epäonnistui: {error}
 	Magnetic Lasso Tool	Magneettinen lassotyökalu
 	Frequency	Taajuus
@@ -2781,7 +2784,7 @@ fontWeight	Italic	Kursivoitu
 	Impressionist	Impressionistinen
 	Rotate View Tool	Näkymän kiertotyökalu
 	Reset View	Palauta näkymä
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Kierrä näkymää vetämällä keskipisteen ympäri  ·  Shift rajoittaa 15°:n välein
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	Kierrä näkymää vetämällä keskipisteen ympäri  ·  Shift rajoittaa 15°:n välein
 
 # Painting symmetry presets.
 	Dual Axis	Kaksi akselia
@@ -2801,11 +2804,11 @@ fontWeight	Italic	Kursivoitu
 	All Layers No Adjustments	Kaikki tasot ilman säätöjä
 	Current & Below No Adjustments	Nykyinen ja alemmat ilman säätöjä
 	Show Sampling Ring	Näytä näytteenottorengas
-	Click to sample the foreground colour  ·  {key}-click for background	Ota edustavärin näyte napsauttamalla  ·  {key}-napsautus taustavärille
+	Click to sample the foreground color  ·  {key}-click for background	Ota edustavärin näyte napsauttamalla  ·  {key}-napsautus taustavärille
 
 # Color Picker warnings
-	Out of gamut for printing: click for the nearest printable colour	Tulostusvärialueen ulkopuolella: napsauta valitaksesi lähimmän tulostettavan värin
-	Not a web colour: click for the nearest web colour	Ei verkkoväri: napsauta valitaksesi lähimmän verkkovärin
+	Out of gamut for printing: click for the nearest printable color	Tulostusvärialueen ulkopuolella: napsauta valitaksesi lähimmän tulostettavan värin
+	Not a web color: click for the nearest web color	Ei verkkoväri: napsauta valitaksesi lähimmän verkkovärin
 	Color to Alpha…	Väri alfaksi…
 	Transparency Threshold	Läpinäkyvyyskynnys
 	Opacity Threshold	Peittävyyskynnys
@@ -3223,7 +3226,7 @@ curves	Smooth	Tasoita
 # Native Windows printing qualification
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Älä valitse myös Peilikuva-asetusta kohdassa Tulostusasetukset…: kaksi peilausta kumoaa toisensa.
 	Print Settings…	Tulostusasetukset…
-	Remember to turn off the printer's own colour management in Print Settings…	Muista poistaa tulostimen oma värinhallinta käytöstä kohdassa Tulostusasetukset…
+	Remember to turn off the printer's own color management in Print Settings…	Muista poistaa tulostimen oma värinhallinta käytöstä kohdassa Tulostusasetukset…
 	Sent to {printer}	Lähetetty tulostimelle {printer}
 	set in Print Settings…	asetetaan kohdassa Tulostusasetukset…
 	ICO is limited to 256 × 256 pixels	ICO-tiedosto on rajoitettu kokoon 256 × 256 pikseliä
@@ -3383,7 +3386,7 @@ curves	Smooth	Tasoita
 	{name} was changed by another app after it was opened or saved here.	Toinen ohjelma on muuttanut tiedostoa {name} sen jälkeen, kun se avattiin tai tallennettiin täällä.
 	Replace it with this document, or cancel and use File › Save As to keep both.	Korvaa se tällä asiakirjalla, tai peruuta ja käytä komentoa Tiedosto › Tallenna nimellä, jos haluat säilyttää molemmat.
 
-# Dynamic UI labels (fourth pass): filter and adjustment parameters, Camera Raw panels,
+# Dynamic UI labels (fourth pass): filter and adjustment parameters, RAW Develop panels,
 # lighting, History/Layers/paths/channels menus, metadata, System Info, status templates and
 # dialog text that other catalogs already carry. Written from the meaning of the English labels
 # in the ordinary Russian graphics-editor vocabulary; no proprietary resource consulted.
@@ -3409,13 +3412,11 @@ curves	Smooth	Tasoita
 	Adjustment Layers	Säätötasot
 	Adjustment Properties	Säädön ominaisuudet
 	Adjustment layers have nothing to transform	Säätötasoilla ei ole mitään muunnettavaa
-	Adobe PDF Presets…	Adobe PDF -esiasetukset…
 	Adobe-rgb-compat	Adobe RGB -yhteensopiva
 	Adwaita (Dark)	Adwaita (tumma)
 	Adwaita (Light)	Adwaita (vaalea)
 	After	Jälkeen
 	Airbrush: keeps painting while the pointer rests.	Ilmasivellin: maalaa edelleen, kun osoitin on paikallaan.
-	All shortcuts reset to Photoshop defaults.	Kaikki pikanäppäimet palautettu Photoshopin oletuksiin.
 	Altitude	Korkeus
 	Ambience	Ympäristövalo
 	Ambient	Ympäristö
@@ -3500,8 +3501,8 @@ curves	Smooth	Tasoita
 	Brush Type	Siveltimen tyyppi
 	Burlap	Juuttikangas
 	Calculations	Laskutoimitukset
-	Camera Raw	Camera Raw
-	Camera Raw Filter	Camera Raw -suodatin
+	RAW Develop	RAW-kehitys
+	RAW Develop Filter	RAW-kehitys -suodatin
 	Cancel transform	Peruuta muunnos
 	Candle Light	Kynttilänvalo
 	Canvas Size	Kankaan koko
@@ -3648,7 +3649,6 @@ curves	Smooth	Tasoita
 	Deep Yellow	Syvä keltainen
 	Default Foreground and Background Colors	Oletusarvoiset edusta- ja taustavärit
 	Default Leaves	Oletuslehdet
-	Default Photoshop Size	Photoshopin oletuskoko
 	Defaults	Oletukset
 	Define Brush Preset	Määritä siveltimen esiasetus
 	Define Custom Shape	Määritä mukautettu muoto
@@ -3887,12 +3887,12 @@ curves	Smooth	Tasoita
 	In White	Tulon valkoinen
 	Increase Brush Hardness	Lisää siveltimen kovuutta
 	Demosaic	Mosaiikin purku
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Miten kameran värisuodatinmosaiikki täydennetään. Menetelmä otetaan käyttöön tiedostoa avattaessa; esikatselu näyttää menetelmän, jolla tiedosto avattiin.
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Miten kameran värisuodatinmosaiikki täydennetään. Menetelmä otetaan käyttöön tiedostoa avattaessa; esikatselu näyttää menetelmän, jolla tiedosto avattiin.
 	AHD (adaptive homogeneity)	AHD (adaptiivinen homogeenisuus)
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: siisteimmät reunat ja vähiten värireunuksia, hitain.
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Gradienttikorjattu interpolointi: terävä ja nopea, hienoissa yksityiskohdissa jonkin verran värireunuksia.
-	The fastest and the softest, with colour fringing on fine detail.	Nopein ja pehmein, hienoissa yksityiskohdissa värireunuksia.
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Hirakawa–Parks: siisteimmät reunat ja vähiten värireunuksia, hitain.
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	Gradienttikorjattu interpolointi: terävä ja nopea, hienoissa yksityiskohdissa jonkin verran värireunuksia.
+	The fastest and the softest, with color fringing on fine detail.	Nopein ja pehmein, hienoissa yksityiskohdissa värireunuksia.
 	“{name}” already exists. Replace it?	”{name}” on jo olemassa. Korvataanko se?
 	The name in the save dialog was “{name}”.	Tallennusikkunassa nimi oli ”{name}”.
 	Move Up	Siirrä ylös
@@ -4488,7 +4488,7 @@ curves	Smooth	Tasoita
 	The file could not be saved.	Tiedostoa ei voitu tallentaa.
 	Thickness	Paksuus
 	This Layer:	Tämä taso:
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Tämä älykäs objekti on rasteroitava ennen jatkamista. Sen sisältöä ei voi enää muokata. Rasteroidaanko älykäs objekti?
+	This smart object must be rasterized before proceeding. Edit Contents will no longer be available. Rasterize the smart object?	Tämä älykäs objekti on rasteroitava ennen jatkamista. Sen sisältöä ei voi enää muokata. Rasteroidaanko älykäs objekti?
 	This adjustment ({key}) is kept as imported and can't be edited yet.	Tämä säätö ({key}) säilytetään tuotuna, eikä sitä voi vielä muokata.
 	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Tämä täyttötaso on rasteroitava ennen jatkamista. Sen täyttösisältöä ei voi enää muokata. Rasteroidaanko taso?
 	This layer must be rasterized before proceeding.	Tämä taso on rasteroitava ennen jatkamista.
@@ -4543,7 +4543,6 @@ curves	Smooth	Tasoita
 	Use File › Open to open an image.	Avaa kuva komennolla Tiedosto › Avaa.
 	Use Selection In Source	Käytä valintaa lähteessä
 	Use Selection In Target	Käytä valintaa kohteessa
-	Uses the foreground and background colors.	Käyttää edusta- ja taustaväriä.
 	Vanishing Point	Pakopiste
 	Variable Data Sets	Muuttuvat tietojoukot
 	Vector Mask Hides Effects	Vektorimaski piilottaa tehosteet
@@ -4701,6 +4700,7 @@ shape	Appearance	Ulkoasu
 	Grayscale Ramp	Harmaasävyliukuma
 	Current Colors	Nykyiset värit
 	Make Ramp Web Safe	Rajoita liukuma verkkoturvallisiin väreihin
+	Scroll All Windows	Vieritä kaikkia ikkunoita
 # Art History Brush (#213).
 	Art History Brush Tool	Taidehistoriasivellintyökalu
 	Tight Short	Tiivis lyhyt
@@ -4749,12 +4749,12 @@ shape	Appearance	Ulkoasu
 @plural	{n} document|{n} documents	{n} asiakirja|{n} asiakirjaa
 @plural	{n} pixel|{n} pixels	{n} pikseli|{n} pikseliä
 cameraRaw	Before (Y)	Ennen (Y)
-cameraRaw	Camera Raw ({name})	Camera Raw ({name})
-cameraRaw	Camera Raw Filter ({layer})	Camera Raw -suodatin ({layer})
-cameraRaw	Camera Raw isn't open	Camera Raw ei ole auki
+cameraRaw	RAW Develop ({name})	RAW-kehitys ({name})
+cameraRaw	RAW Develop Filter ({layer})	RAW-kehitys -suodatin ({layer})
+cameraRaw	RAW Develop isn't open	RAW-kehitys ei ole auki
 cameraRaw	Cancel	Peruuta
-cameraRaw	Cancelled opening {name}	Tiedoston {name} avaaminen peruutettu
-cameraRaw	Cancelled {label}	Peruutettu: {label}
+cameraRaw	Canceled opening {name}	Tiedoston {name} avaaminen peruutettu
+cameraRaw	Canceled {label}	Peruutettu: {label}
 cameraRaw	Color Priority	Väriprioriteetti
 cameraRaw	Developing {name}	Kehitetään tiedostoa {name}
 cameraRaw	Full-resolution preview unavailable	Täyden resoluution esikatselu ei ole käytettävissä
@@ -4763,7 +4763,7 @@ cameraRaw	Highlight Clipping Warning (O)	Korostusten leikkautumisvaroitus (O)
 cameraRaw	Highlight Priority	Korostusten prioriteetti
 cameraRaw	Load Settings…	Lataa asetukset…
 cameraRaw	Load settings from a Camera Raw .xmp file	Lataa asetukset Camera Raw .xmp -tiedostosta
-cameraRaw	Loaded Camera Raw settings from {file}	Camera Raw -asetukset ladattu tiedostosta {file}
+cameraRaw	Loaded RAW Develop settings from {file}	RAW-kehitys -asetukset ladattu tiedostosta {file}
 cameraRaw	Noise Reduction	Kohinan vaimennus
 cameraRaw	OK	OK
 cameraRaw	Open	Avaa
@@ -4789,150 +4789,6 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	The path was discarded	Polku hylättiin
 	The path was kept as the Work Path	Polku säilytettiin työpolkuna
 	Edit Brush…	Muokkaa sivellintä…
-	AI Prompt History	Tekoälykehotteiden historia
-	AI model settings	Tekoälymallin asetukset
-	Adjust colors with Poisson blending	Säädä värejä Poisson-sekoituksella
-	All nine regions	Kaikki yhdeksän aluetta
-	Attach Reference Image	Liitä viitekuva
-	Automatically check for updates	Tarkista päivitykset automaattisesti
-	Check for updates now	Tarkista päivitykset nyt
-	ComfyUI port	ComfyUI-portti
-	Compare with Original Generation	Vertaa alkuperäiseen luontitulokseen
-	Copy English translation	Kopioi englanninkielinen käännös
-	Copy negative prompt	Kopioi negatiivinen kehote
-	Copy original prompt	Kopioi alkuperäinen kehote
-	Custom model filenames (one per line)	Omien mallien tiedostonimet (yksi rivillä)
-	Describe changes to the whole image	Kuvaile koko kuvan muutokset
-	Describe changes, or leave blank to remove	Kuvaile muutokset tai jätä tyhjäksi poistaaksesi
-	Describe the image to generate	Kuvaile luotava kuva
-	Downloading update…	Ladataan päivitystä…
-	Drag to move the selected path	Siirrä valittua polkua vetämällä
-	English translation	Englanninkielinen käännös
-	Generative Fill	Generatiivinen täyttö
-	Match Surrounding Colors	Sovita ympäröiviin väreihin
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Sovita värit luonnin aikana tallennettuun ympäristöön. Voimakkuus 0 palauttaa alkuperäisen luontituloksen.
-	Negative prompt	Negatiivinen kehote
-	No AI prompts recorded	Ei tallennettuja tekoälykehotteita
-	No matching fonts	Ei vastaavia kirjasimia
-	No prompt (remove)	Ei kehotetta (poista)
-	One .safetensors filename per line. Compatibility is not checked.	Yksi .safetensors-tiedostonimi rivillä. Yhteensopivuutta ei tarkisteta.
-	Original prompt	Alkuperäinen kehote
-	PhotoCraft update available	PhotoCraft-päivitys saatavilla
-	Prompt Edit	Muokkaa kehotteella
-	Prompt Generate	Luo kehotteella
-	Prompt information	Kehotteen tiedot
-	Prompt translation model	Kehotteen käännösmalli
-	Regenerate	Luo uudelleen
-	Remove Reference Image	Poista viitekuva
-	Reset steps to model default	Palauta mallin oletusaskelmäärä
-	Sampling steps	Näytteenoton askeleet
-	Text encoders	Tekstikooderit
-	The image exceeds the AI editing size. Resize the document to continue?	Kuva ylittää tekoälymuokkauksen kokorajan. Muutetaanko asiakirjan kokoa jatkamiseksi?
-	Translate prompt to English	Käännä kehote englanniksi
-	Update PhotoCraft and restart now?	Päivitetäänkö PhotoCraft ja käynnistetäänkö se uudelleen nyt?
-	You can check for updates again in Help → About PhotoCraft.	Voit tarkistaa päivitykset uudelleen kohdasta Ohje → Tietoja PhotoCraftista.
-	Prompt Edit…	Muokkaa kehotteella…
-	Prompt Generate…	Luo kehotteella…
-	Generative Fill…	Generatiivinen täyttö…
-	Regenerate AI Result	Luo tekoälytulos uudelleen
-	Comfyui url	ComfyUI-palvelimen osoite
-	Comfyui model	ComfyUI-malli
-	Comfyui custom encoders	Omat ComfyUI-kooderit
-	Comfyui custom model	Oma ComfyUI-malli
-	Comfyui custom models	Omat ComfyUI-mallit
-	Comfyui model settings	ComfyUI-malliasetukset
-	Comfyui translate prompt	Käännä kehote englanniksi
-	Comfyui translation model	Kehotteen käännösmalli
-	External cutout	Ulkoinen taustanpoisto
-	External erase	Ulkoinen poisto
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Select Layer Under Cursor	Valitse osoittimen alla oleva taso
-	Arrange Panels	Järjestä paneelit
-	Close Other Panels in Group	Sulje ryhmän muut paneelit
-	Collapse to Icons	Kutista kuvakkeiksi
-	Dismiss update	Hylkää päivitys
-	Minimize Panel	Pienennä paneeli
-	Open Panel in Own Window	Avaa paneeli omaan ikkunaan
-	Update PhotoCraft	Päivitä PhotoCraft
-	…	…
-	Turbo int8	Turbo INT8
-
-# Fork portable update information
-	PhotoCraft Updates	PhotoCraftin päivitykset
-	Checking for updates…	Tarkistetaan päivityksiä…
-	Open Download Page	Avaa lataussivu
-	PhotoCraft is up to date.	PhotoCraft on ajan tasalla.
-	Could not check for updates.	Päivityksiä ei voitu tarkistaa.
-	Updates have not been checked yet.	Päivityksiä ei ole vielä tarkistettu.
-	Check Again	Tarkista uudelleen
-	Installed version: {version}	Asennettu versio: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} on saatavilla.
-	Answer the open import question first, then import this file again.	Vastaa ensin avoimeen tuontikysymykseen ja tuo sitten tämä tiedosto uudelleen.
-	Import as New Group	Tuo uutena ryhmänä
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Tuo uutena ryhmänä säilyttää ryhmän ”{group}” ja lisää tiedoston sen viereen uutena ryhmänä.
-	No import is waiting. Import the file again.	Yhtään tuontia ei ole odottamassa. Tuo tiedosto uudelleen.
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Korvaaminen poistaa ensin kaiken ryhmästä ”{group}”, myös muokkaamasi tai sinne siirtämäsi esimääritykset. Tätä ei voi kumota.
-	{message} into “{group}”	{message} ryhmään ”{group}”
-	Recently Used Colors	Viimeksi käytetyt värit
-	Shapes can't use patterns yet	Muodot eivät vielä tue kuvioita
-	Stop Color	Väripisteen väri
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Sivellinryhmä ”{group}” sisältää jo omia siveltimiäsi (määrä: {n}).|Sivellinryhmä ”{group}” sisältää jo omia siveltimiäsi (määrä: {n}).
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Liukuväriryhmä ”{group}” on jo olemassa (liukuvärien määrä: {n}).|Liukuväriryhmä ”{group}” on jo olemassa (liukuvärien määrä: {n}).
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	Nuolenkärkien asetukset
-	Arrowheads	Nuolenkärjet
-	Concavity	Koveruus
-	End	Loppu
-	Set as default	Aseta oletukseksi
-	Start	Alku
-	Use these settings for new arrows	Käytä näitä asetuksia uusille nuolille
-
-# Upstream 0.20.2 UI labels
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Komento peruutettiin tai pysäytettiin eräkäsittelyn aikana. Jatketaanko seuraavaan tiedostoon vai lopetetaanko?
-	Attribute	Ominaisuus
-	Batch preview	Erän esikatselu
-	Data Sets as Files is unavailable on the web	Tietojoukot tiedostoina ei ole käytettävissä verkossa
-	Effect	Tehoste
-	Empty	Tyhjä
-	Filter for embedded smart objects	Suodata upotetut älykkäät objektit
-	Filter for linked smart objects that are missing	Suodata puuttuvat linkitetyt älykkäät objektit
-	Filter for smart objects linked locally	Suodata paikallisesti linkitetyt älykkäät objektit
-	High Memory Photoshop Document	Paljon muistia käyttävä Photoshop-asiakirja
-	Image Compression	Kuvan pakkaus
-	LZW	LZW
-	Layer Effects	Tasotehosteet
-	Lining	Versaalinumerot
-	Linked	Linkitetty
-	No Adv. Blending	Ei edistynyttä sekoitusta
-	No Layer Effects	Ei tasotehosteita
-	No Layer Mask	Ei tasomaskia
-	No Vector Mask	Ei vektorimaskia
-	Not Clipped	Ei leikattu
-	Not Empty	Ei tyhjä
-	Not Linked	Ei linkitetty
-	Not Locked	Ei lukittu
-	Not Visible	Ei näkyvissä
-	Numerals	Numerot
-	Open anyway	Avaa silti
-	Opening this document uses more memory and may slow down your computer or other running applications.	Tämän asiakirjan avaaminen käyttää enemmän muistia ja voi hidastaa tietokonetta tai muita käynnissä olevia sovelluksia.
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Asiakirjan ”{name}” avaaminen vaatii arviolta {est} GiB muistia ({avail} GiB käytettävissä).
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Asiakirjan ”{name}” avaaminen vaatii arviolta {est} GiB muistia. Käytettävissä olevaa muistia ei voitu mitata.
-	Proportional	Suhteelliset
-	Proportional Lining	Suhteelliset versaalinumerot
-	Proportional Oldstyle	Suhteelliset gemenanumerot
-	Save Image Pyramid	Tallenna kuvapyramidi
-	Save Transparency	Tallenna läpinäkyvyys
-	Tabular	Tasalevyiset
-	Tabular Lining	Tasalevyiset versaalinumerot
-	Tabular Oldstyle	Tasalevyiset gemenanumerot
-	ZIP	ZIP
-	{ok} written to {dir}	{ok} kirjoitettu kohteeseen {dir}
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} kuvaresurssin vienti epäonnistui|{what}: {n} kuvaresurssin vientiä epäonnistui
-	Memory usage percent	Muistin käyttö prosentteina
-	Save Full-Size Composite in .pcraft Files	Tallenna täysikokoinen yhdistelmäkuva .pcraft-tiedostoihin
 
 # Action Stop message (#8386)
 	Message	Viesti
@@ -4953,51 +4809,196 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Pick a different document for each channel.	Valitse jokaiselle kanavalle eri asiakirja.
 	A picked document is no longer open.	Yksi valituista asiakirjoista ei ole enää auki.
 	A picked document is no longer a grayscale document of the same size.	Yksi valituista asiakirjoista ei ole enää samankokoinen harmaasävyasiakirja.
+	Netscape Gray	Netscape-harmaa
+# Move tool options bar (#11381)
+	Align top edges	Tasaa yläreunat
+	Align vertical centers	Tasaa pystykeskikohdat
+	Align bottom edges	Tasaa alareunat
+	Distribute vertically	Jaa pystysuunnassa
+	Distribute horizontally	Jaa vaakasuunnassa
+	Show layer bounds on hover	Näytä tason rajat osoitettaessa
+	Expand layer group on click	Laajenna tasoryhmä napsautuksella
+	Show hover bounds from Layers	Näytä rajat osoitettaessa Tasot-paneelista
+# Artboard tool options bar (#11385)
+	Distribute Widths	Jaa leveydet tasaisesti
+	Distribute Heights	Jaa korkeudet tasaisesti
+	Auto-nest Layers	Sisäkkäistä tasot automaattisesti
+	Auto-size Canvas	Muuta kankaan kokoa automaattisesti
+	Keep Relative Position During Layer Reordering	Säilytä suhteellinen sijainti tasojen järjestystä muutettaessa
+	Shrinkwrap Canvas on Save	Pienennä kangas sisältöön tallennettaessa
 
-# Upstream 0.21.0 frame, placement and memory messages.
+# RAW Develop feature labels
+	Saved RAW Develop settings to {file}	RAW-kehityksen asetukset tallennettu tiedostoon {file}
+
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Komento peruutettiin tai pysäytettiin eräkäsittelyn aikana. Jatketaanko seuraavaan tiedostoon vai lopetetaanko?
 	A file is still being placed; try again when it has finished.	Tiedoston sijoittaminen on vielä kesken; yritä uudelleen sen valmistuttua.
 	A frame supports affine transforms; select its image for perspective transforms	Kehys tukee affiinisia muunnoksia; valitse sen kuva perspektiivimuunnoksia varten
 	A frame supports affine transforms; select its image to warp it	Kehys tukee affiinisia muunnoksia; valitse sen kuva käyristämistä varten
+	AI Prompt History	Tekoälykehotteiden historia
+	AI model settings	Tekoälymallin asetukset
+	Adjust colors with Poisson blending	Säädä värejä Poisson-sekoituksella
+	All nine regions	Kaikki yhdeksän aluetta
+	Answer the open import question first, then import this file again.	Vastaa ensin avoimeen tuontikysymykseen ja tuo sitten tämä tiedosto uudelleen.
+	Arrange Panels	Järjestä paneelit
+	Arrowhead options	Nuolenkärkien asetukset
+	Arrowheads	Nuolenkärjet
+	Attach Reference Image	Liitä viitekuva
+	Attribute	Ominaisuus
+	Automatically check for updates	Tarkista päivitykset automaattisesti
+	Base64	Base64
+	Batch preview	Erän esikatselu
+	Cancelled opening {name}	Tiedoston {name} avaaminen peruutettu
 	Cancelled placing {name}	Tiedoston {name} sijoittaminen peruutettiin
+	Cancelled {label}	Peruutettu: {label}
+	Centre the gradient (offset 0, 0)	Keskitä liukuväri (siirtymä 0, 0)
+	Check Again	Tarkista uudelleen
+	Check for updates now	Tarkista päivitykset nyt
+	Checking for updates…	Tarkistetaan päivityksiä…
+	Click to fill similar colours	Täytä samankaltaiset värit napsauttamalla
+	Click to restore the current colour	Palauta nykyinen väri napsauttamalla
+	Click to sample the foreground colour  ·  {key}-click for background	Ota edustavärin näyte napsauttamalla  ·  {key}-napsautus taustavärille
+	Close Other Panels in Group	Sulje ryhmän muut paneelit
+	Collapse to Icons	Kutista kuvakkeiksi
+	Color Blindness — Deuteranopia-type	Värisokeus — deuteranopia
+	Color Blindness — Protanopia-type	Värisokeus — protanopia
+	ComfyUI port	ComfyUI-portti
+	Comfyui custom encoders	Omat ComfyUI-kooderit
+	Comfyui custom model	Oma ComfyUI-malli
+	Comfyui custom models	Omat ComfyUI-mallit
+	Comfyui model	ComfyUI-malli
+	Comfyui model settings	ComfyUI-malliasetukset
+	Comfyui translate prompt	Käännä kehote englanniksi
+	Comfyui translation model	Kehotteen käännösmalli
+	Comfyui url	ComfyUI-palvelimen osoite
+	Compare with Original Generation	Vertaa alkuperäiseen luontitulokseen
+	Concavity	Koveruus
 	Convert to Frame…	Muunna kehykseksi…
+	Copy English translation	Kopioi englanninkielinen käännös
+	Copy negative prompt	Kopioi negatiivinen kehote
+	Copy original prompt	Kopioi alkuperäinen kehote
+	Could not check for updates.	Päivityksiä ei voitu tarkistaa.
 	Create a new custom frame	Luo uusi mukautettu kehys
 	Create a new polygonal frame	Luo uusi monikulmainen kehys
 	Create a new triangular frame	Luo uusi kolmionmuotoinen kehys
+	Cube	CUBE
+	Custom model filenames (one per line)	Omien mallien tiedostonimet (yksi rivillä)
+	Data Encoding	Tietojen koodaus
+	Data Sets as Files is unavailable on the web	Tietojoukot tiedostoina ei ole käytettävissä verkossa
+	Default colours (D)	Oletusvärit (D)
+	Describe changes to the whole image	Kuvaile koko kuvan muutokset
+	Describe changes, or leave blank to remove	Kuvaile muutokset tai jätä tyhjäksi poistaaksesi
+	Describe the image to generate	Kuvaile luotava kuva
+	Dismiss update	Hylkää päivitys
+	Downloading update…	Ladataan päivitystä…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Vedä rajauslaatikko · siirrä vetämällä sisältä · reunat muuttavat kokoa ({ratio} suhde, {centre} keskeltä) · Välilyönti siirtää piirrettäessä · nuolet siirtävät · X vaihtaa suunnan · {commit} vahvistaa · Esc peruuttaa
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Kierrä näkymää vetämällä keskipisteen ympäri  ·  Shift rajoittaa 15°:n välein
+	Drag to move the selected path	Siirrä valittua polkua vetämällä
 	Dropped files weren't placed: their document was closed.	Pudotettuja tiedostoja ei sijoitettu: niiden asiakirja suljettiin.
 	Dropped files weren't placed: too many are waiting for their document.	Pudotettuja tiedostoja ei sijoitettu: liian moni odottaa asiakirjaansa.
+	Effect	Tehoste
+	Empty	Tyhjä
+	End	Loppu
+	English translation	Englanninkielinen käännös
+	External cutout	Ulkoinen taustanpoisto
+	External erase	Ulkoinen poisto
+	Filter for embedded smart objects	Suodata upotetut älykkäät objektit
+	Filter for linked smart objects that are missing	Suodata puuttuvat linkitetyt älykkäät objektit
+	Filter for smart objects linked locally	Suodata paikallisesti linkitetyt älykkäät objektit
 	Fit Content to Frame	Sovita sisältö kehykseen
 	Fit Frame to Content	Sovita kehys sisältöön
 	Frame coordinates must be finite and within 600000 pixels	Kehyksen koordinaattien on oltava äärellisiä ja 600000 pikselin rajoissa
+	Generative Fill	Generatiivinen täyttö
+	Generative Fill…	Generatiivinen täyttö…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Gradienttikorjattu interpolointi: terävä ja nopea, hienoissa yksityiskohdissa jonkin verran värireunuksia.
+	High Memory Photoshop Document	Paljon muistia käyttävä Photoshop-asiakirja
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: siisteimmät reunat ja vähiten värireunuksia, hitain.
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Miten kameran värisuodatinmosaiikki täydennetään. Menetelmä otetaan käyttöön tiedostoa avattaessa; esikatselu näyttää menetelmän, jolla tiedosto avattiin.
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	Kuvan pakkaus
 	Import Image…	Tuo kuva…
+	Import as New Group	Tuo uutena ryhmänä
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Tuo uutena ryhmänä säilyttää ryhmän ”{group}” ja lisää tiedoston sen viereen uutena ryhmänä.
+	Installed version: {version}	Asennettu versio: {version}
 	Invalid frame transform	Virheellinen kehyksen muunnos
 	Invalid nested file drop	Virheellinen sisäkkäinen tiedoston pudotus
+	Inverse Selection	Käänteinen valinta
+	LZW	LZW
+	Layer Effects	Tasotehosteet
 	Learn	Opi
+	Lining	Versaalinumerot
+	Linked	Linkitetty
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Tiedoston avaamisen jälkeen muistia jäisi vähän. Sulje ensin muut sovellukset, tai PhotoCraftin muisti voi loppua.
+	Look	LOOK
+	Lut Format	LUT-muoto
+	Match Surrounding Colors	Sovita ympäröiviin väreihin
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Sovita värit luonnin aikana tallennettuun ympäristöön. Voimakkuus 0 palauttaa alkuperäisen luontituloksen.
+	Memory usage percent	Muistin käyttö prosentteina
+	Minimize Panel	Pienennä paneeli
+	Negative prompt	Negatiivinen kehote
 	New Frame	Uusi kehys
 	New file	Uusi tiedosto
+	No AI prompts recorded	Ei tallennettuja tekoälykehotteita
+	No Adv. Blending	Ei edistynyttä sekoitusta
+	No Layer Effects	Ei tasotehosteita
+	No Layer Mask	Ei tasomaskia
+	No Vector Mask	Ei vektorimaskia
+	No import is waiting. Import the file again.	Yhtään tuontia ei ole odottamassa. Tuo tiedosto uudelleen.
+	No matching fonts	Ei vastaavia kirjasimia
+	No prompt (remove)	Ei kehotetta (poista)
+	Not Clipped	Ei leikattu
+	Not Empty	Ei tyhjä
+	Not Linked	Ei linkitetty
+	Not Locked	Ei lukittu
+	Not Visible	Ei näkyvissä
+	Not a web colour: click for the nearest web colour	Ei verkkoväri: napsauta valitaksesi lähimmän verkkovärin
 	Nudge	Siirrä hieman
+	Numerals	Numerot
 	On your computer	Omalla tietokoneella
+	One .safetensors filename per line. Compatibility is not checked.	Yksi .safetensors-tiedostonimi rivillä. Yhteensopivuutta ei tarkisteta.
+	Open Download Page	Avaa lataussivu
+	Open Panel in Own Window	Avaa paneeli omaan ikkunaan
+	Open a document to select a colour range.	Avaa asiakirja valitaksesi värialueen.
+	Open anyway	Avaa silti
+	Opening this document uses more memory and may slow down your computer or other running applications.	Tämän asiakirjan avaaminen käyttää enemmän muistia ja voi hidastaa tietokonetta tai muita käynnissä olevia sovelluksia.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Asiakirjan ”{name}” avaaminen vaatii arviolta {est} GiB muistia ({avail} GiB käytettävissä).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Asiakirjan ”{name}” avaaminen vaatii arviolta {est} GiB muistia. Käytettävissä olevaa muistia ei voitu mitata.
+	Original prompt	Alkuperäinen kehote
+	Out of gamut for printing: click for the nearest printable colour	Tulostusvärialueen ulkopuolella: napsauta valitaksesi lähimmän tulostettavan värin
+	PhotoCraft Updates	PhotoCraftin päivitykset
+	PhotoCraft is up to date.	PhotoCraft on ajan tasalla.
+	PhotoCraft update available	PhotoCraft-päivitys saatavilla
+	PhotoCraft {version} is available.	PhotoCraft {version} on saatavilla.
+	Prompt Edit	Muokkaa kehotteella
+	Prompt Edit…	Muokkaa kehotteella…
+	Prompt Generate	Luo kehotteella
+	Prompt Generate…	Luo kehotteella…
+	Prompt information	Kehotteen tiedot
+	Prompt translation model	Kehotteen käännösmalli
+	Proportional	Suhteelliset
+	Proportional Lining	Suhteelliset versaalinumerot
+	Proportional Oldstyle	Suhteelliset gemenanumerot
+	Quick Export As PNG	Pikavienti PNG-muodossa
+	Qwen image21	Qwen 2.1
+	Recently Used Colors	Viimeksi käytetyt värit
+	Regenerate	Luo uudelleen
+	Regenerate AI Result	Luo tekoälytulos uudelleen
+	Remember to turn off the printer's own colour management in Print Settings…	Muista poistaa tulostimen oma värinhallinta käytöstä kohdassa Tulostusasetukset…
+	Remove Reference Image	Poista viitekuva
 	Replace Image…	Korvaa kuva…
-	Source: {name}	Lähde: {name}
-	The GPU compositor is still being prepared	GPU-koostajaa valmistellaan vielä
-	The History Brush source was deleted: set a new source in the History panel	Historiasiveltimen lähde poistettiin: aseta uusi lähde Historia-paneelissa
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Nykyinen työlevyhakemisto ({path}) ei ilmoita vapaata tilaansa, joten PhotoCraft ei voi pysähtyä ennen sen täyttymistä eivätkä suuret tiedostot saa siitä lisätilaa ilman työlevyn kokorajoitusta. Tämä varoitus koskee nykyistä kokoonpanoa; yllä olevat muutokset tulevat voimaan painamalla Käytä tai OK. Aseta raja tai käytä paikallista levyä.
-	The frame is locked	Kehys on lukittu
-	The frame is unavailable	Kehys ei ole käytettävissä
-	Website	Verkkosivusto
-
-# OpenType stylistic sets.
-	Stylistic Sets	Tyylijoukot
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Korvaaminen poistaa ensin kaiken ryhmästä ”{group}”, myös muokkaamasi tai sinne siirtämäsi esimääritykset. Tätä ei voi kumota.
+	Reset steps to model default	Palauta mallin oletusaskelmäärä
+	Sample: foreground colour	Näyte: edustaväri
+	Sampling steps	Näytteenoton askeleet
+	Save Full-Size Composite in .pcraft Files	Tallenna täysikokoinen yhdistelmäkuva .pcraft-tiedostoihin
+	Save Image Pyramid	Tallenna kuvapyramidi
+	Save Transparency	Tallenna läpinäkyvyys
+	Save cancelled	Tallennus peruutettu
+	Select Layer Under Cursor	Valitse osoittimen alla oleva taso
 	Set 	Joukko
 	Set 1	Joukko 1
-	Set 2	Joukko 2
-	Set 3	Joukko 3
-	Set 4	Joukko 4
-	Set 5	Joukko 5
-	Set 6	Joukko 6
-	Set 7	Joukko 7
-	Set 8	Joukko 8
-	Set 9	Joukko 9
 	Set 10	Joukko 10
 	Set 11	Joukko 11
 	Set 12	Joukko 12
@@ -5008,22 +5009,153 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Set 17	Joukko 17
 	Set 18	Joukko 18
 	Set 19	Joukko 19
+	Set 2	Joukko 2
 	Set 20	Joukko 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	Piirtopöydän syöte
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (oletus)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	Tietojen koodaus
-	Lut Format	LUT-muoto
+	Set 3	Joukko 3
+	Set 4	Joukko 4
+	Set 5	Joukko 5
+	Set 6	Joukko 6
+	Set 7	Joukko 7
+	Set 8	Joukko 8
+	Set 9	Joukko 9
+	Set as default	Aseta oletukseksi
 	Shape Id	Muodon tunniste
 	Shape Name	Muodon nimi
 	Shape Origin Type	Muodon alkuperän tyyppi
 	Shape Path	Muodon polku
+	Shapes can't use patterns yet	Muodot eivät vielä tue kuvioita
+	Source: {name}	Lähde: {name}
+	Start	Alku
+	Stop Color	Väripisteen väri
+	Stylistic Sets	Tyylijoukot
+	Swap colours (X)	Vaihda värit (X)
+	Tablet input	Piirtopöydän syöte
+	Tabular	Tasalevyiset
+	Tabular Lining	Tasalevyiset versaalinumerot
+	Tabular Oldstyle	Tasalevyiset gemenanumerot
 	Text	Teksti
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoders	Tekstikooderit
+	The GPU compositor is still being prepared	GPU-koostajaa valmistellaan vielä
+	The History Brush source was deleted: set a new source in the History panel	Historiasiveltimen lähde poistettiin: aseta uusi lähde Historia-paneelissa
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Nykyinen työlevyhakemisto ({path}) ei ilmoita vapaata tilaansa, joten PhotoCraft ei voi pysähtyä ennen sen täyttymistä eivätkä suuret tiedostot saa siitä lisätilaa ilman työlevyn kokorajoitusta. Tämä varoitus koskee nykyistä kokoonpanoa; yllä olevat muutokset tulevat voimaan painamalla Käytä tai OK. Aseta raja tai käytä paikallista levyä.
+	The fastest and the softest, with colour fringing on fine detail.	Nopein ja pehmein, hienoissa yksityiskohdissa värireunuksia.
+	The frame is locked	Kehys on lukittu
+	The frame is unavailable	Kehys ei ole käytettävissä
+	The image exceeds the AI editing size. Resize the document to continue?	Kuva ylittää tekoälymuokkauksen kokorajan. Muutetaanko asiakirjan kokoa jatkamiseksi?
+	Translate prompt to English	Käännä kehote englanniksi
+	Turbo int8	Turbo INT8
+	Update PhotoCraft	Päivitä PhotoCraft
+	Update PhotoCraft and restart now?	Päivitetäänkö PhotoCraft ja käynnistetäänkö se uudelleen nyt?
+	Updates have not been checked yet.	Päivityksiä ei ole vielä tarkistettu.
+	Use these settings for new arrows	Käytä näitä asetuksia uusille nuolille
+	Uses the foreground and background colours.	Käyttää edusta- ja taustaväriä.
+	Website	Verkkosivusto
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (oletus)
+	You can check for updates again in Help → About PhotoCraft.	Voit tarkistaa päivitykset uudelleen kohdasta Ohje → Tietoja PhotoCraftista.
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label}: tiedostoa kirjoitetaan, eikä toimintoa voi enää peruuttaa
+	{message} into “{group}”	{message} ryhmään ”{group}”
+	{ok} written to {dir}	{ok} kirjoitettu kohteeseen {dir}
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Sivellinryhmä ”{group}” sisältää jo omia siveltimiäsi (määrä: {n}).|Sivellinryhmä ”{group}” sisältää jo omia siveltimiäsi (määrä: {n}).
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Liukuväriryhmä ”{group}” on jo olemassa (liukuvärien määrä: {n}).|Liukuväriryhmä ”{group}” on jo olemassa (liukuvärien määrä: {n}).
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} kuvaresurssin vienti epäonnistui|{what}: {n} kuvaresurssin vientiä epäonnistui
+cameraRaw	Cancelled opening {name}	Tiedoston {name} avaaminen peruutettu
+cameraRaw	Cancelled {label}	Peruutettu: {label}
+
+# Remembered file-import preferences
+	Last folder	Viimeksi käytetty kansio
+	Pdf dpi	PDF-tarkkuus (dpi)
+	Pdf first page	PDF:n ensimmäinen sivu
+	Pdf last page	PDF:n viimeinen sivu
+
+# Integration source-key coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Komento peruttiin tai pysäytettiin eräkäsittelyn aikana. Jatketaanko seuraavasta tiedostosta vai pysäytetäänkö?
+	Allow Tool Recording	Salli työkalujen tallennus
+	Allows rotation and scaling of selection	Sallii valinnan kiertämisen ja skaalaamisen
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Käytä aina painetta peittävyydelle. Muuten paineen määrittää siveltimen esiasetus
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Käytä aina painetta koolle. Muuten paineen määrittää siveltimen esiasetus
+	Bottom align text	Tasaa teksti alas
+	Choose a menu command. Playback asks for its settings when needed.	Valitse valikkokomento. Toisto pyytää tarvittaessa sen asetukset.
+	Choose a remix mode	Valitse sekoitustila
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Skaalaa Zoomaus-työkalulla napsauttamalla ja liikuttamalla vasemmalle tai oikealle (vain OpenGL)
+	Click to open the Brush Preset picker	Avaa siveltimen esiasetusten valitsin napsauttamalla
+	Confirm or cancel the pending Record Again editor first.	Vahvista tai peruuta ensin avoin uudelleentallennuksen muokkain.
+	Confirm or cancel the pending menu item first.	Vahvista tai peruuta ensin odottava valikkokohta.
+	Copy CSS	Kopioi CSS
+	Could not use the type tool because the layer is locked.	Tekstityökalua ei voi käyttää, koska taso on lukittu.
+	Delete Note	Poista muistiinpano
+	Delete this note?	Poistetaanko tämä muistiinpano?
+	Do not erase the foreground swatch color	Älä pyyhi edustavärinäytteen väriä
+	Draws background color over foreground colors	Piirtää taustavärillä edustavärien päälle
+	Enable to remix all layers	Sekoita kaikki tasot ottamalla tämä käyttöön
+	Erase range of similar colors	Pyyhkii samankaltaisten värien alueen
+	How far to let the erasing spread	Kuinka kauas pyyhintä saa levitä
+	Insert Menu Item…	Lisää valikkokohta…
+	Insert Path	Lisää polku
+	No document.	Ei asiakirjaa.
+	No menu item belongs to this chooser.	Tähän valitsimeen ei kuulu valikkokohtaa.
+	No menu item is waiting.	Valikkokohtaa ei ole odottamassa.
+	No note to delete	Ei poistettavaa muistiinpanoa
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Muodon luomiseen ei ole polkua: piirrä polku Kynä-työkalulla tai valitse se Polut-paneelista.
+	No pixels are selected.	Pikseleitä ei ole valittu.
+	No recorded step belongs to this editor.	Tähän muokkaimeen ei kuulu tallennettua vaihetta.
+	No slices are selected. Click a slice in the preview to select it.	Ositteita ei ole valittu. Valitse osite napsauttamalla sitä esikatselussa.
+	No step is waiting.	Vaihetta ei ole odottamassa.
+	Note deleted, but the preference could not be saved: {error}	Muistiinpano poistettiin, mutta asetusta ei voitu tallentaa: {error}
+	Open as Smart Object…	Avaa älykkäänä objektina…
+	Painting Mode	Maalaustila
+	Preparing Free Transform	Valmistellaan vapaata muunnosta
+	Record Again	Tallenna uudelleen
+	Resize windows when zooming using the Zoom Tool	Muuta ikkunoiden kokoa Zoomaus-työkalulla zoomattaessa
+	Scroll all open document windows when using the hand tool	Vieritä kaikkia avoimia asiakirjaikkunoita Käsi-työkalua käytettäessä
+	Search and select fonts	Etsi ja valitse fontteja
+	Select an action first.	Valitse ensin toiminto.
+	Select an action step first.	Valitse ensin toiminnon vaihe.
+	Selected Area Only	Vain valittu alue
+	Selected Slices	Valitut ositteet
+	Set flow rate for stroke	Aseta vedon virtaus
+	Set font size	Aseta fonttikoko
+	Set font style	Aseta fonttityyli
+	Set opacity for stroke	Aseta vedon peittävyys
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Aseta vedon tasoitus\nSuuremmat arvot vähentävät siveltimen vetojen tärinää
+	Set symmetry options for Painting	Aseta maalauksen symmetria-asetukset
+	Set text color	Aseta tekstin väri
+	Set the brush angle	Aseta siveltimen kulma
+	Smoothing Options	Tasoitusasetukset
+	The Record Again command changed.	Uudelleentallennuskomento muuttui.
+	The action or insertion command changed. Request Insert Menu Item again.	Toiminto tai lisäyskomento muuttui. Pyydä valikkokohdan lisäämistä uudelleen.
+	The actions changed. Request Record Again again.	Toiminnot muuttuivat. Pyydä uudelleentallennusta uudelleen.
+	The command permissions changed. Request Insert Menu Item again.	Komennon käyttöoikeudet muuttuivat. Pyydä valikkokohdan lisäämistä uudelleen.
+	The command permissions changed. Request Record Again again.	Komennon käyttöoikeudet muuttuivat. Pyydä uudelleentallennusta uudelleen.
+	The document changed. Request Record Again again.	Asiakirja muuttui. Pyydä uudelleentallennusta uudelleen.
+	The document or its notes changed. Please delete the note again.	Asiakirja tai sen muistiinpanot muuttuivat. Poista muistiinpano uudelleen.
+	The preference could not be saved: {error}	Asetusta ei voitu tallentaa: {error}
+	The step editor could not be opened.	Vaiheen muokkainta ei voitu avata.
+	The step has no command editor.	Vaiheella ei ole komentomuokkainta.
+	Top align text	Tasaa teksti ylös
+	Use relative positioning for reference point	Käytä viitepisteen suhteellista sijaintia
+	Useful mixer brush combinations	Hyödyllisiä sekoitussiveltimen yhdistelmiä
+	Zoom current window to 1:1	Zoomaa nykyinen ikkuna suhteeseen 1:1
+	Zoom current window to fill the screen	Zoomaa nykyinen ikkuna täyttämään näyttö
+	Zoom current window to screen size	Sovita nykyinen ikkuna näytön kokoon
+	brush tool	Sivellin-työkalu
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} tiedosto epäonnistui|{what}: {n} tiedostoa epäonnistui
+	Save the settings to each raw's sidecar without opening it	Tallenna asetukset kunkin RAW-tiedoston oheistiedostoon avaamatta sitä
+	No settings saved: these raws can't keep a sidecar here	Asetuksia ei tallennettu: näille RAW-tiedostoille ei voi luoda oheistiedostoa tähän
+	Nothing to save: these raws are at their default settings	Ei tallennettavaa: nämä RAW-tiedostot käyttävät oletusasetuksia
+	Some settings could not be saved; the raws stay open	Joitakin asetuksia ei voitu tallentaa; RAW-tiedostot pysyvät avoinna
+	Equalize Entire Image Based On Selected Area	Tasaa koko kuva valitun alueen perusteella
+	Equalize Selected Area Only	Tasaa vain valittu alue
+	Open in RAW Develop	Avaa RAW-kehityksessä
+	Skip transform when placing	Ohita muunnos sijoitettaessa
+	Upscale	Suurenna
+	Tiling	Laatoitus
+	Tile size	Laatan koko
+	Overlap	Päällekkäisyys
+	Noise reduction	Kohinanvaimennus
+	Alpha channel	Alfakanava
+	Batch size	Eräkoko
+	No local upscaler installed	Paikallista suurennusmallia ei ole asennettu
+	Highest	Korkein

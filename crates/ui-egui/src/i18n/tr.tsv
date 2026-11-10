@@ -251,7 +251,7 @@
 	Plugins…	Eklentiler…
 	Type…	Metin…
 	Enhanced Controls…	Gelişmiş Kontroller…
-	Camera Raw…	Camera Raw…
+	RAW Defaults…	RAW Varsayılanları…
 	Raw Defaults…	Ham Varsayılanlar…
 	Integrations…	Entegrasyonlar…
 	AI Integrations…	Yapay Zeka Entegrasyonları…
@@ -302,6 +302,8 @@
 	Match Color…	Rengi Eşleştir…
 	Replace Color…	Rengi Değiştir…
 	Equalize	Eşitle
+	Equalize Selected Area Only	Yalnızca Seçili Alanı Eşitle
+	Equalize Entire Image Based On Selected Area	Tüm Görüntüyü Seçili Alana Göre Eşitle
 	Auto Tone	Otomatik Ton
 	Auto Contrast	Otomatik Kontrast
 	Auto Color	Otomatik Renk
@@ -337,8 +339,8 @@
 	Artboard…	Çalışma Yüzeyi…
 	Artboard from Group…	Gruptan Çalışma Yüzeyi…
 	Artboard from Layers…	Katmanlardan Çalışma Yüzeyi…
-	Layer via Copy	Kopyalama Yoluyla Katman
-	Layer via Cut	Kesim Yoluyla Katman
+	Layer Via Copy	Kopyalama Yoluyla Katman
+	Layer Via Cut	Kesim Yoluyla Katman
 	Layer From Background…	Arka Plandan Katman…
 	Layer from Background…	Arka Plandan Katman…
 	Background From Layer	Katmandan Arka Plan
@@ -557,7 +559,6 @@
 	Deselect	Seçimi Kaldır
 	Reselect	Yeniden Seç
 	Inverse	Ters Çevir
-	Inverse Selection	Ters Seçim
 	Similar	Benzer
 	Color Range…	Renk Aralığı…
 	Focus Area…	Odaklanma Alanı…
@@ -581,7 +582,7 @@
 	Last Filter	Son Filtre
 	Filter Gallery…	Filtre Galerisi…
 	Adaptive Wide Angle…	Uyarlanabilir Geniş Açı…
-	Camera Raw Filter…	Camera Raw Filtresi…
+	RAW Develop Filter…	RAW Geliştirme Filtresi…
 	Liquify…	Sıvılaştır…
 	Vanishing Point…	Ufuk Noktası…
 	Blur	Bulanıklaştırma
@@ -672,12 +673,12 @@
 	Working Magenta Plate	Çalışma Macenta Plakası
 	Working Yellow Plate	Çalışma Sarı Plakası
 	Working Black Plate	Çalışma Siyah Plakası
-	Working CMY Plates	Çalışma CMY Plakası
+	Working CMY Plates	Çalışma CMY Plakaları
 	Legacy Macintosh RGB (Gamma 1.8)	Eski Macintosh RGB (Gamma 1.8)
 	Internet Standard RGB (sRGB)	İnternet Standardı RGB (sRGB)
 	Monitor RGB	Monitör RGB
-	Color Blindness — Protanopia-type	Renk Körlüğü — Protanopi tipi
-	Color Blindness — Deuteranopia-type	Renk Körlüğü — Döteranopi tipi
+	Color Blindness - Protanopia-type	Renk Körlüğü - Protanopi tipi
+	Color Blindness - Deuteranopia-type	Renk Körlüğü - Döteranopi tipi
 	Zoom In	Yakınlaştır
 	Zoom Out	Uzaklaştır
 	Fit on Screen	Ekrana Sığdır
@@ -821,6 +822,12 @@
 	Timeline	Zaman Çizelgesi
 	Tool Presets	Araç Ön Ayarları
 	Tools	Araçlar
+	Contextual Task Bar	Bağlamsal Görev Çubuğu
+	Hide bar	Çubuğu gizle
+	Reset bar position	Çubuk konumunu sıfırla
+	Pin bar position	Çubuk konumunu sabitle
+	Move bar	Çubuğu taşı
+	More options	Diğer seçenekler
 	About PhotoCraft	PhotoCraft Hakkında
 	PhotoCraft Website	PhotoCraft Web Sitesi
 	PhotoCraft on GitHub	GitHub'da PhotoCraft
@@ -941,7 +948,7 @@
 	Brush Reconstruct Options	Fırçayla Yeniden Yapılandırma Seçenekleri
 	Brush Tool Options	Fırça Aracı Seçenekleri
 	Cache Level:	Önbellek Düzeyi:
-	Camera Raw isn't open	Camera Raw açık değil
+	RAW Develop isn't open	RAW Geliştirme açık değil
 	Cancel	İptal
 	Reset	Sıfırla
 	Cancel (Esc)	İptal (Esc)
@@ -975,7 +982,7 @@
 	Click to add a point · drag off or {key}-click or Delete to remove	Nokta eklemek için tıklayın · kaldırmak için dışarı sürükleyin, {key}-tıklayın veya Delete'e basın
 	Click to apply, {key}-click to clear overrides, double-click for Style Options	Uygulamak için tıklayın, geçersiz kılmaları temizlemek için {key}-tıklayın, Stil Seçenekleri için çift tıklayın
 	Click to edit the gradient	Degradeyi düzenlemek için tıklayın
-	Click to restore the current colour	Geçerli rengi geri yüklemek için tıklayın
+	Click to restore the current color	Geçerli rengi geri yüklemek için tıklayın
 	Click to zoom in  ·  {key}-click to zoom out  ·  drag right/left to zoom in/out	Yakınlaştırmak için tıklayın · uzaklaştırmak için {key}-tıklayın · yakınlaştırmak/uzaklaştırmak için sağa/sola sürükleyin
 	Click with the Note tool to add a note.	Not eklemek için Not aracıyla tıklayın.
 	Click: corner · Drag: smooth · Click first point: close · {key} finish · Esc cancel	Tıklayın: köşe · Sürükleyin: pürüzsüz · İlk noktaya tıklayın: kapat · {key} bitiş · Esc iptal
@@ -1057,7 +1064,7 @@
 	Darks	Koyu Tonlar
 	Data Sets	Veri Kümeleri
 	Default	Varsayılan
-	Default colours (D)	Varsayılan renkler (D)
+	Default Foreground and Background Colors (D)	Varsayılan Ön Plan ve Arka Plan Renkleri (D)
 	Default printer	Varsayılan yazıcı
 	Default restored.	Varsayılan geri yüklendi.
 	Define	Tanımla
@@ -1338,7 +1345,7 @@
 	Opacity Jitter	Opaklık Titreşimi
 	Opacity:	Opaklık:
 	Open a document to define variables.	Değişkenleri tanımlamak için bir belge açın.
-	Open a document to select a colour range.	Bir renk aralığı seçmek için bir belge açın.
+	Open a document to select a color range.	Bir renk aralığı seçmek için bir belge açın.
 	Open a document to use the timeline.	Zaman çizelgesini kullanmak için bir belge açın.
 	Optical	Optik
 	Optimized	Optimize edilmiş
@@ -1414,7 +1421,6 @@
 	Purity	Saflık
 	Quality	Kalite
 	Quick Actions	Hızlı Eylemler
-	Quick Export As PNG	PNG Olarak Hızlı Dışa Aktarma
 	Radial Gradient	Radyal Degrade
 	Radius	Yarıçap
 	Radius:	Yarıçap:
@@ -1553,7 +1559,7 @@
 	Subtract from Sample	Örnekten Çıkar
 	Subtract from selection  ({key})	Seçimden çıkar ({key})
 	Suggestions:	Öneriler:
-	Swap colours (X)	Renkleri değiştir (X)
+	Switch Foreground and Background Colors (X)	Ön Plan ve Arka Plan Renklerini Değiştir (X)
 	Swaps height and width	Yüksekliği ve genişliği değiştirir
 	Switch between free transform and warp modes	Serbest dönüştürme ve bükme modları arasında geçiş yapın
 	Switch theme	Temayı değiştir
@@ -1655,7 +1661,7 @@
 	Choke	Daraltma
 	Classic	Klasik
 	Click to add text	Metin eklemek için tıklayın
-	Click to fill similar colours	Benzer renkleri doldurmak için tıklayın
+	Click to fill similar colors	Benzer renkleri doldurmak için tıklayın
 	Clone Stamp Tool	Klonlama Damgası Aracı
 	Color Burn	Renk Yakma
 	Color Dodge	Renk Soldurma
@@ -1756,6 +1762,7 @@
 	Move Tool	Taşıma Aracı
 	Could not use the move tool because the layer is locked.	Katman kilitli olduğundan taşıma aracı kullanılamadı.
 	Could not complete the Free Transform command because the layer is locked.	Katman kilitli olduğundan Serbest Dönüştürme komutu tamamlanamadı.
+	Could not transform because the layer is locked.	Katman kilitli olduğundan dönüştürme yapılamadı.
 	Multiply	Çoğalt
 	My Brushes	Fırçalarım
 	Neutrals	Nötrler
@@ -1814,7 +1821,7 @@
 	Rectangular Marquee Tool	Dikdörtgen Seçim Çerçevesi Aracı
 	Reds	Kırmızılar
 	Reflected	Yansıyan
-	Sample: foreground colour	Örnek: ön plan rengi
+	Sample: foreground color	Örnek: ön plan rengi
 	Sampled Colors	Örneklenen Renkler
 	Satin	Saten
 	Save Pixel Aspect Ratio	Piksel En Boy Oranını Kaydet
@@ -1853,7 +1860,6 @@
 	Transfer	Aktarım
 	Triangle Tool	Üçgen Aracı
 	Unsaved changes	Kaydedilmemiş değişiklikler
-	Uses the foreground and background colours.	Ön plan ve arka plan renklerini kullanır.
 	Web	Web
 	Web Large	Web Büyük
 	Web Minimum	Web Minimumu
@@ -1890,6 +1896,7 @@
 	Allow scripts to connect	Komut dosyalarının bağlanmasına izin ver
 	Always	Her zaman
 	Always create smart objects when placing	Yerleştirirken daima akıllı nesneler yaratın
+	Skip transform when placing	Yerleştirirken dönüştürmeyi atla
 	Animated zoom	Animasyonlu yakınlaştırma
 	Apply auto tone	Otomatik tonu uygula
 	Ask	Sor
@@ -1907,7 +1914,7 @@
 	Brush preview color	Fırça önizleme rengi
 	Cache levels	Önbellek düzeyleri
 	Cache tile size	Önbellek kutucuğu boyutu
-	Camera Raw Defaults	Camera Raw Varsayılanları
+	RAW Defaults	RAW Varsayılanları
 	Canvas border	Tuval kenarlığı
 	Show canvas dots	Tuval noktalarını göster
 	Clip thumbnails to layer bounds	Küçük resimleri katman sınırlarına kırp
@@ -1994,7 +2001,6 @@
 	Never	Asla
 	Normal tip	Normal uç
 	Open as smart object	Akıllı nesne olarak aç
-	Open in camera raw	Camera raw'da aç
 	Open documents as tabs	Belgeleri sekmeler halinde aç
 	Overscroll	Aşırı kaydırma
 	Performance	Performans
@@ -2122,7 +2128,7 @@
 	Graphics	Grafik
 	Reset GPU Backend	GPU Arka Ucunu Sıfırla
 	Applies at next launch.	Bir sonraki açılışta geçerlidir.
-	Click to sample the foreground colour  ·  {key}-click for background	Ön plan rengini örneklemek için tıklayın · arka plan için {key}-tıklayın
+	Click to sample the foreground color  ·  {key}-click for background	Ön plan rengini örneklemek için tıklayın · arka plan için {key}-tıklayın
 	{key}-click to set the source	Kaynağı ayarlamak için {key} tuşuna basarak tıklayın
 	{key} to subtract	{key} çıkarmak için
 	Clone source {n} ({key}-click with Clone Stamp to set)	Klon kaynağı {n} (ayarlamak için Klonlama Damgası ile {key}-tıklayın)
@@ -2181,7 +2187,7 @@
 	Gradient Options	Degrade Seçenekleri
 	Align with layer	Katmanla hizala
 	Reset Alignment	Hizalamayı Sıfırla
-	Centre the gradient (offset 0, 0)	Degradeyi ortalayın (kaydırma 0, 0)
+	Center the gradient (offset 0, 0)	Degradeyi ortalayın (kaydırma 0, 0)
 	Gradient Editor	Degrade Düzenleyici
 	Gradient picker	Degrade seçici
 	Gradient stops	Degrade durakları
@@ -2215,7 +2221,7 @@
 	Alt-click to define a source point to clone from	Kopyalanacak kaynak noktayı tanımlamak için Alt tuşuna basarak tıklayın
 	No path to make a selection from: draw one with the Pen tool or select one in the Paths panel.	Seçim yapılabilecek yol yok: Kalem aracıyla bir yol çizin veya Yollar panelinden birini seçin.
 	Cancel opening	Açılışı iptal et
-	Cancelled opening {name}	{name} açılışı iptal edildi
+	Canceled opening {name}	{name} açılışı iptal edildi
 	Damaged Photoshop document	Hasarlı Photoshop belgesi
 	The document “{name}” may be damaged.	“{name}” belgesi hasarlı olabilir.
 	Some layers, pixels or masks could not be read. Do you want to continue opening it?	Bazı katmanlar, pikseller veya maskeler okunamadı. Açmaya devam etmek istiyor musunuz?
@@ -2224,14 +2230,14 @@
 	The document “{name}” has an embedded color profile that does not match the current {mode} working space.	“{name}” belgesinin gömülü renk profili geçerli {mode} çalışma renk uzayıyla eşleşmiyor.
 	Working: {working}	Çalışma renk uzayı: {working}
 	Developing {name}	{name} geliştiriliyor
-	Cancelled {label}	{label} iptal edildi
+	Canceled {label}	{label} iptal edildi
 	Esc to cancel	İptal etmek için Esc
 	Opened {name}	{name} açıldı
 	Opening {name}	{name} açılıyor
 	Saved {name}	{name} kaydedildi
 	Saving {name}	{name} kaydediliyor
 	A save to {name} is still running; try again when it finishes	{name} konumuna kaydetme işlemi hâlâ devam ediyor; bittiğinde tekrar dene
-	{label} is writing the file and can no longer be cancelled	{label} dosyayı yazıyor ve artık iptal edilemez
+	{label} is writing the file and can no longer be canceled	{label} dosyayı yazıyor ve artık iptal edilemez
 	Opening {name}…	{name} açılıyor…
 	Opening…	Açılıyor…
 	Reading…	Okunuyor…
@@ -2278,6 +2284,7 @@
 	Punctuation	Noktalama işaretleri
 	Make Work Path	Çalışma Yolu Oluştur
 	Make Selection	Seçim Yap
+	Make Shape	Şekil Yap
 	Fill Path	Yolu Doldur
 	Stroke Path	Kontur Yolu
 	Delete Path	Yolu Sil
@@ -2296,7 +2303,7 @@
 	Pixel	Piksel
 	Adjustment	Ayarlama
 	Drag (lasso) or click points (polygonal) · {add} add · {sub} subtract	Noktaları sürükleyin (kement) veya tıklayın (çokgen) · {add} ekle · {sub} çıkar
-	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Kırpma kutusunu sürükleyin · taşımak için içeriye sürükleyin · kenarlar yeniden boyutlandırır ({ratio} oran, {centre} merkez) · çizerken Space taşır · ok tuşları hafifçe kaydırır · X yönü değiştirir · {commit} onaylar · Esc iptal eder
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} center) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Kırpma kutusunu sürükleyin · taşımak için içeriye sürükleyin · kenarlar yeniden boyutlandırır ({ratio} oran, {centre} merkez) · çizerken Space taşır · ok tuşları hafifçe kaydırır · X yönü değiştirir · {commit} onaylar · Esc iptal eder
 	{mode} Color · {bits} bit	{mode} Renk · {bits} bit
 	Scrubby Zoom	Sürüklemeli Yakınlaştırma
 	Auto Erase	Otomatik Silme
@@ -2344,8 +2351,8 @@
 	3 x 3	3 x 3
 	4 x 4	4 x 4
 	5 x 5	5 x 5
-	Camera Raw Filter ({layer})	Camera Raw Filtresi ({layer})
-	Camera Raw ({name})	Camera Raw ({name})
+	RAW Develop Filter ({layer})	RAW Geliştirme Filtresi ({layer})
+	RAW Develop ({name})	RAW Geliştirme ({name})
 	Edit Type	Metni Düzenle
 	Grid:	Izgara:
 	Highlight Clipping Warning (O)	Parlak Ton Kırpma Uyarısı (O)
@@ -2388,7 +2395,7 @@
 	Discard Layers and Save a Copy	Katmanları At ve Kopyasını Kaydet
 	Don't show again	Bir daha gösterme
 	Save failed: {error}	Kaydetme başarısız oldu: {error}
-	Save cancelled	Kaydetme iptal edildi
+	Save canceled	Kaydetme iptal edildi
 	Style {name} saved	{name} stili kaydedildi
 	Make Default	Varsayılan Yap
 	Reset to Default	Varsayılana Sıfırla
@@ -2521,7 +2528,7 @@ fontWeight	Italic	İtalik
 	Rotate View	Görünümü Döndür
 	Rotate View Tool	Görünümü Döndürme Aracı
 	Reset View	Görünümü Sıfırla
-	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Görünümü döndürmek için merkez etrafında sürükleyin · Shift 15° ile sınırlar
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	Görünümü döndürmek için merkez etrafında sürükleyin · Shift 15° ile sınırlar
 @id	select.all	Tümünü Seç
 @id	edit.stroke	Kontur…
 @id	edit.transform.scale	Ölçekle
@@ -3346,7 +3353,6 @@ cameraRaw	Color	Renk
 	Add Pins	Pim Ekle
 	Add a mask  (from the selection; ⌥ inverts)	Bir maske ekleyin (seçimden; ⌥ tersine çevirir)
 	Adds grain to the soft edges of the brush tip.	Fırça ucunun yumuşak kenarlarına gren ekler.
-	Adobe PDF Presets…	Adobe PDF Ön Ayarları…
 	Advanced Blending	Gelişmiş Karıştırma
 	After (X)	Sonra (X)
 	Airbrush: keeps painting while the pointer rests.	Airbrush: İşaretçi dururken boyamaya devam eder.
@@ -3373,8 +3379,8 @@ cameraRaw	Color	Renk
 	Border	Kenarlık
 	Box Blur	Kutu Bulanıklığı
 	Calculations	Hesaplamalar
-	Camera Raw	Camera Raw
-	Camera Raw Filter	Camera Raw Filtresi
+	RAW Develop	RAW Geliştirme
+	RAW Develop Filter	RAW Geliştirme Filtresi
 	Canvas rotation	Tuval döndürme
 	Channel1	Kanal 1
 	Channel2	Kanal 2
@@ -3657,8 +3663,6 @@ cameraRaw	Whites	Beyazlar
 	Mac Crisp	Mac Net
 	Mac Strong	Mac Güçlü
 	Mac Smooth	Mac Yumuşak
-	Adobe Single-line Composer	Adobe Tek Satırlı Dizgi Motoru
-	Adobe Every-line Composer	Adobe Tüm Satırlı Dizgi Motoru
 	X	X
 	Y	Y
 	30 fps	30 fps
@@ -3705,8 +3709,8 @@ cameraRaw	Whites	Beyazlar
 @id	filter.sharpen.sharpen	Keskinleştir
 	Good	iyi
 	Best	En iyi
-	Out of gamut for printing: click for the nearest printable colour	Yazdırma için gamın dışında: yazdırılabilir en yakın renk için tıklayın
-	Not a web colour: click for the nearest web colour	Web rengi değil: en yakın web rengi için tıklayın
+	Out of gamut for printing: click for the nearest printable color	Yazdırma için gamın dışında: yazdırılabilir en yakın renk için tıklayın
+	Not a web color: click for the nearest web color	Web rengi değil: en yakın web rengi için tıklayın
 	Adjustment Properties	Ayarlama Özellikleri
 	Brush Stroke	Fırça Vuruşu
 	Default Foreground and Background Colors	Varsayılan Ön Plan ve Arka Plan Renkleri
@@ -3994,12 +3998,12 @@ cameraData	Lens	Lens
 	Load Settings…	Ayarları Yükle…
 	Save these settings as a Camera Raw .xmp file	Bu ayarları Camera Raw .xmp dosyası olarak kaydet
 	Load settings from a Camera Raw .xmp file	Ayarları bir Camera Raw .xmp dosyasından yükle
-	Loaded Camera Raw settings from {file}	Camera Raw ayarları {file} dosyasından yüklendi
-	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw ayarları {file} dosyasından yüklendi ({n} desteklenmiyor)
+	Loaded RAW Develop settings from {file}	RAW Geliştirme ayarları {file} dosyasından yüklendi
+	Loaded RAW Develop settings from {file} ({n} not supported)	RAW Geliştirme ayarları {file} dosyasından yüklendi ({n} desteklenmiyor)
 	Auto Add/Delete	Otomatik Ekle/Sil
 	Don't also tick Mirror Image in Print Settings…: the two flips cancel out.	Yazdırma Ayarlarında ayrıca Ayna Görüntüsünü açmayın: iki yansıtma birbirini iptal eder.
 	Print Settings…	Yazdırma Ayarları…
-	Remember to turn off the printer's own colour management in Print Settings…	Yazdırma Ayarlarında yazıcının kendi renk yönetimini kapatmayı unutmayın…
+	Remember to turn off the printer's own color management in Print Settings…	Yazdırma Ayarlarında yazıcının kendi renk yönetimini kapatmayı unutmayın…
 	Sent to {printer}	{printer} yazıcısına gönderildi
 	set in Print Settings…	Yazdırma Ayarlarında belirlenir…
 	ICO is limited to 256 × 256 pixels	ICO 256 × 256 piksel ile sınırlıdır
@@ -4156,12 +4160,12 @@ cameraData	Lens	Lens
 	Decrease Brush Hardness	Fırça sertliğini azalt
 	Increase Brush Hardness	Fırça sertliğini artır
 	Demosaic	Demozaikleme
-	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Kameranın renk filtresi mozaiğinin nasıl doldurulduğu. Dosya açılırken uygulanır; önizleme dosyanın açıldığı yöntemi gösterir.
+	How the camera's color filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Kameranın renk filtresi mozaiğinin nasıl doldurulduğu. Dosya açılırken uygulanır; önizleme dosyanın açıldığı yöntemi gösterir.
 	AHD (adaptive homogeneity)	AHD (uyarlamalı homojenlik)
 	Malvar–He–Cutler	Malvar–He–Cutler
-	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: en temiz kenarlar ve en az renk saçağı, en yavaş.
-	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Gradyan düzeltmeli ara değerleme: keskin ve hızlı, ince ayrıntılarda biraz renk saçağı.
-	The fastest and the softest, with colour fringing on fine detail.	En hızlı ve en yumuşak, ince ayrıntılarda renk saçağı.
+	Hirakawa–Parks: the cleanest edges and the least color fringing, the slowest.	Hirakawa–Parks: en temiz kenarlar ve en az renk saçağı, en yavaş.
+	Gradient-corrected interpolation: sharp and fast, with some color fringing on fine detail.	Gradyan düzeltmeli ara değerleme: keskin ve hızlı, ince ayrıntılarda biraz renk saçağı.
+	The fastest and the softest, with color fringing on fine detail.	En hızlı ve en yumuşak, ince ayrıntılarda renk saçağı.
 	“{name}” already exists. Replace it?	'{name}' zaten var. Değiştirilsin mi?
 	The name in the save dialog was “{name}”.	Kaydetme penceresindeki ad '{name}' idi.
 	Previous Brush	Önceki fırça
@@ -4229,8 +4233,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Grayscale Ramp	Gri Tonlama Şeridi
 	Current Colors	Geçerli Renkler
 	Make Ramp Web Safe	Şeridi Web Renkleriyle Sınırla
+	Scroll All Windows	Tüm Pencereleri Kaydır
 	The path was kept as the Work Path	Yol, Çalışma Yolu olarak korundu
 	The path was discarded	Yol atıldı
+# Art History Brush (#213).
 	Art History Brush Tool	Sanat Tarihi Fırçası Aracı
 	Tight Short	Sıkı Kısa
 	Tight Medium	Sıkı Orta
@@ -4275,181 +4281,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Stop Color	Durak Rengi
 	Shapes can't use patterns yet	Şekiller henüz desen kullanamaz
 	Edit Brush…	Fırçayı Düzenle…
-	Move Up	Yukarı taşı
-	Move Down	Aşağı taşı
-	AI Prompt History	Yapay zekâ istem geçmişi
-	AI model settings	Yapay zekâ model ayarları
-	All nine regions	Dokuz bölgenin tümü
-	ComfyUI port	ComfyUI bağlantı noktası
-	Copy English translation	İngilizce çeviriyi kopyala
-	Copy negative prompt	Negatif istemi kopyala
-	Copy original prompt	Özgün istemi kopyala
-	Custom model filenames (one per line)	Özel model dosya adları (her satıra bir tane)
-	Describe changes to the whole image	Tüm görüntüdeki değişiklikleri açıklayın
-	Describe changes, or leave blank to remove	Değişiklikleri açıklayın veya kaldırmak için boş bırakın
-	Describe the image to generate	Üretilecek görüntüyü açıklayın
-	English translation	İngilizce çeviri
-	Generative Fill	Üretken dolgu
-	Negative prompt	Negatif istem
-	No AI prompts recorded	Kayıtlı yapay zekâ istemi yok
-	No prompt (remove)	İstem yok (kaldır)
-	One .safetensors filename per line. Compatibility is not checked.	Her satıra bir .safetensors dosya adı. Uyumluluk denetlenmez.
-	Original prompt	Özgün istem
-	Prompt Edit	İstemle düzenle
-	Prompt Generate	İstemle üret
-	Prompt information	İstem bilgisi
-	Prompt translation model	İstem çeviri modeli
-	Regenerate	Yeniden üret
-	Reset steps to model default	Adımları model varsayılanına sıfırla
-	Sampling steps	Örnekleme adımları
-	Text encoders	Metin kodlayıcıları
-	Text encoder	Metin kodlayıcısı
-	Translate prompt to English	İstemi İngilizceye çevir
-	Steps	Adımlar
-	Sampling profile	Örnekleme profili
-	Additional AI models	Ek yapay zekâ modelleri
-	Comfyui url	ComfyUI adresi
-	Comfyui model	ComfyUI modeli
-	Comfyui custom models	Özel ComfyUI modelleri
-	Comfyui custom encoders	Özel ComfyUI kodlayıcıları
-	Comfyui custom model	Özel ComfyUI modeli
-	Comfyui model settings	ComfyUI model ayarları
-	Comfyui translate prompt	ComfyUI istemini çevir
-	Comfyui translation model	ComfyUI çeviri modeli
-	Whole image	Görüntünün tamamı
-	Preparing image and selection	Görüntü ve seçim hazırlanıyor
-	Uploading image to ComfyUI	Görüntü ComfyUI'a yükleniyor
-	Waiting for ComfyUI generation	ComfyUI üretimi bekleniyor
-	Downloading generated image	Üretilen görüntü indiriliyor
-	Adding generated layer	Üretilen katman ekleniyor
-	Translating prompt to English	İstem İngilizceye çevriliyor
-	Regenerate AI Result	Yapay zekâ sonucunu yeniden üret
-	ComfyUI is unavailable in this frontend	Bu arayüzde ComfyUI kullanılamıyor
-	Prompt Generate…	İstemle üret…
-	Prompt Edit…	İstemle düzenle…
-	Generative Fill…	Üretken dolgu…
-	Qwen image21	Qwen 2.1
-	Hy mt18 heretic	Hy-MT2 1.8B
-	Hy mt7 abliterated	Hy-MT2 7B
-	Turbo int8	Turbo INT8
-prompt-region	Top left	Sol üst
-prompt-region	Top center	Üst orta
-prompt-region	Top right	Sağ üst
-prompt-region	Middle left	Sol orta
-prompt-region	Center	Orta
-prompt-region	Middle right	Sağ orta
-prompt-region	Bottom left	Sol alt
-prompt-region	Bottom center	Alt orta
-prompt-region	Bottom right	Sağ alt
-	PhotoCraft update available	PhotoCraft güncellemesi mevcut
-	Update PhotoCraft and restart now?	PhotoCraft güncellensin ve şimdi yeniden başlatılsın mı?
-	Automatically check for updates	Güncellemeleri otomatik denetle
-	Check for updates now	Güncellemeleri şimdi denetle
-	You can check for updates again in Help → About PhotoCraft.	Yardım → PhotoCraft Hakkında menüsünden güncellemeleri yeniden denetleyebilirsiniz.
-	Downloading update…	Güncelleme indiriliyor…
-	Update PhotoCraft	PhotoCraft uygulamasını güncelle
-	Dismiss update	Güncelleme bildirimini kapat
-	Match Surrounding Colors	Çevredeki Renklere Uyarla
-	Adjust colors with Poisson blending	Renkleri Poisson harmanlamasıyla ayarla
-	Compare with Original Generation	İlk Üretim Sonucuyla Karşılaştır
-	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Renkleri üretim sırasında kaydedilen çevreye uyarlar. Güç 0, ilk üretilen sonucu geri yükler.
-	Attach Reference Image	Referans görseli ekle
-	Remove Reference Image	Referans görselini kaldır
-	Reference Image	Referans görseli
-	Resize for AI editing	Yapay zekâ düzenlemesi için boyutlandır
-	The image exceeds the AI editing size. Resize the document to continue?	Görsel yapay zekâ düzenleme boyutunu aşıyor. Devam etmek için belge boyutlandırılsın mı?
-	Arrange Panels	Panelleri Düzenle
-	Close Other Panels in Group	Gruptaki Diğer Panelleri Kapat
-	Collapse to Icons	Simge Durumuna Daralt
-	Minimize Panel	Paneli Küçült
-	Open Panel in Own Window	Paneli Ayrı Pencerede Aç
-	CPU Rendering	CPU ile İşleme
-	Calculating…	Hesaplanıyor…
-	Click to refresh histogram with uncached data	Histogramı önbelleksiz verilerle yenilemek için tıklayın
-	Count:	Sayı:
-	Drawn on the CPU: {reason}. Click for System Info.	CPU ile çizildi: {reason}. Sistem Bilgileri için tıklayın.
-	Level:	Düzey:
-	Percentile:	Yüzdelik:
-	Show Channels in Color	Kanalları Renkli Göster
-	Show Statistics	İstatistikleri Göster
-	Source:	Kaynak:
-	Uncached Refresh	Önbelleksiz Yenile
-	…	…
-	External cutout	Harici Arka Plan Kaldırma
-	External erase	Harici Silme
-	No matching fonts	Eşleşen yazı tipi yok
-	Select Layer Under Cursor	İmlecin altındaki katmanı seç
-	Twirl Counterclockwise	Saat yönünün tersine burgu
-
-# Fork portable update information
-	PhotoCraft Updates	PhotoCraft Güncellemeleri
-	Checking for updates…	Güncellemeler denetleniyor…
-	Open Download Page	İndirme Sayfasını Aç
-	PhotoCraft is up to date.	PhotoCraft güncel.
-	Could not check for updates.	Güncellemeler denetlenemedi.
-	Updates have not been checked yet.	Güncellemeler henüz denetlenmedi.
-	Check Again	Yeniden Denetle
-	Installed version: {version}	Yüklü sürüm: {version}
-	PhotoCraft {version} is available.	PhotoCraft {version} kullanılabilir.
-	Answer the open import question first, then import this file again.	Önce açık içe aktarma sorusunu yanıtlayın, ardından bu dosyayı yeniden içe aktarın.
-	Import as New Group	Yeni Grup Olarak İçe Aktar
-	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Yeni Grup Olarak İçe Aktar, “{group}” grubunu korur ve dosyayı yanına yeni bir grup olarak ekler.
-	No import is waiting. Import the file again.	Bekleyen içe aktarma yok. Dosyayı yeniden içe aktarın.
-	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Değiştir, düzenlediğiniz veya oraya taşıdığınız hazır ayarlar dahil “{group}” içindeki her şeyi önce siler. Bu işlem geri alınamaz.
-	{message} into “{group}”	“{group}” içine {message}
-@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	“{group}” fırça grubunda zaten size ait {n} fırça var.
-@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	“{group}” gradyan grubu zaten var ({n} gradyan).
-
-# Arrowhead settings (upstream 0.20.1)
-	Arrowhead options	Ok ucu seçenekleri
-	Arrowheads	Ok uçları
-	Concavity	İçbükeylik
-	End	Bitiş
-	Set as default	Varsayılan olarak ayarla
-	Start	Başlangıç
-	Use these settings for new arrows	Yeni oklar için bu ayarları kullan
-
-# Upstream 0.20.2 memory, batch, layer filters and numeral options
-	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Toplu işleme sırasında bir komut iptal edildi veya durduruldu. Sonraki dosyayla devam edilsin mi, durdurulsun mu?
-	Attribute	Öznitelik
-	Batch preview	Toplu işlem önizlemesi
-	Data Sets as Files is unavailable on the web	Veri Kümelerini Dosya Olarak Kaydet web sürümünde kullanılamaz
-	Effect	Efekt
-	Empty	Boş
-	Filter for embedded smart objects	Gömülü akıllı nesneleri filtrele
-	Filter for linked smart objects that are missing	Eksik bağlantılı akıllı nesneleri filtrele
-	Filter for smart objects linked locally	Yerel dosyalara bağlı akıllı nesneleri filtrele
-	High Memory Photoshop Document	Yüksek bellek gerektiren Photoshop belgesi
-	Image Compression	Görüntü sıkıştırma
-	LZW	LZW
-	Layer Effects	Katman efektleri
-	Lining	Eşit yükseklikte
-	Linked	Bağlantılı
-	No Adv. Blending	Gelişmiş karıştırma yok
-	No Layer Effects	Katman efekti yok
-	No Layer Mask	Katman maskesi yok
-	No Vector Mask	Vektör maskesi yok
-	Not Clipped	Kırpma maskesi yok
-	Not Empty	Boş değil
-	Not Linked	Bağlantılı değil
-	Not Locked	Kilitli değil
-	Not Visible	Görünür değil
-	Numerals	Rakamlar
-	Open anyway	Yine de aç
-	Opening this document uses more memory and may slow down your computer or other running applications.	Bu belgeyi açmak daha fazla bellek gerektirir ve bilgisayarınızı veya çalışan diğer uygulamaları yavaşlatabilir.
-	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	“{name}” belgesini açmak için tahmini {est} GiB bellek gerekir ({avail} GiB kullanılabilir).
-	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	“{name}” belgesini açmak için tahmini {est} GiB bellek gerekir. Kullanılabilir bellek ölçülemedi.
-	Proportional	Orantılı
-	Proportional Lining	Orantılı eşit yükseklikte
-	Proportional Oldstyle	Orantılı eski stil
-	Save Image Pyramid	Görüntü piramidini kaydet
-	Save Transparency	Saydamlığı kaydet
-	Tabular	Eşit genişlikte
-	Tabular Lining	Eşit genişlikte ve yükseklikte
-	Tabular Oldstyle	Eşit genişlikte eski stil
-	ZIP	ZIP
-	{ok} written to {dir}	{dir} konumuna {ok} yazıldı
-@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} görüntü varlığı çıktısı başarısız
 
 # Action Stop message (#8386)
 	Message	İleti
@@ -4463,6 +4294,8 @@ prompt-region	Bottom right	Sağ alt
 	seconds	saniye
 	Create a single history state	Tek bir geçmiş durumu oluştur
 	Generator enabled	Oluşturucu etkin
+	Move Up	Yukarı taşı
+	Move Down	Aşağı taşı
 	Grid view	Izgara görünümü
 	List view	Liste görünümü
 	On your computer	Bilgisayarınızda
@@ -4502,28 +4335,192 @@ prompt-region	Bottom right	Sağ alt
 	Pick a different document for each channel.	Her kanal için farklı bir belge seçin.
 	A picked document is no longer open.	Seçilen belgelerden biri artık açık değil.
 	A picked document is no longer a grayscale document of the same size.	Seçilen belgelerden biri artık aynı boyutta gri tonlamalı bir belge değil.
+	Netscape Gray	Netscape Grisi
+# Move tool options bar (#11381)
+	Align top edges	Üst kenarları hizala
+	Align vertical centers	Dikey merkezleri hizala
+	Align bottom edges	Alt kenarları hizala
+	Distribute vertically	Dikey olarak dağıt
+	Distribute horizontally	Yatay olarak dağıt
+	Show layer bounds on hover	Üzerine gelince katman sınırlarını göster
+	Expand layer group on click	Tıklayınca katman grubunu genişlet
+	Show hover bounds from Layers	Katmanlar'dan üzerine gelme sınırlarını göster
+	Saved RAW Develop settings to {file}	RAW Geliştirme ayarları {file} dosyasına kaydedildi
+	Save the settings to each raw's sidecar without opening it	Ayarları her raw dosyasının yan dosyasına kaydet, açmadan
+	No settings saved: these raws can't keep a sidecar here	Hiçbir şey kaydedilmedi: bu raw dosyaları burada yan dosyaya sahip olamaz
+	Some settings could not be saved; the raws stay open	Bazı ayarlar kaydedilemedi; raw dosyaları açık kalıyor
+	Nothing to save: these raws are at their default settings	Kaydedilecek bir şey yok: bu raw dosyaları varsayılan ayarlarda
+# Artboard tool options bar (#11385)
+	Distribute Widths	Genişlikleri Dağıt
+	Distribute Heights	Yükseklikleri Dağıt
+	Auto-nest Layers	Katmanları Otomatik İç İçe Yerleştir
+	Auto-size Canvas	Tuvali Otomatik Boyutlandır
+	Keep Relative Position During Layer Reordering	Katmanları Yeniden Sıralarken Göreli Konumu Koru
+	Shrinkwrap Canvas on Save	Kaydederken Tuvali İçeriğe Göre Küçült
 
-# Placement and memory-admission notices from upstream 0.21.0.
+# Fork-specific and compatibility labels retained during integration.
+	3dl	3DL
+	A command was cancelled or stopped during batch processing. Continue with the next file or stop?	Toplu işleme sırasında bir komut iptal edildi veya durduruldu. Sonraki dosyayla devam edilsin mi, durdurulsun mu?
 	A file is still being placed; try again when it has finished.	Bir dosya hâlâ yerleştiriliyor; tamamlandığında yeniden deneyin.
+	AI Prompt History	Yapay zekâ istem geçmişi
+	AI model settings	Yapay zekâ model ayarları
+	Adding generated layer	Üretilen katman ekleniyor
+	Additional AI models	Ek yapay zekâ modelleri
+	Adjust colors with Poisson blending	Renkleri Poisson harmanlamasıyla ayarla
+	All nine regions	Dokuz bölgenin tümü
+	Answer the open import question first, then import this file again.	Önce açık içe aktarma sorusunu yanıtlayın, ardından bu dosyayı yeniden içe aktarın.
+	Arrange Panels	Panelleri Düzenle
+	Arrowhead options	Ok ucu seçenekleri
+	Arrowheads	Ok uçları
+	Attach Reference Image	Referans görseli ekle
+	Attribute	Öznitelik
+	Automatically check for updates	Güncellemeleri otomatik denetle
+	Base64	Base64
+	Batch preview	Toplu işlem önizlemesi
+	CPU Rendering	CPU ile İşleme
+	Calculating…	Hesaplanıyor…
+	Cancelled opening {name}	{name} açılışı iptal edildi
 	Cancelled placing {name}	{name} yerleştirme işlemi iptal edildi
+	Cancelled {label}	{label} iptal edildi
+	Centre the gradient (offset 0, 0)	Degradeyi ortalayın (kaydırma 0, 0)
+	Check Again	Yeniden Denetle
+	Check for updates now	Güncellemeleri şimdi denetle
+	Checking for updates…	Güncellemeler denetleniyor…
+	Click to fill similar colours	Benzer renkleri doldurmak için tıklayın
+	Click to refresh histogram with uncached data	Histogramı önbelleksiz verilerle yenilemek için tıklayın
+	Click to restore the current colour	Geçerli rengi geri yüklemek için tıklayın
+	Click to sample the foreground colour  ·  {key}-click for background	Ön plan rengini örneklemek için tıklayın · arka plan için {key}-tıklayın
+	Close Other Panels in Group	Gruptaki Diğer Panelleri Kapat
+	Collapse to Icons	Simge Durumuna Daralt
+	Color Blindness — Deuteranopia-type	Renk Körlüğü — Döteranopi tipi
+	Color Blindness — Protanopia-type	Renk Körlüğü — Protanopi tipi
+	ComfyUI is unavailable in this frontend	Bu arayüzde ComfyUI kullanılamıyor
+	ComfyUI port	ComfyUI bağlantı noktası
+	Comfyui custom encoders	Özel ComfyUI kodlayıcıları
+	Comfyui custom model	Özel ComfyUI modeli
+	Comfyui custom models	Özel ComfyUI modelleri
+	Comfyui model	ComfyUI modeli
+	Comfyui model settings	ComfyUI model ayarları
+	Comfyui translate prompt	ComfyUI istemini çevir
+	Comfyui translation model	ComfyUI çeviri modeli
+	Comfyui url	ComfyUI adresi
+	Compare with Original Generation	İlk Üretim Sonucuyla Karşılaştır
+	Concavity	İçbükeylik
+	Copy English translation	İngilizce çeviriyi kopyala
+	Copy negative prompt	Negatif istemi kopyala
+	Copy original prompt	Özgün istemi kopyala
+	Could not check for updates.	Güncellemeler denetlenemedi.
+	Count:	Sayı:
+	Cube	CUBE
+	Custom model filenames (one per line)	Özel model dosya adları (her satıra bir tane)
+	Data Encoding	Veri kodlaması
+	Data Sets as Files is unavailable on the web	Veri Kümelerini Dosya Olarak Kaydet web sürümünde kullanılamaz
+	Default colours (D)	Varsayılan renkler (D)
+	Describe changes to the whole image	Tüm görüntüdeki değişiklikleri açıklayın
+	Describe changes, or leave blank to remove	Değişiklikleri açıklayın veya kaldırmak için boş bırakın
+	Describe the image to generate	Üretilecek görüntüyü açıklayın
+	Dismiss update	Güncelleme bildirimini kapat
+	Downloading generated image	Üretilen görüntü indiriliyor
+	Downloading update…	Güncelleme indiriliyor…
+	Drag a crop box · drag inside to move · edges resize ({ratio} ratio, {centre} centre) · Space moves while drawing · arrows nudge · X swaps orientation · {commit} commits · Esc cancels	Kırpma kutusunu sürükleyin · taşımak için içeriye sürükleyin · kenarlar yeniden boyutlandırır ({ratio} oran, {centre} merkez) · çizerken Space taşır · ok tuşları hafifçe kaydırır · X yönü değiştirir · {commit} onaylar · Esc iptal eder
+	Drag around the centre to rotate the view  ·  Shift constrains to 15°	Görünümü döndürmek için merkez etrafında sürükleyin · Shift 15° ile sınırlar
+	Drawn on the CPU: {reason}. Click for System Info.	CPU ile çizildi: {reason}. Sistem Bilgileri için tıklayın.
 	Dropped files weren't placed: their document was closed.	Bırakılan dosyalar yerleştirilemedi: belgeleri kapatıldı.
 	Dropped files weren't placed: too many are waiting for their document.	Bırakılan dosyalar yerleştirilemedi: belgelerini bekleyen çok fazla dosya var.
+	Effect	Efekt
+	Empty	Boş
+	End	Bitiş
+	English translation	İngilizce çeviri
+	External cutout	Harici Arka Plan Kaldırma
+	External erase	Harici Silme
+	Filter for embedded smart objects	Gömülü akıllı nesneleri filtrele
+	Filter for linked smart objects that are missing	Eksik bağlantılı akıllı nesneleri filtrele
+	Filter for smart objects linked locally	Yerel dosyalara bağlı akıllı nesneleri filtrele
+	Generative Fill	Üretken dolgu
+	Generative Fill…	Üretken dolgu…
+	Gradient-corrected interpolation: sharp and fast, with some colour fringing on fine detail.	Gradyan düzeltmeli ara değerleme: keskin ve hızlı, ince ayrıntılarda biraz renk saçağı.
+	High Memory Photoshop Document	Yüksek bellek gerektiren Photoshop belgesi
+	Hirakawa–Parks: the cleanest edges and the least colour fringing, the slowest.	Hirakawa–Parks: en temiz kenarlar ve en az renk saçağı, en yavaş.
+	How the camera's colour filter mosaic is filled in. It is applied when the file opens; the preview shows the method it was opened with.	Kameranın renk filtresi mozaiğinin nasıl doldurulduğu. Dosya açılırken uygulanır; önizleme dosyanın açıldığı yöntemi gösterir.
+	Hy mt18 heretic	Hy-MT2 1.8B
+	Hy mt7 abliterated	Hy-MT2 7B
+	Image Compression	Görüntü sıkıştırma
+	Import as New Group	Yeni Grup Olarak İçe Aktar
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Yeni Grup Olarak İçe Aktar, “{group}” grubunu korur ve dosyayı yanına yeni bir grup olarak ekler.
+	Installed version: {version}	Yüklü sürüm: {version}
+	Inverse Selection	Ters Seçim
+	LZW	LZW
+	Layer Effects	Katman efektleri
+	Level:	Düzey:
+	Lining	Eşit yükseklikte
+	Linked	Bağlantılı
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Bu dosya açıldıktan sonra çok az bellek kalır. Önce diğer uygulamaları kapatın, aksi takdirde PhotoCraft belleği tükenebilir.
+	Look	LOOK
+	Lut Format	LUT biçimi
+	Match Surrounding Colors	Çevredeki Renklere Uyarla
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Renkleri üretim sırasında kaydedilen çevreye uyarlar. Güç 0, ilk üretilen sonucu geri yükler.
+	Minimize Panel	Paneli Küçült
+	Negative prompt	Negatif istem
+	No AI prompts recorded	Kayıtlı yapay zekâ istemi yok
+	No Adv. Blending	Gelişmiş karıştırma yok
+	No Layer Effects	Katman efekti yok
+	No Layer Mask	Katman maskesi yok
+	No Vector Mask	Vektör maskesi yok
+	No import is waiting. Import the file again.	Bekleyen içe aktarma yok. Dosyayı yeniden içe aktarın.
+	No matching fonts	Eşleşen yazı tipi yok
+	No prompt (remove)	İstem yok (kaldır)
+	Not Clipped	Kırpma maskesi yok
+	Not Empty	Boş değil
+	Not Linked	Bağlantılı değil
+	Not Locked	Kilitli değil
+	Not Visible	Görünür değil
+	Not a web colour: click for the nearest web colour	Web rengi değil: en yakın web rengi için tıklayın
 	Nudge	Adım adım kaydır
-	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Geçerli çalışma dizini ({path}) boş alanını bildirmiyor; bu nedenle PhotoCraft dolmadan önce duramaz ve Çalışma Alanı Boyut Sınırı olmadan büyük dosyalar buradan ek alan alamaz. Bu uyarı geçerli yapılandırma için geçerlidir; yukarıdaki değişiklikler Uygula veya Tamam ile etkinleşir. Bir sınır belirleyin veya yerel disk kullanın.
-
-# OpenType stylistic-set labels.
-	Stylistic Sets	Stil kümeleri
+	Numerals	Rakamlar
+	One .safetensors filename per line. Compatibility is not checked.	Her satıra bir .safetensors dosya adı. Uyumluluk denetlenmez.
+	Open Download Page	İndirme Sayfasını Aç
+	Open Panel in Own Window	Paneli Ayrı Pencerede Aç
+	Open a document to select a colour range.	Bir renk aralığı seçmek için bir belge açın.
+	Open anyway	Yine de aç
+	Opening this document uses more memory and may slow down your computer or other running applications.	Bu belgeyi açmak daha fazla bellek gerektirir ve bilgisayarınızı veya çalışan diğer uygulamaları yavaşlatabilir.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	“{name}” belgesini açmak için tahmini {est} GiB bellek gerekir ({avail} GiB kullanılabilir).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	“{name}” belgesini açmak için tahmini {est} GiB bellek gerekir. Kullanılabilir bellek ölçülemedi.
+	Original prompt	Özgün istem
+	Out of gamut for printing: click for the nearest printable colour	Yazdırma için gamın dışında: yazdırılabilir en yakın renk için tıklayın
+	Percentile:	Yüzdelik:
+	PhotoCraft Updates	PhotoCraft Güncellemeleri
+	PhotoCraft is up to date.	PhotoCraft güncel.
+	PhotoCraft update available	PhotoCraft güncellemesi mevcut
+	PhotoCraft {version} is available.	PhotoCraft {version} kullanılabilir.
+	Preparing image and selection	Görüntü ve seçim hazırlanıyor
+	Prompt Edit	İstemle düzenle
+	Prompt Edit…	İstemle düzenle…
+	Prompt Generate	İstemle üret
+	Prompt Generate…	İstemle üret…
+	Prompt information	İstem bilgisi
+	Prompt translation model	İstem çeviri modeli
+	Proportional	Orantılı
+	Proportional Lining	Orantılı eşit yükseklikte
+	Proportional Oldstyle	Orantılı eski stil
+	Quick Export As PNG	PNG Olarak Hızlı Dışa Aktarma
+	Qwen image21	Qwen 2.1
+	Reference Image	Referans görseli
+	Regenerate	Yeniden üret
+	Regenerate AI Result	Yapay zekâ sonucunu yeniden üret
+	Remember to turn off the printer's own colour management in Print Settings…	Yazdırma Ayarlarında yazıcının kendi renk yönetimini kapatmayı unutmayın…
+	Remove Reference Image	Referans görselini kaldır
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Değiştir, düzenlediğiniz veya oraya taşıdığınız hazır ayarlar dahil “{group}” içindeki her şeyi önce siler. Bu işlem geri alınamaz.
+	Reset steps to model default	Adımları model varsayılanına sıfırla
+	Resize for AI editing	Yapay zekâ düzenlemesi için boyutlandır
+	Sample: foreground colour	Örnek: ön plan rengi
+	Sampling profile	Örnekleme profili
+	Sampling steps	Örnekleme adımları
+	Save Image Pyramid	Görüntü piramidini kaydet
+	Save Transparency	Saydamlığı kaydet
+	Save cancelled	Kaydetme iptal edildi
+	Select Layer Under Cursor	İmlecin altındaki katmanı seç
 	Set 	Küme
 	Set 1	Küme 1
-	Set 2	Küme 2
-	Set 3	Küme 3
-	Set 4	Küme 4
-	Set 5	Küme 5
-	Set 6	Küme 6
-	Set 7	Küme 7
-	Set 8	Küme 8
-	Set 9	Küme 9
 	Set 10	Küme 10
 	Set 11	Küme 11
 	Set 12	Küme 12
@@ -4534,22 +4531,156 @@ prompt-region	Bottom right	Sağ alt
 	Set 17	Küme 17
 	Set 18	Küme 18
 	Set 19	Küme 19
+	Set 2	Küme 2
 	Set 20	Küme 20
-
-# Pen tablet input preferences and platform API names.
-	Tablet input	Tablet girişi
-	WinTab	WinTab
-	Windows Ink (default)	Windows Ink (varsayılan)
-
-# Generated filter fields and LUT format identifiers.
-	Data Encoding	Veri kodlaması
-	Lut Format	LUT biçimi
+	Set 3	Küme 3
+	Set 4	Küme 4
+	Set 5	Küme 5
+	Set 6	Küme 6
+	Set 7	Küme 7
+	Set 8	Küme 8
+	Set 9	Küme 9
+	Set as default	Varsayılan olarak ayarla
 	Shape Id	Şekil kimliği
 	Shape Name	Şekil adı
 	Shape Origin Type	Şekil kökeni türü
 	Shape Path	Şekil yolu
+	Show Channels in Color	Kanalları Renkli Göster
+	Show Statistics	İstatistikleri Göster
+	Source:	Kaynak:
+	Start	Başlangıç
+	Steps	Adımlar
+	Stylistic Sets	Stil kümeleri
+	Swap colours (X)	Renkleri değiştir (X)
+	Tablet input	Tablet girişi
+	Tabular	Eşit genişlikte
+	Tabular Lining	Eşit genişlikte ve yükseklikte
+	Tabular Oldstyle	Eşit genişlikte eski stil
 	Text	Metin
-	3dl	3DL
-	Base64	Base64
-	Cube	CUBE
-	Look	LOOK
+	Text encoder	Metin kodlayıcısı
+	Text encoders	Metin kodlayıcıları
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Geçerli çalışma dizini ({path}) boş alanını bildirmiyor; bu nedenle PhotoCraft dolmadan önce duramaz ve Çalışma Alanı Boyut Sınırı olmadan büyük dosyalar buradan ek alan alamaz. Bu uyarı geçerli yapılandırma için geçerlidir; yukarıdaki değişiklikler Uygula veya Tamam ile etkinleşir. Bir sınır belirleyin veya yerel disk kullanın.
+	The fastest and the softest, with colour fringing on fine detail.	En hızlı ve en yumuşak, ince ayrıntılarda renk saçağı.
+	The image exceeds the AI editing size. Resize the document to continue?	Görsel yapay zekâ düzenleme boyutunu aşıyor. Devam etmek için belge boyutlandırılsın mı?
+	Translate prompt to English	İstemi İngilizceye çevir
+	Translating prompt to English	İstem İngilizceye çevriliyor
+	Turbo int8	Turbo INT8
+	Twirl Counterclockwise	Saat yönünün tersine burgu
+	Uncached Refresh	Önbelleksiz Yenile
+	Update PhotoCraft	PhotoCraft uygulamasını güncelle
+	Update PhotoCraft and restart now?	PhotoCraft güncellensin ve şimdi yeniden başlatılsın mı?
+	Updates have not been checked yet.	Güncellemeler henüz denetlenmedi.
+	Uploading image to ComfyUI	Görüntü ComfyUI'a yükleniyor
+	Use these settings for new arrows	Yeni oklar için bu ayarları kullan
+	Uses the foreground and background colours.	Ön plan ve arka plan renklerini kullanır.
+	Waiting for ComfyUI generation	ComfyUI üretimi bekleniyor
+	Whole image	Görüntünün tamamı
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (varsayılan)
+	You can check for updates again in Help → About PhotoCraft.	Yardım → PhotoCraft Hakkında menüsünden güncellemeleri yeniden denetleyebilirsiniz.
+	ZIP	ZIP
+	{label} is writing the file and can no longer be cancelled	{label} dosyayı yazıyor ve artık iptal edilemez
+	{message} into “{group}”	“{group}” içine {message}
+	{ok} written to {dir}	{dir} konumuna {ok} yazıldı
+	…	…
+@plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	“{group}” fırça grubunda zaten size ait {n} fırça var.
+@plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	“{group}” gradyan grubu zaten var ({n} gradyan).
+@plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} görüntü varlığı çıktısı başarısız
+prompt-region	Bottom center	Alt orta
+prompt-region	Bottom left	Sol alt
+prompt-region	Bottom right	Sağ alt
+prompt-region	Center	Orta
+prompt-region	Middle left	Sol orta
+prompt-region	Middle right	Sağ orta
+prompt-region	Top center	Üst orta
+prompt-region	Top left	Sol üst
+prompt-region	Top right	Sağ üst
+
+# Remembered file-import preferences
+	Last folder	Son kullanılan klasör
+	Pdf dpi	PDF çözünürlüğü (dpi)
+	Pdf first page	PDF ilk sayfası
+	Pdf last page	PDF son sayfası
+
+# Complete integration source labels.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Toplu işleme sırasında bir komut iptal edildi veya durduruldu. Sonraki dosyayla devam edilsin mi, durdurulsun mu?
+	Allow Tool Recording	Araç Kaydına İzin Ver
+	Allows rotation and scaling of selection	Seçimin döndürülmesini ve ölçeklenmesini sağlar
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Opaklık için her zaman basınç kullan. Kapalıyken basıncı Fırça Hazır Ayarı denetler
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Boyut için her zaman basınç kullan. Kapalıyken basıncı Fırça Hazır Ayarı denetler
+	Bottom align text	Metni alta hizala
+	Choose a menu command. Playback asks for its settings when needed.	Bir menü komutu seçin. Oynatma sırasında gerektiğinde ayarlar sorulur.
+	Choose a remix mode	Bir yeniden karıştırma modu seçin
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Yakınlaştırma Aracı ile ölçeklemek için tıklayıp sola veya sağa hareket ettirin (yalnızca OpenGL)
+	Click to open the Brush Preset picker	Fırça Hazır Ayarı seçicisini açmak için tıklayın
+	Confirm or cancel the pending Record Again editor first.	Önce açık olan Yeniden Kaydet düzenleyicisini onaylayın veya iptal edin.
+	Confirm or cancel the pending menu item first.	Önce bekleyen menü öğesini onaylayın veya iptal edin.
+	Copy CSS	CSS Kopyala
+	Could not use the type tool because the layer is locked.	Katman kilitli olduğundan yazı aracı kullanılamadı.
+	Delete Note	Notu Sil
+	Delete this note?	Bu not silinsin mi?
+	Do not erase the foreground swatch color	Ön plan renk örneğinin rengini silme
+	Draws background color over foreground colors	Ön plan renklerinin üzerine arka plan rengiyle çizer
+	Enable to remix all layers	Tüm katmanları yeniden karıştırmak için etkinleştirin
+	Erase range of similar colors	Benzer renk aralığını sil
+	How far to let the erasing spread	Silmenin ne kadar yayılabileceği
+	Insert Menu Item…	Menü Öğesi Ekle…
+	Insert Path	Yol Ekle
+	No document.	Belge yok.
+	No menu item belongs to this chooser.	Bu seçiciye ait menü öğesi yok.
+	No menu item is waiting.	Bekleyen menü öğesi yok.
+	No note to delete	Silinecek not yok
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Şekil oluşturulacak yol yok: Kalem aracıyla bir yol çizin veya Yollar panelinden bir yol seçin.
+	No pixels are selected.	Seçili piksel yok.
+	No recorded step belongs to this editor.	Bu düzenleyiciye ait kayıtlı adım yok.
+	No slices are selected. Click a slice in the preview to select it.	Seçili dilim yok. Bir dilimi seçmek için önizlemede üzerine tıklayın.
+	No step is waiting.	Bekleyen adım yok.
+	Note deleted, but the preference could not be saved: {error}	Not silindi ancak tercih kaydedilemedi: {error}
+	Open as Smart Object…	Akıllı Nesne Olarak Aç…
+	Painting Mode	Boyama Modu
+	Preparing Free Transform	Serbest Dönüştürme Hazırlanıyor
+	Record Again	Yeniden Kaydet
+	Resize windows when zooming using the Zoom Tool	Yakınlaştırma Aracı ile yakınlaştırırken pencereleri yeniden boyutlandır
+	Scroll all open document windows when using the hand tool	El aracını kullanırken tüm açık belge pencerelerini kaydır
+	Search and select fonts	Yazı tiplerini ara ve seç
+	Select an action first.	Önce bir eylem seçin.
+	Select an action step first.	Önce bir eylem adımı seçin.
+	Selected Area Only	Yalnızca Seçili Alan
+	Selected Slices	Seçili Dilimler
+	Set flow rate for stroke	Fırça darbesi akış hızını ayarla
+	Set font size	Yazı tipi boyutunu ayarla
+	Set font style	Yazı tipi stilini ayarla
+	Set opacity for stroke	Fırça darbesi opaklığını ayarla
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Fırça darbesi yumuşatmasını ayarla\nFırça darbelerindeki titremeyi azaltmak için daha yüksek değerler kullanın
+	Set symmetry options for Painting	Boyama için simetri seçeneklerini ayarla
+	Set text color	Metin rengini ayarla
+	Set the brush angle	Fırça açısını ayarla
+	Smoothing Options	Yumuşatma Seçenekleri
+	The Record Again command changed.	Yeniden Kaydet komutu değişti.
+	The action or insertion command changed. Request Insert Menu Item again.	Eylem veya ekleme komutu değişti. Menü Öğesi Ekle işlemini yeniden isteyin.
+	The actions changed. Request Record Again again.	Eylemler değişti. Yeniden Kaydet işlemini yeniden isteyin.
+	The command permissions changed. Request Insert Menu Item again.	Komut izinleri değişti. Menü Öğesi Ekle işlemini yeniden isteyin.
+	The command permissions changed. Request Record Again again.	Komut izinleri değişti. Yeniden Kaydet işlemini yeniden isteyin.
+	The document changed. Request Record Again again.	Belge değişti. Yeniden Kaydet işlemini yeniden isteyin.
+	The document or its notes changed. Please delete the note again.	Belge veya notları değişti. Lütfen notu yeniden silin.
+	The preference could not be saved: {error}	Tercih kaydedilemedi: {error}
+	The step editor could not be opened.	Adım düzenleyicisi açılamadı.
+	The step has no command editor.	Adımın komut düzenleyicisi yok.
+	Top align text	Metni üste hizala
+	Use relative positioning for reference point	Referans noktası için göreli konumlandırma kullan
+	Useful mixer brush combinations	Kullanışlı karıştırıcı fırça birleşimleri
+	Zoom current window to 1:1	Geçerli pencereyi 1:1 oranına yakınlaştır
+	Zoom current window to fill the screen	Geçerli pencereyi ekranı dolduracak şekilde yakınlaştır
+	Zoom current window to screen size	Geçerli pencereyi ekran boyutuna yakınlaştır
+	brush tool	fırça aracı
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} dosya başarısız
+	Open in RAW Develop	RAW Geliştirmede aç
+	Upscale	Büyüt
+	Tiling	Döşeme
+	Tile size	Döşeme boyutu
+	Overlap	Örtüşme
+	Noise reduction	Gürültü azaltma
+	Alpha channel	Alfa kanalı
+	Batch size	Toplu işlem boyutu
+	No local upscaler installed	Yerel büyütme modeli yüklü değil
+	Highest	En yüksek
