@@ -2523,6 +2523,27 @@ fn a_one_pixel_selection_traces_at_hundred_percent_on_a_scaled_display() {
 }
 
 #[test]
+fn ai_bar_only_appears_on_the_primary_canvas_with_chrome() {
+    for primary in [false, true] {
+        for mode in ["standard", "fullScreenWithMenuBar", "fullScreen"] {
+            let ctx = egui::Context::default();
+            PhotocraftApp::setup_context(&ctx, Default::default());
+            let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), Default::default());
+            app.background_jobs = false;
+            app.run("file.new", json!({"width": 64, "height": 64})).unwrap();
+            app.ui.ai.available = true;
+            app.ui.view.screen_mode = mode.into();
+            let view = app.ui.views[0].clone();
+            let mut out = ctx.run_ui(Default::default(), |ui| {
+                canvas_view(&mut app, ui, 0, Rect::from_min_size(Pos2::ZERO, vec2(800.0, 600.0)), view.clone(), primary);
+            });
+            out.textures_delta.clear();
+            assert_eq!(app.ui.ai.rect.is_some(), primary && mode != "fullScreen", "primary={primary}, mode={mode}");
+        }
+    }
+}
+
+#[test]
 fn a_secondary_canvas_does_not_overwrite_the_main_canvas_scale() {
     // #1943 review: a document window can sit on a display with another scale; only the
     // primary canvas records `app.ppp`, so the main mapping doesn't change under it.

@@ -3653,3 +3653,17 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Zoom current window to fill the screen	将当前窗口缩放至填满屏幕
 	Zoom current window to screen size	将当前窗口缩放至屏幕大小
 	brush tool	画笔工具
+
+# Remaining upstream 0.22.0 UI strings.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	批处理期间有命令被取消或停止。要继续处理下一个文件还是停止？
+	Click to open the Brush Preset picker	单击打开画笔预设选取器
+	Copy CSS	复制 CSS
+	Delete Note	删除注释
+	Delete this note?	要删除此注释吗？
+	No note to delete	没有可删除的注释
+	Note deleted, but the preference could not be saved: {error}	注释已删除，但无法保存首选项：{error}
+	Open as Smart Object…	作为智能对象打开…
+	Pick Color From Image	从图像拾取颜色
+	Preparing Free Transform	正在准备自由变换
+	The document or its notes changed. Please delete the note again.	文档或其注释已更改。请重新删除该注释。
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}：{n} 个文件失败

@@ -4621,3 +4621,17 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Zoom current window to fill the screen	現在のウィンドウを画面いっぱいに表示
 	Zoom current window to screen size	現在のウィンドウを画面サイズに合わせる
 	brush tool	ブラシツール
+
+# Remaining upstream 0.22.0 UI strings.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	バッチ処理中にコマンドがキャンセルまたは停止されました。次のファイルに進みますか、それとも停止しますか？
+	Click to open the Brush Preset picker	クリックしてブラシプリセットピッカーを開く
+	Copy CSS	CSS をコピー
+	Delete Note	注釈を削除
+	Delete this note?	この注釈を削除しますか？
+	No note to delete	削除する注釈がありません
+	Note deleted, but the preference could not be saved: {error}	注釈を削除しましたが、環境設定を保存できませんでした: {error}
+	Open as Smart Object…	スマートオブジェクトとして開く…
+	Pick Color From Image	画像からカラーを選択
+	Preparing Free Transform	自由変形を準備中
+	The document or its notes changed. Please delete the note again.	ドキュメントまたは注釈が変更されました。注釈をもう一度削除してください。
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} ファイルが失敗

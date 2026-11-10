@@ -4581,3 +4581,16 @@ prompt-region	Top right	우상단
 	Zoom current window to fill the screen	현재 창을 화면에 채우기
 	Zoom current window to screen size	현재 창을 화면 크기에 맞추기
 	brush tool	브러시 도구
+
+# Remaining upstream 0.22.0 UI strings.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	일괄 처리 중 명령이 취소되거나 중지되었습니다. 다음 파일을 계속 처리할까요, 아니면 중지할까요?
+	Click to open the Brush Preset picker	클릭하여 브러시 사전 설정 선택기 열기
+	Copy CSS	CSS 복사
+	Delete Note	메모 삭제
+	Delete this note?	이 메모를 삭제할까요?
+	No note to delete	삭제할 메모가 없습니다
+	Note deleted, but the preference could not be saved: {error}	메모를 삭제했지만 환경 설정을 저장하지 못했습니다: {error}
+	Open as Smart Object…	스마트 오브젝트로 열기…
+	Preparing Free Transform	자유 변형 준비 중
+	The document or its notes changed. Please delete the note again.	문서 또는 메모가 변경되었습니다. 메모를 다시 삭제해 주세요.
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: 파일 {n}개 실패

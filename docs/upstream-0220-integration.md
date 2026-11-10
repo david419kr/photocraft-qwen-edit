@@ -35,3 +35,12 @@ Initial cloud diagnostics, not final source acceptance:
 The draft PR and Actions records identify the final candidate SHA, measured gates and artifact links. No earlier-version result certifies this candidate. Windows x64 MSVC portable packaging uses Rust 1.95.0 and static CRT; its existing verifier checks PE imports, embedded version, exact package allowlist/licenses and SHA256. Artifact availability alone is not acceptance.
 
 Actual CUDA inference, VRAM residency, interactive UI and local GPU acceptance are not performed in the cloud. Follow the checklist in `docs/upstream-070-integration.md` on the exact downloaded candidate, including Quick Mask, native-color local-selection erase and Undo/Redo. No claim is made that historical GPU verification covers this source.
+
+## Recovery validation, 2026-11-10
+
+- The exact two-parent merge tree is `ec235abd1f3dbfbd259cecadcfdeed3857582dbb`; remote merge commit `61970b10724410554bc912cf24430b0eca63c50b` preserves the base and upstream parents above. The connected GitHub transfer recovered and its complete tree was matched to the locally reviewed merge; partial object transfers did not create branches or PRs.
+- Full locked workspace/all-target HEIF Clippy passed on both Rust 1.95.0 and stable 1.99.1 after narrow canvas complexity and dash-test range fixes. No lint suppression or floor reduction was used.
+- Removed an exact duplicated block of nine tool-color persistence tests introduced during merge resolution; each unique test remains. Added primary/secondary/fullscreen AI-bar coverage for the extracted helper.
+- Completed remaining Korean, Japanese, Simplified Chinese and Traditional Chinese catalog gaps (2513/2513 keys in each), and refreshed the generated preference scorecard (210 preferences).
+- Formatting, layering, panel-command coverage, scorecard freshness, catalog structure/placeholders and the Python suites passed locally. Native runtime regressions are being resumed from cache; interrupted compilation is not a test pass.
+- Initial local WASM attempt could not execute because the Rust target standard library was missing. Hosted WASM remains required. Final PR and candidate Actions must certify the exact remote candidate SHA; no prior-release result is substituted.

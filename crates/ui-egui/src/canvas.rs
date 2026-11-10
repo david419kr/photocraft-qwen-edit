@@ -1983,6 +1983,15 @@ fn update_polygon_camera(app: &mut PhotocraftApp, ctx: &egui::Context, (idx, pri
     }
 }
 
+// Keep the fork AI bar's chrome/selection policy separate from canvas navigation.
+fn show_canvas_ai_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui, idx: usize, rect: Rect, xf: &ViewXform, doc: &photocraft_doc::Document) {
+    if app.ui.view.hides_chrome() {
+        return;
+    }
+    let selected = doc.selection.as_ref().map(|m| xf.doc_rect(m.content_bounds().intersect(&doc.bounds())));
+    crate::ai_bar::show(app, ui, idx, rect, xf.doc_rect(doc.bounds()), selected);
+}
+
 pub fn canvas_view(app: &mut PhotocraftApp, ui: &mut egui::Ui, idx: usize, rect: Rect, mut view: View, primary: bool) -> View {
     let ctx = ui.ctx().clone();
     // The Frame tool starts transforms from pointer events, which carry no context; the options
@@ -2324,12 +2333,9 @@ pub fn canvas_view(app: &mut PhotocraftApp, ui: &mut egui::Ui, idx: usize, rect:
             zoom_out: &zoom_out,
         };
         paint_primary_overlays(app, ui, &mut view, &input, ants);
+        show_canvas_ai_bar(app, ui, idx, rect, &xf, &doc);
     } else {
         painter.extend(ants);
-    }
-    if primary && !app.ui.view.hides_chrome() {
-        let selected = doc.selection.as_ref().map(|m| xf.doc_rect(m.content_bounds().intersect(&doc.bounds())));
-        crate::ai_bar::show(app, ui, idx, rect, xf.doc_rect(doc.bounds()), selected);
     }
     let tail = CanvasTailInput {
         ctx: &ctx,
