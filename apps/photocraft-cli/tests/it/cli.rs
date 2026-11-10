@@ -980,6 +980,24 @@ fn jpeg_format_chooses_the_scans() {
     }
 }
 
+/// Metadata stripping preserves pixels except for the fork's precise PNG alpha-LSB scrub.
+fn assert_metadata_none_pixels(ext: &str, original: &photocraft_codecs::Image, clean: &photocraft_codecs::Image) {
+    if ext != "png" {
+        assert_eq!(clean.data(), original.data(), "{ext}: pixels");
+        return;
+    }
+    assert_eq!(clean.layout(), photocraft_codecs::ChannelLayout::Rgba);
+    assert_eq!(clean.data().len(), original.data().len());
+    let (clean_pixels, clean_remainder) = clean.data().as_chunks::<4>();
+    let (original_pixels, original_remainder) = original.data().as_chunks::<4>();
+    assert!(clean_remainder.is_empty());
+    assert!(original_remainder.is_empty());
+    for (clean, original) in clean_pixels.iter().zip(original_pixels) {
+        assert_eq!(&clean[..3], &original[..3], "PNG RGB must not change");
+        assert_eq!(clean[3], original[3] | 1, "PNG alpha scrubs only the lowest bit");
+    }
+}
+
 /// #9466: CLI metadata selection follows the fork's privacy contract (docs/comfyui.md).
 /// None strips XMP/text/EXIF, flat ICC/DPI and PNG alpha-LSB payloads, without changing RGB.
 /// Default/all preserve metadata; layered files also remove XMP for explicit none.
@@ -1031,16 +1049,7 @@ fn metadata_none_leaves_out_the_document_xmp() {
         assert_eq!(all.data(), default.data(), "{ext}: all preserves pixels");
         assert_eq!(all.icc, default.icc, "{ext}: all preserves ICC");
         assert_eq!(all.meta, default.meta, "{ext}: all preserves metadata");
-        if ext == "png" {
-            assert_eq!(none.layout(), photocraft_codecs::ChannelLayout::Rgba);
-            assert_eq!(none.data().len(), default.data().len());
-            for (clean, original) in none.data().chunks_exact(4).zip(default.data().chunks_exact(4)) {
-                assert_eq!(&clean[..3], &original[..3], "PNG RGB must not change");
-                assert_eq!(clean[3], original[3] | 1, "PNG alpha scrubs only the lowest bit");
-            }
-        } else {
-            assert_eq!(none.data(), default.data(), "{ext}: pixels");
-        }
+        assert_metadata_none_pixels(ext, &default, &none);
         assert_eq!(default.icc.as_deref(), Some(&p3[..]), "{ext}: the default export keeps the input's Display P3 profile");
         assert!(default.meta.dpi.is_some_and(|(x, y)| (x - 300.0).abs() < 0.5 && (y - 300.0).abs() < 0.5), "{ext}: {:?}", default.meta.dpi);
         assert!(none.icc.is_none(), "{ext}: None removes ICC");
