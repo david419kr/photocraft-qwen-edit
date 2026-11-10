@@ -4367,9 +4367,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Adding generated layer	Üretilen katman ekleniyor
 	Additional AI models	Ek yapay zekâ modelleri
 	Adjust colors with Poisson blending	Renkleri Poisson harmanlamasıyla ayarla
-	Adobe Every-line Composer	Adobe Tüm Satırlı Dizgi Motoru
-	Adobe PDF Presets…	Adobe PDF Ön Ayarları…
-	Adobe Single-line Composer	Adobe Tek Satırlı Dizgi Motoru
 	All nine regions	Dokuz bölgenin tümü
 	Answer the open import question first, then import this file again.	Önce açık içe aktarma sorusunu yanıtlayın, ardından bu dosyayı yeniden içe aktarın.
 	Arrange Panels	Panelleri Düzenle
@@ -4382,14 +4379,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	Toplu işlem önizlemesi
 	CPU Rendering	CPU ile İşleme
 	Calculating…	Hesaplanıyor…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Camera Raw Varsayılanları
-	Camera Raw Filter	Camera Raw Filtresi
-	Camera Raw Filter ({layer})	Camera Raw Filtresi ({layer})
-	Camera Raw Filter…	Camera Raw Filtresi…
-	Camera Raw isn't open	Camera Raw açık değil
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	{name} açılışı iptal edildi
 	Cancelled placing {name}	{name} yerleştirme işlemi iptal edildi
 	Cancelled {label}	{label} iptal edildi
@@ -4462,14 +4451,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Ters Seçim
 	LZW	LZW
 	Layer Effects	Katman efektleri
-	Layer via Copy	Kopyalama Yoluyla Katman
-	Layer via Cut	Kesim Yoluyla Katman
 	Level:	Düzey:
 	Lining	Eşit yükseklikte
 	Linked	Bağlantılı
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Bu dosya açıldıktan sonra çok az bellek kalır. Önce diğer uygulamaları kapatın, aksi takdirde PhotoCraft belleği tükenebilir.
-	Loaded Camera Raw settings from {file}	Camera Raw ayarları {file} dosyasından yüklendi
-	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw ayarları {file} dosyasından yüklendi ({n} desteklenmiyor)
 	Look	LOOK
 	Lut Format	LUT biçimi
 	Match Surrounding Colors	Çevredeki Renklere Uyarla
@@ -4497,7 +4482,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Paneli Ayrı Pencerede Aç
 	Open a document to select a colour range.	Bir renk aralığı seçmek için bir belge açın.
 	Open anyway	Yine de aç
-	Open in camera raw	Camera raw'da aç
 	Opening this document uses more memory and may slow down your computer or other running applications.	Bu belgeyi açmak daha fazla bellek gerektirir ve bilgisayarınızı veya çalışan diğer uygulamaları yavaşlatabilir.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	“{name}” belgesini açmak için tahmini {est} GiB bellek gerekir ({avail} GiB kullanılabilir).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	“{name}” belgesini açmak için tahmini {est} GiB bellek gerekir. Kullanılabilir bellek ölçülemedi.
@@ -4611,3 +4595,82 @@ prompt-region	Middle right	Sağ orta
 prompt-region	Top center	Üst orta
 prompt-region	Top left	Sol üst
 prompt-region	Top right	Sağ üst
+
+# Remembered file-import preferences
+	Last folder	Son kullanılan klasör
+	Pdf dpi	PDF çözünürlüğü (dpi)
+	Pdf first page	PDF ilk sayfası
+	Pdf last page	PDF son sayfası
+
+# Complete integration source labels.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Toplu işleme sırasında bir komut iptal edildi veya durduruldu. Sonraki dosyayla devam edilsin mi, durdurulsun mu?
+	Allow Tool Recording	Araç Kaydına İzin Ver
+	Allows rotation and scaling of selection	Seçimin döndürülmesini ve ölçeklenmesini sağlar
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Opaklık için her zaman basınç kullan. Kapalıyken basıncı Fırça Hazır Ayarı denetler
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Boyut için her zaman basınç kullan. Kapalıyken basıncı Fırça Hazır Ayarı denetler
+	Bottom align text	Metni alta hizala
+	Choose a menu command. Playback asks for its settings when needed.	Bir menü komutu seçin. Oynatma sırasında gerektiğinde ayarlar sorulur.
+	Choose a remix mode	Bir yeniden karıştırma modu seçin
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Yakınlaştırma Aracı ile ölçeklemek için tıklayıp sola veya sağa hareket ettirin (yalnızca OpenGL)
+	Click to open the Brush Preset picker	Fırça Hazır Ayarı seçicisini açmak için tıklayın
+	Confirm or cancel the pending Record Again editor first.	Önce açık olan Yeniden Kaydet düzenleyicisini onaylayın veya iptal edin.
+	Confirm or cancel the pending menu item first.	Önce bekleyen menü öğesini onaylayın veya iptal edin.
+	Copy CSS	CSS Kopyala
+	Could not use the type tool because the layer is locked.	Katman kilitli olduğundan yazı aracı kullanılamadı.
+	Delete Note	Notu Sil
+	Delete this note?	Bu not silinsin mi?
+	Do not erase the foreground swatch color	Ön plan renk örneğinin rengini silme
+	Draws background color over foreground colors	Ön plan renklerinin üzerine arka plan rengiyle çizer
+	Enable to remix all layers	Tüm katmanları yeniden karıştırmak için etkinleştirin
+	Erase range of similar colors	Benzer renk aralığını sil
+	How far to let the erasing spread	Silmenin ne kadar yayılabileceği
+	Insert Menu Item…	Menü Öğesi Ekle…
+	Insert Path	Yol Ekle
+	No document.	Belge yok.
+	No menu item belongs to this chooser.	Bu seçiciye ait menü öğesi yok.
+	No menu item is waiting.	Bekleyen menü öğesi yok.
+	No note to delete	Silinecek not yok
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Şekil oluşturulacak yol yok: Kalem aracıyla bir yol çizin veya Yollar panelinden bir yol seçin.
+	No pixels are selected.	Seçili piksel yok.
+	No recorded step belongs to this editor.	Bu düzenleyiciye ait kayıtlı adım yok.
+	No slices are selected. Click a slice in the preview to select it.	Seçili dilim yok. Bir dilimi seçmek için önizlemede üzerine tıklayın.
+	No step is waiting.	Bekleyen adım yok.
+	Note deleted, but the preference could not be saved: {error}	Not silindi ancak tercih kaydedilemedi: {error}
+	Open as Smart Object…	Akıllı Nesne Olarak Aç…
+	Painting Mode	Boyama Modu
+	Preparing Free Transform	Serbest Dönüştürme Hazırlanıyor
+	Record Again	Yeniden Kaydet
+	Resize windows when zooming using the Zoom Tool	Yakınlaştırma Aracı ile yakınlaştırırken pencereleri yeniden boyutlandır
+	Scroll all open document windows when using the hand tool	El aracını kullanırken tüm açık belge pencerelerini kaydır
+	Search and select fonts	Yazı tiplerini ara ve seç
+	Select an action first.	Önce bir eylem seçin.
+	Select an action step first.	Önce bir eylem adımı seçin.
+	Selected Area Only	Yalnızca Seçili Alan
+	Selected Slices	Seçili Dilimler
+	Set flow rate for stroke	Fırça darbesi akış hızını ayarla
+	Set font size	Yazı tipi boyutunu ayarla
+	Set font style	Yazı tipi stilini ayarla
+	Set opacity for stroke	Fırça darbesi opaklığını ayarla
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Fırça darbesi yumuşatmasını ayarla\nFırça darbelerindeki titremeyi azaltmak için daha yüksek değerler kullanın
+	Set symmetry options for Painting	Boyama için simetri seçeneklerini ayarla
+	Set text color	Metin rengini ayarla
+	Set the brush angle	Fırça açısını ayarla
+	Smoothing Options	Yumuşatma Seçenekleri
+	The Record Again command changed.	Yeniden Kaydet komutu değişti.
+	The action or insertion command changed. Request Insert Menu Item again.	Eylem veya ekleme komutu değişti. Menü Öğesi Ekle işlemini yeniden isteyin.
+	The actions changed. Request Record Again again.	Eylemler değişti. Yeniden Kaydet işlemini yeniden isteyin.
+	The command permissions changed. Request Insert Menu Item again.	Komut izinleri değişti. Menü Öğesi Ekle işlemini yeniden isteyin.
+	The command permissions changed. Request Record Again again.	Komut izinleri değişti. Yeniden Kaydet işlemini yeniden isteyin.
+	The document changed. Request Record Again again.	Belge değişti. Yeniden Kaydet işlemini yeniden isteyin.
+	The document or its notes changed. Please delete the note again.	Belge veya notları değişti. Lütfen notu yeniden silin.
+	The preference could not be saved: {error}	Tercih kaydedilemedi: {error}
+	The step editor could not be opened.	Adım düzenleyicisi açılamadı.
+	The step has no command editor.	Adımın komut düzenleyicisi yok.
+	Top align text	Metni üste hizala
+	Use relative positioning for reference point	Referans noktası için göreli konumlandırma kullan
+	Useful mixer brush combinations	Kullanışlı karıştırıcı fırça birleşimleri
+	Zoom current window to 1:1	Geçerli pencereyi 1:1 oranına yakınlaştır
+	Zoom current window to fill the screen	Geçerli pencereyi ekranı dolduracak şekilde yakınlaştır
+	Zoom current window to screen size	Geçerli pencereyi ekran boyutuna yakınlaştır
+	brush tool	fırça aracı
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} dosya başarısız|{what}: {n} dosya başarısız

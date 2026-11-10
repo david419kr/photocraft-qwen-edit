@@ -4838,11 +4838,7 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	AI Prompt History	AI-prompthistorik
 	AI model settings	Indstillinger for AI-model
 	Adjust colors with Poisson blending	Juster farver med Poisson-blanding
-	Adobe Every-line Composer	Adobe-flerlinjeopsætter
-	Adobe PDF Presets…	Adobe PDF-forudindstillinger…
-	Adobe Single-line Composer	Adobe-enkeltlinjeopsætter
 	All nine regions	Alle ni områder
-	All shortcuts reset to Photoshop defaults.	Alle genveje er nulstillet til Photoshop-standarderne.
 	Answer the open import question first, then import this file again.	Besvar først det åbne importspørgsmål, og importér derefter filen igen.
 	Arrange Panels	Arranger paneler
 	Arrowhead options	Indstillinger for pilespidser
@@ -4852,14 +4848,6 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Automatically check for updates	Søg automatisk efter opdateringer
 	Base64	Base64
 	Batch preview	Batchforhåndsvisning
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Camera Raw-standarder
-	Camera Raw Filter	Camera Raw-filter
-	Camera Raw Filter ({layer})	Camera Raw-filter ({layer})
-	Camera Raw Filter…	Camera Raw-filter…
-	Camera Raw isn't open	Camera Raw er ikke åben
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Annullerede åbning af {name}
 	Cancelled placing {name}	Placering af {name} annulleret
 	Cancelled {label}	Annullerede {label}
@@ -4897,7 +4885,6 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Custom model filenames (one per line)	Egne modelfilnavne (ét pr. linje)
 	Data Encoding	Datakodning
 	Data Sets as Files is unavailable on the web	Datasæt som filer er ikke tilgængelig på nettet
-	Default Photoshop Size	Photoshop-standardstørrelse
 	Default colours (D)	Standardfarver (D)
 	Describe changes to the whole image	Beskriv ændringer til hele billedet
 	Describe changes, or leave blank to remove	Beskriv ændringer, eller lad feltet være tomt for at fjerne
@@ -4939,14 +4926,10 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Inverse Selection	Invertér markering
 	LZW	LZW
 	Layer Effects	Lageffekter
-	Layer via Copy	Lag via kopiering
-	Layer via Cut	Lag via udklipning
 	Learn	Lær
 	Lining	Versaltal
 	Linked	Sammenkædet
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Der ville være lidt hukommelse tilbage efter åbning af denne fil. Luk andre apps først, ellers kan PhotoCraft løbe tør for hukommelse.
-	Loaded Camera Raw settings from {file}	Indlæste Camera Raw-indstillinger fra {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Indlæste Camera Raw-indstillinger fra {file} ({n} understøttes ikke)
 	Look	LOOK
 	Lut Format	LUT-format
 	Match Surrounding Colors	Tilpas til omgivende farver
@@ -4978,7 +4961,6 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	Open Panel in Own Window	Åbn panel i eget vindue
 	Open a document to select a colour range.	Åbn et dokument for at markere et farveområde.
 	Open anyway	Åbn alligevel
-	Open in camera raw	Åbn i Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Åbning af dette dokument bruger mere hukommelse og kan gøre din computer eller andre kørende programmer langsommere.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Åbning af “{name}” kræver anslået {est} GiB hukommelse ({avail} GiB tilgængelig).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Åbning af “{name}” kræver anslået {est} GiB hukommelse. Den tilgængelige hukommelse kunne ikke måles.
@@ -5059,7 +5041,6 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 	The frame is locked	Rammen er låst
 	The frame is unavailable	Rammen er ikke tilgængelig
 	The image exceeds the AI editing size. Resize the document to continue?	Billedet overskrider størrelsen for AI-redigering. Skal dokumentets størrelse ændres for at fortsætte?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Dette smartobjekt skal rasteriseres, før du fortsætter. Dets indhold kan ikke længere redigeres. Vil du rasterisere smartobjektet?
 	Translate prompt to English	Oversæt prompt til engelsk
 	Turbo int8	Turbo INT8
 	Update PhotoCraft	Opdater PhotoCraft
@@ -5079,9 +5060,86 @@ cameraRaw	White Balance: As Shot	Hvidbalance: Som fotograferet
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).|Penselgruppen “{group}” indeholder allerede dine pensler (antal: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).|Forløbsgruppen “{group}” findes allerede (antal forløb: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} eksport af billedaktiver mislykkedes|{what}: {n} eksporter af billedaktiver mislykkedes
-cameraRaw	Camera Raw ({name})	Camera Raw ({name})
-cameraRaw	Camera Raw Filter ({layer})	Camera Raw-filter ({layer})
-cameraRaw	Camera Raw isn't open	Camera Raw er ikke åben
 cameraRaw	Cancelled opening {name}	Annullerede åbning af {name}
 cameraRaw	Cancelled {label}	Annullerede {label}
-cameraRaw	Loaded Camera Raw settings from {file}	Indlæste Camera Raw-indstillinger fra {file}
+
+# Remembered file-import preferences
+	Last folder	Senest anvendte mappe
+	Pdf dpi	PDF-opløsning (dpi)
+	Pdf first page	Første PDF-side
+	Pdf last page	Sidste PDF-side
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	En kommando blev annulleret eller stoppet under batchbehandling. Fortsæt med næste fil eller stop?
+	Allow Tool Recording	Tillad værktøjsoptagelse
+	Allows rotation and scaling of selection	Tillader rotation og skalering af markeringen
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Brug altid tryk til opacitet. Når slået fra, styrer penselforudindstillingen trykket
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Brug altid tryk til størrelse. Når slået fra, styrer penselforudindstillingen trykket
+	Bottom align text	Juster tekst til bunden
+	Choose a menu command. Playback asks for its settings when needed.	Vælg en menukommando. Afspilning spørger efter dens indstillinger, når det er nødvendigt.
+	Choose a remix mode	Vælg en genblandingstilstand
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Klik og flyt til venstre eller højre for at skalere med zoomværktøjet (kun OpenGL)
+	Click to open the Brush Preset picker	Klik for at åbne vælgeren til penselforudindstillinger
+	Confirm or cancel the pending Record Again editor first.	Bekræft eller annuller først den ventende editor til Optag igen.
+	Confirm or cancel the pending menu item first.	Bekræft eller annuller først det ventende menupunkt.
+	Copy CSS	Kopiér CSS
+	Could not use the type tool because the layer is locked.	Tekstværktøjet kunne ikke bruges, fordi laget er låst.
+	Delete this note?	Slet denne note?
+	Do not erase the foreground swatch color	Slet ikke forgrundsfarvefeltets farve
+	Draws background color over foreground colors	Tegner baggrundsfarven over forgrundsfarverne
+	Enable to remix all layers	Aktivér for at genblande alle lag
+	Equalize Entire Image Based On Selected Area	Udlign hele billedet ud fra det markerede område
+	Equalize Selected Area Only	Udlign kun det markerede område
+	Erase range of similar colors	Slet et interval af lignende farver
+	How far to let the erasing spread	Hvor langt sletningen må brede sig
+	Insert Menu Item…	Indsæt menupunkt…
+	Insert Path	Indsæt kurve
+	No document.	Intet dokument.
+	No menu item belongs to this chooser.	Intet menupunkt hører til denne vælger.
+	No menu item is waiting.	Intet menupunkt venter.
+	No note to delete	Ingen note at slette
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Ingen kurve at lave en figur fra: tegn en med penværktøjet, eller vælg en i panelet Kurver.
+	No pixels are selected.	Ingen pixels er markeret.
+	No recorded step belongs to this editor.	Intet optaget trin hører til denne editor.
+	No settings saved: these raws can't keep a sidecar here	Ingen indstillinger gemt: disse råfiler kan ikke have en sidefil her
+	No slices are selected. Click a slice in the preview to select it.	Ingen udsnit er markeret. Klik på et udsnit i forhåndsvisningen for at markere det.
+	No step is waiting.	Intet trin venter.
+	Note deleted, but the preference could not be saved: {error}	Noten blev slettet, men indstillingen kunne ikke gemmes: {error}
+	Nothing to save: these raws are at their default settings	Intet at gemme: disse råfiler bruger standardindstillingerne
+	Open as Smart Object…	Åbn som Smart Object…
+	Painting Mode	Maletilstand
+	Preparing Free Transform	Forbereder fri transformering
+	Record Again	Optag igen
+	Resize windows when zooming using the Zoom Tool	Tilpas vinduesstørrelsen ved zoom med zoomværktøjet
+	Save the settings to each raw's sidecar without opening it	Gem indstillingerne i hver råfils sidefil uden at åbne filen
+	Scroll all open document windows when using the hand tool	Rul alle åbne dokumentvinduer ved brug af håndværktøjet
+	Search and select fonts	Søg og vælg skrifttyper
+	Select an action first.	Vælg først en handling.
+	Select an action step first.	Vælg først et handlingstrin.
+	Selected Area Only	Kun markeret område
+	Selected Slices	Markerede udsnit
+	Set flow rate for stroke	Indstil flow for penselstrøg
+	Set font size	Indstil skriftstørrelse
+	Set font style	Indstil skrifttypevariant
+	Set opacity for stroke	Indstil opacitet for penselstrøg
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Indstil udjævning for penselstrøg\nBrug højere værdier for at mindske rystelser i penselstrøg
+	Set symmetry options for Painting	Indstil symmetriindstillinger for maling
+	Set text color	Indstil tekstfarve
+	Set the brush angle	Indstil penselvinklen
+	Smoothing Options	Udjævningsindstillinger
+	Some settings could not be saved; the raws stay open	Nogle indstillinger kunne ikke gemmes; råfilerne forbliver åbne
+	The Record Again command changed.	Kommandoen Optag igen blev ændret.
+	The action or insertion command changed. Request Insert Menu Item again.	Handlingen eller indsættelseskommandoen blev ændret. Anmod om Indsæt menupunkt igen.
+	The actions changed. Request Record Again again.	Handlingerne blev ændret. Anmod om Optag igen på ny.
+	The command permissions changed. Request Insert Menu Item again.	Kommandotilladelserne blev ændret. Anmod om Indsæt menupunkt igen.
+	The command permissions changed. Request Record Again again.	Kommandotilladelserne blev ændret. Anmod om Optag igen på ny.
+	The document changed. Request Record Again again.	Dokumentet blev ændret. Anmod om Optag igen på ny.
+	The document or its notes changed. Please delete the note again.	Dokumentet eller dets noter blev ændret. Slet noten igen.
+	The preference could not be saved: {error}	Indstillingen kunne ikke gemmes: {error}
+	The step editor could not be opened.	Trineditoren kunne ikke åbnes.
+	The step has no command editor.	Trinnet har ingen kommandoeditor.
+	Top align text	Juster tekst til toppen
+	Use relative positioning for reference point	Brug relativ placering af referencepunktet
+	Useful mixer brush combinations	Nyttige kombinationer til blandepenslen
+	Zoom current window to 1:1	Zoom det aktuelle vindue til 1:1
+	Zoom current window to fill the screen	Zoom det aktuelle vindue, så skærmen fyldes
+	Zoom current window to screen size	Zoom det aktuelle vindue til skærmstørrelse
+	brush tool	penselværktøj

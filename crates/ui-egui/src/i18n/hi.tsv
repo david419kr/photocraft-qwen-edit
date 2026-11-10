@@ -712,9 +712,6 @@ cameraRaw	Yellow	पीला
 	Attribute	विशेषता
 	Batch	बैच प्रोसेसिंग
 	Batch preview	बैच पूर्वावलोकन
-	Camera Raw	Camera Raw
-	Camera Raw Filter ({layer})	Camera Raw फ़िल्टर ({layer})
-	Camera Raw isn't open	Camera Raw खुला नहीं है
 	Cancelled opening {name}	{name} खोलना रद्द किया गया
 	Cancelled {label}	{label} रद्द किया गया
 	Color Picker	रंग चयनकर्ता
@@ -738,7 +735,6 @@ cameraRaw	Yellow	पीला
 	Length	लंबाई
 	Lining	समान ऊँचाई वाले अंक
 	Linked	जुड़ा हुआ
-	Loaded Camera Raw settings from {file}	{file} से Camera Raw सेटिंग्स लोड की गईं
 	Match Surrounding Colors	आसपास के रंगों से मिलाएँ
 	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	रंगों को जनरेशन के समय कैप्चर किए गए परिवेश से मिलाता है। तीव्रता 0 मूल जनरेट किए गए परिणाम को पुनर्स्थापित करती है।
 	Memory usage percent	मेमोरी उपयोग प्रतिशत
@@ -789,14 +785,13 @@ cameraRaw	Yellow	पीला
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।|ग्रेडिएंट समूह “{group}” पहले से मौजूद है (ग्रेडिएंट की संख्या: {n})।
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} छवि एसेट का आउटपुट विफल हुआ|{what}: {n} छवि एसेट का आउटपुट विफल हुआ
 cameraRaw	Calibration	कैलिब्रेशन
-cameraRaw	Camera Raw ({name})	Camera Raw ({name})
-cameraRaw	Camera Raw Filter ({layer})	Camera Raw फ़िल्टर ({layer})
-cameraRaw	Camera Raw isn't open	Camera Raw खुला नहीं है
 cameraRaw	Cancelled opening {name}	{name} खोलना रद्द किया गया
 cameraRaw	Cancelled {label}	{label} रद्द किया गया
 cameraRaw	Could not write {name}: {error}	{name} लिखा नहीं जा सका: {error}
 cameraRaw	Kept {name}: written by another application	{name} रखा गया: किसी दूसरे अनुप्रयोग ने लिखा है
-cameraRaw	Loaded Camera Raw settings from {file}	{file} से Camera Raw सेटिंग्स लोड की गईं
 cameraRaw	Set the tone sliders from the image	छवि के अनुसार टोन स्लाइडर सेट करें
 cameraRaw	Settings from {name}	{name} की सेटिंग
 cameraRaw	Settings from {name}; {count} not supported: {names}	{name} की सेटिंग; {count} समर्थित नहीं: {names}
+
+# Dynamic integration labels
+	Save the settings to each raw's sidecar without opening it	हर RAW फ़ाइल को खोले बिना उसकी साइडकार फ़ाइल में सेटिंग सहेजें

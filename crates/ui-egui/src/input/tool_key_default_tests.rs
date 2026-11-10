@@ -35,8 +35,10 @@ fn fresh_tool_letters_pick_the_first_tool_in_toolbar_order() {
             let mut app = app();
             app.session.edit_prefs(|prefs| prefs.tools.use_shift_key_for_tool_switch = shift_switch);
             if app.ui.tool.key() == tool.key() {
-                app.ui.tool = Tool::Brush;
+                // Enter the tested group from another key, even when the fork starts on Brush.
+                app.ui.tool = if tool.key() == Tool::Brush.key() { Tool::Move } else { Tool::Brush };
             }
+            assert_ne!(app.ui.tool.key(), tool.key(), "the fixture starts outside the tested group");
             press(&mut app, &egui::Context::default(), key, Modifiers::NONE);
             assert_eq!(app.ui.tool, tool, "{key:?}, Shift switch: {shift_switch}");
         }

@@ -4306,11 +4306,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	AI model settings	AIモデル設定
 	Adding generated layer	生成レイヤーを追加中
 	Adjust colors with Poisson blending	ポアソンブレンディングで色を調整します
-	Adobe Every-line Composer	Adobe 全行コンポーザー
-	Adobe PDF Presets…	Adobe PDF プリセット…
-	Adobe Single-line Composer	Adobe 1 行コンポーザー
 	All nine regions	全9領域
-	All shortcuts reset to Photoshop defaults.	すべてのショートカットを初期状態に戻しました。
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	先に開いている読み込みの質問に回答してから、このファイルを再度読み込んでください。
 	Arrange Panels	パネルを配置
@@ -4324,14 +4320,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	バッチプレビュー
 	CPU Rendering	CPU レンダリング
 	Calculating…	計算中…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Camera Raw の既定値
-	Camera Raw Filter	Camera Raw フィルター
-	Camera Raw Filter ({layer})	Camera Raw フィルター ({layer})
-	Camera Raw Filter…	Camera Raw フィルター…
-	Camera Raw isn't open	Camera Raw は開いていません
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	{name} を開くのをキャンセルしました
 	Cancelled placing {name}	{name} の配置をキャンセルしました
 	Cancelled {label}	{label} をキャンセルしました
@@ -4368,7 +4356,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	カスタムモデルのファイル名（1行に1つ）
 	Data Encoding	データエンコーディング
 	Data Sets as Files is unavailable on the web	Web版ではデータセットのファイル書き出しを利用できません
-	Default Photoshop Size	既定サイズ
 	Default colours (D)	初期カラーに戻す(D)
 	Describe changes to the whole image	画像全体への変更を説明してください
 	Describe changes, or leave blank to remove	変更を説明してください。空欄なら選択範囲を削除します
@@ -4407,15 +4394,11 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	選択範囲を反転
 	LZW	LZW
 	Layer Effects	レイヤー効果
-	Layer via Copy	コピーしたレイヤー
-	Layer via Cut	切り取ったレイヤー
 	Level:	レベル:
 	Lining	ライニング
 	Linked	リンクあり
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	このファイルを開くと空きメモリが少なくなります。先にほかのアプリを閉じてください。そうしないと PhotoCraft のメモリが不足する場合があります。
 	Load Photoshop brushes (.abr)	Photoshop ブラシ(.abr)を読み込み
-	Loaded Camera Raw settings from {file}	{file} から Camera Raw の設定を読み込みました
-	Loaded Camera Raw settings from {file} ({n} not supported)	{file} から Camera Raw の設定を読み込みました（未対応: {n}）
 	Locked	ロック済み
 	Look	LOOK
 	Lut Format	LUT形式
@@ -4447,7 +4430,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	パネルを独立したウィンドウで開く
 	Open a document to select a colour range.	色域を指定するには、ドキュメントを開いてください。
 	Open anyway	それでも開く
-	Open in camera raw	Camera Raw で開く
 	Opening this document uses more memory and may slow down your computer or other running applications.	このドキュメントを開くと大量のメモリを使用し、コンピューターや他の実行中のアプリケーションが遅くなることがあります。
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	「{name}」を開くには推定 {est} GiB のメモリが必要です（利用可能: {avail} GiB）。
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	「{name}」を開くには推定 {est} GiB のメモリが必要です。利用可能なメモリを測定できませんでした。
@@ -4635,3 +4617,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Preparing Free Transform	自由変形を準備中
 	The document or its notes changed. Please delete the note again.	ドキュメントまたは注釈が変更されました。注釈をもう一度削除してください。
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} ファイルが失敗
+
+# Remembered file-import preferences
+	Last folder	前回のフォルダー
+	Pdf dpi	PDF の解像度 (dpi)
+	Pdf first page	PDF の開始ページ
+	Pdf last page	PDF の終了ページ
+
+# Dynamic integration labels
+	Selected Area Only	選択範囲のみ

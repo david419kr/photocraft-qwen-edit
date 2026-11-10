@@ -4571,3 +4571,168 @@ navigator	Zoom	زوم
 
 # RAW Develop feature labels
 	Saved RAW Develop settings to {file}	RAW ڈیولپمنٹ کی ترتیبات {file} میں محفوظ ہو گئیں
+
+# Remembered file-import preferences
+	Last folder	آخری استعمال شدہ فولڈر
+	Pdf dpi	PDF ریزولیوشن (dpi)
+	Pdf first page	PDF کا پہلا صفحہ
+	Pdf last page	PDF کا آخری صفحہ
+
+# Complete fork integration labels.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	بیچ پراسیسنگ کے دوران ایک کمانڈ منسوخ یا بند ہو گئی۔ اگلی فائل کے ساتھ جاری رکھیں یا رک جائیں؟
+	AI Prompt History	مصنوعی ذہانت کی ہدایات کی تاریخ
+	AI model settings	مصنوعی ذہانت ماڈل کی ترتیبات
+	Adjust colors with Poisson blending	پوئسن ملاپ سے رنگوں کو ایڈجسٹ کریں
+	Align bottom edges	نچلے کنارے سیدھ میں لائیں
+	Align top edges	اوپری کنارے سیدھ میں لائیں
+	Align vertical centers	عمودی مراکز سیدھ میں لائیں
+	All nine regions	تمام نو حصے
+	Allow Tool Recording	ٹول کی ریکارڈنگ کی اجازت دیں
+	Allows rotation and scaling of selection	انتخاب کو گھمانے اور اس کا پیمانہ بدلنے کی اجازت دیتا ہے
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	غیر شفافیت کے لیے ہمیشہ دباؤ استعمال کریں۔ بند ہونے پر برش پیش سیٹ دباؤ کنٹرول کرتا ہے
+	Always use Pressure for Size. When off, Brush Preset controls pressure	سائز کے لیے ہمیشہ دباؤ استعمال کریں۔ بند ہونے پر برش پیش سیٹ دباؤ کنٹرول کرتا ہے
+	Attach Reference Image	حوالہ تصویر منسلک کریں
+	Automatically check for updates	خودکار طور پر اپ ڈیٹس چیک کریں
+	Bottom align text	متن کو نیچے سیدھ میں لائیں
+	Canceled opening {name}	{name} کھولنا منسوخ ہو گیا
+	Canceled {label}	{label} منسوخ ہو گیا
+	Center the gradient (offset 0, 0)	گریڈینٹ کو درمیان میں رکھیں (آف سیٹ 0، 0)
+	Check for updates now	ابھی اپ ڈیٹس چیک کریں
+	Choose a menu command. Playback asks for its settings when needed.	مینو کمانڈ منتخب کریں۔ چلانے کے دوران ضرورت پڑنے پر اس کی ترتیبات پوچھی جائیں گی۔
+	Choose a remix mode	دوبارہ ملانے کا موڈ منتخب کریں
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	زوم ٹول سے پیمانہ بدلنے کے لیے کلک کرکے بائیں یا دائیں حرکت دیں (صرف OpenGL)
+	Click to open the Brush Preset picker	برش پیش سیٹ منتخب کرنے کا پینل کھولنے کے لیے کلک کریں
+	Click to restore the current color	موجودہ رنگ بحال کرنے کے لیے کلک کریں
+	Click to sample the foreground color  ·  {key}-click for background	پیش منظر کا رنگ لینے کے لیے کلک کریں · پس منظر کے لیے {key} کے ساتھ کلک کریں
+	Clip Thumbnails to Document Bounds	تھمب نیلز کو دستاویز کی حدود تک کاٹیں
+	ComfyUI port	ComfyUI پورٹ
+	Compare with Original Generation	اصل تخلیق سے موازنہ کریں
+	Confirm or cancel the pending Record Again editor first.	پہلے کھلے ہوئے دوبارہ ریکارڈنگ ایڈیٹر کی تصدیق یا منسوخی کریں۔
+	Confirm or cancel the pending menu item first.	پہلے منتظر مینو آئٹم کی تصدیق یا منسوخی کریں۔
+	Copy CSS	CSS کاپی کریں
+	Copy English translation	انگریزی ترجمہ کاپی کریں
+	Copy negative prompt	منفی ہدایت کاپی کریں
+	Copy original prompt	اصل ہدایت کاپی کریں
+	Could not use the type tool because the layer is locked.	تہہ مقفل ہونے کی وجہ سے متن کا ٹول استعمال نہیں ہو سکا۔
+	Custom model filenames (one per line)	حسب ضرورت ماڈل فائلوں کے نام (ہر سطر میں ایک)
+	Default Foreground and Background Colors (D)	پیش منظر اور پس منظر کے طے شدہ رنگ (D)
+	Delete this note?	یہ نوٹ حذف کریں؟
+	Describe changes to the whole image	پوری تصویر کی تبدیلیاں بیان کریں
+	Describe changes, or leave blank to remove	تبدیلیاں بیان کریں، یا ہٹانے کے لیے خالی چھوڑ دیں
+	Describe the image to generate	بنائی جانے والی تصویر بیان کریں
+	Distribute horizontally	افقی طور پر تقسیم کریں
+	Distribute vertically	عمودی طور پر تقسیم کریں
+	Do not erase the foreground swatch color	پیش منظر کے رنگ کے نمونے کا رنگ نہ مٹائیں
+	Downloading update…	اپ ڈیٹ ڈاؤن لوڈ ہو رہی ہے…
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	منظر گھمانے کے لیے مرکز کے گرد گھسیٹیں · Shift اسے 15° کے وقفوں تک محدود کرتا ہے
+	Draws background color over foreground colors	پیش منظر کے رنگوں پر پس منظر کے رنگ سے بناتا ہے
+	Enable to remix all layers	تمام تہوں کو دوبارہ ملانے کے لیے فعال کریں
+	English translation	انگریزی ترجمہ
+	Equalize Entire Image Based On Selected Area	منتخب حصے کی بنیاد پر پوری تصویر کی مساوات کریں
+	Equalize Selected Area Only	صرف منتخب حصے کی مساوات کریں
+	Erase range of similar colors	ملتے جلتے رنگوں کا دائرہ مٹائیں
+	Expand layer group on click	کلک پر تہوں کا گروپ کھولیں
+	Generative Fill	تخلیقی بھرائی
+	Hide bar	بار چھپائیں
+	How far to let the erasing spread	مٹانے کو کتنی دور تک پھیلنے دیا جائے
+	Insert Menu Item…	مینو آئٹم داخل کریں…
+	Insert Path	راستہ داخل کریں
+	Large Thumbnails	بڑے تھمب نیلز
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	اس فائل کو کھولنے کے بعد بہت کم میموری بچے گی۔ پہلے دوسری ایپس بند کریں، ورنہ PhotoCraft کی میموری ختم ہو سکتی ہے۔
+	Make Shape	شکل بنائیں
+	Match Surrounding Colors	آس پاس کے رنگ ملائیں
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	رنگوں کو تخلیق کے وقت محفوظ کیے گئے اردگرد سے ملائیں۔ شدت 0 اصل تخلیق شدہ نتیجہ بحال کرتی ہے۔
+	Medium Thumbnails	درمیانے تھمب نیلز
+	More options	مزید اختیارات
+	Move bar	بار منتقل کریں
+	Negative prompt	منفی ہدایت
+	Netscape Gray	نیٹ اسکیپ سرمئی
+	No AI prompts recorded	مصنوعی ذہانت کی کوئی ہدایت ریکارڈ نہیں ہوئی
+	No Thumbnails	کوئی تھمب نیل نہیں
+	No document.	کوئی دستاویز نہیں۔
+	No menu item belongs to this chooser.	اس منتخب کنندہ سے کوئی مینو آئٹم منسلک نہیں۔
+	No menu item is waiting.	کوئی مینو آئٹم منتظر نہیں۔
+	No note to delete	حذف کرنے کے لیے کوئی نوٹ نہیں
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	شکل بنانے کے لیے کوئی راستہ نہیں: قلم کے ٹول سے راستہ بنائیں یا راستوں کے پینل میں منتخب کریں۔
+	No pixels are selected.	کوئی پکسل منتخب نہیں۔
+	No prompt (remove)	کوئی ہدایت نہیں (ہٹائیں)
+	No recorded step belongs to this editor.	اس ایڈیٹر سے کوئی ریکارڈ شدہ مرحلہ منسلک نہیں۔
+	No settings saved: these raws can't keep a sidecar here	کوئی ترتیبات محفوظ نہیں ہوئیں: یہ RAW فائلیں یہاں ضمنی فائل نہیں رکھ سکتیں
+	No slices are selected. Click a slice in the preview to select it.	کوئی سلائس منتخب نہیں۔ منتخب کرنے کے لیے پیش نظارے میں کسی سلائس پر کلک کریں۔
+	No step is waiting.	کوئی مرحلہ منتظر نہیں۔
+	Not a web color: click for the nearest web color	یہ ویب رنگ نہیں: قریب ترین ویب رنگ کے لیے کلک کریں
+	Note deleted, but the preference could not be saved: {error}	نوٹ حذف ہو گیا، لیکن ترجیح محفوظ نہیں ہو سکی: {error}
+	Nothing to save: these raws are at their default settings	محفوظ کرنے کو کچھ نہیں: یہ RAW فائلیں طے شدہ ترتیبات پر ہیں
+	Nudge	ہلکا سا سرکائیں
+	One .safetensors filename per line. Compatibility is not checked.	ہر سطر میں ایک ‎.safetensors فائل کا نام۔ مطابقت کی جانچ نہیں کی جاتی۔
+	Open a document to select a color range.	رنگوں کا دائرہ منتخب کرنے کے لیے دستاویز کھولیں۔
+	Open as Smart Object…	اسمارٹ آبجیکٹ کے طور پر کھولیں…
+	Original prompt	اصل ہدایت
+	Out of gamut for printing: click for the nearest printable color	پرنٹنگ کی رنگی حدود سے باہر: قریب ترین قابل پرنٹ رنگ کے لیے کلک کریں
+	Painting Mode	رنگ کرنے کا موڈ
+	PhotoCraft update available	PhotoCraft اپ ڈیٹ دستیاب ہے
+	Pick Color From Image	تصویر سے رنگ منتخب کریں
+	Pin bar position	بار کی جگہ مقرر کریں
+	Preparing Free Transform	آزاد تبدیلی تیار ہو رہی ہے
+	Prompt Edit	ہدایت سے ترمیم
+	Prompt Generate	ہدایت سے تخلیق
+	Prompt information	ہدایت کی معلومات
+	Prompt translation model	ہدایت کے ترجمے کا ماڈل
+	Record Again	دوبارہ ریکارڈ کریں
+	Regenerate	دوبارہ تخلیق کریں
+	Remember to turn off the printer's own color management in Print Settings…	پرنٹ کی ترتیبات میں پرنٹر کا اپنا رنگوں کا انتظام بند کرنا یاد رکھیں…
+	Remove Reference Image	حوالہ تصویر ہٹائیں
+	Reset bar position	بار کی جگہ ازسرنو مقرر کریں
+	Reset steps to model default	مراحل کو ماڈل کی طے شدہ تعداد پر واپس لائیں
+	Resize windows when zooming using the Zoom Tool	زوم ٹول استعمال کرتے وقت ونڈوز کا سائز بدلیں
+	Sample: foreground color	نمونہ: پیش منظر کا رنگ
+	Sampling steps	نمونہ گیری کے مراحل
+	Save canceled	محفوظ کرنا منسوخ ہو گیا
+	Save the settings to each raw's sidecar without opening it	ہر RAW فائل کو کھولے بغیر اس کی ترتیبات اس کی ضمنی فائل میں محفوظ کریں
+	Scroll All Windows	تمام ونڈوز اسکرول کریں
+	Scroll all open document windows when using the hand tool	ہاتھ کا ٹول استعمال کرتے وقت تمام کھلی دستاویز ونڈوز اسکرول کریں
+	Search and select fonts	فونٹس تلاش اور منتخب کریں
+	Select an action first.	پہلے کوئی عمل منتخب کریں۔
+	Select an action step first.	پہلے عمل کا کوئی مرحلہ منتخب کریں۔
+	Selected Area Only	صرف منتخب حصہ
+	Selected Slices	منتخب سلائسز
+	Set flow rate for stroke	برش اسٹروک کے بہاؤ کی شرح مقرر کریں
+	Set font size	فونٹ کا سائز مقرر کریں
+	Set font style	فونٹ کا انداز مقرر کریں
+	Set opacity for stroke	برش اسٹروک کی غیر شفافیت مقرر کریں
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	برش اسٹروک کی ہمواری مقرر کریں\nبرش اسٹروکس کی لرزش کم کرنے کے لیے زیادہ قدریں استعمال کریں
+	Set symmetry options for Painting	رنگ کرنے کے لیے تشاکل کے اختیارات مقرر کریں
+	Set text color	متن کا رنگ مقرر کریں
+	Set the brush angle	برش کا زاویہ مقرر کریں
+	Show hover bounds from Layers	تہوں سے ہوور کی حدود دکھائیں
+	Show layer bounds on hover	ہوور کرنے پر تہہ کی حدود دکھائیں
+	Small Thumbnails	چھوٹے تھمب نیلز
+	Smoothing Options	ہمواری کے اختیارات
+	Some settings could not be saved; the raws stay open	کچھ ترتیبات محفوظ نہیں ہو سکیں؛ RAW فائلیں کھلی رہیں گی
+	Switch Foreground and Background Colors (X)	پیش منظر اور پس منظر کے رنگ بدلیں (X)
+	Text encoders	متن کے انکوڈرز
+	The Record Again command changed.	دوبارہ ریکارڈ کرنے کی کمانڈ بدل گئی ہے۔
+	The action or insertion command changed. Request Insert Menu Item again.	عمل یا داخل کرنے کی کمانڈ بدل گئی ہے۔ مینو آئٹم داخل کرنے کی درخواست دوبارہ کریں۔
+	The actions changed. Request Record Again again.	اعمال بدل گئے ہیں۔ دوبارہ ریکارڈ کرنے کی درخواست پھر کریں۔
+	The command permissions changed. Request Insert Menu Item again.	کمانڈ کی اجازتیں بدل گئی ہیں۔ مینو آئٹم داخل کرنے کی درخواست دوبارہ کریں۔
+	The command permissions changed. Request Record Again again.	کمانڈ کی اجازتیں بدل گئی ہیں۔ دوبارہ ریکارڈ کرنے کی درخواست پھر کریں۔
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	موجودہ عارضی کام کی ڈائریکٹری ({path}) اپنی خالی جگہ نہیں بتاتی، اس لیے PhotoCraft اس کے بھرنے سے پہلے نہیں رک سکتا، اور عارضی جگہ کی حد کے بغیر بڑی فائلوں کو اس سے اضافی جگہ نہیں ملتی۔ یہ تنبیہ موجودہ ترتیب کے لیے ہے؛ اوپر کی تبدیلیاں لاگو کریں یا ٹھیک ہے دبانے پر مؤثر ہوں گی۔ حد مقرر کریں یا مقامی ڈسک استعمال کریں۔
+	The document changed. Request Record Again again.	دستاویز بدل گئی ہے۔ دوبارہ ریکارڈ کرنے کی درخواست پھر کریں۔
+	The document or its notes changed. Please delete the note again.	دستاویز یا اس کے نوٹس بدل گئے ہیں۔ براہ کرم نوٹ دوبارہ حذف کریں۔
+	The image exceeds the AI editing size. Resize the document to continue?	تصویر مصنوعی ذہانت کی ترمیم کے سائز سے بڑی ہے۔ جاری رکھنے کے لیے دستاویز کا سائز بدلیں؟
+	The preference could not be saved: {error}	ترجیح محفوظ نہیں ہو سکی: {error}
+	The step editor could not be opened.	مرحلے کا ایڈیٹر نہیں کھولا جا سکا۔
+	The step has no command editor.	اس مرحلے کا کوئی کمانڈ ایڈیٹر نہیں۔
+	Top align text	متن کو اوپر سیدھ میں لائیں
+	Translate prompt to English	ہدایت کا انگریزی میں ترجمہ کریں
+	Twirl Counterclockwise	گھڑی کی مخالف سمت میں گھمائیں
+	Update PhotoCraft and restart now?	PhotoCraft اپ ڈیٹ کرکے ابھی دوبارہ شروع کریں؟
+	Use relative positioning for reference point	حوالہ نقطے کے لیے نسبتی پوزیشن استعمال کریں
+	Useful mixer brush combinations	مکسر برش کے مفید امتزاج
+	You can check for updates again in Help → About PhotoCraft.	آپ مدد ← PhotoCraft کے بارے میں جا کر دوبارہ اپ ڈیٹس چیک کر سکتے ہیں۔
+	Zoom current window to 1:1	موجودہ ونڈو کو 1:1 پر زوم کریں
+	Zoom current window to fill the screen	موجودہ ونڈو کو اسکرین بھرنے کے لیے زوم کریں
+	Zoom current window to screen size	موجودہ ونڈو کو اسکرین کے سائز پر زوم کریں
+	brush tool	برش کا ٹول
+	{label} is writing the file and can no longer be canceled	{label} فائل لکھ رہا ہے اور اب منسوخ نہیں ہو سکتا
+	…	…

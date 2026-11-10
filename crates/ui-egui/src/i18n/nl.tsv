@@ -4389,11 +4389,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	AI model settings	AI-modelinstellingen
 	Adding generated layer	Adding generated layer
 	Adjust colors with Poisson blending	Kleuren aanpassen met Poisson-menging
-	Adobe Every-line Composer	Adobe-zetmachine voor alle regels
-	Adobe PDF Presets…	Adobe PDF-voorinstellingen…
-	Adobe Single-line Composer	Adobe-zetmachine per regel
 	All nine regions	Alle negen gebieden
-	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	Beantwoord eerst de openstaande importvraag en importeer dit bestand daarna opnieuw.
 	Arrange Panels	Panelen rangschikken
@@ -4406,14 +4402,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	Batchvoorbeeld
 	CPU Rendering	CPU-rendering
 	Calculating…	Berekenen…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Standaardwaarden Camera Raw
-	Camera Raw Filter	Camera Raw-filter
-	Camera Raw Filter ({layer})	Camera Raw-filter ({layer})
-	Camera Raw Filter…	Camera Raw-filter…
-	Camera Raw isn't open	Camera Raw is niet geopend
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Openen van {name} geannuleerd
 	Cancelled placing {name}	Plaatsen van {name} geannuleerd
 	Cancelled {label}	{label} geannuleerd
@@ -4450,7 +4438,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	Bestandsnamen van aangepaste modellen (één per regel)
 	Data Encoding	Gegevenscodering
 	Data Sets as Files is unavailable on the web	Gegevenssets als bestanden is niet beschikbaar op het web
-	Default Photoshop Size	Default Photoshop Size
 	Default colours (D)	Standaardkleuren (D)
 	Describe changes to the whole image	Describe changes to the whole image
 	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
@@ -4489,15 +4476,11 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Selectie omkeren
 	LZW	LZW
 	Layer Effects	Laageffecten
-	Layer via Copy	Laag via kopiëren
-	Layer via Cut	Laag via knippen
 	Level:	Niveau:
 	Lining	Kapitaalcijfers
 	Linked	Gekoppeld
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Na het openen van dit bestand zou er weinig geheugen overblijven. Sluit eerst andere apps, anders kan PhotoCraft zonder geheugen komen te zitten.
 	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
-	Loaded Camera Raw settings from {file}	Camera Raw-instellingen geladen uit {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw-instellingen geladen uit {file} ({n} niet ondersteund)
 	Look	LOOK
 	Lut Format	LUT-indeling
 	Match Surrounding Colors	Aan omgevingskleuren aanpassen
@@ -4527,7 +4510,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Paneel in eigen venster openen
 	Open a document to select a colour range.	Open een document om een kleurbereik te selecteren.
 	Open anyway	Toch openen
-	Open in camera raw	Openen in Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Het openen van dit document gebruikt meer geheugen en kan uw computer of andere actieve toepassingen vertragen.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Het openen van ‘{name}’ vereist naar schatting {est} GiB geheugen ({avail} GiB beschikbaar).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Het openen van ‘{name}’ vereist naar schatting {est} GiB geheugen. Het beschikbare geheugen kon niet worden gemeten.
@@ -4638,3 +4620,83 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	De penseelgroep “{group}” bevat al jouw penselen (aantal: {n}).|De penseelgroep “{group}” bevat al jouw penselen (aantal: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	De verloopgroep “{group}” bestaat al (aantal verlopen: {n}).|De verloopgroep “{group}” bestaat al (aantal verlopen: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} uitvoer van afbeeldingsmiddelen mislukt|{what}: {n} uitvoeren van afbeeldingsmiddelen mislukt
+
+# Remembered file-import preferences
+	Last folder	Laatst gebruikte map
+	Pdf dpi	PDF-resolutie (dpi)
+	Pdf first page	Eerste PDF-pagina
+	Pdf last page	Laatste PDF-pagina
+
+# Complete integration source labels.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Een opdracht is tijdens de batchverwerking geannuleerd of gestopt. Doorgaan met het volgende bestand of stoppen?
+	Allow Tool Recording	Gereedschapsopname toestaan
+	Allows rotation and scaling of selection	Maakt draaien en schalen van de selectie mogelijk
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Druk altijd gebruiken voor dekking. Indien uitgeschakeld, regelt de penseelvoorinstelling de druk
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Druk altijd gebruiken voor grootte. Indien uitgeschakeld, regelt de penseelvoorinstelling de druk
+	Bottom align text	Tekst onderaan uitlijnen
+	Choose a menu command. Playback asks for its settings when needed.	Kies een menuopdracht. Bij het afspelen worden zo nodig de instellingen gevraagd.
+	Choose a remix mode	Kies een remixmodus
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Klik en beweeg naar links of rechts om te schalen met het zoomgereedschap (alleen OpenGL)
+	Click to open the Brush Preset picker	Klik om de penseelvoorinstellingen te openen
+	Confirm or cancel the pending Record Again editor first.	Bevestig of annuleer eerst de geopende editor voor Opnieuw opnemen.
+	Confirm or cancel the pending menu item first.	Bevestig of annuleer eerst het wachtende menu-item.
+	Copy CSS	CSS kopiëren
+	Could not use the type tool because the layer is locked.	Het tekstgereedschap kan niet worden gebruikt omdat de laag is vergrendeld.
+	Delete Note	Notitie verwijderen
+	Delete this note?	Deze notitie verwijderen?
+	Do not erase the foreground swatch color	De voorgrondkleur niet wissen
+	Draws background color over foreground colors	Tekent met de achtergrondkleur over voorgrondkleuren
+	Enable to remix all layers	Inschakelen om alle lagen te remixen
+	Erase range of similar colors	Bereik met vergelijkbare kleuren wissen
+	How far to let the erasing spread	Hoe ver het wissen zich mag uitbreiden
+	Insert Menu Item…	Menu-item invoegen…
+	Insert Path	Pad invoegen
+	No document.	Geen document.
+	No menu item belongs to this chooser.	Er hoort geen menu-item bij deze kiezer.
+	No menu item is waiting.	Er wacht geen menu-item.
+	No note to delete	Geen notitie om te verwijderen
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Geen pad om een vorm van te maken: teken er een met het pengereedschap of selecteer er een in het deelvenster Paden.
+	No pixels are selected.	Er zijn geen pixels geselecteerd.
+	No recorded step belongs to this editor.	Er hoort geen opgenomen stap bij deze editor.
+	No slices are selected. Click a slice in the preview to select it.	Er zijn geen segmenten geselecteerd. Klik op een segment in de voorvertoning om het te selecteren.
+	No step is waiting.	Er wacht geen stap.
+	Note deleted, but the preference could not be saved: {error}	Notitie verwijderd, maar de voorkeur kan niet worden opgeslagen: {error}
+	Open as Smart Object…	Openen als slim object…
+	Painting Mode	Schildermodus
+	Pick Color From Image	Kleur uit afbeelding kiezen
+	Preparing Free Transform	Vrije transformatie voorbereiden
+	Record Again	Opnieuw opnemen
+	Resize windows when zooming using the Zoom Tool	Vensters vergroten of verkleinen bij zoomen met het zoomgereedschap
+	Scroll all open document windows when using the hand tool	Alle geopende documentvensters schuiven bij gebruik van het handgereedschap
+	Search and select fonts	Lettertypen zoeken en selecteren
+	Select an action first.	Selecteer eerst een handeling.
+	Select an action step first.	Selecteer eerst een stap van een handeling.
+	Selected Area Only	Alleen geselecteerd gebied
+	Selected Slices	Geselecteerde segmenten
+	Set flow rate for stroke	Stroom voor penseelstreek instellen
+	Set font size	Tekengrootte instellen
+	Set font style	Tekenstijl instellen
+	Set opacity for stroke	Dekking voor penseelstreek instellen
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Vloeiend maken van penseelstreek instellen\nGebruik hogere waarden om trillingen in penseelstreken te verminderen
+	Set symmetry options for Painting	Symmetrieopties voor schilderen instellen
+	Set text color	Tekstkleur instellen
+	Set the brush angle	Penseelhoek instellen
+	Smoothing Options	Opties voor vloeiend maken
+	The Record Again command changed.	De opdracht Opnieuw opnemen is gewijzigd.
+	The action or insertion command changed. Request Insert Menu Item again.	De handeling of invoegopdracht is gewijzigd. Vraag Menu-item invoegen opnieuw aan.
+	The actions changed. Request Record Again again.	De handelingen zijn gewijzigd. Vraag Opnieuw opnemen opnieuw aan.
+	The command permissions changed. Request Insert Menu Item again.	De opdrachtmachtigingen zijn gewijzigd. Vraag Menu-item invoegen opnieuw aan.
+	The command permissions changed. Request Record Again again.	De opdrachtmachtigingen zijn gewijzigd. Vraag Opnieuw opnemen opnieuw aan.
+	The document changed. Request Record Again again.	Het document is gewijzigd. Vraag Opnieuw opnemen opnieuw aan.
+	The document or its notes changed. Please delete the note again.	Het document of de notities zijn gewijzigd. Verwijder de notitie opnieuw.
+	The preference could not be saved: {error}	De voorkeur kan niet worden opgeslagen: {error}
+	The step editor could not be opened.	De stapeditor kan niet worden geopend.
+	The step has no command editor.	De stap heeft geen opdrachteditor.
+	Top align text	Tekst bovenaan uitlijnen
+	Use relative positioning for reference point	Relatieve positionering voor het referentiepunt gebruiken
+	Useful mixer brush combinations	Nuttige combinaties voor het mixerpenseel
+	Zoom current window to 1:1	Huidig venster zoomen naar 1:1
+	Zoom current window to fill the screen	Huidig venster zoomen om het scherm te vullen
+	Zoom current window to screen size	Huidig venster zoomen naar schermgrootte
+	brush tool	penseelgereedschap
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} bestand mislukt|{what}: {n} bestanden mislukt

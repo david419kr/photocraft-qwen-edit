@@ -4346,11 +4346,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	AI model settings	Налаштування моделі ШІ
 	Adding generated layer	Adding generated layer
 	Adjust colors with Poisson blending	Налаштувати кольори змішуванням Пуассона
-	Adobe Every-line Composer	Багаторядковий компонувальник Adobe
-	Adobe PDF Presets…	Набори Adobe PDF…
-	Adobe Single-line Composer	Однорядковий компонувальник Adobe
 	All nine regions	Усі дев’ять областей
-	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	Спочатку дайте відповідь на відкрите запитання імпорту, а потім імпортуйте цей файл знову.
 	Arrange Panels	Упорядкувати панелі
@@ -4364,14 +4360,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	Попередній перегляд пакетної обробки
 	CPU Rendering	Рендеринг на ЦП
 	Calculating…	Обчислення…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Типові параметри Camera Raw
-	Camera Raw Filter	Фільтр Camera Raw
-	Camera Raw Filter ({layer})	Фільтр Camera Raw ({layer})
-	Camera Raw Filter…	Фільтр Camera Raw…
-	Camera Raw isn't open	Camera Raw не відкрито
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Відкриття {name} скасовано
 	Cancelled placing {name}	Розміщення {name} скасовано
 	Cancelled {label}	Скасовано: {label}
@@ -4408,7 +4396,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	Назви файлів власних моделей (одна в рядку)
 	Data Encoding	Кодування даних
 	Data Sets as Files is unavailable on the web	Набори даних як файли недоступні у вебверсії
-	Default Photoshop Size	Default Photoshop Size
 	Default colours (D)	Типові кольори (D)
 	Describe changes to the whole image	Describe changes to the whole image
 	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
@@ -4447,15 +4434,11 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Інвертувати виділення
 	LZW	LZW
 	Layer Effects	Ефекти шару
-	Layer via Copy	Шар через копіювання
-	Layer via Cut	Шар через вирізання
 	Level:	Рівень:
 	Lining	Маюскульні
 	Linked	Пов’язані
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Після відкриття цього файлу залишиться мало пам’яті. Спочатку закрийте інші програми, інакше PhotoCraft може забракнути пам’яті.
 	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
-	Loaded Camera Raw settings from {file}	Налаштування Camera Raw завантажено з {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Налаштування Camera Raw завантажено з {file} (не підтримується: {n})
 	Locked	Заблоковано
 	Look	LOOK
 	Lut Format	Формат LUT
@@ -4488,7 +4471,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Відкрити панель в окремому вікні
 	Open a document to select a colour range.	Відкрийте документ, щоб виділити колірний діапазон.
 	Open anyway	Усе одно відкрити
-	Open in camera raw	Відкривати в Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Відкриття цього документа потребує більше пам’яті та може сповільнити комп’ютер або інші запущені програми.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Для відкриття «{name}» потрібно приблизно {est} GiB пам’яті (доступно {avail} GiB).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Для відкриття «{name}» потрібно приблизно {est} GiB пам’яті. Не вдалося виміряти доступну пам’ять.
@@ -4567,7 +4549,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Поточний каталог робочого диска ({path}) не повідомляє про вільне місце, тому PhotoCraft не може зупинитися до його заповнення, а великі файли не отримують додаткового місця без обмеження розміру робочого диска. Це попередження стосується поточної конфігурації; зміни вище набудуть чинності після натискання «Застосувати» або «ОК». Установіть обмеження або скористайтеся локальним диском.
 	The fastest and the softest, with colour fringing on fine detail.	Найшвидший і найм'якший, з кольоровою облямівкою на дрібних деталях.
 	The image exceeds the AI editing size. Resize the document to continue?	Зображення перевищує розмір для ШІ-редагування. Змінити розмір документа й продовжити?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Щоб продовжити, потрібно растеризувати цей смартоб’єкт. Після цього його вміст більше не можна буде редагувати. Растеризувати смартоб’єкт?
 	Translate prompt to English	Перекласти промпт англійською
 	Turbo ad q2	Turbo AD-Q2_K
 	Turbo ad q3	Turbo AD-Q3_K
@@ -4603,3 +4584,83 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Група пензлів «{group}» уже містить ваші пензлі (кількість: {n}).|Група пензлів «{group}» уже містить ваші пензлі (кількість: {n}).|Група пензлів «{group}» уже містить ваші пензлі (кількість: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Група градієнтів «{group}» уже існує (кількість градієнтів: {n}).|Група градієнтів «{group}» уже існує (кількість градієнтів: {n}).|Група градієнтів «{group}» уже існує (кількість градієнтів: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: не вдалося вивести {n} графічний ресурс|{what}: не вдалося вивести {n} графічні ресурси|{what}: не вдалося вивести {n} графічних ресурсів
+
+# Remembered file-import preferences
+	Last folder	Остання використана тека
+	Pdf dpi	Роздільна здатність PDF (dpi)
+	Pdf first page	Перша сторінка PDF
+	Pdf last page	Остання сторінка PDF
+
+# Integration source-key coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Команду скасовано або зупинено під час пакетної обробки. Продовжити з наступним файлом чи зупинитися?
+	Allow Tool Recording	Дозволити запис інструментів
+	Allows rotation and scaling of selection	Дозволяє обертання та масштабування виділення
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Завжди враховувати натиск для непрозорості. Якщо вимкнено, натиск задає набір пензля
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Завжди враховувати натиск для розміру. Якщо вимкнено, натиск задає набір пензля
+	Bottom align text	Вирівняти текст за нижнім краєм
+	Choose a menu command. Playback asks for its settings when needed.	Виберіть команду меню. Під час відтворення її параметри буде запитано за потреби.
+	Choose a remix mode	Виберіть режим змішування
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Натисніть і рухайте ліворуч або праворуч для масштабування інструментом «Масштаб» (лише OpenGL)
+	Click to open the Brush Preset picker	Натисніть, щоб відкрити вибір набору пензля
+	Confirm or cancel the pending Record Again editor first.	Спочатку підтвердьте або скасуйте відкритий редактор повторного запису.
+	Confirm or cancel the pending menu item first.	Спочатку підтвердьте або скасуйте очікуваний пункт меню.
+	Copy CSS	Копіювати CSS
+	Could not use the type tool because the layer is locked.	Неможливо використати текстовий інструмент: шар заблоковано.
+	Delete Note	Видалити примітку
+	Delete this note?	Видалити цю примітку?
+	Do not erase the foreground swatch color	Не стирати колір зразка переднього плану
+	Draws background color over foreground colors	Малює фоновим кольором поверх кольорів переднього плану
+	Enable to remix all layers	Увімкніть для змішування всіх шарів
+	Erase range of similar colors	Стирає діапазон схожих кольорів
+	How far to let the erasing spread	Наскільки далеко може поширюватися стирання
+	Insert Menu Item…	Вставити пункт меню…
+	Insert Path	Вставити контур
+	No document.	Немає документа.
+	No menu item belongs to this chooser.	Цьому вікну вибору не належить жоден пункт меню.
+	No menu item is waiting.	Немає очікуваного пункту меню.
+	No note to delete	Немає примітки для видалення
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Немає контуру для створення фігури: намалюйте його інструментом «Перо» або виберіть на панелі «Контури».
+	No pixels are selected.	Пікселі не виділено.
+	No recorded step belongs to this editor.	Цьому редактору не належить жоден записаний крок.
+	No slices are selected. Click a slice in the preview to select it.	Фрагменти не вибрано. Натисніть фрагмент у попередньому перегляді, щоб вибрати його.
+	No step is waiting.	Немає очікуваного кроку.
+	Note deleted, but the preference could not be saved: {error}	Примітку видалено, але налаштування не вдалося зберегти: {error}
+	Open as Smart Object…	Відкрити як смартоб’єкт…
+	Painting Mode	Режим малювання
+	Pick Color From Image	Вибрати колір із зображення
+	Preparing Free Transform	Підготовка вільного трансформування
+	Record Again	Записати знову
+	Resize windows when zooming using the Zoom Tool	Змінювати розмір вікон під час масштабування інструментом «Масштаб»
+	Scroll all open document windows when using the hand tool	Прокручувати всі відкриті вікна документів інструментом «Рука»
+	Search and select fonts	Пошук і вибір шрифтів
+	Select an action first.	Спочатку виберіть операцію.
+	Select an action step first.	Спочатку виберіть крок операції.
+	Selected Area Only	Лише виділена область
+	Selected Slices	Вибрані фрагменти
+	Set flow rate for stroke	Задати інтенсивність потоку для мазка
+	Set font size	Задати розмір шрифту
+	Set font style	Задати накреслення шрифту
+	Set opacity for stroke	Задати непрозорість мазка
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Задати згладжування мазка\nБільші значення зменшують тремтіння мазків пензля
+	Set symmetry options for Painting	Задати параметри симетрії малювання
+	Set text color	Задати колір тексту
+	Set the brush angle	Задати кут пензля
+	Smoothing Options	Параметри згладжування
+	The Record Again command changed.	Команда повторного запису змінилася.
+	The action or insertion command changed. Request Insert Menu Item again.	Операція або команда вставлення змінилася. Знову запитайте вставлення пункту меню.
+	The actions changed. Request Record Again again.	Операції змінилися. Знову запитайте повторний запис.
+	The command permissions changed. Request Insert Menu Item again.	Дозволи команди змінилися. Знову запитайте вставлення пункту меню.
+	The command permissions changed. Request Record Again again.	Дозволи команди змінилися. Знову запитайте повторний запис.
+	The document changed. Request Record Again again.	Документ змінився. Знову запитайте повторний запис.
+	The document or its notes changed. Please delete the note again.	Документ або його примітки змінилися. Повторіть видалення примітки.
+	The preference could not be saved: {error}	Не вдалося зберегти налаштування: {error}
+	The step editor could not be opened.	Не вдалося відкрити редактор кроку.
+	The step has no command editor.	Цей крок не має редактора команди.
+	Top align text	Вирівняти текст за верхнім краєм
+	Use relative positioning for reference point	Використовувати відносне положення опорної точки
+	Useful mixer brush combinations	Корисні поєднання змішувального пензля
+	Zoom current window to 1:1	Масштаб поточного вікна 1:1
+	Zoom current window to fill the screen	Масштабувати поточне вікно до заповнення екрана
+	Zoom current window to screen size	Масштабувати поточне вікно за розміром екрана
+	brush tool	інструмент «Пензель»
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: помилка в {n} файлі|{what}: помилка в {n} файлах|{what}: помилка в {n} файлах

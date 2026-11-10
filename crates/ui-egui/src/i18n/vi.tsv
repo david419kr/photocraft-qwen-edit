@@ -4143,7 +4143,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Additional AI models	Mô hình AI bổ sung
 	Adjust colors with Poisson blending	Điều chỉnh màu bằng hòa trộn Poisson
 	All nine regions	Cả chín vùng
-	All shortcuts reset to Photoshop defaults.	Tất cả phím tắt đã được đặt lại về mặc định Photoshop.
 	Answer the open import question first, then import this file again.	Trước tiên hãy trả lời câu hỏi nhập đang mở, rồi nhập lại tệp này.
 	Arrange Panels	Sắp xếp bảng
 	Arrowhead options	Tùy chọn đầu mũi tên
@@ -4156,14 +4155,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	Xem trước xử lý hàng loạt
 	CPU Rendering	Kết xuất bằng CPU
 	Calculating…	Đang tính…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Mặc định Camera Raw
-	Camera Raw Filter	Bộ lọc Camera Raw
-	Camera Raw Filter ({layer})	Bộ lọc Camera Raw ({layer})
-	Camera Raw Filter…	Bộ lọc Camera Raw…
-	Camera Raw isn't open	Camera Raw chưa mở
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Đã hủy mở {name}
 	Cancelled placing {name}	Đã hủy đặt {name}
 	Cancelled {label}	Đã hủy {label}
@@ -4201,7 +4192,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	Tên tệp mô hình tùy chỉnh (mỗi dòng một tên)
 	Data Encoding	Mã hóa dữ liệu
 	Data Sets as Files is unavailable on the web	Không thể xuất bộ dữ liệu thành tệp trên web
-	Default Photoshop Size	Kích thước Photoshop mặc định
 	Default colours (D)	Màu mặc định (D)
 	Describe changes to the whole image	Mô tả thay đổi cho toàn bộ ảnh
 	Describe changes, or leave blank to remove	Mô tả thay đổi hoặc để trống để xóa
@@ -4240,14 +4230,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Đảo vùng chọn
 	LZW	LZW
 	Layer Effects	Hiệu ứng lớp
-	Layer via Copy	Lớp bằng sao chép
-	Layer via Cut	Lớp bằng cắt
 	Level:	Mức:
 	Lining	Chữ số cùng chiều cao
 	Linked	Đã liên kết
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Sau khi mở tệp này sẽ còn rất ít bộ nhớ. Hãy đóng các ứng dụng khác trước, nếu không PhotoCraft có thể hết bộ nhớ.
-	Loaded Camera Raw settings from {file}	Đã tải cài đặt Camera Raw từ {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Đã tải cài đặt Camera Raw từ {file} ({n} không được hỗ trợ)
 	Locked	Đã khóa
 	Look	LOOK
 	Lut Format	Định dạng LUT
@@ -4277,7 +4263,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Mở bảng trong cửa sổ riêng
 	Open a document to select a colour range.	Mở một tài liệu để chọn phạm vi màu.
 	Open anyway	Vẫn mở
-	Open in camera raw	Mở trong camera raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Mở tài liệu này sẽ sử dụng nhiều bộ nhớ hơn và có thể làm chậm máy tính hoặc các ứng dụng khác đang chạy.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Mở “{name}” ước tính cần {est} GiB bộ nhớ (hiện có {avail} GiB).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Mở “{name}” ước tính cần {est} GiB bộ nhớ. Không thể đo bộ nhớ khả dụng.
@@ -4390,3 +4375,82 @@ prompt-region	Middle right	Giữa phải
 prompt-region	Top center	Trên giữa
 prompt-region	Top left	Trên trái
 prompt-region	Top right	Trên phải
+
+# Remembered file-import preferences
+	Last folder	Thư mục dùng gần nhất
+	Pdf dpi	Độ phân giải PDF (dpi)
+	Pdf first page	Trang đầu của PDF
+	Pdf last page	Trang cuối của PDF
+
+# Upstream 0.22 UI contract coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Một lệnh đã bị hủy hoặc dừng trong khi xử lý hàng loạt. Tiếp tục với tệp tiếp theo hay dừng lại?
+	Allow Tool Recording	Cho phép ghi lại thao tác công cụ
+	Allows rotation and scaling of selection	Cho phép xoay và co giãn vùng chọn
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Luôn dùng lực nhấn để điều khiển độ mờ. Khi tắt, thiết lập sẵn cọ sẽ điều khiển lực nhấn
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Luôn dùng lực nhấn để điều khiển kích thước. Khi tắt, thiết lập sẵn cọ sẽ điều khiển lực nhấn
+	Bottom align text	Căn văn bản xuống dưới
+	Choose a menu command. Playback asks for its settings when needed.	Chọn một lệnh trong menu. Khi phát lại, các thiết lập của lệnh sẽ được hỏi nếu cần.
+	Choose a remix mode	Chọn chế độ phối lại
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Nhấp và di chuyển sang trái hoặc phải để thu phóng bằng công cụ Thu phóng (chỉ OpenGL)
+	Click to open the Brush Preset picker	Nhấp để mở bộ chọn thiết lập sẵn cọ
+	Confirm or cancel the pending Record Again editor first.	Trước tiên, hãy xác nhận hoặc hủy trình chỉnh sửa Ghi lại đang chờ.
+	Confirm or cancel the pending menu item first.	Trước tiên, hãy xác nhận hoặc hủy mục menu đang chờ.
+	Copy CSS	Sao chép CSS
+	Could not use the type tool because the layer is locked.	Không thể dùng công cụ văn bản vì lớp đã bị khóa.
+	Delete Note	Xóa ghi chú
+	Delete this note?	Xóa ghi chú này?
+	Do not erase the foreground swatch color	Không xóa màu trong ô màu tiền cảnh
+	Draws background color over foreground colors	Vẽ màu nền lên các màu tiền cảnh
+	Enable to remix all layers	Bật để phối lại tất cả các lớp
+	Erase range of similar colors	Xóa dải màu tương tự
+	How far to let the erasing spread	Phạm vi lan rộng của thao tác xóa
+	Insert Menu Item…	Chèn mục menu…
+	Insert Path	Chèn đường dẫn
+	No document.	Không có tài liệu.
+	No menu item belongs to this chooser.	Không có mục menu nào thuộc bộ chọn này.
+	No menu item is waiting.	Không có mục menu nào đang chờ.
+	No note to delete	Không có ghi chú để xóa
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Không có đường dẫn để tạo hình: hãy vẽ bằng công cụ Bút hoặc chọn một đường dẫn trong bảng Đường dẫn.
+	No pixels are selected.	Không có điểm ảnh nào được chọn.
+	No recorded step belongs to this editor.	Không có bước đã ghi nào thuộc trình chỉnh sửa này.
+	No slices are selected. Click a slice in the preview to select it.	Không có lát cắt nào được chọn. Nhấp vào một lát cắt trong bản xem trước để chọn.
+	No step is waiting.	Không có bước nào đang chờ.
+	Note deleted, but the preference could not be saved: {error}	Đã xóa ghi chú nhưng không thể lưu tùy chọn: {error}
+	Open as Smart Object…	Mở dưới dạng đối tượng thông minh…
+	Painting Mode	Chế độ vẽ
+	Preparing Free Transform	Đang chuẩn bị biến đổi tự do
+	Record Again	Ghi lại
+	Resize windows when zooming using the Zoom Tool	Thay đổi kích thước cửa sổ khi thu phóng bằng công cụ Thu phóng
+	Scroll all open document windows when using the hand tool	Cuộn tất cả các cửa sổ tài liệu đang mở khi dùng công cụ Bàn tay
+	Search and select fonts	Tìm kiếm và chọn phông chữ
+	Select an action first.	Trước tiên, hãy chọn một thao tác.
+	Select an action step first.	Trước tiên, hãy chọn một bước của thao tác.
+	Selected Area Only	Chỉ vùng đã chọn
+	Selected Slices	Các lát cắt đã chọn
+	Set flow rate for stroke	Đặt lưu lượng cho nét vẽ
+	Set font size	Đặt cỡ chữ
+	Set font style	Đặt kiểu chữ
+	Set opacity for stroke	Đặt độ mờ cho nét vẽ
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Đặt độ làm mượt cho nét vẽ\nDùng giá trị cao hơn để giảm độ run của nét cọ
+	Set symmetry options for Painting	Đặt các tùy chọn đối xứng khi vẽ
+	Set text color	Đặt màu văn bản
+	Set the brush angle	Đặt góc cọ
+	Smoothing Options	Tùy chọn làm mượt
+	The Record Again command changed.	Lệnh Ghi lại đã thay đổi.
+	The action or insertion command changed. Request Insert Menu Item again.	Thao tác hoặc lệnh chèn đã thay đổi. Hãy yêu cầu Chèn mục menu lần nữa.
+	The actions changed. Request Record Again again.	Các thao tác đã thay đổi. Hãy yêu cầu Ghi lại lần nữa.
+	The command permissions changed. Request Insert Menu Item again.	Quyền thực thi lệnh đã thay đổi. Hãy yêu cầu Chèn mục menu lần nữa.
+	The command permissions changed. Request Record Again again.	Quyền thực thi lệnh đã thay đổi. Hãy yêu cầu Ghi lại lần nữa.
+	The document changed. Request Record Again again.	Tài liệu đã thay đổi. Hãy yêu cầu Ghi lại lần nữa.
+	The document or its notes changed. Please delete the note again.	Tài liệu hoặc các ghi chú đã thay đổi. Vui lòng xóa ghi chú lần nữa.
+	The preference could not be saved: {error}	Không thể lưu tùy chọn: {error}
+	The step editor could not be opened.	Không thể mở trình chỉnh sửa bước.
+	The step has no command editor.	Bước này không có trình chỉnh sửa lệnh.
+	Top align text	Căn văn bản lên trên
+	Use relative positioning for reference point	Dùng vị trí tương đối cho điểm tham chiếu
+	Useful mixer brush combinations	Các tổ hợp cọ trộn hữu ích
+	Zoom current window to 1:1	Thu phóng cửa sổ hiện tại về tỷ lệ 1:1
+	Zoom current window to fill the screen	Thu phóng cửa sổ hiện tại để lấp đầy màn hình
+	Zoom current window to screen size	Thu phóng cửa sổ hiện tại cho vừa màn hình
+	brush tool	công cụ cọ
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} tệp bị lỗi

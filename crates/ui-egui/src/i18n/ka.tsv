@@ -4722,7 +4722,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Additional AI models	დამატებითი AI მოდელები
 	Adjust colors with Poisson blending	ფერების გასწორება პუასონის შერევით
 	All nine regions	ცხრავე არე
-	All shortcuts reset to Photoshop defaults.	ყველა მალსახმობი აღდგა Photoshop-ის ნაგულისხმევ მნიშვნელობებზე.
 	Anime fusal	Anime fusal
 	Arrange Panels	პანელების განლაგება
 	Arrowhead options	ისრის წვერის პარამეტრები
@@ -4732,14 +4731,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Automatically check for updates	განახლებების ავტომატური შემოწმება
 	Base64	Base64
 	Batch preview	პაკეტური დამუშავების წინასწარი ხედი
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Camera Raw-ის ნაგულისხმევი პარამეტრები
-	Camera Raw Filter	Camera Raw ფილტრი
-	Camera Raw Filter ({layer})	Camera Raw ფილტრი ({layer})
-	Camera Raw Filter…	Camera Raw ფილტრი…
-	Camera Raw isn't open	Camera Raw არ არის გახსნილი
-	Camera Raw…	Camera Raw…
 	Cancelled placing {name}	{name}-ის განთავსება გაუქმდა
 	Change Gradient Fill	გრადიენტული შევსების შეცვლა
 	Change Pattern Fill	ნიმუშით შევსების შეცვლა
@@ -4776,7 +4767,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Cut Pixels	პიქსელების ამოჭრა
 	Data Encoding	მონაცემთა კოდირება
 	Data Sets as Files is unavailable on the web	მონაცემთა ნაკრებების ფაილებად შენახვა ვებში მიუწვდომელია
-	Default Photoshop Size	Photoshop-ის ნაგულისხმევი ზომა
 	Delete All Notes	ყველა შენიშვნის წაშლა
 	Delete Slice	ფრაგმენტის წაშლა
 	Describe changes to the whole image	აღწერეთ ცვლილებები მთელ გამოსახულებაზე
@@ -4811,13 +4801,9 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	LZW	LZW
 	Layer Comp Options	შრის კომპოზიციის პარამეტრები
 	Layer Effects	შრის ეფექტები
-	Layer via Copy	შრე კოპირებით
-	Layer via Cut	შრე ამოჭრით
 	Lining	თანაბარი სიმაღლის ციფრები
 	Linked	დაკავშირებული
 	Load Photoshop brushes (.abr)	Photoshop ფუნჯების ჩატვირთვა (.abr)
-	Loaded Camera Raw settings from {file}	Camera Raw პარამეტრები ჩაიტვირთა {file}-დან
-	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw პარამეტრები ჩაიტვირთა {file}-დან ({n} მხარდაჭერილი არ არის)
 	Look	იერსახე
 	Lut Format	LUT ფორმატი
 	Match Surrounding Colors	გარშემო ფერებთან შეხამება
@@ -4853,7 +4839,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Download Page	ჩამოტვირთვის გვერდის გახსნა
 	Open Panel in Own Window	პანელის ცალკე ფანჯარაში გახსნა
 	Open anyway	მაინც გახსნა
-	Open in camera raw	Camera Raw-ში გახსნა
 	Original prompt	საწყისი მინიშნება
 	PhotoCraft Updates	PhotoCraft-ის განახლებები
 	PhotoCraft is up to date.	PhotoCraft განახლებულია.
@@ -4985,3 +4970,111 @@ prompt-region	Top right	ზედა მარჯვენა
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	ფუნჯების ჯგუფში „{group}“ უკვე არის თქვენი {n} ფუნჯი.
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	გრადიენტების ჯგუფი „{group}“ უკვე არსებობს ({n} გრადიენტი).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: გამოსახულების რესურსის {n} გატანა ვერ შესრულდა
+
+# Remembered file-import preferences
+	Last folder	ბოლოს გამოყენებული საქაღალდე
+	Pdf dpi	PDF-ის გარჩევადობა (dpi)
+	Pdf first page	PDF-ის პირველი გვერდი
+	Pdf last page	PDF-ის ბოლო გვერდი
+
+# Dynamic integration labels
+	Save the settings to each raw's sidecar without opening it	პარამეტრების შენახვა თითოეული RAW ფაილის თანმხლებ ფაილში გაუხსნელად
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	პაკეტური დამუშავებისას ბრძანება გაუქმდა ან შეჩერდა. გაგრძელდეს შემდეგი ფაილით თუ შეჩერდეს?
+	Align bottom edges	ქვედა კიდეების გასწორება
+	Align top edges	ზედა კიდეების გასწორება
+	Align vertical centers	ვერტიკალური ცენტრების გასწორება
+	Allow Tool Recording	ხელსაწყოების ჩაწერის დაშვება
+	Allows rotation and scaling of selection	მონიშნული არის ბრუნვისა და მასშტაბირების დაშვება
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	გაუმჭვირვალობისთვის ყოველთვის გამოიყენეთ დაწოლა. გამორთვისას დაწოლას ფუნჯის წინასწარი პარამეტრი მართავს
+	Always use Pressure for Size. When off, Brush Preset controls pressure	ზომისთვის ყოველთვის გამოიყენეთ დაწოლა. გამორთვისას დაწოლას ფუნჯის წინასწარი პარამეტრი მართავს
+	Bottom align text	ტექსტის ქვემოთ გასწორება
+	Canceled opening {name}	{name}-ის გახსნა გაუქმდა
+	Canceled {label}	{label} გაუქმდა
+	Center the gradient (offset 0, 0)	გრადიენტის ცენტრირება (წანაცვლება 0, 0)
+	Choose a menu command. Playback asks for its settings when needed.	აირჩიეთ მენიუს ბრძანება. დაკვრა საჭიროებისას პარამეტრებს მოგთხოვთ.
+	Choose a remix mode	აირჩიეთ რემიქსის რეჟიმი
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	დააწკაპუნეთ და გადაადგილდით მარცხნივ ან მარჯვნივ მასშტაბირების ხელსაწყოთი ზომის შესაცვლელად (მხოლოდ OpenGL)
+	Click to open the Brush Preset picker	დააწკაპუნეთ ფუნჯის წინასწარი პარამეტრების ასარჩევად
+	Click to restore the current color	დააწკაპუნეთ მიმდინარე ფერის აღსადგენად
+	Click to sample the foreground color  ·  {key}-click for background	წინა პლანის ფერის ასაღებად დააწკაპუნეთ  ·  ფონისთვის: {key}-დაწკაპუნება
+	Confirm or cancel the pending Record Again editor first.	ჯერ დაადასტურეთ ან გააუქმეთ მოლოდინში მყოფი ხელახალი ჩაწერის რედაქტორი.
+	Confirm or cancel the pending menu item first.	ჯერ დაადასტურეთ ან გააუქმეთ მოლოდინში მყოფი მენიუს ელემენტი.
+	Copy CSS	CSS-ის კოპირება
+	Could not use the type tool because the layer is locked.	ტექსტის ხელსაწყო ვერ გამოიყენება, რადგან ფენა ჩაკეტილია.
+	Default Foreground and Background Colors (D)	წინა პლანისა და ფონის ნაგულისხმევი ფერები (D)
+	Delete this note?	წაიშალოს ეს ჩანაწერი?
+	Distribute horizontally	ჰორიზონტალურად განაწილება
+	Distribute vertically	ვერტიკალურად განაწილება
+	Do not erase the foreground swatch color	არ წაშალოთ წინა პლანის ნიმუშის ფერი
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	ხედის მოსაბრუნებლად გადაათრიეთ ცენტრის გარშემო  ·  Shift ზღუდავს 15°-მდე
+	Draws background color over foreground colors	ფონის ფერით ხატავს წინა პლანის ფერებზე
+	Enable to remix all layers	ჩართეთ ყველა ფენის რემიქსისთვის
+	Equalize Entire Image Based On Selected Area	მთელი სურათის გათანაბრება მონიშნული არის მიხედვით
+	Equalize Selected Area Only	მხოლოდ მონიშნული არის გათანაბრება
+	Erase range of similar colors	მსგავსი ფერების დიაპაზონის წაშლა
+	Expand layer group on click	დაწკაპუნებით ფენების ჯგუფის გაშლა
+	How far to let the erasing spread	რამდენად შორს გავრცელდეს წაშლა
+	Insert Menu Item…	მენიუს ელემენტის ჩასმა…
+	Insert Path	კონტურის ჩასმა
+	Netscape Gray	Netscape-ის ნაცრისფერი
+	No document.	დოკუმენტი არ არის.
+	No menu item belongs to this chooser.	ამ ამრჩევს მენიუს არცერთი ელემენტი არ ეკუთვნის.
+	No menu item is waiting.	მენიუს ელემენტი მოლოდინში არ არის.
+	No note to delete	წასაშლელი ჩანაწერი არ არის
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	ფორმის შესაქმნელი კონტური არ არის: დახაზეთ კალმით ან აირჩიეთ კონტურების პანელში.
+	No pixels are selected.	პიქსელები მონიშნული არ არის.
+	No recorded step belongs to this editor.	ამ რედაქტორს ჩაწერილი ნაბიჯი არ ეკუთვნის.
+	No settings saved: these raws can't keep a sidecar here	პარამეტრები არ შენახულა: ამ raw ფაილებს აქ თანმხლები ფაილის შენახვა არ შეუძლიათ
+	No slices are selected. Click a slice in the preview to select it.	ფრაგმენტები მონიშნული არ არის. ასარჩევად დააწკაპუნეთ ფრაგმენტზე წინასწარ ხედში.
+	No step is waiting.	ნაბიჯი მოლოდინში არ არის.
+	Not a web color: click for the nearest web color	ეს ვების ფერი არ არის: უახლოესი ვების ფერისთვის დააწკაპუნეთ
+	Note deleted, but the preference could not be saved: {error}	ჩანაწერი წაიშალა, მაგრამ პარამეტრი ვერ შეინახა: {error}
+	Nothing to save: these raws are at their default settings	შესანახი არაფერია: ეს raw ფაილები ნაგულისხმევ პარამეტრებს იყენებს
+	Open a document to select a color range.	ფერთა დიაპაზონის ასარჩევად გახსენით დოკუმენტი.
+	Open as Smart Object…	ჭკვიან ობიექტად გახსნა…
+	Out of gamut for printing: click for the nearest printable color	ბეჭდვის ფერთა გამის გარეთაა: უახლოესი დასაბეჭდი ფერისთვის დააწკაპუნეთ
+	Painting Mode	ხატვის რეჟიმი
+	Preparing Free Transform	თავისუფალი გარდაქმნის მომზადება
+	Record Again	ხელახლა ჩაწერა
+	Remember to turn off the printer's own color management in Print Settings…	ბეჭდვის პარამეტრებში გამორთეთ პრინტერის საკუთარი ფერების მართვა…
+	Resize windows when zooming using the Zoom Tool	მასშტაბირების ხელსაწყოს გამოყენებისას ფანჯრების ზომის შეცვლა
+	Sample: foreground color	ნიმუში: წინა პლანის ფერი
+	Save canceled	შენახვა გაუქმდა
+	Scroll All Windows	ყველა ფანჯრის გადახვევა
+	Scroll all open document windows when using the hand tool	ხელის ხელსაწყოს გამოყენებისას ყველა ღია დოკუმენტის ფანჯრის გადახვევა
+	Search and select fonts	შრიფტების ძიება და არჩევა
+	Select an action first.	ჯერ აირჩიეთ მოქმედება.
+	Select an action step first.	ჯერ აირჩიეთ მოქმედების ნაბიჯი.
+	Selected Area Only	მხოლოდ მონიშნული არე
+	Selected Slices	მონიშნული ფრაგმენტები
+	Set flow rate for stroke	მონასმის ნაკადის სიჩქარის დაყენება
+	Set font size	შრიფტის ზომის დაყენება
+	Set font style	შრიფტის სტილის დაყენება
+	Set opacity for stroke	მონასმის გაუმჭვირვალობის დაყენება
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	მონასმის გასწორების დაყენება\nფუნჯის მონასმების რყევის შესამცირებლად გამოიყენეთ უფრო მაღალი მნიშვნელობები
+	Set symmetry options for Painting	ხატვის სიმეტრიის პარამეტრების დაყენება
+	Set text color	ტექსტის ფერის დაყენება
+	Set the brush angle	ფუნჯის კუთხის დაყენება
+	Show hover bounds from Layers	ფენების პანელიდან გადატარების საზღვრების ჩვენება
+	Show layer bounds on hover	გადატარებისას ფენის საზღვრების ჩვენება
+	Smoothing Options	გასწორების პარამეტრები
+	Some settings could not be saved; the raws stay open	ზოგი პარამეტრი ვერ შეინახა; raw ფაილები ღია რჩება
+	Switch Foreground and Background Colors (X)	წინა პლანისა და ფონის ფერების გაცვლა (X)
+	The Record Again command changed.	ხელახალი ჩაწერის ბრძანება შეიცვალა.
+	The action or insertion command changed. Request Insert Menu Item again.	მოქმედება ან ჩასმის ბრძანება შეიცვალა. ხელახლა მოითხოვეთ მენიუს ელემენტის ჩასმა.
+	The actions changed. Request Record Again again.	მოქმედებები შეიცვალა. ხელახლა მოითხოვეთ ხელახალი ჩაწერა.
+	The command permissions changed. Request Insert Menu Item again.	ბრძანების ნებართვები შეიცვალა. ხელახლა მოითხოვეთ მენიუს ელემენტის ჩასმა.
+	The command permissions changed. Request Record Again again.	ბრძანების ნებართვები შეიცვალა. ხელახლა მოითხოვეთ ხელახალი ჩაწერა.
+	The document changed. Request Record Again again.	დოკუმენტი შეიცვალა. ხელახლა მოითხოვეთ ხელახალი ჩაწერა.
+	The document or its notes changed. Please delete the note again.	დოკუმენტი ან მისი ჩანაწერები შეიცვალა. ხელახლა წაშალეთ ჩანაწერი.
+	The preference could not be saved: {error}	პარამეტრი ვერ შეინახა: {error}
+	The step editor could not be opened.	ნაბიჯის რედაქტორი ვერ გაიხსნა.
+	The step has no command editor.	ნაბიჯს ბრძანების რედაქტორი არ აქვს.
+	Top align text	ტექსტის ზემოთ გასწორება
+	Use relative positioning for reference point	საყრდენი წერტილისთვის ფარდობითი პოზიციონირების გამოყენება
+	Useful mixer brush combinations	შემრევი ფუნჯის სასარგებლო კომბინაციები
+	Zoom current window to 1:1	მიმდინარე ფანჯრის მასშტაბი 1:1
+	Zoom current window to fill the screen	მიმდინარე ფანჯრის გადიდება ეკრანის შესავსებად
+	Zoom current window to screen size	მიმდინარე ფანჯრის მასშტაბირება ეკრანის ზომამდე
+	brush tool	ფუნჯის ხელსაწყო
+	{label} is writing the file and can no longer be canceled	{label} წერს ფაილს და მისი გაუქმება აღარ შეიძლება

@@ -4818,11 +4818,7 @@ shape	Appearance	Оформление
 	AI model settings	Настройки модели ИИ
 	Adding generated layer	Добавление нового слоя
 	Adjust colors with Poisson blending	Настроить цвета с помощью смешивания Пуассона
-	Adobe Every-line Composer	Абзацная компоновка Adobe
-	Adobe PDF Presets…	Наборы Adobe PDF…
-	Adobe Single-line Composer	Построчная компоновка Adobe
 	All nine regions	Все девять областей
-	All shortcuts reset to Photoshop defaults.	Все комбинации клавиш сброшены к стандартным Photoshop.
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	Сначала ответьте на открытый вопрос импорта, затем импортируйте этот файл снова.
 	Arrange Panels	Упорядочить панели
@@ -4835,14 +4831,6 @@ shape	Appearance	Оформление
 	Batch preview	Предпросмотр пакетной обработки
 	CPU Rendering	Рендеринг на ЦП
 	Calculating…	Вычисление…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Значения Camera Raw по умолчанию
-	Camera Raw Filter	Фильтр Camera Raw
-	Camera Raw Filter ({layer})	Фильтр Camera Raw ({layer})
-	Camera Raw Filter…	Фильтр Camera Raw…
-	Camera Raw isn't open	Camera Raw не открыт
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Открытие {name} отменено
 	Cancelled placing {name}	Размещение {name} отменено
 	Cancelled {label}	{label}: отменено
@@ -4879,7 +4867,6 @@ shape	Appearance	Оформление
 	Custom model filenames (one per line)	Имена файлов пользовательских моделей (по одному в строке)
 	Data Encoding	Кодирование данных
 	Data Sets as Files is unavailable on the web	Наборы данных в виде файлов недоступны в веб-версии
-	Default Photoshop Size	Размер Photoshop по умолчанию
 	Default colours (D)	Цвета по умолчанию (D)
 	Describe changes to the whole image	Опишите изменения всего изображения
 	Describe changes, or leave blank to remove	Опишите изменения или оставьте пустым для удаления
@@ -4916,14 +4903,10 @@ shape	Appearance	Оформление
 	Inverse Selection	Инвертировать выделение
 	LZW	LZW
 	Layer Effects	Эффекты слоя
-	Layer via Copy	Скопировать на новый слой
-	Layer via Cut	Вырезать на новый слой
 	Level:	Уровень:
 	Lining	Маюскульные
 	Linked	Связанные
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	После открытия этого файла останется мало памяти. Сначала закройте другие приложения, иначе PhotoCraft может не хватить памяти.
-	Loaded Camera Raw settings from {file}	Настройки Camera Raw загружены из {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Настройки Camera Raw загружены из {file} (не поддерживается: {n})
 	Look	LOOK
 	Lut Format	Формат LUT
 	Match Surrounding Colors	Подогнать под цвета окружения
@@ -4953,7 +4936,6 @@ shape	Appearance	Оформление
 	Open Panel in Own Window	Открыть панель в отдельном окне
 	Open a document to select a colour range.	Откройте документ, чтобы выбрать цветовой диапазон.
 	Open anyway	Всё равно открыть
-	Open in camera raw	Открывать в Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Открытие этого документа требует больше памяти и может замедлить работу компьютера или других запущенных приложений.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Для открытия «{name}» требуется примерно {est} GiB памяти (доступно {avail} GiB).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Для открытия «{name}» требуется примерно {est} GiB памяти. Не удалось измерить доступную память.
@@ -5031,7 +5013,6 @@ shape	Appearance	Оформление
 	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Текущий каталог рабочего диска ({path}) не сообщает о свободном месте, поэтому PhotoCraft не может остановиться до его заполнения, а большие файлы не получают дополнительного места без ограничения размера рабочего диска. Это предупреждение относится к текущей конфигурации; изменения выше вступят в силу после нажатия «Применить» или «ОК». Задайте ограничение или используйте локальный диск.
 	The fastest and the softest, with colour fringing on fine detail.	Самый быстрый и самый мягкий, с цветной каймой на мелких деталях.
 	The image exceeds the AI editing size. Resize the document to continue?	Изображение превышает размер для ИИ-редактирования. Изменить размер документа и продолжить?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Перед продолжением необходимо растрировать этот смарт-объект. Его содержимое перестанет быть редактируемым. Растрировать смарт-объект?
 	Translate prompt to English	Перевести промпт на английский
 	Turbo ad q2	Turbo AD-Q2_K
 	Turbo ad q3	Turbo AD-Q3_K
@@ -5065,3 +5046,82 @@ shape	Appearance	Оформление
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).|Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).|Группа кистей «{group}» уже содержит ваши кисти (количество: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Группа градиентов «{group}» уже существует (количество градиентов: {n}).|Группа градиентов «{group}» уже существует (количество градиентов: {n}).|Группа градиентов «{group}» уже существует (количество градиентов: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: не удалось вывести {n} графический ресурс|{what}: не удалось вывести {n} графических ресурса|{what}: не удалось вывести {n} графических ресурсов
+
+# Remembered file-import preferences
+	Last folder	Последняя использованная папка
+	Pdf dpi	Разрешение PDF (dpi)
+	Pdf first page	Первая страница PDF
+	Pdf last page	Последняя страница PDF
+
+# Integration source-key coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Команда была отменена или остановлена при пакетной обработке. Продолжить со следующим файлом или остановиться?
+	Allow Tool Recording	Разрешить запись инструментов
+	Allows rotation and scaling of selection	Разрешает поворот и масштабирование выделения
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Всегда учитывать нажим для непрозрачности. Если выключено, нажим задаётся набором кисти
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Всегда учитывать нажим для размера. Если выключено, нажим задаётся набором кисти
+	Bottom align text	Выровнять текст по нижнему краю
+	Choose a menu command. Playback asks for its settings when needed.	Выберите команду меню. При воспроизведении её параметры будут запрошены при необходимости.
+	Choose a remix mode	Выберите режим смешивания
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Нажмите и двигайте влево или вправо для масштабирования инструментом «Масштаб» (только OpenGL)
+	Click to open the Brush Preset picker	Нажмите, чтобы открыть выбор набора кисти
+	Confirm or cancel the pending Record Again editor first.	Сначала подтвердите или отмените открытый редактор повторной записи.
+	Confirm or cancel the pending menu item first.	Сначала подтвердите или отмените ожидающий пункт меню.
+	Copy CSS	Копировать CSS
+	Could not use the type tool because the layer is locked.	Невозможно использовать инструмент текста: слой заблокирован.
+	Delete Note	Удалить заметку
+	Delete this note?	Удалить эту заметку?
+	Do not erase the foreground swatch color	Не стирать цвет образца переднего плана
+	Draws background color over foreground colors	Рисует фоновым цветом поверх цветов переднего плана
+	Enable to remix all layers	Включите для смешивания всех слоёв
+	Erase range of similar colors	Стирает диапазон похожих цветов
+	How far to let the erasing spread	Как далеко может распространяться стирание
+	Insert Menu Item…	Вставить пункт меню…
+	Insert Path	Вставить контур
+	No document.	Нет документа.
+	No menu item belongs to this chooser.	Этому окну выбора не принадлежит ни один пункт меню.
+	No menu item is waiting.	Нет ожидающего пункта меню.
+	No note to delete	Нет заметки для удаления
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Нет контура для создания фигуры: нарисуйте его инструментом «Перо» или выберите на панели «Контуры».
+	No pixels are selected.	Пиксели не выделены.
+	No recorded step belongs to this editor.	Этому редактору не принадлежит ни один записанный шаг.
+	No slices are selected. Click a slice in the preview to select it.	Фрагменты не выбраны. Нажмите на фрагмент в предпросмотре, чтобы выбрать его.
+	No step is waiting.	Нет ожидающего шага.
+	Note deleted, but the preference could not be saved: {error}	Заметка удалена, но настройку сохранить не удалось: {error}
+	Open as Smart Object…	Открыть как смарт-объект…
+	Painting Mode	Режим рисования
+	Preparing Free Transform	Подготовка свободного трансформирования
+	Record Again	Записать заново
+	Resize windows when zooming using the Zoom Tool	Изменять размер окон при масштабировании инструментом «Масштаб»
+	Scroll all open document windows when using the hand tool	Прокручивать все открытые окна документов инструментом «Рука»
+	Search and select fonts	Поиск и выбор шрифтов
+	Select an action first.	Сначала выберите операцию.
+	Select an action step first.	Сначала выберите шаг операции.
+	Selected Area Only	Только выделенная область
+	Selected Slices	Выбранные фрагменты
+	Set flow rate for stroke	Задать интенсивность потока для штриха
+	Set font size	Задать размер шрифта
+	Set font style	Задать начертание шрифта
+	Set opacity for stroke	Задать непрозрачность штриха
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Задать сглаживание штриха\nБольшие значения уменьшают дрожание мазков кисти
+	Set symmetry options for Painting	Задать параметры симметрии рисования
+	Set text color	Задать цвет текста
+	Set the brush angle	Задать угол кисти
+	Smoothing Options	Параметры сглаживания
+	The Record Again command changed.	Команда повторной записи изменилась.
+	The action or insertion command changed. Request Insert Menu Item again.	Операция или команда вставки изменилась. Снова запросите вставку пункта меню.
+	The actions changed. Request Record Again again.	Операции изменились. Снова запросите повторную запись.
+	The command permissions changed. Request Insert Menu Item again.	Права команды изменились. Снова запросите вставку пункта меню.
+	The command permissions changed. Request Record Again again.	Права команды изменились. Снова запросите повторную запись.
+	The document changed. Request Record Again again.	Документ изменился. Снова запросите повторную запись.
+	The document or its notes changed. Please delete the note again.	Документ или его заметки изменились. Повторите удаление заметки.
+	The preference could not be saved: {error}	Не удалось сохранить настройку: {error}
+	The step editor could not be opened.	Не удалось открыть редактор шага.
+	The step has no command editor.	У этого шага нет редактора команды.
+	Top align text	Выровнять текст по верхнему краю
+	Use relative positioning for reference point	Использовать относительное положение опорной точки
+	Useful mixer brush combinations	Полезные сочетания микс-кисти
+	Zoom current window to 1:1	Масштаб текущего окна 1:1
+	Zoom current window to fill the screen	Масштабировать текущее окно до заполнения экрана
+	Zoom current window to screen size	Масштабировать текущее окно по размеру экрана
+	brush tool	инструмент «Кисть»
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: ошибка в {n} файле|{what}: ошибка в {n} файлах|{what}: ошибка в {n} файлах

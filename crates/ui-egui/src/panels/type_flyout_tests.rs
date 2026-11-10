@@ -475,8 +475,14 @@ fn slot_tool_is_the_current_tool_else_the_slots_last_else_its_first() {
 #[test]
 fn slots_come_back_on_their_last_tool_after_a_restart() {
     let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), crate::Services::default());
-    app.session.prefs.edit(|p| p.group_tools = json!(["PolygonLasso", "PaintBucket", "Pencil", "Sharpen", "SingleRowMarquee"]));
+    app.session.prefs.edit(|p| {
+        // Keep the active tool outside the tested slots; the fork's fresh Brush otherwise
+        // correctly takes precedence over the remembered Pencil in its own slot.
+        p.selected_tool = json!("Move");
+        p.group_tools = json!(["PolygonLasso", "PaintBucket", "Pencil", "Sharpen", "SingleRowMarquee"]);
+    });
     crate::tool_memory::restore(&mut app);
+    assert_eq!(app.ui.tool, Tool::Move);
     let ctx = egui::Context::default();
     PhotocraftApp::setup_context(&ctx, crate::theme::ThemeKind::ALL[0]);
     frame(&mut app, &ctx, 0.0, vec![]);

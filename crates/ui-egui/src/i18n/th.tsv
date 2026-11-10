@@ -2553,7 +2553,7 @@
 	Show Skin Tone Indicator	แสดงตัวบ่งชี้สีผิว
 	Tone Histogram	โทนฮิสโตแกรม
 	Show Selected Region	แสดงภูมิภาคที่เลือก
-cameraRaw	Light	เบา
+cameraRaw	Light	แสง
 # RAW Develop: contextual controls and window title
 	RAW Develop Filter ({layer})	ฟิลเตอร์ การปรับแต่ง RAW ({layer})
 	RAW Develop ({name})	การปรับแต่ง RAW ({name})
@@ -2876,7 +2876,7 @@ fontWeight	Italic	ตัวเอียง
 
 # Layers-panel trash confirmation
 	Delete layer ‘{name}’?	ลบเลเยอร์ '{name}' หรือไม่
-	Delete {count} layers? {names}	Delete {count} layers? {names}
+	Delete {count} layers? {names}	ลบ {count} เลเยอร์หรือไม่? {names}
 	Delete layer?	ลบเลเยอร์ใช่ไหม
 	The document is closed	เอกสารถูกปิด
 	The document or selected layers changed. Please request deletion again.	เอกสารหรือเลเยอร์ที่เลือกมีการเปลี่ยนแปลง กรุณาขอลบอีกครั้ง
@@ -4770,3 +4770,255 @@ cameraRaw	White Balance: As Shot	สมดุลแสงขาว: เท่า
 
 # RAW Develop feature labels
 	Saved RAW Develop settings to {file}	บันทึกการตั้งค่าการปรับแต่ง RAW ไปยัง {file} แล้ว
+
+# Remembered file-import preferences
+	Last folder	โฟลเดอร์ที่ใช้ล่าสุด
+	Pdf dpi	ความละเอียด PDF (dpi)
+	Pdf first page	หน้าแรกของ PDF
+	Pdf last page	หน้าสุดท้ายของ PDF
+
+# Dynamic integration labels
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	คำสั่งถูกยกเลิกหรือหยุดระหว่างการประมวลผลแบบชุด จะดำเนินการกับไฟล์ถัดไปหรือหยุด?
+	A file is still being placed; try again when it has finished.	กำลังวางไฟล์อยู่ โปรดลองอีกครั้งเมื่อเสร็จแล้ว
+	A frame supports affine transforms; select its image for perspective transforms	กรอบรองรับการแปลงแบบแอฟไฟน์ เลือกรูปภาพภายในเพื่อแปลงมุมมอง
+	A frame supports affine transforms; select its image to warp it	กรอบรองรับการแปลงแบบแอฟไฟน์ เลือกรูปภาพภายในเพื่อบิดรูป
+	AI Prompt History	ประวัติพรอมต์ AI
+	AI model settings	การตั้งค่าโมเดล AI
+	Accelerated	แบบเร่งความเร็ว
+	Adjust colors with Poisson blending	ปรับสีด้วยการผสมแบบปัวซง
+	Align bottom edges	จัดแนวขอบล่าง
+	Align top edges	จัดแนวขอบบน
+	Align vertical centers	จัดแนวกึ่งกลางแนวตั้ง
+	All nine regions	ทั้งเก้าพื้นที่
+	Allow Tool Recording	อนุญาตการบันทึกเครื่องมือ
+	Allows rotation and scaling of selection	อนุญาตให้หมุนและปรับขนาดส่วนที่เลือก
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	ใช้แรงกดควบคุมความทึบเสมอ เมื่อปิด ค่าตั้งแปรงจะควบคุมแรงกด
+	Always use Pressure for Size. When off, Brush Preset controls pressure	ใช้แรงกดควบคุมขนาดเสมอ เมื่อปิด ค่าตั้งแปรงจะควบคุมแรงกด
+	Answer the open import question first, then import this file again.	ตอบคำถามการนำเข้าที่เปิดอยู่ก่อน แล้วนำเข้าไฟล์นี้อีกครั้ง
+	Arrowhead options	ตัวเลือกหัวลูกศร
+	Arrowheads	หัวลูกศร
+	Attach Reference Image	แนบรูปภาพอ้างอิง
+	Attribute	คุณลักษณะ
+	Automatically check for updates	ตรวจหาการอัปเดตอัตโนมัติ
+	Batch preview	ตัวอย่างการประมวลผลแบบชุด
+	Bottom align text	จัดข้อความชิดล่าง
+	Canceled opening {name}	ยกเลิกการเปิด {name} แล้ว
+	Canceled {label}	ยกเลิก {label} แล้ว
+	Cancelled placing {name}	ยกเลิกการวาง {name} แล้ว
+	Center the gradient (offset 0, 0)	จัดการไล่ระดับสีไว้กึ่งกลาง (ระยะเยื้อง 0, 0)
+	Channel Options…	ตัวเลือกช่องสี…
+	Check for updates now	ตรวจหาการอัปเดตตอนนี้
+	Choose a menu command. Playback asks for its settings when needed.	เลือกคำสั่งเมนู เมื่อเล่นกลับจะถามการตั้งค่าตามที่จำเป็น
+	Choose a remix mode	เลือกโหมดผสมใหม่
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	คลิกแล้วเลื่อนไปทางซ้ายหรือขวาเพื่อปรับขนาดด้วยเครื่องมือซูม (เฉพาะ OpenGL)
+	Click to open the Brush Preset picker	คลิกเพื่อเปิดตัวเลือกค่าตั้งแปรง
+	Click to restore the current color	คลิกเพื่อคืนค่าสีปัจจุบัน
+	Click to sample the foreground color  ·  {key}-click for background	คลิกเพื่อเก็บตัวอย่างสีพื้นหน้า  ·  คลิกพร้อมกด {key} สำหรับสีพื้นหลัง
+	Clip Thumbnails to Document Bounds	ตัดภาพขนาดย่อให้พอดีขอบเขตเอกสาร
+	ComfyUI port	พอร์ต ComfyUI
+	Compare with Original Generation	เปรียบเทียบกับผลลัพธ์ที่สร้างครั้งแรก
+	Concavity	ความเว้า
+	Confirm or cancel the pending Record Again editor first.	ยืนยันหรือยกเลิกตัวแก้ไขบันทึกอีกครั้งที่ค้างอยู่ก่อน
+	Confirm or cancel the pending menu item first.	ยืนยันหรือยกเลิกรายการเมนูที่ค้างอยู่ก่อน
+	Convert to Frame…	แปลงเป็นกรอบ…
+	Copy CSS	คัดลอก CSS
+	Copy English translation	คัดลอกคำแปลภาษาอังกฤษ
+	Copy negative prompt	คัดลอกพรอมต์เชิงลบ
+	Copy original prompt	คัดลอกพรอมต์ต้นฉบับ
+	Could not use the type tool because the layer is locked.	ไม่สามารถใช้เครื่องมือข้อความได้เนื่องจากเลเยอร์ถูกล็อก
+	Create a new custom frame	สร้างกรอบแบบกำหนดเองใหม่
+	Create a new polygonal frame	สร้างกรอบรูปหลายเหลี่ยมใหม่
+	Create a new triangular frame	สร้างกรอบรูปสามเหลี่ยมใหม่
+	Create a single history state	สร้างสถานะประวัติรายการเดียว
+	Custom model filenames (one per line)	ชื่อไฟล์โมเดลที่กำหนดเอง (หนึ่งชื่อต่อบรรทัด)
+	Data Sets as Files is unavailable on the web	ไม่สามารถใช้ชุดข้อมูลเป็นไฟล์บนเว็บได้
+	Default Foreground and Background Colors (D)	สีพื้นหน้าและพื้นหลังเริ่มต้น (D)
+	Delete effect	ลบเอฟเฟกต์
+	Delete this note?	ลบโน้ตนี้หรือไม่?
+	Describe changes to the whole image	อธิบายการเปลี่ยนแปลงทั้งภาพ
+	Describe changes, or leave blank to remove	อธิบายการเปลี่ยนแปลง หรือเว้นว่างเพื่อลบ
+	Describe the image to generate	อธิบายภาพที่ต้องการสร้าง
+	Distribute horizontally	กระจายตามแนวนอน
+	Distribute vertically	กระจายตามแนวตั้ง
+	Do not erase the foreground swatch color	อย่าลบสีของช่องสีพื้นหน้า
+	Downloading update…	กำลังดาวน์โหลดการอัปเดต…
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	ลากรอบจุดศูนย์กลางเพื่อหมุนมุมมอง  ·  Shift จำกัดมุมครั้งละ 15°
+	Drag to move the selected path	ลากเพื่อย้ายเส้นพาธที่เลือก
+	Draws background color over foreground colors	ระบายสีพื้นหลังทับสีพื้นหน้า
+	Dropped files weren't placed: their document was closed.	ไม่ได้วางไฟล์ที่ปล่อยลงมา เนื่องจากเอกสารของไฟล์ถูกปิดแล้ว
+	Dropped files weren't placed: too many are waiting for their document.	ไม่ได้วางไฟล์ที่ปล่อยลงมา เนื่องจากมีไฟล์รอเอกสารอยู่มากเกินไป
+	Effect	เอฟเฟกต์
+	Empty	ว่าง
+	Enable to remix all layers	เปิดเพื่อผสมใหม่ทุกเลเยอร์
+	End	สิ้นสุด
+	English translation	คำแปลภาษาอังกฤษ
+	Equalize Entire Image Based On Selected Area	ปรับความสม่ำเสมอของทั้งภาพโดยอิงพื้นที่ที่เลือก
+	Equalize Selected Area Only	ปรับความสม่ำเสมอเฉพาะพื้นที่ที่เลือก
+	Erase range of similar colors	ลบช่วงสีที่คล้ายกัน
+	Expand layer group on click	ขยายกลุ่มเลเยอร์เมื่อคลิก
+	Filter for embedded smart objects	กรองสมาร์ตออบเจ็กต์ที่ฝังไว้
+	Filter for linked smart objects that are missing	กรองสมาร์ตออบเจ็กต์ที่เชื่อมโยงแต่หาไม่พบ
+	Filter for smart objects linked locally	กรองสมาร์ตออบเจ็กต์ที่เชื่อมโยงในเครื่อง
+	Fit Content to Frame	ปรับเนื้อหาให้พอดีกรอบ
+	Fit Frame to Content	ปรับกรอบให้พอดีเนื้อหา
+	Frame coordinates must be finite and within 600000 pixels	พิกัดกรอบต้องเป็นค่าจำกัดและอยู่ภายใน 600000 พิกเซล
+	Generative Fill	เติมภาพด้วย AI
+	Hide bar	ซ่อนแถบ
+	High Memory Photoshop Document	เอกสาร Photoshop ที่ใช้หน่วยความจำมาก
+	How far to let the erasing spread	ระยะที่อนุญาตให้การลบกระจายออกไป
+	Image Compression	การบีบอัดภาพ
+	Import Image…	นำเข้ารูปภาพ…
+	Import as New Group	นำเข้าเป็นกลุ่มใหม่
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	การนำเข้าเป็นกลุ่มใหม่จะเก็บ “{group}” ไว้และเพิ่มไฟล์เป็นกลุ่มใหม่ข้างกัน
+	Insert Menu Item…	แทรกรายการเมนู…
+	Insert Path	แทรกเส้นพาธ
+	Invalid frame transform	การแปลงกรอบไม่ถูกต้อง
+	Invalid nested file drop	การปล่อยไฟล์ซ้อนกันไม่ถูกต้อง
+	LZW	LZW
+	Large Thumbnails	ภาพขนาดย่อใหญ่
+	Layer Effects	เอฟเฟกต์เลเยอร์
+	Learn	เรียนรู้
+	Linked	เชื่อมโยงแล้ว
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	หลังเปิดไฟล์นี้จะเหลือหน่วยความจำน้อย ปิดแอปอื่นก่อน มิฉะนั้น PhotoCraft อาจมีหน่วยความจำไม่พอ
+	Make Shape	สร้างรูปทรง
+	Match Surrounding Colors	จับคู่สีกับบริเวณโดยรอบ
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	จับคู่สีกับบริเวณโดยรอบที่เก็บไว้ตอนสร้างภาพ ความเข้ม 0 จะคืนผลลัพธ์ที่สร้างครั้งแรก
+	Medium Thumbnails	ภาพขนาดย่อปานกลาง
+	More options	ตัวเลือกเพิ่มเติม
+	Move bar	ย้ายแถบ
+	Move effect down	ย้ายเอฟเฟกต์ลง
+	Move effect up	ย้ายเอฟเฟกต์ขึ้น
+	Negative prompt	พรอมต์เชิงลบ
+	Netscape Gray	สีเทา Netscape
+	New Frame	กรอบใหม่
+	New file	ไฟล์ใหม่
+	No AI prompts recorded	ยังไม่มีพรอมต์ AI ที่บันทึกไว้
+	No Adv. Blending	ไม่มีการผสมขั้นสูง
+	No Layer Effects	ไม่มีเอฟเฟกต์เลเยอร์
+	No Layer Mask	ไม่มีมาสก์เลเยอร์
+	No Thumbnails	ไม่มีภาพขนาดย่อ
+	No Vector Mask	ไม่มีมาสก์เวกเตอร์
+	No document.	ไม่มีเอกสาร
+	No import is waiting. Import the file again.	ไม่มีการนำเข้าที่รออยู่ ให้นำเข้าไฟล์อีกครั้ง
+	No matching fonts	ไม่มีแบบอักษรที่ตรงกัน
+	No menu item belongs to this chooser.	ไม่มีรายการเมนูที่เป็นของตัวเลือกนี้
+	No menu item is waiting.	ไม่มีรายการเมนูที่รออยู่
+	No note to delete	ไม่มีโน้ตให้ลบ
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	ไม่มีเส้นพาธสำหรับสร้างรูปทรง ให้วาดด้วยเครื่องมือปากกาหรือเลือกในแผงเส้นพาธ
+	No pixels are selected.	ยังไม่ได้เลือกพิกเซล
+	No prompt (remove)	ไม่มีพรอมต์ (ลบ)
+	No recorded step belongs to this editor.	ไม่มีขั้นตอนที่บันทึกไว้ซึ่งเป็นของตัวแก้ไขนี้
+	No settings saved: these raws can't keep a sidecar here	ไม่ได้บันทึกการตั้งค่า ไฟล์ดิบเหล่านี้ไม่สามารถมีไฟล์ประกอบในตำแหน่งนี้ได้
+	No slices are selected. Click a slice in the preview to select it.	ยังไม่ได้เลือกชิ้นส่วน คลิกชิ้นส่วนในตัวอย่างเพื่อเลือก
+	No step is waiting.	ไม่มีขั้นตอนที่รออยู่
+	Not Clipped	ไม่ถูกตัด
+	Not Empty	ไม่ว่าง
+	Not Linked	ไม่ได้เชื่อมโยง
+	Not Locked	ไม่ได้ล็อก
+	Not Visible	ไม่แสดง
+	Not a web color: click for the nearest web color	ไม่ใช่สีเว็บ คลิกเพื่อเลือกสีเว็บที่ใกล้เคียงที่สุด
+	Note deleted, but the preference could not be saved: {error}	ลบโน้ตแล้ว แต่บันทึกค่ากำหนดไม่ได้: {error}
+	Nothing to save: these raws are at their default settings	ไม่มีอะไรให้บันทึก ไฟล์ดิบเหล่านี้ใช้การตั้งค่าเริ่มต้นอยู่
+	Nudge	ขยับเล็กน้อย
+	On your computer	บนคอมพิวเตอร์ของคุณ
+	One .safetensors filename per line. Compatibility is not checked.	ชื่อไฟล์ .safetensors หนึ่งชื่อต่อบรรทัด ไม่มีการตรวจสอบความเข้ากันได้
+	Open a document to select a color range.	เปิดเอกสารเพื่อเลือกช่วงสี
+	Open anyway	เปิดต่อไป
+	Open as Smart Object…	เปิดเป็นสมาร์ตออบเจ็กต์…
+	Opening this document uses more memory and may slow down your computer or other running applications.	การเปิดเอกสารนี้ใช้หน่วยความจำมากขึ้นและอาจทำให้คอมพิวเตอร์หรือแอปพลิเคชันอื่นที่ทำงานอยู่ช้าลง
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	การเปิด “{name}” ต้องใช้หน่วยความจำประมาณ {est} GiB (มีอยู่ {avail} GiB)
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	การเปิด “{name}” ต้องใช้หน่วยความจำประมาณ {est} GiB ไม่สามารถวัดหน่วยความจำที่มีอยู่ได้
+	Original prompt	พรอมต์ต้นฉบับ
+	Out of gamut for printing: click for the nearest printable color	อยู่นอกขอบเขตสีสำหรับการพิมพ์ คลิกเพื่อเลือกสีที่พิมพ์ได้และใกล้เคียงที่สุด
+	Painting Mode	โหมดระบายสี
+	Path operations	การดำเนินการกับเส้นพาธ
+	Pause For	หยุดชั่วคราวเป็นเวลา
+	Pause For:	หยุดชั่วคราวเป็นเวลา:
+	PhotoCraft update available	มีการอัปเดต PhotoCraft
+	Pin bar position	ตรึงตำแหน่งแถบ
+	Playback Options…	ตัวเลือกการเล่นกลับ…
+	Preparing Free Transform	กำลังเตรียมการแปลงแบบอิสระ
+	Prompt Edit	แก้ไขด้วยพรอมต์
+	Prompt Generate	สร้างด้วยพรอมต์
+	Prompt information	ข้อมูลพรอมต์
+	Prompt translation model	โมเดลแปลพรอมต์
+	Recently Used Colors	สีที่ใช้ล่าสุด
+	Record Again	บันทึกอีกครั้ง
+	Regenerate	สร้างใหม่
+	Remember to turn off the printer's own color management in Print Settings…	อย่าลืมปิดการจัดการสีของเครื่องพิมพ์เองในการตั้งค่าการพิมพ์…
+	Remove Reference Image	นำรูปภาพอ้างอิงออก
+	Replace Image…	แทนที่รูปภาพ…
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	การแทนที่จะลบทุกอย่างใน “{group}” ก่อน รวมถึงค่าตั้งล่วงหน้าที่คุณแก้ไขหรือย้ายไปไว้ที่นั่น การกระทำนี้ไม่สามารถเลิกทำได้
+	Reset bar position	รีเซ็ตตำแหน่งแถบ
+	Reset steps to model default	รีเซ็ตจำนวนขั้นตอนเป็นค่าเริ่มต้นของโมเดล
+	Resize windows when zooming using the Zoom Tool	ปรับขนาดหน้าต่างเมื่อซูมด้วยเครื่องมือซูม
+	Sample: foreground color	ตัวอย่าง: สีพื้นหน้า
+	Sampling steps	ขั้นตอนการสุ่มตัวอย่าง
+	Save Image Pyramid	บันทึกพีระมิดภาพ
+	Save Transparency	บันทึกความโปร่งใส
+	Save canceled	ยกเลิกการบันทึกแล้ว
+	Save the settings to each raw's sidecar without opening it	บันทึกการตั้งค่าลงไฟล์ประกอบของไฟล์ดิบแต่ละไฟล์โดยไม่ต้องเปิด
+	Scroll All Windows	เลื่อนทุกหน้าต่าง
+	Scroll all open document windows when using the hand tool	เลื่อนหน้าต่างเอกสารที่เปิดอยู่ทั้งหมดเมื่อใช้เครื่องมือมือ
+	Search and select fonts	ค้นหาและเลือกแบบอักษร
+	Select an action first.	เลือกแอ็กชันก่อน
+	Select an action step first.	เลือกขั้นตอนแอ็กชันก่อน
+	Selected Area Only	เฉพาะพื้นที่ที่เลือก
+	Selected Slices	ชิ้นส่วนที่เลือก
+	Set as default	ตั้งเป็นค่าเริ่มต้น
+	Set flow rate for stroke	ตั้งอัตราการไหลของเส้นแปรง
+	Set font size	ตั้งขนาดแบบอักษร
+	Set font style	ตั้งรูปแบบแบบอักษร
+	Set opacity for stroke	ตั้งความทึบของเส้นแปรง
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	ตั้งความนุ่มนวลของเส้นแปรง\nใช้ค่าที่สูงขึ้นเพื่อลดความสั่นของเส้นแปรง
+	Set symmetry options for Painting	ตั้งตัวเลือกสมมาตรสำหรับการระบายสี
+	Set text color	ตั้งสีข้อความ
+	Set the brush angle	ตั้งมุมแปรง
+	Shapes can't use patterns yet	รูปทรงยังใช้ลวดลายไม่ได้
+	Show hover bounds from Layers	แสดงขอบเขตเมื่อชี้จากแผงเลเยอร์
+	Show layer bounds on hover	แสดงขอบเขตเลเยอร์เมื่อชี้เมาส์
+	Small Thumbnails	ภาพขนาดย่อเล็ก
+	Smoothing Options	ตัวเลือกความนุ่มนวล
+	Some settings could not be saved; the raws stay open	บันทึกการตั้งค่าบางรายการไม่ได้ ไฟล์ดิบจะยังเปิดอยู่
+	Source: {name}	แหล่งที่มา: {name}
+	Specify Channels:	ระบุช่องสี:
+	Start	เริ่ม
+	Step by Step	ทีละขั้นตอน
+	Stop Color	สีของจุดหยุด
+	Switch Foreground and Background Colors (X)	สลับสีพื้นหน้าและพื้นหลัง (X)
+	Text encoders	ตัวเข้ารหัสข้อความ
+	The GPU compositor is still being prepared	กำลังเตรียมตัวประกอบภาพ GPU อยู่
+	The History Brush source was deleted: set a new source in the History panel	แหล่งที่มาของแปรงประวัติถูกลบแล้ว ตั้งแหล่งที่มาใหม่ในแผงประวัติ
+	The Record Again command changed.	คำสั่งบันทึกอีกครั้งเปลี่ยนไป
+	The action or insertion command changed. Request Insert Menu Item again.	แอ็กชันหรือคำสั่งแทรกเปลี่ยนไป ขอแทรกรายการเมนูอีกครั้ง
+	The actions changed. Request Record Again again.	แอ็กชันเปลี่ยนไป ขอบันทึกอีกครั้งใหม่
+	The command permissions changed. Request Insert Menu Item again.	สิทธิ์ของคำสั่งเปลี่ยนไป ขอแทรกรายการเมนูอีกครั้ง
+	The command permissions changed. Request Record Again again.	สิทธิ์ของคำสั่งเปลี่ยนไป ขอบันทึกอีกครั้งใหม่
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	โฟลเดอร์ชั่วคราวปัจจุบัน ({path}) ไม่รายงานพื้นที่ว่าง PhotoCraft จึงหยุดก่อนพื้นที่เต็มไม่ได้ และไฟล์ขนาดใหญ่จะไม่ได้รับพื้นที่เพิ่มเติมหากไม่ได้ตั้งขีดจำกัดขนาดพื้นที่ชั่วคราว คำเตือนนี้ใช้กับการกำหนดค่าปัจจุบัน การเปลี่ยนแปลงด้านบนจะมีผลเมื่อกดใช้หรือตกลง ตั้งขีดจำกัดหรือใช้ดิสก์ในเครื่อง
+	The document changed. Request Record Again again.	เอกสารเปลี่ยนไป ขอบันทึกอีกครั้งใหม่
+	The document or its notes changed. Please delete the note again.	เอกสารหรือโน้ตเปลี่ยนไป โปรดลบโน้ตอีกครั้ง
+	The frame is locked	กรอบถูกล็อก
+	The frame is unavailable	กรอบไม่พร้อมใช้งาน
+	The image exceeds the AI editing size. Resize the document to continue?	ภาพมีขนาดเกินขีดจำกัดการแก้ไขด้วย AI จะปรับขนาดเอกสารเพื่อดำเนินการต่อหรือไม่?
+	The preference could not be saved: {error}	บันทึกค่ากำหนดไม่ได้: {error}
+	The step editor could not be opened.	เปิดตัวแก้ไขขั้นตอนไม่ได้
+	The step has no command editor.	ขั้นตอนนี้ไม่มีตัวแก้ไขคำสั่ง
+	Top align text	จัดข้อความชิดบน
+	Translate prompt to English	แปลพรอมต์เป็นภาษาอังกฤษ
+	Update PhotoCraft and restart now?	อัปเดต PhotoCraft และเริ่มใหม่ตอนนี้หรือไม่?
+	Use relative positioning for reference point	ใช้การจัดตำแหน่งแบบสัมพัทธ์สำหรับจุดอ้างอิง
+	Use these settings for new arrows	ใช้การตั้งค่าเหล่านี้กับลูกศรใหม่
+	Useful mixer brush combinations	ชุดค่าผสมแปรงผสมสีที่มีประโยชน์
+	Website	เว็บไซต์
+	You can check for updates again in Help → About PhotoCraft.	คุณตรวจหาการอัปเดตอีกครั้งได้ที่ วิธีใช้ → เกี่ยวกับ PhotoCraft
+	ZIP	ZIP
+	Zoom current window to 1:1	ซูมหน้าต่างปัจจุบันเป็น 1:1
+	Zoom current window to fill the screen	ซูมหน้าต่างปัจจุบันให้เต็มหน้าจอ
+	Zoom current window to screen size	ซูมหน้าต่างปัจจุบันให้พอดีขนาดหน้าจอ
+	brush tool	เครื่องมือแปรง
+	seconds	วินาที
+	{label} is writing the file and can no longer be canceled	{label} กำลังเขียนไฟล์และไม่สามารถยกเลิกได้อีก
+	{message} into “{group}”	{message} ลงใน “{group}”
+	{ok} written to {dir}	เขียน {ok} ไปยัง {dir} แล้ว
+	{set} from {file} replaced the one from {earlier}	{set} จาก {file} แทนที่รายการจาก {earlier} แล้ว
+	…	…

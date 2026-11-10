@@ -131,10 +131,10 @@
 	16 Bits/Channel	16 Bit/Kanal
 	32 Bits/Channel	32 Bit/Kanal
 	8 Bits/Channel	8 Bit/Kanal
-	8 bit	8 bit
+	8 bit	8 bitlik
 	Integer	Tam ədəd
-	16 bit	16 bit
-	32 bit (float)	32 bit (float)
+	16 bit	16 bitlik
+	32 bit (float)	32 bitlik (sürüşən nöqtəli)
 	Floating point	Üzən nöqtə
 	Mode	Rejim
 	Grayscale	Boz rəng
@@ -4630,3 +4630,240 @@ smartSvg	SVG editor opened. Save the SVG to update this Smart Object.	SVG redakt
 
 # RAW Develop feature labels
 	Saved RAW Develop settings to {file}	RAW emalı ayarları {file} faylında saxlanıldı
+
+# Remembered file-import preferences
+	Last folder	Son istifadə olunan qovluq
+	Pdf dpi	PDF ayırdetməsi (dpi)
+	Pdf first page	PDF-in ilk səhifəsi
+	Pdf last page	PDF-in son səhifəsi
+
+# Dynamic integration labels
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Toplu emal zamanı əmr ləğv edildi və ya dayandırıldı. Növbəti faylla davam edilsin, yoxsa dayandırılsın?
+	A file is still being placed; try again when it has finished.	Fayl hələ yerləşdirilir; tamamlandıqdan sonra yenidən cəhd edin.
+	A frame supports affine transforms; select its image for perspective transforms	Çərçivə afin çevirmələri dəstəkləyir; perspektiv çevirmələr üçün onun şəklini seçin
+	A frame supports affine transforms; select its image to warp it	Çərçivə afin çevirmələri dəstəkləyir; əymək üçün onun şəklini seçin
+	AI Prompt History	Süni intellekt sorğularının tarixçəsi
+	AI model settings	Süni intellekt modelinin parametrləri
+	Accelerated	Sürətləndirilmiş
+	Adjust colors with Poisson blending	Puasson qarışdırması ilə rəngləri tənzimlə
+	All nine regions	Bütün doqquz sahə
+	Allow Tool Recording	Alət qeydinə icazə ver
+	Allows rotation and scaling of selection	Seçimin fırladılmasına və miqyaslanmasına imkan verir
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Qeyri-şəffaflıq üçün həmişə təzyiqdən istifadə et. Söndürüldükdə təzyiqi fırça önayarı idarə edir
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Ölçü üçün həmişə təzyiqdən istifadə et. Söndürüldükdə təzyiqi fırça önayarı idarə edir
+	Answer the open import question first, then import this file again.	Əvvəlcə açıq idxal sualına cavab verin, sonra bu faylı yenidən idxal edin.
+	Arrowhead options	Ox ucu seçimləri
+	Arrowheads	Ox ucları
+	Attach Reference Image	İstinad şəklini əlavə et
+	Attribute	Atribut
+	Automatically check for updates	Yeniləmələri avtomatik yoxla
+	Batch preview	Toplu önizləmə
+	Bottom align text	Mətni aşağıya düzləndir
+	Canceled opening {name}	{name} açılması ləğv edildi
+	Canceled {label}	{label} ləğv edildi
+	Cancelled placing {name}	{name} yerləşdirilməsi ləğv edildi
+	Center the gradient (offset 0, 0)	Qradiyenti mərkəzləşdir (sürüşmə 0, 0)
+	Channel Options…	Kanal seçimləri…
+	Check Again	Yenidən yoxla
+	Check for updates now	Yeniləmələri indi yoxla
+	Checking for updates…	Yeniləmələr yoxlanılır…
+	Choose a menu command. Playback asks for its settings when needed.	Menyu əmri seçin. İcra zamanı lazım olduqda onun parametrləri soruşulacaq.
+	Choose a remix mode	Yenidən qarışdırma rejimi seçin
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Miqyaslama aləti ilə ölçünü dəyişmək üçün klikləyib sola və ya sağa hərəkət etdirin (yalnız OpenGL)
+	Click to open the Brush Preset picker	Fırça önayarı seçicisini açmaq üçün klikləyin
+	Click to restore the current color	Cari rəngi bərpa etmək üçün klikləyin
+	Click to sample the foreground color  ·  {key}-click for background	Ön plan rəngindən nümunə almaq üçün klikləyin  ·  Arxa plan üçün {key} ilə klikləyin
+	Clip Thumbnails to Document Bounds	Miniatürləri sənəd sərhədlərinə kəs
+	ComfyUI port	ComfyUI portu
+	Compare with Original Generation	İlkin yaradılmış nəticə ilə müqayisə et
+	Concavity	Çökəklik
+	Confirm or cancel the pending Record Again editor first.	Əvvəlcə gözləyən Yenidən qeyd et redaktorunu təsdiqləyin və ya ləğv edin.
+	Confirm or cancel the pending menu item first.	Əvvəlcə gözləyən menyu elementini təsdiqləyin və ya ləğv edin.
+	Copy CSS	CSS-i kopyala
+	Copy English translation	İngiliscə tərcüməni kopyala
+	Copy negative prompt	Mənfi sorğunu kopyala
+	Copy original prompt	İlkin sorğunu kopyala
+	Could not check for updates.	Yeniləmələri yoxlamaq mümkün olmadı.
+	Could not use the type tool because the layer is locked.	Qat kilidli olduğuna görə mətn alətindən istifadə etmək mümkün olmadı.
+	Create a new custom frame	Yeni fərdi çərçivə yarat
+	Create a new polygonal frame	Yeni çoxbucaqlı çərçivə yarat
+	Create a new triangular frame	Yeni üçbucaqlı çərçivə yarat
+	Create a single history state	Vahid tarixçə vəziyyəti yarat
+	Custom model filenames (one per line)	Fərdi model fayl adları (hər sətirdə bir ad)
+	Data Sets as Files is unavailable on the web	Verilənlər dəstlərini fayl kimi saxlamaq vebdə əlçatan deyil
+	Default Foreground and Background Colors (D)	Standart ön və arxa plan rəngləri (D)
+	Delete this note?	Bu qeyd silinsin?
+	Describe changes to the whole image	Bütün şəkildə ediləcək dəyişiklikləri təsvir edin
+	Describe changes, or leave blank to remove	Dəyişiklikləri təsvir edin və ya silmək üçün boş saxlayın
+	Describe the image to generate	Yaradılacaq şəkli təsvir edin
+	Do not erase the foreground swatch color	Ön plan rəng nümunəsinin rəngini silmə
+	Downloading update…	Yeniləmə endirilir…
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	Görünüşü fırlatmaq üçün mərkəz ətrafında sürükləyin  ·  Shift bucağı 15° addımlarla məhdudlaşdırır
+	Draws background color over foreground colors	Arxa plan rəngini ön plan rənglərinin üzərinə çəkir
+	Dropped files weren't placed: their document was closed.	Buraxılan fayllar yerləşdirilmədi: onların sənədi bağlandı.
+	Dropped files weren't placed: too many are waiting for their document.	Buraxılan fayllar yerləşdirilmədi: sənədini gözləyən faylların sayı çoxdur.
+	Effect	Effekt
+	Empty	Boş
+	Enable to remix all layers	Bütün qatları yenidən qarışdırmaq üçün aktivləşdirin
+	End	Son
+	English translation	İngiliscə tərcümə
+	Equalize Entire Image Based On Selected Area	Seçilmiş sahəyə əsasən bütün şəkli bərabərləşdir
+	Equalize Selected Area Only	Yalnız seçilmiş sahəni bərabərləşdir
+	Erase range of similar colors	Oxşar rənglər aralığını sil
+	Filter for embedded smart objects	Daxilə yerləşdirilmiş ağıllı obyektləri süzgəcdən keçir
+	Filter for linked smart objects that are missing	Əlaqələndirilmiş, lakin tapılmayan ağıllı obyektləri süzgəcdən keçir
+	Filter for smart objects linked locally	Yerli olaraq əlaqələndirilmiş ağıllı obyektləri süzgəcdən keçir
+	Frame coordinates must be finite and within 600000 pixels	Çərçivə koordinatları sonlu olmalı və 600000 piksel daxilində yerləşməlidir
+	Generative Fill	Generativ doldurma
+	Hide bar	Paneli gizlət
+	High Memory Photoshop Document	Yüksək yaddaş tələb edən Photoshop sənədi
+	How far to let the erasing spread	Silmənin nə qədər yayılmasına icazə verilsin
+	Image Compression	Şəkil sıxılması
+	Import as New Group	Yeni qrup kimi idxal et
+	Import as New Group keeps “{group}” and adds the file as a new group beside it.	Yeni qrup kimi idxal “{group}” qrupunu saxlayır və faylı onun yanında yeni qrup kimi əlavə edir.
+	Insert Menu Item…	Menyu elementi daxil et…
+	Insert Path	Yol daxil et
+	Invalid frame transform	Yanlış çərçivə çevirməsi
+	Invalid nested file drop	Yanlış iç-içə fayl buraxılması
+	LZW	LZW
+	Large Thumbnails	Böyük miniatürlər
+	Layer Effects	Qat effektləri
+	Learn	Öyrən
+	Linked	Əlaqələndirilmiş
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Bu fayl açıldıqdan sonra az yaddaş qalacaq. Əvvəlcə digər tətbiqləri bağlayın, əks halda PhotoCraft-da yaddaş tükənə bilər.
+	Make Shape	Forma yarat
+	Match Surrounding Colors	Ətraf rənglərə uyğunlaşdır
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Rəngləri yaradılma zamanı qeydə alınmış ətrafa uyğunlaşdır. Güc 0 olduqda ilkin yaradılmış nəticə bərpa edilir.
+	Medium Thumbnails	Orta miniatürlər
+	More options	Daha çox seçim
+	Move bar	Paneli köçür
+	Negative prompt	Mənfi sorğu
+	Netscape Gray	Netscape boz rəngi
+	New Frame	Yeni çərçivə
+	New file	Yeni fayl
+	No AI prompts recorded	Süni intellekt sorğusu qeydə alınmayıb
+	No Adv. Blending	Qabaqcıl qarışdırma yoxdur
+	No Layer Effects	Qat effektləri yoxdur
+	No Layer Mask	Qat maskası yoxdur
+	No Thumbnails	Miniatürlər yoxdur
+	No Vector Mask	Vektor maskası yoxdur
+	No document.	Sənəd yoxdur.
+	No import is waiting. Import the file again.	Gözləyən idxal yoxdur. Faylı yenidən idxal edin.
+	No menu item belongs to this chooser.	Bu seçiciyə aid menyu elementi yoxdur.
+	No menu item is waiting.	Gözləyən menyu elementi yoxdur.
+	No note to delete	Silinəcək qeyd yoxdur
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Forma yaratmaq üçün yol yoxdur: Qələm aləti ilə bir yol çəkin və ya Yollar panelindən seçin.
+	No pixels are selected.	Heç bir piksel seçilməyib.
+	No prompt (remove)	Sorğu yoxdur (sil)
+	No recorded step belongs to this editor.	Bu redaktora aid qeydə alınmış addım yoxdur.
+	No settings saved: these raws can't keep a sidecar here	Parametrlər saxlanılmadı: bu xam faylların burada köməkçi faylı ola bilməz
+	No slices are selected. Click a slice in the preview to select it.	Heç bir dilim seçilməyib. Seçmək üçün önizləmədə dilimə klikləyin.
+	No step is waiting.	Gözləyən addım yoxdur.
+	Not Clipped	Kəsilməmiş
+	Not Empty	Boş deyil
+	Not Linked	Əlaqələndirilməmiş
+	Not Locked	Kilidlənməmiş
+	Not Visible	Görünməyən
+	Not a web color: click for the nearest web color	Veb rəngi deyil: ən yaxın veb rəngi üçün klikləyin
+	Note deleted, but the preference could not be saved: {error}	Qeyd silindi, lakin parametr saxlanıla bilmədi: {error}
+	Nothing to save: these raws are at their default settings	Saxlanılacaq heç nə yoxdur: bu xam fayllar standart parametrlərdədir
+	Nudge	Azca sürüşdür
+	On your computer	Kompüterinizdə
+	One .safetensors filename per line. Compatibility is not checked.	Hər sətirdə bir .safetensors fayl adı. Uyğunluq yoxlanılmır.
+	Open Download Page	Endirmə səhifəsini aç
+	Open a document to select a color range.	Rəng aralığı seçmək üçün sənəd açın.
+	Open anyway	Yenə də aç
+	Open as Smart Object…	Ağıllı obyekt kimi aç…
+	Opening this document uses more memory and may slow down your computer or other running applications.	Bu sənədin açılması daha çox yaddaş istifadə edir və kompüterinizi və ya işləyən digər tətbiqləri ləngidə bilər.
+	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	“{name}” açılması üçün təxminən {est} GiB yaddaş tələb olunur ({avail} GiB əlçatandır).
+	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	“{name}” açılması üçün təxminən {est} GiB yaddaş tələb olunur. Əlçatan yaddaşı ölçmək mümkün olmadı.
+	Original prompt	İlkin sorğu
+	Out of gamut for printing: click for the nearest printable color	Çap rəng diapazonundan kənardır: ən yaxın çap edilə bilən rəng üçün klikləyin
+	Painting Mode	Rəngləmə rejimi
+	Pause For	Fasilə müddəti
+	Pause For:	Fasilə müddəti:
+	PhotoCraft Updates	PhotoCraft yeniləmələri
+	PhotoCraft is up to date.	PhotoCraft ən son versiyadadır.
+	PhotoCraft update available	PhotoCraft yeniləməsi mövcuddur
+	Pin bar position	Panelin mövqeyini sabitlə
+	Playback Options…	İcra seçimləri…
+	Preparing Free Transform	Sərbəst çevirmə hazırlanır
+	Prompt Edit	Sorğu ilə redaktə
+	Prompt Generate	Sorğu ilə yarat
+	Prompt information	Sorğu məlumatı
+	Prompt translation model	Sorğu tərcümə modeli
+	Record Again	Yenidən qeyd et
+	Regenerate	Yenidən yarat
+	Remember to turn off the printer's own color management in Print Settings…	Çap parametrlərində printerin öz rəng idarəetməsini söndürməyi unutmayın…
+	Remove Reference Image	İstinad şəklini çıxar
+	Replace deletes everything in “{group}” first, including presets you edited or moved there. This can't be undone.	Əvəzləmə əvvəlcə “{group}” daxilindəki hər şeyi, o cümlədən redaktə etdiyiniz və ya ora köçürdüyünüz önayarları silir. Bunu geri qaytarmaq mümkün deyil.
+	Reset bar position	Panelin mövqeyini sıfırla
+	Reset steps to model default	Addımları modelin standartına sıfırla
+	Resize windows when zooming using the Zoom Tool	Miqyaslama aləti ilə yaxınlaşdırarkən pəncərələrin ölçüsünü dəyiş
+	Sample: foreground color	Nümunə: ön plan rəngi
+	Sampling steps	Nümunələmə addımları
+	Save Image Pyramid	Şəkil piramidasını saxla
+	Save Transparency	Şəffaflığı saxla
+	Save canceled	Saxlama ləğv edildi
+	Save the settings to each raw's sidecar without opening it	Hər xam faylı açmadan parametrləri onun köməkçi faylına saxla
+	Scroll All Windows	Bütün pəncərələri sürüşdür
+	Scroll all open document windows when using the hand tool	Əl alətindən istifadə edərkən bütün açıq sənəd pəncərələrini sürüşdür
+	Search and select fonts	Şriftləri axtar və seç
+	Select an action first.	Əvvəlcə bir əməliyyat seçin.
+	Select an action step first.	Əvvəlcə bir əməliyyat addımı seçin.
+	Selected Area Only	Yalnız seçilmiş sahə
+	Selected Slices	Seçilmiş dilimlər
+	Set as default	Standart olaraq təyin et
+	Set flow rate for stroke	Fırça izi üçün axın sürətini təyin et
+	Set font size	Şrift ölçüsünü təyin et
+	Set font style	Şrift üslubunu təyin et
+	Set opacity for stroke	Fırça izi üçün qeyri-şəffaflığı təyin et
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Fırça izi üçün hamarlamanı təyin et\nFırça izlərinin titrəməsini azaltmaq üçün daha yüksək dəyərlərdən istifadə edin
+	Set symmetry options for Painting	Rəngləmə üçün simmetriya seçimlərini təyin et
+	Set text color	Mətn rəngini təyin et
+	Set the brush angle	Fırçanın bucağını təyin et
+	Small Thumbnails	Kiçik miniatürlər
+	Smoothing Options	Hamarlama seçimləri
+	Some settings could not be saved; the raws stay open	Bəzi parametrlər saxlanıla bilmədi; xam fayllar açıq qalır
+	Source: {name}	Mənbə: {name}
+	Specify Channels:	Kanalları göstər:
+	Start	Başlanğıc
+	Step by Step	Addım-addım
+	Switch Foreground and Background Colors (X)	Ön və arxa plan rənglərini dəyiş (X)
+	Text encoders	Mətn kodlayıcıları
+	The GPU compositor is still being prepared	GPU kompozitoru hələ hazırlanır
+	The History Brush source was deleted: set a new source in the History panel	Tarixçə fırçasının mənbəyi silindi: Tarixçə panelində yeni mənbə təyin edin
+	The Record Again command changed.	Yenidən qeyd et əmri dəyişdi.
+	The action or insertion command changed. Request Insert Menu Item again.	Əməliyyat və ya daxil etmə əmri dəyişdi. Menyu elementi daxil et əmrini yenidən istəyin.
+	The actions changed. Request Record Again again.	Əməliyyatlar dəyişdi. Yenidən qeyd et əmrini təkrar istəyin.
+	The command permissions changed. Request Insert Menu Item again.	Əmr icazələri dəyişdi. Menyu elementi daxil et əmrini yenidən istəyin.
+	The command permissions changed. Request Record Again again.	Əmr icazələri dəyişdi. Yenidən qeyd et əmrini təkrar istəyin.
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Cari müvəqqəti qovluq ({path}) boş yerini bildirmir, buna görə PhotoCraft dolmazdan əvvəl dayana bilmir və Müvəqqəti yaddaş ölçüsü limiti olmadan böyük fayllar əlavə yer əldə etmir. Bu xəbərdarlıq cari konfiqurasiyaya aiddir; yuxarıdakı dəyişikliklər Tətbiq et və ya OK düyməsi ilə qüvvəyə minir. Limit təyin edin və ya yerli diskdən istifadə edin.
+	The document changed. Request Record Again again.	Sənəd dəyişdi. Yenidən qeyd et əmrini təkrar istəyin.
+	The document or its notes changed. Please delete the note again.	Sənəd və ya onun qeydləri dəyişdi. Zəhmət olmasa qeydi yenidən silin.
+	The frame is locked	Çərçivə kilidlidir
+	The frame is unavailable	Çərçivə əlçatan deyil
+	The image exceeds the AI editing size. Resize the document to continue?	Şəkil süni intellektlə redaktə ölçüsünü aşır. Davam etmək üçün sənədin ölçüsü dəyişdirilsin?
+	The preference could not be saved: {error}	Parametr saxlanıla bilmədi: {error}
+	The step editor could not be opened.	Addım redaktorunu açmaq mümkün olmadı.
+	The step has no command editor.	Addımın əmr redaktoru yoxdur.
+	Top align text	Mətni yuxarıya düzləndir
+	Translate prompt to English	Sorğunu ingiliscəyə tərcümə et
+	Update PhotoCraft and restart now?	PhotoCraft indi yenilənsin və yenidən başladılsın?
+	Updates have not been checked yet.	Yeniləmələr hələ yoxlanılmayıb.
+	Use relative positioning for reference point	İstinad nöqtəsi üçün nisbi yerləşdirmədən istifadə et
+	Use these settings for new arrows	Yeni oxlar üçün bu parametrlərdən istifadə et
+	Useful mixer brush combinations	Faydalı qarışdırıcı fırça birləşmələri
+	Website	Veb-sayt
+	You can check for updates again in Help → About PhotoCraft.	Kömək → PhotoCraft haqqında bölməsində yeniləmələri yenidən yoxlaya bilərsiniz.
+	ZIP	ZIP
+	Zoom current window to 1:1	Cari pəncərəni 1:1 miqyasına gətir
+	Zoom current window to fill the screen	Cari pəncərəni ekranı dolduracaq qədər miqyasla
+	Zoom current window to screen size	Cari pəncərəni ekran ölçüsünə miqyasla
+	brush tool	fırça aləti
+	seconds	saniyə
+	{label} is writing the file and can no longer be canceled	{label} faylı yazır və artıq ləğv edilə bilməz
+	{message} into “{group}”	{message} “{group}” daxilinə
+	{ok} written to {dir}	{ok} {dir} qovluğuna yazıldı
+	{set} from {file} replaced the one from {earlier}	{file} faylından {set}, {earlier} mənbəsindəkini əvəz etdi
+	…	…

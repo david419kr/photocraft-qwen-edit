@@ -4836,11 +4836,7 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	AI Prompt History	AI-prompthistorik
 	AI model settings	Inställningar för AI-modell
 	Adjust colors with Poisson blending	Justera färger med Poisson-blandning
-	Adobe Every-line Composer	Adobe Every-line Composer
-	Adobe PDF Presets…	Adobe PDF-förinställningar…
-	Adobe Single-line Composer	Adobe Single-line Composer
 	All nine regions	Alla nio områden
-	All shortcuts reset to Photoshop defaults.	Alla kortkommandon har återställts till Photoshops standardvärden.
 	Answer the open import question first, then import this file again.	Svara först på den öppna importfrågan och importera sedan filen igen.
 	Arrange Panels	Ordna paneler
 	Arrowhead options	Alternativ för pilspetsar
@@ -4850,14 +4846,6 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Automatically check for updates	Sök efter uppdateringar automatiskt
 	Base64	Base64
 	Batch preview	Förhandsvisning av gruppbearbetning
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Standardinställningar för Camera Raw
-	Camera Raw Filter	Camera Raw-filter
-	Camera Raw Filter ({layer})	Camera Raw-filter ({layer})
-	Camera Raw Filter…	Camera Raw-filter…
-	Camera Raw isn't open	Camera Raw är inte öppet
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Öppningen av {name} avbröts
 	Cancelled placing {name}	Montering av {name} avbröts
 	Cancelled {label}	{label} avbröts
@@ -4895,7 +4883,6 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Custom model filenames (one per line)	Egna modellfilnamn (ett per rad)
 	Data Encoding	Datakodning
 	Data Sets as Files is unavailable on the web	Datauppsättningar som filer är inte tillgängligt på webben
-	Default Photoshop Size	Standardstorlek för Photoshop
 	Default colours (D)	Standardfärger (D)
 	Describe changes to the whole image	Beskriv ändringar i hela bilden
 	Describe changes, or leave blank to remove	Beskriv ändringar eller lämna tomt för att ta bort
@@ -4937,14 +4924,10 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Inverse Selection	Omvänd markering
 	LZW	LZW
 	Layer Effects	Lagereffekter
-	Layer via Copy	Lager via kopiering
-	Layer via Cut	Lager via urklippning
 	Learn	Lär dig
 	Lining	Versalsiffror
 	Linked	Länkad
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Det skulle finnas lite minne kvar efter att filen öppnats. Stäng andra appar först, annars kan PhotoCraft få slut på minne.
-	Loaded Camera Raw settings from {file}	Läste in Camera Raw-inställningar från {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Läste in Camera Raw-inställningar från {file} ({n} stöds inte)
 	Look	LOOK
 	Lut Format	LUT-format
 	Match Surrounding Colors	Matcha omgivande färger
@@ -4976,7 +4959,6 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	Open Panel in Own Window	Öppna panel i eget fönster
 	Open a document to select a colour range.	Öppna ett dokument för att välja ett färgintervall.
 	Open anyway	Öppna ändå
-	Open in camera raw	Öppna i Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Att öppna det här dokumentet använder mer minne och kan göra datorn eller andra program som körs långsammare.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Att öppna ”{name}” kräver uppskattningsvis {est} GiB minne ({avail} GiB tillgängligt).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Att öppna ”{name}” kräver uppskattningsvis {est} GiB minne. Det tillgängliga minnet kunde inte mätas.
@@ -5057,7 +5039,6 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 	The frame is locked	Ramen är låst
 	The frame is unavailable	Ramen är inte tillgänglig
 	The image exceeds the AI editing size. Resize the document to continue?	Bilden överskrider storleken för AI-redigering. Ändra dokumentets storlek för att fortsätta?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Det här smarta objektet måste rasteriseras innan du fortsätter. Innehållet går inte längre att redigera. Vill du rasterisera det smarta objektet?
 	Translate prompt to English	Översätt prompt till engelska
 	Turbo int8	Turbo INT8
 	Update PhotoCraft	Uppdatera PhotoCraft
@@ -5077,9 +5058,86 @@ cameraRaw	White Balance: As Shot	Vitbalans: som tagen
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Penselgruppen ”{group}” innehåller redan dina penslar (antal: {n}).|Penselgruppen ”{group}” innehåller redan dina penslar (antal: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Övertoningsgruppen ”{group}” finns redan (antal övertoningar: {n}).|Övertoningsgruppen ”{group}” finns redan (antal övertoningar: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} export av bildresurser misslyckades|{what}: {n} exporter av bildresurser misslyckades
-cameraRaw	Camera Raw ({name})	Camera Raw ({name})
-cameraRaw	Camera Raw Filter ({layer})	Camera Raw-filter ({layer})
-cameraRaw	Camera Raw isn't open	Camera Raw är inte öppet
 cameraRaw	Cancelled opening {name}	Öppningen av {name} avbröts
 cameraRaw	Cancelled {label}	{label} avbröts
-cameraRaw	Loaded Camera Raw settings from {file}	Läste in Camera Raw-inställningar från {file}
+
+# Remembered file-import preferences
+	Last folder	Senast använda mapp
+	Pdf dpi	PDF-upplösning (dpi)
+	Pdf first page	Första PDF-sidan
+	Pdf last page	Sista PDF-sidan
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Ett kommando avbröts eller stoppades under satsbearbetningen. Fortsätta med nästa fil eller stoppa?
+	Allow Tool Recording	Tillåt verktygsinspelning
+	Allows rotation and scaling of selection	Tillåter rotation och skalning av markeringen
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Använd alltid tryck för opacitet. När avstängt styr penselförinställningen trycket
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Använd alltid tryck för storlek. När avstängt styr penselförinställningen trycket
+	Bottom align text	Justera text mot nederkanten
+	Choose a menu command. Playback asks for its settings when needed.	Välj ett menykommando. Vid uppspelning efterfrågas dess inställningar vid behov.
+	Choose a remix mode	Välj ett omblandningsläge
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Klicka och dra åt vänster eller höger för att skala med zoomverktyget (endast OpenGL)
+	Click to open the Brush Preset picker	Klicka för att öppna väljaren för penselförinställningar
+	Confirm or cancel the pending Record Again editor first.	Bekräfta eller avbryt först den väntande redigeraren för Spela in igen.
+	Confirm or cancel the pending menu item first.	Bekräfta eller avbryt först det väntande menyobjektet.
+	Copy CSS	Kopiera CSS
+	Could not use the type tool because the layer is locked.	Textverktyget kunde inte användas eftersom lagret är låst.
+	Delete this note?	Ta bort den här anteckningen?
+	Do not erase the foreground swatch color	Radera inte förgrundsrutans färg
+	Draws background color over foreground colors	Målar bakgrundsfärgen över förgrundsfärgerna
+	Enable to remix all layers	Aktivera för att blanda om alla lager
+	Equalize Entire Image Based On Selected Area	Utjämna hela bilden utifrån det markerade området
+	Equalize Selected Area Only	Utjämna endast markerat område
+	Erase range of similar colors	Radera ett intervall av liknande färger
+	How far to let the erasing spread	Hur långt raderingen får spridas
+	Insert Menu Item…	Infoga menyobjekt…
+	Insert Path	Infoga bana
+	No document.	Inget dokument.
+	No menu item belongs to this chooser.	Inget menyobjekt hör till den här väljaren.
+	No menu item is waiting.	Inget menyobjekt väntar.
+	No note to delete	Ingen anteckning att ta bort
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Ingen bana att skapa en form från: rita en med pennverktyget eller välj en i panelen Banor.
+	No pixels are selected.	Inga pixlar är markerade.
+	No recorded step belongs to this editor.	Inget inspelat steg hör till den här redigeraren.
+	No settings saved: these raws can't keep a sidecar here	Inga inställningar sparades: dessa råfiler kan inte ha en sidofil här
+	No slices are selected. Click a slice in the preview to select it.	Inga segment är markerade. Klicka på ett segment i förhandsvisningen för att markera det.
+	No step is waiting.	Inget steg väntar.
+	Note deleted, but the preference could not be saved: {error}	Anteckningen togs bort, men inställningen kunde inte sparas: {error}
+	Nothing to save: these raws are at their default settings	Inget att spara: dessa råfiler har standardinställningarna
+	Open as Smart Object…	Öppna som smart objekt…
+	Painting Mode	Målningsläge
+	Preparing Free Transform	Förbereder fri omformning
+	Record Again	Spela in igen
+	Resize windows when zooming using the Zoom Tool	Ändra fönsterstorlek vid zoomning med zoomverktyget
+	Save the settings to each raw's sidecar without opening it	Spara inställningarna i varje råfils sidofil utan att öppna filen
+	Scroll all open document windows when using the hand tool	Rulla alla öppna dokumentfönster när handverktyget används
+	Search and select fonts	Sök och välj teckensnitt
+	Select an action first.	Välj en åtgärd först.
+	Select an action step first.	Välj ett åtgärdssteg först.
+	Selected Area Only	Endast markerat område
+	Selected Slices	Markerade segment
+	Set flow rate for stroke	Ange flöde för penseldrag
+	Set font size	Ange teckenstorlek
+	Set font style	Ange teckenstil
+	Set opacity for stroke	Ange opacitet för penseldrag
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Ange utjämning för penseldrag\nAnvänd högre värden för att minska darrigheten i penseldragen
+	Set symmetry options for Painting	Ange symmetrialternativ för målning
+	Set text color	Ange textfärg
+	Set the brush angle	Ange penselvinkeln
+	Smoothing Options	Utjämningsalternativ
+	Some settings could not be saved; the raws stay open	Vissa inställningar kunde inte sparas; råfilerna förblir öppna
+	The Record Again command changed.	Kommandot Spela in igen ändrades.
+	The action or insertion command changed. Request Insert Menu Item again.	Åtgärden eller infogningskommandot ändrades. Begär Infoga menyobjekt igen.
+	The actions changed. Request Record Again again.	Åtgärderna ändrades. Begär Spela in igen på nytt.
+	The command permissions changed. Request Insert Menu Item again.	Kommandobehörigheterna ändrades. Begär Infoga menyobjekt igen.
+	The command permissions changed. Request Record Again again.	Kommandobehörigheterna ändrades. Begär Spela in igen på nytt.
+	The document changed. Request Record Again again.	Dokumentet ändrades. Begär Spela in igen på nytt.
+	The document or its notes changed. Please delete the note again.	Dokumentet eller dess anteckningar ändrades. Försök ta bort anteckningen igen.
+	The preference could not be saved: {error}	Inställningen kunde inte sparas: {error}
+	The step editor could not be opened.	Stegredigeraren kunde inte öppnas.
+	The step has no command editor.	Steget har ingen kommandoredigerare.
+	Top align text	Justera text mot överkanten
+	Use relative positioning for reference point	Använd relativ positionering för referenspunkten
+	Useful mixer brush combinations	Användbara kombinationer för blandpenseln
+	Zoom current window to 1:1	Zooma aktuellt fönster till 1:1
+	Zoom current window to fill the screen	Zooma aktuellt fönster så att skärmen fylls
+	Zoom current window to screen size	Zooma aktuellt fönster till skärmstorlek
+	brush tool	penselverktyg

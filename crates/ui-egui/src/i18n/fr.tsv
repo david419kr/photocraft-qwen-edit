@@ -4656,11 +4656,7 @@ shape	Appearance	Apparence
 	AI model settings	Paramètres du modèle IA
 	Adding generated layer	Ajout du calque généré
 	Adjust colors with Poisson blending	Ajuster les couleurs par fusion de Poisson
-	Adobe Every-line Composer	Composeur multiligne Adobe
-	Adobe PDF Presets…	Préréglages Adobe PDF…
-	Adobe Single-line Composer	Composeur ligne par ligne Adobe
 	All nine regions	Les neuf régions
-	All shortcuts reset to Photoshop defaults.	Tous les raccourcis ont été réinitialisés aux valeurs par défaut de Photoshop.
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	Répondez d’abord à la question d’importation ouverte, puis importez à nouveau ce fichier.
 	Arrange Panels	Organiser les panneaux
@@ -4673,14 +4669,6 @@ shape	Appearance	Apparence
 	Batch preview	Aperçu du traitement par lots
 	CPU Rendering	Rendu par le processeur
 	Calculating…	Calcul en cours…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Valeurs par défaut de Camera Raw
-	Camera Raw Filter	Filtre Camera Raw
-	Camera Raw Filter ({layer})	Filtre Camera Raw ({layer})
-	Camera Raw Filter…	Filtre Camera Raw…
-	Camera Raw isn't open	Camera Raw n'est pas ouvert
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Ouverture de {name} annulée
 	Cancelled placing {name}	Importation de {name} annulée
 	Cancelled {label}	{label} : annulé
@@ -4717,7 +4705,6 @@ shape	Appearance	Apparence
 	Custom model filenames (one per line)	Noms de fichiers des modèles personnalisés (un par ligne)
 	Data Encoding	Encodage des données
 	Data Sets as Files is unavailable on the web	L’exportation des ensembles de données sous forme de fichiers n’est pas disponible sur le Web
-	Default Photoshop Size	Taille Photoshop par défaut
 	Default colours (D)	Couleurs par défaut (D)
 	Describe changes to the whole image	Décrivez les modifications de toute l’image
 	Describe changes, or leave blank to remove	Décrivez les modifications ou laissez vide pour supprimer
@@ -4755,15 +4742,11 @@ shape	Appearance	Apparence
 	Inverse Selection	Inverser la sélection
 	LZW	LZW
 	Layer Effects	Effets de calque
-	Layer via Copy	Calque par copie
-	Layer via Cut	Calque par coupe
 	Level:	Niveau :
 	Lining	Chiffres alignés
 	Linked	Lié
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Il resterait peu de mémoire après l’ouverture de ce fichier. Fermez d’abord les autres applications, sinon PhotoCraft risque de manquer de mémoire.
 	Load Photoshop brushes (.abr)	Charger des pinceaux Photoshop (.abr)
-	Loaded Camera Raw settings from {file}	Paramètres Camera Raw chargés depuis {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Paramètres Camera Raw chargés depuis {file} ({n} non pris en charge)
 	Look	LOOK
 	Lut Format	Format LUT
 	Match Surrounding Colors	Adapter aux couleurs environnantes
@@ -4793,7 +4776,6 @@ shape	Appearance	Apparence
 	Open Panel in Own Window	Ouvrir le panneau dans une fenêtre indépendante
 	Open a document to select a colour range.	Ouvrez un document pour sélectionner une plage de couleurs.
 	Open anyway	Ouvrir quand même
-	Open in camera raw	Ouvrir dans Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	L’ouverture de ce document utilise davantage de mémoire et peut ralentir votre ordinateur ou les autres applications en cours d’exécution.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	L’ouverture de « {name} » nécessite environ {est} GiB de mémoire ({avail} GiB disponibles).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	L’ouverture de « {name} » nécessite environ {est} GiB de mémoire. La mémoire disponible n’a pas pu être mesurée.
@@ -4871,7 +4853,6 @@ shape	Appearance	Apparence
 	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Le dossier de travail actuel ({path}) ne signale pas son espace libre. PhotoCraft ne peut donc pas s’arrêter avant qu’il soit plein, et les fichiers volumineux ne bénéficient d’aucun espace supplémentaire sans limite de taille du disque de travail. Cet avertissement concerne la configuration actuelle ; les modifications ci-dessus prennent effet avec Appliquer ou OK. Définissez une limite ou utilisez un disque local.
 	The fastest and the softest, with colour fringing on fine detail.	Le plus rapide et le plus doux, avec des franges colorées sur les détails fins.
 	The image exceeds the AI editing size. Resize the document to continue?	L’image dépasse la taille de retouche IA. Redimensionner le document pour continuer ?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Cet objet intelligent doit être rastérisé pour continuer. Son contenu ne sera plus modifiable. Rastériser l'objet intelligent ?
 	Translate prompt to English	Traduire le prompt en anglais
 	Turbo ad q2	Turbo AD-Q2_K
 	Turbo ad q3	Turbo AD-Q3_K
@@ -4905,3 +4886,81 @@ shape	Appearance	Apparence
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Le groupe de pinceaux « {group} » contient déjà vos pinceaux (nombre : {n}).|Le groupe de pinceaux « {group} » contient déjà vos pinceaux (nombre : {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Le groupe de dégradés « {group} » existe déjà (nombre de dégradés : {n}).|Le groupe de dégradés « {group} » existe déjà (nombre de dégradés : {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what} : échec de {n} exportation de ressource d’image|{what} : échec de {n} exportations de ressources d’image
+
+# Remembered file-import preferences
+	Last folder	Dernier dossier utilisé
+	Pdf dpi	Résolution du PDF (ppp)
+	Pdf first page	Première page du PDF
+	Pdf last page	Dernière page du PDF
+
+# Upstream 0.22 UI contract coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Une commande a été annulée ou arrêtée pendant le traitement par lots. Continuer avec le fichier suivant ou arrêter ?
+	Allow Tool Recording	Autoriser l’enregistrement des outils
+	Allows rotation and scaling of selection	Permet de faire pivoter et de redimensionner la sélection
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Toujours utiliser la pression pour l’opacité. Sinon, le pinceau prédéfini contrôle la pression
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Toujours utiliser la pression pour la taille. Sinon, le pinceau prédéfini contrôle la pression
+	Bottom align text	Aligner le texte en bas
+	Choose a menu command. Playback asks for its settings when needed.	Choisissez une commande de menu. La lecture demandera ses paramètres si nécessaire.
+	Choose a remix mode	Choisir un mode de mélange
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Cliquez et déplacez-vous vers la gauche ou la droite pour redimensionner avec l’outil Zoom (OpenGL uniquement)
+	Click to open the Brush Preset picker	Cliquez pour ouvrir le sélecteur de pinceaux prédéfinis
+	Confirm or cancel the pending Record Again editor first.	Confirmez ou annulez d’abord l’éditeur Réenregistrer en attente.
+	Confirm or cancel the pending menu item first.	Confirmez ou annulez d’abord l’élément de menu en attente.
+	Copy CSS	Copier le CSS
+	Could not use the type tool because the layer is locked.	Impossible d’utiliser l’outil Texte car le calque est verrouillé.
+	Delete this note?	Supprimer cette note ?
+	Do not erase the foreground swatch color	Ne pas effacer la couleur de premier plan
+	Draws background color over foreground colors	Peint la couleur d’arrière-plan sur les couleurs de premier plan
+	Enable to remix all layers	Activer pour mélanger tous les calques
+	Erase range of similar colors	Effacer une plage de couleurs similaires
+	How far to let the erasing spread	Étendue autorisée de l’effacement
+	Insert Menu Item…	Insérer un élément de menu…
+	Insert Path	Insérer un tracé
+	No document.	Aucun document.
+	No menu item belongs to this chooser.	Aucun élément de menu n’appartient à ce sélecteur.
+	No menu item is waiting.	Aucun élément de menu en attente.
+	No note to delete	Aucune note à supprimer
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Aucun tracé pour créer une forme : dessinez-en un avec l’outil Plume ou sélectionnez-en un dans le panneau Tracés.
+	No pixels are selected.	Aucun pixel sélectionné.
+	No recorded step belongs to this editor.	Aucune étape enregistrée n’appartient à cet éditeur.
+	No slices are selected. Click a slice in the preview to select it.	Aucune tranche sélectionnée. Cliquez sur une tranche dans l’aperçu pour la sélectionner.
+	No step is waiting.	Aucune étape en attente.
+	Note deleted, but the preference could not be saved: {error}	Note supprimée, mais la préférence n’a pas pu être enregistrée : {error}
+	Open as Smart Object…	Ouvrir en tant qu’objet dynamique…
+	Painting Mode	Mode de peinture
+	Pick Color From Image	Choisir une couleur dans l’image
+	Preparing Free Transform	Préparation de la transformation manuelle
+	Record Again	Réenregistrer
+	Resize windows when zooming using the Zoom Tool	Redimensionner les fenêtres lors du zoom avec l’outil Zoom
+	Scroll all open document windows when using the hand tool	Faire défiler toutes les fenêtres de document ouvertes avec l’outil Main
+	Search and select fonts	Rechercher et sélectionner des polices
+	Select an action first.	Sélectionnez d’abord une action.
+	Select an action step first.	Sélectionnez d’abord une étape d’action.
+	Selected Area Only	Zone sélectionnée uniquement
+	Selected Slices	Tranches sélectionnées
+	Set flow rate for stroke	Définir le débit du trait
+	Set font size	Définir la taille de police
+	Set font style	Définir le style de police
+	Set opacity for stroke	Définir l’opacité du trait
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Définir le lissage du trait\nAugmentez la valeur pour réduire les tremblements des traits de pinceau
+	Set symmetry options for Painting	Définir les options de symétrie de peinture
+	Set text color	Définir la couleur du texte
+	Set the brush angle	Définir l’angle du pinceau
+	Smoothing Options	Options de lissage
+	The Record Again command changed.	La commande Réenregistrer a changé.
+	The action or insertion command changed. Request Insert Menu Item again.	L’action ou la commande d’insertion a changé. Redemandez Insérer un élément de menu.
+	The actions changed. Request Record Again again.	Les actions ont changé. Redemandez Réenregistrer.
+	The command permissions changed. Request Insert Menu Item again.	Les autorisations de la commande ont changé. Redemandez Insérer un élément de menu.
+	The command permissions changed. Request Record Again again.	Les autorisations de la commande ont changé. Redemandez Réenregistrer.
+	The document changed. Request Record Again again.	Le document a changé. Redemandez Réenregistrer.
+	The document or its notes changed. Please delete the note again.	Le document ou ses notes ont changé. Supprimez à nouveau la note.
+	The preference could not be saved: {error}	Impossible d’enregistrer la préférence : {error}
+	The step editor could not be opened.	Impossible d’ouvrir l’éditeur d’étapes.
+	The step has no command editor.	Cette étape n’a pas d’éditeur de commande.
+	Top align text	Aligner le texte en haut
+	Use relative positioning for reference point	Utiliser le positionnement relatif pour le point de référence
+	Useful mixer brush combinations	Combinaisons utiles du pinceau mélangeur
+	Zoom current window to 1:1	Afficher la fenêtre active à 1:1
+	Zoom current window to fill the screen	Agrandir la fenêtre active pour remplir l’écran
+	Zoom current window to screen size	Adapter la fenêtre active à la taille de l’écran
+	brush tool	outil Pinceau

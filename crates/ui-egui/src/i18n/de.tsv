@@ -3679,7 +3679,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Adding generated layer	Neue Ebene wird hinzugefügt
 	Adjust colors with Poisson blending	Farben mit Poisson-Blending anpassen
 	All nine regions	Alle neun Bereiche
-	All shortcuts reset to Photoshop defaults.	Alle Kurzbefehle wurden auf die Photoshop-Standards zurückgesetzt.
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	Beantworte zuerst die offene Importfrage und importiere diese Datei dann erneut.
 	Arrange Panels	Bedienfelder anordnen
@@ -3694,12 +3693,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	Stapelvorschau
 	CPU Rendering	CPU-Rendering
 	Calculating…	Wird berechnet…
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Camera-Raw-Standardeinstellungen
-	Camera Raw Filter ({layer})	Camera-Raw-Filter ({layer})
-	Camera Raw Filter…	Camera-Raw-Filter…
-	Camera Raw isn't open	Camera Raw ist nicht geöffnet
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Öffnen von {name} abgebrochen
 	Cancelled placing {name}	Platzieren von {name} abgebrochen
 	Cancelled {label}	{label} abgebrochen
@@ -3737,7 +3730,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	Dateinamen eigener Modelle (einer pro Zeile)
 	Data Encoding	Datenkodierung
 	Data Sets as Files is unavailable on the web	Datensätze als Dateien sind im Web nicht verfügbar
-	Default Photoshop Size	Standard-Photoshop-Größe
 	Default colours (D)	Standardfarben (D)
 	Describe changes to the whole image	Änderungen am gesamten Bild beschreiben
 	Describe changes, or leave blank to remove	Änderungen beschreiben oder zum Entfernen leer lassen
@@ -3779,15 +3771,11 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Auswahl umkehren
 	LZW	LZW
 	Layer Effects	Ebeneneffekte
-	Layer via Copy	Ebene durch Kopieren
-	Layer via Cut	Ebene durch Ausschneiden
 	Level:	Tonwert:
 	Lining	Versalziffern
 	Linked	Verknüpft
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Nach dem Öffnen dieser Datei bliebe nur wenig Arbeitsspeicher übrig. Schließen Sie zuerst andere Apps, sonst könnte PhotoCraft der Arbeitsspeicher ausgehen.
 	Load Photoshop brushes (.abr)	Photoshop-Pinsel (.abr) laden
-	Loaded Camera Raw settings from {file}	Camera-Raw-Einstellungen aus {file} geladen
-	Loaded Camera Raw settings from {file} ({n} not supported)	Camera-Raw-Einstellungen aus {file} geladen ({n} nicht unterstützt)
 	Locked	Gesperrt
 	Look	LOOK
 	Lut Format	LUT-Format
@@ -3820,7 +3808,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Bedienfeld in eigenem Fenster öffnen
 	Open a document to select a colour range.	Öffne ein Dokument, um einen Farbbereich auszuwählen.
 	Open anyway	Trotzdem öffnen
-	Open in camera raw	In Camera Raw öffnen
 	Opening this document uses more memory and may slow down your computer or other running applications.	Das Öffnen dieses Dokuments benötigt mehr Arbeitsspeicher und kann Ihren Computer oder andere laufende Anwendungen verlangsamen.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Das Öffnen von „{name}“ benötigt geschätzt {est} GiB Arbeitsspeicher ({avail} GiB verfügbar).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Das Öffnen von „{name}“ benötigt geschätzt {est} GiB Arbeitsspeicher. Der verfügbare Arbeitsspeicher konnte nicht ermittelt werden.
@@ -3934,3 +3921,83 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Die Pinselgruppe „{group}“ enthält bereits eigene Pinsel (Anzahl: {n}).|Die Pinselgruppe „{group}“ enthält bereits eigene Pinsel (Anzahl: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Die Verlaufsgruppe „{group}“ existiert bereits (Anzahl der Verläufe: {n}).|Die Verlaufsgruppe „{group}“ existiert bereits (Anzahl der Verläufe: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} Ausgabe von Bild-Assets fehlgeschlagen|{what}: {n} Ausgaben von Bild-Assets fehlgeschlagen
+
+# Remembered file-import preferences
+	Last folder	Zuletzt verwendeter Ordner
+	Pdf dpi	PDF-Auflösung (dpi)
+	Pdf first page	Erste PDF-Seite
+	Pdf last page	Letzte PDF-Seite
+
+# Complete integration source labels.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Ein Befehl wurde während der Stapelverarbeitung abgebrochen oder angehalten. Mit der nächsten Datei fortfahren oder stoppen?
+	Allow Tool Recording	Werkzeugaufzeichnung zulassen
+	Allows rotation and scaling of selection	Ermöglicht das Drehen und Skalieren der Auswahl
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Druck immer für die Deckkraft verwenden. Wenn deaktiviert, steuert die Pinselvorgabe den Druck
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Druck immer für die Größe verwenden. Wenn deaktiviert, steuert die Pinselvorgabe den Druck
+	Bottom align text	Text unten ausrichten
+	Choose a menu command. Playback asks for its settings when needed.	Wählen Sie einen Menübefehl. Bei der Wiedergabe werden die Einstellungen bei Bedarf abgefragt.
+	Choose a remix mode	Remix-Modus auswählen
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Klicken und nach links oder rechts bewegen, um mit dem Zoom-Werkzeug zu skalieren (nur OpenGL)
+	Click to open the Brush Preset picker	Klicken, um die Pinselvorgaben-Auswahl zu öffnen
+	Confirm or cancel the pending Record Again editor first.	Bestätigen oder verwerfen Sie zuerst den offenen Editor für „Erneut aufzeichnen“.
+	Confirm or cancel the pending menu item first.	Bestätigen oder verwerfen Sie zuerst den ausstehenden Menüeintrag.
+	Copy CSS	CSS kopieren
+	Could not use the type tool because the layer is locked.	Das Textwerkzeug konnte nicht verwendet werden, da die Ebene gesperrt ist.
+	Delete Note	Notiz löschen
+	Delete this note?	Diese Notiz löschen?
+	Do not erase the foreground swatch color	Die Vordergrundfarbe nicht löschen
+	Draws background color over foreground colors	Zeichnet mit der Hintergrundfarbe über Vordergrundfarben
+	Enable to remix all layers	Aktivieren, um alle Ebenen zu remixen
+	Erase range of similar colors	Bereich ähnlicher Farben löschen
+	How far to let the erasing spread	Wie weit sich das Löschen ausbreiten darf
+	Insert Menu Item…	Menüeintrag einfügen…
+	Insert Path	Pfad einfügen
+	No document.	Kein Dokument.
+	No menu item belongs to this chooser.	Zu dieser Auswahl gehört kein Menüeintrag.
+	No menu item is waiting.	Kein Menüeintrag wartet.
+	No note to delete	Keine Notiz zum Löschen
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Kein Pfad zum Erstellen einer Form: Zeichnen Sie einen mit dem Zeichenstift oder wählen Sie einen im Pfade-Bedienfeld aus.
+	No pixels are selected.	Keine Pixel ausgewählt.
+	No recorded step belongs to this editor.	Zu diesem Editor gehört kein aufgezeichneter Schritt.
+	No slices are selected. Click a slice in the preview to select it.	Keine Slices ausgewählt. Klicken Sie in der Vorschau auf ein Slice, um es auszuwählen.
+	No step is waiting.	Kein Schritt wartet.
+	Note deleted, but the preference could not be saved: {error}	Notiz gelöscht, aber die Einstellung konnte nicht gespeichert werden: {error}
+	Open as Smart Object…	Als Smartobjekt öffnen…
+	Painting Mode	Malmodus
+	Pick Color From Image	Farbe aus Bild aufnehmen
+	Preparing Free Transform	Freies Transformieren wird vorbereitet
+	Record Again	Erneut aufzeichnen
+	Resize windows when zooming using the Zoom Tool	Fenstergröße beim Zoomen mit dem Zoom-Werkzeug ändern
+	Scroll all open document windows when using the hand tool	Bei Verwendung des Handwerkzeugs alle geöffneten Dokumentfenster scrollen
+	Search and select fonts	Schriftarten suchen und auswählen
+	Select an action first.	Wählen Sie zuerst eine Aktion aus.
+	Select an action step first.	Wählen Sie zuerst einen Aktionsschritt aus.
+	Selected Area Only	Nur ausgewählter Bereich
+	Selected Slices	Ausgewählte Slices
+	Set flow rate for stroke	Fluss für den Pinselstrich einstellen
+	Set font size	Schriftgröße einstellen
+	Set font style	Schriftschnitt einstellen
+	Set opacity for stroke	Deckkraft für den Pinselstrich einstellen
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Glättung für den Pinselstrich einstellen\nHöhere Werte verringern das Zittern von Pinselstrichen
+	Set symmetry options for Painting	Symmetrieoptionen zum Malen einstellen
+	Set text color	Textfarbe einstellen
+	Set the brush angle	Pinselwinkel einstellen
+	Smoothing Options	Glättungsoptionen
+	The Record Again command changed.	Der Befehl „Erneut aufzeichnen“ wurde geändert.
+	The action or insertion command changed. Request Insert Menu Item again.	Die Aktion oder der Einfügebefehl wurde geändert. Fordern Sie „Menüeintrag einfügen“ erneut an.
+	The actions changed. Request Record Again again.	Die Aktionen wurden geändert. Fordern Sie „Erneut aufzeichnen“ erneut an.
+	The command permissions changed. Request Insert Menu Item again.	Die Befehlsberechtigungen wurden geändert. Fordern Sie „Menüeintrag einfügen“ erneut an.
+	The command permissions changed. Request Record Again again.	Die Befehlsberechtigungen wurden geändert. Fordern Sie „Erneut aufzeichnen“ erneut an.
+	The document changed. Request Record Again again.	Das Dokument wurde geändert. Fordern Sie „Erneut aufzeichnen“ erneut an.
+	The document or its notes changed. Please delete the note again.	Das Dokument oder seine Notizen wurden geändert. Löschen Sie die Notiz bitte erneut.
+	The preference could not be saved: {error}	Die Einstellung konnte nicht gespeichert werden: {error}
+	The step editor could not be opened.	Der Schritteditor konnte nicht geöffnet werden.
+	The step has no command editor.	Der Schritt hat keinen Befehlseditor.
+	Top align text	Text oben ausrichten
+	Use relative positioning for reference point	Relative Positionierung für den Referenzpunkt verwenden
+	Useful mixer brush combinations	Nützliche Mischpinsel-Kombinationen
+	Zoom current window to 1:1	Aktuelles Fenster auf 1:1 zoomen
+	Zoom current window to fill the screen	Aktuelles Fenster bildschirmfüllend zoomen
+	Zoom current window to screen size	Aktuelles Fenster auf Bildschirmgröße zoomen
+	brush tool	Pinselwerkzeug
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} Datei fehlgeschlagen|{what}: {n} Dateien fehlgeschlagen

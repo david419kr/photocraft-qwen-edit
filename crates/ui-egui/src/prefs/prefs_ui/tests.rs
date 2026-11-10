@@ -1141,7 +1141,8 @@ fn group_tools_survive_a_restart() {
     let (mut app, store) = app_with_store();
     let ctx = egui::Context::default();
     tick(&mut app, &ctx);
-    for tool in [Tool::Brush, Tool::Pencil, Tool::PaintBucket, Tool::PolygonLasso, Tool::Pencil, Tool::Zoom] {
+    // Explicitly visit Move: the fork starts on Brush rather than upstream's Move.
+    for tool in [Tool::Move, Tool::Brush, Tool::Pencil, Tool::PaintBucket, Tool::PolygonLasso, Tool::Pencil, Tool::Zoom] {
         app.ui.tool = tool;
         crate::tool_memory::persist(&mut app, &ctx);
         tick(&mut app, &ctx);
@@ -1185,8 +1186,13 @@ fn group_tools_are_saved_when_the_selected_tool_stays_the_same() {
     let (mut app, store) = app_with_store();
     let ctx = egui::Context::default();
     let pointer = |pressed| egui::Event::PointerButton { pos: egui::Pos2::ZERO, button: egui::PointerButton::Primary, pressed, modifiers: Default::default() };
+    // The fork starts on Brush, so first establish a different explicit selection.
+    // This keeps the upstream scenario about a remembered choice, not fresh-profile defaults.
+    app.ui.tool = Tool::Move;
+    tool_frame(&mut app, &ctx, vec![]);
     app.ui.tool = Tool::Brush;
     tool_frame(&mut app, &ctx, vec![]);
+    assert_eq!(stored(&store)["selectedTool"], json!("Brush"), "the pre-drag choice is persisted");
     tool_frame(&mut app, &ctx, vec![pointer(true)]);
     app.ui.tool = Tool::PaintBucket;
     tool_frame(&mut app, &ctx, vec![]);
@@ -1205,7 +1211,8 @@ fn group_tools_exclude_temporary_switches() {
     use crate::state::Tool;
     let (mut app, store) = app_with_store();
     let ctx = egui::Context::default();
-    for tool in [Tool::MagicEraser, Tool::Brush] {
+    // Preserve the same explicit history regardless of the fork's fresh-profile default.
+    for tool in [Tool::Move, Tool::MagicEraser, Tool::Brush] {
         app.ui.tool = tool;
         tool_frame(&mut app, &ctx, vec![]);
     }
@@ -1234,6 +1241,9 @@ fn a_launch_alone_saves_no_group_tools() {
     let ctx = egui::Context::default();
     tool_frame(&mut app, &ctx, vec![]);
     assert_eq!(stored(&store)["groupTools"], saved["groupTools"]);
+    assert_eq!(app.ui.tool, Tool::Brush, "the fork defaults to Brush");
+    app.ui.tool = Tool::Move;
+    tool_frame(&mut app, &ctx, vec![]);
     app.ui.tool = Tool::Brush;
     tool_frame(&mut app, &ctx, vec![]);
     assert_eq!(stored(&store)["groupTools"], json!(["Brush", "Move", "Pencil", "PaintBucket"]));
@@ -1245,12 +1255,12 @@ fn damaged_group_tools_keep_what_reads_back() {
     use crate::state::Tool;
     for bad in [json!(null), json!("Pencil"), json!(42), json!({"B": "Pencil"})] {
         let (app, _) = app_with_saved(Some(json!({"groupTools": bad, "toolOptions": {"feather": 12.0}}).to_string()));
-        assert_eq!(app.ui.group_tools, [Tool::Move], "{bad}");
+        assert_eq!(app.ui.group_tools, [Tool::Brush], "{bad}");
         assert_eq!(app.ui.tool_options.feather, 12.0);
     }
     let saved = json!({"groupTools": ["FutureTool", "Pencil", 7, null, {}, "PaintBucket", "Pencil"]});
     let (app, _) = app_with_saved(Some(saved.to_string()));
-    assert_eq!(app.ui.group_tools, [Tool::Move, Tool::Pencil, Tool::PaintBucket]);
+    assert_eq!(app.ui.group_tools, [Tool::Brush, Tool::Pencil, Tool::PaintBucket]);
 }
 
 #[test]

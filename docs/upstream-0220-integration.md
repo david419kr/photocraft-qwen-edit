@@ -44,3 +44,15 @@ Actual CUDA inference, VRAM residency, interactive UI and local GPU acceptance a
 - Completed remaining Korean, Japanese, Simplified Chinese and Traditional Chinese catalog gaps (2513/2513 keys in each), and refreshed the generated preference scorecard (210 preferences).
 - Formatting, layering, panel-command coverage, scorecard freshness, catalog structure/placeholders and the Python suites passed locally. Native runtime regressions are being resumed from cache; interrupted compilation is not a test pass.
 - Initial local WASM attempt could not execute because the Rust target standard library was missing. Hosted WASM remains required. Final PR and candidate Actions must certify the exact remote candidate SHA; no prior-release result is substituted.
+
+### Full-gate findings and corrections
+
+The first hosted candidate `10802f82f264ab9a64eb99293def7ed644ed2ee2` produced a verified Windows ZIP, but was not accepted: the Ubuntu gate executed 17,265 tests (17,240 passed, 25 failed, 112 skipped). The focused fork suite also stopped on a selected-tool fixture. These failure records and the original artifact remain attached to PR #28.
+
+- Fresh profiles intentionally start on Brush. Upstream group-history, shortcut and flyout fixtures assumed Move. Fixtures now explicitly establish the history under test or assert the fork's Brush fallback, preserving the original behavior checks and adding setup assertions. No production tool behavior changed.
+- The upstream CLI metadata-none test expected retained ICC/DPI, alpha identifier bits and layered XMP. Assertions and CLI help now follow the existing fork privacy contract instead; all/default metadata checks remain. Metadata removal behavior is unchanged.
+- Restored the missing Star entry in the checked 69-tool inventory.
+- Completed missing source and dynamically generated labels across all 33 complete catalogs, preserved placeholders/plural forms, removed retired display-name rows and reconciled contextual label collisions. No catalog completeness flag or test gate was lowered.
+- The UI translation source scanner compared literal backslash-n with a catalog runtime newline. It now decodes supported source-string escapes before lookup, with a regression proving newline/tab/quote/backslash handling and a negative raw-key assertion; the source-key set and coverage threshold are unchanged.
+
+Final hosted validation and replacement Windows artifact must use the corrective candidate SHA recorded in PR #28. The first candidate's ZIP/hash is retained only as historical evidence, not as final acceptance.

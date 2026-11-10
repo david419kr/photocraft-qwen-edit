@@ -4337,9 +4337,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	AI model settings	Ρυθμίσεις μοντέλου AI
 	Adding generated layer	Adding generated layer
 	Adjust colors with Poisson blending	Προσαρμογή χρωμάτων με ανάμειξη Poisson
-	Adobe PDF Presets…	Προεπιλογές Adobe PDF…
 	All nine regions	Και οι εννέα περιοχές
-	All shortcuts reset to Photoshop defaults.	All shortcuts reset to Photoshop defaults.
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	Απαντήστε πρώτα στην ανοιχτή ερώτηση εισαγωγής και μετά εισαγάγετε ξανά αυτό το αρχείο.
 	Arrange Panels	Τακτοποίηση πλαισίων
@@ -4352,14 +4350,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	Προεπισκόπηση μαζικής επεξεργασίας
 	CPU Rendering	Απόδοση με CPU
 	Calculating…	Υπολογισμός…
-	Camera Raw	Επεξεργασία ακατέργαστης εικόνας
-	Camera Raw ({name})	Επεξεργασία RAW ({name})
-	Camera Raw Defaults	Προεπιλογές Camera Raw
-	Camera Raw Filter	Φίλτρο επεξεργασίας ακατέργαστης εικόνας
-	Camera Raw Filter ({layer})	Φίλτρο Camera Raw ({layer})
-	Camera Raw Filter…	Φίλτρο επεξεργασίας ακατέργαστης εικόνας…
-	Camera Raw isn't open	Το Camera Raw δεν είναι ανοιχτό
-	Camera Raw…	Επεξεργασία ακατέργαστης εικόνας…
 	Cancelled opening {name}	Ακυρώθηκε το άνοιγμα του {name}
 	Cancelled placing {name}	Ακυρώθηκε η τοποθέτηση του {name}
 	Cancelled {label}	Ακυρώθηκε: {label}
@@ -4396,7 +4386,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	Ονόματα αρχείων προσαρμοσμένων μοντέλων (ένα ανά γραμμή)
 	Data Encoding	Κωδικοποίηση δεδομένων
 	Data Sets as Files is unavailable on the web	Τα σύνολα δεδομένων ως αρχεία δεν είναι διαθέσιμα στον ιστό
-	Default Photoshop Size	Default Photoshop Size
 	Default colours (D)	Προεπιλεγμένα χρώματα (D)
 	Describe changes to the whole image	Describe changes to the whole image
 	Describe changes, or leave blank to remove	Describe changes, or leave blank to remove
@@ -4434,15 +4423,11 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Αντιστροφή επιλογής
 	LZW	LZW
 	Layer Effects	Εφέ επιπέδου
-	Layer via Copy	Επίπεδο μέσω αντιγραφής
-	Layer via Cut	Επίπεδο μέσω αποκοπής
 	Level:	Επίπεδο:
 	Lining	Ίσου ύψους
 	Linked	Συνδεδεμένα
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Μετά το άνοιγμα αυτού του αρχείου θα απέμενε λίγη μνήμη. Κλείστε πρώτα άλλες εφαρμογές, διαφορετικά το PhotoCraft μπορεί να εξαντλήσει τη μνήμη.
 	Load Photoshop brushes (.abr)	Load Photoshop brushes (.abr)
-	Loaded Camera Raw settings from {file}	Φορτώθηκαν ρυθμίσεις Camera Raw από το {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Φορτώθηκαν ρυθμίσεις Camera Raw από το {file} ({n} δεν υποστηρίζονται)
 	Look	LOOK
 	Lut Format	Μορφή LUT
 	Match Surrounding Colors	Προσαρμογή στα χρώματα του περιβάλλοντος
@@ -4472,7 +4457,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Άνοιγμα πλαισίου σε ξεχωριστό παράθυρο
 	Open a document to select a colour range.	Ανοίξτε ένα έγγραφο για να επιλέξετε εύρος χρωμάτων.
 	Open anyway	Άνοιγμα ούτως ή άλλως
-	Open in camera raw	Άνοιγμα στο Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Το άνοιγμα αυτού του εγγράφου απαιτεί περισσότερη μνήμη και μπορεί να επιβραδύνει τον υπολογιστή ή άλλες εφαρμογές που εκτελούνται.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Το άνοιγμα του «{name}» απαιτεί περίπου {est} GiB μνήμης ({avail} GiB διαθέσιμα).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Το άνοιγμα του «{name}» απαιτεί περίπου {est} GiB μνήμης. Δεν ήταν δυνατή η μέτρηση της διαθέσιμης μνήμης.
@@ -4583,3 +4567,83 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Η ομάδα πινέλων «{group}» περιέχει ήδη δικά σας πινέλα (πλήθος: {n}).|Η ομάδα πινέλων «{group}» περιέχει ήδη δικά σας πινέλα (πλήθος: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Η ομάδα ντεγκραντέ «{group}» υπάρχει ήδη (πλήθος ντεγκραντέ: {n}).|Η ομάδα ντεγκραντέ «{group}» υπάρχει ήδη (πλήθος ντεγκραντέ: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: απέτυχε η έξοδος {n} πόρου εικόνας|{what}: απέτυχε η έξοδος {n} πόρων εικόνας
+
+# Remembered file-import preferences
+	Last folder	Τελευταίος φάκελος που χρησιμοποιήθηκε
+	Pdf dpi	Ανάλυση PDF (dpi)
+	Pdf first page	Πρώτη σελίδα PDF
+	Pdf last page	Τελευταία σελίδα PDF
+
+# Complete integration source labels.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Μια εντολή ακυρώθηκε ή διακόπηκε κατά τη μαζική επεξεργασία. Συνέχεια με το επόμενο αρχείο ή διακοπή;
+	Allow Tool Recording	Να επιτρέπεται η καταγραφή εργαλείων
+	Allows rotation and scaling of selection	Επιτρέπει την περιστροφή και την αλλαγή κλίμακας της επιλογής
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Πάντα χρήση πίεσης για την αδιαφάνεια. Όταν είναι ανενεργό, η προεπιλογή πινέλου ελέγχει την πίεση
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Πάντα χρήση πίεσης για το μέγεθος. Όταν είναι ανενεργό, η προεπιλογή πινέλου ελέγχει την πίεση
+	Bottom align text	Στοίχιση κειμένου κάτω
+	Choose a menu command. Playback asks for its settings when needed.	Επιλέξτε μια εντολή μενού. Η αναπαραγωγή ζητά τις ρυθμίσεις της όταν χρειάζεται.
+	Choose a remix mode	Επιλέξτε λειτουργία αναμείξης
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Κάντε κλικ και μετακινηθείτε αριστερά ή δεξιά για αλλαγή κλίμακας με το εργαλείο ζουμ (μόνο OpenGL)
+	Click to open the Brush Preset picker	Κάντε κλικ για άνοιγμα της επιλογής προεπιλογών πινέλου
+	Confirm or cancel the pending Record Again editor first.	Επιβεβαιώστε ή ακυρώστε πρώτα τον ανοιχτό επεξεργαστή επανάληψης καταγραφής.
+	Confirm or cancel the pending menu item first.	Επιβεβαιώστε ή ακυρώστε πρώτα το στοιχείο μενού που εκκρεμεί.
+	Copy CSS	Αντιγραφή CSS
+	Could not use the type tool because the layer is locked.	Δεν ήταν δυνατή η χρήση του εργαλείου κειμένου επειδή η στρώση είναι κλειδωμένη.
+	Delete Note	Διαγραφή σημείωσης
+	Delete this note?	Να διαγραφεί αυτή η σημείωση;
+	Do not erase the foreground swatch color	Να μη διαγράφεται το χρώμα προσκηνίου
+	Draws background color over foreground colors	Ζωγραφίζει με το χρώμα παρασκηνίου πάνω στα χρώματα προσκηνίου
+	Enable to remix all layers	Ενεργοποιήστε για ανάμειξη όλων των στρώσεων
+	Erase range of similar colors	Διαγραφή περιοχής παρόμοιων χρωμάτων
+	How far to let the erasing spread	Πόσο μακριά επιτρέπεται να εξαπλωθεί η διαγραφή
+	Insert Menu Item…	Εισαγωγή στοιχείου μενού…
+	Insert Path	Εισαγωγή διαδρομής
+	No document.	Δεν υπάρχει έγγραφο.
+	No menu item belongs to this chooser.	Δεν αντιστοιχεί στοιχείο μενού σε αυτόν τον επιλογέα.
+	No menu item is waiting.	Δεν εκκρεμεί στοιχείο μενού.
+	No note to delete	Δεν υπάρχει σημείωση για διαγραφή
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Δεν υπάρχει διαδρομή για δημιουργία σχήματος: σχεδιάστε μία με την πένα ή επιλέξτε μία στον πίνακα Διαδρομές.
+	No pixels are selected.	Δεν έχουν επιλεγεί εικονοστοιχεία.
+	No recorded step belongs to this editor.	Δεν αντιστοιχεί καταγεγραμμένο βήμα σε αυτόν τον επεξεργαστή.
+	No slices are selected. Click a slice in the preview to select it.	Δεν έχουν επιλεγεί τεμάχια. Κάντε κλικ σε ένα τεμάχιο στην προεπισκόπηση για να το επιλέξετε.
+	No step is waiting.	Δεν εκκρεμεί βήμα.
+	Note deleted, but the preference could not be saved: {error}	Η σημείωση διαγράφηκε, αλλά η προτίμηση δεν αποθηκεύτηκε: {error}
+	Open as Smart Object…	Άνοιγμα ως έξυπνο αντικείμενο…
+	Painting Mode	Λειτουργία ζωγραφικής
+	Pick Color From Image	Λήψη χρώματος από εικόνα
+	Preparing Free Transform	Προετοιμασία ελεύθερου μετασχηματισμού
+	Record Again	Επανάληψη καταγραφής
+	Resize windows when zooming using the Zoom Tool	Αλλαγή μεγέθους παραθύρων κατά το ζουμ με το εργαλείο ζουμ
+	Scroll all open document windows when using the hand tool	Κύλιση όλων των ανοιχτών παραθύρων εγγράφων κατά τη χρήση του εργαλείου χεριού
+	Search and select fonts	Αναζήτηση και επιλογή γραμματοσειρών
+	Select an action first.	Επιλέξτε πρώτα μια ενέργεια.
+	Select an action step first.	Επιλέξτε πρώτα ένα βήμα ενέργειας.
+	Selected Area Only	Μόνο η επιλεγμένη περιοχή
+	Selected Slices	Επιλεγμένα τεμάχια
+	Set flow rate for stroke	Ορισμός ροής πινελιάς
+	Set font size	Ορισμός μεγέθους γραμματοσειράς
+	Set font style	Ορισμός στυλ γραμματοσειράς
+	Set opacity for stroke	Ορισμός αδιαφάνειας πινελιάς
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Ορισμός εξομάλυνσης πινελιάς\nΧρησιμοποιήστε υψηλότερες τιμές για να μειώσετε το τρέμουλο των πινελιών
+	Set symmetry options for Painting	Ορισμός επιλογών συμμετρίας για ζωγραφική
+	Set text color	Ορισμός χρώματος κειμένου
+	Set the brush angle	Ορισμός γωνίας πινέλου
+	Smoothing Options	Επιλογές εξομάλυνσης
+	The Record Again command changed.	Η εντολή επανάληψης καταγραφής άλλαξε.
+	The action or insertion command changed. Request Insert Menu Item again.	Η ενέργεια ή η εντολή εισαγωγής άλλαξε. Ζητήστε ξανά εισαγωγή στοιχείου μενού.
+	The actions changed. Request Record Again again.	Οι ενέργειες άλλαξαν. Ζητήστε ξανά επανάληψη καταγραφής.
+	The command permissions changed. Request Insert Menu Item again.	Τα δικαιώματα της εντολής άλλαξαν. Ζητήστε ξανά εισαγωγή στοιχείου μενού.
+	The command permissions changed. Request Record Again again.	Τα δικαιώματα της εντολής άλλαξαν. Ζητήστε ξανά επανάληψη καταγραφής.
+	The document changed. Request Record Again again.	Το έγγραφο άλλαξε. Ζητήστε ξανά επανάληψη καταγραφής.
+	The document or its notes changed. Please delete the note again.	Το έγγραφο ή οι σημειώσεις του άλλαξαν. Διαγράψτε ξανά τη σημείωση.
+	The preference could not be saved: {error}	Η προτίμηση δεν αποθηκεύτηκε: {error}
+	The step editor could not be opened.	Δεν ήταν δυνατό το άνοιγμα του επεξεργαστή βήματος.
+	The step has no command editor.	Το βήμα δεν διαθέτει επεξεργαστή εντολής.
+	Top align text	Στοίχιση κειμένου πάνω
+	Use relative positioning for reference point	Χρήση σχετικής τοποθέτησης για το σημείο αναφοράς
+	Useful mixer brush combinations	Χρήσιμοι συνδυασμοί πινέλου ανάμειξης
+	Zoom current window to 1:1	Ζουμ του τρέχοντος παραθύρου σε 1:1
+	Zoom current window to fill the screen	Ζουμ του τρέχοντος παραθύρου για πλήρωση της οθόνης
+	Zoom current window to screen size	Ζουμ του τρέχοντος παραθύρου στο μέγεθος της οθόνης
+	brush tool	εργαλείο πινέλου
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} αρχείο απέτυχε|{what}: {n} αρχεία απέτυχαν

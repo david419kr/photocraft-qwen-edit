@@ -3662,11 +3662,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	AI model settings	Pengaturan model AI
 	Adding generated layer	Menambahkan lapisan hasil
 	Adjust colors with Poisson blending	Sesuaikan warna dengan pencampuran Poisson
-	Adobe Every-line Composer	Adobe Every-line Composer
-	Adobe PDF Presets…	Preset Adobe PDF…
-	Adobe Single-line Composer	Adobe Single-line Composer
 	All nine regions	Kesembilan wilayah
-	All shortcuts reset to Photoshop defaults.	Semua pintasan direset ke default Photoshop.
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	Jawab dahulu pertanyaan impor yang terbuka, lalu impor file ini lagi.
 	Arrange Panels	Susun Panel
@@ -3681,12 +3677,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	Pratinjau batch
 	CPU Rendering	Rendering CPU
 	Calculating…	Menghitung…
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Default Camera Raw
-	Camera Raw Filter ({layer})	Filter Camera Raw ({layer})
-	Camera Raw Filter…	Filter Camera Raw…
-	Camera Raw isn't open	Camera Raw tidak terbuka
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Pembukaan {name} dibatalkan
 	Cancelled placing {name}	Penempatan {name} dibatalkan
 	Cancelled {label}	{label} dibatalkan
@@ -3723,7 +3713,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	Nama berkas model kustom (satu per baris)
 	Data Encoding	Pengodean data
 	Data Sets as Files is unavailable on the web	Ekspor Kumpulan Data sebagai Berkas tidak tersedia di web
-	Default Photoshop Size	Ukuran Default Photoshop
 	Default colours (D)	Warna default (D)
 	Describe changes to the whole image	Jelaskan perubahan untuk seluruh gambar
 	Describe changes, or leave blank to remove	Jelaskan perubahan atau kosongkan untuk menghapus
@@ -3765,16 +3754,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Balik Seleksi
 	LZW	LZW
 	Layer Effects	Efek Lapisan
-	Layer via Copy	Layer via Salin
-	Layer via Cut	Layer via Potong
 	Length	Panjang
 	Level:	Tingkat:
 	Lining	Angka Sejajar
 	Linked	Tertaut
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Hanya sedikit memori yang akan tersisa setelah membuka berkas ini. Tutup aplikasi lain terlebih dahulu, atau PhotoCraft dapat kehabisan memori.
 	Load Photoshop brushes (.abr)	Muat kuas Photoshop (.abr)
-	Loaded Camera Raw settings from {file}	Pengaturan Camera Raw dimuat dari {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Pengaturan Camera Raw dimuat dari {file} ({n} tidak didukung)
 	Locked	Terkunci
 	Look	LOOK
 	Lut Format	Format LUT
@@ -3807,7 +3792,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Buka Panel di Jendela Terpisah
 	Open a document to select a colour range.	Buka dokumen untuk memilih rentang warna.
 	Open anyway	Tetap buka
-	Open in camera raw	Buka di Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Membuka dokumen ini menggunakan lebih banyak memori dan dapat memperlambat komputer atau aplikasi lain yang sedang berjalan.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Membuka “{name}” diperkirakan memerlukan memori {est} GiB ({avail} GiB tersedia).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Membuka “{name}” diperkirakan memerlukan memori {est} GiB. Memori yang tersedia tidak dapat diukur.
@@ -3921,3 +3905,79 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Grup kuas “{group}” sudah berisi {n} kuas milik Anda.
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Grup gradien “{group}” sudah ada ({n} gradien).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: keluaran {n} Aset Gambar gagal
+
+# Remembered file-import preferences
+	Last folder	Folder terakhir digunakan
+	Pdf dpi	Resolusi PDF (dpi)
+	Pdf first page	Halaman pertama PDF
+	Pdf last page	Halaman terakhir PDF
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Perintah dibatalkan atau dihentikan selama pemrosesan kelompok. Lanjutkan ke berkas berikutnya atau berhenti?
+	Allow Tool Recording	Izinkan Perekaman Alat
+	Allows rotation and scaling of selection	Mengizinkan rotasi dan penskalaan seleksi
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Selalu gunakan tekanan untuk opasitas. Jika nonaktif, prasetel kuas mengatur tekanan
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Selalu gunakan tekanan untuk ukuran. Jika nonaktif, prasetel kuas mengatur tekanan
+	Bottom align text	Ratakan teks ke bawah
+	Choose a menu command. Playback asks for its settings when needed.	Pilih perintah menu. Pemutaran akan meminta pengaturannya jika diperlukan.
+	Choose a remix mode	Pilih mode remix
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Klik lalu gerakkan ke kiri atau kanan untuk menskalakan dengan Alat Zoom (hanya OpenGL)
+	Click to open the Brush Preset picker	Klik untuk membuka pemilih prasetel kuas
+	Confirm or cancel the pending Record Again editor first.	Konfirmasikan atau batalkan editor Rekam Ulang yang tertunda terlebih dahulu.
+	Confirm or cancel the pending menu item first.	Konfirmasikan atau batalkan item menu yang tertunda terlebih dahulu.
+	Copy CSS	Salin CSS
+	Could not use the type tool because the layer is locked.	Alat teks tidak dapat digunakan karena lapisan terkunci.
+	Delete this note?	Hapus catatan ini?
+	Do not erase the foreground swatch color	Jangan hapus warna contoh latar depan
+	Draws background color over foreground colors	Menggambar warna latar belakang di atas warna latar depan
+	Enable to remix all layers	Aktifkan untuk meremix semua lapisan
+	Erase range of similar colors	Hapus rentang warna serupa
+	How far to let the erasing spread	Seberapa jauh penghapusan boleh menyebar
+	Insert Menu Item…	Sisipkan Item Menu…
+	Insert Path	Sisipkan Jalur
+	No document.	Tidak ada dokumen.
+	No menu item belongs to this chooser.	Tidak ada item menu untuk pemilih ini.
+	No menu item is waiting.	Tidak ada item menu yang menunggu.
+	No note to delete	Tidak ada catatan untuk dihapus
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Tidak ada jalur untuk membuat bentuk: gambar dengan alat Pena atau pilih di panel Jalur.
+	No pixels are selected.	Tidak ada piksel yang dipilih.
+	No recorded step belongs to this editor.	Tidak ada langkah terekam untuk editor ini.
+	No slices are selected. Click a slice in the preview to select it.	Tidak ada irisan yang dipilih. Klik irisan di pratinjau untuk memilihnya.
+	No step is waiting.	Tidak ada langkah yang menunggu.
+	Note deleted, but the preference could not be saved: {error}	Catatan dihapus, tetapi preferensi tidak dapat disimpan: {error}
+	Open as Smart Object…	Buka sebagai Objek Cerdas…
+	Painting Mode	Mode Melukis
+	Pick Color From Image	Pilih Warna dari Gambar
+	Preparing Free Transform	Menyiapkan Transformasi Bebas
+	Record Again	Rekam Ulang
+	Resize windows when zooming using the Zoom Tool	Ubah ukuran jendela saat memperbesar dengan Alat Zoom
+	Scroll all open document windows when using the hand tool	Gulir semua jendela dokumen terbuka saat menggunakan alat tangan
+	Search and select fonts	Cari dan pilih font
+	Select an action first.	Pilih aksi terlebih dahulu.
+	Select an action step first.	Pilih langkah aksi terlebih dahulu.
+	Selected Area Only	Hanya Area Terpilih
+	Selected Slices	Irisan Terpilih
+	Set flow rate for stroke	Atur laju aliran goresan
+	Set font size	Atur ukuran font
+	Set font style	Atur gaya font
+	Set opacity for stroke	Atur opasitas goresan
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Atur penghalusan goresan\nGunakan nilai lebih tinggi untuk mengurangi getaran goresan kuas
+	Set symmetry options for Painting	Atur opsi simetri untuk melukis
+	Set text color	Atur warna teks
+	Set the brush angle	Atur sudut kuas
+	Smoothing Options	Opsi Penghalusan
+	The Record Again command changed.	Perintah Rekam Ulang berubah.
+	The action or insertion command changed. Request Insert Menu Item again.	Aksi atau perintah penyisipan berubah. Minta Sisipkan Item Menu lagi.
+	The actions changed. Request Record Again again.	Aksi berubah. Minta Rekam Ulang lagi.
+	The command permissions changed. Request Insert Menu Item again.	Izin perintah berubah. Minta Sisipkan Item Menu lagi.
+	The command permissions changed. Request Record Again again.	Izin perintah berubah. Minta Rekam Ulang lagi.
+	The document changed. Request Record Again again.	Dokumen berubah. Minta Rekam Ulang lagi.
+	The document or its notes changed. Please delete the note again.	Dokumen atau catatannya berubah. Hapus catatan lagi.
+	The preference could not be saved: {error}	Preferensi tidak dapat disimpan: {error}
+	The step editor could not be opened.	Editor langkah tidak dapat dibuka.
+	The step has no command editor.	Langkah ini tidak memiliki editor perintah.
+	Top align text	Ratakan teks ke atas
+	Use relative positioning for reference point	Gunakan posisi relatif untuk titik acuan
+	Useful mixer brush combinations	Kombinasi kuas pencampur yang berguna
+	Zoom current window to 1:1	Perbesar jendela saat ini ke 1:1
+	Zoom current window to fill the screen	Perbesar jendela saat ini untuk memenuhi layar
+	Zoom current window to screen size	Perbesar jendela saat ini ke ukuran layar
+	brush tool	alat kuas

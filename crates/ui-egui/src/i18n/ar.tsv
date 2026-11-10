@@ -3646,12 +3646,6 @@ curves	Smooth	تنعيم
 	Base64	Base64
 	Batch	معالجة دفعية
 	Batch preview	معاينة المعالجة الدفعية
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	إعدادات Camera Raw الافتراضية
-	Camera Raw Filter ({layer})	فلتر Camera Raw ({layer})
-	Camera Raw Filter…	فلتر Camera Raw…
-	Camera Raw isn't open	Camera Raw غير مفتوح
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	تم إلغاء فتح {name}
 	Cancelled placing {name}	أُلغي وضع {name}
 	Cancelled {label}	تم إلغاء {label}
@@ -3735,14 +3729,10 @@ curves	Smooth	تنعيم
 	Inverse Selection	عكس التحديد
 	LZW	LZW
 	Layer Effects	تأثيرات الطبقة
-	Layer via Copy	طبقة عبر النسخ
-	Layer via Cut	طبقة عبر القص
 	Learn	تعلّم
 	Lining	متساوية الارتفاع
 	Linked	مرتبط
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	ستتبقى ذاكرة قليلة بعد فتح هذا الملف. أغلق التطبيقات الأخرى أولًا، وإلا فقد تنفد ذاكرة PhotoCraft.
-	Loaded Camera Raw settings from {file}	تم تحميل إعدادات Camera Raw من {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	تم تحميل إعدادات Camera Raw من {file} ({n} غير مدعومة)
 	Locked	مقفل
 	Look	LOOK
 	Lut Format	تنسيق LUT
@@ -3779,7 +3769,6 @@ curves	Smooth	تنعيم
 	Open Panel in Own Window	فتح اللوحة في نافذة مستقلة
 	Open a document to select a colour range.	افتح مستندًا لتحديد نطاق ألوان.
 	Open anyway	فتح على أي حال
-	Open in camera raw	فتح في Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	يتطلب فتح هذا المستند مزيدًا من الذاكرة وقد يبطئ الكمبيوتر أو التطبيقات الأخرى قيد التشغيل.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	يتطلب فتح «{name}» ذاكرة تُقدّر بـ {est} GiB (المتاح {avail} GiB).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	يتطلب فتح «{name}» ذاكرة تُقدّر بـ {est} GiB. تعذّر قياس الذاكرة المتاحة.
@@ -3885,3 +3874,89 @@ curves	Smooth	تنعيم
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).|تحتوي مجموعة الفُرَش «{group}» بالفعل على فُرَش لك (العدد: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).|مجموعة التدرجات «{group}» موجودة بالفعل (عدد التدرجات: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})|{what}: فشل إخراج موارد الصور (العدد: {n})
+
+# Remembered file-import preferences
+	Last folder	آخر مجلد مستخدم
+	Pdf dpi	دقة PDF (نقطة/بوصة)
+	Pdf first page	الصفحة الأولى من PDF
+	Pdf last page	الصفحة الأخيرة من PDF
+
+# Integration source-key coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	أُلغي أمر أو أُوقف أثناء المعالجة الدفعية. هل تريد المتابعة بالملف التالي أم التوقف؟
+	Allow Tool Recording	السماح بتسجيل الأدوات
+	Allows rotation and scaling of selection	يسمح بتدوير التحديد وتغيير حجمه
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	استخدام الضغط دائمًا للتحكم في العتامة. عند الإيقاف، يتحكم إعداد الفرشاة المسبق في الضغط
+	Always use Pressure for Size. When off, Brush Preset controls pressure	استخدام الضغط دائمًا للتحكم في الحجم. عند الإيقاف، يتحكم إعداد الفرشاة المسبق في الضغط
+	Bottom align text	محاذاة النص إلى الأسفل
+	Choose a menu command. Playback asks for its settings when needed.	اختر أمرًا من القائمة. سيطلب التشغيل إعداداته عند الحاجة.
+	Choose a remix mode	اختر وضع المزج
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	انقر وحرّك يسارًا أو يمينًا لتغيير الحجم بأداة التكبير (OpenGL فقط)
+	Click to open the Brush Preset picker	انقر لفتح منتقي إعدادات الفرشاة المسبقة
+	Confirm or cancel the pending Record Again editor first.	أكّد أولًا محرر إعادة التسجيل المفتوح أو ألغِه.
+	Confirm or cancel the pending menu item first.	أكّد أولًا عنصر القائمة المعلّق أو ألغِه.
+	Copy CSS	نسخ CSS
+	Could not use the type tool because the layer is locked.	تعذّر استخدام أداة النص لأن الطبقة مقفلة.
+	Delete Note	حذف الملاحظة
+	Delete this note?	هل تريد حذف هذه الملاحظة؟
+	Do not erase the foreground swatch color	عدم مسح لون عينة المقدمة
+	Draws background color over foreground colors	يرسم بلون الخلفية فوق ألوان المقدمة
+	Enable to remix all layers	فعّل هذا الخيار لمزج كل الطبقات
+	Erase range of similar colors	يمسح نطاقًا من الألوان المتشابهة
+	How far to let the erasing spread	مدى امتداد المسح
+	Insert Menu Item…	إدراج عنصر قائمة…
+	Insert Path	إدراج مسار
+	No document.	لا يوجد مستند.
+	No menu item belongs to this chooser.	لا يوجد عنصر قائمة مرتبط بهذا المنتقي.
+	No menu item is waiting.	لا يوجد عنصر قائمة معلّق.
+	No note to delete	لا توجد ملاحظة لحذفها
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	لا يوجد مسار لإنشاء شكل منه: ارسم مسارًا بأداة القلم أو اختر واحدًا من لوحة المسارات.
+	No pixels are selected.	لم يتم تحديد أي بكسلات.
+	No recorded step belongs to this editor.	لا توجد خطوة مسجلة مرتبطة بهذا المحرر.
+	No slices are selected. Click a slice in the preview to select it.	لم يتم تحديد أي شرائح. انقر على شريحة في المعاينة لتحديدها.
+	No step is waiting.	لا توجد خطوة معلّقة.
+	Note deleted, but the preference could not be saved: {error}	حُذفت الملاحظة، لكن تعذّر حفظ التفضيل: {error}
+	Open as Smart Object…	فتح ككائن ذكي…
+	Painting Mode	وضع الرسم
+	Pick Color From Image	اختيار لون من الصورة
+	Preparing Free Transform	جارٍ تحضير التحويل الحر
+	Record Again	التسجيل مجددًا
+	Resize windows when zooming using the Zoom Tool	تغيير حجم النوافذ عند التكبير بأداة التكبير
+	Scroll all open document windows when using the hand tool	تمرير كل نوافذ المستندات المفتوحة عند استخدام أداة اليد
+	Search and select fonts	البحث عن الخطوط واختيارها
+	Select an action first.	اختر إجراءً أولًا.
+	Select an action step first.	اختر خطوة من الإجراء أولًا.
+	Selected Area Only	المنطقة المحددة فقط
+	Selected Slices	الشرائح المحددة
+	Set flow rate for stroke	ضبط معدل تدفق الضربة
+	Set font size	ضبط حجم الخط
+	Set font style	ضبط نمط الخط
+	Set opacity for stroke	ضبط عتامة الضربة
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	ضبط تنعيم الضربة\nتقلل القيم الأعلى من اهتزاز ضربات الفرشاة
+	Set symmetry options for Painting	ضبط خيارات تماثل الرسم
+	Set text color	ضبط لون النص
+	Set the brush angle	ضبط زاوية الفرشاة
+	Smoothing Options	خيارات التنعيم
+	The Record Again command changed.	تغيّر أمر إعادة التسجيل.
+	The action or insertion command changed. Request Insert Menu Item again.	تغيّر الإجراء أو أمر الإدراج. اطلب إدراج عنصر قائمة مجددًا.
+	The actions changed. Request Record Again again.	تغيّرت الإجراءات. اطلب إعادة التسجيل مجددًا.
+	The command permissions changed. Request Insert Menu Item again.	تغيّرت أذونات الأمر. اطلب إدراج عنصر قائمة مجددًا.
+	The command permissions changed. Request Record Again again.	تغيّرت أذونات الأمر. اطلب إعادة التسجيل مجددًا.
+	The document changed. Request Record Again again.	تغيّر المستند. اطلب إعادة التسجيل مجددًا.
+	The document or its notes changed. Please delete the note again.	تغيّر المستند أو ملاحظاته. احذف الملاحظة مجددًا.
+	The preference could not be saved: {error}	تعذّر حفظ التفضيل: {error}
+	The step editor could not be opened.	تعذّر فتح محرر الخطوة.
+	The step has no command editor.	لا يوجد محرر أمر لهذه الخطوة.
+	Top align text	محاذاة النص إلى الأعلى
+	Use relative positioning for reference point	استخدام موضع نسبي للنقطة المرجعية
+	Useful mixer brush combinations	تركيبات مفيدة لفرشاة المزج
+	Zoom current window to 1:1	تكبير النافذة الحالية إلى 1:1
+	Zoom current window to fill the screen	تكبير النافذة الحالية لملء الشاشة
+	Zoom current window to screen size	تكبير النافذة الحالية لتناسب حجم الشاشة
+	brush tool	أداة الفرشاة
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: فشل {n} ملف|{what}: فشل ملف واحد ({n})|{what}: فشل ملفان ({n})|{what}: فشلت {n} ملفات|{what}: فشل {n} ملفًا|{what}: فشل {n} ملف
+	Save the settings to each raw's sidecar without opening it	حفظ الإعدادات في الملف الجانبي لكل ملف RAW دون فتحه
+	No settings saved: these raws can't keep a sidecar here	لم تُحفظ الإعدادات: لا يمكن إنشاء ملف جانبي لهذه الملفات بصيغة RAW هنا
+	Nothing to save: these raws are at their default settings	لا يوجد ما يُحفظ: تستخدم ملفات RAW هذه إعداداتها الافتراضية
+	Some settings could not be saved; the raws stay open	تعذّر حفظ بعض الإعدادات؛ ستبقى ملفات RAW مفتوحة
+	Equalize Entire Image Based On Selected Area	تسوية الصورة بالكامل بناءً على المنطقة المحددة
+	Equalize Selected Area Only	تسوية المنطقة المحددة فقط

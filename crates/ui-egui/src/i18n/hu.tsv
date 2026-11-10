@@ -4543,9 +4543,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Adding generated layer	Létrehozott réteg hozzáadása
 	Additional AI models	További MI-modellek
 	Adjust colors with Poisson blending	Színek igazítása Poisson-keveréssel
-	Adobe Every-line Composer	Adobe többsoros szedőmotor
-	Adobe PDF Presets…	Adobe PDF-előbeállítások…
-	Adobe Single-line Composer	Adobe egysoros szedőmotor
 	All nine regions	Mind a kilenc terület
 	Answer the open import question first, then import this file again.	Először válaszoljon a megnyitott importálási kérdésre, majd importálja újra ezt a fájlt.
 	Arrange Panels	Panelek elrendezése
@@ -4558,14 +4555,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	Köteg előnézete
 	CPU Rendering	CPU-renderelés
 	Calculating…	Számítás…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Camera Raw-alapértékek
-	Camera Raw Filter	Camera Raw szűrő
-	Camera Raw Filter ({layer})	Camera Raw szűrő ({layer})
-	Camera Raw Filter…	Camera Raw szűrő…
-	Camera Raw isn't open	A Camera Raw nincs megnyitva
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Megnyitás megszakítva: {name}
 	Cancelled placing {name}	A(z) {name} elhelyezése megszakítva
 	Cancelled {label}	Megszakítva: {label}
@@ -4638,14 +4627,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Kijelölés megfordítása
 	LZW	LZW
 	Layer Effects	Rétegeffektusok
-	Layer via Copy	Réteg másolással
-	Layer via Cut	Réteg kivágással
 	Level:	Szint:
 	Lining	Álló számjegyek
 	Linked	Csatolt
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	A fájl megnyitása után kevés memória maradna. Előbb zárjon be más alkalmazásokat, különben a PhotoCraft kifogyhat a memóriából.
-	Loaded Camera Raw settings from {file}	Camera Raw-beállítások betöltve innen: {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw-beállítások betöltve innen: {file} ({n} nem támogatott)
 	Look	LOOK
 	Lut Format	LUT-formátum
 	Match Surrounding Colors	Igazítás a környezet színeihez
@@ -4673,7 +4658,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Panel megnyitása külön ablakban
 	Open a document to select a colour range.	Színtartomány kijelöléséhez nyiss meg egy dokumentumot.
 	Open anyway	Megnyitás mégis
-	Open in camera raw	Megnyitás a Camera Raw-ban
 	Opening this document uses more memory and may slow down your computer or other running applications.	A dokumentum megnyitása több memóriát igényel, és lelassíthatja a számítógépet vagy más futó alkalmazásokat.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	A(z) „{name}” megnyitásához becslés szerint {est} GiB memória szükséges ({avail} GiB érhető el).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	A(z) „{name}” megnyitásához becslés szerint {est} GiB memória szükséges. A rendelkezésre álló memória nem mérhető.
@@ -4754,7 +4738,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	A jelenlegi munkakönyvtár ({path}) nem jelzi a szabad helyét, ezért a PhotoCraft nem tud megállni a megtelése előtt, és a nagy fájlok munkaterületméret-korlát nélkül nem kapnak belőle további helyet. Ez a figyelmeztetés a jelenlegi beállításokra vonatkozik; a fenti módosítások az Alkalmaz vagy az OK gombbal lépnek érvénybe. Állítson be korlátot, vagy használjon helyi lemezt.
 	The fastest and the softest, with colour fringing on fine detail.	A leggyorsabb és a leglágyabb, apró részleteken színes szegéllyel.
 	The image exceeds the AI editing size. Resize the document to continue?	A kép meghaladja az AI-szerkesztési méretet. Átméretezi a dokumentumot a folytatáshoz?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	A folytatáshoz az intelligens objektumot raszterizálni kell. A tartalma ezután nem lesz szerkeszthető. Raszterizálod az intelligens objektumot?
 	Translate prompt to English	Utasítás fordítása angolra
 	Translating prompt to English	Utasítás fordítása angolra
 	Turbo int8	Turbo INT8
@@ -4788,3 +4771,82 @@ prompt-region	Middle right	Jobb középső
 prompt-region	Top center	Fent középen
 prompt-region	Top left	Bal felső
 prompt-region	Top right	Jobb felső
+
+# Remembered file-import preferences
+	Last folder	Utoljára használt mappa
+	Pdf dpi	PDF-felbontás (dpi)
+	Pdf first page	PDF első oldala
+	Pdf last page	PDF utolsó oldala
+
+# Complete integration source labels.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Egy parancs megszakadt vagy leállt a kötegelt feldolgozás során. Folytatja a következő fájllal, vagy leállítja?
+	Allow Tool Recording	Eszközrögzítés engedélyezése
+	Allows rotation and scaling of selection	Lehetővé teszi a kijelölés forgatását és méretezését
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Mindig használjon nyomást az átlátszatlansághoz. Kikapcsolva az ecsetkészlet vezérli a nyomást
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Mindig használjon nyomást a mérethez. Kikapcsolva az ecsetkészlet vezérli a nyomást
+	Bottom align text	Szöveg alulra igazítása
+	Choose a menu command. Playback asks for its settings when needed.	Válasszon menüparancsot. Lejátszáskor a program szükség esetén bekéri a beállításait.
+	Choose a remix mode	Válasszon újrakeverési módot
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Kattintson, majd mozgassa balra vagy jobbra a Nagyító eszközzel történő méretezéshez (csak OpenGL)
+	Click to open the Brush Preset picker	Kattintson az ecsetkészlet-választó megnyitásához
+	Confirm or cancel the pending Record Again editor first.	Előbb erősítse meg vagy szakítsa meg a nyitott Újrarögzítés szerkesztőt.
+	Confirm or cancel the pending menu item first.	Előbb erősítse meg vagy szakítsa meg a függőben lévő menüpontot.
+	Copy CSS	CSS másolása
+	Could not use the type tool because the layer is locked.	A szövegeszköz nem használható, mert a réteg zárolva van.
+	Delete Note	Jegyzet törlése
+	Delete this note?	Törli ezt a jegyzetet?
+	Do not erase the foreground swatch color	Ne törölje az előtérszín színét
+	Draws background color over foreground colors	Háttérszínnel fest az előtérszínekre
+	Enable to remix all layers	Engedélyezze az összes réteg újrakeveréséhez
+	Erase range of similar colors	Hasonló színek tartományának törlése
+	How far to let the erasing spread	Milyen messzire terjedhet a törlés
+	Insert Menu Item…	Menüpont beszúrása…
+	Insert Path	Görbe beszúrása
+	No document.	Nincs dokumentum.
+	No menu item belongs to this chooser.	Ehhez a választóhoz nem tartozik menüpont.
+	No menu item is waiting.	Nincs várakozó menüpont.
+	No note to delete	Nincs törölhető jegyzet
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Nincs alakzattá alakítható görbe: rajzoljon egyet a Toll eszközzel, vagy válasszon egyet a Görbék panelen.
+	No pixels are selected.	Nincsenek kijelölt képpontok.
+	No recorded step belongs to this editor.	Ehhez a szerkesztőhöz nem tartozik rögzített lépés.
+	No slices are selected. Click a slice in the preview to select it.	Nincsenek kijelölt szeletek. A kijelöléshez kattintson egy szeletre az előnézetben.
+	No step is waiting.	Nincs várakozó lépés.
+	Note deleted, but the preference could not be saved: {error}	A jegyzet törölve, de a beállítás nem menthető: {error}
+	Open as Smart Object…	Megnyitás intelligens objektumként…
+	Painting Mode	Festési mód
+	Preparing Free Transform	Szabad alakítás előkészítése
+	Record Again	Újrarögzítés
+	Resize windows when zooming using the Zoom Tool	Ablakok átméretezése a Nagyító eszköz használatakor
+	Scroll all open document windows when using the hand tool	Az összes nyitott dokumentumablak görgetése a Kéz eszköz használatakor
+	Search and select fonts	Betűtípusok keresése és kiválasztása
+	Select an action first.	Előbb válasszon egy műveletet.
+	Select an action step first.	Előbb válasszon egy műveleti lépést.
+	Selected Area Only	Csak a kijelölt terület
+	Selected Slices	Kijelölt szeletek
+	Set flow rate for stroke	Ecsetvonás folyásának beállítása
+	Set font size	Betűméret beállítása
+	Set font style	Betűstílus beállítása
+	Set opacity for stroke	Ecsetvonás átlátszatlanságának beállítása
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Ecsetvonás simításának beállítása\nNagyobb értékekkel csökkenthető az ecsetvonások remegése
+	Set symmetry options for Painting	Festési szimmetriabeállítások megadása
+	Set text color	Szövegszín beállítása
+	Set the brush angle	Ecsetszög beállítása
+	Smoothing Options	Simítási beállítások
+	The Record Again command changed.	Az Újrarögzítés parancs megváltozott.
+	The action or insertion command changed. Request Insert Menu Item again.	A művelet vagy a beszúrási parancs megváltozott. Kérje újra a Menüpont beszúrása műveletet.
+	The actions changed. Request Record Again again.	A műveletek megváltoztak. Kérje újra az Újrarögzítés műveletet.
+	The command permissions changed. Request Insert Menu Item again.	A parancs engedélyei megváltoztak. Kérje újra a Menüpont beszúrása műveletet.
+	The command permissions changed. Request Record Again again.	A parancs engedélyei megváltoztak. Kérje újra az Újrarögzítés műveletet.
+	The document changed. Request Record Again again.	A dokumentum megváltozott. Kérje újra az Újrarögzítés műveletet.
+	The document or its notes changed. Please delete the note again.	A dokumentum vagy a jegyzetei megváltoztak. Törölje újra a jegyzetet.
+	The preference could not be saved: {error}	A beállítás nem menthető: {error}
+	The step editor could not be opened.	A lépésszerkesztő nem nyitható meg.
+	The step has no command editor.	A lépéshez nem tartozik parancsszerkesztő.
+	Top align text	Szöveg felülre igazítása
+	Use relative positioning for reference point	Relatív elhelyezés használata a referenciaponthoz
+	Useful mixer brush combinations	Hasznos keverőecset-kombinációk
+	Zoom current window to 1:1	Aktuális ablak nagyítása 1:1 arányra
+	Zoom current window to fill the screen	Aktuális ablak nagyítása a képernyő kitöltéséhez
+	Zoom current window to screen size	Aktuális ablak nagyítása képernyőméretre
+	brush tool	ecseteszköz
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} fájl sikertelen|{what}: {n} fájl sikertelen

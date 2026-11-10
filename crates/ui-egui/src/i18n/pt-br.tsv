@@ -4549,11 +4549,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	AI model settings	Configurações do modelo de IA
 	Adding generated layer	Adicionando camada gerada
 	Adjust colors with Poisson blending	Ajustar cores com mesclagem de Poisson
-	Adobe Every-line Composer	Compositor de todas as linhas Adobe
-	Adobe PDF Presets…	Predefinições do Adobe PDF…
-	Adobe Single-line Composer	Compositor de linha única Adobe
 	All nine regions	Todas as nove regiões
-	All shortcuts reset to Photoshop defaults.	Todos os atalhos foram redefinidos para os padrões do Photoshop.
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	Responda primeiro à pergunta de importação aberta e importe este arquivo novamente.
 	Arrange Panels	Organizar painéis
@@ -4566,14 +4562,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	Visualização do lote
 	CPU Rendering	Renderização por CPU
 	Calculating…	Calculando…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Padrões do Camera Raw
-	Camera Raw Filter	Filtro do Camera Raw
-	Camera Raw Filter ({layer})	Filtro Camera Raw ({layer})
-	Camera Raw Filter…	Filtro Camera Raw…
-	Camera Raw isn't open	Camera Raw não está aberto
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Abertura de {name} cancelada
 	Cancelled placing {name}	Inserção de {name} cancelada
 	Cancelled {label}	{label} cancelado
@@ -4610,7 +4598,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	Nomes dos arquivos de modelos personalizados (um por linha)
 	Data Encoding	Codificação dos dados
 	Data Sets as Files is unavailable on the web	Conjuntos de dados como arquivos não está disponível na Web
-	Default Photoshop Size	Tamanho padrão do Photoshop
 	Default colours (D)	Cores padrão (D)
 	Describe changes to the whole image	Descreva alterações na imagem inteira
 	Describe changes, or leave blank to remove	Descreva alterações ou deixe vazio para remover
@@ -4649,15 +4636,11 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Inverter seleção
 	LZW	LZW
 	Layer Effects	Efeitos de camada
-	Layer via Copy	Camada via cópia
-	Layer via Cut	Camada via recorte
 	Level:	Nível:
 	Lining	Algarismos alinhados
 	Linked	Vinculado
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Restaria pouca memória após abrir este arquivo. Feche outros aplicativos primeiro, ou o PhotoCraft poderá ficar sem memória.
 	Load Photoshop brushes (.abr)	Carregar pincéis do Photoshop (.abr)
-	Loaded Camera Raw settings from {file}	Configurações do Camera Raw carregadas de {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Configurações do Camera Raw carregadas de {file} ({n} sem suporte)
 	Look	LOOK
 	Lut Format	Formato LUT
 	Match Surrounding Colors	Ajustar às cores ao redor
@@ -4687,7 +4670,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Abrir painel em janela própria
 	Open a document to select a colour range.	Abra um documento para selecionar um intervalo de cores.
 	Open anyway	Abrir mesmo assim
-	Open in camera raw	Abrir no Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Abrir este documento usa mais memória e pode deixar o computador ou outros aplicativos em execução mais lentos.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Abrir “{name}” requer aproximadamente {est} GiB de memória ({avail} GiB disponíveis).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Abrir “{name}” requer aproximadamente {est} GiB de memória. Não foi possível medir a memória disponível.
@@ -4765,7 +4747,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	O diretório de memória virtual atual ({path}) não informa o espaço livre, então o PhotoCraft não pode parar antes que ele fique cheio, e arquivos grandes não ganham espaço extra sem um limite de tamanho da memória virtual. Este aviso se aplica à configuração atual; as alterações acima entram em vigor ao clicar em Aplicar ou OK. Defina um limite ou use um disco local.
 	The fastest and the softest, with colour fringing on fine detail.	O mais rápido e o mais suave, com franjamento de cor em detalhes finos.
 	The image exceeds the AI editing size. Resize the document to continue?	A imagem excede o tamanho de edição com IA. Redimensionar o documento para continuar?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Este objeto inteligente precisa ser rasterizado antes de continuar. O conteúdo não poderá mais ser editado. Rasterizar o objeto inteligente?
 	Translate prompt to English	Traduzir o prompt para inglês
 	Turbo ad q2	Turbo AD-Q2_K
 	Turbo ad q3	Turbo AD-Q3_K
@@ -4799,3 +4780,82 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	O grupo de pincéis “{group}” já contém pincéis seus (quantidade: {n}).|O grupo de pincéis “{group}” já contém pincéis seus (quantidade: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	O grupo de degradês “{group}” já existe (quantidade de degradês: {n}).|O grupo de degradês “{group}” já existe (quantidade de degradês: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: falha em {n} saída de recursos de imagem|{what}: falha em {n} saídas de recursos de imagem
+
+# Remembered file-import preferences
+	Last folder	Última pasta utilizada
+	Pdf dpi	Resolução do PDF (dpi)
+	Pdf first page	Primeira página do PDF
+	Pdf last page	Última página do PDF
+
+# Upstream 0.22 UI contract coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Um comando foi cancelado ou interrompido durante o processamento em lote. Continuar com o próximo arquivo ou parar?
+	Allow Tool Recording	Permitir gravação de ferramentas
+	Allows rotation and scaling of selection	Permite girar e redimensionar a seleção
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Sempre usar a pressão para a opacidade. Quando desativado, a predefinição do pincel controla a pressão
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Sempre usar a pressão para o tamanho. Quando desativado, a predefinição do pincel controla a pressão
+	Bottom align text	Alinhar texto embaixo
+	Choose a menu command. Playback asks for its settings when needed.	Escolha um comando de menu. A reprodução solicitará suas configurações quando necessário.
+	Choose a remix mode	Escolher um modo de mistura
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Clique e mova para a esquerda ou direita para redimensionar com a ferramenta Zoom (somente OpenGL)
+	Click to open the Brush Preset picker	Clique para abrir o seletor de predefinições de pincel
+	Confirm or cancel the pending Record Again editor first.	Confirme ou cancele primeiro o editor Gravar novamente pendente.
+	Confirm or cancel the pending menu item first.	Confirme ou cancele primeiro o item de menu pendente.
+	Copy CSS	Copiar CSS
+	Could not use the type tool because the layer is locked.	Não foi possível usar a ferramenta Texto porque a camada está bloqueada.
+	Delete Note	Excluir nota
+	Delete this note?	Excluir esta nota?
+	Do not erase the foreground swatch color	Não apagar a cor da amostra de primeiro plano
+	Draws background color over foreground colors	Pinta a cor de fundo sobre as cores de primeiro plano
+	Enable to remix all layers	Ative para misturar todas as camadas
+	Erase range of similar colors	Apagar um intervalo de cores semelhantes
+	How far to let the erasing spread	Até onde o apagamento pode se estender
+	Insert Menu Item…	Inserir item de menu…
+	Insert Path	Inserir demarcador
+	No document.	Nenhum documento.
+	No menu item belongs to this chooser.	Nenhum item de menu pertence a este seletor.
+	No menu item is waiting.	Nenhum item de menu está aguardando.
+	No note to delete	Nenhuma nota para excluir
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Não há demarcador para criar uma forma: desenhe um com a ferramenta Caneta ou selecione um no painel Demarcadores.
+	No pixels are selected.	Nenhum pixel selecionado.
+	No recorded step belongs to this editor.	Nenhuma etapa gravada pertence a este editor.
+	No slices are selected. Click a slice in the preview to select it.	Nenhuma fatia selecionada. Clique em uma fatia na visualização para selecioná-la.
+	No step is waiting.	Nenhuma etapa está aguardando.
+	Note deleted, but the preference could not be saved: {error}	Nota excluída, mas não foi possível salvar a preferência: {error}
+	Open as Smart Object…	Abrir como objeto inteligente…
+	Painting Mode	Modo de pintura
+	Preparing Free Transform	Preparando transformação livre
+	Record Again	Gravar novamente
+	Resize windows when zooming using the Zoom Tool	Redimensionar janelas ao ampliar com a ferramenta Zoom
+	Scroll all open document windows when using the hand tool	Rolar todas as janelas de documentos abertas ao usar a ferramenta Mão
+	Search and select fonts	Pesquisar e selecionar fontes
+	Select an action first.	Selecione uma ação primeiro.
+	Select an action step first.	Selecione uma etapa da ação primeiro.
+	Selected Area Only	Somente a área selecionada
+	Selected Slices	Fatias selecionadas
+	Set flow rate for stroke	Definir a vazão do traçado
+	Set font size	Definir o tamanho da fonte
+	Set font style	Definir o estilo da fonte
+	Set opacity for stroke	Definir a opacidade do traçado
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Definir a suavização do traçado\nUse valores maiores para reduzir a tremulação dos traçados do pincel
+	Set symmetry options for Painting	Definir opções de simetria da pintura
+	Set text color	Definir a cor do texto
+	Set the brush angle	Definir o ângulo do pincel
+	Smoothing Options	Opções de suavização
+	The Record Again command changed.	O comando Gravar novamente foi alterado.
+	The action or insertion command changed. Request Insert Menu Item again.	A ação ou o comando de inserção foi alterado. Solicite Inserir item de menu novamente.
+	The actions changed. Request Record Again again.	As ações foram alteradas. Solicite Gravar novamente outra vez.
+	The command permissions changed. Request Insert Menu Item again.	As permissões do comando foram alteradas. Solicite Inserir item de menu novamente.
+	The command permissions changed. Request Record Again again.	As permissões do comando foram alteradas. Solicite Gravar novamente outra vez.
+	The document changed. Request Record Again again.	O documento foi alterado. Solicite Gravar novamente outra vez.
+	The document or its notes changed. Please delete the note again.	O documento ou suas notas foram alterados. Exclua a nota novamente.
+	The preference could not be saved: {error}	Não foi possível salvar a preferência: {error}
+	The step editor could not be opened.	Não foi possível abrir o editor de etapas.
+	The step has no command editor.	A etapa não possui um editor de comandos.
+	Top align text	Alinhar texto em cima
+	Use relative positioning for reference point	Usar posicionamento relativo para o ponto de referência
+	Useful mixer brush combinations	Combinações úteis do pincel misturador
+	Zoom current window to 1:1	Exibir a janela atual em 1:1
+	Zoom current window to fill the screen	Ampliar a janela atual para preencher a tela
+	Zoom current window to screen size	Ajustar a janela atual ao tamanho da tela
+	brush tool	ferramenta Pincel
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: falha em {n} arquivo|{what}: falha em {n} arquivos

@@ -93,10 +93,10 @@ pub(crate) struct ExportArgs {
     /// real image
     #[arg(long)]
     pub(crate) no_maximize_compatibility: bool,
-    /// The document metadata a flat export embeds: all (the default) keeps the document's XMP
-    /// packet and free-form text where the format holds them, as Save As does; none leaves them
-    /// out, as Export As's Metadata: None. Nothing else changes: the ICC profile, EXIF and
-    /// resolution are written as they are without it. PSD, PSB and .pcraft always keep the XMP
+    /// The document metadata an export embeds: all (the default) keeps XMP, EXIF and free-form
+    /// text where the format holds them; none removes them, including from PSD, PSB and .pcraft.
+    /// Flat exports with none also omit ICC and resolution; PNG sets each alpha sample's lowest
+    /// bit to one to scrub hidden alpha-LSB data, without changing RGB samples
     #[arg(long, value_name = "none|all", value_parser = metadata)]
     pub(crate) metadata: Option<XmpEmbed>,
 }

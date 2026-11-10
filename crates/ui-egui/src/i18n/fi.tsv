@@ -4839,11 +4839,7 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	AI Prompt History	Tekoälykehotteiden historia
 	AI model settings	Tekoälymallin asetukset
 	Adjust colors with Poisson blending	Säädä värejä Poisson-sekoituksella
-	Adobe Every-line Composer	Adobe kaikkien rivien asettelija
-	Adobe PDF Presets…	Adobe PDF -esiasetukset…
-	Adobe Single-line Composer	Adobe yksirivinen asettelija
 	All nine regions	Kaikki yhdeksän aluetta
-	All shortcuts reset to Photoshop defaults.	Kaikki pikanäppäimet palautettu Photoshopin oletuksiin.
 	Answer the open import question first, then import this file again.	Vastaa ensin avoimeen tuontikysymykseen ja tuo sitten tämä tiedosto uudelleen.
 	Arrange Panels	Järjestä paneelit
 	Arrowhead options	Nuolenkärkien asetukset
@@ -4853,14 +4849,6 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Automatically check for updates	Tarkista päivitykset automaattisesti
 	Base64	Base64
 	Batch preview	Erän esikatselu
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Camera Raw -oletukset
-	Camera Raw Filter	Camera Raw -suodatin
-	Camera Raw Filter ({layer})	Camera Raw -suodatin ({layer})
-	Camera Raw Filter…	Camera Raw -suodatin…
-	Camera Raw isn't open	Camera Raw ei ole auki
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Tiedoston {name} avaaminen peruutettu
 	Cancelled placing {name}	Tiedoston {name} sijoittaminen peruutettiin
 	Cancelled {label}	Peruutettu: {label}
@@ -4898,7 +4886,6 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Custom model filenames (one per line)	Omien mallien tiedostonimet (yksi rivillä)
 	Data Encoding	Tietojen koodaus
 	Data Sets as Files is unavailable on the web	Tietojoukot tiedostoina ei ole käytettävissä verkossa
-	Default Photoshop Size	Photoshopin oletuskoko
 	Default colours (D)	Oletusvärit (D)
 	Describe changes to the whole image	Kuvaile koko kuvan muutokset
 	Describe changes, or leave blank to remove	Kuvaile muutokset tai jätä tyhjäksi poistaaksesi
@@ -4940,14 +4927,10 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Inverse Selection	Käänteinen valinta
 	LZW	LZW
 	Layer Effects	Tasotehosteet
-	Layer via Copy	Taso kopioimalla
-	Layer via Cut	Taso leikkaamalla
 	Learn	Opi
 	Lining	Versaalinumerot
 	Linked	Linkitetty
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Tiedoston avaamisen jälkeen muistia jäisi vähän. Sulje ensin muut sovellukset, tai PhotoCraftin muisti voi loppua.
-	Loaded Camera Raw settings from {file}	Camera Raw -asetukset ladattu tiedostosta {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Camera Raw -asetukset ladattu tiedostosta {file} ({n} tukematonta)
 	Look	LOOK
 	Lut Format	LUT-muoto
 	Match Surrounding Colors	Sovita ympäröiviin väreihin
@@ -4979,7 +4962,6 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	Open Panel in Own Window	Avaa paneeli omaan ikkunaan
 	Open a document to select a colour range.	Avaa asiakirja valitaksesi värialueen.
 	Open anyway	Avaa silti
-	Open in camera raw	Avaa Camera Raw'ssa
 	Opening this document uses more memory and may slow down your computer or other running applications.	Tämän asiakirjan avaaminen käyttää enemmän muistia ja voi hidastaa tietokonetta tai muita käynnissä olevia sovelluksia.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Asiakirjan ”{name}” avaaminen vaatii arviolta {est} GiB muistia ({avail} GiB käytettävissä).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Asiakirjan ”{name}” avaaminen vaatii arviolta {est} GiB muistia. Käytettävissä olevaa muistia ei voitu mitata.
@@ -5060,7 +5042,6 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 	The frame is locked	Kehys on lukittu
 	The frame is unavailable	Kehys ei ole käytettävissä
 	The image exceeds the AI editing size. Resize the document to continue?	Kuva ylittää tekoälymuokkauksen kokorajan. Muutetaanko asiakirjan kokoa jatkamiseksi?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Tämä älykäs objekti on rasteroitava ennen jatkamista. Sen sisältöä ei voi enää muokata. Rasteroidaanko älykäs objekti?
 	Translate prompt to English	Käännä kehote englanniksi
 	Turbo int8	Turbo INT8
 	Update PhotoCraft	Päivitä PhotoCraft
@@ -5080,9 +5061,90 @@ cameraRaw	White Balance: As Shot	Valkotasapaino: kuvauksen mukainen
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Sivellinryhmä ”{group}” sisältää jo omia siveltimiäsi (määrä: {n}).|Sivellinryhmä ”{group}” sisältää jo omia siveltimiäsi (määrä: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Liukuväriryhmä ”{group}” on jo olemassa (liukuvärien määrä: {n}).|Liukuväriryhmä ”{group}” on jo olemassa (liukuvärien määrä: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: {n} kuvaresurssin vienti epäonnistui|{what}: {n} kuvaresurssin vientiä epäonnistui
-cameraRaw	Camera Raw ({name})	Camera Raw ({name})
-cameraRaw	Camera Raw Filter ({layer})	Camera Raw -suodatin ({layer})
-cameraRaw	Camera Raw isn't open	Camera Raw ei ole auki
 cameraRaw	Cancelled opening {name}	Tiedoston {name} avaaminen peruutettu
 cameraRaw	Cancelled {label}	Peruutettu: {label}
-cameraRaw	Loaded Camera Raw settings from {file}	Camera Raw -asetukset ladattu tiedostosta {file}
+
+# Remembered file-import preferences
+	Last folder	Viimeksi käytetty kansio
+	Pdf dpi	PDF-tarkkuus (dpi)
+	Pdf first page	PDF:n ensimmäinen sivu
+	Pdf last page	PDF:n viimeinen sivu
+
+# Integration source-key coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Komento peruttiin tai pysäytettiin eräkäsittelyn aikana. Jatketaanko seuraavasta tiedostosta vai pysäytetäänkö?
+	Allow Tool Recording	Salli työkalujen tallennus
+	Allows rotation and scaling of selection	Sallii valinnan kiertämisen ja skaalaamisen
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Käytä aina painetta peittävyydelle. Muuten paineen määrittää siveltimen esiasetus
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Käytä aina painetta koolle. Muuten paineen määrittää siveltimen esiasetus
+	Bottom align text	Tasaa teksti alas
+	Choose a menu command. Playback asks for its settings when needed.	Valitse valikkokomento. Toisto pyytää tarvittaessa sen asetukset.
+	Choose a remix mode	Valitse sekoitustila
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Skaalaa Zoomaus-työkalulla napsauttamalla ja liikuttamalla vasemmalle tai oikealle (vain OpenGL)
+	Click to open the Brush Preset picker	Avaa siveltimen esiasetusten valitsin napsauttamalla
+	Confirm or cancel the pending Record Again editor first.	Vahvista tai peruuta ensin avoin uudelleentallennuksen muokkain.
+	Confirm or cancel the pending menu item first.	Vahvista tai peruuta ensin odottava valikkokohta.
+	Copy CSS	Kopioi CSS
+	Could not use the type tool because the layer is locked.	Tekstityökalua ei voi käyttää, koska taso on lukittu.
+	Delete Note	Poista muistiinpano
+	Delete this note?	Poistetaanko tämä muistiinpano?
+	Do not erase the foreground swatch color	Älä pyyhi edustavärinäytteen väriä
+	Draws background color over foreground colors	Piirtää taustavärillä edustavärien päälle
+	Enable to remix all layers	Sekoita kaikki tasot ottamalla tämä käyttöön
+	Erase range of similar colors	Pyyhkii samankaltaisten värien alueen
+	How far to let the erasing spread	Kuinka kauas pyyhintä saa levitä
+	Insert Menu Item…	Lisää valikkokohta…
+	Insert Path	Lisää polku
+	No document.	Ei asiakirjaa.
+	No menu item belongs to this chooser.	Tähän valitsimeen ei kuulu valikkokohtaa.
+	No menu item is waiting.	Valikkokohtaa ei ole odottamassa.
+	No note to delete	Ei poistettavaa muistiinpanoa
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Muodon luomiseen ei ole polkua: piirrä polku Kynä-työkalulla tai valitse se Polut-paneelista.
+	No pixels are selected.	Pikseleitä ei ole valittu.
+	No recorded step belongs to this editor.	Tähän muokkaimeen ei kuulu tallennettua vaihetta.
+	No slices are selected. Click a slice in the preview to select it.	Ositteita ei ole valittu. Valitse osite napsauttamalla sitä esikatselussa.
+	No step is waiting.	Vaihetta ei ole odottamassa.
+	Note deleted, but the preference could not be saved: {error}	Muistiinpano poistettiin, mutta asetusta ei voitu tallentaa: {error}
+	Open as Smart Object…	Avaa älykkäänä objektina…
+	Painting Mode	Maalaustila
+	Preparing Free Transform	Valmistellaan vapaata muunnosta
+	Record Again	Tallenna uudelleen
+	Resize windows when zooming using the Zoom Tool	Muuta ikkunoiden kokoa Zoomaus-työkalulla zoomattaessa
+	Scroll all open document windows when using the hand tool	Vieritä kaikkia avoimia asiakirjaikkunoita Käsi-työkalua käytettäessä
+	Search and select fonts	Etsi ja valitse fontteja
+	Select an action first.	Valitse ensin toiminto.
+	Select an action step first.	Valitse ensin toiminnon vaihe.
+	Selected Area Only	Vain valittu alue
+	Selected Slices	Valitut ositteet
+	Set flow rate for stroke	Aseta vedon virtaus
+	Set font size	Aseta fonttikoko
+	Set font style	Aseta fonttityyli
+	Set opacity for stroke	Aseta vedon peittävyys
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Aseta vedon tasoitus\nSuuremmat arvot vähentävät siveltimen vetojen tärinää
+	Set symmetry options for Painting	Aseta maalauksen symmetria-asetukset
+	Set text color	Aseta tekstin väri
+	Set the brush angle	Aseta siveltimen kulma
+	Smoothing Options	Tasoitusasetukset
+	The Record Again command changed.	Uudelleentallennuskomento muuttui.
+	The action or insertion command changed. Request Insert Menu Item again.	Toiminto tai lisäyskomento muuttui. Pyydä valikkokohdan lisäämistä uudelleen.
+	The actions changed. Request Record Again again.	Toiminnot muuttuivat. Pyydä uudelleentallennusta uudelleen.
+	The command permissions changed. Request Insert Menu Item again.	Komennon käyttöoikeudet muuttuivat. Pyydä valikkokohdan lisäämistä uudelleen.
+	The command permissions changed. Request Record Again again.	Komennon käyttöoikeudet muuttuivat. Pyydä uudelleentallennusta uudelleen.
+	The document changed. Request Record Again again.	Asiakirja muuttui. Pyydä uudelleentallennusta uudelleen.
+	The document or its notes changed. Please delete the note again.	Asiakirja tai sen muistiinpanot muuttuivat. Poista muistiinpano uudelleen.
+	The preference could not be saved: {error}	Asetusta ei voitu tallentaa: {error}
+	The step editor could not be opened.	Vaiheen muokkainta ei voitu avata.
+	The step has no command editor.	Vaiheella ei ole komentomuokkainta.
+	Top align text	Tasaa teksti ylös
+	Use relative positioning for reference point	Käytä viitepisteen suhteellista sijaintia
+	Useful mixer brush combinations	Hyödyllisiä sekoitussiveltimen yhdistelmiä
+	Zoom current window to 1:1	Zoomaa nykyinen ikkuna suhteeseen 1:1
+	Zoom current window to fill the screen	Zoomaa nykyinen ikkuna täyttämään näyttö
+	Zoom current window to screen size	Sovita nykyinen ikkuna näytön kokoon
+	brush tool	Sivellin-työkalu
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} tiedosto epäonnistui|{what}: {n} tiedostoa epäonnistui
+	Save the settings to each raw's sidecar without opening it	Tallenna asetukset kunkin RAW-tiedoston oheistiedostoon avaamatta sitä
+	No settings saved: these raws can't keep a sidecar here	Asetuksia ei tallennettu: näille RAW-tiedostoille ei voi luoda oheistiedostoa tähän
+	Nothing to save: these raws are at their default settings	Ei tallennettavaa: nämä RAW-tiedostot käyttävät oletusasetuksia
+	Some settings could not be saved; the raws stay open	Joitakin asetuksia ei voitu tallentaa; RAW-tiedostot pysyvät avoinna
+	Equalize Entire Image Based On Selected Area	Tasaa koko kuva valitun alueen perusteella
+	Equalize Selected Area Only	Tasaa vain valittu alue

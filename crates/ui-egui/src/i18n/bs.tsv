@@ -4655,11 +4655,7 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	AI model settings	Postavke AI modela
 	Accelerated	Ubrzano
 	Adjust colors with Poisson blending	Prilagodi boje Poissonovim stapanjem
-	Adobe Every-line Composer	Adobe slagač svih redova
-	Adobe PDF Presets…	Adobe PDF predlošci…
-	Adobe Single-line Composer	Adobe slagač jednog reda
 	All nine regions	Svih devet područja
-	All shortcuts reset to Photoshop defaults.	Sve prečice su vraćene na zadane vrijednosti Photoshopa.
 	Answer the open import question first, then import this file again.	Prvo odgovorite na otvoreno pitanje o uvozu, a zatim ponovo uvezite ovu datoteku.
 	Arrange Panels	Rasporedi panele
 	Arrowhead options	Opcije vrhova strelica
@@ -4669,14 +4665,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Automatically check for updates	Automatski provjeravaj ažuriranja
 	Base64	Base64
 	Batch preview	Pregled grupne obrade
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Zadane postavke Camera Raw
-	Camera Raw Filter	Camera Raw filter
-	Camera Raw Filter ({layer})	Camera Raw filter ({layer})
-	Camera Raw Filter…	Camera Raw filter…
-	Camera Raw isn't open	Camera Raw nije otvoren
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Otkazano otvaranje {name}
 	Cancelled placing {name}	Otkazano postavljanje datoteke {name}
 	Cancelled {label}	Otkazano: {label}
@@ -4712,7 +4700,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	Nazivi datoteka prilagođenih modela (jedan po redu)
 	Data Encoding	Kodiranje podataka
 	Data Sets as Files is unavailable on the web	Izvoz skupova podataka kao datoteka nije dostupan na webu
-	Default Photoshop Size	Zadana veličina Photoshopa
 	Default colours (D)	Zadane boje (D)
 	Describe changes to the whole image	Opišite izmjene cijele slike
 	Describe changes, or leave blank to remove	Opišite izmjene ili ostavite prazno za uklanjanje
@@ -4752,14 +4739,10 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Obrnuti odabir
 	LZW	LZW
 	Layer Effects	Efekti sloja
-	Layer via Copy	Sloj kopiranjem
-	Layer via Cut	Sloj izrezivanjem
 	Learn	Učenje
 	Lining	Verzalne
 	Linked	Povezano
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Nakon otvaranja ove datoteke ostalo bi malo memorije. Prvo zatvorite druge aplikacije ili bi PhotoCraft mogao ostati bez memorije.
-	Loaded Camera Raw settings from {file}	Učitane postavke Camera Raw iz {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Učitane postavke Camera Raw iz {file} ({n} nije podržano)
 	Look	LOOK
 	Lut Format	LUT format
 	Match Surrounding Colors	Uskladi s okolnim bojama
@@ -4789,7 +4772,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Otvori panel u zasebnom prozoru
 	Open a document to select a colour range.	Otvorite dokument da odaberete raspon boja.
 	Open anyway	Ipak otvori
-	Open in camera raw	Otvori u Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Otvaranje ovog dokumenta koristi više memorije i može usporiti računar ili druge pokrenute aplikacije.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Otvaranje „{name}” zahtijeva približno {est} GiB memorije (dostupno: {avail} GiB).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Otvaranje „{name}” zahtijeva približno {est} GiB memorije. Dostupnu memoriju nije bilo moguće izmjeriti.
@@ -4868,7 +4850,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	The frame is locked	Okvir je zaključan
 	The frame is unavailable	Okvir nije dostupan
 	The image exceeds the AI editing size. Resize the document to continue?	Slika premašuje veličinu za AI uređivanje. Promijeniti veličinu dokumenta za nastavak?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Ovaj pametni objekat mora se rasterizirati prije nastavka. Njegov sadržaj više neće biti moguće uređivati. Rasterizirati pametni objekat?
 	Translate prompt to English	Prevedi upit na engleski
 	Turbo int8	Turbo INT8
 	Update PhotoCraft	Ažuriraj PhotoCraft
@@ -4888,9 +4869,95 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Grupa četkica „{group}” već sadrži {n} vašu četkicu.|Grupa četkica „{group}” već sadrži {n} vaše četkice.|Grupa četkica „{group}” već sadrži {n} vaših četkica.
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Grupa gradijenata „{group}” već postoji ({n} gradijent).|Grupa gradijenata „{group}” već postoji ({n} gradijenta).|Grupa gradijenata „{group}” već postoji ({n} gradijenata).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: nije uspjelo čuvanje {n} slikovnog resursa|{what}: nije uspjelo čuvanje {n} slikovna resursa|{what}: nije uspjelo čuvanje {n} slikovnih resursa
-cameraRaw	Camera Raw ({name})	Camera Raw ({name})
-cameraRaw	Camera Raw Filter ({layer})	Camera Raw filter ({layer})
-cameraRaw	Camera Raw isn't open	Camera Raw nije otvoren
 cameraRaw	Cancelled opening {name}	Otkazano otvaranje {name}
 cameraRaw	Cancelled {label}	Otkazano: {label}
-cameraRaw	Loaded Camera Raw settings from {file}	Učitane postavke Camera Raw iz {file}
+
+# Remembered file-import preferences
+	Last folder	Posljednja korištena fascikla
+	Pdf dpi	Rezolucija PDF-a (dpi)
+	Pdf first page	Prva stranica PDF-a
+	Pdf last page	Posljednja stranica PDF-a
+
+# Integration source-key coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Komanda je otkazana ili zaustavljena tokom grupne obrade. Nastaviti sa sljedećom datotekom ili zaustaviti?
+	Allow Tool Recording	Dozvoli snimanje alata
+	Allows rotation and scaling of selection	Omogućava rotiranje i promjenu veličine selekcije
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Uvijek koristi pritisak za neprozirnost. Kada je isključeno, pritisak određuje postavka četkice
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Uvijek koristi pritisak za veličinu. Kada je isključeno, pritisak određuje postavka četkice
+	Bottom align text	Poravnaj tekst po donjoj ivici
+	Choose a menu command. Playback asks for its settings when needed.	Izaberite komandu menija. Pri reprodukciji će se po potrebi tražiti njene postavke.
+	Choose a remix mode	Izaberite režim miješanja
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Kliknite i pomjerajte lijevo ili desno za promjenu razmjere alatom Zum (samo OpenGL)
+	Click to open the Brush Preset picker	Kliknite da otvorite izbor postavke četkice
+	Confirm or cancel the pending Record Again editor first.	Prvo potvrdite ili otkažite otvoreni uređivač ponovnog snimanja.
+	Confirm or cancel the pending menu item first.	Prvo potvrdite ili otkažite stavku menija na čekanju.
+	Copy CSS	Kopiraj CSS
+	Could not use the type tool because the layer is locked.	Alat za tekst nije moguće koristiti jer je sloj zaključan.
+	Delete Note	Obriši bilješku
+	Delete this note?	Obrisati ovu bilješku?
+	Do not erase the foreground swatch color	Ne briši boju uzorka prednjeg plana
+	Draws background color over foreground colors	Crta bojom pozadine preko boja prednjeg plana
+	Enable to remix all layers	Uključite za miješanje svih slojeva
+	Erase range of similar colors	Briše opseg sličnih boja
+	How far to let the erasing spread	Koliko daleko se brisanje može proširiti
+	Insert Menu Item…	Umetni stavku menija…
+	Insert Path	Umetni putanju
+	No document.	Nema dokumenta.
+	No menu item belongs to this chooser.	Nijedna stavka menija ne pripada ovom biraču.
+	No menu item is waiting.	Nema stavke menija na čekanju.
+	No note to delete	Nema bilješke za brisanje
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Nema putanje za pravljenje oblika: nacrtajte je alatom Pero ili izaberite na panelu Putanje.
+	No pixels are selected.	Nema izabranih piksela.
+	No recorded step belongs to this editor.	Nijedan snimljeni korak ne pripada ovom uređivaču.
+	No slices are selected. Click a slice in the preview to select it.	Nema izabranih isječaka. Kliknite na isječak u pregledu da ga izaberete.
+	No step is waiting.	Nema koraka na čekanju.
+	Note deleted, but the preference could not be saved: {error}	Bilješka je obrisana, ali postavka nije sačuvana: {error}
+	Open as Smart Object…	Otvori kao pametni objekat…
+	Painting Mode	Režim slikanja
+	Preparing Free Transform	Priprema slobodne transformacije
+	Record Again	Snimi ponovo
+	Resize windows when zooming using the Zoom Tool	Mijenjaj veličinu prozora pri zumiranju alatom Zum
+	Scroll all open document windows when using the hand tool	Pomjeraj prikaz u svim otvorenim prozorima dokumenata pri korišćenju alata Ruka
+	Search and select fonts	Pretraži i izaberi fontove
+	Select an action first.	Prvo izaberite radnju.
+	Select an action step first.	Prvo izaberite korak radnje.
+	Selected Area Only	Samo izabrana oblast
+	Selected Slices	Izabrani isječci
+	Set flow rate for stroke	Podesi protok poteza
+	Set font size	Podesi veličinu fonta
+	Set font style	Podesi stil fonta
+	Set opacity for stroke	Podesi neprozirnost poteza
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Podesi izglađivanje poteza\nVeće vrijednosti smanjuju podrhtavanje poteza četkice
+	Set symmetry options for Painting	Podesi opcije simetrije slikanja
+	Set text color	Podesi boju teksta
+	Set the brush angle	Podesi ugao četkice
+	Smoothing Options	Opcije izglađivanja
+	The Record Again command changed.	Komanda ponovnog snimanja je promijenjena.
+	The action or insertion command changed. Request Insert Menu Item again.	Radnja ili komanda umetanja je promijenjena. Ponovo zatražite umetanje stavke menija.
+	The actions changed. Request Record Again again.	Radnje su promijenjene. Ponovo zatražite snimanje.
+	The command permissions changed. Request Insert Menu Item again.	Dozvole komande su promijenjene. Ponovo zatražite umetanje stavke menija.
+	The command permissions changed. Request Record Again again.	Dozvole komande su promijenjene. Ponovo zatražite snimanje.
+	The document changed. Request Record Again again.	Dokument je promijenjen. Ponovo zatražite snimanje.
+	The document or its notes changed. Please delete the note again.	Dokument ili njegove bilješke su promijenjeni. Ponovo obrišite bilješku.
+	The preference could not be saved: {error}	Postavka nije mogla biti sačuvana: {error}
+	The step editor could not be opened.	Uređivač koraka nije mogao da se otvori.
+	The step has no command editor.	Korak nema uređivač komande.
+	Top align text	Poravnaj tekst po gornjoj ivici
+	Use relative positioning for reference point	Koristi relativni položaj referentne tačke
+	Useful mixer brush combinations	Korisne kombinacije četkice za miješanje
+	Zoom current window to 1:1	Zumiraj trenutni prozor na 1:1
+	Zoom current window to fill the screen	Zumiraj trenutni prozor da ispuni ekran
+	Zoom current window to screen size	Prilagodi trenutni prozor veličini ekrana
+	brush tool	alat Četkica
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} datoteka nije uspjela|{what}: {n} datoteke nisu uspjele|{what}: {n} datoteka nije uspjelo
+
+# Dynamic integration labels
+	Equalize Entire Image Based On Selected Area	Izjednači cijelu sliku na osnovu izabrane oblasti
+	Equalize Selected Area Only	Izjednači samo izabranu oblast
+	Make Shape	Napravi oblik
+	Netscape Gray	Netscape siva
+	No settings saved: these raws can't keep a sidecar here	Postavke nisu sačuvane: ove RAW datoteke ovdje ne mogu imati prateću datoteku
+	Nothing to save: these raws are at their default settings	Nema šta sačuvati: ove RAW datoteke koriste zadane postavke
+	Save the settings to each raw's sidecar without opening it	Sačuvaj postavke u prateću datoteku svake RAW datoteke bez otvaranja
+	Scroll All Windows	Pomeraj prikaz u svim prozorima
+	Some settings could not be saved; the raws stay open	Neke postavke nisu sačuvane; RAW datoteke ostaju otvorene

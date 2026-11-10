@@ -4613,3 +4613,166 @@ navigator	Zoom	Zoom
 
 # RAW Develop feature labels
 	Saved RAW Develop settings to {file}	Setările de developare RAW au fost salvate în {file}
+
+# Remembered file-import preferences
+	Last folder	Ultimul dosar utilizat
+	Pdf dpi	Rezoluție PDF (dpi)
+	Pdf first page	Prima pagină PDF
+	Pdf last page	Ultima pagină PDF
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	O comandă a fost anulată sau oprită în timpul procesării în lot. Continuați cu fișierul următor sau opriți?
+	AI Prompt History	Istoricul instrucțiunilor AI
+	AI model settings	Setările modelului AI
+	Adjust colors with Poisson blending	Ajustează culorile prin îmbinare Poisson
+	Align bottom edges	Aliniază marginile de jos
+	Align top edges	Aliniază marginile de sus
+	Align vertical centers	Aliniază centrele verticale
+	All nine regions	Toate cele nouă regiuni
+	Allow Tool Recording	Permite înregistrarea instrumentelor
+	Allows rotation and scaling of selection	Permite rotirea și scalarea selecției
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Folosește întotdeauna presiunea pentru opacitate. Când este dezactivat, presetarea pensulei controlează presiunea
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Folosește întotdeauna presiunea pentru dimensiune. Când este dezactivat, presetarea pensulei controlează presiunea
+	Attach Reference Image	Atașează imagine de referință
+	Automatically check for updates	Verifică automat actualizările
+	Bottom align text	Aliniază textul jos
+	Canceled opening {name}	Deschiderea fișierului {name} a fost anulată
+	Canceled {label}	{label} a fost anulat
+	Center the gradient (offset 0, 0)	Centrează gradientul (decalaj 0, 0)
+	Check for updates now	Verifică actualizările acum
+	Choose a menu command. Playback asks for its settings when needed.	Alegeți o comandă de meniu. Redarea va solicita setările când este necesar.
+	Choose a remix mode	Alegeți un mod de remixare
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Faceți clic și deplasați la stânga sau la dreapta pentru a scala cu instrumentul Zoom (doar OpenGL)
+	Click to open the Brush Preset picker	Faceți clic pentru a deschide selectorul presetărilor pensulei
+	Click to restore the current color	Faceți clic pentru a restabili culoarea curentă
+	Click to sample the foreground color  ·  {key}-click for background	Clic pentru a preleva culoarea de prim-plan  ·  {key}-clic pentru fundal
+	Clip Thumbnails to Document Bounds	Decupează miniaturile la limitele documentului
+	ComfyUI port	Port ComfyUI
+	Compare with Original Generation	Compară cu generarea originală
+	Confirm or cancel the pending Record Again editor first.	Confirmați sau anulați mai întâi editorul Reînregistrează aflat în așteptare.
+	Confirm or cancel the pending menu item first.	Confirmați sau anulați mai întâi elementul de meniu aflat în așteptare.
+	Copy CSS	Copiază CSS
+	Copy English translation	Copiază traducerea în engleză
+	Copy negative prompt	Copiază instrucțiunea negativă
+	Copy original prompt	Copiază instrucțiunea originală
+	Could not use the type tool because the layer is locked.	Instrumentul de text nu poate fi utilizat deoarece stratul este blocat.
+	Custom model filenames (one per line)	Nume de fișiere de modele personalizate (unul pe linie)
+	Default Foreground and Background Colors (D)	Culori implicite de prim-plan și fundal (D)
+	Delete this note?	Ștergeți această notă?
+	Describe changes to the whole image	Descrieți modificările întregii imagini
+	Describe changes, or leave blank to remove	Descrieți modificările sau lăsați gol pentru eliminare
+	Describe the image to generate	Descrieți imaginea de generat
+	Distribute horizontally	Distribuie orizontal
+	Distribute vertically	Distribuie vertical
+	Do not erase the foreground swatch color	Nu șterge culoarea mostrei de prim-plan
+	Downloading update…	Se descarcă actualizarea…
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	Trageți în jurul centrului pentru a roti vederea  ·  Shift limitează la 15°
+	Draws background color over foreground colors	Desenează culoarea de fundal peste culorile de prim-plan
+	Enable to remix all layers	Activați pentru a remixa toate straturile
+	English translation	Traducere în engleză
+	Equalize Entire Image Based On Selected Area	Egalizează întreaga imagine pe baza zonei selectate
+	Equalize Selected Area Only	Egalizează doar zona selectată
+	Erase range of similar colors	Șterge un interval de culori similare
+	Expand layer group on click	Extinde grupul de straturi la clic
+	Generative Fill	Umplere generativă
+	Hide bar	Ascunde bara
+	How far to let the erasing spread	Cât de mult se poate extinde ștergerea
+	Insert Menu Item…	Inserează element de meniu…
+	Insert Path	Inserează traseu
+	Large Thumbnails	Miniaturi mari
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	După deschiderea acestui fișier ar rămâne puțină memorie. Închideți mai întâi alte aplicații, altfel PhotoCraft poate rămâne fără memorie.
+	Make Shape	Creează formă
+	Match Surrounding Colors	Potrivește culorile din jur
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	Potrivește culorile cu împrejurimile capturate la generare. Intensitatea 0 restabilește rezultatul generat original.
+	Medium Thumbnails	Miniaturi medii
+	More options	Mai multe opțiuni
+	Move bar	Mută bara
+	Negative prompt	Instrucțiune negativă
+	Netscape Gray	Gri Netscape
+	No AI prompts recorded	Nu sunt înregistrate instrucțiuni AI
+	No Thumbnails	Fără miniaturi
+	No document.	Niciun document.
+	No menu item belongs to this chooser.	Niciun element de meniu nu aparține acestui selector.
+	No menu item is waiting.	Niciun element de meniu nu este în așteptare.
+	No note to delete	Nicio notă de șters
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Niciun traseu pentru a crea o formă: desenați unul cu instrumentul Peniță sau selectați unul în panoul Trasee.
+	No pixels are selected.	Nu sunt selectați pixeli.
+	No prompt (remove)	Fără instrucțiune (eliminare)
+	No recorded step belongs to this editor.	Niciun pas înregistrat nu aparține acestui editor.
+	No settings saved: these raws can't keep a sidecar here	Nu s-au salvat setări: aceste fișiere raw nu pot păstra aici un fișier auxiliar
+	No slices are selected. Click a slice in the preview to select it.	Nu sunt selectate felii. Faceți clic pe o felie în previzualizare pentru a o selecta.
+	No step is waiting.	Niciun pas nu este în așteptare.
+	Not a web color: click for the nearest web color	Nu este o culoare web: clic pentru cea mai apropiată culoare web
+	Note deleted, but the preference could not be saved: {error}	Nota a fost ștearsă, dar preferința nu a putut fi salvată: {error}
+	Nothing to save: these raws are at their default settings	Nimic de salvat: aceste fișiere raw au setările implicite
+	Nudge	Deplasează puțin
+	One .safetensors filename per line. Compatibility is not checked.	Un nume de fișier .safetensors pe linie. Compatibilitatea nu este verificată.
+	Open a document to select a color range.	Deschideți un document pentru a selecta un interval de culori.
+	Open as Smart Object…	Deschide ca obiect inteligent…
+	Original prompt	Instrucțiunea originală
+	Out of gamut for printing: click for the nearest printable color	În afara gamei de imprimare: clic pentru cea mai apropiată culoare imprimabilă
+	Painting Mode	Mod de pictare
+	PhotoCraft update available	Este disponibilă o actualizare PhotoCraft
+	Pick Color From Image	Alege culoarea din imagine
+	Pin bar position	Fixează poziția barei
+	Preparing Free Transform	Se pregătește transformarea liberă
+	Prompt Edit	Editare prin instrucțiune
+	Prompt Generate	Generare prin instrucțiune
+	Prompt information	Informații despre instrucțiune
+	Prompt translation model	Model pentru traducerea instrucțiunilor
+	Record Again	Reînregistrează
+	Regenerate	Regenerează
+	Remember to turn off the printer's own color management in Print Settings…	Nu uitați să dezactivați gestionarea culorilor de către imprimantă în Setări de imprimare…
+	Remove Reference Image	Elimină imaginea de referință
+	Reset bar position	Resetează poziția barei
+	Reset steps to model default	Resetează pașii la valoarea implicită a modelului
+	Resize windows when zooming using the Zoom Tool	Redimensionează ferestrele la mărire cu instrumentul Zoom
+	Sample: foreground color	Prelevare: culoarea de prim-plan
+	Sampling steps	Pași de eșantionare
+	Save canceled	Salvare anulată
+	Save the settings to each raw's sidecar without opening it	Salvează setările în fișierul auxiliar al fiecărui raw fără a-l deschide
+	Scroll All Windows	Derulează toate ferestrele
+	Scroll all open document windows when using the hand tool	Derulează toate ferestrele de document deschise la utilizarea instrumentului Mână
+	Search and select fonts	Caută și selectează fonturi
+	Select an action first.	Selectați mai întâi o acțiune.
+	Select an action step first.	Selectați mai întâi un pas al acțiunii.
+	Selected Area Only	Doar zona selectată
+	Selected Slices	Felii selectate
+	Set flow rate for stroke	Setează debitul tușei
+	Set font size	Setează dimensiunea fontului
+	Set font style	Setează stilul fontului
+	Set opacity for stroke	Setează opacitatea tușei
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Setează netezirea tușei\nFolosiți valori mai mari pentru a reduce tremurul tușelor pensulei
+	Set symmetry options for Painting	Setează opțiunile de simetrie pentru pictare
+	Set text color	Setează culoarea textului
+	Set the brush angle	Setează unghiul pensulei
+	Show hover bounds from Layers	Afișează limitele la trecerea cursorului în Straturi
+	Show layer bounds on hover	Afișează limitele stratului la trecerea cursorului
+	Small Thumbnails	Miniaturi mici
+	Smoothing Options	Opțiuni de netezire
+	Some settings could not be saved; the raws stay open	Unele setări nu au putut fi salvate; fișierele raw rămân deschise
+	Switch Foreground and Background Colors (X)	Schimbă între ele culorile de prim-plan și fundal (X)
+	Text encoders	Codificatoare de text
+	The Record Again command changed.	Comanda Reînregistrează s-a modificat.
+	The action or insertion command changed. Request Insert Menu Item again.	Acțiunea sau comanda de inserare s-a modificat. Solicitați din nou Inserează element de meniu.
+	The actions changed. Request Record Again again.	Acțiunile s-au modificat. Solicitați din nou Reînregistrează.
+	The command permissions changed. Request Insert Menu Item again.	Permisiunile comenzii s-au modificat. Solicitați din nou Inserează element de meniu.
+	The command permissions changed. Request Record Again again.	Permisiunile comenzii s-au modificat. Solicitați din nou Reînregistrează.
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	Directorul temporar curent ({path}) nu raportează spațiul liber, deci PhotoCraft nu se poate opri înainte de umplerea lui, iar fișierele mari nu primesc spațiu suplimentar fără o limită de dimensiune a spațiului temporar. Avertismentul se aplică configurației curente; modificările de mai sus intră în vigoare la Aplică sau OK. Setați o limită sau folosiți un disc local.
+	The document changed. Request Record Again again.	Documentul s-a modificat. Solicitați din nou Reînregistrează.
+	The document or its notes changed. Please delete the note again.	Documentul sau notele sale s-au modificat. Ștergeți din nou nota.
+	The image exceeds the AI editing size. Resize the document to continue?	Imaginea depășește dimensiunea pentru editare AI. Redimensionați documentul pentru a continua?
+	The preference could not be saved: {error}	Preferința nu a putut fi salvată: {error}
+	The step editor could not be opened.	Editorul pasului nu a putut fi deschis.
+	The step has no command editor.	Pasul nu are un editor de comandă.
+	Top align text	Aliniază textul sus
+	Translate prompt to English	Traduce instrucțiunea în engleză
+	Twirl Counterclockwise	Răsucește în sens antiorar
+	Update PhotoCraft and restart now?	Actualizați PhotoCraft și reporniți acum?
+	Use relative positioning for reference point	Folosește poziționarea relativă pentru punctul de referință
+	Useful mixer brush combinations	Combinații utile pentru pensula de amestecare
+	You can check for updates again in Help → About PhotoCraft.	Puteți verifica din nou actualizările în Ajutor → Despre PhotoCraft.
+	Zoom current window to 1:1	Mărește fereastra curentă la 1:1
+	Zoom current window to fill the screen	Mărește fereastra curentă pentru a umple ecranul
+	Zoom current window to screen size	Mărește fereastra curentă la dimensiunea ecranului
+	brush tool	instrument pensulă
+	{label} is writing the file and can no longer be canceled	{label} scrie fișierul și nu mai poate fi anulat
+	…	…

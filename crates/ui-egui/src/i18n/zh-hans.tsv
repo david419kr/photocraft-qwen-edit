@@ -3333,10 +3333,8 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	AI model settings	AI 模型设置
 	Adding generated layer	正在添加生成图层
 	Adjust colors with Poisson blending	使用泊松融合调整颜色
-	Adobe PDF Presets…	Adobe PDF 预设…
 	Advanced Blending	高级混合
 	All nine regions	全部九个区域
-	All shortcuts reset to Photoshop defaults.	所有快捷键已重置为 Photoshop 默认值。
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	请先回答当前的导入问题，然后再次导入此文件。
 	Arrange Panels	排列面板
@@ -3351,12 +3349,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	批处理预览
 	CPU Rendering	CPU 渲染
 	Calculating…	正在计算…
-	Camera Raw ({name})	Camera Raw（{name}）
-	Camera Raw Defaults	Camera Raw 默认设置
-	Camera Raw Filter ({layer})	Camera Raw 滤镜（{layer}）
-	Camera Raw Filter…	Camera Raw 滤镜…
-	Camera Raw isn't open	尚未打开 Camera Raw
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	已取消打开 {name}
 	Cancelled placing {name}	已取消置入 {name}
 	Cancelled {label}	已取消 {label}
@@ -3394,7 +3386,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	自定义模型文件名（每行一个）
 	Data Encoding	数据编码
 	Data Sets as Files is unavailable on the web	网页版不支持将数据组导出为文件
-	Default Photoshop Size	默认 Photoshop 大小
 	Default colours (D)	默认颜色（D）
 	Describe changes to the whole image	描述对整张图像的修改
 	Describe changes, or leave blank to remove	描述修改内容，留空以移除选区内容
@@ -3434,16 +3425,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	反选选区
 	LZW	LZW
 	Layer Effects	图层效果
-	Layer via Copy	通过复制创建图层
-	Layer via Cut	通过剪切创建图层
 	Length	长度
 	Level:	色阶:
 	Lining	齐线数字
 	Linked	已链接
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	打开此文件后剩余内存将很少。请先关闭其他应用，否则 PhotoCraft 可能耗尽内存。
 	Load Photoshop brushes (.abr)	载入 Photoshop 画笔（.abr）
-	Loaded Camera Raw settings from {file}	已从 {file} 载入 Camera Raw 设置
-	Loaded Camera Raw settings from {file} ({n} not supported)	已从 {file} 载入 Camera Raw 设置（{n} 项不支持）
 	Locked	已锁定
 	Look	LOOK
 	Lut Format	LUT 格式
@@ -3476,7 +3463,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	在独立窗口中打开面板
 	Open a document to select a colour range.	打开文档以选择色彩范围。
 	Open anyway	仍然打开
-	Open in camera raw	在 Camera Raw 中打开
 	Opening this document uses more memory and may slow down your computer or other running applications.	打开此文档会占用较多内存，可能导致计算机或其他正在运行的应用程序变慢。
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	打开“{name}”预计需要 {est} GiB 内存（可用内存为 {avail} GiB）。
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	打开“{name}”预计需要 {est} GiB 内存。无法测量可用内存。
@@ -3667,3 +3653,12 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Preparing Free Transform	正在准备自由变换
 	The document or its notes changed. Please delete the note again.	文档或其注释已更改。请重新删除该注释。
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}：{n} 个文件失败
+
+# Remembered file-import preferences
+	Last folder	上次使用的文件夹
+	Pdf dpi	PDF 分辨率 (dpi)
+	Pdf first page	PDF 起始页
+	Pdf last page	PDF 结束页
+
+# Dynamic integration labels
+	Selected Area Only	仅选定区域

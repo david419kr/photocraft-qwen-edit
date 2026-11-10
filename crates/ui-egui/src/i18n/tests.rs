@@ -1188,6 +1188,23 @@ fn russian_dynamic_status_hardware_and_dialog_labels_are_translated() {
     assert!(text.contains("/tmp/a.pcraft") && text.contains("/tmp/assets"), "{text}");
 }
 
+// Rust UI literals here use JSON-compatible escapes. Decode them before catalog lookup;
+// a source \n must be checked as a newline, not as two literal characters.
+fn decoded_tl_literal(raw: &str) -> String {
+    serde_json::from_str(&format!("\"{raw}\"")).expect("tl! source literal has supported string escapes")
+}
+
+#[test]
+fn tl_literal_scan_decodes_escapes_before_catalog_lookup() {
+    let raw = r#"line\nnext\t\"quoted\"\\end"#;
+    let decoded = decoded_tl_literal(raw);
+    assert_eq!(decoded, "line\nnext\t\"quoted\"\\end");
+    let catalog = Catalog::parse("\tline\\nnext\\t\"quoted\"\\\\end\ttranslated\n");
+    // Catalog escapes and source-string escapes must resolve to the same runtime key.
+    assert_eq!(catalog.plain(&decoded), Some("translated"));
+    assert!(catalog.plain(raw).is_none());
+}
+
 #[test]
 fn every_tl_literal_is_translated() {
     const KEEP_AS_IS: &[&str] = &[];
@@ -1214,7 +1231,7 @@ fn every_tl_literal_is_translated() {
                     while end < bytes.len() && !(bytes[end] == b'"' && (end == 0 || bytes[end - 1] != b'\\')) {
                         end += 1;
                     }
-                    let lit = rest.get(..end).unwrap_or("").replace("\\\"", "\"");
+                    let lit = decoded_tl_literal(rest.get(..end).unwrap_or(""));
                     if rest.get(end + 1..end + 2) == Some(")") {
                         literals.insert(lit);
                     }

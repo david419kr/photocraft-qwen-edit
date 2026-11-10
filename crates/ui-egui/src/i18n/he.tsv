@@ -4571,3 +4571,168 @@ navigator	Zoom	תקריב
 
 # RAW Develop feature labels
 	Saved RAW Develop settings to {file}	הגדרות פיתוח RAW נשמרו ב־{file}
+
+# Remembered file-import preferences
+	Last folder	התיקייה האחרונה בשימוש
+	Pdf dpi	רזולוציית PDF (dpi)
+	Pdf first page	העמוד הראשון ב-PDF
+	Pdf last page	העמוד האחרון ב-PDF
+
+# Complete fork integration labels.
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	פקודה בוטלה או הופסקה במהלך עיבוד האצווה. להמשיך לקובץ הבא או לעצור?
+	AI Prompt History	היסטוריית הנחיות בינה מלאכותית
+	AI model settings	הגדרות מודל בינה מלאכותית
+	Adjust colors with Poisson blending	התאמת צבעים באמצעות מיזוג פואסון
+	Align bottom edges	יישור קצוות תחתונים
+	Align top edges	יישור קצוות עליונים
+	Align vertical centers	יישור מרכזים אנכיים
+	All nine regions	כל תשעת האזורים
+	Allow Tool Recording	אפשר הקלטת כלים
+	Allows rotation and scaling of selection	מאפשר סיבוב ושינוי קנה מידה של הבחירה
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	השתמש תמיד בלחץ לשליטה באטימות. כשהאפשרות כבויה, קביעת המברשת שולטת בלחץ
+	Always use Pressure for Size. When off, Brush Preset controls pressure	השתמש תמיד בלחץ לשליטה בגודל. כשהאפשרות כבויה, קביעת המברשת שולטת בלחץ
+	Attach Reference Image	צירוף תמונת ייחוס
+	Automatically check for updates	בדיקה אוטומטית של עדכונים
+	Bottom align text	יישור טקסט לתחתית
+	Canceled opening {name}	פתיחת {name} בוטלה
+	Canceled {label}	{label} בוטל
+	Center the gradient (offset 0, 0)	מרכוז מעבר הצבע (היסט 0, 0)
+	Check for updates now	בדיקת עדכונים כעת
+	Choose a menu command. Playback asks for its settings when needed.	בחר פקודת תפריט. בעת ההפעלה יתבקשו הגדרותיה לפי הצורך.
+	Choose a remix mode	בחר מצב ערבוב מחדש
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	לחץ והזז שמאלה או ימינה לשינוי קנה מידה באמצעות כלי הזום (OpenGL בלבד)
+	Click to open the Brush Preset picker	לחץ לפתיחת בורר קביעות המברשת
+	Click to restore the current color	לחץ לשחזור הצבע הנוכחי
+	Click to sample the foreground color  ·  {key}-click for background	לחץ לדגימת צבע החזית · לחץ עם {key} לדגימת הרקע
+	Clip Thumbnails to Document Bounds	חיתוך תמונות ממוזערות לגבולות המסמך
+	ComfyUI port	יציאת ComfyUI
+	Compare with Original Generation	השוואה לתוצאה המקורית שנוצרה
+	Confirm or cancel the pending Record Again editor first.	אשר או בטל תחילה את עורך ההקלטה מחדש הפתוח.
+	Confirm or cancel the pending menu item first.	אשר או בטל תחילה את פריט התפריט הממתין.
+	Copy CSS	העתקת CSS
+	Copy English translation	העתקת התרגום לאנגלית
+	Copy negative prompt	העתקת ההנחיה השלילית
+	Copy original prompt	העתקת ההנחיה המקורית
+	Could not use the type tool because the layer is locked.	לא ניתן להשתמש בכלי הטקסט מפני שהשכבה נעולה.
+	Custom model filenames (one per line)	שמות קובצי מודלים מותאמים אישית (אחד בכל שורה)
+	Default Foreground and Background Colors (D)	צבעי חזית ורקע כברירת מחדל (D)
+	Delete this note?	למחוק הערה זו?
+	Describe changes to the whole image	תאר שינויים בתמונה כולה
+	Describe changes, or leave blank to remove	תאר שינויים, או השאר ריק להסרה
+	Describe the image to generate	תאר את התמונה ליצירה
+	Distribute horizontally	פיזור אופקי
+	Distribute vertically	פיזור אנכי
+	Do not erase the foreground swatch color	אל תמחק את צבע דוגמית החזית
+	Downloading update…	הורדת עדכון…
+	Drag around the center to rotate the view  ·  Shift constrains to 15°	גרור סביב המרכז לסיבוב התצוגה · Shift מגביל לצעדים של 15°
+	Draws background color over foreground colors	מצייר בצבע הרקע מעל צבעי החזית
+	Enable to remix all layers	הפעל כדי לערבב מחדש את כל השכבות
+	English translation	תרגום לאנגלית
+	Equalize Entire Image Based On Selected Area	השוואת התמונה כולה על סמך האזור הנבחר
+	Equalize Selected Area Only	השוואת האזור הנבחר בלבד
+	Erase range of similar colors	מחיקת טווח צבעים דומים
+	Expand layer group on click	הרחבת קבוצת שכבות בלחיצה
+	Generative Fill	מילוי גנרטיבי
+	Hide bar	הסתרת הסרגל
+	How far to let the erasing spread	עד כמה לאפשר למחיקה להתפשט
+	Insert Menu Item…	הוספת פריט תפריט…
+	Insert Path	הוספת נתיב
+	Large Thumbnails	תמונות ממוזערות גדולות
+	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	יישאר מעט זיכרון לאחר פתיחת הקובץ. סגור תחילה יישומים אחרים, אחרת הזיכרון של PhotoCraft עלול להיגמר.
+	Make Shape	יצירת צורה
+	Match Surrounding Colors	התאמת צבעי הסביבה
+	Match colors to the surroundings captured at generation. Strength 0 restores the original generated result.	התאמת הצבעים לסביבה שנקלטה בעת היצירה. עוצמה 0 משחזרת את התוצאה המקורית שנוצרה.
+	Medium Thumbnails	תמונות ממוזערות בינוניות
+	More options	אפשרויות נוספות
+	Move bar	הזזת הסרגל
+	Negative prompt	הנחיה שלילית
+	Netscape Gray	אפור Netscape
+	No AI prompts recorded	לא נרשמו הנחיות בינה מלאכותית
+	No Thumbnails	ללא תמונות ממוזערות
+	No document.	אין מסמך.
+	No menu item belongs to this chooser.	אין פריט תפריט המשויך לבורר זה.
+	No menu item is waiting.	אין פריט תפריט ממתין.
+	No note to delete	אין הערה למחיקה
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	אין נתיב ליצירת צורה: צייר נתיב בכלי העט או בחר נתיב בחלונית הנתיבים.
+	No pixels are selected.	לא נבחרו פיקסלים.
+	No prompt (remove)	ללא הנחיה (הסרה)
+	No recorded step belongs to this editor.	אין שלב מוקלט המשויך לעורך זה.
+	No settings saved: these raws can't keep a sidecar here	לא נשמרו הגדרות: לא ניתן לשמור כאן קובץ נלווה לקובצי RAW אלה
+	No slices are selected. Click a slice in the preview to select it.	לא נבחרו פרוסות. לחץ על פרוסה בתצוגה המקדימה כדי לבחור בה.
+	No step is waiting.	אין שלב ממתין.
+	Not a web color: click for the nearest web color	זה אינו צבע אינטרנט: לחץ לבחירת צבע האינטרנט הקרוב ביותר
+	Note deleted, but the preference could not be saved: {error}	ההערה נמחקה, אך לא ניתן לשמור את ההעדפה: {error}
+	Nothing to save: these raws are at their default settings	אין מה לשמור: קובצי RAW אלה משתמשים בהגדרות ברירת המחדל
+	Nudge	הזזה קלה
+	One .safetensors filename per line. Compatibility is not checked.	שם קובץ ‎.safetensors אחד בכל שורה. התאימות אינה נבדקת.
+	Open a document to select a color range.	פתח מסמך לבחירת טווח צבעים.
+	Open as Smart Object…	פתיחה כאובייקט חכם…
+	Original prompt	הנחיה מקורית
+	Out of gamut for printing: click for the nearest printable color	מחוץ לטווח הצבעים להדפסה: לחץ לבחירת הצבע הניתן להדפסה הקרוב ביותר
+	Painting Mode	מצב ציור
+	PhotoCraft update available	עדכון PhotoCraft זמין
+	Pick Color From Image	דגימת צבע מהתמונה
+	Pin bar position	קיבוע מיקום הסרגל
+	Preparing Free Transform	הכנת שינוי צורה חופשי
+	Prompt Edit	עריכה באמצעות הנחיה
+	Prompt Generate	יצירה באמצעות הנחיה
+	Prompt information	מידע על ההנחיה
+	Prompt translation model	מודל תרגום ההנחיה
+	Record Again	הקלטה מחדש
+	Regenerate	יצירה מחדש
+	Remember to turn off the printer's own color management in Print Settings…	זכור לכבות את ניהול הצבעים של המדפסת עצמה בהגדרות ההדפסה…
+	Remove Reference Image	הסרת תמונת הייחוס
+	Reset bar position	איפוס מיקום הסרגל
+	Reset steps to model default	איפוס מספר הצעדים לברירת המחדל של המודל
+	Resize windows when zooming using the Zoom Tool	שינוי גודל חלונות בעת שימוש בכלי הזום
+	Sample: foreground color	דגימה: צבע חזית
+	Sampling steps	צעדי דגימה
+	Save canceled	השמירה בוטלה
+	Save the settings to each raw's sidecar without opening it	שמירת ההגדרות בקובץ הנלווה של כל RAW בלי לפתוח אותו
+	Scroll All Windows	גלילת כל החלונות
+	Scroll all open document windows when using the hand tool	גלילת כל חלונות המסמכים הפתוחים בעת שימוש בכלי היד
+	Search and select fonts	חיפוש ובחירת גופנים
+	Select an action first.	בחר תחילה פעולה.
+	Select an action step first.	בחר תחילה שלב פעולה.
+	Selected Area Only	האזור הנבחר בלבד
+	Selected Slices	פרוסות נבחרות
+	Set flow rate for stroke	הגדרת קצב הזרימה למשיכת המברשת
+	Set font size	הגדרת גודל הגופן
+	Set font style	הגדרת סגנון הגופן
+	Set opacity for stroke	הגדרת אטימות משיכת המברשת
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	הגדרת החלקת משיכת המברשת\nהשתמש בערכים גבוהים יותר להפחתת רעידות במשיכות המברשת
+	Set symmetry options for Painting	הגדרת אפשרויות סימטריה לציור
+	Set text color	הגדרת צבע הטקסט
+	Set the brush angle	הגדרת זווית המברשת
+	Show hover bounds from Layers	הצגת גבולות בריחוף מחלונית השכבות
+	Show layer bounds on hover	הצגת גבולות השכבה בריחוף
+	Small Thumbnails	תמונות ממוזערות קטנות
+	Smoothing Options	אפשרויות החלקה
+	Some settings could not be saved; the raws stay open	לא ניתן לשמור חלק מההגדרות; קובצי RAW נשארים פתוחים
+	Switch Foreground and Background Colors (X)	החלפת צבעי החזית והרקע (X)
+	Text encoders	מקודדי טקסט
+	The Record Again command changed.	פקודת ההקלטה מחדש השתנתה.
+	The action or insertion command changed. Request Insert Menu Item again.	הפעולה או פקודת ההוספה השתנתה. בקש שוב הוספת פריט תפריט.
+	The actions changed. Request Record Again again.	הפעולות השתנו. בקש שוב הקלטה מחדש.
+	The command permissions changed. Request Insert Menu Item again.	הרשאות הפקודה השתנו. בקש שוב הוספת פריט תפריט.
+	The command permissions changed. Request Record Again again.	הרשאות הפקודה השתנו. בקש שוב הקלטה מחדש.
+	The current scratch directory ({path}) doesn't report its free space, so PhotoCraft can't stop before it fills up, and large files get no extra room from it without a Scratch Size Limit. This warning applies to the current configuration; changes above take effect on Apply or OK. Set a limit or use a local disk.	תיקיית העבודה הזמנית הנוכחית ({path}) אינה מדווחת על המקום הפנוי שלה, ולכן PhotoCraft אינו יכול לעצור לפני שהיא מתמלאת, וקבצים גדולים לא יקבלו ממנה שטח נוסף ללא מגבלת גודל לאחסון הזמני. אזהרה זו מתייחסת לתצורה הנוכחית; השינויים למעלה יחולו בלחיצה על החל או אישור. הגדר מגבלה או השתמש בדיסק מקומי.
+	The document changed. Request Record Again again.	המסמך השתנה. בקש שוב הקלטה מחדש.
+	The document or its notes changed. Please delete the note again.	המסמך או הערותיו השתנו. מחק שוב את ההערה.
+	The image exceeds the AI editing size. Resize the document to continue?	התמונה חורגת מגודל העריכה של הבינה המלאכותית. לשנות את גודל המסמך כדי להמשיך?
+	The preference could not be saved: {error}	לא ניתן לשמור את ההעדפה: {error}
+	The step editor could not be opened.	לא ניתן לפתוח את עורך השלב.
+	The step has no command editor.	לשלב אין עורך פקודות.
+	Top align text	יישור טקסט למעלה
+	Translate prompt to English	תרגום ההנחיה לאנגלית
+	Twirl Counterclockwise	סחרור נגד כיוון השעון
+	Update PhotoCraft and restart now?	לעדכן את PhotoCraft ולהפעיל מחדש כעת?
+	Use relative positioning for reference point	שימוש במיקום יחסי לנקודת הייחוס
+	Useful mixer brush combinations	שילובים שימושיים של מברשת ערבוב
+	You can check for updates again in Help → About PhotoCraft.	ניתן לבדוק עדכונים שוב דרך עזרה ← אודות PhotoCraft.
+	Zoom current window to 1:1	זום החלון הנוכחי ליחס 1:1
+	Zoom current window to fill the screen	זום החלון הנוכחי למילוי המסך
+	Zoom current window to screen size	זום החלון הנוכחי לגודל המסך
+	brush tool	כלי מברשת
+	{label} is writing the file and can no longer be canceled	{label} כותב את הקובץ ואי אפשר עוד לבטל
+	…	…

@@ -4380,7 +4380,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Adding generated layer	Přidávání nové vrstvy
 	Adjust colors with Poisson blending	Upravit barvy pomocí Poissonova prolnutí
 	All nine regions	Všech devět oblastí
-	All shortcuts reset to Photoshop defaults.	Všechny zkratky byly obnoveny na výchozí hodnoty Photoshopu.
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	Nejprve odpovězte na otevřenou otázku importu a potom tento soubor importujte znovu.
 	Arrange Panels	Uspořádat panely
@@ -4393,14 +4392,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Batch preview	Náhled dávky
 	CPU Rendering	Vykreslování pomocí CPU
 	Calculating…	Výpočet…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Výchozí nastavení Camera Raw
-	Camera Raw Filter	Filtr Camera Raw
-	Camera Raw Filter ({layer})	Filtr Camera Raw ({layer})
-	Camera Raw Filter…	Filtr Camera Raw…
-	Camera Raw isn't open	Camera Raw není otevřen
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	Otevírání {name} zrušeno
 	Cancelled placing {name}	Umístění {name} zrušeno
 	Cancelled {label}	Zrušeno: {label}
@@ -4438,7 +4429,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Custom model filenames (one per line)	Názvy souborů vlastních modelů (jeden na řádek)
 	Data Encoding	Kódování dat
 	Data Sets as Files is unavailable on the web	Datové sady jako soubory nejsou na webu dostupné
-	Default Photoshop Size	Výchozí velikost
 	Default colours (D)	Výchozí barvy (D)
 	Describe changes to the whole image	Popište změny celého obrázku
 	Describe changes, or leave blank to remove	Popište změny nebo nechte prázdné pro odstranění
@@ -4476,15 +4466,11 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Inverse Selection	Invertovat výběr
 	LZW	LZW
 	Layer Effects	Efekty vrstvy
-	Layer via Copy	Vrstva kopírováním
-	Layer via Cut	Vrstva vyjmutím
 	Level:	Úroveň:
 	Lining	Verzálkové
 	Linked	Propojené
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	Po otevření tohoto souboru by zbylo málo paměti. Nejprve zavřete ostatní aplikace, jinak může PhotoCraft dojít paměť.
 	Load Photoshop brushes (.abr)	Načíst štětce Photoshopu (.abr)
-	Loaded Camera Raw settings from {file}	Nastavení Camera Raw načteno ze souboru {file}
-	Loaded Camera Raw settings from {file} ({n} not supported)	Nastavení Camera Raw načteno ze souboru {file} (nepodporováno: {n})
 	Look	LOOK
 	Lut Format	Formát LUT
 	Match Surrounding Colors	Přizpůsobit barvy okolí
@@ -4515,7 +4501,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	Open Panel in Own Window	Otevřít panel v samostatném okně
 	Open a document to select a colour range.	Chcete-li vybrat rozsah barev, otevřete dokument.
 	Open anyway	Přesto otevřít
-	Open in camera raw	Otevírat v Camera Raw
 	Opening this document uses more memory and may slow down your computer or other running applications.	Otevření tohoto dokumentu vyžaduje více paměti a může zpomalit počítač nebo jiné spuštěné aplikace.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	Otevření „{name}“ vyžaduje odhadem {est} GiB paměti (dostupných {avail} GiB).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	Otevření „{name}“ vyžaduje odhadem {est} GiB paměti. Dostupnou paměť se nepodařilo změřit.
@@ -4595,7 +4580,6 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 	The document has an embedded colour profile that does not match the working space.\nEmbedded: {embedded}\nWorking: {working}	Dokument má vložený barevný profil, který neodpovídá pracovnímu prostoru barev.\nVložený: {embedded}\nPracovní: {working}
 	The fastest and the softest, with colour fringing on fine detail.	Nejrychlejší a nejměkčí, s barevnými lemy v jemných detailech.
 	The image exceeds the AI editing size. Resize the document to continue?	Obrázek překračuje velikost pro úpravy AI. Změnit velikost dokumentu a pokračovat?
-	This Smart Object must be rasterized before proceeding. Its contents will no longer be editable. Rasterize the Smart Object?	Před pokračováním je nutné tento chytrý objekt rastrovat. Jeho obsah už nebude možné upravovat. Rastrovat chytrý objekt?
 	Translate prompt to English	Přeložit zadání do angličtiny
 	Turbo ad q2	Turbo AD-Q2_K
 	Turbo ad q3	Turbo AD-Q3_K
@@ -4630,3 +4614,82 @@ smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded
 @plural	The brush group “{group}” already has {n} brush of yours.|The brush group “{group}” already has {n} brushes of yours.	Skupina štětců „{group}“ již obsahuje vaše štětce (počet: {n}).|Skupina štětců „{group}“ již obsahuje vaše štětce (počet: {n}).|Skupina štětců „{group}“ již obsahuje vaše štětce (počet: {n}).
 @plural	The gradient group “{group}” already exists ({n} gradient).|The gradient group “{group}” already exists ({n} gradients).	Skupina přechodů „{group}“ již existuje (počet přechodů: {n}).|Skupina přechodů „{group}“ již existuje (počet přechodů: {n}).|Skupina přechodů „{group}“ již existuje (počet přechodů: {n}).
 @plural	{what}: {n} Image Assets output failed|{what}: {n} Image Assets outputs failed	{what}: selhal výstup {n} obrazového datového zdroje|{what}: selhal výstup {n} obrazových datových zdrojů|{what}: selhal výstup {n} obrazových datových zdrojů
+
+# Remembered file-import preferences
+	Last folder	Naposledy použitá složka
+	Pdf dpi	Rozlišení PDF (dpi)
+	Pdf first page	První stránka PDF
+	Pdf last page	Poslední stránka PDF
+
+# Integration source-key coverage
+	A command was canceled or stopped during batch processing. Continue with the next file or stop?	Příkaz byl při dávkovém zpracování zrušen nebo zastaven. Pokračovat dalším souborem, nebo zastavit?
+	Allow Tool Recording	Povolit záznam nástrojů
+	Allows rotation and scaling of selection	Umožňuje otáčení a změnu velikosti výběru
+	Always use Pressure for Opacity. When off, Brush Preset controls pressure	Vždy používat přítlak pro krytí. Je-li vypnuto, přítlak řídí přednastavení štětce
+	Always use Pressure for Size. When off, Brush Preset controls pressure	Vždy používat přítlak pro velikost. Je-li vypnuto, přítlak řídí přednastavení štětce
+	Bottom align text	Zarovnat text dolů
+	Choose a menu command. Playback asks for its settings when needed.	Vyberte příkaz nabídky. Při přehrávání se podle potřeby zobrazí dotaz na jeho nastavení.
+	Choose a remix mode	Vyberte režim míchání
+	Click and move left or right to scale using the Zoom Tool (OpenGL only)	Kliknutím a pohybem vlevo nebo vpravo měníte měřítko nástrojem Lupa (pouze OpenGL)
+	Click to open the Brush Preset picker	Kliknutím otevřete výběr přednastavení štětce
+	Confirm or cancel the pending Record Again editor first.	Nejprve potvrďte nebo zrušte otevřený editor opakovaného záznamu.
+	Confirm or cancel the pending menu item first.	Nejprve potvrďte nebo zrušte čekající položku nabídky.
+	Copy CSS	Kopírovat CSS
+	Could not use the type tool because the layer is locked.	Textový nástroj nelze použít, protože vrstva je zamčená.
+	Delete Note	Odstranit poznámku
+	Delete this note?	Odstranit tuto poznámku?
+	Do not erase the foreground swatch color	Nemazat barvu vzorku popředí
+	Draws background color over foreground colors	Kreslí barvou pozadí přes barvy popředí
+	Enable to remix all layers	Zapněte pro míchání všech vrstev
+	Erase range of similar colors	Maže rozsah podobných barev
+	How far to let the erasing spread	Jak daleko se může mazání šířit
+	Insert Menu Item…	Vložit položku nabídky…
+	Insert Path	Vložit cestu
+	No document.	Žádný dokument.
+	No menu item belongs to this chooser.	K tomuto výběru nepatří žádná položka nabídky.
+	No menu item is waiting.	Žádná položka nabídky nečeká.
+	No note to delete	Žádná poznámka k odstranění
+	No path to make a shape from: draw one with the Pen tool or select one in the Paths panel.	Není cesta pro vytvoření tvaru: nakreslete ji nástrojem Pero nebo vyberte na panelu Cesty.
+	No pixels are selected.	Nejsou vybrány žádné pixely.
+	No recorded step belongs to this editor.	K tomuto editoru nepatří žádný zaznamenaný krok.
+	No slices are selected. Click a slice in the preview to select it.	Nejsou vybrány žádné řezy. Kliknutím na řez v náhledu jej vyberete.
+	No step is waiting.	Žádný krok nečeká.
+	Note deleted, but the preference could not be saved: {error}	Poznámka byla odstraněna, ale nastavení nelze uložit: {error}
+	Open as Smart Object…	Otevřít jako inteligentní objekt…
+	Painting Mode	Režim malování
+	Preparing Free Transform	Příprava libovolné transformace
+	Record Again	Zaznamenat znovu
+	Resize windows when zooming using the Zoom Tool	Měnit velikost oken při přibližování nástrojem Lupa
+	Scroll all open document windows when using the hand tool	Při použití nástroje Ruka posouvat všechna otevřená okna dokumentů
+	Search and select fonts	Hledat a vybírat písma
+	Select an action first.	Nejprve vyberte akci.
+	Select an action step first.	Nejprve vyberte krok akce.
+	Selected Area Only	Pouze vybraná oblast
+	Selected Slices	Vybrané řezy
+	Set flow rate for stroke	Nastavit tok tahu
+	Set font size	Nastavit velikost písma
+	Set font style	Nastavit styl písma
+	Set opacity for stroke	Nastavit krytí tahu
+	Set smoothing for stroke\nUse higher values to reduce the shakiness of brush strokes	Nastavit vyhlazení tahu\nVyšší hodnoty snižují roztřesení tahů štětce
+	Set symmetry options for Painting	Nastavit možnosti symetrie malování
+	Set text color	Nastavit barvu textu
+	Set the brush angle	Nastavit úhel štětce
+	Smoothing Options	Možnosti vyhlazení
+	The Record Again command changed.	Příkaz opakovaného záznamu se změnil.
+	The action or insertion command changed. Request Insert Menu Item again.	Akce nebo příkaz vložení se změnil. Znovu vyžádejte vložení položky nabídky.
+	The actions changed. Request Record Again again.	Akce se změnily. Znovu vyžádejte opakovaný záznam.
+	The command permissions changed. Request Insert Menu Item again.	Oprávnění příkazu se změnila. Znovu vyžádejte vložení položky nabídky.
+	The command permissions changed. Request Record Again again.	Oprávnění příkazu se změnila. Znovu vyžádejte opakovaný záznam.
+	The document changed. Request Record Again again.	Dokument se změnil. Znovu vyžádejte opakovaný záznam.
+	The document or its notes changed. Please delete the note again.	Dokument nebo jeho poznámky se změnily. Znovu odstraňte poznámku.
+	The preference could not be saved: {error}	Nastavení nelze uložit: {error}
+	The step editor could not be opened.	Editor kroku nelze otevřít.
+	The step has no command editor.	Krok nemá editor příkazu.
+	Top align text	Zarovnat text nahoru
+	Use relative positioning for reference point	Použít relativní umístění vztažného bodu
+	Useful mixer brush combinations	Užitečné kombinace míchacího štětce
+	Zoom current window to 1:1	Přiblížit aktuální okno na 1:1
+	Zoom current window to fill the screen	Přiblížit aktuální okno tak, aby vyplnilo obrazovku
+	Zoom current window to screen size	Přizpůsobit aktuální okno velikosti obrazovky
+	brush tool	nástroj Štětec
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} soubor selhal|{what}: {n} soubory selhaly|{what}: {n} souborů selhalo

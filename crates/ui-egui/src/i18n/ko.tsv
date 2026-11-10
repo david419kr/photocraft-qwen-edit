@@ -4213,7 +4213,6 @@ shape	Appearance	화면 모양
 	Additional AI models	추가 AI 모델
 	Adjust colors with Poisson blending	푸아송 블렌딩으로 주변 색상에 맞춥니다
 	All nine regions	전체 9구역
-	All shortcuts reset to Photoshop defaults.	모든 단축키를 Photoshop 기본값으로 초기화했습니다.
 	Anime fusal	Anime FUSAL
 	Answer the open import question first, then import this file again.	열려 있는 가져오기 질문에 먼저 답한 다음 이 파일을 다시 가져오세요.
 	Arrange Panels	패널 정렬
@@ -4227,14 +4226,6 @@ shape	Appearance	화면 모양
 	Batch preview	일괄 처리 미리 보기
 	CPU Rendering	CPU 렌더링
 	Calculating…	계산 중…
-	Camera Raw	Camera Raw
-	Camera Raw ({name})	Camera Raw ({name})
-	Camera Raw Defaults	Camera Raw 기본값
-	Camera Raw Filter	Camera Raw 필터
-	Camera Raw Filter ({layer})	Camera Raw 필터 ({layer})
-	Camera Raw Filter…	Camera Raw 필터…
-	Camera Raw isn't open	Camera Raw가 열려 있지 않습니다
-	Camera Raw…	Camera Raw…
 	Cancelled opening {name}	{name} 열기를 취소했습니다
 	Cancelled placing {name}	{name} 배치를 취소했습니다
 	Cancelled {label}	{label} 작업을 취소했습니다
@@ -4282,7 +4273,6 @@ shape	Appearance	화면 모양
 	Cut Pixels	픽셀 잘라내기
 	Data Encoding	데이터 인코딩
 	Data Sets as Files is unavailable on the web	웹에서는 데이터 세트를 파일로 내보낼 수 없습니다
-	Default Photoshop Size	Photoshop 기본 크기
 	Default colours (D)	기본 색상 (D)
 	Delete All Notes	모든 메모 삭제
 	Delete Slice	분할 영역 삭제
@@ -4330,15 +4320,11 @@ shape	Appearance	화면 모양
 	LZW	LZW
 	Layer Comp Options	레이어 구성 요소 옵션
 	Layer Effects	레이어 효과
-	Layer via Copy	복사하여 레이어 만들기
-	Layer via Cut	잘라내어 레이어 만들기
 	Level:	레벨:
 	Lining	라이닝
 	Linked	연결됨
 	Little memory would be left after opening this file. Close other apps first, or PhotoCraft may run out of memory.	이 파일을 열면 남는 메모리가 적습니다. 먼저 다른 앱을 닫으세요. 그렇지 않으면 PhotoCraft의 메모리가 부족해질 수 있습니다.
 	Load Photoshop brushes (.abr)	Photoshop 브러시 불러오기(.abr)
-	Loaded Camera Raw settings from {file}	{file}에서 Camera Raw 설정을 불러왔습니다
-	Loaded Camera Raw settings from {file} ({n} not supported)	{file}에서 Camera Raw 설정을 불러왔습니다 (미지원 {n}개)
 	Locked	잠김
 	Look	LOOK
 	Lut Format	LUT 형식
@@ -4380,7 +4366,6 @@ shape	Appearance	화면 모양
 	Open Panel in Own Window	패널을 별도 창에서 열기
 	Open a document to select a colour range.	색상 범위를 선택하려면 문서를 여세요.
 	Open anyway	그래도 열기
-	Open in camera raw	Camera Raw에서 열기
 	Opening this document uses more memory and may slow down your computer or other running applications.	이 문서를 열면 메모리를 많이 사용하여 컴퓨터나 실행 중인 다른 응용 프로그램이 느려질 수 있습니다.
 	Opening “{name}” requires an estimated {est} GiB of memory ({avail} GiB available).	“{name}”을(를) 열려면 약 {est} GiB의 메모리가 필요합니다(사용 가능: {avail} GiB).
 	Opening “{name}” requires an estimated {est} GiB of memory. The available memory could not be measured.	“{name}”을(를) 열려면 약 {est} GiB의 메모리가 필요합니다. 사용 가능한 메모리를 측정할 수 없습니다.
@@ -4594,3 +4579,12 @@ prompt-region	Top right	우상단
 	Preparing Free Transform	자유 변형 준비 중
 	The document or its notes changed. Please delete the note again.	문서 또는 메모가 변경되었습니다. 메모를 다시 삭제해 주세요.
 @plural	{what}: {n} file failed|{what}: {n} files failed	{what}: 파일 {n}개 실패
+
+# Remembered file-import preferences
+	Last folder	마지막으로 사용한 폴더
+	Pdf dpi	PDF 해상도 (dpi)
+	Pdf first page	PDF 시작 페이지
+	Pdf last page	PDF 마지막 페이지
+
+# Dynamic integration labels
+	Selected Area Only	선택 영역만
