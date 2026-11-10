@@ -4673,5 +4673,5 @@ prompt-region	Top right	Sağ üst
 	Zoom current window to fill the screen	Geçerli pencereyi ekranı dolduracak şekilde yakınlaştır
 	Zoom current window to screen size	Geçerli pencereyi ekran boyutuna yakınlaştır
 	brush tool	fırça aracı
-@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} dosya başarısız|{what}: {n} dosya başarısız
+@plural	{what}: {n} file failed|{what}: {n} files failed	{what}: {n} dosya başarısız
 	Open in RAW Develop	RAW Geliştirmede aç

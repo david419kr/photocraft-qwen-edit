@@ -2384,6 +2384,7 @@ fn reset_section_on_type_keeps_the_favourite_fonts() {
 fn preference_labels_are_translated() {
     let session = photocraft_engine::Session::new();
     let v: Value = serde_json::from_str(&session.prefs_to_json()).expect("prefs json");
+    let mut all_missing = Vec::new();
     for lang in crate::i18n::Lang::all().filter(|l| l.complete_menus()) {
         let mut missing = Vec::new();
         for (sec, title) in SECTIONS {
@@ -2402,8 +2403,11 @@ fn preference_labels_are_translated() {
         }
         missing.sort();
         missing.dedup();
-        assert!(missing.is_empty(), "{}: untranslated preference labels: {missing:#?}", lang.code());
+        if !missing.is_empty() {
+            all_missing.push((lang.code(), missing));
+        }
     }
+    assert!(all_missing.is_empty(), "untranslated preference labels: {all_missing:#?}");
 }
 
 #[test]

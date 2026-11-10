@@ -4797,3 +4797,26 @@ navigator	Zoom	Zoom
 	Update PhotoCraft	Actualizează PhotoCraft
 	Working CMY Plates	Plăci CMY de lucru
 	Open in RAW Develop	Deschide în developare RAW
+cameraRaw	Highlights	Zone luminoase
+	Comfyui custom encoders	Codificatoare ComfyUI personalizate
+	Comfyui custom model	Model ComfyUI personalizat
+	Comfyui custom models	Modele ComfyUI personalizate
+	Comfyui model	Model ComfyUI
+	Comfyui model settings	Setările modelului ComfyUI
+	Comfyui translate prompt	Traduce instrucțiunea ComfyUI
+	Comfyui translation model	Model de traducere ComfyUI
+	Comfyui url	Adresa URL ComfyUI
+	External cutout	Decupare externă
+	External erase	Ștergere externă
+	Hy mt18 heretic	HyMT 1.8 Heretic
+	Hy mt7 abliterated	HyMT 7 Abliterated
+	Memory usage percent	Procentul de memorie utilizată
+	Plugins	Module suplimentare
+	Qwen image21	Qwen Image 2.1
+	Save Full-Size Composite in .pcraft Files	Salvează compoziția la dimensiunea completă în fișierele .pcraft
+	Scratch Size Limit (MB, 0 = No Limit)	Limita spațiului temporar (MB, 0 = fără limită)
+	Skip transform when placing	Omite transformarea la plasare
+	Tablet input	Intrare tabletă
+	Turbo int8	Turbo INT8
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (implicit)

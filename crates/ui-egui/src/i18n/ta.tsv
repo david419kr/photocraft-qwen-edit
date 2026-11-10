@@ -4661,3 +4661,34 @@ navigator	Zoom	பெரிதாக்கல்
 	Update PhotoCraft	PhotoCraft ஐப் புதுப்பி
 	Working CMY Plates	பணியிட CMY அச்சுத் தட்டுகள்
 	Open in RAW Develop	RAW உருவாக்கத்தில் திற
+
+# Generated preference labels
+	105%	105%
+	110%	110%
+	115%	115%
+	120%	120%
+	Comfyui custom encoders	ComfyUI தனிப்பயன் குறியாக்கிகள்
+	Comfyui custom model	ComfyUI தனிப்பயன் மாதிரி
+	Comfyui custom models	ComfyUI தனிப்பயன் மாதிரிகள்
+	Comfyui model	ComfyUI மாதிரி
+	Comfyui model settings	ComfyUI மாதிரி அமைப்புகள்
+	Comfyui translate prompt	ComfyUI வழிமொழியை மொழிபெயர்
+	Comfyui translation model	ComfyUI மொழிபெயர்ப்பு மாதிரி
+	Comfyui url	ComfyUI முகவரி
+	Enable Generator	உருவாக்கியை இயக்கு
+	External cutout	வெளிப்புறப் பின்னணி நீக்கம்
+	External erase	வெளிப்புற அழித்தல்
+	Favorite fonts	விருப்பமான எழுத்துருக்கள்
+	Hy mt18 heretic	Hy MT18 Heretic
+	Hy mt7 abliterated	Hy MT7 Abliterated
+	Memory usage percent	நினைவகப் பயன்பாட்டு சதவீதம்
+	Plugins	செருகுநிரல்கள்
+	Qwen image21	Qwen Image21
+	Save Full-Size Composite in .pcraft Files	.pcraft கோப்புகளில் முழு அளவுத் தொகுப்புப் படத்தைச் சேமி
+	Scratch Size Limit (MB, 0 = No Limit)	தற்காலிகப் பணியிட அளவு வரம்பு (MB, 0 = வரம்பில்லை)
+	Skip transform when placing	வைக்கும்போது உருமாற்றத்தைத் தவிர்
+	Tablet input	வரைபலகை உள்ளீடு
+	Turbo int8	Turbo INT8
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (இயல்புநிலை)
+	Write xmp sidecars	XMP துணைக்கோப்புகளை எழுது

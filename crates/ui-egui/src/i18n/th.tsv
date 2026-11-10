@@ -5073,3 +5073,25 @@ cameraRaw	White Balance: As Shot	สมดุลแสงขาว: เท่า
 	Set 19	ชุดที่ 19
 	Set 20	ชุดที่ 20
 	Open in RAW Develop	เปิดในการปรับแต่ง RAW
+	Comfyui custom encoders	ตัวเข้ารหัส ComfyUI ที่กำหนดเอง
+	Comfyui custom model	โมเดล ComfyUI ที่กำหนดเอง
+	Comfyui custom models	โมเดล ComfyUI ที่กำหนดเองหลายรายการ
+	Comfyui model	โมเดล ComfyUI
+	Comfyui model settings	การตั้งค่าโมเดล ComfyUI
+	Comfyui translate prompt	แปลพรอมต์ด้วย ComfyUI
+	Comfyui translation model	โมเดลแปลภาษาของ ComfyUI
+	Comfyui url	ที่อยู่ ComfyUI
+	External cutout	ตัดพื้นหลังด้วยบริการภายนอก
+	External erase	ลบด้วยบริการภายนอก
+	Hy mt18 heretic	Hy MT18 Heretic
+	Hy mt7 abliterated	Hy MT7 Abliterated
+	Memory usage percent	เปอร์เซ็นต์การใช้หน่วยความจำ
+	Plugins	ปลั๊กอิน
+	Qwen image21	Qwen Image21
+	Save Full-Size Composite in .pcraft Files	บันทึกภาพรวมขนาดเต็มในไฟล์ .pcraft
+	Scratch Size Limit (MB, 0 = No Limit)	ขีดจำกัดขนาดพื้นที่ชั่วคราว (MB, 0 = ไม่จำกัด)
+	Skip transform when placing	ข้ามการแปลงเมื่อวาง
+	Tablet input	การป้อนข้อมูลจากแท็บเล็ต
+	Turbo int8	Turbo INT8
+	WinTab	WinTab
+	Windows Ink (default)	Windows Ink (ค่าเริ่มต้น)
