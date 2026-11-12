@@ -1,27 +1,12 @@
-//! UI localisation. Strings in code stay English and are the default lookup keys; a per-language
-//! catalog (`*.tsv`, see `ja.tsv` for the format) maps them to display text at render time. Command
-//! ids, menu paths used for logic, the control channel, the CLI and MCP never see translated text,
-//! so agents and scripts are unaffected. A string without a translation is shown in English.
-//!
-//! # Adding a language
-//! 1. Add `xx.tsv` next to `ja.tsv` (copy its header; translate from the *meaning* of the English
-//!    text, clean-room, see `ja.tsv`).
-//! 2. Add one row to [`LANGUAGES`] (code, native name, catalog, plural rule).
-//!
-//! That is all: the Preferences dropdown, the system-locale match and the catalog tests (parse,
-//! placeholders, plural forms) pick it up from the registry. A right-to-left language (Arabic,
-//! Hebrew, Persian, Urdu, see [`dir_for_code`]) also mirrors the window's chrome
-//! ([`crate::direction`]).
-//!
-//! # Looking strings up
-//! - [`tr`]: a plain string. [`tr_ctx`]: when one English word needs different translations.
-//! - [`tr_id`]: a command-id keyed string with the English label as fallback (menu items), so a
-//!   translation survives rewording of the English text and can differ per command.
-//! - [`trn`]: plural-aware (`{n}` is filled in). [`fmt`]: fill `{name}` placeholders after [`tr`];
-//!   translators may reorder placeholders freely.
+//! UI localisation uses the upstream craft-i18n lookup and CLDR plural rules.
+//! The fork always embeds compressed catalogs, including its Qwen/upscaler labels.
+//! Catalog rows combine the exact `craft-i18n.rev` input with fork overrides by
+//! context/source key. Completeness, malformed-input and round-trip tests remain gates.
+//! Command ids, control responses and stored history labels remain English.
 
 mod casing;
 mod catalog;
+use catalog::Catalog;
 mod system;
 
 #[cfg(test)]
@@ -29,9 +14,34 @@ pub(crate) use system::with_decimal_separator;
 pub use system::{decimal_separator, system_lang};
 
 use std::cell::Cell;
-use std::sync::OnceLock;
+use std::collections::HashMap;
+use std::sync::{LazyLock, OnceLock};
 
-use catalog::Catalog;
+use craft_i18n::I18n;
+
+// Keep the fork's translations available even without an optional build checkout.
+// These catalogs merge craft-i18n.rev with the fork's context/source-key overrides.
+pub(crate) static CRAFT_I18N: LazyLock<Vec<(&'static str, &'static str, &'static str)>> = LazyLock::new(|| {
+    LANGUAGES
+        .iter()
+        .filter(|l| l.code != "en")
+        .map(|l| {
+            let text: &'static str = Box::leak(l.text().into_boxed_str());
+            (l.code, "", text)
+        })
+        .collect()
+});
+
+/// The embedded catalogs, offering exactly the languages in [`LANGUAGES`]. Built on first use; a
+/// locale is parsed on its first lookup.
+static I18N: LazyLock<I18n> = LazyLock::new(|| {
+    let offered: Vec<&str> = LANGUAGES.iter().map(|l| l.code).collect();
+    let (i18n, problems) = I18n::new(&CRAFT_I18N, &offered);
+    for problem in problems {
+        log::warn!("interface catalogs: {problem}");
+    }
+    i18n
+});
 
 /// One supported UI language.
 pub struct LangInfo {
@@ -68,6 +78,7 @@ pub fn dir_for_code(code: &str) -> Dir {
     if RTL_LANGUAGES.iter().any(|l| l.eq_ignore_ascii_case(primary)) { Dir::Rtl } else { Dir::Ltr }
 }
 
+const LANGUAGE_COUNT: usize = 35;
 fn plural_one_other(n: u64) -> usize {
     usize::from(n != 1)
 }
@@ -230,7 +241,7 @@ pub static LANGUAGES: [LangInfo; 35] = [
     // Serbian (Latin script, Ekavian) has the same one/few/many rule for integer counts. `sr-RS`,
     // `sr-Latn-*` and `sr_RS@latin` resolve here; so do Cyrillic `sr` locales, which read Latin
     // rather than English.
-    LangInfo { code: "sr", name: "Srpski", source: catalog!("sr"), plural: plural_russian, complete_menus: true, catalog: OnceLock::new() },
+    LangInfo { code: "sr-latn", name: "Srpski", source: catalog!("sr-latn"), plural: plural_russian, complete_menus: true, catalog: OnceLock::new() },
     // Bosnian (Latin script, Ijekavian), the same one/few/other rule for integer counts. `bs-BA`,
     // `bs-Latn-*` and `bs_BA.UTF-8` resolve here; so do Cyrillic `bs` locales, which read Latin
     // rather than English.
@@ -302,34 +313,54 @@ impl LangInfo {
     }
 }
 
-/// A language the UI can be shown in (a handle into [`LANGUAGES`]).
+/// Per language of [`LANGUAGES`], PhotoCraft's own catalog rows as written (escaped): (context,
+/// source) to translation, read on first use ([`Lang::owns`]).
+static OWN_ROWS: [OnceLock<HashMap<(&'static str, &'static str), &'static str>>; LANGUAGE_COUNT] = [const { OnceLock::new() }; LANGUAGE_COUNT];
+
+/// A language the UI can be shown in: English, or one of [`LANGUAGES`] whose catalogs are
+/// embedded.
 #[derive(Clone, Copy)]
-pub struct Lang(&'static LangInfo);
+pub struct Lang {
+    lang: craft_i18n::Lang,
+    /// The catalogs it is looked up in: the embedded ones ([`I18N`]), or a test fixture's.
+    catalogs: Option<&'static I18n>,
+}
 
 impl std::fmt::Debug for Lang {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Lang({})", self.0.code)
+        write!(f, "Lang({})", self.code())
     }
 }
 
 impl PartialEq for Lang {
     fn eq(&self, other: &Self) -> bool {
-        self.0.code == other.0.code
+        self.code() == other.code()
     }
 }
 
 impl Eq for Lang {}
 
 impl Lang {
-    pub const EN: Lang = Lang(&LANGUAGES[0]);
+    pub const EN: Lang = Lang { lang: craft_i18n::Lang::EN, catalogs: None };
 
-    pub fn code(self) -> &'static str {
-        self.0.code
+    fn i18n(self) -> &'static I18n {
+        self.catalogs.unwrap_or_else(|| LazyLock::force(&I18N))
     }
 
-    /// A language by its exact code.
+    fn info(self) -> Option<&'static LangInfo> {
+        let code = self.code();
+        LANGUAGES.iter().find(|l| l.code == code)
+    }
+
+    pub fn code(self) -> &'static str {
+        self.i18n().code(self.lang)
+    }
+
+    /// A language by its exact code (any case): one of [`LANGUAGES`] whose catalogs are embedded.
     pub fn from_code(code: &str) -> Option<Lang> {
-        LANGUAGES.iter().find(|l| l.code.eq_ignore_ascii_case(code)).map(Lang)
+        let code = if code.eq_ignore_ascii_case("sr") { "sr-latn" } else { code };
+        let info = LANGUAGES.iter().find(|l| l.code.eq_ignore_ascii_case(code))?;
+        I18N.from_code(info.code).map(|lang| Lang { lang, catalogs: None })
     }
 
     /// Resolve the `interface.language` preference: a language code, or `auto` (and anything
@@ -341,9 +372,10 @@ impl Lang {
         Lang::from_code(pref).or_else(|| lang_from_tag(pref)).unwrap_or_else(system_lang)
     }
 
-    /// Every registered language.
+    /// Every language the interface can be shown in: [`LANGUAGES`] in order, those whose catalogs
+    /// are embedded (English alone in a build without craft-i18n).
     pub fn all() -> impl Iterator<Item = Lang> {
-        LANGUAGES.iter().map(Lang)
+        LANGUAGES.iter().filter_map(|l| Lang::from_code(l.code))
     }
 
     /// Every registered language in the order a picker lists them: English first (the source
@@ -356,23 +388,77 @@ impl Lang {
         std::iter::once(Lang::EN).chain(rest).collect()
     }
 
+    /// The language's name in itself (its `@id language.name` row), shown in the Preferences
+    /// dropdown.
     pub fn name(self) -> &'static str {
-        self.0.name
+        self.i18n().name(self.lang)
     }
 
     /// Does this language's catalog claim to cover every menu string and `tl!` literal?
     pub fn complete_menus(self) -> bool {
-        self.0.complete_menus
+        self.info().is_some_and(|l| l.complete_menus)
     }
 
     /// The language's reading direction.
     pub fn dir(self) -> Dir {
-        dir_for_code(self.0.code)
+        dir_for_code(self.code())
     }
 
     fn catalog(self) -> &'static Catalog {
-        self.0.catalog()
+        self.info().unwrap_or(&LANGUAGES[0]).catalog()
     }
+
+    #[cfg(test)]
+    fn legacy_info(self) -> &'static LangInfo {
+        self.info().unwrap_or(&LANGUAGES[0])
+    }
+
+    /// Whether `translated`, the lookup's text for (`context`, `source`), comes from PhotoCraft's
+    /// own catalog (`photocraft.tsv`, not the shared `common.tsv`). The shared catalog's `@id` rows
+    /// are keyed by the other apps' command ids, which can name another command, so command-id
+    /// lookups ask this; every `@id` row PhotoCraft had is in its own catalog. Comparing the text,
+    /// not only the key, keeps a shared row out when craft-i18n skipped a malformed own row. A test
+    /// fixture has no shared catalog: its rows are its own.
+    fn owns(self, context: &str, source: &str, translated: &str) -> bool {
+        if let Some(fixture) = self.catalogs {
+            return fixture.get(self.lang, context, source) == Some(translated);
+        }
+        let code = self.code();
+        let Some(slot) = LANGUAGES.iter().position(|l| l.code == code).and_then(|i| OWN_ROWS.get(i)) else { return false };
+        let rows: &HashMap<(&str, &str), &str> = slot.get_or_init(|| {
+            app_catalog(code)
+                .lines()
+                .filter(|l| !l.starts_with('#'))
+                .filter_map(|l| {
+                    let mut columns = l.split('\t');
+                    Some(((columns.next()?, columns.next()?), columns.next()?))
+                })
+                .collect()
+        });
+        let escape = |s: &str| s.replace('\\', "\\\\").replace('\n', "\\n").replace('\t', "\\t");
+        rows.get(&(escape(context).as_str(), escape(source).as_str())).is_some_and(|own| *own == escape(translated))
+    }
+}
+
+impl Lang {
+    /// The embedded catalog texts this language reads, the shared one then PhotoCraft's; none for
+    /// English. For checks that the interface fonts draw every translation.
+    #[cfg(test)]
+    pub(crate) fn catalog_texts(self) -> impl Iterator<Item = &'static str> {
+        let code = self.code();
+        CRAFT_I18N.iter().filter(move |(c, ..)| c.eq_ignore_ascii_case(code)).flat_map(|(_, shared, app)| [*shared, *app])
+    }
+}
+
+/// PhotoCraft's own embedded catalog text (`photocraft.tsv`) in the locale `code`; empty when
+/// there is none.
+fn app_catalog(code: &str) -> &'static str {
+    CRAFT_I18N.iter().find(|(c, ..)| c.eq_ignore_ascii_case(code)).map_or("", |(_, _, app)| *app)
+}
+
+/// Whether the fork translation snapshot is embedded. All supported languages are mandatory.
+pub fn catalogs_embedded() -> bool {
+    !CRAFT_I18N.is_empty()
 }
 
 /// `name` lowercased with the Latin accents that occur in language names folded away, so a
@@ -414,6 +500,12 @@ fn candidates(tag: &str) -> Vec<String> {
     if primary == "pt" && !out.iter().any(|c| c == "pt-br") {
         // The only Portuguese catalog is Brazilian; other regions use it rather than English.
         out.insert(out.len() - 1, "pt-br".to_string());
+    }
+    if primary == "sr" && !out.iter().any(|c| c == "sr-latn") {
+        // The only Serbian catalog is Latin (`sr-latn`). Plain, regional (`sr-RS`, `sr-ME`) and
+        // Cyrillic (`sr-Cyrl-RS`) tags read it rather than English, as when it was PhotoCraft's
+        // `sr` catalog; craft-i18n's own matching never takes `sr` to a script it doesn't name.
+        out.insert(out.len() - 1, "sr-latn".to_string());
     }
     if matches!(primary, "no" | "nn") && !out.iter().any(|c| c == "nb") {
         // The only Norwegian catalog is Bokmål; the macrolanguage code and Nynorsk use it rather
@@ -489,7 +581,7 @@ pub fn sync_context(ctx: &egui::Context, language: &str) {
 
 /// Does `lang` have a catalog entry for this plain string? (English never does: it is the source.)
 pub fn has(lang: Lang, s: &str) -> bool {
-    lang.catalog().plain(s).is_some()
+    lang.i18n().get(lang.lang, "", s).is_some()
 }
 
 /// Translate an English UI string into the current language ([`tr`] with [`current`]).
@@ -499,7 +591,7 @@ pub fn t(s: &str) -> &str {
 
 /// Translate an English UI string; unknown strings come back unchanged.
 pub fn tr(lang: Lang, s: &str) -> &str {
-    lang.catalog().plain(s).unwrap_or(s)
+    lang.i18n().t(lang.lang, s)
 }
 
 /// Keep history labels stable in the engine and reuse menu/tool translations at display time.
@@ -523,12 +615,36 @@ pub fn history_label(lang: Lang, label: &str) -> &str {
 
 /// Like [`tr`], for an English string that needs a disambiguating `context`.
 pub fn tr_ctx<'a>(lang: Lang, context: &str, s: &'a str) -> &'a str {
-    lang.catalog().contextual(context, s).unwrap_or_else(|| tr(lang, s))
+    lang.i18n().tc(lang.lang, context, s)
 }
 
-/// A string keyed by its command id, falling back to the translation of the English `label`.
+/// A string keyed by its command id, falling back to the translation of the English `label`. Only
+/// PhotoCraft's own `@id` rows count ([`own_id`]).
 pub fn tr_id<'a>(lang: Lang, id: &str, label: &'a str) -> &'a str {
-    lang.catalog().id(id).unwrap_or_else(|| tr(lang, label))
+    if own_id(lang, id, label) { lang.i18n().tid(lang.lang, id, label) } else { tr(lang, label) }
+}
+
+/// Whether `lang` has PhotoCraft's own `@id` row for `id` ([`Lang::owns`]: command ids are each
+/// app's own) and it keeps the `{placeholders}` and trailing `…` of the English `label`. craft-i18n
+/// can't check that, because an `@id` row's source is the id, so a row that doesn't is skipped
+/// here and the label's translation shows instead.
+fn own_id(lang: Lang, id: &str, label: &str) -> bool {
+    lang.i18n().get(lang.lang, "@id", id).is_some_and(|translated| lang.owns("@id", id, translated) && same_shape(translated, label))
+}
+
+/// Whether `translated` has the `{placeholders}` (in any order) and the trailing `…` of `english`,
+/// the check craft-i18n makes on every row whose source is English text, and no `{` left open or
+/// `}` without its `{`.
+fn same_shape(translated: &str, english: &str) -> bool {
+    let placeholders = |text: &str| -> Option<Vec<String>> {
+        let mut names = text.split('{').skip(1).map(|p| p.split_once('}').map(|(name, _)| name.to_owned())).collect::<Option<Vec<_>>>()?;
+        if text.matches('}').count() != names.len() {
+            return None;
+        }
+        names.sort_unstable();
+        Some(names)
+    };
+    translated.ends_with('…') == english.ends_with('…') && placeholders(translated).is_some_and(|names| Some(names) == placeholders(english))
 }
 
 /// Fill `{name}` placeholders. Unknown placeholders are left as written.
@@ -541,12 +657,32 @@ pub fn fmt(template: &str, args: &[(&str, &str)]) -> String {
 }
 
 /// A plural-aware message: `one`/`other` are the English forms (with `{n}` where the count goes).
+/// The form is the language's CLDR category; `{n}` is written in `0`–`9` without grouping or
+/// isolate marks, as PhotoCraft always has.
 pub fn trn(lang: Lang, n: u64, one: &str, other: &str) -> String {
-    let idx = (lang.0.plural)(n);
-    let text = lang.catalog().plural(one, other, idx).unwrap_or(if n == 1 { one } else { other });
-    fmt(text, &[("n", &n.to_string())])
+    lang.i18n().trn_plain(lang.lang, n, one, other)
 }
 
+/// A test language whose PhotoCraft catalog is `source` (catalog format), so tests of lookup code
+/// don't depend on the embedded catalogs' wording. `code` picks the CLDR plural rules.
+#[cfg(test)]
+pub(crate) fn fixture_lang(code: &'static str, source: &'static str) -> Lang {
+    let embedded: &'static craft_i18n::Embedded = Box::leak(Box::new([(code, "", source)]));
+    let (i18n, _) = I18n::new(embedded, &[code]);
+    let i18n: &'static I18n = Box::leak(Box::new(i18n));
+    let lang = i18n.from_code(code).unwrap_or(craft_i18n::Lang::EN);
+    Lang { lang, catalogs: Some(i18n) }
+}
+
+/// Require embedded catalogs rather than silently skipping translation coverage.
+#[cfg(test)]
+pub(crate) fn needs_catalogs() -> bool {
+    assert!(catalogs_embedded(), "the fork must embed its translation catalogs");
+    true
+}
+
+#[cfg(test)]
+mod fork_tests;
 #[cfg(test)]
 mod tests;
 

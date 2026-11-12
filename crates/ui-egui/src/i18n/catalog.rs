@@ -88,6 +88,7 @@ impl Catalog {
         c
     }
 
+    #[cfg(test)]
     pub fn plain(&self, s: &str) -> Option<&str> {
         self.plain.get(s).map(String::as_str)
     }
@@ -96,15 +97,18 @@ impl Catalog {
         self.history.get(&history_key(s)).map(String::as_str)
     }
 
+    #[cfg(test)]
     pub fn contextual(&self, ctx: &str, s: &str) -> Option<&str> {
         self.contextual.get(&format!("{ctx}\u{1}{s}")).map(String::as_str)
     }
 
+    #[cfg(test)]
     pub fn id(&self, id: &str) -> Option<&str> {
         self.ids.get(id).map(String::as_str)
     }
 
     /// The plural form `index` of the message whose English forms are `one|other`.
+    #[cfg(test)]
     pub fn plural(&self, one: &str, other: &str, index: usize) -> Option<&str> {
         let forms = self.plurals.get(&format!("{one}|{other}"))?;
         forms.get(index.min(forms.len().saturating_sub(1))).map(String::as_str)
