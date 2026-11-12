@@ -1,0 +1,70 @@
+name: Verify and publish PhotoCraft 0.23.1 release
+on:
+  push:
+    branches: ['publish/261112-0231']
+permissions:
+  contents: write
+  actions: read
+  pull-requests: read
+concurrency:
+  group: photocraft-release-publication
+  cancel-in-progress: false
+jobs:
+  verify-and-promote:
+    if: github.repository == 'david419kr/photocraft-qwen-edit' && github.ref == 'refs/heads/publish/261112-0231'
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: publisher
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate pinned configuration before checkout
+        id: config
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $c = Get-Content publisher/release-support/selection-erase/config.json -Raw | ConvertFrom-Json
+          if ((Get-Content publisher/release-support/selection-erase/config.json -Raw).Contains('PENDING_')) { throw 'Unresolved release inputs' }
+          if ($env:GITHUB_REF -ne "refs/heads/$($c.publisher_branch)") { throw 'Wrong publisher branch' }
+          if ($c.publish_enabled -isnot [bool]) { throw 'publish_enabled must be a boolean' }
+          if ($c.publish_enabled -and $c.publish_tag -ne $c.tag) { throw 'Authorized tag differs from config' }
+          if (!$c.publish_enabled -and $c.publish_tag) { throw 'Disabled publication must have empty publish_tag' }
+          if ($env:GITHUB_EVENT_NAME -ne 'push') { throw 'Expected exact publisher branch push' }
+          "publish_enabled=$($c.publish_enabled.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
+          "publish_tag=$($c.publish_tag)" >> $env:GITHUB_OUTPUT
+          "source=$($c.build_sha)" >> $env:GITHUB_OUTPUT
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.config.outputs.source }}
+          path: source
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@1.95.0
+      - name: Verify original artifacts and optionally publish
+        working-directory: source
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_PUBLISH_APPROVED: ${{ steps.config.outputs.publish_tag }}
+          RELEASE_PUBLISH_ENABLED: ${{ steps.config.outputs.publish_enabled }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $options = @()
+          if ($env:RELEASE_PUBLISH_ENABLED -eq 'true') { $options += '--publish' }
+          python ../publisher/release-support/selection-erase/publish.py @options
+          if ($LASTEXITCODE -ne 0) { throw 'Release verification/publication failed; inspect draft/public state before retry' }
+      - name: Preserve verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: photocraft-0231-release-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            source/dist/verified-artifact.json
+            source/dist/release-provenance.json
+            source/dist/updater-identity-verification.json
+            source/dist/publication-verification.json
+          if-no-files-found: warn
