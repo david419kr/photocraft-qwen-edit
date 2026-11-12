@@ -14,10 +14,10 @@ default = []
 avif-decode = ["dep:oxideav-avif", "dep:oxideav-heif"]
 # Optional AVIF encode via ravif (pure Rust): U8 and XMP via Exif XMLPacket.
 avif = ["image/avif"]
-# HEIC/HEIF decode via the optional photocraft-heif crate (heic-rs, pure Rust). Off by default so
+# HEIC/HEIF decode via the optional craft-heif crate from craft-libs (heic-rs, pure Rust). Off by default so
 # distributors choose it at build time; official builds and CI enable it (`--features heif` on the
 # apps). Without it HEIF files are still recognised and opening one is a clear "unsupported" error.
-heif = ["dep:photocraft-heif"]
+heif = ["dep:craft-heif"]
 
 [dependencies]
 thiserror.workspace = true
@@ -36,7 +36,7 @@ jpeg-encoder = "0.6"
 craft-jpeg.workspace = true
 # Pure-Rust modular JPEG XL lossless encoder.
 zune-jpegxl = { version = "=0.5.2", default-features = false, features = ["std"] }
-photocraft-heif = { path = "../heif", optional = true }
+craft-heif = { workspace = true, optional = true }
 # Pin the new parser/decoder: review fidelity and malformed-input tests before upgrading.
 oxideav-avif = { version = "=0.0.14", optional = true }
 oxideav-heif = { version = "=0.0.10", default-features = false, optional = true }
@@ -51,6 +51,8 @@ exr = { version = "1.73", default-features = false, features = ["rayon"] }
 proptest.workspace = true
 # Oracle decoders for cross-checking in tests only.
 image = { workspace = true, features = ["png", "jpeg", "tiff"] }
+# Lossless synthetic HEIC files for the `heif` feature's tests.
+craft-heif = { workspace = true, features = ["testdata"] }
 
 # Independent JPEG XL decoder oracle; not linked into the application.
 [target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]

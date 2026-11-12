@@ -1,4 +1,5 @@
-//! Bake the contributor credits into the binary as static Rust tables. Nothing is read at run time.
+//! Bake the contributor credits into the binary as static Rust tables, and embed the craft-i18n
+//! interface catalogs. Nothing is read at run time.
 //!
 //! - contributors/contributors.json: commit stats per GitHub username, with a mark for whose people.toml
 //!   entry is verified.
@@ -7,10 +8,9 @@
 //!
 //! A missing or malformed file gives empty tables (or no names) and a warning.
 //!
-//! Also packs the translation catalogs (`src/i18n/*.tsv`) into `OUT_DIR/i18n/` for
-//! `i18n::LANGUAGES` (see [`pack_catalogs`]): stored that way they take ~0.5 MB of the binary
-//! instead of ~2.2 MB, which keeps the web build under its 24 MiB size gate
-//! (packaging/web/package.sh). A catalog is unpacked the first time its language is used.
+//! - `src/i18n/*.tsv`: pinned central translations plus fork overrides. Always embedded,
+//!   packed by shared key and deflated to retain multilingual portable/web builds without
+//!   requiring a separate checkout. `craft-i18n.rev` records their central source revision.
 
 use std::fmt::Write as _;
 
