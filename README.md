@@ -1,6 +1,6 @@
 # PhotoCraft — Local Qwen AI
 
-This branch prepares upstream **0.23.0** as a candidate. Validation and Windows artifact provenance are tracked in [the integration record](docs/upstream-0230-integration.md).
+This branch prepares upstream **0.23.1** as a candidate. Validation and Windows artifact provenance are tracked in [the integration record](docs/upstream-0231-integration.md).
 
 [한국어](README.ko.md) · [Download the portable release](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 
