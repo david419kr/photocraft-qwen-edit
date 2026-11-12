@@ -4983,3 +4983,9 @@ layers	Fill	Fyllning
 layers	Fill:	Fyllning:
 navigator	Zoom	Zoom
 shape	Appearance	Utseende
+	Count Color	Räkningsfärg
+	Count Group	Räkningsgrupp
+	Count group color	Räkningsgruppens färg
+	Delete the currently selected count group	Ta bort den markerade räkningsgruppen
+	Toggle Character and Paragraph panels	Visa/dölj panelerna Tecken och Stycke
+	Toggle visibility of count group	Växla räkningsgruppens synlighet

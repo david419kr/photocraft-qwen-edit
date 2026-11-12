@@ -4956,3 +4956,9 @@ layers	Fill:	Заливка:
 navigator	Zoom	Масштаб
 shape	Appearance	Оформление
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	Содержимое AI/PDF/EPS будет редактироваться как SVG. Сохранение заменит встроенный источник; особенности исходного формата могут измениться.
+	Count Color	Цвет счётчика
+	Count Group	Группа счётчиков
+	Count group color	Цвет группы счётчиков
+	Delete the currently selected count group	Удалить выбранную группу счётчиков
+	Toggle Character and Paragraph panels	Показать или скрыть панели «Символ» и «Абзац»
+	Toggle visibility of count group	Переключить видимость группы счётчиков

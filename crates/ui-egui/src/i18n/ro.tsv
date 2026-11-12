@@ -4822,3 +4822,9 @@ fontWeight	SemiBold	Semi Bold
 fontWeight	Thin	Ultrafină
 layerLabel	No Color	Fără culoare
 navigator	Zoom	Zoom
+	Count Color	Culoare numărare
+	Count Group	Grup de numărare
+	Count group color	Culoarea grupului de numărare
+	Delete the currently selected count group	Șterge grupul de numărare selectat în prezent
+	Toggle Character and Paragraph panels	Afișează/ascunde panourile Caracter și Paragraf
+	Toggle visibility of count group	Comută vizibilitatea grupului de numărare

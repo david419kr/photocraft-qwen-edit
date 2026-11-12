@@ -3928,3 +3928,9 @@ fontWeight	Regular	Reguler
 fontWeight	SemiBold	SemiTebal
 fontWeight	Thin	Sangat Tipis
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	Konten AI/PDF/EPS akan diedit sebagai SVG. Menyimpan akan mengganti sumber tersemat; fitur khusus format mungkin berubah.
+	Count Color	Warna Hitungan
+	Count Group	Grup Hitungan
+	Count group color	Warna grup hitungan
+	Delete the currently selected count group	Hapus grup hitungan yang sedang dipilih
+	Toggle Character and Paragraph panels	Tampilkan/sembunyikan panel Karakter dan Paragraf
+	Toggle visibility of count group	Alihkan visibilitas grup hitungan

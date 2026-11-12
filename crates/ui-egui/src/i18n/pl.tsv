@@ -4506,3 +4506,9 @@ fontWeight	Regular	Zwykły
 fontWeight	SemiBold	Półgruby
 fontWeight	Thin	Cienki
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	Zawartość AI/PDF/EPS będzie edytowana jako SVG. Zapisanie zastąpi osadzone źródło; właściwości specyficzne dla formatu mogą się zmienić.
+	Count Color	Kolor zliczania
+	Count Group	Grupa zliczania
+	Count group color	Kolor grupy zliczania
+	Delete the currently selected count group	Usuń aktualnie wybraną grupę zliczania
+	Toggle Character and Paragraph panels	Pokaż lub ukryj panele Znak i Akapit
+	Toggle visibility of count group	Przełącz widoczność grupy zliczania

@@ -4355,3 +4355,9 @@ smartSvg	SVG editor opened. Save the SVG to update this Smart Object.	Đã mở 
 smartSvg	Save to the opened SVG file. Each saved change becomes one undo step in PhotoCraft.	Lưu vào tệp SVG đã mở. Mỗi lần lưu thay đổi tạo một bước hoàn tác trong PhotoCraft.
 smartSvg	Stop syncing this Smart Object	Dừng đồng bộ Đối tượng thông minh này
 smartSvg	Updates wait while another document or an editing dialog is active.	Các cập nhật sẽ chờ khi tài liệu khác hoặc hộp thoại chỉnh sửa đang hoạt động.
+	Count Color	Màu đếm
+	Count Group	Nhóm đếm
+	Count group color	Màu nhóm đếm
+	Delete the currently selected count group	Xóa nhóm đếm đang được chọn
+	Toggle Character and Paragraph panels	Hiện/ẩn các bảng Ký tự và Đoạn văn
+	Toggle visibility of count group	Bật/tắt hiển thị nhóm đếm

@@ -1,10 +1,7 @@
 name: Release
 
 on:
-  # A nightly dry run on main: every release build except macOS, nothing signed or released
-  # (craft-common-actions release.yml `dry-run`). Finds release-only breakage before release day.
-  schedule:
-    - cron: "28 2 * * *"
+  # Fork updates are scheduled externally; do not introduce nightly release builds.
   push:
     branches: [release]
   workflow_dispatch:

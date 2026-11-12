@@ -4818,3 +4818,9 @@ smartSvg	SVG editor opened. Save the SVG to update this Smart Object.	Az SVG-sze
 smartSvg	Save to the opened SVG file. Each saved change becomes one undo step in PhotoCraft.	Mentse a megnyitott SVG-fájlba. Minden mentett módosítás külön visszavonási lépés lesz a PhotoCraftban.
 smartSvg	Stop syncing this Smart Object	Az intelligens objektum szinkronizálásának leállítása
 smartSvg	Updates wait while another document or an editing dialog is active.	A frissítések várakoznak, amíg másik dokumentum vagy szerkesztési párbeszédablak aktív.
+	Count Color	Számlálás színe
+	Count Group	Számlálási csoport
+	Count group color	Számlálási csoport színe
+	Delete the currently selected count group	Az aktuálisan kijelölt számlálási csoport törlése
+	Toggle Character and Paragraph panels	Karakter és Bekezdés panelek megjelenítése/elrejtése
+	Toggle visibility of count group	Számlálási csoport láthatóságának váltása

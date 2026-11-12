@@ -4792,3 +4792,9 @@ fontWeight	SemiBold	Seminegrito
 fontWeight	Thin	Fina
 layerLabel	No Color	Sem cor
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	O conteúdo AI/PDF/EPS será editado como SVG. Salvar substitui a origem incorporada; recursos específicos do formato podem mudar.
+	Count Color	Cor da contagem
+	Count Group	Grupo de contagem
+	Count group color	Cor do grupo de contagem
+	Delete the currently selected count group	Excluir o grupo de contagem selecionado atualmente
+	Toggle Character and Paragraph panels	Mostrar ou ocultar os painéis Caractere e Parágrafo
+	Toggle visibility of count group	Alternar a visibilidade do grupo de contagem

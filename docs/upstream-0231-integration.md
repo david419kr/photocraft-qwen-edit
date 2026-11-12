@@ -17,7 +17,7 @@ Upstream PR #13257's automation GPU nextest filter is now part of this exact rel
 
 Preserve generation/edit/fill/blank removal with original RGB and black/white guides, non-destructive layers and Undo/Redo, cancellation and document-local jobs, model/TE/CFG/Turbo sigma, HyMT isolation/residency/two-marker full-free, XMP/Metadata None including native saves, AVIF, compressed multilingual catalogs/Korean, static CRT, installer pins/licenses/updater, selected-tool/native-color persistence, Quick Mask Selected Areas, local selection erase and PR #27 external upscalers. Dependency changes in Cargo.lock are workspace version changes only; external dependency pins remain unchanged.
 
-Extend the existing candidate workflow's branch guards and upstream/base provenance to 0.23.1. Keep all full PR checks, explicitly enable the full sweep for this candidate, and leave FreeBSD manual-only. PR #7 is not rerun. Existing successful publication infrastructure is reference only; this task stops at draft PR/artifact.
+Extend the existing candidate workflow's branch guards and upstream/base provenance to 0.23.1. Keep all full PR checks, explicitly enable the full sweep for this candidate, and leave FreeBSD manual-only. PR #7 is not rerun. Exclude the newly added upstream release-nightly cron: fork updates are scheduled externally, and this task does not authorize a new scheduler. Keep its manual/release-branch behavior. Existing successful publication infrastructure is reference only; this task stops at draft PR/artifact.
 
 ## Validation status
 
@@ -28,3 +28,9 @@ The managed cloud environment initially required a startup wait; it then became 
 ## Outside-cloud acceptance not performed
 
 No user PC was accessed. Actual CUDA Qwen Generate/Edit/Fill/blank Remove/background removal/reroll, output quality, feather boundaries, interactive Windows cancellation/layers/Undo, model/TE/CFG/Turbo controls, Korean IME/Ctrl+Enter/hover-wheel, real HyMT VRAM pressure/residency/two-marker full-free, PNG/AVIF/native metadata All/None save/reopen UI, Quick Mask/local erase, and real IllustrationJaNai/waifu2x/TensorRT inference remain untested here. Cloud mock/software-GPU checks cannot certify those hardware/UI results.
+
+## Initial preparation evidence
+
+Initial merge `46d50d4688e5405ee1861c94ec9c906bb761c3d9` is in draft [PR #30](https://github.com/david419kr/photocraft-qwen-edit/pull/30). PR merge `57d7b70e3366dc4a14007bd13b209be8b1a61e52` has the identical full tree `9c89e7cce96b3ee8abacc90f845527d792899306`. Local full stable 1.99.1 Clippy passed in 6m49s. Installer tests: 14 passed; package/updater Python suite: 11 passed, three Windows-only skipped; CI-reuse policy: 19 passed. Formatting/diff checks passed. Rust 1.95 and full final-source hosted tests remain pending here; later measured results belong in the PR. External dependency lock entries and the entire nextest configuration match fork base exactly.
+
+The initial local xtask run passed all 13 library tests and 88/89 binary tests, failing complete-catalog coverage on six new Count/Character/Paragraph source keys. Add those six translated entries to each of the 33 complete language catalogs without changing existing translations or Hindi's partial status. The same suites then pass all 102 tests. The actual shared-lookup report covers 2,583/2,583 keys in every complete catalog. Layers pass for 30 crates and the generated scorecard is current. This correction changes embedded catalogs, so final-source platform tests and packaging must run for the new SHA; initial CI/artifacts are historical only.

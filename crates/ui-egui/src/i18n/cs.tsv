@@ -4594,3 +4594,9 @@ layers	Fill	Krytí výplně
 layers	Fill:	Krytí výplně:
 navigator	Zoom	Zvětšení
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	Obsah AI/PDF/EPS se bude upravovat jako SVG. Uložení nahradí vložený zdroj; vlastnosti specifické pro formát se mohou změnit.
+	Count Color	Barva počítání
+	Count Group	Skupina počítání
+	Count group color	Barva skupiny počítání
+	Delete the currently selected count group	Odstranit aktuálně vybranou skupinu počítání
+	Toggle Character and Paragraph panels	Zobrazit nebo skrýt panely Znaky a Odstavec
+	Toggle visibility of count group	Přepnout viditelnost skupiny počítání

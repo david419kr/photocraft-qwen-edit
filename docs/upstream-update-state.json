@@ -453,5 +453,9 @@
     }
   },
   "validation": "Pending fresh exact-source gates; previous-version passes are historical only. Actual CUDA/VRAM/UI not run.",
-  "windows_candidate": null
+  "windows_candidate": null,
+  "pull_request": 30,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/30",
+  "initial_merge_sha": "46d50d4688e5405ee1861c94ec9c906bb761c3d9",
+  "validation_record": "https://github.com/david419kr/photocraft-qwen-edit/pull/30"
 }

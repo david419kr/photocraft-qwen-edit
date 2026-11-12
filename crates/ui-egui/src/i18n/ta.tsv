@@ -4752,3 +4752,9 @@ fontWeight	SemiBold	அரைத் தடித்த
 fontWeight	Thin	மெல்லிய
 layerLabel	No Color	நிறம் இல்லை
 navigator	Zoom	பெரிதாக்கல்
+	Count Color	எண்ணிக்கை நிறம்
+	Count Group	எண்ணிக்கைக் குழு
+	Count group color	எண்ணிக்கைக் குழுவின் நிறம்
+	Delete the currently selected count group	தற்போது தேர்ந்தெடுக்கப்பட்ட எண்ணிக்கைக் குழுவை நீக்கு
+	Toggle Character and Paragraph panels	எழுத்து மற்றும் பத்தி பலகைகளைக் காட்டு/மறை
+	Toggle visibility of count group	எண்ணிக்கைக் குழுவின் தெரிவுநிலையை மாற்று

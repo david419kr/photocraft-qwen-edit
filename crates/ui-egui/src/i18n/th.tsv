@@ -4948,3 +4948,9 @@ layers	Fill	เติม
 layers	Fill:	กรอก:
 navigator	Zoom	ซูม
 shape	Appearance	ลักษณะที่ปรากฏ
+	Count Color	สีการนับ
+	Count Group	กลุ่มการนับ
+	Count group color	สีของกลุ่มการนับ
+	Delete the currently selected count group	ลบกลุ่มการนับที่เลือกอยู่
+	Toggle Character and Paragraph panels	แสดงหรือซ่อนแผงอักขระและย่อหน้า
+	Toggle visibility of count group	สลับการแสดงกลุ่มการนับ

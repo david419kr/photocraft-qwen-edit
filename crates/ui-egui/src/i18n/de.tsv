@@ -3948,3 +3948,9 @@ smartSvg	SVG editor opened. Save the SVG to update this Smart Object.	SVG-Editor
 smartSvg	Save to the opened SVG file. Each saved change becomes one undo step in PhotoCraft.	Speichern Sie die geöffnete SVG-Datei. Jede gespeicherte Änderung wird in PhotoCraft zu einem Rückgängig-Schritt.
 smartSvg	Stop syncing this Smart Object	Synchronisierung dieses Smart-Objekts beenden
 smartSvg	Updates wait while another document or an editing dialog is active.	Aktualisierungen warten, während ein anderes Dokument oder ein Bearbeitungsdialog aktiv ist.
+	Count Color	Zählfarbe
+	Count Group	Zählgruppe
+	Count group color	Farbe der Zählgruppe
+	Delete the currently selected count group	Die aktuell ausgewählte Zählgruppe löschen
+	Toggle Character and Paragraph panels	Zeichen- und Absatzbedienfelder ein-/ausblenden
+	Toggle visibility of count group	Sichtbarkeit der Zählgruppe umschalten

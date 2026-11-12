@@ -4821,3 +4821,9 @@ fontWeight	SemiBold	מודגש-חלקי
 fontWeight	Thin	דק
 layerLabel	No Color	בלי צבע
 navigator	Zoom	תקריב
+	Count Color	צבע הספירה
+	Count Group	קבוצת ספירה
+	Count group color	צבע קבוצת הספירה
+	Delete the currently selected count group	מחיקת קבוצת הספירה שנבחרה כעת
+	Toggle Character and Paragraph panels	הצגה או הסתרה של החלוניות תו ופסקה
+	Toggle visibility of count group	הצגה או הסתרה של קבוצת הספירה

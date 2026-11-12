@@ -4948,3 +4948,9 @@ layers	Fill:	Remplissage :
 navigator	Zoom	Zoom
 shape	Appearance	Apparence
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	Le contenu AI/PDF/EPS sera modifié au format SVG. L’enregistrement remplace la source incorporée ; les propriétés propres au format peuvent changer.
+	Count Color	Couleur de comptage
+	Count Group	Groupe de comptage
+	Count group color	Couleur du groupe de comptage
+	Delete the currently selected count group	Supprimer le groupe de comptage actuellement sélectionné
+	Toggle Character and Paragraph panels	Afficher ou masquer les panneaux Caractère et Paragraphe
+	Toggle visibility of count group	Basculer la visibilité du groupe de comptage
