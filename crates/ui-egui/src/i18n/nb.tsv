@@ -4358,7 +4358,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	Denne justeringen ({key}) beholdes som importert og kan ikke redigeres ennå.
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Dette dokumentets lag trenger {needed}, men kan holde {budget}: gjentegning av hele dokumentet bruker CPU-en
 	This document's layers: {needed} of {budget} for layers	Dette dokumentets lag: {needed} av {budget} for lag
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Dette fyllaget må rasteriseres før du fortsetter. Fyllinnholdet kan da ikke lenger redigeres. Rasterisere laget?
 	This layer must be rasterized before proceeding.	Dette laget må rasteriseres før du fortsetter.
 	This operation will turn a live shape into a regular path. Continue?	Den dynamiske formen blir en vanlig bane. Fortsette?
 	This redraw took {seconds} s on the CPU.	Denne gjentegningen tok {seconds} s på CPU-en.

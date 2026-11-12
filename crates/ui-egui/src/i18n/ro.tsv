@@ -4276,7 +4276,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	Acest ajustaj ({key}) este conservat ca a fost importat și nu poate fi editat încă.
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Straturile acestui document necesită {needed} dar pot ocupa {budget}: redesenările întregului document folosesc CPU
 	This document's layers: {needed} of {budget} for layers	Straturile acestui document: {needed} din {budget} pentru straturi
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Acest strat de umplere trebuie rasterizat înainte de a continua. Conținutul său de umplere nu va mai fi editabil. Rasterizați stratul?
 	This layer must be rasterized before proceeding.	Acest strat trebuie rasterizat înainte de a continua.
 	This operation will turn a live shape into a regular path. Continue?	Forma dinamică va deveni un traseu obișnuit. Continuați?
 	This redraw took {seconds} s on the CPU.	Această redesenare a durat {seconds} s pe CPU.

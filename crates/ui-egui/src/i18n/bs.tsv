@@ -4365,7 +4365,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	Ovo podešavanje ({key}) zadržano je kako je uvezeno i još se ne može uređivati.
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Slojevi ovog dokumenta trebaju {needed}, a mogu imati {budget}: ponovno iscrtavanje cijelog dokumenta koristi CPU
 	This document's layers: {needed} of {budget} for layers	Slojevi ovog dokumenta: {needed} od {budget} za slojeve
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Ovaj sloj ispune mora se rasterizirati prije nastavka. Njegov sadržaj ispune više neće biti moguće uređivati. Rasterizirati sloj?
 	This layer must be rasterized before proceeding.	Ovaj sloj mora se rasterizirati prije nastavka.
 	This operation will turn a live shape into a regular path. Continue?	Živi oblik će se pretvoriti u običnu putanju. Nastaviti?
 	This redraw took {seconds} s on the CPU.	Ovo ponovno iscrtavanje trajalo je {seconds} s na CPU.

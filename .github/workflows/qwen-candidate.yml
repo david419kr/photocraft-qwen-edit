@@ -56,10 +56,22 @@ jobs:
     if: github.repository == 'david419kr/photocraft-qwen-edit' && (github.ref == 'refs/heads/update/0.23.0' || github.ref == 'refs/heads/update/0.22.0' || github.ref == 'refs/heads/update/0.21.0' || github.ref == 'refs/heads/update/0.20.2' || github.ref == 'refs/heads/update/0.20.1' || github.ref == 'refs/heads/fix/cmyk-adjustment-fill' || github.ref == 'refs/heads/fix/psd-import-20gib')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
+    env:
+      CRAFT_FONTS_DIR: ${{ github.workspace }}/craft-fonts
+      CRAFT_FONTS_REQUIRED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      # The full i18n regression set draws CJK and Arabic in a strict first frame.
+      # Use the same pinned font input as full PR CI; missing glyphs must fail.
+      - name: Check out regression fonts
+        uses: actions/checkout@v4
+        with:
+          repository: storytold/craft-fonts
+          ref: b076417b5880bd4154bd22f00695b1d28c6bea83
+          path: craft-fonts
+          persist-credentials: false
       - name: Check candidate ancestry
         run: |
           git merge-base --is-ancestor "$QWEN_UPSTREAM_SHA" HEAD

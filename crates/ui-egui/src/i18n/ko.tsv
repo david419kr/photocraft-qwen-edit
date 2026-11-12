@@ -3964,7 +3964,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	이 조정({key})은 가져온 상태로 유지되며 아직 편집할 수 없습니다.
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	이 문서의 레이어에 {needed}가 필요하지만 {budget}만 사용할 수 있습니다: 문서 전체 다시 그리기는 CPU를 사용합니다
 	This document's layers: {needed} of {budget} for layers	이 문서의 레이어: 레이어용 {budget} 중 {needed}
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	계속하려면 이 칠 레이어를 래스터화해야 합니다. 이후에는 칠 내용을 편집할 수 없습니다. 레이어를 래스터화할까요?
 	This layer must be rasterized before proceeding.	계속하려면 이 레이어를 래스터화해야 합니다.
 	This operation will turn a live shape into a regular path. Continue?	라이브 모양을 일반 패스로 변환합니다. 계속하시겠습니까?
 	This redraw took {seconds} s on the CPU.	이번 다시 그리기는 CPU에서 {seconds}초 걸렸습니다.

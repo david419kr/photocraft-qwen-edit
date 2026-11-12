@@ -4351,7 +4351,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	Cet ajustement ({key}) est conservé tel qu'il a été importé et ne peut pas encore être modifié.
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Les calques de ce document ont besoin de {needed} mais peuvent occuper {budget} : le document entier se redessine sur le CPU
 	This document's layers: {needed} of {budget} for layers	Calques de ce document : {needed} sur {budget} pour les calques
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Ce calque de remplissage doit être rastérisé pour continuer. Son contenu de remplissage ne sera plus modifiable. Rastériser le calque ?
 	This layer must be rasterized before proceeding.	Ce calque doit être rastérisé pour continuer.
 	This operation will turn a live shape into a regular path. Continue?	Cette opération transforme la forme dynamique en tracé ordinaire. Continuer ?
 	This redraw took {seconds} s on the CPU.	Ce redessin sur le CPU a pris {seconds} s.

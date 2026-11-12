@@ -4217,7 +4217,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	இந்தச் சரிசெய்தல் ({key}) இறக்குமதி செய்தபடியே வைக்கப்பட்டுள்ளது; இன்னும் திருத்த முடியாது.
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	இந்த ஆவணத்தின் அடுக்குகளுக்கு {needed} தேவை, ஆனால் {budget} மட்டுமே வைத்திருக்க முடியும்: முழு ஆவண மறுவரைவுகள் கணினிச் செயலியைப் பயன்படுத்துகின்றன
 	This document's layers: {needed} of {budget} for layers	இந்த ஆவணத்தின் அடுக்குகள்: அடுக்குகளுக்கான {budget} இல் {needed}
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	தொடர்வதற்கு முன் இந்த நிரப்பு அடுக்கு ராஸ்டராக்கப்பட வேண்டும். அதன் நிரப்பு உள்ளடக்கத்தை இனி திருத்த முடியாது. அடுக்கை ராஸ்டராக்கவா?
 	This layer must be rasterized before proceeding.	தொடர்வதற்கு முன் இந்த அடுக்கு ராஸ்டராக்கப்பட வேண்டும்.
 	This operation will turn a live shape into a regular path. Continue?	நேரடி வடிவம் சாதாரண பாதையாக மாற்றப்படும். தொடரவா?
 	This redraw took {seconds} s on the CPU.	இந்த மறுவரைவு CPU இல் {seconds} வி எடுத்தது.

@@ -4276,7 +4276,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	یہ ایڈجسٹمنٹ ({key}) درآمد شدہ کے طور پر رکھی گئی ہے اور ابھی ترمیم کے قابل نہیں۔
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	اس دستاویز کی تہوں کو {needed} درکار ہے لیکن شاید {budget} رکھ سکیں: پوری دستاویز کی دوبارہ ڈرائنگ CPU استعمال کرتی ہے
 	This document's layers: {needed} of {budget} for layers	اس دستاویز کی تہیں: تہوں کے لیے {budget} میں سے {needed}
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	آگے بڑھنے سے پہلے اس بھرائی تہہ کو ریسٹرائز کرنا ضروری ہے۔ اس کا بھرائی مواد مزید قابل ترمیم نہیں رہے گا۔ کیا تہہ کو ریسٹرائز کریں؟
 	This layer must be rasterized before proceeding.	آگے بڑھنے سے پہلے اس تہہ کو ریسٹرائز کرنا ضروری ہے۔
 	This operation will turn a live shape into a regular path. Continue?	لائیو شکل عام راستے میں تبدیل ہو جائے گی۔ جاری رکھیں؟
 	This redraw took {seconds} s on the CPU.	یہ دوبارہ ڈرائنگ CPU پر {seconds} سیکنڈ لگی۔

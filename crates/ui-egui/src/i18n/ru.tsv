@@ -4357,7 +4357,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	Эта коррекция ({key}) сохраняется в импортированном виде и пока не может быть изменена.
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Слоям этого документа нужно {needed}, но занимать они могут {budget}: весь документ перерисовывается на CPU
 	This document's layers: {needed} of {budget} for layers	Слои этого документа: {needed} из {budget} для слоёв
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Перед продолжением необходимо растрировать этот слой заливки. Содержимое заливки перестанет быть редактируемым. Растрировать слой?
 	This layer must be rasterized before proceeding.	Перед продолжением необходимо растрировать этот слой.
 	This operation will turn a live shape into a regular path. Continue?	Динамическая фигура станет обычным контуром. Продолжить?
 	This redraw took {seconds} s on the CPU.	Эта перерисовка на CPU заняла {seconds} с.

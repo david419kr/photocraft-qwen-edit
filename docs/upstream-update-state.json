@@ -407,5 +407,9 @@
     }
   },
   "validation": "Pending fresh exact-source gates; no previous-version passes reused.",
-  "windows_candidate": null
+  "windows_candidate": null,
+  "pull_request": 29,
+  "pull_request_url": "https://github.com/david419kr/photocraft-qwen-edit/pull/29",
+  "initial_merge_sha": "91a01ca764e578d1b96435fd5046a0aa2f456f04",
+  "validation_record": "https://github.com/david419kr/photocraft-qwen-edit/pull/29"
 }

@@ -4323,7 +4323,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	การปรับเปลี่ยนนี้ ({key}) ถูกเก็บไว้เป็นการนำเข้าและยังไม่สามารถแก้ไขได้
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	เลเยอร์ของเอกสารนี้จำเป็นต้องมี {needed} แต่อาจเก็บ {budget} ได้: การวาดทั้งเอกสารใหม่ใช้ CPU
 	This document's layers: {needed} of {budget} for layers	เลเยอร์ของเอกสารนี้: {needed} จาก {budget} สำหรับเลเยอร์
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	เลเยอร์เติมนี้จะต้องถูกแรสเตอร์ก่อนดำเนินการต่อ เนื้อหาที่กรอกจะไม่สามารถแก้ไขได้อีกต่อไป แรสเตอร์เลเยอร์หรือไม่?
 	This layer must be rasterized before proceeding.	เลเยอร์นี้จะต้องถูกแรสเตอร์ก่อนดำเนินการต่อ
 	This operation will turn a live shape into a regular path. Continue?	รูปร่างแบบสดจะถูกแปลงเป็นพาธปกติ ดำเนินการต่อหรือไม่?
 	This redraw took {seconds} s on the CPU.	การวาดใหม่นี้ใช้เวลา {seconds} วินาทีบน CPU

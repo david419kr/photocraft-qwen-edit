@@ -4329,7 +4329,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	Bu tənzimləmə ({key}) idxal edilmiş kimi saxlanılır və hələ redaktə edilə bilməz.
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	Bu sənədin qatlari {needed} tələb edir, lakin {budget} saxlaya bilər: bütün sənədin yenidən çəkilişləri CPU-dan istifadə edir
 	This document's layers: {needed} of {budget} for layers	Bu sənədin qatlari: qatlar üçün {needed} və {budget}
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	Davam etməzdən əvvəl bu doldurma qatsi rasterləşdirilməlidir. Onun doldurma məzmunu artıq redaktə edilə bilməyəcək. Qat rasterləşdirilsin?
 	This layer must be rasterized before proceeding.	Davam etməzdən əvvəl bu qat rasterləşdirilməlidir.
 	This operation will turn a live shape into a regular path. Continue?	Canlı forma adi yola çevriləcək. Davam edilsin?
 	This redraw took {seconds} s on the CPU.	Bu yenidən çəkiliş CPU-da {seconds} s çəkdi.

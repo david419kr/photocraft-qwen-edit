@@ -4406,7 +4406,6 @@
 	This adjustment ({key}) is kept as imported and can't be edited yet.	ეს კორექცია ({key}) შენარჩუნებულია იმპორტირებული სახით და ჯერ ვერ რედაქტირდება.
 	This document's layers need {needed} but may hold {budget}: whole-document redraws use the CPU	ამ დოკუმენტის შრეებს სჭირდება {needed}, დასაშვებია კი {budget}: მთელი დოკუმენტის გადახატვა CPU-ს იყენებს
 	This document's layers: {needed} of {budget} for layers	ამ დოკუმენტის შრეები: {needed} / {budget} (შრეებისთვის)
-	This fill layer must be rasterized before proceeding. Its fill content will no longer be editable. Rasterize the layer?	გასაგრძელებლად ეს შევსების შრე უნდა დარასტრირდეს. მისი შევსება აღარ იქნება რედაქტირებადი. დავარასტრირო შრე?
 	This layer must be rasterized before proceeding.	გასაგრძელებლად ეს შრე უნდა დარასტრირდეს.
 	This operation will turn a live shape into a regular path. Continue?	ცოცხალი ფორმა ჩვეულებრივ კონტურად გარდაიქმნება. გაგრძელდეს?
 	This redraw took {seconds} s on the CPU.	ამ გადახატვას CPU-ზე {seconds} წმ დასჭირდა.
