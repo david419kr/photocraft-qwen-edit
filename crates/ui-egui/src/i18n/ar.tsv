@@ -3898,3 +3898,9 @@ fontWeight	Regular	عادي
 fontWeight	SemiBold	شبه غامق
 fontWeight	Thin	رفيع
 layerLabel	No Color	بلا لون
+	Count Color	لون العد
+	Count Group	مجموعة العد
+	Count group color	لون مجموعة العد
+	Delete the currently selected count group	حذف مجموعة العد المحددة حاليًا
+	Toggle Character and Paragraph panels	إظهار أو إخفاء لوحتي الحرف والفقرة
+	Toggle visibility of count group	تبديل ظهور مجموعة العد

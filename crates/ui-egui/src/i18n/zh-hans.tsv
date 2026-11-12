@@ -3605,3 +3605,9 @@ fontWeight	Regular	常规
 fontWeight	SemiBold	半粗
 fontWeight	Thin	极细
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	AI/PDF/EPS 内容将以 SVG 格式编辑。保存会替换嵌入的源文件；格式特有的功能可能会发生变化。
+	Count Color	计数颜色
+	Count Group	计数组
+	Count group color	计数组颜色
+	Delete the currently selected count group	删除当前选中的计数组
+	Toggle Character and Paragraph panels	显示或隐藏字符和段落面板
+	Toggle visibility of count group	切换计数组可见性

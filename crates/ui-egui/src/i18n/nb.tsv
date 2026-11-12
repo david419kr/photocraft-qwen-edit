@@ -4983,3 +4983,9 @@ layers	Fill	Fyll
 layers	Fill:	Fyll:
 navigator	Zoom	Zoom
 shape	Appearance	Utseende
+	Count Color	Tellefarge
+	Count Group	Tellegruppe
+	Count group color	Farge på tellegruppe
+	Delete the currently selected count group	Slett den valgte tellegruppen
+	Toggle Character and Paragraph panels	Vis/skjul panelene Tegn og Avsnitt
+	Toggle visibility of count group	Bytt synlighet for tellegruppen

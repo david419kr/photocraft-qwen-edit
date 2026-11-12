@@ -4821,3 +4821,9 @@ fontWeight	SemiBold	نیم بولڈ
 fontWeight	Thin	پتلا
 layerLabel	No Color	بلا رنگ
 navigator	Zoom	زوم
+	Count Color	شمار کا رنگ
+	Count Group	شمار کا گروپ
+	Count group color	شمار کے گروپ کا رنگ
+	Delete the currently selected count group	فی الحال منتخب شمار کا گروپ حذف کریں
+	Toggle Character and Paragraph panels	کریکٹر اور پیراگراف پینل دکھائیں یا چھپائیں
+	Toggle visibility of count group	شمار کے گروپ کی نمائش بدلیں

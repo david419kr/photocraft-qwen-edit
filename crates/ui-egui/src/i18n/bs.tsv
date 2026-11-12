@@ -5002,3 +5002,9 @@ smartSvg	SVG editor opened. Save the SVG to update this Smart Object.	SVG uređi
 smartSvg	Save to the opened SVG file. Each saved change becomes one undo step in PhotoCraft.	Sačuvajte u otvorenu SVG datoteku. Svaka sačuvana izmjena postaje jedan korak poništavanja u PhotoCraftu.
 smartSvg	Stop syncing this Smart Object	Zaustavi sinhronizaciju ovog pametnog objekta
 smartSvg	Updates wait while another document or an editing dialog is active.	Ažuriranja čekaju dok je aktivan drugi dokument ili dijalog za uređivanje.
+	Count Color	Boja brojanja
+	Count Group	Grupa brojanja
+	Count group color	Boja grupe brojanja
+	Delete the currently selected count group	Izbriši trenutno odabranu grupu brojanja
+	Toggle Character and Paragraph panels	Prikaži/sakrij panele Znak i Pasus
+	Toggle visibility of count group	Prikaži/sakrij grupu brojanja

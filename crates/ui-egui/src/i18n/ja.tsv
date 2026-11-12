@@ -4538,3 +4538,9 @@ fontWeight	Regular	標準
 fontWeight	SemiBold	中太
 fontWeight	Thin	極細
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	AI/PDF/EPS の内容を SVG として編集します。保存すると埋め込みソースが置き換わります。形式固有の機能が変わる場合があります。
+	Count Color	カウントカラー
+	Count Group	カウントグループ
+	Count group color	カウントグループのカラー
+	Delete the currently selected count group	現在選択されているカウントグループを削除
+	Toggle Character and Paragraph panels	文字パネルと段落パネルの表示を切り替え
+	Toggle visibility of count group	カウントグループの表示を切り替え

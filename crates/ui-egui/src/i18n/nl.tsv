@@ -4673,3 +4673,9 @@ fontWeight	SemiBold	Halfvet
 fontWeight	Thin	Dun
 layerLabel	No Color	Geen kleur
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	AI/PDF/EPS-inhoud wordt als SVG bewerkt. Opslaan vervangt de ingesloten bron; formaatspecifieke eigenschappen kunnen veranderen.
+	Count Color	Telkleur
+	Count Group	Telgroep
+	Count group color	Kleur van telgroep
+	Delete the currently selected count group	De momenteel geselecteerde telgroep verwijderen
+	Toggle Character and Paragraph panels	De deelvensters Teken en Alinea tonen of verbergen
+	Toggle visibility of count group	Zichtbaarheid van telgroep wisselen

@@ -4528,3 +4528,9 @@ prompt-region	Top left	좌상단
 prompt-region	Top right	우상단
 shape	Appearance	화면 모양
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	AI/PDF/EPS 내용을 SVG로 편집합니다. 저장하면 포함된 원본이 교체되며 형식별 기능이 변경될 수 있습니다.
+	Count Color	개수 색상
+	Count Group	개수 그룹
+	Count group color	개수 그룹 색상
+	Delete the currently selected count group	현재 선택한 개수 그룹 삭제
+	Toggle Character and Paragraph panels	문자 및 단락 패널 표시 전환
+	Toggle visibility of count group	개수 그룹 표시 전환

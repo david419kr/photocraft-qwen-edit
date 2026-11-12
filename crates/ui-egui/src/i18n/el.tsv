@@ -4603,3 +4603,9 @@ fontWeight	Regular	Κανονικά
 fontWeight	SemiBold	Ημιέντονα
 fontWeight	Thin	Πολύ λεπτά
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	Το περιεχόμενο AI/PDF/EPS θα υποστεί επεξεργασία ως SVG. Η αποθήκευση αντικαθιστά την ενσωματωμένη πηγή· οι ιδιότητες του αρχικού τύπου αρχείου μπορεί να αλλάξουν.
+	Count Color	Χρώμα καταμέτρησης
+	Count Group	Ομάδα καταμέτρησης
+	Count group color	Χρώμα ομάδας καταμέτρησης
+	Delete the currently selected count group	Διαγραφή της τρέχουσας επιλεγμένης ομάδας καταμέτρησης
+	Toggle Character and Paragraph panels	Εμφάνιση/απόκρυψη των πινάκων Χαρακτήρας και Παράγραφος
+	Toggle visibility of count group	Εναλλαγή ορατότητας ομάδας καταμέτρησης

@@ -1,6 +1,6 @@
 # PhotoCraft — 로컬 Qwen AI 기능
 
-이 브랜치는 upstream **0.23.0** 후보를 준비합니다. 검증과 Windows 산출물 출처는 [통합 기록](docs/upstream-0230-integration.md)에 기록합니다.
+이 브랜치는 upstream **0.23.1** 후보를 준비합니다. 검증과 Windows 산출물 출처는 [통합 기록](docs/upstream-0231-integration.md)에 기록합니다.
 
 [English](README.md) · [포터블 릴리스 다운로드](https://github.com/david419kr/photocraft-qwen-edit/releases/latest)
 

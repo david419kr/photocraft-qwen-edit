@@ -4812,3 +4812,9 @@ fontWeight	Thin	Ultrafina
 layerLabel	No Color	Sin color
 navigator	Zoom	Zoom
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	El contenido AI/PDF/EPS se editará como SVG. Al guardar se reemplaza el origen incrustado; las funciones específicas del formato pueden cambiar.
+	Count Color	Color de recuento
+	Count Group	Grupo de recuento
+	Count group color	Color del grupo de recuento
+	Delete the currently selected count group	Eliminar el grupo de recuento seleccionado actualmente
+	Toggle Character and Paragraph panels	Mostrar u ocultar los paneles Carácter y Párrafo
+	Toggle visibility of count group	Alternar la visibilidad del grupo de recuento

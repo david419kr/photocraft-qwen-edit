@@ -4522,3 +4522,9 @@ fontWeight	SemiBold	Напівжирний
 fontWeight	Thin	Тонкий
 layerLabel	No Color	Без кольору
 smartSvg	AI/PDF/EPS contents will be edited as SVG. Saving replaces the embedded source; format-specific features may change.	Вміст AI/PDF/EPS редагуватиметься як SVG. Збереження замінить вбудоване джерело; властивості початкового формату можуть змінитися.
+	Count Color	Колір підрахунку
+	Count Group	Група підрахунку
+	Count group color	Колір групи підрахунку
+	Delete the currently selected count group	Видалити поточну вибрану групу підрахунку
+	Toggle Character and Paragraph panels	Показати або приховати панелі «Символ» і «Абзац»
+	Toggle visibility of count group	Перемкнути видимість групи підрахунку

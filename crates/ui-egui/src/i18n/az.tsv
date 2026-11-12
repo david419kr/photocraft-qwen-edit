@@ -4963,3 +4963,9 @@ smartSvg	SVG editor opened. Save the SVG to update this Smart Object.	SVG redakt
 smartSvg	Save to the opened SVG file. Each saved change becomes one undo step in PhotoCraft.	Açılmış SVG faylında yadda saxlayın. Saxlanmış hər bir dəyişiklik PhotoCraft-də bir geri qaytarma addımına çevrilir.
 smartSvg	Stop syncing this Smart Object	Bu Ağıllı Obyektin sinxronizasiyasını dayandırın
 smartSvg	Updates wait while another document or an editing dialog is active.	Yeniləmələr başqa sənəd və ya redaktə dialoqu aktiv olduqda gözləyir.
+	Count Color	Sayım rəngi
+	Count Group	Sayım qrupu
+	Count group color	Sayım qrupunun rəngi
+	Delete the currently selected count group	Hazırda seçilmiş sayım qrupunu sil
+	Toggle Character and Paragraph panels	Simvol və Abzas panellərini göstər/gizlət
+	Toggle visibility of count group	Sayım qrupunun görünməsini dəyiş

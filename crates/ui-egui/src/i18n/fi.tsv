@@ -4983,3 +4983,9 @@ layers	Fill	Täyttö
 layers	Fill:	Täyttö:
 navigator	Zoom	Zoomaus
 shape	Appearance	Ulkoasu
+	Count Color	Laskurin väri
+	Count Group	Laskuriryhmä
+	Count group color	Laskuriryhmän väri
+	Delete the currently selected count group	Poista valittu laskuriryhmä
+	Toggle Character and Paragraph panels	Näytä tai piilota Merkki- ja Kappale-paneelit
+	Toggle visibility of count group	Vaihda laskuriryhmän näkyvyyttä

@@ -5069,3 +5069,9 @@ smartSvg	SVG editor opened. Save the SVG to update this Smart Object.	SVG-რე
 smartSvg	Save to the opened SVG file. Each saved change becomes one undo step in PhotoCraft.	შეინახეთ გახსნილ SVG ფაილში. ყოველი შენახული ცვლილება PhotoCraft-ში ერთ დაბრუნების ნაბიჯად იქცევა.
 smartSvg	Stop syncing this Smart Object	ამ ჭკვიანი ობიექტის სინქრონიზაციის შეწყვეტა
 smartSvg	Updates wait while another document or an editing dialog is active.	განახლება დაელოდება, სანამ სხვა დოკუმენტი ან რედაქტირების დიალოგი აქტიურია.
+	Count Color	დათვლის ფერი
+	Count Group	დათვლის ჯგუფი
+	Count group color	დათვლის ჯგუფის ფერი
+	Delete the currently selected count group	ამჟამად არჩეული დათვლის ჯგუფის წაშლა
+	Toggle Character and Paragraph panels	სიმბოლოსა და აბზაცის პანელების ჩვენება/დამალვა
+	Toggle visibility of count group	დათვლის ჯგუფის ხილვადობის გადართვა

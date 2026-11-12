@@ -4983,3 +4983,9 @@ layers	Fill	Udfyldning
 layers	Fill:	Udfyldning:
 navigator	Zoom	Zoom
 shape	Appearance	Udseende
+	Count Color	Optællingsfarve
+	Count Group	Optællingsgruppe
+	Count group color	Optællingsgruppens farve
+	Delete the currently selected count group	Slet den aktuelt valgte optællingsgruppe
+	Toggle Character and Paragraph panels	Vis/skjul panelerne Tegn og Afsnit
+	Toggle visibility of count group	Skift optællingsgruppens synlighed
